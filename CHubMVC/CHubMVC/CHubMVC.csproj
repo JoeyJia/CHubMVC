@@ -249,6 +249,10 @@
       <Project>{9017c2ae-01d9-4f15-8363-de32a04c2aa6}</Project>
       <Name>CHubBLL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CHubCommon\CHubCommon.csproj">
+      <Project>{4ECE8D30-4DA4-4E70-85C9-30A3E2F7A367}</Project>
+      <Name>CHubCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CHubDBEntity\CHubDBEntity.csproj">
       <Project>{ee754c7b-0aaa-4cbe-81f9-e8954f9eb1e5}</Project>
       <Name>CHubDBEntity</Name>

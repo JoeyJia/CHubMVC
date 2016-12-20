@@ -9,6 +9,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using CHubMVC.Models;
+using CHubBLL;
+using CHubDBEntity;
+using CHubCommon;
 
 namespace CHubMVC.Controllers
 {
@@ -41,24 +44,26 @@ namespace CHubMVC.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public  ActionResult Login(LoginViewModel model, string returnUrl)
         {
-            if (ModelState.IsValid)
+            if (!string.IsNullOrEmpty(model.UserName))
             {
-                var user = await UserManager.FindAsync(model.UserName, model.Password);
-                if (user != null)
+                APP_USERS_BLL userBLL = new APP_USERS_BLL();
+                APP_USERS user = userBLL.GetAppUserByDomainName(model.UserName);
+
+                //Need to check whether is null or empty obj
+                if (user == null)
                 {
-                    await SignInAsync(user, model.RememberMe);
-                    return RedirectToLocal(returnUrl);
+                    if (!userBLL.AddAppUserWithRole(model.UserName))
+                        throw new Exception("Fail to add App User");
+                    user = userBLL.GetAppUserByDomainName(model.UserName);
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid username or password.");
-                }
+                Session[CHubConstValues.SessionUser] = user.APP_USER;
+                return RedirectToAction("Index", "Home");
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            //not success remail login page
+            return View();
         }
 
         //

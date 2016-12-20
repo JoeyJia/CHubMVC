@@ -1,58 +1,51 @@
 ﻿@model CHubMVC.Models.LoginViewModel
 
 @{
+    Layout = null;
     ViewBag.Title = "Log in";
 }
 
-<h2>@ViewBag.Title.</h2>
-<div class="row">
-    <div class="col-md-8">
+<meta charset="utf-8">
+<link href="~/Scripts/bootstrap.css" rel="stylesheet">
+
+
+<body style="background-color:#eee;width:98%">
+<div class="row" style="margin-top:180px;">
+    <div class="col-md-offset-4 col-md-4 col-sm-offset-4 col-sm-4 col-lg-3 col-lg-offset-4" >
+        <div class="panel panel-primary" style="border-color:#263F6A">
+            <div class="panel-heading" style="border-bottom:0;height:60px;background-color:#263F6A">
+                <h3 class="panel-title" style="line-height:40px;">Chub Log In</h3>
+                </div>
         <section id="loginForm">
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
-                <h4>Use a local account to log in.</h4>
-                <hr />
-                @Html.ValidationSummary(true)
                 <div class="form-group">
-                    @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.UserName)
                     </div>
-                </div>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Password)
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <div class="checkbox">
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe)
+                    <div class="input-append col-md-8 col-md-offset-2 col-sm-offset-2 col-sm-8 col-lg-6 col-lg-offset-3" >
+                        @Html.TextBoxFor(m=>m.UserName,new { @class = "form-control", @placeholder="App User", @required = "required"})
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Log in" class="btn btn-default" />
+
+                 <div class="form-group">
+                        <div class="input-append col-md-8 col-md-offset-2 col-sm-offset-2 col-sm-8 col-lg-6 col-lg-offset-3">
+                            @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @placeholder = "PassWord" })
+                            @Html.ValidationSummary()
+                        </div>
                     </div>
-                </div>
-                <p>
-                    @Html.ActionLink("Register", "Register") if you don't have a local account.
-                </p>
+
+                  <div class="form-group">
+                        <div class="input-append col-md-8 col-md-offset-2 col-sm-offset-2 col-sm-8 col-lg-6 col-lg-offset-3">
+                           <button class="btn btn-lg btn-primary btn-block" type="submit">SignIn</button>
+                        </div>
+                    </div>
             }
         </section>
-    </div>
-    <div class="col-md-4">
-        <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
-        </section>
+            </div>
     </div>
 </div>
+</body>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

@@ -21,12 +21,9 @@ namespace CHubDAL
             return db.APP_USERS.FirstOrDefault(a => a.APP_USER == appUser); 
         }
 
-        public bool AddAppUserWithRole(APP_USERS appUser, APP_USER_ROLE_LINK urLink)
+        public bool AddAppUserWithRole(APP_USERS appUser)
         {
-            this.Add(appUser, false);
-            //Check work or not
-            this.Add(urLink, false);
-            this.SaveChanges();
+            this.Add(appUser);
             return true;
         }
 

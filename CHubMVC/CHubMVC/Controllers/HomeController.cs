@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using CHubBLL;
 using CHubDBEntity;
 using CHubModel;
+using CHubCommon;
 
 namespace CHubMVC.Controllers
 {
@@ -13,12 +14,33 @@ namespace CHubMVC.Controllers
     {
         public ActionResult Index()
         {
+            if(Session[CHubConstValues.SessionUser]==null)
+                return RedirectToAction("Login", "Account");
+
+            string userName = Session[CHubConstValues.SessionUser].ToString();
+
+            //Get Welcome Part
+            APP_WELCOME_BLL welBLL = new APP_WELCOME_BLL();
+            ViewBag.welcomeList = welBLL.GetAppWelcome();
+
+            //Recently page
+
+            //Get Notice Part
+            APP_NOTICE_BLL noticeBLL = new APP_NOTICE_BLL();
+            ViewBag.noticeList = noticeBLL.GetValidAppNotice();
+
+            ViewBag.userName = userName;
             return View();
         }
 
         [HttpPost]
         public JsonResult GetLeftNav(string appUser)
         {
+            if (Session[CHubConstValues.SessionUser] == null)
+                throw new Exception("Please Login First");
+
+            appUser = Session[CHubConstValues.SessionUser].ToString();
+
             V_USER_NAV_ALL_BLL navBLL = new V_USER_NAV_ALL_BLL();
             List<V_USER_NAV_ALL> navList = new List<V_USER_NAV_ALL>();
             navList = navBLL.GetNavByAppUser(appUser);

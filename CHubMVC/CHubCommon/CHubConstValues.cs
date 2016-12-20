@@ -8,5 +8,6 @@ namespace CHubCommon
 {
     public class CHubConstValues
     {
+        public static string SessionUser = "AppUser";
     }
 }

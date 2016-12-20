@@ -27,7 +27,12 @@ namespace CHubBLL
             return dal.GetAppUserByDomainName(appUser);
         }
 
-        public bool AddAppUserWithRole(string domainName, CHubRoles role=CHubRoles.Public)
+        /// <summary>
+        /// Add a app User ,will default add a "Public" role link by a trigger
+        /// </summary>
+        /// <param name="domainName"></param>
+        /// <returns></returns>
+        public bool AddAppUserWithRole(string domainName)
         {
             APP_USERS appUser = new APP_USERS()
             {
@@ -39,14 +44,7 @@ namespace CHubBLL
                 STATUS = UserStates.A.ToString()
             };
 
-            APP_USER_ROLE_LINK urLink = new APP_USER_ROLE_LINK()
-            {
-                APP_USER = domainName,
-                ROLE_NAME = role.ToString().ToLower(),
-                CREATE_DATE = DateTime.Now
-            };
-
-            return dal.AddAppUserWithRole(appUser, urLink);
+            return dal.AddAppUserWithRole(appUser);
         }
 
     }
