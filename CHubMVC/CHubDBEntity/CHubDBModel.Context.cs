@@ -44,10 +44,6 @@ namespace CHubDBEntity
         public virtual DbSet<APP_WORKSPACE> APP_WORKSPACE { get; set; }
         public virtual DbSet<M_PARAMETER> M_PARAMETER { get; set; }
         public virtual DbSet<M_SYSTEM> M_SYSTEM { get; set; }
-        public virtual DbSet<TS_ORDER_HEADER> TS_ORDER_HEADER { get; set; }
-        public virtual DbSet<TS_ORDER_DETAIL> TS_ORDER_DETAIL { get; set; }
-        public virtual DbSet<TS_ORDER_DETAIL_STG> TS_ORDER_DETAIL_STG { get; set; }
-        public virtual DbSet<TS_ORDER_HEADER_STG> TS_ORDER_HEADER_STG { get; set; }
         public virtual DbSet<G_PART_DESCRIPTION> G_PART_DESCRIPTION { get; set; }
         public virtual DbSet<G_PART_SUPERSESSION_ALL> G_PART_SUPERSESSION_ALL { get; set; }
         public virtual DbSet<P_ADDR_DFLT> P_ADDR_DFLT { get; set; }
@@ -65,5 +61,9 @@ namespace CHubDBEntity
         public virtual DbSet<V_NAV_ALL> V_NAV_ALL { get; set; }
         public virtual DbSet<V_USER_PAGE_LINK> V_USER_PAGE_LINK { get; set; }
         public virtual DbSet<V_USER_NAV_ALL> V_USER_NAV_ALL { get; set; }
+        public virtual DbSet<APP_ORDER_STATUS> APP_ORDER_STATUS { get; set; }
+        public virtual DbSet<APP_SHIP_SEQ> APP_SHIP_SEQ { get; set; }
+        public virtual DbSet<TS_OR_HEADER> TS_OR_HEADER { get; set; }
+        public virtual DbSet<TS_OR_DETAIL> TS_OR_DETAIL { get; set; }
     }
 }

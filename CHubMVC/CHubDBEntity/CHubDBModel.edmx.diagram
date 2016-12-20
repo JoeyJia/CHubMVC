@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d7f6e9b31a6d43e79a67a386d41c7d55" Name="Diagram1">
+      <Diagram DiagramId="d7f6e9b31a6d43e79a67a386d41c7d55" Name="Diagram1" ZoomLevel="87">
         <EntityTypeShape EntityType="CHubDBModel.APP_CUST_ALIAS" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.APP_CUST_ALIAS_LINK" Width="1.5" PointX="8" PointY="4.625" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.APP_DURATION" Width="1.5" PointX="8" PointY="0.75" IsExpanded="true" />
@@ -24,10 +24,6 @@
         <EntityTypeShape EntityType="CHubDBModel.APP_WORKSPACE" Width="1.5" PointX="3.75" PointY="15" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.M_PARAMETER" Width="1.5" PointX="10.75" PointY="13.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.M_SYSTEM" Width="1.5" PointX="5.75" PointY="8.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.TS_ORDER_HEADER" Width="1.5" PointX="11" PointY="5.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.TS_ORDER_DETAIL" Width="1.5" PointX="12.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.TS_ORDER_DETAIL_STG" Width="1.5" PointX="13.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.TS_ORDER_HEADER_STG" Width="1.5" PointX="5.75" PointY="15.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.G_PART_DESCRIPTION" Width="1.5" PointX="13.75" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.G_PART_SUPERSESSION_ALL" Width="1.5" PointX="7.75" PointY="15.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.P_ADDR_DFLT" Width="1.5" PointX="14.75" PointY="12.75" IsExpanded="true" />
@@ -48,7 +44,6 @@
         <AssociationConnector Association="CHubDBModel.APP_USER_ALIAS_LINK_R02" ManuallyRouted="false" />
         <AssociationConnector Association="CHubDBModel.APP_CUST_ALIAS_LINK_R02" ManuallyRouted="false" />
         <AssociationConnector Association="CHubDBModel.APP_DURATION_R01" ManuallyRouted="false" />
-        <AssociationConnector Association="CHubDBModel.TS_ORDER_HEADER_R02" ManuallyRouted="false" />
         <AssociationConnector Association="CHubDBModel.APP_PAGE_ROLE_LINK_R01" ManuallyRouted="false" />
         <AssociationConnector Association="CHubDBModel.APP_PAGE_ROLE_LINK_R02" ManuallyRouted="false" />
         <AssociationConnector Association="CHubDBModel.APP_RECENT_PAGES_R02" ManuallyRouted="false" />
@@ -61,8 +56,16 @@
         <AssociationConnector Association="CHubDBModel.APP_USER_ROLE_LINK_R01" ManuallyRouted="false" />
         <AssociationConnector Association="CHubDBModel.C0001" ManuallyRouted="false" />
         <AssociationConnector Association="CHubDBModel.APP_WH_R02" ManuallyRouted="false" />
-        <AssociationConnector Association="CHubDBModel.TS_ORDER_HEADER_R01" ManuallyRouted="false" />
         <EntityTypeShape EntityType="CHubDBModel.V_USER_NAV_ALL" Width="1.5" PointX="21.375" PointY="8.75" />
+        <EntityTypeShape EntityType="CHubDBModel.APP_ORDER_STATUS" Width="1.5" PointX="8.75" PointY="28.625" />
+        <EntityTypeShape EntityType="CHubDBModel.APP_SHIP_SEQ" Width="1.5" PointX="8.75" PointY="26.375" />
+        <EntityTypeShape EntityType="CHubDBModel.TS_OR_HEADER" Width="1.5" PointX="11" PointY="0.75" />
+        <EntityTypeShape EntityType="CHubDBModel.TS_OR_DETAIL" Width="1.5" PointX="21.375" PointY="18" />
+        <AssociationConnector Association="CHubDBModel.TS_OR_HEADER_R05" />
+        <AssociationConnector Association="CHubDBModel.TS_OR_HEADER_R02" />
+        <AssociationConnector Association="CHubDBModel.TS_OR_HEADER_R04" />
+        <AssociationConnector Association="CHubDBModel.TS_OR_HEADER_R01" />
+        <AssociationConnector Association="CHubDBModel.TS_OR_HEADER_R03" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

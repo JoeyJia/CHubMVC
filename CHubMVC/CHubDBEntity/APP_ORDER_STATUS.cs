@@ -12,24 +12,17 @@ namespace CHubDBEntity
     using System;
     using System.Collections.Generic;
     
-    public partial class APP_CUST_ALIAS
+    public partial class APP_ORDER_STATUS
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public APP_CUST_ALIAS()
+        public APP_ORDER_STATUS()
         {
-            this.APP_CUST_ALIAS_LINK = new HashSet<APP_CUST_ALIAS_LINK>();
-            this.APP_USER_ALIAS_LINK = new HashSet<APP_USER_ALIAS_LINK>();
             this.TS_OR_HEADER = new HashSet<TS_OR_HEADER>();
         }
     
-        public string ALIAS_NAME { get; set; }
-        public string DESCRIPTION { get; set; }
-        public string ACTIVEIND { get; set; }
+        public string ORDER_STATUS { get; set; }
+        public string STATUS_DESC { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<APP_CUST_ALIAS_LINK> APP_CUST_ALIAS_LINK { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<APP_USER_ALIAS_LINK> APP_USER_ALIAS_LINK { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TS_OR_HEADER> TS_OR_HEADER { get; set; }
     }

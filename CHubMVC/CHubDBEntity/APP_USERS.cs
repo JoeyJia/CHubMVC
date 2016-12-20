@@ -35,6 +35,7 @@ namespace CHubDBEntity
         public string EMAIL_ADDR { get; set; }
         public string PWD { get; set; }
         public string STATUS { get; set; }
+        public Nullable<System.DateTime> LAST_LOGIN { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<APP_RECENT_PAGES> APP_RECENT_PAGES { get; set; }

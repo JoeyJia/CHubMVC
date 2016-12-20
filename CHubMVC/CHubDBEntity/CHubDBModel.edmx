@@ -54,6 +54,13 @@
           <Property Name="BEGIN_DATE" Type="date" Nullable="false" />
           <Property Name="END_DATE" Type="date" Nullable="false" />
         </EntityType>
+        <EntityType Name="APP_ORDER_STATUS">
+          <Key>
+            <PropertyRef Name="ORDER_STATUS" />
+          </Key>
+          <Property Name="ORDER_STATUS" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="STATUS_DESC" Type="varchar2" MaxLength="20" Nullable="false" />
+        </EntityType>
         <EntityType Name="APP_ORDER_TYPE">
           <Key>
             <PropertyRef Name="ORDER_TYPE" />
@@ -96,6 +103,7 @@
           <Property Name="APP_USER" Type="varchar2" MaxLength="20" Nullable="false" />
           <Property Name="PAGE_NAME" Type="varchar2" MaxLength="20" Nullable="false" />
           <Property Name="LAST_ACTIVITY" Type="date" Nullable="false" />
+          <Property Name="PAGE_URL" Type="varchar2" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="APP_ROLES">
           <Key>
@@ -104,6 +112,13 @@
           <Property Name="ROLE_NAME" Type="varchar2" MaxLength="20" Nullable="false" />
           <Property Name="DESCRIPTION" Type="varchar2" MaxLength="30" />
           <Property Name="ADMIN" Type="varchar2" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="APP_SHIP_SEQ">
+          <Key>
+            <PropertyRef Name="SHIPFROM_SEQ" />
+          </Key>
+          <Property Name="SHIPFROM_SEQ" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="SHIPFROM_DESC" Type="varchar2" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="APP_SITES">
           <Key>
@@ -164,6 +179,7 @@
           <Property Name="EMAIL_ADDR" Type="varchar2" MaxLength="300" />
           <Property Name="PWD" Type="varchar2" MaxLength="100" />
           <Property Name="STATUS" Type="varchar2" MaxLength="1" />
+          <Property Name="LAST_LOGIN" Type="date" />
         </EntityType>
         <EntityType Name="APP_WELCOME">
           <Key>
@@ -214,119 +230,83 @@
           <Property Name="DB_LINK" Type="varchar2" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'GWAPP.TS_ORDER_DETAIL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="TS_ORDER_DETAIL">
-          <Key>
-            <PropertyRef Name="REQ_NO" />
-            <PropertyRef Name="PART_NO" />
-            <PropertyRef Name="BUY_QTY" />
-          </Key>
-          <Property Name="REQ_NO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="PART_NO" Type="varchar2" MaxLength="25" Nullable="false" />
-          <Property Name="CUSTOMER_PART_NO" Type="varchar2" MaxLength="25" />
-          <Property Name="BUY_QTY" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="35" />
-          <Property Name="CREATION_DATE" Type="date" />
-          <Property Name="CREATED_BY" Type="varchar2" MaxLength="20" />
-          <Property Name="UPDATED_DATE" Type="date" />
-          <Property Name="UPDATED_BY" Type="varchar2" MaxLength="1" />
-        </EntityType>
+warning 6013: The table/view 'GWAPP.QUEST_TEMP_EXPLAIN' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="QUEST_TEMP_EXPLAIN">
+          <Property Name="STATEMENT_ID" Type="varchar2" MaxLength="30" />
+          <Property Name="TIMESTAMP" Type="date" />
+          <Property Name="REMARKS" Type="varchar2" MaxLength="80" />
+          <Property Name="OPERATION" Type="varchar2" MaxLength="30" />
+          <Property Name="OPTIONS" Type="varchar2" MaxLength="30" />
+          <Property Name="OBJECT_NODE" Type="varchar2" MaxLength="128" />
+          <Property Name="OBJECT_OWNER" Type="varchar2" MaxLength="30" />
+          <Property Name="OBJECT_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="OBJECT_INSTANCE" Type="number" Precision="38" Scale="0" />
+          <Property Name="OBJECT_TYPE" Type="varchar2" MaxLength="30" />
+          <Property Name="OPTIMIZER" Type="varchar2" MaxLength="255" />
+          <Property Name="SEARCH_COLUMNS" Type="number" Precision="38" Scale="0" />
+          <Property Name="ID" Type="number" Precision="38" Scale="0" />
+          <Property Name="PARENT_ID" Type="number" Precision="38" Scale="0" />
+          <Property Name="POSITION" Type="number" Precision="38" Scale="0" />
+          <Property Name="COST" Type="number" Precision="38" Scale="0" />
+          <Property Name="CARDINALITY" Type="number" Precision="38" Scale="0" />
+          <Property Name="BYTES" Type="number" Precision="38" Scale="0" />
+          <Property Name="OTHER_TAG" Type="varchar2" MaxLength="255" />
+          <Property Name="PARTITION_START" Type="varchar2" MaxLength="255" />
+          <Property Name="PARTITION_STOP" Type="varchar2" MaxLength="255" />
+          <Property Name="PARTITION_ID" Type="number" Precision="38" Scale="0" />
+          <Property Name="OTHER" Type="long" />
+          <Property Name="DISTRIBUTION" Type="varchar2" MaxLength="30" />
+          <Property Name="CPU_COST" Type="number" Precision="38" Scale="0" />
+          <Property Name="IO_COST" Type="number" Precision="38" Scale="0" />
+          <Property Name="TEMP_SPACE" Type="number" Precision="38" Scale="0" />
+          <Property Name="ACCESS_PREDICATES" Type="varchar2" MaxLength="4000" />
+          <Property Name="FILTER_PREDICATES" Type="varchar2" MaxLength="4000" />
+        </EntityType>-->
         <!--Errors Found During Generation:
-warning 6002: The table/view 'GWAPP.TS_ORDER_DETAIL_STG' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="TS_ORDER_DETAIL_STG">
+warning 6002: The table/view 'GWAPP.TS_OR_DETAIL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TS_OR_DETAIL">
           <Key>
+            <PropertyRef Name="ORDER_REQ_NO" />
+            <PropertyRef Name="SHIPFROM_SEQ" />
             <PropertyRef Name="PART_NO" />
             <PropertyRef Name="BUY_QTY" />
-            <PropertyRef Name="WAREHOUSE" />
-            <PropertyRef Name="TOKEN_ID" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="CREATED_BY" />
           </Key>
+          <Property Name="ORDER_REQ_NO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="SHIPFROM_SEQ" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="PART_NO" Type="varchar2" MaxLength="25" Nullable="false" />
           <Property Name="CUSTOMER_PART_NO" Type="varchar2" MaxLength="25" />
           <Property Name="BUY_QTY" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DESCRIPTION" Type="varchar2" MaxLength="35" />
-          <Property Name="WAREHOUSE" Type="varchar2" MaxLength="10" Nullable="false" />
-          <Property Name="TOKEN_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="CREATION_DATE" Type="date" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="UPDATED_DATE" Type="date" />
+          <Property Name="UPDATED_BY" Type="varchar2" MaxLength="20" />
         </EntityType>
-        <EntityType Name="TS_ORDER_HEADER">
+        <EntityType Name="TS_OR_HEADER">
           <Key>
-            <PropertyRef Name="REQ_NO" />
+            <PropertyRef Name="ORDER_REQ_NO" />
+            <PropertyRef Name="SHIPFROM_SEQ" />
           </Key>
-          <Property Name="REQ_NO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ORDER_REQ_NO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="SHIPFROM_SEQ" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="TO_SYSTEM" Type="varchar2" MaxLength="10" Nullable="false" />
           <Property Name="CUSTOMER_NO" Type="varchar2" MaxLength="8" Nullable="false" />
-          <Property Name="NAME" Type="varchar2" MaxLength="35" Nullable="false" />
           <Property Name="BILL_TO_LOCATION" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="SHIP_TO_LOCATION" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DEST_LOCATION" Type="number" Precision="38" Scale="0" />
           <Property Name="DUE_DATE" Type="date" Nullable="false" />
           <Property Name="ORDER_TYPE" Type="varchar2" MaxLength="10" Nullable="false" />
-          <Property Name="CUSTOMER_PO_NO" Type="varchar2" MaxLength="20" />
+          <Property Name="CUSTOMER_PO_NO" Type="varchar2" MaxLength="20" Nullable="false" />
           <Property Name="SPL_IND" Type="varchar2" MaxLength="1" Nullable="false" />
-          <Property Name="DEST_LOCATION" Type="number" Precision="38" Scale="0" />
-          <Property Name="DEST_NAME" Type="varchar2" MaxLength="35" />
-          <Property Name="DEST_ADDR_1" Type="varchar2" MaxLength="35" />
-          <Property Name="DEST_ADDR_2" Type="varchar2" MaxLength="35" />
-          <Property Name="DEST_CITY" Type="varchar2" MaxLength="20" />
-          <Property Name="DEST_ZIP" Type="varchar2" MaxLength="10" />
-          <Property Name="DEST_STATE" Type="varchar2" MaxLength="10" />
-          <Property Name="DEST_COUNTRY" Type="varchar2" MaxLength="4" />
           <Property Name="SHIPCOMP_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
-          <Property Name="WAREHOUSE" Type="varchar2" MaxLength="8" Nullable="false" />
-          <Property Name="LOCAL_DEST_NAME" Type="varchar2" MaxLength="35" />
-          <Property Name="LOCAL_DEST_ADDR_1" Type="varchar2" MaxLength="35" />
-          <Property Name="LOCAL_DEST_ADDR_2" Type="varchar2" MaxLength="35" />
-          <Property Name="LOCAL_DEST_ADDR_3" Type="varchar2" MaxLength="35" />
-          <Property Name="LOCAL_DEST_CITY" Type="varchar2" MaxLength="20" />
-          <Property Name="LOCAL_DEST_COUNTRY" Type="varchar2" MaxLength="8" />
-          <Property Name="LOCAL_DEST_STATE" Type="varchar2" MaxLength="20" />
+          <Property Name="ORDER_STATUS" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="CREATION_DATE" Type="date" Nullable="false" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="20" Nullable="false" />
           <Property Name="RECORD_DATE" Type="date" />
           <Property Name="UPDATED_BY" Type="varchar2" MaxLength="20" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'GWAPP.TS_ORDER_HEADER_STG' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="TS_ORDER_HEADER_STG">
-          <Key>
-            <PropertyRef Name="TO_SYSTEM" />
-            <PropertyRef Name="CUSTOMER_NO" />
-            <PropertyRef Name="NAME" />
-            <PropertyRef Name="BILL_TO_LOCATION" />
-            <PropertyRef Name="SHIP_TO_LOCATION" />
-            <PropertyRef Name="DUE_DATE" />
-            <PropertyRef Name="ORDER_TYPE" />
-            <PropertyRef Name="SPL_IND" />
-            <PropertyRef Name="SHIPCOMP_FLAG" />
-            <PropertyRef Name="WAREHOUSE" />
-            <PropertyRef Name="TOKEN_ID" />
-          </Key>
-          <Property Name="REQ_NO" Type="number" Precision="38" Scale="0" />
-          <Property Name="TO_SYSTEM" Type="varchar2" MaxLength="10" Nullable="false" />
-          <Property Name="CUSTOMER_NO" Type="varchar2" MaxLength="8" Nullable="false" />
-          <Property Name="NAME" Type="varchar2" MaxLength="35" Nullable="false" />
-          <Property Name="BILL_TO_LOCATION" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="SHIP_TO_LOCATION" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DUE_DATE" Type="date" Nullable="false" />
-          <Property Name="ORDER_TYPE" Type="varchar2" MaxLength="10" Nullable="false" />
-          <Property Name="CUSTOMER_PO_NO" Type="varchar2" MaxLength="20" />
-          <Property Name="SPL_IND" Type="varchar2" MaxLength="1" Nullable="false" />
-          <Property Name="DEST_LOCATION" Type="number" Precision="38" Scale="0" />
-          <Property Name="DEST_NAME" Type="varchar2" MaxLength="35" />
-          <Property Name="DEST_ADDR_1" Type="varchar2" MaxLength="35" />
-          <Property Name="DEST_ADDR_2" Type="varchar2" MaxLength="35" />
-          <Property Name="DEST_CITY" Type="varchar2" MaxLength="20" />
-          <Property Name="DEST_ZIP" Type="varchar2" MaxLength="10" />
-          <Property Name="DEST_STATE" Type="varchar2" MaxLength="10" />
-          <Property Name="DEST_COUNTRY" Type="varchar2" MaxLength="4" />
-          <Property Name="SHIPCOMP_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
-          <Property Name="WAREHOUSE" Type="varchar2" MaxLength="8" Nullable="false" />
-          <Property Name="LOCAL_DEST_NAME" Type="varchar2" MaxLength="35" />
-          <Property Name="LOCAL_DEST_ADDR_1" Type="varchar2" MaxLength="35" />
-          <Property Name="LOCAL_DEST_ADDR_2" Type="varchar2" MaxLength="35" />
-          <Property Name="LOCAL_DEST_ADDR_3" Type="varchar2" MaxLength="35" />
-          <Property Name="LOCAL_DEST_CITY" Type="varchar2" MaxLength="20" />
-          <Property Name="LOCAL_DEST_COUNTRY" Type="varchar2" MaxLength="8" />
-          <Property Name="LOCAL_DEST_STATE" Type="varchar2" MaxLength="20" />
-          <Property Name="TOKEN_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ALIAS_NAME" Type="varchar2" MaxLength="20" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.G_PART_DESCRIPTION' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -887,18 +867,6 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="APP_RECENT_PAGES_R02">
-          <End Role="APP_PAGES" Type="Self.APP_PAGES" Multiplicity="1" />
-          <End Role="APP_RECENT_PAGES" Type="Self.APP_RECENT_PAGES" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="APP_PAGES">
-              <PropertyRef Name="PAGE_NAME" />
-            </Principal>
-            <Dependent Role="APP_RECENT_PAGES">
-              <PropertyRef Name="PAGE_NAME" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="APP_SPACE_PAGE_LINK_R01">
           <End Role="APP_WORKSPACE" Type="Self.APP_WORKSPACE" Multiplicity="1" />
           <End Role="APP_SPACE_PAGE_LINK" Type="Self.APP_SPACE_PAGE_LINK" Multiplicity="*" />
@@ -1007,27 +975,63 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="TS_ORDER_HEADER_R01">
+        <Association Name="TS_OR_HEADER_R01">
+          <End Role="APP_SHIP_SEQ" Type="Self.APP_SHIP_SEQ" Multiplicity="1" />
+          <End Role="TS_OR_HEADER" Type="Self.TS_OR_HEADER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APP_SHIP_SEQ">
+              <PropertyRef Name="SHIPFROM_SEQ" />
+            </Principal>
+            <Dependent Role="TS_OR_HEADER">
+              <PropertyRef Name="SHIPFROM_SEQ" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TS_OR_HEADER_R02">
+          <End Role="APP_ORDER_STATUS" Type="Self.APP_ORDER_STATUS" Multiplicity="1" />
+          <End Role="TS_OR_HEADER" Type="Self.TS_OR_HEADER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APP_ORDER_STATUS">
+              <PropertyRef Name="ORDER_STATUS" />
+            </Principal>
+            <Dependent Role="TS_OR_HEADER">
+              <PropertyRef Name="ORDER_STATUS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TS_OR_HEADER_R03">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
-          <End Role="TS_ORDER_HEADER" Type="Self.TS_ORDER_HEADER" Multiplicity="*" />
+          <End Role="TS_OR_HEADER" Type="Self.TS_OR_HEADER" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="M_SYSTEM">
               <PropertyRef Name="SYSID" />
             </Principal>
-            <Dependent Role="TS_ORDER_HEADER">
+            <Dependent Role="TS_OR_HEADER">
               <PropertyRef Name="TO_SYSTEM" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="TS_ORDER_HEADER_R02">
+        <Association Name="TS_OR_HEADER_R04">
           <End Role="APP_ORDER_TYPE" Type="Self.APP_ORDER_TYPE" Multiplicity="1" />
-          <End Role="TS_ORDER_HEADER" Type="Self.TS_ORDER_HEADER" Multiplicity="*" />
+          <End Role="TS_OR_HEADER" Type="Self.TS_OR_HEADER" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="APP_ORDER_TYPE">
               <PropertyRef Name="ORDER_TYPE" />
             </Principal>
-            <Dependent Role="TS_ORDER_HEADER">
+            <Dependent Role="TS_OR_HEADER">
               <PropertyRef Name="ORDER_TYPE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TS_OR_HEADER_R05">
+          <End Role="APP_CUST_ALIAS" Type="Self.APP_CUST_ALIAS" Multiplicity="1" />
+          <End Role="TS_OR_HEADER" Type="Self.TS_OR_HEADER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APP_CUST_ALIAS">
+              <PropertyRef Name="ALIAS_NAME" />
+            </Principal>
+            <Dependent Role="TS_OR_HEADER">
+              <PropertyRef Name="ALIAS_NAME" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1036,11 +1040,13 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="APP_CUST_ALIAS_LINK" EntityType="Self.APP_CUST_ALIAS_LINK" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="APP_DURATION" EntityType="Self.APP_DURATION" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="APP_NOTICE" EntityType="Self.APP_NOTICE" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="APP_ORDER_STATUS" EntityType="Self.APP_ORDER_STATUS" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="APP_ORDER_TYPE" EntityType="Self.APP_ORDER_TYPE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="APP_PAGE_ROLE_LINK" EntityType="Self.APP_PAGE_ROLE_LINK" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="APP_PAGES" EntityType="Self.APP_PAGES" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="APP_RECENT_PAGES" EntityType="Self.APP_RECENT_PAGES" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="APP_ROLES" EntityType="Self.APP_ROLES" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="APP_SHIP_SEQ" EntityType="Self.APP_SHIP_SEQ" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="APP_SITES" EntityType="Self.APP_SITES" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="APP_SPACE_PAGE_LINK" EntityType="Self.APP_SPACE_PAGE_LINK" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="APP_USER_ALIAS_LINK" EntityType="Self.APP_USER_ALIAS_LINK" Schema="GWAPP" store:Type="Tables" />
@@ -1051,61 +1057,20 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="APP_WORKSPACE" EntityType="Self.APP_WORKSPACE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_PARAMETER" EntityType="Self.M_PARAMETER" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_SYSTEM" EntityType="Self.M_SYSTEM" Schema="GWAPP" store:Type="Tables" />
-          <EntitySet Name="TS_ORDER_HEADER" EntityType="Self.TS_ORDER_HEADER" Schema="GWAPP" store:Type="Tables" />
-          <EntitySet Name="TS_ORDER_DETAIL" EntityType="Self.TS_ORDER_DETAIL" store:Type="Tables" store:Schema="GWAPP">
+          <EntitySet Name="TS_OR_HEADER" EntityType="Self.TS_OR_HEADER" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="TS_OR_DETAIL" EntityType="Self.TS_OR_DETAIL" store:Type="Tables" store:Schema="GWAPP">
             <DefiningQuery>SELECT 
-"TS_ORDER_DETAIL"."REQ_NO" AS "REQ_NO", 
-"TS_ORDER_DETAIL"."PART_NO" AS "PART_NO", 
-"TS_ORDER_DETAIL"."CUSTOMER_PART_NO" AS "CUSTOMER_PART_NO", 
-"TS_ORDER_DETAIL"."BUY_QTY" AS "BUY_QTY", 
-"TS_ORDER_DETAIL"."DESCRIPTION" AS "DESCRIPTION", 
-"TS_ORDER_DETAIL"."CREATION_DATE" AS "CREATION_DATE", 
-"TS_ORDER_DETAIL"."CREATED_BY" AS "CREATED_BY", 
-"TS_ORDER_DETAIL"."UPDATED_DATE" AS "UPDATED_DATE", 
-"TS_ORDER_DETAIL"."UPDATED_BY" AS "UPDATED_BY"
-FROM "GWAPP"."TS_ORDER_DETAIL" "TS_ORDER_DETAIL"</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="TS_ORDER_DETAIL_STG" EntityType="Self.TS_ORDER_DETAIL_STG" store:Type="Tables" store:Schema="GWAPP">
-            <DefiningQuery>SELECT 
-"TS_ORDER_DETAIL_STG"."PART_NO" AS "PART_NO", 
-"TS_ORDER_DETAIL_STG"."CUSTOMER_PART_NO" AS "CUSTOMER_PART_NO", 
-"TS_ORDER_DETAIL_STG"."BUY_QTY" AS "BUY_QTY", 
-"TS_ORDER_DETAIL_STG"."DESCRIPTION" AS "DESCRIPTION", 
-"TS_ORDER_DETAIL_STG"."WAREHOUSE" AS "WAREHOUSE", 
-"TS_ORDER_DETAIL_STG"."TOKEN_ID" AS "TOKEN_ID"
-FROM "GWAPP"."TS_ORDER_DETAIL_STG" "TS_ORDER_DETAIL_STG"</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="TS_ORDER_HEADER_STG" EntityType="Self.TS_ORDER_HEADER_STG" store:Type="Tables" store:Schema="GWAPP">
-            <DefiningQuery>SELECT 
-"TS_ORDER_HEADER_STG"."REQ_NO" AS "REQ_NO", 
-"TS_ORDER_HEADER_STG"."TO_SYSTEM" AS "TO_SYSTEM", 
-"TS_ORDER_HEADER_STG"."CUSTOMER_NO" AS "CUSTOMER_NO", 
-"TS_ORDER_HEADER_STG"."NAME" AS "NAME", 
-"TS_ORDER_HEADER_STG"."BILL_TO_LOCATION" AS "BILL_TO_LOCATION", 
-"TS_ORDER_HEADER_STG"."SHIP_TO_LOCATION" AS "SHIP_TO_LOCATION", 
-"TS_ORDER_HEADER_STG"."DUE_DATE" AS "DUE_DATE", 
-"TS_ORDER_HEADER_STG"."ORDER_TYPE" AS "ORDER_TYPE", 
-"TS_ORDER_HEADER_STG"."CUSTOMER_PO_NO" AS "CUSTOMER_PO_NO", 
-"TS_ORDER_HEADER_STG"."SPL_IND" AS "SPL_IND", 
-"TS_ORDER_HEADER_STG"."DEST_LOCATION" AS "DEST_LOCATION", 
-"TS_ORDER_HEADER_STG"."DEST_NAME" AS "DEST_NAME", 
-"TS_ORDER_HEADER_STG"."DEST_ADDR_1" AS "DEST_ADDR_1", 
-"TS_ORDER_HEADER_STG"."DEST_ADDR_2" AS "DEST_ADDR_2", 
-"TS_ORDER_HEADER_STG"."DEST_CITY" AS "DEST_CITY", 
-"TS_ORDER_HEADER_STG"."DEST_ZIP" AS "DEST_ZIP", 
-"TS_ORDER_HEADER_STG"."DEST_STATE" AS "DEST_STATE", 
-"TS_ORDER_HEADER_STG"."DEST_COUNTRY" AS "DEST_COUNTRY", 
-"TS_ORDER_HEADER_STG"."SHIPCOMP_FLAG" AS "SHIPCOMP_FLAG", 
-"TS_ORDER_HEADER_STG"."WAREHOUSE" AS "WAREHOUSE", 
-"TS_ORDER_HEADER_STG"."LOCAL_DEST_NAME" AS "LOCAL_DEST_NAME", 
-"TS_ORDER_HEADER_STG"."LOCAL_DEST_ADDR_1" AS "LOCAL_DEST_ADDR_1", 
-"TS_ORDER_HEADER_STG"."LOCAL_DEST_ADDR_2" AS "LOCAL_DEST_ADDR_2", 
-"TS_ORDER_HEADER_STG"."LOCAL_DEST_ADDR_3" AS "LOCAL_DEST_ADDR_3", 
-"TS_ORDER_HEADER_STG"."LOCAL_DEST_CITY" AS "LOCAL_DEST_CITY", 
-"TS_ORDER_HEADER_STG"."LOCAL_DEST_COUNTRY" AS "LOCAL_DEST_COUNTRY", 
-"TS_ORDER_HEADER_STG"."LOCAL_DEST_STATE" AS "LOCAL_DEST_STATE", 
-"TS_ORDER_HEADER_STG"."TOKEN_ID" AS "TOKEN_ID"
-FROM "GWAPP"."TS_ORDER_HEADER_STG" "TS_ORDER_HEADER_STG"</DefiningQuery>
+"TS_OR_DETAIL"."ORDER_REQ_NO" AS "ORDER_REQ_NO", 
+"TS_OR_DETAIL"."SHIPFROM_SEQ" AS "SHIPFROM_SEQ", 
+"TS_OR_DETAIL"."PART_NO" AS "PART_NO", 
+"TS_OR_DETAIL"."CUSTOMER_PART_NO" AS "CUSTOMER_PART_NO", 
+"TS_OR_DETAIL"."BUY_QTY" AS "BUY_QTY", 
+"TS_OR_DETAIL"."DESCRIPTION" AS "DESCRIPTION", 
+"TS_OR_DETAIL"."CREATION_DATE" AS "CREATION_DATE", 
+"TS_OR_DETAIL"."CREATED_BY" AS "CREATED_BY", 
+"TS_OR_DETAIL"."UPDATED_DATE" AS "UPDATED_DATE", 
+"TS_OR_DETAIL"."UPDATED_BY" AS "UPDATED_BY"
+FROM "GWAPP"."TS_OR_DETAIL" "TS_OR_DETAIL"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="G_PART_DESCRIPTION" EntityType="Self.G_PART_DESCRIPTION" store:Type="Views" store:Schema="GWAPP">
             <DefiningQuery>SELECT 
@@ -1533,10 +1498,6 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="APP_USERS" EntitySet="APP_USERS" />
             <End Role="APP_RECENT_PAGES" EntitySet="APP_RECENT_PAGES" />
           </AssociationSet>
-          <AssociationSet Name="APP_RECENT_PAGES_R02" Association="Self.APP_RECENT_PAGES_R02">
-            <End Role="APP_PAGES" EntitySet="APP_PAGES" />
-            <End Role="APP_RECENT_PAGES" EntitySet="APP_RECENT_PAGES" />
-          </AssociationSet>
           <AssociationSet Name="APP_SPACE_PAGE_LINK_R01" Association="Self.APP_SPACE_PAGE_LINK_R01">
             <End Role="APP_WORKSPACE" EntitySet="APP_WORKSPACE" />
             <End Role="APP_SPACE_PAGE_LINK" EntitySet="APP_SPACE_PAGE_LINK" />
@@ -1573,13 +1534,25 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="APP_USERS" EntitySet="APP_USERS" />
             <End Role="APP_USERS1" EntitySet="APP_USERS" />
           </AssociationSet>
-          <AssociationSet Name="TS_ORDER_HEADER_R01" Association="Self.TS_ORDER_HEADER_R01">
-            <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
-            <End Role="TS_ORDER_HEADER" EntitySet="TS_ORDER_HEADER" />
+          <AssociationSet Name="TS_OR_HEADER_R01" Association="Self.TS_OR_HEADER_R01">
+            <End Role="APP_SHIP_SEQ" EntitySet="APP_SHIP_SEQ" />
+            <End Role="TS_OR_HEADER" EntitySet="TS_OR_HEADER" />
           </AssociationSet>
-          <AssociationSet Name="TS_ORDER_HEADER_R02" Association="Self.TS_ORDER_HEADER_R02">
+          <AssociationSet Name="TS_OR_HEADER_R02" Association="Self.TS_OR_HEADER_R02">
+            <End Role="APP_ORDER_STATUS" EntitySet="APP_ORDER_STATUS" />
+            <End Role="TS_OR_HEADER" EntitySet="TS_OR_HEADER" />
+          </AssociationSet>
+          <AssociationSet Name="TS_OR_HEADER_R03" Association="Self.TS_OR_HEADER_R03">
+            <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
+            <End Role="TS_OR_HEADER" EntitySet="TS_OR_HEADER" />
+          </AssociationSet>
+          <AssociationSet Name="TS_OR_HEADER_R04" Association="Self.TS_OR_HEADER_R04">
             <End Role="APP_ORDER_TYPE" EntitySet="APP_ORDER_TYPE" />
-            <End Role="TS_ORDER_HEADER" EntitySet="TS_ORDER_HEADER" />
+            <End Role="TS_OR_HEADER" EntitySet="TS_OR_HEADER" />
+          </AssociationSet>
+          <AssociationSet Name="TS_OR_HEADER_R05" Association="Self.TS_OR_HEADER_R05">
+            <End Role="APP_CUST_ALIAS" EntitySet="APP_CUST_ALIAS" />
+            <End Role="TS_OR_HEADER" EntitySet="TS_OR_HEADER" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -1595,6 +1568,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="ACTIVEIND" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="APP_CUST_ALIAS_LINK" Relationship="Self.APP_CUST_ALIAS_LINK_R01" FromRole="APP_CUST_ALIAS" ToRole="APP_CUST_ALIAS_LINK" />
           <NavigationProperty Name="APP_USER_ALIAS_LINK" Relationship="Self.APP_USER_ALIAS_LINK_R02" FromRole="APP_CUST_ALIAS" ToRole="APP_USER_ALIAS_LINK" />
+          <NavigationProperty Name="TS_OR_HEADER" Relationship="CHubDBModel.TS_OR_HEADER_R05" FromRole="APP_CUST_ALIAS" ToRole="TS_OR_HEADER" />
         </EntityType>
         <EntityType Name="APP_CUST_ALIAS_LINK">
           <Key>
@@ -1647,7 +1621,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="ORDER_TYPE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DESCRIPTION" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
           <Property Name="ACTIVEIND" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="TS_ORDER_HEADER" Relationship="Self.TS_ORDER_HEADER_R02" FromRole="APP_ORDER_TYPE" ToRole="TS_ORDER_HEADER" />
+          <NavigationProperty Name="TS_OR_HEADER" Relationship="CHubDBModel.TS_OR_HEADER_R04" FromRole="APP_ORDER_TYPE" ToRole="TS_OR_HEADER" />
         </EntityType>
         <EntityType Name="APP_PAGE_ROLE_LINK">
           <Key>
@@ -1690,6 +1664,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="LAST_ACTIVITY" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="APP_PAGES" Relationship="Self.APP_RECENT_PAGES_R02" FromRole="APP_RECENT_PAGES" ToRole="APP_PAGES" />
           <NavigationProperty Name="APP_USERS" Relationship="Self.APP_RECENT_PAGES_R01" FromRole="APP_RECENT_PAGES" ToRole="APP_USERS" />
+          <Property Name="PAGE_URL" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="APP_ROLES">
           <Key>
@@ -1773,6 +1748,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <NavigationProperty Name="APP_USER_ROLE_LINK" Relationship="Self.APP_USER_ROLE_LINK_R01" FromRole="APP_USERS" ToRole="APP_USER_ROLE_LINK" />
           <NavigationProperty Name="APP_USERS1" Relationship="Self.C0001" FromRole="APP_USERS" ToRole="APP_USERS1" />
           <NavigationProperty Name="APP_USERS2" Relationship="Self.C0001" FromRole="APP_USERS1" ToRole="APP_USERS" />
+          <Property Name="LAST_LOGIN" Type="DateTime" />
         </EntityType>
         <EntityType Name="APP_WELCOME">
           <Key>
@@ -1826,118 +1802,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="DB_LINK" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="APP_CUST_ALIAS_LINK" Relationship="Self.APP_CUST_ALIAS_LINK_R02" FromRole="M_SYSTEM" ToRole="APP_CUST_ALIAS_LINK" />
           <NavigationProperty Name="APP_WH" Relationship="Self.APP_WH_R02" FromRole="M_SYSTEM" ToRole="APP_WH" />
-          <NavigationProperty Name="TS_ORDER_HEADER" Relationship="Self.TS_ORDER_HEADER_R01" FromRole="M_SYSTEM" ToRole="TS_ORDER_HEADER" />
-        </EntityType>
-        <EntityType Name="TS_ORDER_HEADER">
-          <Key>
-            <PropertyRef Name="REQ_NO" />
-          </Key>
-          <Property Name="REQ_NO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="TO_SYSTEM" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CUSTOMER_NO" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="NAME" Type="String" MaxLength="35" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="BILL_TO_LOCATION" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="SHIP_TO_LOCATION" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DUE_DATE" Type="DateTime" Nullable="false" />
-          <Property Name="ORDER_TYPE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CUSTOMER_PO_NO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="SPL_IND" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DEST_LOCATION" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="DEST_NAME" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="DEST_ADDR_1" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="DEST_ADDR_2" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="DEST_CITY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="DEST_ZIP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="DEST_STATE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="DEST_COUNTRY" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
-          <Property Name="SHIPCOMP_FLAG" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="WAREHOUSE" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="LOCAL_DEST_NAME" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="LOCAL_DEST_ADDR_1" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="LOCAL_DEST_ADDR_2" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="LOCAL_DEST_ADDR_3" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="LOCAL_DEST_CITY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="LOCAL_DEST_COUNTRY" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="LOCAL_DEST_STATE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="CREATION_DATE" Type="DateTime" Nullable="false" />
-          <Property Name="CREATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="RECORD_DATE" Type="DateTime" />
-          <Property Name="UPDATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="APP_ORDER_TYPE" Relationship="Self.TS_ORDER_HEADER_R02" FromRole="TS_ORDER_HEADER" ToRole="APP_ORDER_TYPE" />
-          <NavigationProperty Name="M_SYSTEM" Relationship="Self.TS_ORDER_HEADER_R01" FromRole="TS_ORDER_HEADER" ToRole="M_SYSTEM" />
-        </EntityType>
-        <EntityType Name="TS_ORDER_DETAIL">
-          <Key>
-            <PropertyRef Name="REQ_NO" />
-            <PropertyRef Name="PART_NO" />
-            <PropertyRef Name="BUY_QTY" />
-          </Key>
-          <Property Name="REQ_NO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="PART_NO" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CUSTOMER_PART_NO" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="BUY_QTY" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DESCRIPTION" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="CREATION_DATE" Type="DateTime" />
-          <Property Name="CREATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="UPDATED_DATE" Type="DateTime" />
-          <Property Name="UPDATED_BY" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="TS_ORDER_DETAIL_STG">
-          <Key>
-            <PropertyRef Name="PART_NO" />
-            <PropertyRef Name="BUY_QTY" />
-            <PropertyRef Name="WAREHOUSE" />
-            <PropertyRef Name="TOKEN_ID" />
-          </Key>
-          <Property Name="PART_NO" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CUSTOMER_PART_NO" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="BUY_QTY" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DESCRIPTION" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="WAREHOUSE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="TOKEN_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TS_ORDER_HEADER_STG">
-          <Key>
-            <PropertyRef Name="TO_SYSTEM" />
-            <PropertyRef Name="CUSTOMER_NO" />
-            <PropertyRef Name="NAME" />
-            <PropertyRef Name="BILL_TO_LOCATION" />
-            <PropertyRef Name="SHIP_TO_LOCATION" />
-            <PropertyRef Name="DUE_DATE" />
-            <PropertyRef Name="ORDER_TYPE" />
-            <PropertyRef Name="SPL_IND" />
-            <PropertyRef Name="SHIPCOMP_FLAG" />
-            <PropertyRef Name="WAREHOUSE" />
-            <PropertyRef Name="TOKEN_ID" />
-          </Key>
-          <Property Name="REQ_NO" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="TO_SYSTEM" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CUSTOMER_NO" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="NAME" Type="String" MaxLength="35" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="BILL_TO_LOCATION" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="SHIP_TO_LOCATION" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DUE_DATE" Type="DateTime" Nullable="false" />
-          <Property Name="ORDER_TYPE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CUSTOMER_PO_NO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="SPL_IND" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DEST_LOCATION" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="DEST_NAME" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="DEST_ADDR_1" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="DEST_ADDR_2" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="DEST_CITY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="DEST_ZIP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="DEST_STATE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="DEST_COUNTRY" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
-          <Property Name="SHIPCOMP_FLAG" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="WAREHOUSE" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="LOCAL_DEST_NAME" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="LOCAL_DEST_ADDR_1" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="LOCAL_DEST_ADDR_2" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="LOCAL_DEST_ADDR_3" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Name="LOCAL_DEST_CITY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="LOCAL_DEST_COUNTRY" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="LOCAL_DEST_STATE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="TOKEN_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <NavigationProperty Name="TS_OR_HEADER" Relationship="CHubDBModel.TS_OR_HEADER_R03" FromRole="M_SYSTEM" ToRole="TS_OR_HEADER" />
         </EntityType>
         <EntityType Name="G_PART_DESCRIPTION">
           <Key>
@@ -2421,18 +2286,6 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="TS_ORDER_HEADER_R02">
-          <End Role="APP_ORDER_TYPE" Type="Self.APP_ORDER_TYPE" Multiplicity="1" />
-          <End Role="TS_ORDER_HEADER" Type="Self.TS_ORDER_HEADER" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="APP_ORDER_TYPE">
-              <PropertyRef Name="ORDER_TYPE" />
-            </Principal>
-            <Dependent Role="TS_ORDER_HEADER">
-              <PropertyRef Name="ORDER_TYPE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="APP_PAGE_ROLE_LINK_R01">
           <End Role="APP_ROLES" Type="Self.APP_ROLES" Multiplicity="1" />
           <End Role="APP_PAGE_ROLE_LINK" Type="Self.APP_PAGE_ROLE_LINK" Multiplicity="*" />
@@ -2577,18 +2430,6 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="TS_ORDER_HEADER_R01">
-          <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
-          <End Role="TS_ORDER_HEADER" Type="Self.TS_ORDER_HEADER" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_SYSTEM">
-              <PropertyRef Name="SYSID" />
-            </Principal>
-            <Dependent Role="TS_ORDER_HEADER">
-              <PropertyRef Name="TO_SYSTEM" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="CHubEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="APP_CUST_ALIAS" EntityType="Self.APP_CUST_ALIAS" />
           <EntitySet Name="APP_CUST_ALIAS_LINK" EntityType="Self.APP_CUST_ALIAS_LINK" />
@@ -2609,10 +2450,6 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySet Name="APP_WORKSPACE" EntityType="Self.APP_WORKSPACE" />
           <EntitySet Name="M_PARAMETER" EntityType="Self.M_PARAMETER" />
           <EntitySet Name="M_SYSTEM" EntityType="Self.M_SYSTEM" />
-          <EntitySet Name="TS_ORDER_HEADER" EntityType="Self.TS_ORDER_HEADER" />
-          <EntitySet Name="TS_ORDER_DETAIL" EntityType="Self.TS_ORDER_DETAIL" />
-          <EntitySet Name="TS_ORDER_DETAIL_STG" EntityType="Self.TS_ORDER_DETAIL_STG" />
-          <EntitySet Name="TS_ORDER_HEADER_STG" EntityType="Self.TS_ORDER_HEADER_STG" />
           <EntitySet Name="G_PART_DESCRIPTION" EntityType="Self.G_PART_DESCRIPTION" />
           <EntitySet Name="G_PART_SUPERSESSION_ALL" EntityType="Self.G_PART_SUPERSESSION_ALL" />
           <EntitySet Name="P_ADDR_DFLT" EntityType="Self.P_ADDR_DFLT" />
@@ -2644,10 +2481,6 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <AssociationSet Name="APP_DURATION_R01" Association="Self.APP_DURATION_R01">
             <End Role="APP_SITES" EntitySet="APP_SITES" />
             <End Role="APP_DURATION" EntitySet="APP_DURATION" />
-          </AssociationSet>
-          <AssociationSet Name="TS_ORDER_HEADER_R02" Association="Self.TS_ORDER_HEADER_R02">
-            <End Role="APP_ORDER_TYPE" EntitySet="APP_ORDER_TYPE" />
-            <End Role="TS_ORDER_HEADER" EntitySet="TS_ORDER_HEADER" />
           </AssociationSet>
           <AssociationSet Name="APP_PAGE_ROLE_LINK_R01" Association="Self.APP_PAGE_ROLE_LINK_R01">
             <End Role="APP_ROLES" EntitySet="APP_ROLES" />
@@ -2697,11 +2530,31 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="APP_WH" EntitySet="APP_WH" />
           </AssociationSet>
-          <AssociationSet Name="TS_ORDER_HEADER_R01" Association="Self.TS_ORDER_HEADER_R01">
-            <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
-            <End Role="TS_ORDER_HEADER" EntitySet="TS_ORDER_HEADER" />
-          </AssociationSet>
           <EntitySet Name="V_USER_NAV_ALL" EntityType="CHubDBModel.V_USER_NAV_ALL" />
+          <EntitySet Name="APP_ORDER_STATUS" EntityType="CHubDBModel.APP_ORDER_STATUS" />
+          <EntitySet Name="APP_SHIP_SEQ" EntityType="CHubDBModel.APP_SHIP_SEQ" />
+          <EntitySet Name="TS_OR_HEADER" EntityType="CHubDBModel.TS_OR_HEADER" />
+          <EntitySet Name="TS_OR_DETAIL" EntityType="CHubDBModel.TS_OR_DETAIL" />
+          <AssociationSet Name="TS_OR_HEADER_R05" Association="CHubDBModel.TS_OR_HEADER_R05">
+            <End Role="APP_CUST_ALIAS" EntitySet="APP_CUST_ALIAS" />
+            <End Role="TS_OR_HEADER" EntitySet="TS_OR_HEADER" />
+          </AssociationSet>
+          <AssociationSet Name="TS_OR_HEADER_R02" Association="CHubDBModel.TS_OR_HEADER_R02">
+            <End Role="APP_ORDER_STATUS" EntitySet="APP_ORDER_STATUS" />
+            <End Role="TS_OR_HEADER" EntitySet="TS_OR_HEADER" />
+          </AssociationSet>
+          <AssociationSet Name="TS_OR_HEADER_R04" Association="CHubDBModel.TS_OR_HEADER_R04">
+            <End Role="APP_ORDER_TYPE" EntitySet="APP_ORDER_TYPE" />
+            <End Role="TS_OR_HEADER" EntitySet="TS_OR_HEADER" />
+          </AssociationSet>
+          <AssociationSet Name="TS_OR_HEADER_R01" Association="CHubDBModel.TS_OR_HEADER_R01">
+            <End Role="APP_SHIP_SEQ" EntitySet="APP_SHIP_SEQ" />
+            <End Role="TS_OR_HEADER" EntitySet="TS_OR_HEADER" />
+          </AssociationSet>
+          <AssociationSet Name="TS_OR_HEADER_R03" Association="CHubDBModel.TS_OR_HEADER_R03">
+            <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
+            <End Role="TS_OR_HEADER" EntitySet="TS_OR_HEADER" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -2722,6 +2575,131 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="PUBLICIND" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="VERION" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="APP_ORDER_STATUS">
+          <Key>
+            <PropertyRef Name="ORDER_STATUS" />
+          </Key>
+          <Property Name="ORDER_STATUS" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="STATUS_DESC" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TS_OR_HEADER" Relationship="CHubDBModel.TS_OR_HEADER_R02" FromRole="APP_ORDER_STATUS" ToRole="TS_OR_HEADER" />
+        </EntityType>
+        <EntityType Name="APP_SHIP_SEQ">
+          <Key>
+            <PropertyRef Name="SHIPFROM_SEQ" />
+          </Key>
+          <Property Name="SHIPFROM_SEQ" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="SHIPFROM_DESC" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TS_OR_HEADER" Relationship="CHubDBModel.TS_OR_HEADER_R01" FromRole="APP_SHIP_SEQ" ToRole="TS_OR_HEADER" />
+        </EntityType>
+        <EntityType Name="TS_OR_HEADER">
+          <Key>
+            <PropertyRef Name="ORDER_REQ_NO" />
+            <PropertyRef Name="SHIPFROM_SEQ" />
+          </Key>
+          <Property Name="ORDER_REQ_NO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="SHIPFROM_SEQ" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="TO_SYSTEM" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CUSTOMER_NO" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="BILL_TO_LOCATION" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="SHIP_TO_LOCATION" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DEST_LOCATION" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="DUE_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="ORDER_TYPE" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CUSTOMER_PO_NO" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SPL_IND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="SHIPCOMP_FLAG" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="ORDER_STATUS" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="CREATION_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="RECORD_DATE" Type="DateTime" />
+          <Property Name="UPDATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ALIAS_NAME" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="APP_CUST_ALIAS" Relationship="CHubDBModel.TS_OR_HEADER_R05" FromRole="TS_OR_HEADER" ToRole="APP_CUST_ALIAS" />
+          <NavigationProperty Name="APP_ORDER_STATUS" Relationship="CHubDBModel.TS_OR_HEADER_R02" FromRole="TS_OR_HEADER" ToRole="APP_ORDER_STATUS" />
+          <NavigationProperty Name="APP_ORDER_TYPE" Relationship="CHubDBModel.TS_OR_HEADER_R04" FromRole="TS_OR_HEADER" ToRole="APP_ORDER_TYPE" />
+          <NavigationProperty Name="APP_SHIP_SEQ" Relationship="CHubDBModel.TS_OR_HEADER_R01" FromRole="TS_OR_HEADER" ToRole="APP_SHIP_SEQ" />
+          <NavigationProperty Name="M_SYSTEM" Relationship="CHubDBModel.TS_OR_HEADER_R03" FromRole="TS_OR_HEADER" ToRole="M_SYSTEM" />
+        </EntityType>
+        <EntityType Name="TS_OR_DETAIL">
+          <Key>
+            <PropertyRef Name="ORDER_REQ_NO" />
+            <PropertyRef Name="SHIPFROM_SEQ" />
+            <PropertyRef Name="PART_NO" />
+            <PropertyRef Name="BUY_QTY" />
+            <PropertyRef Name="CREATION_DATE" />
+            <PropertyRef Name="CREATED_BY" />
+          </Key>
+          <Property Name="ORDER_REQ_NO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="SHIPFROM_SEQ" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="PART_NO" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="CUSTOMER_PART_NO" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="BUY_QTY" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="CREATION_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UPDATED_DATE" Type="DateTime" />
+          <Property Name="UPDATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="TS_OR_HEADER_R05">
+          <End Type="CHubDBModel.APP_CUST_ALIAS" Role="APP_CUST_ALIAS" Multiplicity="1" />
+          <End Type="CHubDBModel.TS_OR_HEADER" Role="TS_OR_HEADER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APP_CUST_ALIAS">
+              <PropertyRef Name="ALIAS_NAME" />
+            </Principal>
+            <Dependent Role="TS_OR_HEADER">
+              <PropertyRef Name="ALIAS_NAME" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TS_OR_HEADER_R02">
+          <End Type="CHubDBModel.APP_ORDER_STATUS" Role="APP_ORDER_STATUS" Multiplicity="1" />
+          <End Type="CHubDBModel.TS_OR_HEADER" Role="TS_OR_HEADER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APP_ORDER_STATUS">
+              <PropertyRef Name="ORDER_STATUS" />
+            </Principal>
+            <Dependent Role="TS_OR_HEADER">
+              <PropertyRef Name="ORDER_STATUS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TS_OR_HEADER_R04">
+          <End Type="CHubDBModel.APP_ORDER_TYPE" Role="APP_ORDER_TYPE" Multiplicity="1" />
+          <End Type="CHubDBModel.TS_OR_HEADER" Role="TS_OR_HEADER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APP_ORDER_TYPE">
+              <PropertyRef Name="ORDER_TYPE" />
+            </Principal>
+            <Dependent Role="TS_OR_HEADER">
+              <PropertyRef Name="ORDER_TYPE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TS_OR_HEADER_R01">
+          <End Type="CHubDBModel.APP_SHIP_SEQ" Role="APP_SHIP_SEQ" Multiplicity="1" />
+          <End Type="CHubDBModel.TS_OR_HEADER" Role="TS_OR_HEADER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APP_SHIP_SEQ">
+              <PropertyRef Name="SHIPFROM_SEQ" />
+            </Principal>
+            <Dependent Role="TS_OR_HEADER">
+              <PropertyRef Name="SHIPFROM_SEQ" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TS_OR_HEADER_R03">
+          <End Type="CHubDBModel.M_SYSTEM" Role="M_SYSTEM" Multiplicity="1" />
+          <End Type="CHubDBModel.TS_OR_HEADER" Role="TS_OR_HEADER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_SYSTEM">
+              <PropertyRef Name="SYSID" />
+            </Principal>
+            <Dependent Role="TS_OR_HEADER">
+              <PropertyRef Name="TO_SYSTEM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2816,6 +2794,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="APP_RECENT_PAGES">
             <EntityTypeMapping TypeName="CHubDBModel.APP_RECENT_PAGES">
               <MappingFragment StoreEntitySet="APP_RECENT_PAGES">
+                <ScalarProperty Name="PAGE_URL" ColumnName="PAGE_URL" />
                 <ScalarProperty Name="APP_USER" ColumnName="APP_USER" />
                 <ScalarProperty Name="PAGE_NAME" ColumnName="PAGE_NAME" />
                 <ScalarProperty Name="LAST_ACTIVITY" ColumnName="LAST_ACTIVITY" />
@@ -2877,6 +2856,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="APP_USERS">
             <EntityTypeMapping TypeName="CHubDBModel.APP_USERS">
               <MappingFragment StoreEntitySet="APP_USERS">
+                <ScalarProperty Name="LAST_LOGIN" ColumnName="LAST_LOGIN" />
                 <ScalarProperty Name="APP_USER" ColumnName="APP_USER" />
                 <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
                 <ScalarProperty Name="MIDDLE_INITIAL" ColumnName="MIDDLE_INITIAL" />
@@ -2943,104 +2923,6 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
                 <ScalarProperty Name="SYS_TYPE" ColumnName="SYS_TYPE" />
                 <ScalarProperty Name="DB_LINK" ColumnName="DB_LINK" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TS_ORDER_HEADER">
-            <EntityTypeMapping TypeName="CHubDBModel.TS_ORDER_HEADER">
-              <MappingFragment StoreEntitySet="TS_ORDER_HEADER">
-                <ScalarProperty Name="REQ_NO" ColumnName="REQ_NO" />
-                <ScalarProperty Name="TO_SYSTEM" ColumnName="TO_SYSTEM" />
-                <ScalarProperty Name="CUSTOMER_NO" ColumnName="CUSTOMER_NO" />
-                <ScalarProperty Name="NAME" ColumnName="NAME" />
-                <ScalarProperty Name="BILL_TO_LOCATION" ColumnName="BILL_TO_LOCATION" />
-                <ScalarProperty Name="SHIP_TO_LOCATION" ColumnName="SHIP_TO_LOCATION" />
-                <ScalarProperty Name="DUE_DATE" ColumnName="DUE_DATE" />
-                <ScalarProperty Name="ORDER_TYPE" ColumnName="ORDER_TYPE" />
-                <ScalarProperty Name="CUSTOMER_PO_NO" ColumnName="CUSTOMER_PO_NO" />
-                <ScalarProperty Name="SPL_IND" ColumnName="SPL_IND" />
-                <ScalarProperty Name="DEST_LOCATION" ColumnName="DEST_LOCATION" />
-                <ScalarProperty Name="DEST_NAME" ColumnName="DEST_NAME" />
-                <ScalarProperty Name="DEST_ADDR_1" ColumnName="DEST_ADDR_1" />
-                <ScalarProperty Name="DEST_ADDR_2" ColumnName="DEST_ADDR_2" />
-                <ScalarProperty Name="DEST_CITY" ColumnName="DEST_CITY" />
-                <ScalarProperty Name="DEST_ZIP" ColumnName="DEST_ZIP" />
-                <ScalarProperty Name="DEST_STATE" ColumnName="DEST_STATE" />
-                <ScalarProperty Name="DEST_COUNTRY" ColumnName="DEST_COUNTRY" />
-                <ScalarProperty Name="SHIPCOMP_FLAG" ColumnName="SHIPCOMP_FLAG" />
-                <ScalarProperty Name="WAREHOUSE" ColumnName="WAREHOUSE" />
-                <ScalarProperty Name="LOCAL_DEST_NAME" ColumnName="LOCAL_DEST_NAME" />
-                <ScalarProperty Name="LOCAL_DEST_ADDR_1" ColumnName="LOCAL_DEST_ADDR_1" />
-                <ScalarProperty Name="LOCAL_DEST_ADDR_2" ColumnName="LOCAL_DEST_ADDR_2" />
-                <ScalarProperty Name="LOCAL_DEST_ADDR_3" ColumnName="LOCAL_DEST_ADDR_3" />
-                <ScalarProperty Name="LOCAL_DEST_CITY" ColumnName="LOCAL_DEST_CITY" />
-                <ScalarProperty Name="LOCAL_DEST_COUNTRY" ColumnName="LOCAL_DEST_COUNTRY" />
-                <ScalarProperty Name="LOCAL_DEST_STATE" ColumnName="LOCAL_DEST_STATE" />
-                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="RECORD_DATE" ColumnName="RECORD_DATE" />
-                <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TS_ORDER_DETAIL">
-            <EntityTypeMapping TypeName="CHubDBModel.TS_ORDER_DETAIL">
-              <MappingFragment StoreEntitySet="TS_ORDER_DETAIL">
-                <ScalarProperty Name="REQ_NO" ColumnName="REQ_NO" />
-                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
-                <ScalarProperty Name="CUSTOMER_PART_NO" ColumnName="CUSTOMER_PART_NO" />
-                <ScalarProperty Name="BUY_QTY" ColumnName="BUY_QTY" />
-                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
-                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="UPDATED_DATE" ColumnName="UPDATED_DATE" />
-                <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TS_ORDER_DETAIL_STG">
-            <EntityTypeMapping TypeName="CHubDBModel.TS_ORDER_DETAIL_STG">
-              <MappingFragment StoreEntitySet="TS_ORDER_DETAIL_STG">
-                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
-                <ScalarProperty Name="CUSTOMER_PART_NO" ColumnName="CUSTOMER_PART_NO" />
-                <ScalarProperty Name="BUY_QTY" ColumnName="BUY_QTY" />
-                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
-                <ScalarProperty Name="WAREHOUSE" ColumnName="WAREHOUSE" />
-                <ScalarProperty Name="TOKEN_ID" ColumnName="TOKEN_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TS_ORDER_HEADER_STG">
-            <EntityTypeMapping TypeName="CHubDBModel.TS_ORDER_HEADER_STG">
-              <MappingFragment StoreEntitySet="TS_ORDER_HEADER_STG">
-                <ScalarProperty Name="REQ_NO" ColumnName="REQ_NO" />
-                <ScalarProperty Name="TO_SYSTEM" ColumnName="TO_SYSTEM" />
-                <ScalarProperty Name="CUSTOMER_NO" ColumnName="CUSTOMER_NO" />
-                <ScalarProperty Name="NAME" ColumnName="NAME" />
-                <ScalarProperty Name="BILL_TO_LOCATION" ColumnName="BILL_TO_LOCATION" />
-                <ScalarProperty Name="SHIP_TO_LOCATION" ColumnName="SHIP_TO_LOCATION" />
-                <ScalarProperty Name="DUE_DATE" ColumnName="DUE_DATE" />
-                <ScalarProperty Name="ORDER_TYPE" ColumnName="ORDER_TYPE" />
-                <ScalarProperty Name="CUSTOMER_PO_NO" ColumnName="CUSTOMER_PO_NO" />
-                <ScalarProperty Name="SPL_IND" ColumnName="SPL_IND" />
-                <ScalarProperty Name="DEST_LOCATION" ColumnName="DEST_LOCATION" />
-                <ScalarProperty Name="DEST_NAME" ColumnName="DEST_NAME" />
-                <ScalarProperty Name="DEST_ADDR_1" ColumnName="DEST_ADDR_1" />
-                <ScalarProperty Name="DEST_ADDR_2" ColumnName="DEST_ADDR_2" />
-                <ScalarProperty Name="DEST_CITY" ColumnName="DEST_CITY" />
-                <ScalarProperty Name="DEST_ZIP" ColumnName="DEST_ZIP" />
-                <ScalarProperty Name="DEST_STATE" ColumnName="DEST_STATE" />
-                <ScalarProperty Name="DEST_COUNTRY" ColumnName="DEST_COUNTRY" />
-                <ScalarProperty Name="SHIPCOMP_FLAG" ColumnName="SHIPCOMP_FLAG" />
-                <ScalarProperty Name="WAREHOUSE" ColumnName="WAREHOUSE" />
-                <ScalarProperty Name="LOCAL_DEST_NAME" ColumnName="LOCAL_DEST_NAME" />
-                <ScalarProperty Name="LOCAL_DEST_ADDR_1" ColumnName="LOCAL_DEST_ADDR_1" />
-                <ScalarProperty Name="LOCAL_DEST_ADDR_2" ColumnName="LOCAL_DEST_ADDR_2" />
-                <ScalarProperty Name="LOCAL_DEST_ADDR_3" ColumnName="LOCAL_DEST_ADDR_3" />
-                <ScalarProperty Name="LOCAL_DEST_CITY" ColumnName="LOCAL_DEST_CITY" />
-                <ScalarProperty Name="LOCAL_DEST_COUNTRY" ColumnName="LOCAL_DEST_COUNTRY" />
-                <ScalarProperty Name="LOCAL_DEST_STATE" ColumnName="LOCAL_DEST_STATE" />
-                <ScalarProperty Name="TOKEN_ID" ColumnName="TOKEN_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3477,6 +3359,62 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="SPACE_CODE" ColumnName="SPACE_CODE" />
                 <ScalarProperty Name="DISPLAY_SEQ" ColumnName="DISPLAY_SEQ" />
                 <ScalarProperty Name="APP_USER" ColumnName="APP_USER" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="APP_ORDER_STATUS">
+            <EntityTypeMapping TypeName="CHubDBModel.APP_ORDER_STATUS">
+              <MappingFragment StoreEntitySet="APP_ORDER_STATUS">
+                <ScalarProperty Name="STATUS_DESC" ColumnName="STATUS_DESC" />
+                <ScalarProperty Name="ORDER_STATUS" ColumnName="ORDER_STATUS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="APP_SHIP_SEQ">
+            <EntityTypeMapping TypeName="CHubDBModel.APP_SHIP_SEQ">
+              <MappingFragment StoreEntitySet="APP_SHIP_SEQ">
+                <ScalarProperty Name="SHIPFROM_DESC" ColumnName="SHIPFROM_DESC" />
+                <ScalarProperty Name="SHIPFROM_SEQ" ColumnName="SHIPFROM_SEQ" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TS_OR_HEADER">
+            <EntityTypeMapping TypeName="CHubDBModel.TS_OR_HEADER">
+              <MappingFragment StoreEntitySet="TS_OR_HEADER">
+                <ScalarProperty Name="ALIAS_NAME" ColumnName="ALIAS_NAME" />
+                <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
+                <ScalarProperty Name="RECORD_DATE" ColumnName="RECORD_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
+                <ScalarProperty Name="ORDER_STATUS" ColumnName="ORDER_STATUS" />
+                <ScalarProperty Name="SHIPCOMP_FLAG" ColumnName="SHIPCOMP_FLAG" />
+                <ScalarProperty Name="SPL_IND" ColumnName="SPL_IND" />
+                <ScalarProperty Name="CUSTOMER_PO_NO" ColumnName="CUSTOMER_PO_NO" />
+                <ScalarProperty Name="ORDER_TYPE" ColumnName="ORDER_TYPE" />
+                <ScalarProperty Name="DUE_DATE" ColumnName="DUE_DATE" />
+                <ScalarProperty Name="DEST_LOCATION" ColumnName="DEST_LOCATION" />
+                <ScalarProperty Name="SHIP_TO_LOCATION" ColumnName="SHIP_TO_LOCATION" />
+                <ScalarProperty Name="BILL_TO_LOCATION" ColumnName="BILL_TO_LOCATION" />
+                <ScalarProperty Name="CUSTOMER_NO" ColumnName="CUSTOMER_NO" />
+                <ScalarProperty Name="TO_SYSTEM" ColumnName="TO_SYSTEM" />
+                <ScalarProperty Name="SHIPFROM_SEQ" ColumnName="SHIPFROM_SEQ" />
+                <ScalarProperty Name="ORDER_REQ_NO" ColumnName="ORDER_REQ_NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TS_OR_DETAIL">
+            <EntityTypeMapping TypeName="CHubDBModel.TS_OR_DETAIL">
+              <MappingFragment StoreEntitySet="TS_OR_DETAIL">
+                <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
+                <ScalarProperty Name="UPDATED_DATE" ColumnName="UPDATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="BUY_QTY" ColumnName="BUY_QTY" />
+                <ScalarProperty Name="CUSTOMER_PART_NO" ColumnName="CUSTOMER_PART_NO" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+                <ScalarProperty Name="SHIPFROM_SEQ" ColumnName="SHIPFROM_SEQ" />
+                <ScalarProperty Name="ORDER_REQ_NO" ColumnName="ORDER_REQ_NO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

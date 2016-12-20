@@ -19,7 +19,7 @@ namespace CHubDBEntity
         {
             this.APP_CUST_ALIAS_LINK = new HashSet<APP_CUST_ALIAS_LINK>();
             this.APP_WH = new HashSet<APP_WH>();
-            this.TS_ORDER_HEADER = new HashSet<TS_ORDER_HEADER>();
+            this.TS_OR_HEADER = new HashSet<TS_OR_HEADER>();
         }
     
         public string SYSID { get; set; }
@@ -32,6 +32,6 @@ namespace CHubDBEntity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<APP_WH> APP_WH { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TS_ORDER_HEADER> TS_ORDER_HEADER { get; set; }
+        public virtual ICollection<TS_OR_HEADER> TS_OR_HEADER { get; set; }
     }
 }
