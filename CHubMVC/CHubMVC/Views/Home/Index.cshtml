@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<div class="container body-content">
+    <div class="row">
+        <div class="col-md-12">
+            <p id="pWelcome">welcome</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            recent page
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="input-group">
+                <div style="float:left;">
+                    <input id="goContent" placeholder="Go" list="url_list" type="text" class="form-control" autocomplete="on">
+                    <datalist id="url_list"></datalist>
+                </div>
+                <span class="input-group-btn" style="float:left;">
+                    <button type="button" class="btn btn-default" id="btnSearch" onclick=""><span class="glyphicon glyphicon-search"></span></button>
+                </span>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-default indexRight" style="overflow:scroll">
+                <table id="fileListTable" class="table  table-striped  table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width:30%;word-wrap:break-word;" >ID</th>
+                            <th style="width:29%;word-wrap:break-word;">CreateBy</th>
+                            <th style="width:12%;word-wrap:break-word;">Text</th>
+                            <th style="width:17%;word-wrap:break-word;">Start Date</th>
+                            <th style="width:14%;word-wrap:break-word;">EndDate</th>
+                        </tr>
+                    </thead>
+                    <tbody style="display:none;">
+                        <tr>
+                        @*<tr ng-repeat="f in Folders |  filter:usersFilter | orderBy:sort:desc">*@
+
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>

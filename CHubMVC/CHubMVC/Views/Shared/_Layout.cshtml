@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Application name", "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-md-3">
+                <div id="tree"></div>
+            </div>
+            <div class="col-md-9">
+                @RenderBody()
+                <hr />
+            </div>
+            </div>
+
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+<script>
+    
+    getLeftNav()
+    function getTree() {
+        // Some logic to retrieve, or generate tree structure
+        var tree = [
+  {
+      text: "Parent 1",
+      icon: "glyphicon glyphicon-stop",
+      selectedIcon: "glyphicon glyphicon-stop",
+      color: "#000000",
+      backColor: "#FFFFFF",
+      href: "#node-1",
+      selectable: true,
+
+      nodes: [
+        {
+            text: "Child 1",
+            nodes: [
+              {
+                  text: "Grandchild 1"
+              },
+              {
+                  text: "Grandchild 2"
+              }
+            ]
+        },
+        {
+            text: "Child 2"
+        }
+      ]
+  },
+  {
+      text: "Parent 2"
+  },
+  {
+      text: "Parent 3"
+  },
+  {
+      text: "Parent 4"
+  },
+  {
+      text: "Parent 5"
+  }
+        ];
+        return tree;
+    }
+
+    function getLeftNav()
+    {
+        $.ajax({
+            url: "/Home/GetLeftNav",
+            type: "post",
+            data:{appUser :"lg166"},
+            async: false,
+            success: function (oData) {
+                $('#tree').treeview({
+                    data: oData,
+                    showBorder: false,
+                    collapseIcon: "glyphicon glyphicon-chevron-down",
+                    expandIcon: "glyphicon glyphicon-chevron-right",
+                    highlightSelected: true,
+                    enableLinks:true,
+                });
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>
