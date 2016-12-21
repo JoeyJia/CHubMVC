@@ -24,15 +24,26 @@ namespace CHubMVC.Controllers
             ViewBag.welcomeList = welBLL.GetAppWelcome();
 
             //Recently page
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            ViewBag.recentList = rpBLL.GetRecentPages(userName);
 
             //Get Notice Part
             APP_NOTICE_BLL noticeBLL = new APP_NOTICE_BLL();
             ViewBag.noticeList = noticeBLL.GetValidAppNotice();
 
             ViewBag.userName = userName;
+
+            //Add recently page data
+            rpBLL.Add(userName,@"/home/index", this.Request.Url.AbsoluteUri);
+
             return View();
         }
 
+        /// <summary>
+        /// Use session user to get nav tree data
+        /// </summary>
+        /// <param name="appUser"></param>
+        /// <returns></returns>
         [HttpPost]
         public JsonResult GetLeftNav(string appUser)
         {
@@ -86,12 +97,20 @@ namespace CHubMVC.Controllers
         {
             ViewBag.Message = "Your application description page.";
 
+            string userName = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(userName, @"/home/about", this.Request.Url.AbsoluteUri);
+
             return View();
         }
 
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
+
+            string userName = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(userName, @"/home/contact", this.Request.Url.AbsoluteUri);
 
             return View();
         }

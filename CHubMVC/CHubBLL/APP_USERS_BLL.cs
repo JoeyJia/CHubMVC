@@ -24,7 +24,7 @@ namespace CHubBLL
 
         public APP_USERS GetAppUserByDomainName(string appUser)
         {
-            return dal.GetAppUserByDomainName(appUser);
+            return dal.GetAppUserByDomainName(appUser.ToLower());
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace CHubBLL
         {
             APP_USERS appUser = new APP_USERS()
             {
-                APP_USER = domainName,
+                APP_USER = domainName.ToLower(),
                 FIRST_NAME = "User",
                 LAST_NAME = string.Empty,
                 CREATED_BY = domainName,
