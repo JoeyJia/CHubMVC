@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APP_PAGES_BLL.cs" />
     <Compile Include="APP_USERS_BLL.cs" />
     <Compile Include="APP_RECENT_PAGES_BLL.cs" />
     <Compile Include="APP_NOTICE_BLL.cs" />

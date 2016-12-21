@@ -41,7 +41,7 @@ namespace CHubBLL
                 LAST_NAME = string.Empty,
                 CREATED_BY = domainName,
                 CREATE_DATE = DateTime.Now,
-                STATUS = UserStates.A.ToString()
+                STATUS = UserStatesEnum.A.ToString()
             };
 
             return dal.AddAppUserWithRole(appUser);

@@ -13,7 +13,7 @@ namespace CHubCommon
         /// Public for default,
         /// when using, need to be with tolower()
         /// </summary>
-        public enum CHubRoles
+        public enum CHubRolesEnum
         {
             Public,
             Admin,
@@ -24,10 +24,22 @@ namespace CHubCommon
             Transportation
         }
 
-        public enum UserStates
+        public enum UserStatesEnum
         {
             A,
             I
+        }
+
+        public enum PageNameEnum
+        {
+            blank,
+            qkord,
+            syspra,
+            usrmnt,
+            rolemnt,
+            manual,
+            ordinq,
+            invinq
         }
 
     }

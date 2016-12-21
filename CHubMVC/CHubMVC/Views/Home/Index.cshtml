@@ -9,9 +9,9 @@ a.NoLine:visited { text-decoration: none}
 a.NoLine:hover {text-decoration: none}
 </style>
 
-<div class="container body-content">
+<div class="container-fluid body-content">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 col-lg-10">
            @foreach (var item in ViewBag.welcomeList)
            {
                <h3>@item.WEL_MSG</h3>
@@ -22,14 +22,17 @@ a.NoLine:hover {text-decoration: none}
     <div class="row">
         <div class="col-md-12">
             <p class="text-left"><strong>Recent Page</strong></p>
-            <table>
+            <dl class="dl-horizontal">
             @foreach (var item in ViewBag.recentList)
             {
-                <tr>
-                    <td><p><a class="NoLine" href="@item.PAGE_URL">@item.PAGE_NAME</a></p><td>
-                </tr>
+                <dt>
+                    <p><a class="NoLine" href="@item.URL">@item.DISPLAY</a></p>
+                </dt>
+                <dd>
+                    <p>@item.DESCRIPTION</p>
+                </dd>
             }
-                </table>
+             </dl>
 
         </div>
     </div>
@@ -38,12 +41,12 @@ a.NoLine:hover {text-decoration: none}
         <div class="col-md-12">
             <p class="text-left"><strong>Notice</strong></p>
 
-            <div class="panel panel-default indexRight">
+            <div class="panel panel-default indexRight table-responsive">
                 <table id="fileListTable" class="table  table-striped  table-hover" style="table-layout:fixed ">
                     <thead>
                         <tr>
                             <th style="width:50px;word-wrap:break-word;" >ID</th>
-                            <th class="text-center" style="width:auto;word-wrap:break-word;">Text</th>
+                            <th class="text-center" style="width:auto;word-wrap:break-word;">Topic</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,7 +55,7 @@ a.NoLine:hover {text-decoration: none}
                         {
                             <tr>
                                 <td>@index</td>
-                                <td>@item.NOTICE_TEXT</td>
+                                <td class="text-center" onmouseover="overShow()" onmouseout="outHide()" >@item.NOTICE_TOPIC</td>
                             </tr>
                             index++;
                         }
@@ -65,3 +68,21 @@ a.NoLine:hover {text-decoration: none}
     </div>
 
 </div>
+
+<div id="showDiv" style="position: absolute; background-color: white; border: 1px solid black;"></div>
+
+<script>
+    function overShow() {
+        var showDiv = document.getElementById('showDiv');
+        showDiv.style.left = event.clientX;
+        showDiv.style.top = event.clientY;
+        showDiv.style.display = 'block';
+        showDiv.innerHTML = 'TipsContents';
+    }
+
+    function outHide() {
+        var showDiv = document.getElementById('showDiv');
+        showDiv.style.display = 'none';
+        showDiv.innerHTML = '';
+    }
+</script>

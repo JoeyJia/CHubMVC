@@ -21,9 +21,19 @@ namespace CHubBLL
             dal = new APP_RECENT_PAGES_DAL(db);
         }
 
-        public List<APP_RECENT_PAGES> GetRecentPages(string appUser)
+        public List<APP_PAGES> GetRecentPages(string appUser)
         {
-            return dal.GetRecentPages(appUser);
+            List<APP_RECENT_PAGES> rpList =  dal.GetRecentPages(appUser);
+            List<string> names = new List<string>();
+            foreach (var item in rpList)
+            {
+                names.Add(item.PAGE_NAME);
+            }
+
+            APP_PAGES_DAL pDal = new APP_PAGES_DAL(dal.db);
+            List<APP_PAGES> pList = pDal.GetPagesByNames(names);
+            return pList;
+
         }
 
         public bool Add(APP_RECENT_PAGES model)

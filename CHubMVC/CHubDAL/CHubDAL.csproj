@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APP_PAGES_DAL.cs" />
     <Compile Include="APP_USER_ROLE_LINK_DAL.cs" />
     <Compile Include="APP_USERS_DAL.cs" />
     <Compile Include="BaseDAL.cs" />

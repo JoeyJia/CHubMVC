@@ -7,6 +7,7 @@ using CHubBLL;
 using CHubDBEntity;
 using CHubModel;
 using CHubCommon;
+using static CHubCommon.CHubEnum;
 
 namespace CHubMVC.Controllers
 {
@@ -34,7 +35,7 @@ namespace CHubMVC.Controllers
             ViewBag.userName = userName;
 
             //Add recently page data
-            rpBLL.Add(userName,@"/home/index", this.Request.Url.AbsoluteUri);
+            rpBLL.Add(userName,PageNameEnum.usrmnt.ToString(), this.Request.Url.AbsoluteUri);
 
             return View();
         }
@@ -64,8 +65,8 @@ namespace CHubMVC.Controllers
                 tn.text = navList[i].SPACE_DESC;
                 tn.selectable = true;
 
-                if (i + 1 < navList.Count && navList[i + 1].DISPLAY_SEQ == navList[i].DISPLAY_SEQ)
-                {
+                //if (i + 1 < navList.Count && navList[i + 1].DISPLAY_SEQ == navList[i].DISPLAY_SEQ)
+                //{
                     tn.nodes = new List<TreeNode>();
                     int offset = 0;
                     while (true)
@@ -81,12 +82,12 @@ namespace CHubMVC.Controllers
                             break;
                     }
                     i = i + offset;
-                }
-                else
-                {
-                    tn.href =navList[i].URL;
-                    i++;
-                }
+                //}
+                //else
+                //{
+                //    tn.href =navList[i].URL;
+                   // i++;
+                //}
                 nodeList.Add(tn);
             }
 
@@ -99,7 +100,7 @@ namespace CHubMVC.Controllers
 
             string userName = Session[CHubConstValues.SessionUser].ToString();
             APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
-            rpBLL.Add(userName, @"/home/about", this.Request.Url.AbsoluteUri);
+            rpBLL.Add(userName, PageNameEnum.invinq.ToString(), this.Request.Url.AbsoluteUri);
 
             return View();
         }
@@ -110,7 +111,7 @@ namespace CHubMVC.Controllers
 
             string userName = Session[CHubConstValues.SessionUser].ToString();
             APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
-            rpBLL.Add(userName, @"/home/contact", this.Request.Url.AbsoluteUri);
+            rpBLL.Add(userName, PageNameEnum.manual.ToString(), this.Request.Url.AbsoluteUri);
 
             return View();
         }
