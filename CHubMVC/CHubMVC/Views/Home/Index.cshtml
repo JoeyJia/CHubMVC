@@ -30,21 +30,24 @@ a.NoLine:hover {text-decoration: none}
             <div class="row">
                 <div class="col-md-12">
                     <div class="panel panel-default">
-                    <div class="panel-heading"><b>Recent Pages</b></div>
-                    <dl class="dl-horizontal">
-                        @foreach (var item in ViewBag.recentList)
-                       {
-                            <dt>
-                                <p><a class="NoLine" href="@item.URL">@item.DISPLAY</a></p>
-                            </dt>
-                            <dd>
-                                <p>@item.DESCRIPTION</p>
-                            </dd>
-                        }
-                    </dl>
+                        <div class="panel-heading"><b>Recent Pages</b></div>
 
-                </div>
-                </div>
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group" style="margin-left:10px;margin-top:10px;">
+                                @foreach (var item in ViewBag.recentList)
+                                {
+                                    <div class="col-md-3">
+                                        <p><a class="NoLine" href="@item.URL">@item.DISPLAY</a></p>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p>@item.DESCRIPTION</p>
+                                    </div>
+                                }
+                                </div>
+                            </form>
+
+                            </div>
+                    </div>
             </div>
 
             </div>
