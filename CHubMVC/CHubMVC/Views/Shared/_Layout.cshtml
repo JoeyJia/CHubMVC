@@ -6,6 +6,9 @@
     <title>@ViewBag.Title - CHub Home Page</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
 
 </head>
 <body>
@@ -34,7 +37,7 @@
             <div class="col-md-3 col-lg-2">
                 <div id="tree"></div>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-9 col-lg-10">
                 @RenderBody()
                 <hr />
             </div>
@@ -45,9 +48,7 @@
             </footer>
         </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+
 
 <script>
     
