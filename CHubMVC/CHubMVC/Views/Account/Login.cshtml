@@ -14,44 +14,76 @@
     }*/
 </style>
 
-<body style="width:98%">
-<div class="row" style="margin-top:180px;">
-    <div class="col-md-offset-4 col-md-3 col-sm-offset-4 col-sm-3 col-lg-2 col-lg-offset-4" >
-        <div class="panel panel-default" style="height:375px;background-color:#eee;">
+<body style="width:100%;">
+    <div id="BgImg" style="height: 70px; width:100%; background-image: url('../../Images/bg-header.png');">
+        <a href="/home/index" title="HomePage">
+            <img src="~/Images/cummins-logo-print.gif" style="margin-top:10px; margin-left:150px;height:50px;width:55px">
+        </a>
+    </div>
 
-        <section id="loginForm" >
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+
+            <div class="container-fluid" style="height:85%;">
+                <div class="row" style="margin-top:150px;height:375px">
+                    <div class="col-md-12 col-lg-12" style="height:375px;">
+                        <div class="row">
+
+                            <div class="col-md-8 text-right">
+                                <img src="~/Images/LogBack/Jolie.jpg">
+                            </div>
+
+                            <div class="col-md-2">
+
+                                <div class="panel panel-default" style="height:375px;background-color:#eee;">
+
+                                    <section id="loginForm">
+                                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
-                @Html.AntiForgeryToken()
+                                            @Html.AntiForgeryToken()
 
-                <div class="panel panel-default" style="height:270px;">
-                    <div class="form-group" style="margin-top:30px">
+                                            <div class="panel panel-default" style="height:270px;">
+                                                <div class="form-group" style="margin-top:30px">
 
-                        <div class="input-append col-md-8 col-md-offset-2 col-sm-offset-2 col-sm-8 col-lg-10 col-lg-offset-1">
-                            <label for="userName">User Name:</label>
-                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @id = "userName", @placeholder = "App User", @required = "required" })
-                        </div>
-                    </div>
+                                                    <div class="input-append col-md-8 col-md-offset-2 col-sm-offset-2 col-sm-8 col-lg-10 col-lg-offset-1">
+                                                        <label for="userName">User Name:</label>
+                                                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @id = "userName", @placeholder = "App User", @required = "required" })
+                                                    </div>
+                                                </div>
 
-                    <div class="form-group" style="margin-top:30px">
+                                                <div class="form-group" style="margin-top:30px">
 
-                        <div class="input-append col-md-8 col-md-offset-2 col-sm-offset-2 col-sm-8 col-lg-10 col-lg-offset-1">
-                            <label for="pwd">PassWord:</label>
-                            @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @id = "pwd", @placeholder = "PassWord" })
-                            @Html.ValidationSummary()
+                                                    <div class="input-append col-md-8 col-md-offset-2 col-sm-offset-2 col-sm-8 col-lg-10 col-lg-offset-1">
+                                                        <label for="pwd">PassWord:</label>
+                                                        @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @id = "pwd", @placeholder = "PassWord" })
+                                                        @Html.ValidationSummary()
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="input-append col-md-4 col-md-offset-2 col-sm-offset-2 col-sm-4 col-lg-4 col-lg-offset-1">
+                                                    <button class="btn btn-primary btn-block" style="background-color:brown" type="submit">SignIn</button>
+                                                </div>
+                                            </div>
+                                        }
+                                    </section>
+                                </div>
+
+                            </div>
+
                         </div>
                     </div>
                 </div>
-                  <div class="form-group">
-                        <div class="input-append col-md-4 col-md-offset-2 col-sm-offset-2 col-sm-4 col-lg-4 col-lg-offset-1">
-                           <button class="btn btn-primary btn-block" style="background-color:brown" type="submit">SignIn</button>
-                        </div>
-                    </div>
-            }
-        </section>
+            </div>
+
+    <footer>
+        <div class="container">
+            <div class="row text-center">
+                 <p>&copy; <strong>Naturetour @DateTime.Now.Year</strong>.</p>
+            </div>
+            <div class="row text-center">
+                <p><small>No portion of this website may be reproduced without the prior written consent of Naturetour. All rights reserved.</small></p>
+            </div>
         </div>
-    </div>
-</div>
+    </footer>
 </body>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
