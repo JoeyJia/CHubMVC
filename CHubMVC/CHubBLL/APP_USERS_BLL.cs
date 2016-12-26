@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
 using static CHubCommon.CHubEnum;
+using CHubCommon;
 
 namespace CHubBLL
 {
@@ -39,6 +40,7 @@ namespace CHubBLL
                 APP_USER = domainName.ToLower(),
                 FIRST_NAME = "User",
                 LAST_NAME = string.Empty,
+                EMAIL_ADDR = string.Format(CHubConstValues.EmailFormat, domainName),
                 CREATED_BY = domainName,
                 CREATE_DATE = DateTime.Now,
                 STATUS = UserStatesEnum.A.ToString()

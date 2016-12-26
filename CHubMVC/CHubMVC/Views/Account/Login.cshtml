@@ -37,7 +37,7 @@
 
                                     <section id="loginForm">
                                         @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
+                                         {
                                             @Html.AntiForgeryToken()
 
                                             <div class="panel panel-default" style="height:270px;">
@@ -45,7 +45,7 @@
 
                                                     <div class="input-append col-md-8 col-md-offset-2 col-sm-offset-2 col-sm-8 col-lg-10 col-lg-offset-1">
                                                         <label for="userName">User Name:</label>
-                                                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @id = "userName", @placeholder = "App User", @required = "required" })
+                                                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @id = "userName", @placeholder = "Your WWID", @required = "required" })
                                                     </div>
                                                 </div>
 
@@ -53,7 +53,7 @@
 
                                                     <div class="input-append col-md-8 col-md-offset-2 col-sm-offset-2 col-sm-8 col-lg-10 col-lg-offset-1">
                                                         <label for="pwd">PassWord:</label>
-                                                        @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @id = "pwd", @placeholder = "PassWord" })
+                                                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @id = "pwd", @placeholder = "Your CED Password" })
                                                         @Html.ValidationSummary()
                                                     </div>
                                                 </div>

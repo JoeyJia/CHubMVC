@@ -131,6 +131,7 @@
           <Property Name="SITE_ADDR" Type="varchar2" MaxLength="100" Nullable="false" />
           <Property Name="SITE_CITY" Type="varchar2" MaxLength="20" Nullable="false" />
           <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="SITE_DESC" Type="varchar2" MaxLength="20" />
         </EntityType>
         <EntityType Name="APP_SPACE_PAGE_LINK">
           <Key>
@@ -230,39 +231,6 @@
           <Property Name="DB_LINK" Type="varchar2" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6013: The table/view 'GWAPP.QUEST_TEMP_EXPLAIN' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="QUEST_TEMP_EXPLAIN">
-          <Property Name="STATEMENT_ID" Type="varchar2" MaxLength="30" />
-          <Property Name="TIMESTAMP" Type="date" />
-          <Property Name="REMARKS" Type="varchar2" MaxLength="80" />
-          <Property Name="OPERATION" Type="varchar2" MaxLength="30" />
-          <Property Name="OPTIONS" Type="varchar2" MaxLength="30" />
-          <Property Name="OBJECT_NODE" Type="varchar2" MaxLength="128" />
-          <Property Name="OBJECT_OWNER" Type="varchar2" MaxLength="30" />
-          <Property Name="OBJECT_NAME" Type="varchar2" MaxLength="30" />
-          <Property Name="OBJECT_INSTANCE" Type="number" Precision="38" Scale="0" />
-          <Property Name="OBJECT_TYPE" Type="varchar2" MaxLength="30" />
-          <Property Name="OPTIMIZER" Type="varchar2" MaxLength="255" />
-          <Property Name="SEARCH_COLUMNS" Type="number" Precision="38" Scale="0" />
-          <Property Name="ID" Type="number" Precision="38" Scale="0" />
-          <Property Name="PARENT_ID" Type="number" Precision="38" Scale="0" />
-          <Property Name="POSITION" Type="number" Precision="38" Scale="0" />
-          <Property Name="COST" Type="number" Precision="38" Scale="0" />
-          <Property Name="CARDINALITY" Type="number" Precision="38" Scale="0" />
-          <Property Name="BYTES" Type="number" Precision="38" Scale="0" />
-          <Property Name="OTHER_TAG" Type="varchar2" MaxLength="255" />
-          <Property Name="PARTITION_START" Type="varchar2" MaxLength="255" />
-          <Property Name="PARTITION_STOP" Type="varchar2" MaxLength="255" />
-          <Property Name="PARTITION_ID" Type="number" Precision="38" Scale="0" />
-          <Property Name="OTHER" Type="long" />
-          <Property Name="DISTRIBUTION" Type="varchar2" MaxLength="30" />
-          <Property Name="CPU_COST" Type="number" Precision="38" Scale="0" />
-          <Property Name="IO_COST" Type="number" Precision="38" Scale="0" />
-          <Property Name="TEMP_SPACE" Type="number" Precision="38" Scale="0" />
-          <Property Name="ACCESS_PREDICATES" Type="varchar2" MaxLength="4000" />
-          <Property Name="FILTER_PREDICATES" Type="varchar2" MaxLength="4000" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.TS_OR_DETAIL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="TS_OR_DETAIL">
           <Key>
@@ -307,6 +275,7 @@ warning 6002: The table/view 'GWAPP.TS_OR_DETAIL' does not have a primary key de
           <Property Name="RECORD_DATE" Type="date" />
           <Property Name="UPDATED_BY" Type="varchar2" MaxLength="20" />
           <Property Name="ALIAS_NAME" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="ORDER_NOTES" Type="varchar2" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.G_PART_DESCRIPTION' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -657,6 +626,9 @@ warning 6002: The table/view 'GWAPP.V_ALIAS_ADDR_DFLT' does not have a primary k
             <PropertyRef Name="ALIAS_NAME" />
             <PropertyRef Name="DESCRIPTION" />
           </Key>
+          <Property Name="DAYS" Type="number" Precision="38" Scale="0" />
+          <Property Name="DISTANCE" Type="number" Precision="38" Scale="0" />
+          <Property Name="KG_FREIGHT" Type="number" Precision="2" Scale="0" />
           <Property Name="ALIAS_NAME" Type="varchar2" MaxLength="20" Nullable="false" />
           <Property Name="DESCRIPTION" Type="varchar2" MaxLength="50" Nullable="false" />
           <Property Name="SYSID" Type="varchar2" MaxLength="10" />
@@ -695,6 +667,9 @@ warning 6002: The table/view 'GWAPP.V_ALIAS_ADDR_SPL' does not have a primary ke
             <PropertyRef Name="ALIAS_NAME" />
             <PropertyRef Name="DESCRIPTION" />
           </Key>
+          <Property Name="DAYS" Type="number" Precision="38" Scale="0" />
+          <Property Name="DISTANCE" Type="number" Precision="38" Scale="0" />
+          <Property Name="KG_FREIGHT" Type="number" Precision="2" Scale="0" />
           <Property Name="ALIAS_NAME" Type="varchar2" MaxLength="20" Nullable="false" />
           <Property Name="DESCRIPTION" Type="varchar2" MaxLength="50" Nullable="false" />
           <Property Name="SYSID" Type="varchar2" MaxLength="10" />
@@ -1359,6 +1334,9 @@ FROM "GWAPP"."R_CATALOG_CUSTOMER_PART" "R_CATALOG_CUSTOMER_PART"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="V_ALIAS_ADDR_DFLT" EntityType="Self.V_ALIAS_ADDR_DFLT" store:Type="Views" store:Schema="GWAPP">
             <DefiningQuery>SELECT 
+"V_ALIAS_ADDR_DFLT"."DAYS" AS "DAYS", 
+"V_ALIAS_ADDR_DFLT"."DISTANCE" AS "DISTANCE", 
+"V_ALIAS_ADDR_DFLT"."KG_FREIGHT" AS "KG_FREIGHT", 
 "V_ALIAS_ADDR_DFLT"."ALIAS_NAME" AS "ALIAS_NAME", 
 "V_ALIAS_ADDR_DFLT"."DESCRIPTION" AS "DESCRIPTION", 
 "V_ALIAS_ADDR_DFLT"."SYSID" AS "SYSID", 
@@ -1393,6 +1371,9 @@ FROM "GWAPP"."V_ALIAS_ADDR_DFLT" "V_ALIAS_ADDR_DFLT"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="V_ALIAS_ADDR_SPL" EntityType="Self.V_ALIAS_ADDR_SPL" store:Type="Views" store:Schema="GWAPP">
             <DefiningQuery>SELECT 
+"V_ALIAS_ADDR_SPL"."DAYS" AS "DAYS", 
+"V_ALIAS_ADDR_SPL"."DISTANCE" AS "DISTANCE", 
+"V_ALIAS_ADDR_SPL"."KG_FREIGHT" AS "KG_FREIGHT", 
 "V_ALIAS_ADDR_SPL"."ALIAS_NAME" AS "ALIAS_NAME", 
 "V_ALIAS_ADDR_SPL"."DESCRIPTION" AS "DESCRIPTION", 
 "V_ALIAS_ADDR_SPL"."SYSID" AS "SYSID", 
@@ -1689,6 +1670,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="ACTIVEIND" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="APP_DURATION" Relationship="Self.APP_DURATION_R01" FromRole="APP_SITES" ToRole="APP_DURATION" />
           <NavigationProperty Name="APP_WH" Relationship="Self.APP_WH_R01" FromRole="APP_SITES" ToRole="APP_WH" />
+          <Property Name="SITE_DESC" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="APP_SPACE_PAGE_LINK">
           <Key>
@@ -2159,6 +2141,9 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="LOCAL_SHIP_TO_COUNTRY" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="LOCAL_SHIP_TO_STATE" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="RECORD_DATE_OSL" Type="DateTime" />
+          <Property Name="DAYS" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="DISTANCE" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="KG_FREIGHT" Type="Byte" />
         </EntityType>
         <EntityType Name="V_ALIAS_ADDR_SPL">
           <Key>
@@ -2196,6 +2181,9 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="LOCAL_DEST_COUNTRY" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="LOCAL_DEST_STATE" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="RECORD_DATE_OSDL" Type="DateTime" />
+          <Property Name="DAYS" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="DISTANCE" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="KG_FREIGHT" Type="Byte" />
         </EntityType>
         <EntityType Name="V_CHK_DURATION_MISSING">
           <Key>
@@ -2619,6 +2607,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <NavigationProperty Name="APP_ORDER_TYPE" Relationship="CHubDBModel.TS_OR_HEADER_R04" FromRole="TS_OR_HEADER" ToRole="APP_ORDER_TYPE" />
           <NavigationProperty Name="APP_SHIP_SEQ" Relationship="CHubDBModel.TS_OR_HEADER_R01" FromRole="TS_OR_HEADER" ToRole="APP_SHIP_SEQ" />
           <NavigationProperty Name="M_SYSTEM" Relationship="CHubDBModel.TS_OR_HEADER_R03" FromRole="TS_OR_HEADER" ToRole="M_SYSTEM" />
+          <Property Name="ORDER_NOTES" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TS_OR_DETAIL">
           <Key>
@@ -2813,6 +2802,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="APP_SITES">
             <EntityTypeMapping TypeName="CHubDBModel.APP_SITES">
               <MappingFragment StoreEntitySet="APP_SITES">
+                <ScalarProperty Name="SITE_DESC" ColumnName="SITE_DESC" />
                 <ScalarProperty Name="SITE_NAME" ColumnName="SITE_NAME" />
                 <ScalarProperty Name="SITE_LEADER" ColumnName="SITE_LEADER" />
                 <ScalarProperty Name="LEADER_EMAIL" ColumnName="LEADER_EMAIL" />
@@ -3236,6 +3226,9 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="V_ALIAS_ADDR_DFLT">
             <EntityTypeMapping TypeName="CHubDBModel.V_ALIAS_ADDR_DFLT">
               <MappingFragment StoreEntitySet="V_ALIAS_ADDR_DFLT">
+                <ScalarProperty Name="KG_FREIGHT" ColumnName="KG_FREIGHT" />
+                <ScalarProperty Name="DISTANCE" ColumnName="DISTANCE" />
+                <ScalarProperty Name="DAYS" ColumnName="DAYS" />
                 <ScalarProperty Name="ALIAS_NAME" ColumnName="ALIAS_NAME" />
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
                 <ScalarProperty Name="SYSID" ColumnName="SYSID" />
@@ -3272,6 +3265,9 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="V_ALIAS_ADDR_SPL">
             <EntityTypeMapping TypeName="CHubDBModel.V_ALIAS_ADDR_SPL">
               <MappingFragment StoreEntitySet="V_ALIAS_ADDR_SPL">
+                <ScalarProperty Name="KG_FREIGHT" ColumnName="KG_FREIGHT" />
+                <ScalarProperty Name="DISTANCE" ColumnName="DISTANCE" />
+                <ScalarProperty Name="DAYS" ColumnName="DAYS" />
                 <ScalarProperty Name="ALIAS_NAME" ColumnName="ALIAS_NAME" />
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
                 <ScalarProperty Name="SYSID" ColumnName="SYSID" />
@@ -3381,6 +3377,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="TS_OR_HEADER">
             <EntityTypeMapping TypeName="CHubDBModel.TS_OR_HEADER">
               <MappingFragment StoreEntitySet="TS_OR_HEADER">
+                <ScalarProperty Name="ORDER_NOTES" ColumnName="ORDER_NOTES" />
                 <ScalarProperty Name="ALIAS_NAME" ColumnName="ALIAS_NAME" />
                 <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
                 <ScalarProperty Name="RECORD_DATE" ColumnName="RECORD_DATE" />

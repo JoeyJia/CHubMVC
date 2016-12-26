@@ -46,12 +46,11 @@ namespace CHubMVC.Controllers
         [ValidateAntiForgeryToken]
         public  ActionResult Login(LoginViewModel model, string returnUrl)
         {
-            if (!string.IsNullOrEmpty(model.UserName))
+            if (DomainUserAuth.IsAuthenticated("CED", model.UserName, model.Password))
             {
                 APP_USERS_BLL userBLL = new APP_USERS_BLL();
                 APP_USERS user = userBLL.GetAppUserByDomainName(model.UserName);
-
-                //Need to check whether is null or empty obj
+        
                 if (user == null)
                 {
                     if (!userBLL.AddAppUserWithRole(model.UserName))

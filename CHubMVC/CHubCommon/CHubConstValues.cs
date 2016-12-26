@@ -9,5 +9,6 @@ namespace CHubCommon
     public class CHubConstValues
     {
         public static string SessionUser = "AppUser";
+        public static string EmailFormat = "{0}@cummins.com";
     }
 }

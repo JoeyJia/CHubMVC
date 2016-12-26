@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "Quick Order Entry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    label.form-control {
+        margin-left:10px;
+    }
+
+</style>
+
+    <form class="form-horizontal" action="/order/index" method="post">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>Quick Order Entry</b></div>
+            
+            <div class="row" style="margin-top:20px;">
+                <div class="form-group">
+                    <label for="orderID" class="col-sm-1 control-label">Order SEQ</label>
+                    <div class="col-sm-1">
+                        <input type="text" class="form-control" id="orderID" placeholder="Auto Generation" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="cAlias" class="col-sm-1 control-label">Cus Alias</label>
+                    <div class="col-sm-2">
+                        <select class="form-control" id="cAlias" >
+                            <option>Customer Alias 01</option>
+                            <option>Customer Alias 02</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="poNum" class="col-sm-1 control-label">PO No.</label>
+                    <div class="col-sm-2">
+                        <input type="text"  class="form-control" id="poNum" placeholder="Customer PO No.">
+                    </div>
+
+                    <label for="orderType" class="col-sm-1 control-label">Order Type</label>
+                    <div class="col-sm-2">
+                        <select class="form-control" id="orderType">
+                            <option>Type01</option>
+                            <option>Type02</option>
+                        </select>
+                    </div>
+
+                    <label for="dueDate" class="col-sm-1 control-label">Due Date</label>
+                    <div class="col-sm-1">
+                        <input type="text" class="form-control" id="dueDate" placeholder="Due Date">
+                    </div>
+
+                    <label for="cShip" class="col-sm-1 control-label">Complete Ship</label>
+                    <div class="col-sm-1">
+                        <select class="form-control" id="cShip">
+                            <option>N</option>
+                            <option>Y</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="notes" class="col-sm-1 control-label">Notes</label>
+                    <div class="col-sm-9 col-lg-9">
+                        <input type="text" class="form-control col-sm-8" id="notes" placeholder="Notes" style="width:90%;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="ssto" class="col-sm-1 control-label">SS to Order</label>
+                    <div class="checkbox col-md-2 col-lg-2">
+                        <label>
+                            <input type="checkbox" id="ssto"  style="margin-left:1px;" checked>
+                        </label>
+                    </div>
+                    <label for="shipName" class="col-sm-1 control-label">Ship Name</label>
+                    <div class="col-sm-5 col-lg-5">
+                        <input type="text" class="form-control" id="shipName" placeholder="shipName">
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </form>
+
+
+
