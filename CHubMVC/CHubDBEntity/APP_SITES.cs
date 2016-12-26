@@ -28,6 +28,7 @@ namespace CHubDBEntity
         public string SITE_ADDR { get; set; }
         public string SITE_CITY { get; set; }
         public string ACTIVEIND { get; set; }
+        public string SITE_DESC { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<APP_DURATION> APP_DURATION { get; set; }

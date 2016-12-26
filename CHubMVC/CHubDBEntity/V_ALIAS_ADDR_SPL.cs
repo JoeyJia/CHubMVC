@@ -45,5 +45,8 @@ namespace CHubDBEntity
         public string LOCAL_DEST_COUNTRY { get; set; }
         public string LOCAL_DEST_STATE { get; set; }
         public Nullable<System.DateTime> RECORD_DATE_OSDL { get; set; }
+        public Nullable<decimal> DAYS { get; set; }
+        public Nullable<decimal> DISTANCE { get; set; }
+        public Nullable<byte> KG_FREIGHT { get; set; }
     }
 }

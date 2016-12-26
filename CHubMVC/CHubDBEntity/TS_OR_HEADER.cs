@@ -32,6 +32,7 @@ namespace CHubDBEntity
         public Nullable<System.DateTime> RECORD_DATE { get; set; }
         public string UPDATED_BY { get; set; }
         public string ALIAS_NAME { get; set; }
+        public string ORDER_NOTES { get; set; }
     
         public virtual APP_CUST_ALIAS APP_CUST_ALIAS { get; set; }
         public virtual APP_ORDER_STATUS APP_ORDER_STATUS { get; set; }
