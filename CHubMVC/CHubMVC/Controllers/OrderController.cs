@@ -10,12 +10,12 @@ using CHubModel.ExtensionModel;
 
 namespace CHubMVC.Controllers
 {
-    public class OrderController : Controller
+    public class OrderController : BaseController
     {
         // GET: Order
         public ActionResult Index()
         {
-            if (Session[CHubConstValues.SessionUser] == null)
+            //if (Session[CHubConstValues.SessionUser] == null)
                 Session[CHubConstValues.SessionUser] = "lg166";// For test using
                                                                //return RedirectToAction("Login", "Account");
 
@@ -26,8 +26,9 @@ namespace CHubMVC.Controllers
         [HttpPost]
         public JsonResult Init()
         {
-            using (CHubEntities db = new CHubEntities())
-            {
+            //using (CHubEntities db = new CHubEntities())
+            //{
+            CHubEntities db = new CHubEntities();
                 string appUser = Session[CHubConstValues.SessionUser].ToString();
                 APP_CUST_ALIAS_BLL acaBLL = new APP_CUST_ALIAS_BLL(db);
                 List<ExAppCustAlias> acaList = acaBLL.GetAppCustAliasByAppUser(appUser);
@@ -35,16 +36,20 @@ namespace CHubMVC.Controllers
 
                 APP_ORDER_TYPE_BLL aotBLL = new APP_ORDER_TYPE_BLL(db);
                 List<APP_ORDER_TYPE> aotList = aotBLL.GetValidOrderType();
+            foreach (var item in aotList)
+            {
+                item.TS_OR_HEADER = null;
+            }
 
                 var obj = new
                 {
                     custAlias = acaList,
                     orderType = aotList,
-                    selectedAlias = selectedAlias
+                    //selectedAlias = selectedAlias
                 };
 
                 return Json(obj);
-            }
+            //}
                 
         }
 

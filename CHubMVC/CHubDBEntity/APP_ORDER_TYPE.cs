@@ -9,9 +9,10 @@
 
 namespace CHubDBEntity
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
-    
+
     public partial class APP_ORDER_TYPE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,8 +24,9 @@ namespace CHubDBEntity
         public string ORDER_TYPE { get; set; }
         public string DESCRIPTION { get; set; }
         public string ACTIVEIND { get; set; }
-    
+     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [JsonIgnore]
         public virtual ICollection<TS_OR_HEADER> TS_OR_HEADER { get; set; }
     }
 }

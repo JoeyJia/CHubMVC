@@ -46,9 +46,8 @@
 
                     <label for="orderType" class="col-sm-1 control-label">Order Type</label>
                     <div class="col-sm-2">
-                        <select class="form-control" id="orderType">
-                            <option>Type01</option>
-                            <option>Type02</option>
+                        <select class="form-control" id="orderType" ng-model="selectedOrderType" ng-options="ot.ORDER_TYPE for ot in orderType">
+
                         </select>
                     </div>
 
@@ -122,7 +121,7 @@
 <script>
     $(document).ready(function () {
 
-        alert("loaded");
+        //alert("loaded");
     });
 
 
@@ -130,11 +129,12 @@
     angular.module('orderApp', []).controller('orderCtrl', function ($scope, $http) {
 
         $http.post("/order/init",null,null).then(function (resp) {
-        $scope.custAlias = resp.custAlias;
-        $scope.orderType = resp.orderType;
+        $scope.custAlias = resp.data.custAlias;
+        $scope.orderType = resp.data.orderType;
 
-        $scope.selectedAlias = resp.selectedAlias;
-            $scope.notice = "Notice 123";
+        $scope.selectedAlias = resp.data.selectedAlias;
+        $scope.selectedOrderType = "";
+        $scope.notice = "Notice 123";
             debugger;
         }, 
      function (resp) {
