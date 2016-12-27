@@ -57,6 +57,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APP_CUST_ALIAS_LINK_DAL.cs" />
+    <Compile Include="APP_CUST_ALIAS_DAL.cs" />
+    <Compile Include="APP_ORDER_STATUS_DAL.cs" />
+    <Compile Include="APP_ORDER_TYPE_DAL.cs" />
+    <Compile Include="APP_USER_ALIAS_LINK_DAL.cs" />
+    <Compile Include="V_ALIAS_ADDR_SPL_DAL.cs" />
+    <Compile Include="V_ALIAS_ADDR_DFLT_DAL.cs" />
     <Compile Include="APP_PAGES_DAL.cs" />
     <Compile Include="APP_USER_ROLE_LINK_DAL.cs" />
     <Compile Include="APP_USERS_DAL.cs" />

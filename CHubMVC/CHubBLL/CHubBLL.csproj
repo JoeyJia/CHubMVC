@@ -57,12 +57,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APP_CUST_ALIAS_LINK_BLL.cs" />
+    <Compile Include="APP_ORDER_STATUS_BLL.cs" />
+    <Compile Include="APP_ORDER_TYPE_BLL.cs" />
+    <Compile Include="APP_USER_ALIAS_LINK_BLL.cs" />
+    <Compile Include="APP_CUST_ALIAS_BLL.cs" />
     <Compile Include="APP_PAGES_BLL.cs" />
     <Compile Include="APP_USERS_BLL.cs" />
     <Compile Include="APP_RECENT_PAGES_BLL.cs" />
     <Compile Include="APP_NOTICE_BLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="APP_WELCOME_BLL.cs" />
+    <Compile Include="V_ALIAS_ADDR_SPL_BLL.cs" />
+    <Compile Include="V_ALIAS_ADDR_DFLT_BLL.cs" />
     <Compile Include="V_USER_NAV_ALL_BLL.cs" />
   </ItemGroup>
   <ItemGroup>

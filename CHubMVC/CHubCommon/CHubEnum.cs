@@ -42,5 +42,21 @@ namespace CHubCommon
             invinq
         }
 
+        public enum OrderStatusEnum
+        {
+            /// <summary>
+            /// Order Saved
+            /// </summary>
+            S,
+            /// <summary>
+            /// Draft
+            /// </summary>
+            D,
+            /// <summary>
+            /// Canceled
+            /// </summary>
+            C
+        }
+
     }
 }

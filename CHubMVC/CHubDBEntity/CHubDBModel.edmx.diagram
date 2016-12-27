@@ -8,7 +8,7 @@
         <EntityTypeShape EntityType="CHubDBModel.APP_CUST_ALIAS" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.APP_CUST_ALIAS_LINK" Width="1.5" PointX="8" PointY="4.625" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.APP_DURATION" Width="1.5" PointX="8" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_NOTICE" Width="1.5" PointX="10.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CHubDBModel.APP_NOTICE" Width="1.5" PointX="12.875" PointY="3.5" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.APP_ORDER_TYPE" Width="1.5" PointX="8.75" PointY="11.375" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.APP_PAGE_ROLE_LINK" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.APP_PAGES" Width="1.5" PointX="0.75" PointY="9.625" IsExpanded="true" />
