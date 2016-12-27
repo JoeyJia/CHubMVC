@@ -230,18 +230,30 @@
           <Property Name="SYS_TYPE" Type="varchar2" MaxLength="10" />
           <Property Name="DB_LINK" Type="varchar2" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'GWAPP.TS_OR_DETAIL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="TS_OR_DETAIL">
           <Key>
             <PropertyRef Name="ORDER_REQ_NO" />
-            <PropertyRef Name="SHIPFROM_SEQ" />
-            <PropertyRef Name="PART_NO" />
-            <PropertyRef Name="BUY_QTY" />
-            <PropertyRef Name="CREATION_DATE" />
-            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="ORDER_LINE_NO" />
           </Key>
           <Property Name="ORDER_REQ_NO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ORDER_LINE_NO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="SHIPFROM_SEQ" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="PART_NO" Type="varchar2" MaxLength="25" Nullable="false" />
+          <Property Name="CUSTOMER_PART_NO" Type="varchar2" MaxLength="25" />
+          <Property Name="BUY_QTY" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="35" />
+          <Property Name="CREATION_DATE" Type="date" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="UPDATED_DATE" Type="date" />
+          <Property Name="UPDATED_BY" Type="varchar2" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="TS_OR_DETAIL_STAGE">
+          <Key>
+            <PropertyRef Name="ORDER_REQ_NO" />
+            <PropertyRef Name="ORDER_LINE_NO" />
+          </Key>
+          <Property Name="ORDER_REQ_NO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ORDER_LINE_NO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="SHIPFROM_SEQ" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="PART_NO" Type="varchar2" MaxLength="25" Nullable="false" />
           <Property Name="CUSTOMER_PART_NO" Type="varchar2" MaxLength="25" />
@@ -260,6 +272,7 @@ warning 6002: The table/view 'GWAPP.TS_OR_DETAIL' does not have a primary key de
           <Property Name="ORDER_REQ_NO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="SHIPFROM_SEQ" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="TO_SYSTEM" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="ALIAS_NAME" Type="varchar2" MaxLength="20" Nullable="false" />
           <Property Name="CUSTOMER_NO" Type="varchar2" MaxLength="8" Nullable="false" />
           <Property Name="BILL_TO_LOCATION" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="SHIP_TO_LOCATION" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -274,7 +287,31 @@ warning 6002: The table/view 'GWAPP.TS_OR_DETAIL' does not have a primary key de
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="20" Nullable="false" />
           <Property Name="RECORD_DATE" Type="date" />
           <Property Name="UPDATED_BY" Type="varchar2" MaxLength="20" />
+          <Property Name="ORDER_NOTES" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TS_OR_HEADER_STAGE">
+          <Key>
+            <PropertyRef Name="ORDER_REQ_NO" />
+            <PropertyRef Name="SHIPFROM_SEQ" />
+          </Key>
+          <Property Name="ORDER_REQ_NO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="SHIPFROM_SEQ" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="TO_SYSTEM" Type="varchar2" MaxLength="10" Nullable="false" />
           <Property Name="ALIAS_NAME" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="CUSTOMER_NO" Type="varchar2" MaxLength="8" Nullable="false" />
+          <Property Name="BILL_TO_LOCATION" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="SHIP_TO_LOCATION" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DEST_LOCATION" Type="number" Precision="38" Scale="0" />
+          <Property Name="DUE_DATE" Type="date" Nullable="false" />
+          <Property Name="ORDER_TYPE" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="CUSTOMER_PO_NO" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="SPL_IND" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="SHIPCOMP_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="ORDER_STATUS" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="CREATION_DATE" Type="date" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="RECORD_DATE" Type="date" />
+          <Property Name="UPDATED_BY" Type="varchar2" MaxLength="20" />
           <Property Name="ORDER_NOTES" Type="varchar2" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
@@ -1032,21 +1069,10 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="APP_WORKSPACE" EntityType="Self.APP_WORKSPACE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_PARAMETER" EntityType="Self.M_PARAMETER" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_SYSTEM" EntityType="Self.M_SYSTEM" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="TS_OR_DETAIL" EntityType="Self.TS_OR_DETAIL" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="TS_OR_DETAIL_STAGE" EntityType="Self.TS_OR_DETAIL_STAGE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TS_OR_HEADER" EntityType="Self.TS_OR_HEADER" Schema="GWAPP" store:Type="Tables" />
-          <EntitySet Name="TS_OR_DETAIL" EntityType="Self.TS_OR_DETAIL" store:Type="Tables" store:Schema="GWAPP">
-            <DefiningQuery>SELECT 
-"TS_OR_DETAIL"."ORDER_REQ_NO" AS "ORDER_REQ_NO", 
-"TS_OR_DETAIL"."SHIPFROM_SEQ" AS "SHIPFROM_SEQ", 
-"TS_OR_DETAIL"."PART_NO" AS "PART_NO", 
-"TS_OR_DETAIL"."CUSTOMER_PART_NO" AS "CUSTOMER_PART_NO", 
-"TS_OR_DETAIL"."BUY_QTY" AS "BUY_QTY", 
-"TS_OR_DETAIL"."DESCRIPTION" AS "DESCRIPTION", 
-"TS_OR_DETAIL"."CREATION_DATE" AS "CREATION_DATE", 
-"TS_OR_DETAIL"."CREATED_BY" AS "CREATED_BY", 
-"TS_OR_DETAIL"."UPDATED_DATE" AS "UPDATED_DATE", 
-"TS_OR_DETAIL"."UPDATED_BY" AS "UPDATED_BY"
-FROM "GWAPP"."TS_OR_DETAIL" "TS_OR_DETAIL"</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="TS_OR_HEADER_STAGE" EntityType="Self.TS_OR_HEADER_STAGE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="G_PART_DESCRIPTION" EntityType="Self.G_PART_DESCRIPTION" store:Type="Views" store:Schema="GWAPP">
             <DefiningQuery>SELECT 
 "G_PART_DESCRIPTION"."PART_NO" AS "PART_NO", 
@@ -2543,6 +2569,8 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="TS_OR_HEADER" EntitySet="TS_OR_HEADER" />
           </AssociationSet>
+          <EntitySet Name="TS_OR_DETAIL_STAGE" EntityType="CHubDBModel.TS_OR_DETAIL_STAGE" />
+          <EntitySet Name="TS_OR_HEADER_STAGE" EntityType="CHubDBModel.TS_OR_HEADER_STAGE" />
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -2612,11 +2640,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
         <EntityType Name="TS_OR_DETAIL">
           <Key>
             <PropertyRef Name="ORDER_REQ_NO" />
-            <PropertyRef Name="SHIPFROM_SEQ" />
-            <PropertyRef Name="PART_NO" />
-            <PropertyRef Name="BUY_QTY" />
-            <PropertyRef Name="CREATION_DATE" />
-            <PropertyRef Name="CREATED_BY" />
+            <PropertyRef Name="ORDER_LINE_NO" />
           </Key>
           <Property Name="ORDER_REQ_NO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="SHIPFROM_SEQ" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
@@ -2628,6 +2652,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="UPDATED_DATE" Type="DateTime" />
           <Property Name="UPDATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ORDER_LINE_NO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
         </EntityType>
         <Association Name="TS_OR_HEADER_R05">
           <End Type="CHubDBModel.APP_CUST_ALIAS" Role="APP_CUST_ALIAS" Multiplicity="1" />
@@ -2689,6 +2714,48 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="TS_OR_DETAIL_STAGE">
+          <Key>
+            <PropertyRef Name="ORDER_REQ_NO" />
+            <PropertyRef Name="ORDER_LINE_NO" />
+          </Key>
+          <Property Name="ORDER_REQ_NO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="ORDER_LINE_NO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="SHIPFROM_SEQ" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="PART_NO" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="CUSTOMER_PART_NO" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="BUY_QTY" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="CREATION_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UPDATED_DATE" Type="DateTime" />
+          <Property Name="UPDATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TS_OR_HEADER_STAGE">
+          <Key>
+            <PropertyRef Name="ORDER_REQ_NO" />
+            <PropertyRef Name="SHIPFROM_SEQ" />
+          </Key>
+          <Property Name="ORDER_REQ_NO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="SHIPFROM_SEQ" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="TO_SYSTEM" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ALIAS_NAME" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CUSTOMER_NO" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="BILL_TO_LOCATION" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="SHIP_TO_LOCATION" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DEST_LOCATION" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="DUE_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="ORDER_TYPE" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CUSTOMER_PO_NO" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SPL_IND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="SHIPCOMP_FLAG" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="ORDER_STATUS" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="CREATION_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="RECORD_DATE" Type="DateTime" />
+          <Property Name="UPDATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ORDER_NOTES" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3402,6 +3469,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="TS_OR_DETAIL">
             <EntityTypeMapping TypeName="CHubDBModel.TS_OR_DETAIL">
               <MappingFragment StoreEntitySet="TS_OR_DETAIL">
+                <ScalarProperty Name="ORDER_LINE_NO" ColumnName="ORDER_LINE_NO" />
                 <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
                 <ScalarProperty Name="UPDATED_DATE" ColumnName="UPDATED_DATE" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
@@ -3410,6 +3478,48 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="BUY_QTY" ColumnName="BUY_QTY" />
                 <ScalarProperty Name="CUSTOMER_PART_NO" ColumnName="CUSTOMER_PART_NO" />
                 <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+                <ScalarProperty Name="SHIPFROM_SEQ" ColumnName="SHIPFROM_SEQ" />
+                <ScalarProperty Name="ORDER_REQ_NO" ColumnName="ORDER_REQ_NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TS_OR_DETAIL_STAGE">
+            <EntityTypeMapping TypeName="CHubDBModel.TS_OR_DETAIL_STAGE">
+              <MappingFragment StoreEntitySet="TS_OR_DETAIL_STAGE">
+                <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
+                <ScalarProperty Name="UPDATED_DATE" ColumnName="UPDATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="BUY_QTY" ColumnName="BUY_QTY" />
+                <ScalarProperty Name="CUSTOMER_PART_NO" ColumnName="CUSTOMER_PART_NO" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+                <ScalarProperty Name="SHIPFROM_SEQ" ColumnName="SHIPFROM_SEQ" />
+                <ScalarProperty Name="ORDER_LINE_NO" ColumnName="ORDER_LINE_NO" />
+                <ScalarProperty Name="ORDER_REQ_NO" ColumnName="ORDER_REQ_NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TS_OR_HEADER_STAGE">
+            <EntityTypeMapping TypeName="CHubDBModel.TS_OR_HEADER_STAGE">
+              <MappingFragment StoreEntitySet="TS_OR_HEADER_STAGE">
+                <ScalarProperty Name="ORDER_NOTES" ColumnName="ORDER_NOTES" />
+                <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
+                <ScalarProperty Name="RECORD_DATE" ColumnName="RECORD_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
+                <ScalarProperty Name="ORDER_STATUS" ColumnName="ORDER_STATUS" />
+                <ScalarProperty Name="SHIPCOMP_FLAG" ColumnName="SHIPCOMP_FLAG" />
+                <ScalarProperty Name="SPL_IND" ColumnName="SPL_IND" />
+                <ScalarProperty Name="CUSTOMER_PO_NO" ColumnName="CUSTOMER_PO_NO" />
+                <ScalarProperty Name="ORDER_TYPE" ColumnName="ORDER_TYPE" />
+                <ScalarProperty Name="DUE_DATE" ColumnName="DUE_DATE" />
+                <ScalarProperty Name="DEST_LOCATION" ColumnName="DEST_LOCATION" />
+                <ScalarProperty Name="SHIP_TO_LOCATION" ColumnName="SHIP_TO_LOCATION" />
+                <ScalarProperty Name="BILL_TO_LOCATION" ColumnName="BILL_TO_LOCATION" />
+                <ScalarProperty Name="CUSTOMER_NO" ColumnName="CUSTOMER_NO" />
+                <ScalarProperty Name="ALIAS_NAME" ColumnName="ALIAS_NAME" />
+                <ScalarProperty Name="TO_SYSTEM" ColumnName="TO_SYSTEM" />
                 <ScalarProperty Name="SHIPFROM_SEQ" ColumnName="SHIPFROM_SEQ" />
                 <ScalarProperty Name="ORDER_REQ_NO" ColumnName="ORDER_REQ_NO" />
               </MappingFragment>

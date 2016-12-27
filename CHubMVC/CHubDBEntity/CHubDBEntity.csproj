@@ -178,7 +178,13 @@
     <Compile Include="TS_OR_DETAIL.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="TS_OR_DETAIL_STAGE.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="TS_OR_HEADER.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TS_OR_HEADER_STAGE.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_ALIAS_ADDR_DFLT.cs">

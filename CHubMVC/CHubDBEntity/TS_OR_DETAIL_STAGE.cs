@@ -12,9 +12,10 @@ namespace CHubDBEntity
     using System;
     using System.Collections.Generic;
     
-    public partial class TS_OR_DETAIL
+    public partial class TS_OR_DETAIL_STAGE
     {
         public decimal ORDER_REQ_NO { get; set; }
+        public decimal ORDER_LINE_NO { get; set; }
         public decimal SHIPFROM_SEQ { get; set; }
         public string PART_NO { get; set; }
         public string CUSTOMER_PART_NO { get; set; }
@@ -24,6 +25,5 @@ namespace CHubDBEntity
         public string CREATED_BY { get; set; }
         public Nullable<System.DateTime> UPDATED_DATE { get; set; }
         public string UPDATED_BY { get; set; }
-        public decimal ORDER_LINE_NO { get; set; }
     }
 }

@@ -65,5 +65,7 @@ namespace CHubDBEntity
         public virtual DbSet<APP_SHIP_SEQ> APP_SHIP_SEQ { get; set; }
         public virtual DbSet<TS_OR_HEADER> TS_OR_HEADER { get; set; }
         public virtual DbSet<TS_OR_DETAIL> TS_OR_DETAIL { get; set; }
+        public virtual DbSet<TS_OR_DETAIL_STAGE> TS_OR_DETAIL_STAGE { get; set; }
+        public virtual DbSet<TS_OR_HEADER_STAGE> TS_OR_HEADER_STAGE { get; set; }
     }
 }
