@@ -20,9 +20,9 @@ namespace CHubDBEntity
         public string CUSTOMER_NO { get; set; }
         public string NAME { get; set; }
         public string ACTIVEIND { get; set; }
-        public Nullable<int> BILL_TO_LOCATION { get; set; }
-        public Nullable<long> SHIP_TO_LOCATION { get; set; }
-        public Nullable<long> DEST_LOCATION { get; set; }
+        public int BILL_TO_LOCATION { get; set; }
+        public long SHIP_TO_LOCATION { get; set; }
+        public long DEST_LOCATION { get; set; }
         public string DEST_NAME { get; set; }
         public string DEST_ADDR_1 { get; set; }
         public string DEST_ADDR_2 { get; set; }

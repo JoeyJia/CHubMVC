@@ -661,19 +661,22 @@ warning 6002: The table/view 'GWAPP.V_ALIAS_ADDR_DFLT' does not have a primary k
         <EntityType Name="V_ALIAS_ADDR_DFLT">
           <Key>
             <PropertyRef Name="ALIAS_NAME" />
-            <PropertyRef Name="DESCRIPTION" />
+            <PropertyRef Name="SYSID" />
+            <PropertyRef Name="CUSTOMER_NO" />
+            <PropertyRef Name="BILL_TO_LOCATION" />
+            <PropertyRef Name="SHIP_TO_LOCATION" />
           </Key>
           <Property Name="DAYS" Type="number" Precision="38" Scale="0" />
           <Property Name="DISTANCE" Type="number" Precision="38" Scale="0" />
           <Property Name="KG_FREIGHT" Type="number" Precision="2" Scale="0" />
           <Property Name="ALIAS_NAME" Type="varchar2" MaxLength="20" Nullable="false" />
           <Property Name="DESCRIPTION" Type="varchar2" MaxLength="50" Nullable="false" />
-          <Property Name="SYSID" Type="varchar2" MaxLength="10" />
-          <Property Name="CUSTOMER_NO" Type="varchar2" MaxLength="30" />
+          <Property Name="SYSID" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="CUSTOMER_NO" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="NAME" Type="varchar2" MaxLength="105" />
           <Property Name="ACTIVEIND" Type="char" MaxLength="3" />
-          <Property Name="BILL_TO_LOCATION" Type="number" Precision="6" Scale="0" />
-          <Property Name="SHIP_TO_LOCATION" Type="number" Precision="6" Scale="0" />
+          <Property Name="BILL_TO_LOCATION" Type="number" Precision="6" Scale="0" Nullable="false" />
+          <Property Name="SHIP_TO_LOCATION" Type="number" Precision="6" Scale="0" Nullable="false" />
           <Property Name="SHIP_TO_NAME" Type="varchar2" MaxLength="105" />
           <Property Name="SHIP_TO_ADDR_1" Type="varchar2" MaxLength="105" />
           <Property Name="SHIP_TO_ADDR_2" Type="varchar2" MaxLength="105" />
@@ -702,20 +705,24 @@ warning 6002: The table/view 'GWAPP.V_ALIAS_ADDR_SPL' does not have a primary ke
         <EntityType Name="V_ALIAS_ADDR_SPL">
           <Key>
             <PropertyRef Name="ALIAS_NAME" />
-            <PropertyRef Name="DESCRIPTION" />
+            <PropertyRef Name="SYSID" />
+            <PropertyRef Name="CUSTOMER_NO" />
+            <PropertyRef Name="BILL_TO_LOCATION" />
+            <PropertyRef Name="SHIP_TO_LOCATION" />
+            <PropertyRef Name="DEST_LOCATION" />
           </Key>
           <Property Name="DAYS" Type="number" Precision="38" Scale="0" />
           <Property Name="DISTANCE" Type="number" Precision="38" Scale="0" />
           <Property Name="KG_FREIGHT" Type="number" Precision="2" Scale="0" />
           <Property Name="ALIAS_NAME" Type="varchar2" MaxLength="20" Nullable="false" />
           <Property Name="DESCRIPTION" Type="varchar2" MaxLength="50" Nullable="false" />
-          <Property Name="SYSID" Type="varchar2" MaxLength="10" />
-          <Property Name="CUSTOMER_NO" Type="varchar2" MaxLength="30" />
+          <Property Name="SYSID" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="CUSTOMER_NO" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="NAME" Type="varchar2" MaxLength="105" />
           <Property Name="ACTIVEIND" Type="char" MaxLength="3" />
-          <Property Name="BILL_TO_LOCATION" Type="number" Precision="6" Scale="0" />
-          <Property Name="SHIP_TO_LOCATION" Type="number" Precision="11" Scale="0" />
-          <Property Name="DEST_LOCATION" Type="number" Precision="11" Scale="0" />
+          <Property Name="BILL_TO_LOCATION" Type="number" Precision="6" Scale="0" Nullable="false" />
+          <Property Name="SHIP_TO_LOCATION" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="DEST_LOCATION" Type="number" Precision="11" Scale="0" Nullable="false" />
           <Property Name="DEST_NAME" Type="varchar2" MaxLength="105" />
           <Property Name="DEST_ADDR_1" Type="varchar2" MaxLength="105" />
           <Property Name="DEST_ADDR_2" Type="varchar2" MaxLength="105" />
@@ -2135,16 +2142,19 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
         <EntityType Name="V_ALIAS_ADDR_DFLT">
           <Key>
             <PropertyRef Name="ALIAS_NAME" />
-            <PropertyRef Name="DESCRIPTION" />
+            <PropertyRef Name="SYSID" />
+            <PropertyRef Name="CUSTOMER_NO" />
+            <PropertyRef Name="BILL_TO_LOCATION" />
+            <PropertyRef Name="SHIP_TO_LOCATION" />
           </Key>
           <Property Name="ALIAS_NAME" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DESCRIPTION" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="SYSID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="CUSTOMER_NO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="SYSID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CUSTOMER_NO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="NAME" Type="String" MaxLength="105" FixedLength="false" Unicode="false" />
           <Property Name="ACTIVEIND" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
-          <Property Name="BILL_TO_LOCATION" Type="Int32" />
-          <Property Name="SHIP_TO_LOCATION" Type="Int32" />
+          <Property Name="BILL_TO_LOCATION" Type="Int32" Nullable="false" />
+          <Property Name="SHIP_TO_LOCATION" Type="Int32" Nullable="false" />
           <Property Name="SHIP_TO_NAME" Type="String" MaxLength="105" FixedLength="false" Unicode="false" />
           <Property Name="SHIP_TO_ADDR_1" Type="String" MaxLength="105" FixedLength="false" Unicode="false" />
           <Property Name="SHIP_TO_ADDR_2" Type="String" MaxLength="105" FixedLength="false" Unicode="false" />
@@ -2174,17 +2184,21 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
         <EntityType Name="V_ALIAS_ADDR_SPL">
           <Key>
             <PropertyRef Name="ALIAS_NAME" />
-            <PropertyRef Name="DESCRIPTION" />
+            <PropertyRef Name="SYSID" />
+            <PropertyRef Name="CUSTOMER_NO" />
+            <PropertyRef Name="BILL_TO_LOCATION" />
+            <PropertyRef Name="SHIP_TO_LOCATION" />
+            <PropertyRef Name="DEST_LOCATION" />
           </Key>
           <Property Name="ALIAS_NAME" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DESCRIPTION" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="SYSID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="CUSTOMER_NO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="SYSID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CUSTOMER_NO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="NAME" Type="String" MaxLength="105" FixedLength="false" Unicode="false" />
           <Property Name="ACTIVEIND" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
-          <Property Name="BILL_TO_LOCATION" Type="Int32" />
-          <Property Name="SHIP_TO_LOCATION" Type="Int64" />
-          <Property Name="DEST_LOCATION" Type="Int64" />
+          <Property Name="BILL_TO_LOCATION" Type="Int32" Nullable="false" />
+          <Property Name="SHIP_TO_LOCATION" Type="Int64" Nullable="false" />
+          <Property Name="DEST_LOCATION" Type="Int64" Nullable="false" />
           <Property Name="DEST_NAME" Type="String" MaxLength="105" FixedLength="false" Unicode="false" />
           <Property Name="DEST_ADDR_1" Type="String" MaxLength="105" FixedLength="false" Unicode="false" />
           <Property Name="DEST_ADDR_2" Type="String" MaxLength="105" FixedLength="false" Unicode="false" />

@@ -16,7 +16,7 @@
     <form class="form-horizontal" action="/order/index" method="post">
         <div class="panel panel-default">
             <div class="panel-heading"><b>Quick Order Entry</b></div>
-            
+
             <div class="row" style="margin-top:20px;">
                 <div class="form-group">
                     <label for="orderID" class="col-sm-1 control-label">Order SEQ</label>
@@ -30,9 +30,7 @@
                 <div class="form-group">
                     <label for="cAlias" class="col-sm-1 control-label">Cus Alias</label>
                     <div class="col-sm-2">
-                        <select class="form-control" id="cAlias" ng-model="selectedAlias" ng-options="ca.ALIAS_NAME for ca in custAlias" >
-
-                        </select>
+                        <select class="form-control" id="cAlias" ng-model="selectedAlias" ng-options="ca.ALIAS_NAME for ca in custAlias"></select>
                     </div>
                 </div>
             </div>
@@ -41,14 +39,12 @@
                 <div class="form-group">
                     <label for="poNum" class="col-sm-1 control-label">PO No.</label>
                     <div class="col-sm-2">
-                        <input type="text"  class="form-control" id="poNum" placeholder="Customer PO No.">
+                        <input type="text" class="form-control" id="poNum" placeholder="Customer PO No.">
                     </div>
 
                     <label for="orderType" class="col-sm-1 control-label">Order Type</label>
                     <div class="col-sm-2">
-                        <select class="form-control" id="orderType" ng-model="selectedOrderType" ng-options="ot.ORDER_TYPE for ot in orderType">
-
-                        </select>
+                        <select class="form-control" id="orderType" ng-model="selectedOrderType" ng-options="ot.ORDER_TYPE for ot in orderType"></select>
                     </div>
 
                     <label for="dueDate" class="col-sm-1 control-label">Due Date</label>
@@ -80,65 +76,118 @@
                     <label for="ssto" class="col-sm-1 control-label">SS to Order</label>
                     <div class="checkbox col-md-2 col-lg-2">
                         <label>
-                            <input type="checkbox" id="ssto"  style="margin-left:1px;" checked>
+                            <input type="checkbox" id="ssto" style="margin-left:1px;" checked>
                         </label>
                     </div>
                 </div>
             </div>
 
 
-                <div class="row" id="searchBox">
-                    <div class="panel panel-default col-sm-7 col-sm-offset-1">
-                        <div class="form-group" style="padding-top:10px">
-                            <label for="shipName" class="col-sm-2 control-label">Ship Name</label>
-                            <div class="col-sm-7 col-lg-7">
-                                <input type="text" class="form-control" id="sbShipName" placeholder="Ship Name">
-                            </div>
+            <div class="row" id="searchBox">
+                <div class="panel panel-default col-sm-7 col-sm-offset-1">
+                    <div class="form-group" style="padding-top:10px">
+                        <label for="shipName" class="col-sm-2 control-label">Ship Name</label>
+                        <div class="col-sm-7 col-lg-7">
+                            <input type="text" class="form-control" id="sbShipName" placeholder="Ship Name">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sbAddr" class="col-sm-2 control-label">Address</label>
+                        <div class="col-sm-7 col-lg-7">
+                            <input type="text" class="form-control" id="sbAddr" placeholder="Address">
                         </div>
 
-                        <div class="form-group">
-                            <label for="sbAddr" class="col-sm-2 control-label">Address</label>
-                            <div class="col-sm-7 col-lg-7">
-                                <input type="text" class="form-control" id="sbAddr" placeholder="Address">
-                            </div>
-
-                            <div class="col-sm-2">
-                                <button type="button" class="btn btn-default" onclick="searchAddrs();">Search</button>
-                            </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-default" onclick="searchAddrs();">Search</button>
                         </div>
-
-
                     </div>
                 </div>
-
-
-
-
             </div>
+            <!--For alias addr list part-->
+            <hr />
+            @*<div class="row">
+                <div class="col-md-1" style="background-color:#eee">
+                    <p><b>Primary Ship From</b></p>
+                </div>
+            </div>*@
+            <div class="row">
+                    <div class="col-md-9 col-md-offset-1">
+                        <div class="panel panel-default" style="">
+                            <div class="panel-heading"><b>Primary Ship From</b></div>
+                            <table class="table table-bordered table-condensed table-striped" style="border-color:black;">
+                                <tr>
+                                    <td></td>
+                                    <td style="width:30px"><b>Duration</b></td>
+                                    <td style="width:10px">{{selectedAliasAddr.Days}}</td>
+                                    <td style="width:15px"><b>WareHouse</b></td>
+                                    <td style="width:15px">{{selectedAliasAddr.WareHouse}}</td>
+                                    <td style="width:20px"><b>Customer No.</b></td>
+                                    <td style="width:15px">{{selectedAliasAddr.CustomerNo}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:30px"><b>Ship To Name</b></td>
+                                    <td colspan="6">{{selectedAliasAddr.LocalDestName}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:30px"><b>Addr 1</b></td>
+                                    <td colspan="6">{{selectedAliasAddr.LocalDestAddr1}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:30px"><b>Addr 2</b></td>
+                                    <td colspan="6">{{selectedAliasAddr.LocalDestAddr2}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:30px"><b>Addr 3</b></td>
+                                    <td colspan="6">{{selectedAliasAddr.LocalDestAddr3}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:30px"><b>City</b></td>
+                                    <td colspan="6">{{selectedAliasAddr.LocalDestCity}}</td>
+                                </tr>
+                                <tr></tr>
+                                <tr>
+                                    <td style="width:30px"><b>Ship To Name</b></td>
+                                    <td style="width:30px">{{selectedAliasAddr.DestName}}</td>
+                                    <td style="width:30px"><b>Dest No.</b></td>
+                                    <td style="width:30px" colspan="4">{{selectedAliasAddr.DestLocation}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:30px"><b>Addr 1</b></td>
+                                    <td colspan="6">{{selectedAliasAddr.DestAddr1}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:30px"><b>Addr 2</b></td>
+                                    <td colspan="6">{{selectedAliasAddr.DestAddr2}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:30px"><b>Addr 3</b></td>
+                                    <td colspan="6">{{selectedAliasAddr.DestAddr3}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:30px"><b>City</b></td>
+                                    <td>{{selectedAliasAddr.DestCity}}</td>
+                                    <td style="width:30px"><b>ZIP</b></td>
+                                    <td>{{selectedAliasAddr.DestZip}}</td>
+                                    <td style="width:30px"><b>State</b></td>
+                                    <td colspan="2">{{selectedAliasAddr.DestState}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:30px"><b>Country</b></td>
+                                    <td colspan="6">{{selectedAliasAddr.DestCountry}}</td>
+                                </tr>
+
+                            </table>
+                        </div>
+                </div>
+            </div>
+
+
+        </div>
     </form>
+ 
 </div>
 
-<!-- Large modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Large modal</button>
-
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            ...
-        </div>
-    </div>
-</div>
-
-<!-- Small modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>
-
-<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            ...
-        </div>
-    </div>
-</div>
 
 <!-- Search result modal-->
 <div class="modal fade" id="aliasSearch" role="dialog" aria-labelledby="result" aria-hidden="true" ng-app="resultApp" ng-controller="searchResultCtrl">
@@ -153,9 +202,9 @@
                         <thead>
                             <tr>
                                 <th style="width:10px"></th>
-                                <th>Duration(days)</th>
-                                <th>Distance</th>
-                                <th>WareHouse</th>
+                                <th style="">Duration(days)</th>
+                                <th style="width:15px">Distance</th>
+                                <th style="width:20px">WareHouse</th>
                                 <th>Attention</th>
                                 <th>Ship to Name</th>
                                 <th>Addr1</th>
@@ -165,31 +214,33 @@
                                 <th>Province</th>
                             </tr>
                         </thead>
-                        <tbody style="display:none">
+                        <tbody style="">
                             <tr ng-repeat="rd in resultData ">
-                                <td style="">123
-                                    @*<div class="radio">
+                                <td style="">
+                                    <div class="radio">
                                         <label>
-                                            <input type="radio" name="blankRadio" id="blankRadio1" value="option1">
+                                            <input type="radio" name="optionsRdios"  id ="optionsRdios$index" class="addrRadio" seq="{{$index}}" value="">
                                         </label>
-                                    </div>*@
+                                    </div>
                               </td>
-                                <td>rd.Days</td>
-                                <td>rd.Distance</td>
-                                <td>rd.WareHouse</td>
-                                <td>rd.DestAttention</td>
-                                <td>rd.LocalDestName</td>
-                                <td>rd.LocalDestAddr1</td>
-                                <td>rd.LocalDestAddr2</td>
-                                <td>rd.LocalDestAddr3</td>
-                                <td>rd.LocalDestCity</td>
-                                <td>rd.LocalDestState</td>
+                                <td>{{rd.Days}}</td>
+                                <td>{{rd.Distance}}</td>
+                                <td>{{rd.WareHouse}}</td>
+                                <td>{{rd.DestAttention}}</td>
+                                <td>{{rd.LocalDestName}}</td>
+                                <td>{{rd.LocalDestAddr1}}</td>
+                                <td>{{rd.LocalDestAddr2}}</td>
+                                <td>{{rd.LocalDestAddr3}}</td>
+                                <td>{{rd.LocalDestCity}}</td>
+                                <td>{{rd.LocalDestState}}</td>
                             </tr>
                         </tbody>
                     </table>
-
-                <input type="text" value={{selectedItem}} placeholder="teing" />
-                <input type="text" id="testInput" placeholder="teing" />
+                <div class="row">
+                    <div class="col-md-2 col-md-offset-10">
+                        <button type="button" class="btn btn-primary" onclick="ConfirmAddr()">Confirm</button>
+                        <div>
+                </div>
 
             </div>
         </div>
@@ -212,7 +263,8 @@
 
         $scope.selectedAlias = resp.data.selectedAlias;
         $scope.selectedOrderType = "";
-            //debugger;
+
+        $scope.selectedAliasAddr = "";
 
         $scope.searchBtn = function () {
             $("#aliasSearch").modal("show");
@@ -234,6 +286,7 @@
 
     });
 
+    //Add second app to document
     angular.bootstrap(document.getElementById("aliasSearch"), ['resultApp']);
 
     //Functions start
@@ -258,9 +311,7 @@
                 var appElement = document.querySelector('[ng-controller=searchResultCtrl]');
                 var scope = angular.element(appElement).scope();
                 scope.resultData = obj;
-                scope.selectedItem = "scoping";
-
-                $("#testInput").val("知道");
+                //scope.selectedItem = "scoping";
                 
                 scope.$apply();
                 $("#aliasSearch").modal("show");
@@ -273,8 +324,27 @@
             }
 
         });
+    }
 
+    function ConfirmAddr()
+    {
+        for (var i = 0; i < $(".addrRadio").length ; i++) {
+            if ($(".addrRadio")[i].checked)
+            {
+                var seq = $(".addrRadio")[i].attributes['seq'].value;
+                debugger;
+                var appElement = document.querySelector('[ng-controller=searchResultCtrl]');
+                var scope = angular.element(appElement).scope();
+                var selected = scope.resultData[seq];
 
+                var appElement1 = document.querySelector('[ng-controller=orderCtrl]');
+                var scope1 = angular.element(appElement1).scope();
+                scope1.selectedAliasAddr = selected;
+                scope1.$apply();
+                break;
+            }
+            $("#aliasSearch").modal("hide");
+        }
     }
 
 </script>
