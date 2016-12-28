@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="CHubConstValues.cs" />
     <Compile Include="CHubEnum.cs" />
+    <Compile Include="ClassConvert\ClassConvert.cs" />
+    <Compile Include="ClassConvert\ClassConvertTable.cs" />
     <Compile Include="Compare\PropertyCompare.cs" />
     <Compile Include="DomainAuth\DomainUserAuth.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

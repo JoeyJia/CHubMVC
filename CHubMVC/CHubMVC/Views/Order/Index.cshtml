@@ -103,7 +103,7 @@
                             </div>
 
                             <div class="col-sm-2">
-                                <button type="submit" class="btn btn-default">Search</button>
+                                <button type="button" class="btn btn-default" onclick="searchAddrs();">Search</button>
                             </div>
                         </div>
 
@@ -116,6 +116,84 @@
 
             </div>
     </form>
+</div>
+
+<!-- Large modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Large modal</button>
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            ...
+        </div>
+    </div>
+</div>
+
+<!-- Small modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            ...
+        </div>
+    </div>
+</div>
+
+<!-- Search result modal-->
+<div class="modal fade" id="aliasSearch" role="dialog" aria-labelledby="result" aria-hidden="true" ng-app="resultApp" ng-controller="searchResultCtrl">
+    <div class="modal-dialog" style="width:90%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Address Result</h4>
+            </div>
+
+            <div class="modal-body">
+                    <table id="searchResult" class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width:10px"></th>
+                                <th>Duration(days)</th>
+                                <th>Distance</th>
+                                <th>WareHouse</th>
+                                <th>Attention</th>
+                                <th>Ship to Name</th>
+                                <th>Addr1</th>
+                                <th>Addr2</th>
+                                <th>Addr3</th>
+                                <th>City</th>
+                                <th>Province</th>
+                            </tr>
+                        </thead>
+                        <tbody style="display:none">
+                            <tr ng-repeat="rd in resultData ">
+                                <td style="">123
+                                    @*<div class="radio">
+                                        <label>
+                                            <input type="radio" name="blankRadio" id="blankRadio1" value="option1">
+                                        </label>
+                                    </div>*@
+                              </td>
+                                <td>rd.Days</td>
+                                <td>rd.Distance</td>
+                                <td>rd.WareHouse</td>
+                                <td>rd.DestAttention</td>
+                                <td>rd.LocalDestName</td>
+                                <td>rd.LocalDestAddr1</td>
+                                <td>rd.LocalDestAddr2</td>
+                                <td>rd.LocalDestAddr3</td>
+                                <td>rd.LocalDestCity</td>
+                                <td>rd.LocalDestState</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                <input type="text" value={{selectedItem}} placeholder="teing" />
+                <input type="text" id="testInput" placeholder="teing" />
+
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -134,20 +212,69 @@
 
         $scope.selectedAlias = resp.data.selectedAlias;
         $scope.selectedOrderType = "";
-        $scope.notice = "Notice 123";
-            debugger;
+            //debugger;
+
+        $scope.searchBtn = function () {
+            $("#aliasSearch").modal("show");
+        };
+
+
         }, 
      function (resp) {
          alert("Fail!");
-         $scope.resp = resp;
-         debugger;
-     }
-     );
+        // $scope.resp = resp;
+     });
+    });
 
 
+    angular.module('resultApp', []).controller('searchResultCtrl', function ($scope, $http) {
 
+        $scope.resultData = "";
+        $scope.selectedItem = "";
 
     });
 
+    angular.bootstrap(document.getElementById("aliasSearch"), ['resultApp']);
+
+    //Functions start
+    function searchAddrs()
+    {
+        debugger;
+        var shipName = $("#sbShipName").val();
+        var addr = $("#sbAddr").val();
+        var isSpecialShip = $("#ssto")[0].checked;
+
+        $.ajax({
+            url: "/order/SearchAddrs",
+            data: {
+                shipName: shipName,
+                addr: addr,
+                isSpecialShip: isSpecialShip
+            },
+            type:"post",
+            async:false,
+            success: function (obj) {
+                debugger;
+                var appElement = document.querySelector('[ng-controller=searchResultCtrl]');
+                var scope = angular.element(appElement).scope();
+                scope.resultData = obj;
+                scope.selectedItem = "scoping";
+
+                $("#testInput").val("知道");
+                
+                scope.$apply();
+                $("#aliasSearch").modal("show");
+
+            },
+            error: function (obj)
+            {
+                alert("fail");
+                debugger;
+            }
+
+        });
+
+
+    }
 
 </script>

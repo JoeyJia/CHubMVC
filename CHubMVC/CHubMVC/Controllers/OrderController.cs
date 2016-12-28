@@ -45,7 +45,7 @@ namespace CHubMVC.Controllers
                 {
                     custAlias = acaList,
                     orderType = aotList,
-                    //selectedAlias = selectedAlias
+                    selectedAlias = selectedAlias
                 };
 
                 return Json(obj);
@@ -53,10 +53,23 @@ namespace CHubMVC.Controllers
                 
         }
 
-        // GET: Order/Create
-        public ActionResult Create()
+        [HttpPost]
+        public JsonResult SearchAddrs(string shipName,string addr,bool isSpecialShip)
         {
-            return View();
+            List<ExVAliasAddr> list = new List<ExVAliasAddr>();
+            CHubEntities db = new CHubEntities();
+            if (isSpecialShip)
+            {
+                V_ALIAS_ADDR_SPL_BLL bll = new V_ALIAS_ADDR_SPL_BLL();
+                list = bll.GetAliasAddrSPL(shipName, addr);
+            }
+            else
+            {
+                V_ALIAS_ADDR_DFLT_BLL bll = new V_ALIAS_ADDR_DFLT_BLL();
+                list = bll.GetAliasAddrDFLT(shipName, addr);
+            }
+
+            return Json(list);
         }
 
         // POST: Order/Create

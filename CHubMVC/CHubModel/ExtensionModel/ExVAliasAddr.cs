@@ -8,7 +8,7 @@ namespace CHubModel.ExtensionModel
 {
     public class ExVAliasAddr
     {
-        public string aliasName { get; set; } 
+        public string AliasName { get; set; } 
 
         public string Description { get; set; } 
 

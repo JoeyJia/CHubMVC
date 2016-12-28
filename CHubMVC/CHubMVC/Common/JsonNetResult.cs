@@ -17,8 +17,8 @@ namespace CHubMVC
             Settings = new JsonSerializerSettings
             {
                 //solve loop issue             
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                NullValueHandling = NullValueHandling.Ignore
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                //NullValueHandling = NullValueHandling.Ignore
             };
         }
 
