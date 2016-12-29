@@ -10,6 +10,9 @@
 
 </style>
 
+@Styles.Render("~/Content/datatimecss")
+@Scripts.Render("~/bundles/datetime")
+
 <input type="hidden" value="@ViewBag.AppUser" id="hddAppUser" />
 
 <div id="orderBody" ng-app="orderApp" ng-controller="orderCtrl">
@@ -49,7 +52,7 @@
 
                     <label for="dueDate" class="col-sm-1 control-label">Due Date</label>
                     <div class="col-sm-1">
-                        <input type="text" class="form-control" id="dueDate" placeholder="Due Date">
+                        <input type="text" id="dueDate" class="form-control" />
                     </div>
 
                     <label for="cShip" class="col-sm-1 control-label">Complete Ship</label>
@@ -306,6 +309,14 @@
 
 <script>
     $(document).ready(function () {
+        $('#dueDate').datetimepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            minView: 'month',
+            todayBtn: true,
+            pickerPositioin:'botton-right'
+
+        });
 
         //alert("loaded");
     });
