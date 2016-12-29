@@ -7,6 +7,9 @@ using System.Web.Mvc;
 using CHubDBEntity;
 using CHubBLL;
 using CHubModel.ExtensionModel;
+using CHubModel;
+using CHubCommon;
+using CHubDBEntity;
 
 namespace CHubMVC.Controllers
 {
@@ -26,9 +29,8 @@ namespace CHubMVC.Controllers
         [HttpPost]
         public JsonResult Init()
         {
-            //using (CHubEntities db = new CHubEntities())
-            //{
-            CHubEntities db = new CHubEntities();
+            using (CHubEntities db = new CHubEntities())
+            {
                 string appUser = Session[CHubConstValues.SessionUser].ToString();
                 APP_CUST_ALIAS_BLL acaBLL = new APP_CUST_ALIAS_BLL(db);
                 List<ExAppCustAlias> acaList = acaBLL.GetAppCustAliasByAppUser(appUser);
@@ -36,10 +38,10 @@ namespace CHubMVC.Controllers
 
                 APP_ORDER_TYPE_BLL aotBLL = new APP_ORDER_TYPE_BLL(db);
                 List<APP_ORDER_TYPE> aotList = aotBLL.GetValidOrderType();
-            foreach (var item in aotList)
-            {
-                item.TS_OR_HEADER = null;
-            }
+                foreach (var item in aotList)
+                {
+                    item.TS_OR_HEADER = null;
+                }
 
                 var obj = new
                 {
@@ -49,8 +51,8 @@ namespace CHubMVC.Controllers
                 };
 
                 return Json(obj);
-            //}
-                
+            }
+
         }
 
         [HttpPost]
@@ -71,7 +73,7 @@ namespace CHubMVC.Controllers
 
             //Get from parameter table?
             if (list.Count > 10)
-                return Json("More Strict");
+                return Json("OverFlow");
 
             return Json(list);
         }
@@ -95,26 +97,52 @@ namespace CHubMVC.Controllers
             return Json(list);
         }
 
-        // POST: Order/Create
+
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult SaveDraft(OrderSaveArg arg)
         {
             try
             {
-                // TODO: Add insert logic here
+                if (arg.headInfo == null)
+                    return Content("fail");
 
-                return RedirectToAction("Index");
+                CHubEntities db = new CHubEntities();
+                TS_OR_HEADER_STAGE orHeaderStage = ManualClassConvert.ConvertExAliaAddr2HeaderStage(arg.headInfo);
+                TS_OR_HEADER_STAGE_BLL bll = new TS_OR_HEADER_STAGE_BLL(db);
+                bll.AddHeaderStage(orHeaderStage);
+
+                if (arg.altHeadInfo != null)
+                {
+                    TS_OR_HEADER_STAGE altORHeaderStage = ManualClassConvert.ConvertExAliaAddr2HeaderStage(arg.altHeadInfo);
+                    bll.AddHeaderStage(altORHeaderStage);
+                }
+
+                return Content("success");
             }
-            catch
+            catch(Exception ee)
             {
-                return View();
+                return Content("fail");
             }
         }
 
-        // GET: Order/Edit/5
-        public ActionResult Edit(int id)
+        [HttpPost]
+        public ActionResult SaveOrder(TS_OR_HEADER orHeader,TS_OR_HEADER altORHeader)
         {
-            return View();
+            try
+            {
+                if (orHeader == null)
+                    return Content("fail");
+                TS_OR_HEADER_BLL bll = new TS_OR_HEADER_BLL();
+                bll.AddHeader(orHeader);
+                if (altORHeader != null)
+                    bll.AddHeader(altORHeader);
+
+                return Content("success");
+            }
+            catch
+            {
+                return Content("fail");
+            }
         }
 
         // POST: Order/Edit/5

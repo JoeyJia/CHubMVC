@@ -45,9 +45,20 @@
     <Compile Include="CHubEnum.cs" />
     <Compile Include="ClassConvert\ClassConvert.cs" />
     <Compile Include="ClassConvert\ClassConvertTable.cs" />
+    <Compile Include="ClassConvert\ManualClassConvert.cs" />
     <Compile Include="Compare\PropertyCompare.cs" />
     <Compile Include="DomainAuth\DomainUserAuth.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CHubDBEntity\CHubDBEntity.csproj">
+      <Project>{ee754c7b-0aaa-4cbe-81f9-e8954f9eb1e5}</Project>
+      <Name>CHubDBEntity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CHubModel\CHubModel.csproj">
+      <Project>{acc93060-a797-4076-ae6b-366bd627978a}</Project>
+      <Name>CHubModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

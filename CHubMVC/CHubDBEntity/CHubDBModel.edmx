@@ -665,6 +665,7 @@ warning 6002: The table/view 'GWAPP.V_ALIAS_ADDR_DFLT' does not have a primary k
             <PropertyRef Name="CUSTOMER_NO" />
             <PropertyRef Name="BILL_TO_LOCATION" />
             <PropertyRef Name="SHIP_TO_LOCATION" />
+            
           </Key>
           <Property Name="DAYS" Type="number" Precision="38" Scale="0" />
           <Property Name="DISTANCE" Type="number" Precision="38" Scale="0" />
@@ -710,6 +711,7 @@ warning 6002: The table/view 'GWAPP.V_ALIAS_ADDR_SPL' does not have a primary ke
             <PropertyRef Name="BILL_TO_LOCATION" />
             <PropertyRef Name="SHIP_TO_LOCATION" />
             <PropertyRef Name="DEST_LOCATION" />
+            
           </Key>
           <Property Name="DAYS" Type="number" Precision="38" Scale="0" />
           <Property Name="DISTANCE" Type="number" Precision="38" Scale="0" />

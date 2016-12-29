@@ -77,5 +77,26 @@ namespace CHubDAL
             AutoSave(autoSave);
         }
 
+        public decimal GetOrderSqeNextVal()
+        {
+            List<decimal> nextVal = db.Database.SqlQuery<decimal>( "select ORDER_SEQ_NO.nextval from dual", string.Empty).ToList();
+            decimal result = nextVal[0];
+            return result; 
+        }
+
+        public decimal GetOrderSqeCurrVal()
+        {
+            try
+            {
+                List<decimal> nextVal = db.Database.SqlQuery<decimal>("select ORDER_SEQ_NO.currval from dual", string.Empty).ToList();
+                decimal result = nextVal[0];
+                return result;
+            }
+            catch
+            {
+                return 0.00M;
+            }
+        }
+
     }
 }

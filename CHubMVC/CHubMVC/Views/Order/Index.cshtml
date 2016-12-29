@@ -30,7 +30,7 @@
                 <div class="form-group">
                     <label for="cAlias" class="col-sm-1 control-label">Cus Alias</label>
                     <div class="col-sm-2">
-                        <select class="form-control" id="cAlias" ng-model="selectedAlias" ng-options="ca.ALIAS_NAME for ca in custAlias"></select>
+                        <select class="form-control" id="cAlias" ng-model="selectedAlias" ng-options="ca.ALIAS_NAME for ca in custAlias">{{selectedAlias.ALIAS_NAME}}</select>
                     </div>
                 </div>
             </div>
@@ -44,7 +44,7 @@
 
                     <label for="orderType" class="col-sm-1 control-label">Order Type</label>
                     <div class="col-sm-2">
-                        <select class="form-control" id="orderType" ng-model="selectedOrderType" ng-options="ot.ORDER_TYPE for ot in orderType"></select>
+                        <select class="form-control" id="orderType" ng-model="selectedOrderType" ng-options="ot.ORDER_TYPE for ot in orderType">STOCK</select>
                     </div>
 
                     <label for="dueDate" class="col-sm-1 control-label">Due Date</label>
@@ -206,7 +206,7 @@
                                 <td style="">
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="optionsRdios" id="optionsRdios$index" class="addrRadio" seq="{{$index}}" value="">
+                                            <input type="radio" name="altOptionsRdios" id="altOptionsRdios$index" class="altAddrRadio" seq="{{$index}}" value="">
                                         </label>
                                     </div>
                                 </td>
@@ -223,6 +223,17 @@
                             </tr>
                         </tbody>
                     </table>
+
+                </div>
+            </div>
+
+            <!--For button Part start-->
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                    <button type="button" class="btn btn-primary" ng-click="SaveDraft()">Save Draft</button>
+                    <button type="button" class="btn btn-primary">Save Order</button>
+                    <button type="button" class="btn btn-primary">Auto Fulfillments </button>
+                    <button type="button" class="btn btn-primary">Download</button>
 
                 </div>
             </div>
@@ -342,6 +353,40 @@
         }
 
 
+        $scope.SaveDraft = function ()
+        {
+            debugger;
+            for (var i = 0; i < $(".altAddrRadio").length ; i++) {
+                if ($(".altAddrRadio")[i].checked) {
+                    var seq = $(".altAddrRadio")[i].attributes['seq'].value;
+                    $scope.selectedAltAliasAddr = $scope.AltAliasAddr[seq];
+                    break;
+                }
+            }
+
+
+            $.ajax({
+                url: "/order/SaveDraft",
+                data: JSON.stringify( {
+                    headInfo: $scope.selectedAliasAddr,
+                    altHeadInfo: $scope.selectedAltAliasAddr
+                }),
+                type: "post",
+                async: false,
+                contentType: 'application/json',
+                success: function (obj) {
+                    if (obj == "success")
+                        alert(obj);
+
+                },
+                error: function (obj) {
+                    alert("fail");
+                    debugger;
+                }
+
+            });
+        }
+
         }, 
      function (resp) {
          alert("Fail!");
@@ -363,7 +408,6 @@
     //Functions start
     function searchAddrs()
     {
-        debugger;
         var shipName = $("#sbShipName").val();
         var addr = $("#sbAddr").val();
         var isSpecialShip = $("#ssto")[0].checked;
@@ -378,7 +422,6 @@
             type:"post",
             async:false,
             success: function (obj) {
-                debugger;
                 var appElement = document.querySelector('[ng-controller=searchResultCtrl]');
                 var scope = angular.element(appElement).scope();
                 scope.resultData = obj;
@@ -391,7 +434,6 @@
             error: function (obj)
             {
                 alert("fail");
-                debugger;
             }
 
         });
@@ -405,7 +447,6 @@
             if ($(".addrRadio")[i].checked)
             {
                 var seq = $(".addrRadio")[i].attributes['seq'].value;
-                debugger;
                 var appElement = document.querySelector('[ng-controller=searchResultCtrl]');
                 var scope = angular.element(appElement).scope();
                 var selected = scope.resultData[seq];
@@ -413,7 +454,6 @@
                 var appElement1 = document.querySelector('[ng-controller=orderCtrl]');
                 var scope1 = angular.element(appElement1).scope();
                 scope1.selectedAliasAddr = selected;
-                debugger;
                 scope1.GetAltAliasAddr(scope1.selectedAliasAddr.LocalDestName, scope1.selectedAliasAddr.LocalDestAddr1);
                 scope1.$apply();
                 break;
