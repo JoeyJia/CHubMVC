@@ -69,6 +69,29 @@ namespace CHubMVC.Controllers
                 list = bll.GetAliasAddrDFLT(shipName, addr);
             }
 
+            //Get from parameter table?
+            if (list.Count > 10)
+                return Json("More Strict");
+
+            return Json(list);
+        }
+
+        [HttpPost]
+        public JsonResult GetStrictAddrs(string shipName, string addr, bool isSpecialShip)
+        {
+            List<ExVAliasAddr> list = new List<ExVAliasAddr>();
+            CHubEntities db = new CHubEntities();
+            if (isSpecialShip)
+            {
+                V_ALIAS_ADDR_SPL_BLL bll = new V_ALIAS_ADDR_SPL_BLL();
+                list = bll.GetStrictAliasAddrSPL(shipName.Trim(), addr.Trim());
+            }
+            else
+            {
+                V_ALIAS_ADDR_DFLT_BLL bll = new V_ALIAS_ADDR_DFLT_BLL();
+                list = bll.GetStrictAliasAddrDFLT(shipName.Trim(), addr.Trim());
+            }
+
             return Json(list);
         }
 

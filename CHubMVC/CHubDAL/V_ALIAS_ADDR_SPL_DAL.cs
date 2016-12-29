@@ -22,6 +22,11 @@ namespace CHubDAL
             return db.V_ALIAS_ADDR_SPL.Where(a => a.LOCAL_DEST_NAME.Contains(localDestName) && a.LOCAL_DEST_ADDR_1.Contains(addr) && a.ACTIVEIND== CHubConstValues.IndY).OrderBy(a=>a.DAYS).ToList();
         }
 
+        public List<V_ALIAS_ADDR_SPL> GetStictAliasAddrSPL(string localDestName, string addr)
+        {
+            return db.V_ALIAS_ADDR_SPL.Where(a => a.LOCAL_DEST_NAME == localDestName && a.LOCAL_DEST_ADDR_1 == addr && a.ACTIVEIND == CHubConstValues.IndY).OrderBy(a => a.DAYS).ToList();
+        }
+
         public V_ALIAS_ADDR_SPL GetSpecifyAliasAddrSPL(string aliasName,string sysID, string cusNo,int? bill2Location,long? ship2Location,long? destLocation )
         {
             return db.V_ALIAS_ADDR_SPL.FirstOrDefault(a => a.ALIAS_NAME == aliasName

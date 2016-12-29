@@ -40,6 +40,23 @@ namespace CHubBLL
             return exList;
         }
 
+        public List<ExVAliasAddr> GetStrictAliasAddrDFLT(string shipName, string addr)
+        {
+            List<V_ALIAS_ADDR_DFLT> list = dal.GetStrictAliasAddrDFLT(shipName, addr);
+            List<ExVAliasAddr> exList = new List<ExVAliasAddr>();
+
+            ClassConvertTable cct = new ClassConvertTable();
+
+            foreach (var item in list)
+            {
+                ExVAliasAddr ex = new ExVAliasAddr();
+                ClassConvert.ConvertAction(item, ex, cct.AliasAddrDFLTConvert);
+                exList.Add(ex);
+            }
+
+            return exList;
+        }
+
         public V_ALIAS_ADDR_DFLT GetSpecifyAliasAddrDFLT(string aliasName, string sysID, string cusNo, int? bill2Location, int? ship2Location)
         {
             return dal.GetSpecifyAliasAddrDFLT(aliasName, sysID, cusNo, bill2Location, ship2Location);
