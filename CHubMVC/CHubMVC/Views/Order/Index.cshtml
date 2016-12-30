@@ -188,7 +188,7 @@
             <!--Alt Alias Address part-->
             <div class="row">
                 <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
-                    <table id="altAliasAddr" class="table table-striped table-hover">
+                    <table id="altAliasAddr" class="table table-striped table-hover table-bordered">
                         <thead>
                             <tr>
                                 <th style="width:10px"></th>
@@ -232,12 +232,46 @@
 
             <!--For button Part start-->
             <div class="row">
-                <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1" style="margin-top:10px">
                     <button type="button" class="btn btn-primary" ng-click="SaveDraft()">Save Draft</button>
                     <button type="button" class="btn btn-primary" ng-click="SaveOrder()">Save Order</button>
                     <button type="button" class="btn btn-primary">Auto Fulfillments </button>
                     <button type="button" class="btn btn-primary">Download</button>
 
+                </div>
+            </div>
+
+            <hr />
+            <!--For Order Lines-->
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                    <div class="panel panel-default" style="">
+                        <div class="panel-heading"><b>Order Lines</b></div>
+                        <table id="dtOrderLines" class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:10px">SEQ</th>
+                                    <th style="">Customer Part No.</th>
+                                    <th style="">Part No.</th>
+                                    <th style="">Qty</th>
+                                    <th>AVL Check(Pri)</th>
+                                    <th>AVL Check(Alt)</th>
+                                    <th>Operation</th>
+                                </tr>
+                            </thead>
+                            <tbody style="">
+                                <tr ng-repeat="rd in AltAliasAddr ">
+                                    <td style="">{{$index}}</td>
+                                    <td>{{rd.Days}}</td>
+                                    <td>{{rd.Distance}}</td>
+                                    <td>{{rd.WareHouse}}</td>
+                                    <td>{{rd.DestAttention}}</td>
+                                    <td>{{rd.LocalDestName}}</td>
+                                    <td>{{rd.LocalDestAddr1}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
