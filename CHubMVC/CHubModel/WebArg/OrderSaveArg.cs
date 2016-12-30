@@ -9,6 +9,16 @@ namespace CHubModel
 {
     public class OrderSaveArg
     {
+        public string dueDate { get; set; }
+
+        public string orderType { get; set; }
+
+        public string shipCompFlag { get; set; }
+
+        public string orderNote { get; set; }
+
+        public string  customerPONO { get; set; }
+
         public ExVAliasAddr headInfo { get; set; }
 
         public ExVAliasAddr altHeadInfo { get; set; }

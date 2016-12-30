@@ -22,10 +22,37 @@ namespace CHubBLL
             dal = new TS_OR_HEADER_DAL(db);
         }
 
-        public bool AddHeader(TS_OR_HEADER toHeader)
+        private bool AddHeader(TS_OR_HEADER orHeader)
         {
-            dal.Add(toHeader);
+
+            decimal nextVal = dal.GetOrderSqeNextVal();
+            orHeader.ORDER_REQ_NO = nextVal;
+            dal.Add(orHeader);
             return true;
+        }
+
+        public bool AddHeaderwithAlt(TS_OR_HEADER orHeader, TS_OR_HEADER altORHeader)
+        {
+            try
+            {
+                if (altORHeader == null)
+                    return AddHeader(orHeader);
+                else
+                {
+                    decimal nextVal = dal.GetOrderSqeNextVal();
+                    orHeader.ORDER_REQ_NO = nextVal;
+                    altORHeader.ORDER_REQ_NO = nextVal;
+
+                    dal.Add(orHeader, false);
+                    dal.Add(altORHeader, false);
+                    dal.SaveChanges();
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
 
     }

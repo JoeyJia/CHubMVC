@@ -34,7 +34,6 @@ namespace CHubMVC.Controllers
                 string appUser = Session[CHubConstValues.SessionUser].ToString();
                 APP_CUST_ALIAS_BLL acaBLL = new APP_CUST_ALIAS_BLL(db);
                 List<ExAppCustAlias> acaList = acaBLL.GetAppCustAliasByAppUser(appUser);
-                ExAppCustAlias selectedAlias = acaList.First(a => a.DEFAULT_FLAG == CHubConstValues.IndY);
 
                 APP_ORDER_TYPE_BLL aotBLL = new APP_ORDER_TYPE_BLL(db);
                 List<APP_ORDER_TYPE> aotList = aotBLL.GetValidOrderType();
@@ -47,7 +46,7 @@ namespace CHubMVC.Controllers
                 {
                     custAlias = acaList,
                     orderType = aotList,
-                    selectedAlias = selectedAlias
+                    defaultOrderType = CHubConstValues.DefaultOrderType
                 };
 
                 return Json(obj);
@@ -56,19 +55,19 @@ namespace CHubMVC.Controllers
         }
 
         [HttpPost]
-        public JsonResult SearchAddrs(string shipName,string addr,bool isSpecialShip)
+        public JsonResult SearchAddrs(string shipName,string addr,string aliasName, bool isSpecialShip)
         {
             List<ExVAliasAddr> list = new List<ExVAliasAddr>();
             CHubEntities db = new CHubEntities();
             if (isSpecialShip)
             {
                 V_ALIAS_ADDR_SPL_BLL bll = new V_ALIAS_ADDR_SPL_BLL();
-                list = bll.GetAliasAddrSPL(shipName, addr);
+                list = bll.GetAliasAddrSPL(shipName.Trim(), addr.Trim(),aliasName);
             }
             else
             {
                 V_ALIAS_ADDR_DFLT_BLL bll = new V_ALIAS_ADDR_DFLT_BLL();
-                list = bll.GetAliasAddrDFLT(shipName, addr);
+                list = bll.GetAliasAddrDFLT(shipName.Trim(), addr.Trim(),aliasName);
             }
 
             //Get from parameter table?
@@ -79,19 +78,19 @@ namespace CHubMVC.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetStrictAddrs(string shipName, string addr, bool isSpecialShip)
+        public JsonResult GetStrictAddrs(string shipName, string addr, string aliasName, bool isSpecialShip)
         {
             List<ExVAliasAddr> list = new List<ExVAliasAddr>();
             CHubEntities db = new CHubEntities();
             if (isSpecialShip)
             {
                 V_ALIAS_ADDR_SPL_BLL bll = new V_ALIAS_ADDR_SPL_BLL();
-                list = bll.GetStrictAliasAddrSPL(shipName.Trim(), addr.Trim());
+                list = bll.GetStrictAliasAddrSPL(shipName.Trim(), addr.Trim(),aliasName);
             }
             else
             {
                 V_ALIAS_ADDR_DFLT_BLL bll = new V_ALIAS_ADDR_DFLT_BLL();
-                list = bll.GetStrictAliasAddrDFLT(shipName.Trim(), addr.Trim());
+                list = bll.GetStrictAliasAddrDFLT(shipName.Trim(), addr.Trim(),aliasName);
             }
 
             return Json(list);
@@ -106,18 +105,22 @@ namespace CHubMVC.Controllers
                 if (arg.headInfo == null)
                     return Content("fail");
 
-                CHubEntities db = new CHubEntities();
-                TS_OR_HEADER_STAGE orHeaderStage = ManualClassConvert.ConvertExAliaAddr2HeaderStage(arg.headInfo);
-                TS_OR_HEADER_STAGE_BLL bll = new TS_OR_HEADER_STAGE_BLL(db);
-                bll.AddHeaderStage(orHeaderStage);
+                string AppUser = Session[CHubConstValues.SessionUser].ToString();
 
+                CHubEntities db = new CHubEntities();
+                TS_OR_HEADER_STAGE_BLL bll = new TS_OR_HEADER_STAGE_BLL(db);
+
+                TS_OR_HEADER_STAGE orHeaderStage = ManualClassConvert.ConvertExAliaAddr2HeaderStage(arg.headInfo,arg.dueDate,arg.orderType,arg.shipCompFlag,arg.customerPONO, arg.orderNote,AppUser);
+                TS_OR_HEADER_STAGE altORHeaderStage = null;
                 if (arg.altHeadInfo != null)
                 {
-                    TS_OR_HEADER_STAGE altORHeaderStage = ManualClassConvert.ConvertExAliaAddr2HeaderStage(arg.altHeadInfo);
-                    bll.AddHeaderStage(altORHeaderStage);
+                    altORHeaderStage = ManualClassConvert.ConvertExAliaAddr2HeaderStage(arg.altHeadInfo, arg.dueDate, arg.orderType, arg.shipCompFlag,arg.customerPONO, arg.orderNote, AppUser,true);
                 }
-
-                return Content("success");
+                bool success = bll.AddHeaderwithAltStage(orHeaderStage, altORHeaderStage);
+                if (success)
+                    return Content("success");
+                else
+                    return Content("Fail");
             }
             catch(Exception ee)
             {
@@ -126,20 +129,31 @@ namespace CHubMVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveOrder(TS_OR_HEADER orHeader,TS_OR_HEADER altORHeader)
+        public ActionResult SaveOrder(OrderSaveArg arg)
         {
             try
             {
-                if (orHeader == null)
+                if (arg.headInfo == null)
                     return Content("fail");
-                TS_OR_HEADER_BLL bll = new TS_OR_HEADER_BLL();
-                bll.AddHeader(orHeader);
-                if (altORHeader != null)
-                    bll.AddHeader(altORHeader);
 
-                return Content("success");
+                string AppUser = Session[CHubConstValues.SessionUser].ToString();
+
+                CHubEntities db = new CHubEntities();
+                TS_OR_HEADER_BLL bll = new TS_OR_HEADER_BLL(db);
+
+                TS_OR_HEADER orHeader = ManualClassConvert.ConvertExAliaAddr2Header(arg.headInfo, arg.dueDate, arg.orderType, arg.shipCompFlag, arg.customerPONO, arg.orderNote, AppUser);
+                TS_OR_HEADER altORHeader = null;
+                if (arg.altHeadInfo != null)
+                {
+                    altORHeader = ManualClassConvert.ConvertExAliaAddr2Header(arg.altHeadInfo, arg.dueDate, arg.orderType, arg.shipCompFlag, arg.customerPONO, arg.orderNote, AppUser, true);
+                }
+                bool success = bll.AddHeaderwithAlt(orHeader, altORHeader);
+                if (success)
+                    return Content("success");
+                else
+                    return Content("Fail");
             }
-            catch
+            catch (Exception ee)
             {
                 return Content("fail");
             }

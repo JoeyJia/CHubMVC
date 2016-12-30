@@ -58,5 +58,13 @@ namespace CHubCommon
             C
         }
 
+        public enum OrderTypeEnum
+        {
+            STOCK,
+            ECON,
+            CUSDWN,
+            SCHORD
+        }
+
     }
 }

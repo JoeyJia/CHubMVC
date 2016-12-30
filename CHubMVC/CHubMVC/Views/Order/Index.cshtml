@@ -33,7 +33,7 @@
                 <div class="form-group">
                     <label for="cAlias" class="col-sm-1 control-label">Cus Alias</label>
                     <div class="col-sm-2">
-                        <select class="form-control" id="cAlias" ng-model="selectedAlias" ng-options="ca.ALIAS_NAME for ca in custAlias">{{selectedAlias.ALIAS_NAME}}</select>
+                        <select class="form-control" id="cAlias" ng-model="selectedAlias" ng-options="ca.ALIAS_NAME for ca in custAlias"></select>
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
 
                     <label for="orderType" class="col-sm-1 control-label">Order Type</label>
                     <div class="col-sm-2">
-                        <select class="form-control" id="orderType" ng-model="selectedOrderType" ng-options="ot.ORDER_TYPE for ot in orderType">STOCK</select>
+                        <select class="form-control" id="orderType" ng-model="selectedOrderType" ng-options="ot.ORDER_TYPE for ot in orderType"></select>
                     </div>
 
                     <label for="dueDate" class="col-sm-1 control-label">Due Date</label>
@@ -234,7 +234,7 @@
             <div class="row">
                 <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
                     <button type="button" class="btn btn-primary" ng-click="SaveDraft()">Save Draft</button>
-                    <button type="button" class="btn btn-primary">Save Order</button>
+                    <button type="button" class="btn btn-primary" ng-click="SaveOrder()">Save Order</button>
                     <button type="button" class="btn btn-primary">Auto Fulfillments </button>
                     <button type="button" class="btn btn-primary">Download</button>
 
@@ -328,31 +328,66 @@
         $http.post("/order/init",null,null).then(function (resp) {
         $scope.custAlias = resp.data.custAlias;
         $scope.orderType = resp.data.orderType;
+        $scope.defaultOrderType = resp.data.defaultOrderType;
 
-        $scope.selectedAlias = resp.data.selectedAlias;
+        $scope.selectedAlias = "";
         $scope.selectedOrderType="";
 
         $scope.selectedAliasAddr="";
 
         //alternative alias addr list and selected on addr
         $scope.AltAliasAddr="";
-        $scope.selectedAltAliasAddr="";
+        $scope.selectedAltAliasAddr = "";
 
-        $scope.GetAltAliasAddr = function (localDestName, localDestAddr1)
-        {
-            debugger;
+        $scope.notice = "";
+
+        for (var i=0;i< $scope.custAlias.length;i++) {
+            if ( $scope.custAlias[i].DEFAULT_FLAG == "Y")
+            {
+                $scope.selectedAlias = $scope.custAlias[i];
+                break;
+            }
+        }
+        for (var i = 0; i < $scope.orderType.length; i++) {
+            if ($scope.orderType[i].ORDER_TYPE == $scope.defaultOrderType) {
+                $scope.selectedOrderType = $scope.orderType[i];
+                break;
+            }
+        }
+
+        }, 
+     function (resp) {
+         alert("Fail!");
+        // $scope.resp = resp;
+     });
+
+        $scope.GetAltAliasAddr = function (localDestName, localDestAddr1,aliasName) {
             var isSpecialShip = $("#ssto")[0].checked;
             $.ajax({
                 url: "/order/GetStrictAddrs",
                 data: {
                     shipName: localDestName,
                     addr: localDestAddr1,
+                    aliasName:aliasName,
                     isSpecialShip: isSpecialShip
                 },
                 type: "post",
                 async: false,
                 success: function (obj) {
                     $scope.AltAliasAddr = obj;
+                    debugger;
+                    var exist;
+                    for (var i = 0; i < $scope.AltAliasAddr.length; i++) {
+                        if ($scope.AltAliasAddr[i].AliasName == $scope.selectedAliasAddr.AliasName
+                            && $scope.AltAliasAddr[i].SysID == $scope.selectedAliasAddr.SysID
+                            && $scope.AltAliasAddr[i].CustomerNo == $scope.selectedAliasAddr.CustomerNo
+                            && $scope.AltAliasAddr[i].Bill2Location == $scope.selectedAliasAddr.Bill2Location
+                            && $scope.AltAliasAddr[i].Ship2Location == $scope.selectedAliasAddr.Ship2Location) {
+                            exist = i;
+                            break;
+                        }
+                    }
+                    $scope.AltAliasAddr.splice(i, 1);
 
                 },
                 error: function (obj) {
@@ -361,12 +396,10 @@
                 }
 
             });
-        }
+        };
 
 
-        $scope.SaveDraft = function ()
-        {
-            debugger;
+        $scope.SaveDraft = function () {
             for (var i = 0; i < $(".altAddrRadio").length ; i++) {
                 if ($(".altAddrRadio")[i].checked) {
                     var seq = $(".altAddrRadio")[i].attributes['seq'].value;
@@ -375,10 +408,21 @@
                 }
             }
 
+            var dueDate = $("#dueDate")[0].value;
+            var orderType = $scope.selectedOrderType.ORDER_TYPE;
+            var shipCompFlag = $("#cShip")[0].value;
+            var orderNote = $("#notes").val();
+            var custPONO = $("#poNum").val();
+
 
             $.ajax({
                 url: "/order/SaveDraft",
-                data: JSON.stringify( {
+                data: JSON.stringify({
+                    dueDate: dueDate,
+                    orderType: orderType,
+                    shipCompFlag: shipCompFlag,
+                    orderNote: orderNote,
+                    customerPONO: custPONO,
                     headInfo: $scope.selectedAliasAddr,
                     altHeadInfo: $scope.selectedAltAliasAddr
                 }),
@@ -396,20 +440,56 @@
                 }
 
             });
-        }
+        };
 
-        }, 
-     function (resp) {
-         alert("Fail!");
-        // $scope.resp = resp;
-     });
+        $scope.SaveOrder = function () {
+            for (var i = 0; i < $(".altAddrRadio").length ; i++) {
+                if ($(".altAddrRadio")[i].checked) {
+                    var seq = $(".altAddrRadio")[i].attributes['seq'].value;
+                    $scope.selectedAltAliasAddr = $scope.AltAliasAddr[seq];
+                    break;
+                }
+            }
+
+            var dueDate = $("#dueDate")[0].value;
+            var orderType = $scope.selectedOrderType.ORDER_TYPE;
+            var shipCompFlag = $("#cShip")[0].value;
+            var orderNote = $("#notes").val();
+            var custPONO = $("#poNum").val();
+
+
+            $.ajax({
+                url: "/order/SaveOrder",
+                data: JSON.stringify({
+                    dueDate: dueDate,
+                    orderType: orderType,
+                    shipCompFlag: shipCompFlag,
+                    orderNote: orderNote,
+                    customerPONO: custPONO,
+                    headInfo: $scope.selectedAliasAddr,
+                    altHeadInfo: $scope.selectedAltAliasAddr
+                }),
+                type: "post",
+                async: false,
+                contentType: 'application/json',
+                success: function (obj) {
+                    //if (obj == "success")
+                    alert(obj);
+                },
+                error: function (obj) {
+                    alert("fail");
+                    debugger;
+                }
+
+            });
+        };
+
     });
 
 
     angular.module('resultApp', []).controller('searchResultCtrl', function ($scope, $http) {
-
+        //Alias addres list
         $scope.resultData = "";
-        $scope.selectedItem = "";
 
     });
 
@@ -422,12 +502,14 @@
         var shipName = $("#sbShipName").val();
         var addr = $("#sbAddr").val();
         var isSpecialShip = $("#ssto")[0].checked;
+        var aliasName = $("#cAlias")[0].innerText;
 
         $.ajax({
             url: "/order/SearchAddrs",
             data: {
                 shipName: shipName,
                 addr: addr,
+                aliasName:aliasName,
                 isSpecialShip: isSpecialShip
             },
             type:"post",
@@ -436,7 +518,6 @@
                 var appElement = document.querySelector('[ng-controller=searchResultCtrl]');
                 var scope = angular.element(appElement).scope();
                 scope.resultData = obj;
-                //scope.selectedItem = "scoping";
                 
                 scope.$apply();
                 $("#aliasSearch").modal("show");
@@ -465,13 +546,11 @@
                 var appElement1 = document.querySelector('[ng-controller=orderCtrl]');
                 var scope1 = angular.element(appElement1).scope();
                 scope1.selectedAliasAddr = selected;
-                scope1.GetAltAliasAddr(scope1.selectedAliasAddr.LocalDestName, scope1.selectedAliasAddr.LocalDestAddr1);
+                scope1.GetAltAliasAddr(scope1.selectedAliasAddr.LocalDestName, scope1.selectedAliasAddr.LocalDestAddr1, scope1.selectedAlias.ALIAS_NAME);
                 scope1.$apply();
                 break;
             }
             $("#aliasSearch").modal("hide");
-           
-            //scope1.$apply();
             
         }
     }

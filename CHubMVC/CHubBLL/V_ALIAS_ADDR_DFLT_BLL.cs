@@ -23,9 +23,9 @@ namespace CHubBLL
             dal = new V_ALIAS_ADDR_DFLT_DAL(db);
         }
 
-        public List<ExVAliasAddr> GetAliasAddrDFLT(string shipName, string addr)
+        public List<ExVAliasAddr> GetAliasAddrDFLT(string shipName, string addr, string aliasName)
         {
-            List<V_ALIAS_ADDR_DFLT>  list = dal.GetAliasAddrDFLT(shipName, addr);
+            List<V_ALIAS_ADDR_DFLT>  list = dal.GetAliasAddrDFLT(shipName, addr,aliasName);
             List<ExVAliasAddr> exList = new List<ExVAliasAddr>();
 
             ClassConvertTable cct = new ClassConvertTable();
@@ -40,9 +40,9 @@ namespace CHubBLL
             return exList;
         }
 
-        public List<ExVAliasAddr> GetStrictAliasAddrDFLT(string shipName, string addr)
+        public List<ExVAliasAddr> GetStrictAliasAddrDFLT(string shipName, string addr, string aliasName)
         {
-            List<V_ALIAS_ADDR_DFLT> list = dal.GetStrictAliasAddrDFLT(shipName, addr);
+            List<V_ALIAS_ADDR_DFLT> list = dal.GetStrictAliasAddrDFLT(shipName, addr,aliasName);
             List<ExVAliasAddr> exList = new List<ExVAliasAddr>();
 
             ClassConvertTable cct = new ClassConvertTable();
