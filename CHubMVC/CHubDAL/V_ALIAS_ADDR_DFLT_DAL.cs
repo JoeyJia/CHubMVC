@@ -17,11 +17,9 @@ namespace CHubDAL
             : base(db) { }
 
 
-        public List<V_ALIAS_ADDR_DFLT> GetAliasAddrDFLT(string shipName, string addr, string aliasName)
+        public List<V_ALIAS_ADDR_DFLT> GetAliasAddrDFLT(string aliasName)
         {
-            return db.V_ALIAS_ADDR_DFLT.Where(a => a.LOCAL_SHIP_TO_NAME.Contains(shipName)
-                                                  && a.LOCAL_SHIP_TO_ADDR_1.Contains(addr)
-                                                  && a.ALIAS_NAME == aliasName
+            return db.V_ALIAS_ADDR_DFLT.Where(a => a.ALIAS_NAME == aliasName 
                                                   && a.ACTIVEIND == CHubConstValues.IndY).OrderBy(a => a.DAYS).ToList();
         }
 

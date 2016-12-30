@@ -79,7 +79,7 @@
                     <label for="ssto" class="col-sm-1 control-label">SS to Order</label>
                     <div class="checkbox col-md-2 col-lg-2">
                         <label>
-                            <input type="checkbox" id="ssto" style="margin-left:1px;" checked>
+                            <input type="checkbox" id="ssto" style="margin-left:1px;" onclick="checkSstoStatu()" checked>
                         </label>
                     </div>
                 </div>
@@ -375,7 +375,7 @@
                 async: false,
                 success: function (obj) {
                     $scope.AltAliasAddr = obj;
-                    debugger;
+                    //Remove the primary alias addr
                     var exist;
                     for (var i = 0; i < $scope.AltAliasAddr.length; i++) {
                         if ($scope.AltAliasAddr[i].AliasName == $scope.selectedAliasAddr.AliasName
@@ -515,6 +515,8 @@
             type:"post",
             async:false,
             success: function (obj) {
+                if (obj == "OverFlow")
+                    alert("Please make condition more strict");
                 var appElement = document.querySelector('[ng-controller=searchResultCtrl]');
                 var scope = angular.element(appElement).scope();
                 scope.resultData = obj;
@@ -533,8 +535,6 @@
 
     function ConfirmAddr()
     {
-      
-
         for (var i = 0; i < $(".addrRadio").length ; i++) {
             if ($(".addrRadio")[i].checked)
             {
@@ -550,9 +550,17 @@
                 scope1.$apply();
                 break;
             }
-            $("#aliasSearch").modal("hide");
-            
+   
         }
+        $("#aliasSearch").modal("hide");
+    }
+
+    function checkSstoStatu()
+    {
+        if ($("#ssto")[0].checked == false && $("#cAlias")[0].innerText != null)
+            searchAddrs();
+        if ($("#ssto")[0].checked == false && $("#cAlias")[0].innerText == null)
+            alert("Please select a Cus Alias");
     }
 
 </script>

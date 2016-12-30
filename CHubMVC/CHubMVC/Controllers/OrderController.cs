@@ -67,7 +67,7 @@ namespace CHubMVC.Controllers
             else
             {
                 V_ALIAS_ADDR_DFLT_BLL bll = new V_ALIAS_ADDR_DFLT_BLL();
-                list = bll.GetAliasAddrDFLT(shipName.Trim(), addr.Trim(),aliasName);
+                list = bll.GetAliasAddrDFLT(aliasName);
             }
 
             //Get from parameter table?
@@ -159,42 +159,6 @@ namespace CHubMVC.Controllers
             }
         }
 
-        // POST: Order/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Order/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Order/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        
     }
 }

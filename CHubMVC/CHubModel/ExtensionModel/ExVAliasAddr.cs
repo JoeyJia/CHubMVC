@@ -20,11 +20,11 @@ namespace CHubModel.ExtensionModel
 
         public string ActiveInd { get; set; } 
 
-        public int? Bill2Location { get; set; } 
+        public int Bill2Location { get; set; } 
 
-        public long? Ship2Location { get; set; } 
+        public long Ship2Location { get; set; } 
 
-        public long? DestLocation { get; set; } //SPL
+        public long DestLocation { get; set; } //SPL
 
         public string DestName { get; set; } 
 
