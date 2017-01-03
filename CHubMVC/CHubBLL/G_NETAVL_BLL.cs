@@ -22,6 +22,10 @@ namespace CHubBLL
             dal = new G_NETAVL_DAL(db);
         }
 
+        public int GetSpecifyNETAVL(string sysId, string partNo, string wareHouse)
+        {
+            return dal.GetSpecifyNETAVL(sysId, partNo, wareHouse);
+        }
 
     }
 }
