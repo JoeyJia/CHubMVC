@@ -61,6 +61,7 @@
     <Compile Include="APP_CUST_ALIAS_DAL.cs" />
     <Compile Include="APP_ORDER_STATUS_DAL.cs" />
     <Compile Include="APP_ORDER_TYPE_DAL.cs" />
+    <Compile Include="G_NETAVL_DAL.cs" />
     <Compile Include="TS_OR_HEADER_STAGE_DAL.cs" />
     <Compile Include="TS_OR_HEADER_DAL.cs" />
     <Compile Include="APP_USER_ALIAS_LINK_DAL.cs" />
@@ -74,6 +75,8 @@
     <Compile Include="APP_WELCOME_DAL.cs" />
     <Compile Include="APP_RECENT_PAGES_DAL.cs" />
     <Compile Include="APP_NOTICE_DAL.cs" />
+    <Compile Include="G_CATALOG_CUSTOMER_PART_DAL.cs" />
+    <Compile Include="G_PART_DESCRIPTION_DAL.cs" />
     <Compile Include="V_USER_NAV_ALL_DAL.cs" />
   </ItemGroup>
   <ItemGroup>

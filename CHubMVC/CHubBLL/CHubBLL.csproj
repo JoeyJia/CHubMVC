@@ -57,6 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="G_NETAVL_BLL.cs" />
+    <Compile Include="G_CATALOG_CUSTOMER_PART_BLL.cs" />
     <Compile Include="TS_OR_HEADER_BLL.cs" />
     <Compile Include="TS_OR_HEADER_STAGE_BLL.cs" />
     <Compile Include="APP_CUST_ALIAS_LINK_BLL.cs" />
@@ -72,6 +74,7 @@
     <Compile Include="APP_WELCOME_BLL.cs" />
     <Compile Include="V_ALIAS_ADDR_SPL_BLL.cs" />
     <Compile Include="V_ALIAS_ADDR_DFLT_BLL.cs" />
+    <Compile Include="G_PART_DESCRIPTION_BLL.cs" />
     <Compile Include="V_USER_NAV_ALL_BLL.cs" />
   </ItemGroup>
   <ItemGroup>

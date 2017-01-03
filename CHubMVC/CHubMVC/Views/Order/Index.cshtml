@@ -188,46 +188,48 @@
             <!--Alt Alias Address part-->
             <div class="row">
                 <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
-                    <table id="altAliasAddr" class="table table-striped table-hover table-bordered">
-                        <thead>
-                            <tr>
-                                <th style="width:10px"></th>
-                                <th style="">Duration(days)</th>
-                                <th style="width:15px">Distance</th>
-                                <th style="width:20px">WareHouse</th>
-                                <th>Attention</th>
-                                <th>Ship to Name</th>
-                                <th>Addr1</th>
-                                <th>Addr2</th>
-                                <th>Addr3</th>
-                                <th>City</th>
-                                <th>Province</th>
-                            </tr>
-                        </thead>
-                        <tbody style="">
-                            <tr ng-repeat="rd in AltAliasAddr ">
-                                <td style="">
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="altOptionsRdios" id="altOptionsRdios$index" class="altAddrRadio" seq="{{$index}}" value="">
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>{{rd.Days}}</td>
-                                <td>{{rd.Distance}}</td>
-                                <td>{{rd.WareHouse}}</td>
-                                <td>{{rd.DestAttention}}</td>
-                                <td>{{rd.LocalDestName}}</td>
-                                <td>{{rd.LocalDestAddr1}}</td>
-                                <td>{{rd.LocalDestAddr2}}</td>
-                                <td>{{rd.LocalDestAddr3}}</td>
-                                <td>{{rd.LocalDestCity}}</td>
-                                <td>{{rd.LocalDestState}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </div>
+                    <div class="panel panel-default" style="">
+                        <div class="panel-heading"><b>Alternative Ship From</b></div>
+                        <table id="altAliasAddr" class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:10px"></th>
+                                    <th style="">Duration(days)</th>
+                                    <th style="width:15px">Distance</th>
+                                    <th style="width:20px">WareHouse</th>
+                                    <th>Attention</th>
+                                    <th>Ship to Name</th>
+                                    <th>Addr1</th>
+                                    <th>Addr2</th>
+                                    <th>Addr3</th>
+                                    <th>City</th>
+                                    <th>Province</th>
+                                </tr>
+                            </thead>
+                            <tbody style="">
+                                <tr ng-repeat="rd in AltAliasAddr ">
+                                    <td style="">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="altOptionsRdios" id="altOptionsRdios$index" class="altAddrRadio" seq="{{$index}}" value="">
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>{{rd.Days}}</td>
+                                    <td>{{rd.Distance}}</td>
+                                    <td>{{rd.WareHouse}}</td>
+                                    <td>{{rd.DestAttention}}</td>
+                                    <td>{{rd.LocalDestName}}</td>
+                                    <td>{{rd.LocalDestAddr1}}</td>
+                                    <td>{{rd.LocalDestAddr2}}</td>
+                                    <td>{{rd.LocalDestAddr3}}</td>
+                                    <td>{{rd.LocalDestCity}}</td>
+                                    <td>{{rd.LocalDestState}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
             </div>
 
             <!--For button Part start-->
@@ -551,12 +553,14 @@
             success: function (obj) {
                 if (obj == "OverFlow")
                     alert("Please make condition more strict");
-                var appElement = document.querySelector('[ng-controller=searchResultCtrl]');
-                var scope = angular.element(appElement).scope();
-                scope.resultData = obj;
-                
-                scope.$apply();
-                $("#aliasSearch").modal("show");
+                else {
+                    var appElement = document.querySelector('[ng-controller=searchResultCtrl]');
+                    var scope = angular.element(appElement).scope();
+                    scope.resultData = obj;
+
+                    scope.$apply();
+                    $("#aliasSearch").modal("show");
+                }
 
             },
             error: function (obj)

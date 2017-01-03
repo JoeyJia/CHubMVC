@@ -187,6 +187,8 @@
     <Compile Include="TS_OR_HEADER_STAGE.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="UnmanagedModel\G_CATALOG_CUSTOMER_PART.cs" />
+    <Compile Include="UnmanagedModel\G_NETAVL.cs" />
     <Compile Include="V_ALIAS_ADDR_DFLT.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>

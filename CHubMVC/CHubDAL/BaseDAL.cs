@@ -77,6 +77,21 @@ namespace CHubDAL
             AutoSave(autoSave);
         }
 
+        /// <summary>
+        /// for db.Database.SqlQuery function date CultureInfo check
+        /// if CurrentCulture is zh-CN need to change db configuration
+        /// otherwise will get wrong date format exception
+        /// </summary>
+        public void CheckCultureInfoForDate()
+        {
+            var cur = System.Globalization.CultureInfo.CurrentCulture;//zh-CN
+            if (cur.Name == "zh-CN")
+            {
+                db.Database.ExecuteSqlCommand("alter session set nls_date_language = 'american'");
+            }
+        }
+
+
         public decimal GetOrderSqeNextVal()
         {
             List<decimal> nextVal = db.Database.SqlQuery<decimal>( "select ORDER_SEQ_NO.nextval from dual", string.Empty).ToList();
