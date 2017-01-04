@@ -10,6 +10,7 @@ using CHubModel.ExtensionModel;
 using CHubModel;
 using CHubCommon;
 using CHubDBEntity;
+using System.Net;
 
 namespace CHubMVC.Controllers
 {
@@ -110,21 +111,31 @@ namespace CHubMVC.Controllers
                 CHubEntities db = new CHubEntities();
                 TS_OR_HEADER_STAGE_BLL bll = new TS_OR_HEADER_STAGE_BLL(db);
 
-                TS_OR_HEADER_STAGE orHeaderStage = ManualClassConvert.ConvertExAliaAddr2HeaderStage(arg.headInfo,arg.dueDate,arg.orderType,arg.shipCompFlag,arg.customerPONO, arg.orderNote,AppUser);
+                TS_OR_HEADER_STAGE orHeaderStage = ManualClassConvert.ConvertExAliaAddr2HeaderStage(arg.headInfo,arg.seq, arg.dueDate,arg.orderType,arg.shipCompFlag,arg.customerPONO, arg.orderNote,AppUser);
                 TS_OR_HEADER_STAGE altORHeaderStage = null;
                 if (arg.altHeadInfo != null)
                 {
-                    altORHeaderStage = ManualClassConvert.ConvertExAliaAddr2HeaderStage(arg.altHeadInfo, arg.dueDate, arg.orderType, arg.shipCompFlag,arg.customerPONO, arg.orderNote, AppUser,true);
+                    altORHeaderStage = ManualClassConvert.ConvertExAliaAddr2HeaderStage(arg.altHeadInfo,arg.seq, arg.dueDate, arg.orderType, arg.shipCompFlag,arg.customerPONO, arg.orderNote, AppUser,true);
                 }
-                bool success = bll.AddHeaderwithAltStage(orHeaderStage, altORHeaderStage);
-                if (success)
-                    return Content("success");
+                decimal seq = 0;
+                if (string.IsNullOrEmpty(arg.seq))
+                    seq = bll.AddHeaderwithAltStage(orHeaderStage, altORHeaderStage);
                 else
-                    return Content("Fail");
+                    seq = bll.UpdateHeaderWithAltStage(orHeaderStage, altORHeaderStage);
+
+                if (seq != 0.00M)
+                    return Content(seq.ToString());
+                else
+                {
+                    Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    return Content("Fail to save header draft");
+                }
             }
             catch(Exception ee)
             {
-                return Content("fail");
+                //log ee
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Content("Fail to save header draft");
             }
         }
 
@@ -141,21 +152,57 @@ namespace CHubMVC.Controllers
                 CHubEntities db = new CHubEntities();
                 TS_OR_HEADER_BLL bll = new TS_OR_HEADER_BLL(db);
 
-                TS_OR_HEADER orHeader = ManualClassConvert.ConvertExAliaAddr2Header(arg.headInfo, arg.dueDate, arg.orderType, arg.shipCompFlag, arg.customerPONO, arg.orderNote, AppUser);
+                TS_OR_HEADER orHeader = ManualClassConvert.ConvertExAliaAddr2Header(arg.headInfo, arg.seq, arg.dueDate, arg.orderType, arg.shipCompFlag, arg.customerPONO, arg.orderNote, AppUser);
                 TS_OR_HEADER altORHeader = null;
                 if (arg.altHeadInfo != null)
                 {
-                    altORHeader = ManualClassConvert.ConvertExAliaAddr2Header(arg.altHeadInfo, arg.dueDate, arg.orderType, arg.shipCompFlag, arg.customerPONO, arg.orderNote, AppUser, true);
+                    altORHeader = ManualClassConvert.ConvertExAliaAddr2Header(arg.altHeadInfo,arg.seq, arg.dueDate, arg.orderType, arg.shipCompFlag, arg.customerPONO, arg.orderNote, AppUser, true);
                 }
-                bool success = bll.AddHeaderwithAlt(orHeader, altORHeader);
-                if (success)
-                    return Content("success");
+
+                decimal seq = 0;
+                if (string.IsNullOrEmpty(arg.seq))
+                    seq = bll.AddHeaderwithAlt(orHeader, altORHeader);
                 else
-                    return Content("Fail");
+                    seq = bll.UpdateHeaderwithAlt(orHeader, altORHeader);
+
+                if (seq != 0.00M)
+                    return Content(seq.ToString());
+                else
+                {
+                    Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    return Content("Fail to save header");
+                }
             }
             catch (Exception ee)
             {
-                return Content("fail");
+                //log ee
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Content("Fail to save header");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult GetPartNoFromCustPartNo(string custPartNo)
+        {
+            if (string.IsNullOrEmpty(custPartNo))
+                return Content(string.Empty);
+            using (CHubEntities db = new CHubEntities())
+            {
+                G_CATALOG_CUSTOMER_PART_BLL custBLL = new G_CATALOG_CUSTOMER_PART_BLL(db);
+                string PartNo = custBLL.GetPartNoFromCustPartNo(custPartNo);
+                if (string.IsNullOrEmpty(PartNo))
+                {
+                    G_PART_DESCRIPTION_BLL partBLL = new G_PART_DESCRIPTION_BLL(db);
+                    if (partBLL.IsPartNoExist(custPartNo))
+                        return Content(custPartNo);
+                    else
+                    {
+                        Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        return Content("Can't get Part No");
+                    }
+
+                }
+                return Content(PartNo);
             }
         }
 

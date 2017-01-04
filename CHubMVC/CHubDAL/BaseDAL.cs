@@ -78,6 +78,19 @@ namespace CHubDAL
         }
 
         /// <summary>
+        /// Function for remove a exist model
+        /// Note: Carefull to use this function
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="model"></param>
+        /// <param name="autoSave"></param>
+        public void Delete<T>(T model, bool autoSave = true) where T : class
+        {
+            db.Entry<T>(model).State = EntityState.Deleted;
+            AutoSave(autoSave);
+        }
+
+        /// <summary>
         /// for db.Database.SqlQuery function date CultureInfo check
         /// if CurrentCulture is zh-CN need to change db configuration
         /// otherwise will get wrong date format exception

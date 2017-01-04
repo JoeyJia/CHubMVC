@@ -15,5 +15,11 @@ namespace CHubCommon
 
         public static string IndY = "Y";
         public static string IndN = "N";
+
+        //Stock Tip color
+        public static string SatisfyStockColor = "green";
+        public static string PartialStockColor = "orange";
+        public static string NoStockColor = "";
+
     }
 }

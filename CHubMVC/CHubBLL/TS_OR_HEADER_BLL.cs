@@ -22,36 +22,63 @@ namespace CHubBLL
             dal = new TS_OR_HEADER_DAL(db);
         }
 
-        private bool AddHeader(TS_OR_HEADER orHeader)
-        {
 
-            decimal nextVal = dal.GetOrderSqeNextVal();
-            orHeader.ORDER_REQ_NO = nextVal;
-            dal.Add(orHeader);
-            return true;
-        }
-
-        public bool AddHeaderwithAlt(TS_OR_HEADER orHeader, TS_OR_HEADER altORHeader)
+        public decimal AddHeaderwithAlt(TS_OR_HEADER orHeader, TS_OR_HEADER altORHeader)
         {
             try
             {
-                if (altORHeader == null)
-                    return AddHeader(orHeader);
-                else
-                {
-                    decimal nextVal = dal.GetOrderSqeNextVal();
-                    orHeader.ORDER_REQ_NO = nextVal;
-                    altORHeader.ORDER_REQ_NO = nextVal;
+                decimal nextVal = dal.GetOrderSqeNextVal();
+                orHeader.ORDER_REQ_NO = nextVal;
+                dal.Add(orHeader, false);
 
-                    dal.Add(orHeader, false);
+                if (altORHeader != null)
+                {
+                    altORHeader.ORDER_REQ_NO = nextVal;
                     dal.Add(altORHeader, false);
-                    dal.SaveChanges();
-                    return true;
                 }
+                dal.SaveChanges();
+                return nextVal;
+
             }
             catch
             {
-                return false;
+                return 0;
+            }
+        }
+
+        public decimal UpdateHeaderwithAlt(TS_OR_HEADER orHeader, TS_OR_HEADER altORHeader)
+        {
+            try
+            {
+                TS_OR_HEADER_STAGE_BLL hsBLL = new TS_OR_HEADER_STAGE_BLL(dal.db);
+                //Or Header part => if exist stage =>delete stage and add header. if not exist stage => update header
+                TS_OR_HEADER_STAGE headerStage = hsBLL.GetSpecifyHeaderStage(orHeader.ORDER_REQ_NO, orHeader.SHIPFROM_SEQ);
+                if (headerStage != null)
+                {
+                    dal.Delete(headerStage, false);
+                    dal.Add(orHeader, false);
+                }
+                else
+                    dal.Update(orHeader, false);
+
+                //Alt Or header part
+                if (altORHeader != null)
+                {
+                    TS_OR_HEADER_STAGE altHeaderStage = hsBLL.GetSpecifyHeaderStage(altORHeader.ORDER_REQ_NO, altORHeader.SHIPFROM_SEQ);
+                    if (altHeaderStage != null)
+                    {
+                        dal.Delete(altHeaderStage, false);
+                        dal.Add(altORHeader);
+                    }
+                    else
+                        dal.Update(altORHeader, false);
+                }
+                dal.SaveChanges();
+                return orHeader.ORDER_REQ_NO;
+            }
+            catch
+            {
+                return 0;
             }
         }
 

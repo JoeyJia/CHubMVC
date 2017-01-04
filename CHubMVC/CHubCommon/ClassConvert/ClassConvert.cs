@@ -11,13 +11,20 @@ namespace CHubCommon
     {
         public static void ConvertAction(object from, object to, Dictionary<string, string> converter)
         {
-            foreach (var item in converter)
+            try
             {
-                if (!string.IsNullOrEmpty(item.Value))
+                foreach (var item in converter)
                 {
-                    PropertyInfo pi = to.GetType().GetProperty(item.Key);
-                    pi.SetValue(to, from.GetType().GetProperty(item.Value).GetValue(from, null));
+                    if (!string.IsNullOrEmpty(item.Value))
+                    {
+                        PropertyInfo pi = to.GetType().GetProperty(item.Key);
+                        pi.SetValue(to, from.GetType().GetProperty(item.Value).GetValue(from, null));
+                    }
                 }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
             }
         }
 

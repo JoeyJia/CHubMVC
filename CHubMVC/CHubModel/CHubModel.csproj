@@ -41,9 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExtensionModel\ExAppCustAlias.cs" />
+    <Compile Include="ExtensionModel\ExOrderDetail.cs" />
     <Compile Include="ExtensionModel\ExVAliasAddr.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TreeNode.cs" />
+    <Compile Include="WebArg\OrderLineItem.cs" />
     <Compile Include="WebArg\OrderSaveArg.cs" />
   </ItemGroup>
   <ItemGroup />

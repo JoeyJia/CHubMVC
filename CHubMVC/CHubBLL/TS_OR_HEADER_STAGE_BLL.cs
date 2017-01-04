@@ -22,38 +22,50 @@ namespace CHubBLL
             dal = new TS_OR_HEADER_STAGE_DAL(db);
         }
 
-        private bool AddHeaderStage(TS_OR_HEADER_STAGE orHeaderStage)
+        public TS_OR_HEADER_STAGE GetSpecifyHeaderStage(decimal orderSeq, decimal shipFromSeq)
         {
-           
-            decimal nextVal = dal.GetOrderSqeNextVal();
-            orHeaderStage.ORDER_REQ_NO = nextVal;
-            dal.Add(orHeaderStage);
-            return true;
+            return dal.GetSpecifyHeaderStage(orderSeq, shipFromSeq);
         }
 
-        public bool AddHeaderwithAltStage(TS_OR_HEADER_STAGE orHeaderStage, TS_OR_HEADER_STAGE altORHeaderStage)
+
+        public decimal AddHeaderwithAltStage(TS_OR_HEADER_STAGE orHeaderStage, TS_OR_HEADER_STAGE altORHeaderStage)
         {
             try
             {
-                if (altORHeaderStage == null)
-                    return AddHeaderStage(orHeaderStage);
-                else
-                {
-                    decimal nextVal = dal.GetOrderSqeNextVal();
-                    orHeaderStage.ORDER_REQ_NO = nextVal;
-                    altORHeaderStage.ORDER_REQ_NO = nextVal;
+                decimal nextVal = dal.GetOrderSqeNextVal();
+                orHeaderStage.ORDER_REQ_NO = nextVal;
+                dal.Add(orHeaderStage, false);
 
-                    dal.Add(orHeaderStage, false);
+                if (altORHeaderStage != null)
+                {
+                    altORHeaderStage.ORDER_REQ_NO = nextVal;
                     dal.Add(altORHeaderStage, false);
-                    dal.SaveChanges();
-                    return true;
                 }
+                dal.SaveChanges();
+                return nextVal;
             }
             catch
             {
-                return false;
+                return 0;
             }
         }
+
+        public decimal UpdateHeaderWithAltStage(TS_OR_HEADER_STAGE orHeaderStage, TS_OR_HEADER_STAGE altORHeaderStage)
+        {
+            try
+            {
+                dal.Update(orHeaderStage, false);
+                if (altORHeaderStage != null)
+                    dal.Update(altORHeaderStage, false);
+                dal.SaveChanges();
+                return orHeaderStage.ORDER_REQ_NO;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
 
     }
 }

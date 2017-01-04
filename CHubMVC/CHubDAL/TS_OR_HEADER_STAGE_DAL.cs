@@ -17,7 +17,10 @@ namespace CHubDAL
         public TS_OR_HEADER_STAGE_DAL(CHubEntities db)
             : base(db) { }
 
-
+        public TS_OR_HEADER_STAGE GetSpecifyHeaderStage(decimal orderSeq,decimal shipFromSeq)
+        {
+            return db.TS_OR_HEADER_STAGE.FirstOrDefault(a => a.ORDER_REQ_NO == orderSeq && a.SHIPFROM_SEQ == shipFromSeq);
+        }
 
 
     }

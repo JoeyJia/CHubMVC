@@ -9,6 +9,8 @@ namespace CHubModel
 {
     public class OrderSaveArg
     {
+        public string seq { get; set; }
+
         public string dueDate { get; set; }
 
         public string orderType { get; set; }

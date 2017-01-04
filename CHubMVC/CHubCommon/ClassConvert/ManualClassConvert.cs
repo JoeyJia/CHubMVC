@@ -13,10 +13,10 @@ namespace CHubCommon
     public class ManualClassConvert
     {
 
-        public static TS_OR_HEADER_STAGE ConvertExAliaAddr2HeaderStage(ExVAliasAddr addr,string dueDate,string orderType,string shipCompFlag,string customerPONO, string orderNote,string appUser,bool IsAltAddr = false)
+        public static TS_OR_HEADER_STAGE ConvertExAliaAddr2HeaderStage(ExVAliasAddr addr, string seq, string dueDate,string orderType,string shipCompFlag,string customerPONO, string orderNote,string appUser,bool IsAltAddr = false)
         {
             TS_OR_HEADER_STAGE hStage = new TS_OR_HEADER_STAGE();
-            hStage.ORDER_REQ_NO = 0;//sequence
+            hStage.ORDER_REQ_NO = string.IsNullOrEmpty(seq) ? 0 : decimal.Parse(seq);//sequence
             hStage.SHIPFROM_SEQ = IsAltAddr?1:0;// 0 or 1
             hStage.TO_SYSTEM = addr.SysID;
             hStage.ALIAS_NAME = addr.AliasName;
@@ -39,10 +39,10 @@ namespace CHubCommon
             return hStage;
         }
 
-        public static TS_OR_HEADER ConvertExAliaAddr2Header(ExVAliasAddr addr, string dueDate, string orderType, string shipCompFlag, string customerPONO, string orderNote, string appUser, bool IsAltAddr = false)
+        public static TS_OR_HEADER ConvertExAliaAddr2Header(ExVAliasAddr addr,string seq, string dueDate, string orderType, string shipCompFlag, string customerPONO, string orderNote, string appUser, bool IsAltAddr = false)
         {
             TS_OR_HEADER header = new TS_OR_HEADER();
-            header.ORDER_REQ_NO = 0;//sequence
+            header.ORDER_REQ_NO = string.IsNullOrEmpty(seq)?0:decimal.Parse(seq);//sequence
             header.SHIPFROM_SEQ = IsAltAddr ? 1 : 0;// 0 or 1
             header.TO_SYSTEM = addr.SysID;
             header.ALIAS_NAME = addr.AliasName;

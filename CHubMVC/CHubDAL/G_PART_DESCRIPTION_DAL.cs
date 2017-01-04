@@ -17,10 +17,7 @@ namespace CHubDAL
 
         public bool IsPartNoExist(string partNo)
         {
-            var model = db.G_PART_DESCRIPTION.FirstOrDefault(a => a.PART_NO == partNo);
-            if (model == null)
-                return false;
-            return true;
+            return db.G_PART_DESCRIPTION.Any(a => a.PART_NO == partNo);
         }
 
     }

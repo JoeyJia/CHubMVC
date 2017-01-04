@@ -24,7 +24,7 @@
                 <div class="form-group">
                     <label for="orderID" class="col-sm-1 control-label">Order SEQ</label>
                     <div class="col-sm-1">
-                        <input type="text" class="form-control" id="orderID" placeholder="Auto Generation" disabled>
+                        <input type="text" class="form-control" id="orderID" ng-model="orderSeq" placeholder="Auto" disabled>
                     </div>
                 </div>
             </div>
@@ -69,14 +69,14 @@
                 <div class="form-group">
                     <label for="notes" class="col-sm-1 control-label">Notes</label>
                     <div class="col-sm-9 col-lg-9">
-                        <input type="text" class="form-control col-sm-8" id="notes" placeholder="Notes" value={{notice}} style="width:90%;">
+                        <input type="text" class="form-control col-sm-8" id="notes" placeholder="Notes" ng-model="notice" style="width:90%;">
                     </div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-group">
-                    <label for="ssto" class="col-sm-1 control-label">SS to Order</label>
+                    <label for="ssto" class="col-sm-1 control-label">SPL Order</label>
                     <div class="checkbox col-md-2 col-lg-2">
                         <label>
                             <input type="checkbox" id="ssto" style="margin-left:1px;" onclick="checkSstoStatu()" checked>
@@ -109,16 +109,12 @@
             </div>
             <!--For alias addr list part-->
             <hr />
-            @*<div class="row">
-                <div class="col-md-1" style="background-color:#eee">
-                    <p><b>Primary Ship From</b></p>
-                </div>
-            </div>*@
+
             <div class="row">
-                    <div class="col-md-9 col-md-offset-1">
+                    <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
                         <div class="panel panel-default" style="">
                             <div class="panel-heading"><b>Primary Ship From</b></div>
-                            <table class="table table-bordered table-condensed table-striped" style="border-color:black;">
+                            <table class="table table-bordered table-striped" style="border-color:black;">
                                 <tr>
                                     <td></td>
                                     <td style="width:30px"><b>Duration</b></td>
@@ -211,7 +207,7 @@
                                     <td style="">
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="altOptionsRdios" id="altOptionsRdios$index" class="altAddrRadio" seq="{{$index}}" value="">
+                                                <input type="radio" name="altOptionsRdios" id="altOptionsRdios$index" class="altAddrRadio"  seq="{{$index}}" value="">
                                             </label>
                                         </div>
                                     </td>
@@ -262,17 +258,18 @@
                                 </tr>
                             </thead>
                             <tbody style="">
-                                <tr ng-repeat="rd in AltAliasAddr ">
+                                <tr ng-repeat="ol in orderLines ">
                                     <td style="">{{$index+1}}</td>
-                                    <td>{{rd.Days}}</td>
-                                    <td>{{rd.Distance}}</td>
-                                    <td>{{rd.WareHouse}}</td>
-                                    <td>{{rd.DestAttention}}</td>
-                                    <td>{{rd.LocalDestName}}</td>
-                                    <td>{{rd.LocalDestAddr1}}</td>
+                                    <td><input class="form-control" ng-model="ol.CustomerPartNo" ng-blur="checkCustPartNo(ol)" /></td>
+                                    <td><input class="form-control" ng-model="ol.PartNo" readonly/></td>
+                                    <td><input class="form-control" ng-model="ol.Qty" /></td>
+                                    <td><input class="form-control" ng-model="ol.PriAVLCheck" readonly /></td>
+                                    <td><input class="form-control" ng-model="ol.AltAVLCheck" readonly /></td>
+                                    <td style="text-align:center"><a href="javascript:void(0)" title="Delete" ng-click="removeOLItem($index)"><span class="glyphicon glyphicon-trash"></span></a></td>
                                 </tr>
                             </tbody>
                         </table>
+                        <button type="button" class="btn-primary" ng-click="addOLItem()">NewLine</button>
                     </div>
                 </div>
             </div>
@@ -280,7 +277,7 @@
 
         </div>
     </form>
- 
+
 </div>
 
 
@@ -354,7 +351,6 @@
 
         });
 
-        //alert("loaded");
     });
 
 
@@ -366,6 +362,7 @@
         $scope.orderType = resp.data.orderType;
         $scope.defaultOrderType = resp.data.defaultOrderType;
 
+        $scope.orderSeq = "";
         $scope.selectedAlias = "";
         $scope.selectedOrderType="";
 
@@ -376,6 +373,8 @@
         $scope.selectedAltAliasAddr = "";
 
         $scope.notice = "";
+
+        $scope.orderLines = [ { CustomerPartNo:"", PartNo: "", Qty: 0, PriAVLCheck: 0, AltAVLCheck: 0 }];
 
         for (var i=0;i< $scope.custAlias.length;i++) {
             if ( $scope.custAlias[i].DEFAULT_FLAG == "Y")
@@ -447,17 +446,16 @@
             var dueDate = $("#dueDate")[0].value;
             var orderType = $scope.selectedOrderType.ORDER_TYPE;
             var shipCompFlag = $("#cShip")[0].value;
-            var orderNote = $("#notes").val();
             var custPONO = $("#poNum").val();
-
 
             $.ajax({
                 url: "/order/SaveDraft",
                 data: JSON.stringify({
+                    seq:$scope.orderSeq,
                     dueDate: dueDate,
                     orderType: orderType,
                     shipCompFlag: shipCompFlag,
-                    orderNote: orderNote,
+                    orderNote: $scope.notice,
                     customerPONO: custPONO,
                     headInfo: $scope.selectedAliasAddr,
                     altHeadInfo: $scope.selectedAltAliasAddr
@@ -466,12 +464,12 @@
                 async: false,
                 contentType: 'application/json',
                 success: function (obj) {
-                    if (obj == "success")
-                        alert(obj);
+                    $scope.orderSeq = obj;
+                    alert("success save header draft");
 
                 },
                 error: function (obj) {
-                    alert("fail");
+                    alert(obj);
                     debugger;
                 }
 
@@ -490,17 +488,17 @@
             var dueDate = $("#dueDate")[0].value;
             var orderType = $scope.selectedOrderType.ORDER_TYPE;
             var shipCompFlag = $("#cShip")[0].value;
-            var orderNote = $("#notes").val();
             var custPONO = $("#poNum").val();
 
 
             $.ajax({
                 url: "/order/SaveOrder",
                 data: JSON.stringify({
+                    seq: $scope.orderSeq,
                     dueDate: dueDate,
                     orderType: orderType,
                     shipCompFlag: shipCompFlag,
-                    orderNote: orderNote,
+                    orderNote: $scope.notice,
                     customerPONO: custPONO,
                     headInfo: $scope.selectedAliasAddr,
                     altHeadInfo: $scope.selectedAltAliasAddr
@@ -509,16 +507,50 @@
                 async: false,
                 contentType: 'application/json',
                 success: function (obj) {
-                    //if (obj == "success")
-                    alert(obj);
+                    $scope.orderSeq = obj;
+                    alert("success save header");
                 },
                 error: function (obj) {
-                    alert("fail");
+                    alert(obj);
                     debugger;
                 }
 
             });
         };
+
+        $scope.addOLItem = function()
+        {
+            var newItem = { CustomerPartNo: "", PartNo: "", Qty: 0, PriAVLCheck: 0, AltAVLCheck:0};
+            $scope.orderLines.push(newItem);
+        };
+
+        $scope.removeOLItem = function(index)
+        {
+            $scope.orderLines.splice(index, 1);
+        };
+
+    //Get PartNo from CustPartNo
+        $scope.checkCustPartNo = function (curr) {
+            if (curr.CustomerPartNo == curr.LastCheckNo)
+                return;
+
+            $.ajax({
+                url: "/order/GetPartNoFromCustPartNo",
+                data: { custPartNo:curr.CustomerPartNo },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    curr.PartNo = obj;
+                    curr.LastCheckNo = curr.CustomerPartNo;
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+
+            });
+
+        };
+
 
     });
 
