@@ -260,17 +260,24 @@
                             <tbody style="">
                                 <tr ng-repeat="ol in orderLines ">
                                     <td style="">{{$index+1}}</td>
-                                    <td><input class="form-control" ng-model="ol.CustomerPartNo" ng-blur="checkCustPartNo(ol)" /></td>
+                                    <td><input class="form-control" ng-model="ol.CustomerPartNo" ng-blur="checkOrderLineItem(ol)" /></td>
                                     <td><input class="form-control" ng-model="ol.PartNo" readonly/></td>
-                                    <td><input class="form-control" ng-model="ol.Qty" /></td>
-                                    <td><input class="form-control" ng-model="ol.PriAVLCheck" readonly /></td>
-                                    <td><input class="form-control" ng-model="ol.AltAVLCheck" readonly /></td>
+                                    <td><input class="form-control" ng-model="ol.Qty" ng-blur="checkOrderLineItem(ol)" /></td>
+                                    <td><input class="form-control" ng-model="ol.PriAVLCheck" ng-style ="{color:ol.PriAVLCheckColor}" readonly /></td>
+                                    <td><input class="form-control" ng-model="ol.AltAVLCheck" ng-style ="{color:ol.AltAVLCheckColer}" readonly /></td>
                                     <td style="text-align:center"><a href="javascript:void(0)" title="Delete" ng-click="removeOLItem($index)"><span class="glyphicon glyphicon-trash"></span></a></td>
                                 </tr>
                             </tbody>
                         </table>
                         <button type="button" class="btn-primary" ng-click="addOLItem()">NewLine</button>
                     </div>
+                </div>
+            </div>
+
+            <!--For save button Part start-->
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1" style="margin-top:10px">
+                    <button type="button" class="btn btn-primary" ng-click="saveOrderLines()">Save Lines</button>
                 </div>
             </div>
 
@@ -357,6 +364,7 @@
     //Angular orderApp start
     angular.module('orderApp', []).controller('orderCtrl', function ($scope, $http) {
 
+        $scope.lineNo = 1;
         $http.post("/order/init",null,null).then(function (resp) {
         $scope.custAlias = resp.data.custAlias;
         $scope.orderType = resp.data.orderType;
@@ -374,7 +382,7 @@
 
         $scope.notice = "";
 
-        $scope.orderLines = [ { CustomerPartNo:"", PartNo: "", Qty: 0, PriAVLCheck: 0, AltAVLCheck: 0 }];
+        $scope.orderLines = [{ OrderLineNo: $scope.lineNo, CustomerPartNo: "", PartNo: "", Qty: 0, PriAVLCheck: 0, AltAVLCheck: 0 }];
 
         for (var i=0;i< $scope.custAlias.length;i++) {
             if ( $scope.custAlias[i].DEFAULT_FLAG == "Y")
@@ -520,12 +528,14 @@
 
         $scope.addOLItem = function()
         {
-            var newItem = { CustomerPartNo: "", PartNo: "", Qty: 0, PriAVLCheck: 0, AltAVLCheck:0};
+            $scope.lineNo = $scope.lineNo + 1;
+            var newItem = {OrderLineNo:$scope.lineNo, CustomerPartNo: "", PartNo: "", Qty: 0, PriAVLCheck: 0, AltAVLCheck:0};
             $scope.orderLines.push(newItem);
         };
 
         $scope.removeOLItem = function(index)
         {
+            $scope.lineNo = $scope.lineNo - 1;
             $scope.orderLines.splice(index, 1);
         };
 
@@ -549,6 +559,47 @@
 
             });
 
+        };
+
+        //Get PartNo from CustPartNo
+        $scope.checkOrderLineItem = function (curr) {
+            //debugger;
+            //Unchange no need to check
+            if (curr.CustomerPartNo == curr.LastCheckNo && curr.Qty == curr.LastQty)
+                return;
+
+            $.ajax({
+                url: "/order/CheckOrderLineItem",
+                data: JSON.stringify({
+                    primarySysID: $scope.selectedAliasAddr.SysID,
+                    primaryWareHouse: $scope.selectedAliasAddr.WareHouse,
+                    altSysID: $scope.selectedAltAliasAddr.SysID,
+                    altWareHosue: $scope.selectedAltAliasAddr.WareHouse,
+                    olItem: curr
+                }),
+                type: "post",
+                async: false,
+                contentType: 'application/json',
+                success: function (obj) {
+                    curr.PartNo = obj.PartNo;
+                    curr.PriAVLCheck = obj.PriAVLCheck;
+                    curr.PriAVLCheckColor = obj.PriAVLCheckColor;
+                    curr.AltAVLCheck = obj.AltAVLCheck;
+                    curr.AltAVLCheckColer = obj.AltAVLCheckColer;
+
+                    curr.LastCheckNo = curr.CustomerPartNo;
+                    curr.LastQty = curr.Qty;
+                    //debugger;
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+        $scope.saveOrderLines = function()
+        {
+            debugger;
         };
 
 

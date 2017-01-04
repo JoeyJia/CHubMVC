@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CHubModel.WebArg
+namespace CHubModel
 {
     public class OrderLineItem
     {
+        public decimal OrderLineNo { get; set; }
+
         public string CustomerPartNo { get; set; }
 
         public string PartNo { get; set; }
@@ -16,7 +18,7 @@ namespace CHubModel.WebArg
 
         public decimal PriAVLCheck { get; set; }
 
-        public string PriAVLCheckColer { get; set; }
+        public string PriAVLCheckColor { get; set; }
 
         public decimal AltAVLCheck { get; set; }
 

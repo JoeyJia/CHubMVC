@@ -181,11 +181,87 @@ namespace CHubMVC.Controllers
             }
         }
 
+        //[HttpPost]
+        //public ActionResult GetPartNoFromCustPartNo(string custPartNo)
+        //{
+        //    if (string.IsNullOrEmpty(custPartNo))
+        //        return Content(string.Empty);
+        //    using (CHubEntities db = new CHubEntities())
+        //    {
+        //        G_CATALOG_CUSTOMER_PART_BLL custBLL = new G_CATALOG_CUSTOMER_PART_BLL(db);
+        //        string PartNo = custBLL.GetPartNoFromCustPartNo(custPartNo);
+        //        if (string.IsNullOrEmpty(PartNo))
+        //        {
+        //            G_PART_DESCRIPTION_BLL partBLL = new G_PART_DESCRIPTION_BLL(db);
+        //            if (partBLL.IsPartNoExist(custPartNo))
+        //                return Content(custPartNo);
+        //            else
+        //            {
+        //                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        //                return Content("Can't get Part No");
+        //            }
+
+        //        }
+        //        return Content(PartNo);
+        //    }
+        //}
+
         [HttpPost]
-        public ActionResult GetPartNoFromCustPartNo(string custPartNo)
+        public ActionResult CheckOrderLineItem(OrderLineCheckArg olArg)
+        {
+            if (string.IsNullOrEmpty(olArg.olItem.PartNo))
+                olArg.olItem.PartNo = GetPartNoFromCustPartNo(olArg.olItem.CustomerPartNo);
+            if (string.IsNullOrEmpty(olArg.olItem.PartNo))
+            {
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Content("Can't find Part NO");
+            }
+
+            //Do AVL check
+            if (olArg.olItem.Qty > 0)
+            {
+                if (string.IsNullOrEmpty(olArg.primarySysID) || string.IsNullOrEmpty(olArg.primaryWareHouse))
+                {
+                    Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    return Content("No Primary SysID and WareHouse information");
+                }
+
+                CHubEntities db = new CHubEntities();
+                G_NETAVL_BLL netBLL = new G_NETAVL_BLL(db);
+                //Primary AVL check
+                decimal priNet = netBLL.GetSpecifyNETAVL(olArg.primarySysID, olArg.olItem.PartNo, olArg.primaryWareHouse);
+                if(priNet==0)
+                    olArg.olItem.PriAVLCheckColor = CHubConstValues.NoStockColor;
+                else if (priNet >= olArg.olItem.Qty)
+                    olArg.olItem.PriAVLCheckColor = CHubConstValues.SatisfyStockColor;
+                else
+                    olArg.olItem.PriAVLCheckColor = CHubConstValues.PartialStockColor;
+                olArg.olItem.PriAVLCheck = priNet;
+
+                //if primary is no enough do  Alt AVL check
+                if (priNet < olArg.olItem.Qty)
+                {
+                    if (!(string.IsNullOrEmpty(olArg.altSysID) || string.IsNullOrEmpty(olArg.altWareHosue)))
+                    {
+                        decimal altNet = netBLL.GetSpecifyNETAVL(olArg.altSysID, olArg.olItem.PartNo, olArg.altWareHosue);
+                        if (altNet == 0)
+                            olArg.olItem.AltAVLCheckColer = CHubConstValues.NoStockColor;
+                        else if (altNet >= olArg.olItem.Qty)
+                            olArg.olItem.AltAVLCheckColer = CHubConstValues.SatisfyStockColor;
+                        else
+                            olArg.olItem.AltAVLCheckColer = CHubConstValues.PartialStockColor;
+                        olArg.olItem.AltAVLCheck = altNet;
+                    }
+                }
+            }
+
+            return Json(olArg.olItem);
+        }
+
+        private string GetPartNoFromCustPartNo(string custPartNo)
         {
             if (string.IsNullOrEmpty(custPartNo))
-                return Content(string.Empty);
+                return string.Empty;
             using (CHubEntities db = new CHubEntities())
             {
                 G_CATALOG_CUSTOMER_PART_BLL custBLL = new G_CATALOG_CUSTOMER_PART_BLL(db);
@@ -194,18 +270,18 @@ namespace CHubMVC.Controllers
                 {
                     G_PART_DESCRIPTION_BLL partBLL = new G_PART_DESCRIPTION_BLL(db);
                     if (partBLL.IsPartNoExist(custPartNo))
-                        return Content(custPartNo);
+                        return custPartNo;
                     else
                     {
-                        Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                        return Content("Can't get Part No");
+                        return string.Empty;
                     }
 
                 }
-                return Content(PartNo);
+                return PartNo;
             }
         }
 
-        
+
+
     }
 }

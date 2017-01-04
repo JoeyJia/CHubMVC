@@ -21,7 +21,7 @@ namespace CHubDAL
             string sql =string.Format("select * from G_CATALOG_CUSTOMER_PART where CUSTOMER_PARTNO= '{0}'", custPartNo);
 
             List<G_CATALOG_CUSTOMER_PART> modelList = db.Database.SqlQuery<G_CATALOG_CUSTOMER_PART>(sql).ToList();
-            if (modelList != null&&modelList.Count==1)
+            if (modelList != null&&modelList.Count>0)
                 return modelList[0].CATALOG_NO;
             else
                 return null;

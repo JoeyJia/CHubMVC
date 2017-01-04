@@ -15,7 +15,7 @@ namespace CHubDAL
         public G_NETAVL_DAL(CHubEntities db)
             : base(db) { }
 
-        public int GetSpecifyNETAVL(string sysId, string partNo, string wareHouse)
+        public decimal GetSpecifyNETAVL(string sysId, string partNo, string wareHouse)
         {
             try
             {
@@ -24,7 +24,7 @@ namespace CHubDAL
                 var list = db.Database.SqlQuery<G_NETAVL>(sql).ToList();
                 if (list != null && list.Count == 1)
                 {
-                    int result = (int)list[0].NETAVL;
+                    decimal result = list[0].NETAVL;
                     return result < 0 ? 0 : result;
                 }
                 return 0;
