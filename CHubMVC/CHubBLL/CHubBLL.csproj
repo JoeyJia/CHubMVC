@@ -59,6 +59,8 @@
   <ItemGroup>
     <Compile Include="G_NETAVL_BLL.cs" />
     <Compile Include="G_CATALOG_CUSTOMER_PART_BLL.cs" />
+    <Compile Include="TS_OR_DETAIL_STAGE_BLL.cs" />
+    <Compile Include="TS_OR_DETAIL_BLL.cs" />
     <Compile Include="TS_OR_HEADER_BLL.cs" />
     <Compile Include="TS_OR_HEADER_STAGE_BLL.cs" />
     <Compile Include="APP_CUST_ALIAS_LINK_BLL.cs" />

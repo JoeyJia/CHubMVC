@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CHubModel.WebArg
+namespace CHubModel
 {
     public class OrderLinesSaveArg
     {
+        public decimal orderReqNo { get; set; }
+
+        public List<OrderLineItem> olList { get; set; }
     }
 }

@@ -181,31 +181,6 @@ namespace CHubMVC.Controllers
             }
         }
 
-        //[HttpPost]
-        //public ActionResult GetPartNoFromCustPartNo(string custPartNo)
-        //{
-        //    if (string.IsNullOrEmpty(custPartNo))
-        //        return Content(string.Empty);
-        //    using (CHubEntities db = new CHubEntities())
-        //    {
-        //        G_CATALOG_CUSTOMER_PART_BLL custBLL = new G_CATALOG_CUSTOMER_PART_BLL(db);
-        //        string PartNo = custBLL.GetPartNoFromCustPartNo(custPartNo);
-        //        if (string.IsNullOrEmpty(PartNo))
-        //        {
-        //            G_PART_DESCRIPTION_BLL partBLL = new G_PART_DESCRIPTION_BLL(db);
-        //            if (partBLL.IsPartNoExist(custPartNo))
-        //                return Content(custPartNo);
-        //            else
-        //            {
-        //                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        //                return Content("Can't get Part No");
-        //            }
-
-        //        }
-        //        return Content(PartNo);
-        //    }
-        //}
-
         [HttpPost]
         public ActionResult CheckOrderLineItem(OrderLineCheckArg olArg)
         {
@@ -258,6 +233,58 @@ namespace CHubMVC.Controllers
             return Json(olArg.olItem);
         }
 
+        [HttpPost]
+        public ActionResult SaveOrderLines(OrderLinesSaveArg arg)
+        {
+            try
+            {
+                if (arg.orderReqNo == 0)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return Content("No Order Seq Data");
+                }
+                if (arg.olList == null || arg.olList.Count == 0)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return Content("NO Order Lines Data");
+                }
+
+                TS_OR_DETAIL_BLL odBLL = new TS_OR_DETAIL_BLL();
+                foreach (var item in arg.olList)
+                {
+                    //ignore wrong lines
+                    if (string.IsNullOrEmpty(item.PartNo) || string.IsNullOrEmpty(item.PriAVLCheckColor))
+                        continue;
+                    TS_OR_DETAIL detail = new TS_OR_DETAIL();
+
+                    detail.ORDER_REQ_NO = arg.orderReqNo;
+                    detail.ORDER_LINE_NO = item.OrderLineNo;
+                    if (item.PriAVLCheck < item.Qty && item.AltAVLCheck >= item.Qty)
+                        detail.SHIPFROM_SEQ = 1;
+                    else
+                        detail.SHIPFROM_SEQ = 0;
+                    detail.PART_NO = item.PartNo;
+                    detail.CUSTOMER_PART_NO = item.CustomerPartNo;
+                    detail.BUY_QTY = item.Qty;
+                    detail.DESCRIPTION = null;
+                    detail.CREATION_DATE = DateTime.Now;
+                    detail.CREATED_BY = Session[CHubConstValues.SessionUser].ToString();
+                    detail.UPDATED_DATE = null;
+                    detail.UPDATED_BY = null;
+                    odBLL.AddDetail(detail);
+                }
+
+                return Content("Success");
+            }
+            catch (Exception ex)
+            {
+                //Log
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Content("Fail to save Order Lines");
+            }
+        }
+
+        #region private helper function
         private string GetPartNoFromCustPartNo(string custPartNo)
         {
             if (string.IsNullOrEmpty(custPartNo))
@@ -280,7 +307,7 @@ namespace CHubMVC.Controllers
                 return PartNo;
             }
         }
-
+        #endregion
 
 
     }

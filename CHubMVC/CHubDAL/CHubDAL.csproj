@@ -62,6 +62,8 @@
     <Compile Include="APP_ORDER_STATUS_DAL.cs" />
     <Compile Include="APP_ORDER_TYPE_DAL.cs" />
     <Compile Include="G_NETAVL_DAL.cs" />
+    <Compile Include="TS_OR_DETAIL_STAGE_DAL.cs" />
+    <Compile Include="TS_OR_DETAIL_DAL.cs" />
     <Compile Include="TS_OR_HEADER_STAGE_DAL.cs" />
     <Compile Include="TS_OR_HEADER_DAL.cs" />
     <Compile Include="APP_USER_ALIAS_LINK_DAL.cs" />

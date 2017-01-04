@@ -276,7 +276,7 @@
 
             <!--For save button Part start-->
             <div class="row">
-                <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1" style="margin-top:10px">
+                <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1" style="">
                     <button type="button" class="btn btn-primary" ng-click="saveOrderLines()">Save Lines</button>
                 </div>
             </div>
@@ -599,7 +599,28 @@
 
         $scope.saveOrderLines = function()
         {
+            if ($scope.orderSeq == "") {
+                alert("No Order Seq");
+                return;
+            }
             debugger;
+            $.ajax({
+                url: "/order/SaveOrderLines",
+                data: JSON.stringify({
+                    orderReqNo: $scope.orderSeq,
+                    olList: $scope.orderLines
+                }),
+                type: "post",
+                async: false,
+                contentType: 'application/json',
+                success: function (obj) {
+                    alert("Success Save Lines");
+                    //debugger;
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
         };
 
 
