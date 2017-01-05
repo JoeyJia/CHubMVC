@@ -24,7 +24,7 @@
                 <div class="form-group">
                     <label for="orderID" class="col-sm-1 control-label">Order SEQ</label>
                     <div class="col-sm-1">
-                        <input type="text" class="form-control" id="orderID" ng-model="orderSeq" placeholder="Auto" disabled>
+                        <input type="text" class="form-control input-sm" id="orderID" ng-model="orderSeq" placeholder="Auto" disabled>
                     </div>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                     </div>
 
                     <label for="orderType" class="col-sm-1 control-label">Order Type</label>
-                    <div class="col-sm-2">
+                    <div class="col-sm-1">
                         <select class="form-control" id="orderType" ng-model="selectedOrderType" ng-options="ot.ORDER_TYPE for ot in orderType"></select>
                     </div>
 
@@ -111,7 +111,7 @@
             <hr />
 
             <div class="row">
-                    <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                    <div class="col-md-10 col-lg-10 ">
                         <div class="panel panel-default" style="">
                             <div class="panel-heading"><b>Primary Ship From</b></div>
                             <table class="table table-bordered table-striped" style="border-color:black;">
@@ -183,10 +183,15 @@
 
             <!--Alt Alias Address part-->
             <div class="row">
-                <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                <div class="col-md-10  col-lg-10 ">
                     <div class="panel panel-default" style="">
-                        <div class="panel-heading"><b>Alternative Ship From</b></div>
-                        <table id="altAliasAddr" class="table table-striped table-hover table-bordered">
+                        <div class="panel-heading">
+                            <label>
+                                <input type="checkbox" id="altCheck" style="margin-left:1px;" ng-model="altAddrVisiable" ng-click="checkAltAddrVisiable()" >
+                            </label>
+                        <b>Alternative Ship From</b>
+                        </div>
+                        <table id="altAliasAddr" ng-show="altAddrVisiable" class="table table-striped table-hover table-bordered">
                             <thead>
                                 <tr>
                                     <th style="width:10px"></th>
@@ -207,7 +212,7 @@
                                     <td style="">
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="altOptionsRdios" id="altOptionsRdios$index" class="altAddrRadio"  seq="{{$index}}" value="">
+                                                <input type="radio" name="altOptionsRdios" id="altOptionsRdios$index" class="altAddrRadio" ng-click="AltAddrRadioChange(rd)"  seq="{{$index}}" value="">
                                             </label>
                                         </div>
                                     </td>
@@ -228,21 +233,10 @@
                     </div>
             </div>
 
-            <!--For button Part start-->
-            <div class="row">
-                <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1" style="margin-top:10px">
-                    <button type="button" class="btn btn-primary" ng-click="SaveDraft()">Save Draft</button>
-                    <button type="button" class="btn btn-primary" ng-click="SaveOrder()">Save Order</button>
-                    <button type="button" class="btn btn-primary">Auto Fulfillments </button>
-                    <button type="button" class="btn btn-primary">Download</button>
-
-                </div>
-            </div>
-
             <hr />
             <!--For Order Lines-->
             <div class="row">
-                <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                <div class="col-md-10 col-lg-10">
                     <div class="panel panel-default" style="">
                         <div class="panel-heading"><b>Order Lines</b></div>
                         <table id="dtOrderLines" class="table table-striped table-hover table-bordered">
@@ -274,10 +268,22 @@
                 </div>
             </div>
 
+            <!--For button Part start-->
+            <div class="row">
+                <div class="col-md-10 col-lg-10 " style="margin-top:10px">
+                    <button type="button" class="btn btn-primary" ng-click="SaveDraft()">Save Draft</button>
+                    <button type="button" class="btn btn-primary" ng-click="SaveOrder()">Save Order</button>
+                    <button type="button" class="btn btn-primary">Auto Fulfillments </button>
+                    <button type="button" class="btn btn-primary">Download</button>
+
+                </div>
+            </div>
+
             <!--For save button Part start-->
             <div class="row">
-                <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1" style="">
+                <div class="col-md-10 col-lg-10 " style="">
                     <button type="button" class="btn btn-primary" ng-click="saveOrderLines()">Save Lines</button>
+                    <button type="button" class="btn btn-primary" onclick="ReadClip()">Get Data From Clipboard</button>
                 </div>
             </div>
 
@@ -365,6 +371,7 @@
     angular.module('orderApp', []).controller('orderCtrl', function ($scope, $http) {
 
         $scope.lineNo = 1;
+        $scope.altAddrVisiable = false;
         $http.post("/order/init",null,null).then(function (resp) {
         $scope.custAlias = resp.data.custAlias;
         $scope.orderType = resp.data.orderType;
@@ -455,6 +462,7 @@
             var orderType = $scope.selectedOrderType.ORDER_TYPE;
             var shipCompFlag = $("#cShip")[0].value;
             var custPONO = $("#poNum").val();
+            var isSpecialShip = $("#ssto")[0].checked;
 
             $.ajax({
                 url: "/order/SaveDraft",
@@ -465,8 +473,10 @@
                     shipCompFlag: shipCompFlag,
                     orderNote: $scope.notice,
                     customerPONO: custPONO,
+                    isSpecialShip: isSpecialShip,
                     headInfo: $scope.selectedAliasAddr,
-                    altHeadInfo: $scope.selectedAltAliasAddr
+                    altHeadInfo: $scope.selectedAltAliasAddr,
+                    olList: $scope.orderLines
                 }),
                 type: "post",
                 async: false,
@@ -497,6 +507,7 @@
             var orderType = $scope.selectedOrderType.ORDER_TYPE;
             var shipCompFlag = $("#cShip")[0].value;
             var custPONO = $("#poNum").val();
+            var isSpecialShip = $("#ssto")[0].checked;
 
 
             $.ajax({
@@ -508,8 +519,10 @@
                     shipCompFlag: shipCompFlag,
                     orderNote: $scope.notice,
                     customerPONO: custPONO,
+                    isSpecialShip: isSpecialShip,
                     headInfo: $scope.selectedAliasAddr,
-                    altHeadInfo: $scope.selectedAltAliasAddr
+                    altHeadInfo: $scope.selectedAltAliasAddr,
+                    olList: $scope.orderLines
                 }),
                 type: "post",
                 async: false,
@@ -539,27 +552,6 @@
             $scope.orderLines.splice(index, 1);
         };
 
-    //Get PartNo from CustPartNo
-        $scope.checkCustPartNo = function (curr) {
-            if (curr.CustomerPartNo == curr.LastCheckNo)
-                return;
-
-            $.ajax({
-                url: "/order/GetPartNoFromCustPartNo",
-                data: { custPartNo:curr.CustomerPartNo },
-                type: "post",
-                async: false,
-                success: function (obj) {
-                    curr.PartNo = obj;
-                    curr.LastCheckNo = curr.CustomerPartNo;
-                },
-                error: function (obj) {
-                    alert(obj.responseText);
-                }
-
-            });
-
-        };
 
         //Get PartNo from CustPartNo
         $scope.checkOrderLineItem = function (curr) {
@@ -622,6 +614,17 @@
                 }
             });
         };
+
+        $scope.AltAddrRadioChange = function (curr) {
+            $scope.selectedAltAliasAddr = curr;
+
+        };
+
+        $scope.checkAltAddrVisiable = function () {
+            if ($scope.altAddrVisiable == false)
+                $scope.selectedAltAliasAddr = null;
+        }
+
 
 
     });
@@ -704,5 +707,22 @@
         if ($("#ssto")[0].checked == false && $("#cAlias")[0].innerText == null)
             alert("Please select a Cus Alias");
     }
+
+    function ReadClip()
+    {
+        debugger;
+        var str = getClipboard(); 
+        var len = str.split("\n");
+        debugger;
+    }
+
+    function getClipboard() {
+        if (window.clipboardData) {
+            return (window.clipboardData.getData('Text'));
+        }
+
+        return null;
+    }
+
 
 </script>

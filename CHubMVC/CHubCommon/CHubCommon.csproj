@@ -49,6 +49,7 @@
     <Compile Include="Compare\PropertyCompare.cs" />
     <Compile Include="DomainAuth\DomainUserAuth.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValueConvert.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CHubDBEntity\CHubDBEntity.csproj">

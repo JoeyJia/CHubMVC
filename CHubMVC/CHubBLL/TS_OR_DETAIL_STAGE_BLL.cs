@@ -22,5 +22,10 @@ namespace CHubBLL
             dal = new TS_OR_DETAIL_STAGE_DAL(db);
         }
 
+        public bool AddDetailStage(TS_OR_DETAIL_STAGE model)
+        {
+            return dal.AddDetailStage(model);
+        }
+
     }
 }

@@ -17,5 +17,14 @@ namespace CHubDAL
         public TS_OR_DETAIL_STAGE_DAL(CHubEntities db)
             : base(db) { }
 
+
+        public bool AddDetailStage(TS_OR_DETAIL_STAGE model)
+        {
+            if (db.TS_OR_DETAIL_STAGE.Any(a => a.ORDER_REQ_NO == model.ORDER_REQ_NO && a.ORDER_LINE_NO == model.ORDER_LINE_NO))
+                Update(model);
+            else
+                Add(model);
+            return true;
+        }
     }
 }

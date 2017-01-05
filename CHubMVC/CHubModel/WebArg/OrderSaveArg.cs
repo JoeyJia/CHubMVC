@@ -21,8 +21,12 @@ namespace CHubModel
 
         public string  customerPONO { get; set; }
 
+        public bool isSpecialShip { get; set; }
+
         public ExVAliasAddr headInfo { get; set; }
 
         public ExVAliasAddr altHeadInfo { get; set; }
+
+        public List<OrderLineItem> olList { get; set; }
     }
 }
