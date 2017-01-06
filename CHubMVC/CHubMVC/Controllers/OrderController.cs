@@ -238,7 +238,7 @@ namespace CHubMVC.Controllers
                 G_NETAVL_BLL netBLL = new G_NETAVL_BLL(db);
                 //Primary AVL check
                 decimal priNet = netBLL.GetSpecifyNETAVL(olArg.primarySysID, olArg.olItem.PartNo, olArg.primaryWareHouse);
-                if(priNet==0)
+                if (priNet == 0)
                     olArg.olItem.PriAVLCheckColor = CHubConstValues.NoStockColor;
                 else if (priNet >= olArg.olItem.Qty)
                     olArg.olItem.PriAVLCheckColor = CHubConstValues.SatisfyStockColor;
@@ -260,8 +260,20 @@ namespace CHubMVC.Controllers
                             olArg.olItem.AltAVLCheckColer = CHubConstValues.PartialStockColor;
                         olArg.olItem.AltAVLCheck = altNet;
                     }
+                    else
+                    {
+                        //reset value
+                        olArg.olItem.AltAVLCheckColer = string.Empty;
+                    }
+                }
+                else
+                {
+                    //reset value
+                    olArg.olItem.AltAVLCheckColer = string.Empty;
                 }
             }
+            else
+                olArg.olItem.PriAVLCheckColor = string.Empty;
 
             return Json(olArg.olItem);
         }
