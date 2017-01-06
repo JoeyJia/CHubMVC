@@ -26,5 +26,11 @@ namespace CHubDAL
                 Add(model);
             return true;
         }
+
+        public TS_OR_DETAIL_STAGE GetSpecifyDetailStage(decimal seq, decimal lineNO)
+        {
+            return db.TS_OR_DETAIL_STAGE.FirstOrDefault(a => a.ORDER_REQ_NO == seq && a.ORDER_LINE_NO == lineNO);
+        }
+
     }
 }

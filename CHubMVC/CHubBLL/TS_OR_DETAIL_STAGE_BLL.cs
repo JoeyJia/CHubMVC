@@ -27,5 +27,11 @@ namespace CHubBLL
             return dal.AddDetailStage(model);
         }
 
+
+        public TS_OR_DETAIL_STAGE GetSpecifyDetailStage(decimal seq, decimal lineNO)
+        {
+            return dal.GetSpecifyDetailStage(seq, lineNO);
+        }
+
     }
 }

@@ -23,7 +23,7 @@ namespace CHubBLL
         }
 
 
-        public decimal AddHeaderwithAlt(TS_OR_HEADER orHeader, TS_OR_HEADER altORHeader)
+        public decimal AddHeadersWithDetails(TS_OR_HEADER orHeader, TS_OR_HEADER altORHeader, List<TS_OR_DETAIL> detailList)
         {
             try
             {
@@ -36,6 +36,17 @@ namespace CHubBLL
                     altORHeader.ORDER_REQ_NO = nextVal;
                     dal.Add(altORHeader, false);
                 }
+
+                //detail part
+                if (detailList != null && detailList.Count > 0)
+                {
+                    foreach (var item in detailList)
+                    {
+                        item.ORDER_REQ_NO = nextVal;
+                        dal.Add(item, false);
+                    }
+                }
+
                 dal.SaveChanges();
                 return nextVal;
 
@@ -46,7 +57,14 @@ namespace CHubBLL
             }
         }
 
-        public decimal UpdateHeaderwithAlt(TS_OR_HEADER orHeader, TS_OR_HEADER altORHeader)
+        /// <summary>
+        /// update header and detail ,need to delete stage date if exist stage data
+        /// </summary>
+        /// <param name="orHeader"></param>
+        /// <param name="altORHeader"></param>
+        /// <param name="detailList"></param>
+        /// <returns></returns>
+        public decimal UpdateHeadersWithDetails(TS_OR_HEADER orHeader, TS_OR_HEADER altORHeader, List<TS_OR_DETAIL> detailList)
         {
             try
             {
@@ -73,6 +91,25 @@ namespace CHubBLL
                     else
                         dal.Update(altORHeader, false);
                 }
+
+                //Detail part
+                if (detailList != null && detailList.Count > 0)
+                {
+                    TS_OR_DETAIL_STAGE_BLL dStageBLL = new TS_OR_DETAIL_STAGE_BLL(dal.db);
+                    foreach (var item in detailList)
+                    {
+                        TS_OR_DETAIL_STAGE dStage = dStageBLL.GetSpecifyDetailStage(item.ORDER_REQ_NO, item.ORDER_LINE_NO);
+                        if (dStage != null)
+                        {
+                            dal.Delete(dStage, false);
+                            dal.Add(item, false);
+                        }
+                        else
+                            dal.Update(item, false);
+
+                    }
+                }
+
                 dal.SaveChanges();
                 return orHeader.ORDER_REQ_NO;
             }

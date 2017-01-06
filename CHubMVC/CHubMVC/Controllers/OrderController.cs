@@ -106,36 +106,53 @@ namespace CHubMVC.Controllers
                 if (arg.headInfo == null)
                     return Content("fail");
 
-                string AppUser = Session[CHubConstValues.SessionUser].ToString();
+                string appUser = Session[CHubConstValues.SessionUser].ToString();
 
                 CHubEntities db = new CHubEntities();
                 TS_OR_HEADER_STAGE_BLL bll = new TS_OR_HEADER_STAGE_BLL(db);
 
-                TS_OR_HEADER_STAGE orHeaderStage = ManualClassConvert.ConvertExAliaAddr2HeaderStage(arg.headInfo,arg.seq, arg.dueDate,arg.orderType,arg.shipCompFlag,arg.customerPONO, arg.orderNote,arg.isSpecialShip,AppUser);
+                //Header part
+                TS_OR_HEADER_STAGE orHeaderStage = ManualClassConvert.ConvertExAliaAddr2HeaderStage(arg.headInfo,arg.seq, arg.dueDate,arg.orderType,arg.shipCompFlag,arg.customerPONO, arg.orderNote,arg.isSpecialShip,appUser);
                 TS_OR_HEADER_STAGE altORHeaderStage = null;
                 if (arg.altHeadInfo != null)
                 {
-                    altORHeaderStage = ManualClassConvert.ConvertExAliaAddr2HeaderStage(arg.altHeadInfo,arg.seq, arg.dueDate, arg.orderType, arg.shipCompFlag,arg.customerPONO, arg.orderNote, arg.isSpecialShip,AppUser,true);
+                    altORHeaderStage = ManualClassConvert.ConvertExAliaAddr2HeaderStage(arg.altHeadInfo,arg.seq, arg.dueDate, arg.orderType, arg.shipCompFlag,arg.customerPONO, arg.orderNote, arg.isSpecialShip,appUser,true);
                 }
+
+                //Detail Part
+                List<TS_OR_DETAIL_STAGE> dStageList = null;
+                if (arg.olList != null && arg.olList.Count > 0)
+                {
+                    dStageList = new List<TS_OR_DETAIL_STAGE>();
+                    foreach (var item in arg.olList)
+                    {
+                        //ignore wrong lines
+                        if (string.IsNullOrEmpty(item.PartNo) || string.IsNullOrEmpty(item.PriAVLCheckColor))
+                            continue;
+                        TS_OR_DETAIL_STAGE dStage = ManualClassConvert.ConvertOLItem2DetailStage(item, arg.seq, appUser);
+                        dStageList.Add(dStage);
+                    }
+                }
+
                 decimal seq = 0;
                 if (string.IsNullOrEmpty(arg.seq))
-                    seq = bll.AddHeaderwithAltStage(orHeaderStage, altORHeaderStage);
+                    seq = bll.AddHeadersWithDetailsStage(orHeaderStage, altORHeaderStage,dStageList);
                 else
-                    seq = bll.UpdateHeaderWithAltStage(orHeaderStage, altORHeaderStage);
+                    seq = bll.UpdateHeadersWithDetailsStage(orHeaderStage, altORHeaderStage,dStageList);
 
                 if (seq != 0.00M)
                     return Content(seq.ToString());
                 else
                 {
                     Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    return Content("Fail to save header draft");
+                    return Content("Fail to save draft");
                 }
             }
             catch(Exception ee)
             {
                 //log ee
                 Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                return Content("Fail to save header draft");
+                return Content("Fail to save draft");
             }
         }
 
@@ -147,37 +164,53 @@ namespace CHubMVC.Controllers
                 if (arg.headInfo == null)
                     return Content("fail");
 
-                string AppUser = Session[CHubConstValues.SessionUser].ToString();
+                string appUser = Session[CHubConstValues.SessionUser].ToString();
 
                 CHubEntities db = new CHubEntities();
                 TS_OR_HEADER_BLL bll = new TS_OR_HEADER_BLL(db);
 
-                TS_OR_HEADER orHeader = ManualClassConvert.ConvertExAliaAddr2Header(arg.headInfo, arg.seq, arg.dueDate, arg.orderType, arg.shipCompFlag, arg.customerPONO, arg.orderNote,arg.isSpecialShip, AppUser);
+                //Header part
+                TS_OR_HEADER orHeader = ManualClassConvert.ConvertExAliaAddr2Header(arg.headInfo, arg.seq, arg.dueDate, arg.orderType, arg.shipCompFlag, arg.customerPONO, arg.orderNote,arg.isSpecialShip, appUser);
                 TS_OR_HEADER altORHeader = null;
                 if (arg.altHeadInfo != null)
                 {
-                    altORHeader = ManualClassConvert.ConvertExAliaAddr2Header(arg.altHeadInfo,arg.seq, arg.dueDate, arg.orderType, arg.shipCompFlag, arg.customerPONO, arg.orderNote, arg.isSpecialShip,AppUser, true);
+                    altORHeader = ManualClassConvert.ConvertExAliaAddr2Header(arg.altHeadInfo,arg.seq, arg.dueDate, arg.orderType, arg.shipCompFlag, arg.customerPONO, arg.orderNote, arg.isSpecialShip,appUser, true);
+                }
+
+                //Detail part
+                List<TS_OR_DETAIL> detailList = null;
+                if (arg.olList != null && arg.olList.Count > 0)
+                {
+                    detailList = new List<TS_OR_DETAIL>();
+                    foreach (var item in arg.olList)
+                    {
+                        //ignore wrong lines
+                        if (string.IsNullOrEmpty(item.PartNo) || string.IsNullOrEmpty(item.PriAVLCheckColor))
+                            continue;
+                        TS_OR_DETAIL detail = ManualClassConvert.ConvertOLItem2Detail(item, arg.seq, appUser);
+                        detailList.Add(detail);
+                    }
                 }
 
                 decimal seq = 0;
                 if (string.IsNullOrEmpty(arg.seq))
-                    seq = bll.AddHeaderwithAlt(orHeader, altORHeader);
+                    seq = bll.AddHeadersWithDetails(orHeader, altORHeader,detailList);
                 else
-                    seq = bll.UpdateHeaderwithAlt(orHeader, altORHeader);
+                    seq = bll.UpdateHeadersWithDetails(orHeader, altORHeader,detailList);
 
                 if (seq != 0.00M)
                     return Content(seq.ToString());
                 else
                 {
                     Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    return Content("Fail to save header");
+                    return Content("Fail to save order");
                 }
             }
             catch (Exception ee)
             {
                 //log ee
                 Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                return Content("Fail to save header");
+                return Content("Fail to  order save order");
             }
         }
 
@@ -233,58 +266,8 @@ namespace CHubMVC.Controllers
             return Json(olArg.olItem);
         }
 
-        [HttpPost]
-        public ActionResult SaveOrderLines(OrderLinesSaveArg arg)
-        {
-            try
-            {
-                if (arg.orderReqNo == 0)
-                {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    return Content("No Order Seq Data");
-                }
-                if (arg.olList == null || arg.olList.Count == 0)
-                {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    return Content("NO Order Lines Data");
-                }
 
-                TS_OR_DETAIL_BLL odBLL = new TS_OR_DETAIL_BLL();
-                foreach (var item in arg.olList)
-                {
-                    //ignore wrong lines
-                    if (string.IsNullOrEmpty(item.PartNo) || string.IsNullOrEmpty(item.PriAVLCheckColor))
-                        continue;
-                    TS_OR_DETAIL detail = new TS_OR_DETAIL();
-
-                    detail.ORDER_REQ_NO = arg.orderReqNo;
-                    detail.ORDER_LINE_NO = item.OrderLineNo;
-                    if (item.PriAVLCheck < item.Qty && item.AltAVLCheck >= item.Qty)
-                        detail.SHIPFROM_SEQ = 1;
-                    else
-                        detail.SHIPFROM_SEQ = 0;
-                    detail.PART_NO = item.PartNo;
-                    detail.CUSTOMER_PART_NO = item.CustomerPartNo;
-                    detail.BUY_QTY = item.Qty;
-                    detail.DESCRIPTION = null;
-                    detail.CREATION_DATE = DateTime.Now;
-                    detail.CREATED_BY = Session[CHubConstValues.SessionUser].ToString();
-                    detail.UPDATED_DATE = null;
-                    detail.UPDATED_BY = null;
-                    odBLL.AddDetail(detail);
-                }
-
-                return Content("Success");
-            }
-            catch (Exception ex)
-            {
-                //Log
-                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                return Content("Fail to save Order Lines");
-            }
-        }
-
-        #region private helper function
+        #region private function
         private string GetPartNoFromCustPartNo(string custPartNo)
         {
             if (string.IsNullOrEmpty(custPartNo))

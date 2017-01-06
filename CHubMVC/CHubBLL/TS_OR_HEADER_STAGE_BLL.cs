@@ -28,7 +28,7 @@ namespace CHubBLL
         }
 
 
-        public decimal AddHeaderwithAltStage(TS_OR_HEADER_STAGE orHeaderStage, TS_OR_HEADER_STAGE altORHeaderStage)
+        public decimal AddHeadersWithDetailsStage(TS_OR_HEADER_STAGE orHeaderStage, TS_OR_HEADER_STAGE altORHeaderStage, List<TS_OR_DETAIL_STAGE> dStageList)
         {
             try
             {
@@ -41,6 +41,16 @@ namespace CHubBLL
                     altORHeaderStage.ORDER_REQ_NO = nextVal;
                     dal.Add(altORHeaderStage, false);
                 }
+                //add Detail part
+                if (dStageList != null && dStageList.Count > 0)
+                {
+                    foreach (var item in dStageList)
+                    {
+                        item.ORDER_REQ_NO = nextVal;
+                        dal.Add(item, false);
+                    }
+                }
+
                 dal.SaveChanges();
                 return nextVal;
             }
@@ -50,13 +60,23 @@ namespace CHubBLL
             }
         }
 
-        public decimal UpdateHeaderWithAltStage(TS_OR_HEADER_STAGE orHeaderStage, TS_OR_HEADER_STAGE altORHeaderStage)
+        public decimal UpdateHeadersWithDetailsStage(TS_OR_HEADER_STAGE orHeaderStage, TS_OR_HEADER_STAGE altORHeaderStage, List<TS_OR_DETAIL_STAGE> dStageList)
         {
             try
             {
                 dal.Update(orHeaderStage, false);
                 if (altORHeaderStage != null)
                     dal.Update(altORHeaderStage, false);
+
+                //Update detail part
+                if (dStageList != null && dStageList.Count > 0)
+                {
+                    foreach (var item in dStageList)
+                    {
+                        dal.Update(item, false);
+                    }
+                }
+
                 dal.SaveChanges();
                 return orHeaderStage.ORDER_REQ_NO;
             }

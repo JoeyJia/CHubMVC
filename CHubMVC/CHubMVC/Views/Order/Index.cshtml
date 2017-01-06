@@ -42,7 +42,7 @@
                 <div class="form-group">
                     <label for="poNum" class="col-sm-1 control-label">PO No.</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" id="poNum" placeholder="Customer PO No.">
+                        <input type="text" class="form-control" id="poNum" placeholder="Customer PO No." required>
                     </div>
 
                     <label for="orderType" class="col-sm-1 control-label">Order Type</label>
@@ -129,19 +129,19 @@
                                     <td colspan="6">{{selectedAliasAddr.LocalDestName}}</td>
                                 </tr>
                                 <tr>
-                                    <td style="width:30px"><b>Addr 1</b></td>
+                                    <td style="width:30px"><b>Local Addr 1</b></td>
                                     <td colspan="6">{{selectedAliasAddr.LocalDestAddr1}}</td>
                                 </tr>
                                 <tr>
-                                    <td style="width:30px"><b>Addr 2</b></td>
+                                    <td style="width:30px"><b>Local Addr 2</b></td>
                                     <td colspan="6">{{selectedAliasAddr.LocalDestAddr2}}</td>
                                 </tr>
                                 <tr>
-                                    <td style="width:30px"><b>Addr 3</b></td>
+                                    <td style="width:30px"><b>Local Addr 3</b></td>
                                     <td colspan="6">{{selectedAliasAddr.LocalDestAddr3}}</td>
                                 </tr>
                                 <tr>
-                                    <td style="width:30px"><b>City</b></td>
+                                    <td style="width:30px"><b>Local City</b></td>
                                     <td colspan="6">{{selectedAliasAddr.LocalDestCity}}</td>
                                 </tr>
                                 <tr></tr>
@@ -273,19 +273,19 @@
                 <div class="col-md-10 col-lg-10 " style="margin-top:10px">
                     <button type="button" class="btn btn-primary" ng-click="SaveDraft()">Save Draft</button>
                     <button type="button" class="btn btn-primary" ng-click="SaveOrder()">Save Order</button>
-                    <button type="button" class="btn btn-primary">Auto Fulfillments </button>
                     <button type="button" class="btn btn-primary">Download</button>
+                    <button type="button" class="btn btn-primary" ng-click="ReadClip()">Get Data From Clipboard</button>
 
                 </div>
             </div>
 
             <!--For save button Part start-->
-            <div class="row">
+            @*<div class="row">
                 <div class="col-md-10 col-lg-10 " style="">
                     <button type="button" class="btn btn-primary" ng-click="saveOrderLines()">Save Lines</button>
-                    <button type="button" class="btn btn-primary" onclick="ReadClip()">Get Data From Clipboard</button>
+
                 </div>
-            </div>
+            </div>*@
 
 
         </div>
@@ -483,7 +483,7 @@
                 contentType: 'application/json',
                 success: function (obj) {
                     $scope.orderSeq = obj;
-                    alert("success save header draft");
+                    alert("Success Save Draft");
 
                 },
                 error: function (obj) {
@@ -529,7 +529,7 @@
                 contentType: 'application/json',
                 success: function (obj) {
                     $scope.orderSeq = obj;
-                    alert("success save header");
+                    alert("Success Save Order");
                 },
                 error: function (obj) {
                     alert(obj);
@@ -557,6 +557,8 @@
         $scope.checkOrderLineItem = function (curr) {
             //debugger;
             //Unchange no need to check
+            if (curr.CustomerPartNo == "")
+                return;
             if (curr.CustomerPartNo == curr.LastCheckNo && curr.Qty == curr.LastQty)
                 return;
 
@@ -584,33 +586,8 @@
                     //debugger;
                 },
                 error: function (obj) {
-                    alert(obj.responseText);
-                }
-            });
-        };
-
-        $scope.saveOrderLines = function()
-        {
-            if ($scope.orderSeq == "") {
-                alert("No Order Seq");
-                return;
-            }
-            debugger;
-            $.ajax({
-                url: "/order/SaveOrderLines",
-                data: JSON.stringify({
-                    orderReqNo: $scope.orderSeq,
-                    olList: $scope.orderLines
-                }),
-                type: "post",
-                async: false,
-                contentType: 'application/json',
-                success: function (obj) {
-                    alert("Success Save Lines");
-                    //debugger;
-                },
-                error: function (obj) {
-                    alert(obj.responseText);
+                    curr.PartNo = "Not Find";
+                    //alert(obj.responseText);
                 }
             });
         };
@@ -623,6 +600,44 @@
         $scope.checkAltAddrVisiable = function () {
             if ($scope.altAddrVisiable == false)
                 $scope.selectedAltAliasAddr = null;
+        };
+
+        $scope.ReadClip = function() {
+            var str = getClipboard();
+            if (str == null)
+                alert("No ClipBoard Data");
+            var rows = str.split("\n");
+            if (rows[0].split("\t").length < 2)
+                alert("Wrong Data format");
+            if (isNaN(rows[0].split("\t")[1]))
+                alert("Wrong Data Format");
+
+            @*var nl = "@(System.Environment.NewLine)";*@
+
+            for (var i = 0; i < rows.length; i++) {
+                var data = rows[i].split("\t");
+                if (data.length > 1) {
+                    if (i == 0 && $scope.orderLines[$scope.orderLines.length - 1].CustomerPartNo == "") {
+                        $scope.orderLines[$scope.orderLines.length - 1].CustomerPartNo = data[0];
+                        $scope.orderLines[$scope.orderLines.length - 1].Qty = data[1];
+                        $scope.checkOrderLineItem($scope.orderLines[$scope.orderLines.length - 1]);
+                    }
+                    else {
+                        var newItem = { CustomerPartNo: data[0], Qty: data[1] };
+                        $scope.checkOrderLineItem(newItem);
+                        $scope.orderLines.push(newItem);
+                    }
+                }
+
+            }
+        }
+
+        function getClipboard() {
+            if (window.clipboardData) {
+                return (window.clipboardData.getData('Text'));
+            }
+
+            return null;
         }
 
 
