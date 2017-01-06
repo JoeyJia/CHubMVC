@@ -14,15 +14,21 @@ namespace CHubModel
 
         public string PartNo { get; set; }
 
+        public string PartNoPlaceHolder { get; set; }
+
+        public string Description { get; set; }
+
+        public string DescCN { get; set; }
+
         public decimal Qty { get; set; }
 
-        public decimal PriAVLCheck { get; set; }
+        public decimal? PriAVLCheck { get; set; }
 
         public string PriAVLCheckColor { get; set; }
 
-        public decimal AltAVLCheck { get; set; }
+        public decimal? AltAVLCheck { get; set; }
 
-        public string AltAVLCheckColer { get; set; }
+        public string AltAVLCheckColor { get; set; }
 
         public string LastCheckNo { get; set; }
 

@@ -45,6 +45,7 @@
     <Compile Include="ExtensionModel\ExVAliasAddr.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TreeNode.cs" />
+    <Compile Include="WebArg\OrderLineBatchCheckArg.cs" />
     <Compile Include="WebArg\OrderLineCheckArg.cs" />
     <Compile Include="WebArg\OrderLineItem.cs" />
     <Compile Include="WebArg\OrderLinesSaveArg.cs" />

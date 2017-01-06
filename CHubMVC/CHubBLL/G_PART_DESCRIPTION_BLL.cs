@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
+using static CHubCommon.CHubEnum;
 
 namespace CHubBLL
 {
@@ -24,6 +25,12 @@ namespace CHubBLL
         public bool IsPartNoExist(string partNo)
         {
             return dal.IsPartNoExist(partNo);
+        }
+
+        public G_PART_DESCRIPTION GetPartDescription(string partNo, PartStatusEnum status = PartStatusEnum.A)
+        {
+            string statusStr = status.ToString();
+            return dal.GetPartDescription(partNo, statusStr);
         }
 
     }

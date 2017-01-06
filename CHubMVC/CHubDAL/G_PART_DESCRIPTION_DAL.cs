@@ -20,5 +20,10 @@ namespace CHubDAL
             return db.G_PART_DESCRIPTION.Any(a => a.PART_NO == partNo);
         }
 
+        public G_PART_DESCRIPTION GetPartDescription(string partNo,string status)
+        {
+            return db.G_PART_DESCRIPTION.FirstOrDefault(a => a.PART_NO == partNo && a.PART_STATUS==status);
+        }
+
     }
 }

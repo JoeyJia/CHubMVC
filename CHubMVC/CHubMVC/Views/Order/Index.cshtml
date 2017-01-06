@@ -245,9 +245,11 @@
                                     <th style="width:10px">SEQ</th>
                                     <th style="">Customer Part No.</th>
                                     <th style="">Part No.</th>
-                                    <th style="">Qty</th>
-                                    <th>AVL Check(Pri)</th>
-                                    <th>AVL Check(Alt)</th>
+                                    <th style="">Description</th>
+                                    <th style="">DescCN</th>
+                                    <th style="width:100px">Qty</th>
+                                    <th style="width:100px">AVL Check(Pri)</th>
+                                    <th style="width:100px">AVL Check(Alt)</th>
                                     <th>Operation</th>
                                 </tr>
                             </thead>
@@ -255,10 +257,12 @@
                                 <tr ng-repeat="ol in orderLines ">
                                     <td style="">{{$index+1}}</td>
                                     <td><input class="form-control" ng-model="ol.CustomerPartNo" ng-blur="checkOrderLineItem(ol)" /></td>
-                                    <td><input class="form-control" ng-model="ol.PartNo" readonly/></td>
+                                    <td><input class="form-control" ng-model="ol.PartNo" placeholder="{{ol.PartNoPlaceHolder}}" readonly/></td>
+                                    <td><input class="form-control" ng-model="ol.Description" readonly/></td>
+                                    <td><input class="form-control" ng-model="ol.DescCN" readonly/></td>
                                     <td><input class="form-control" ng-model="ol.Qty" ng-blur="checkOrderLineItem(ol)" /></td>
                                     <td><input class="form-control" ng-model="ol.PriAVLCheck" ng-style ="{color:ol.PriAVLCheckColor}" readonly /></td>
-                                    <td><input class="form-control" ng-model="ol.AltAVLCheck" ng-style ="{color:ol.AltAVLCheckColer}" readonly /></td>
+                                    <td><input class="form-control" ng-model="ol.AltAVLCheck" ng-style ="{color:ol.AltAVLCheckColor}" readonly /></td>
                                     <td style="text-align:center"><a href="javascript:void(0)" title="Delete" ng-click="removeOLItem($index)"><span class="glyphicon glyphicon-trash"></span></a></td>
                                 </tr>
                             </tbody>
@@ -373,42 +377,42 @@
         $scope.lineNo = 1;
         $scope.altAddrVisiable = false;
         $http.post("/order/init",null,null).then(function (resp) {
-        $scope.custAlias = resp.data.custAlias;
-        $scope.orderType = resp.data.orderType;
-        $scope.defaultOrderType = resp.data.defaultOrderType;
+            $scope.custAlias = resp.data.custAlias;
+            $scope.orderType = resp.data.orderType;
+            $scope.defaultOrderType = resp.data.defaultOrderType;
 
-        $scope.orderSeq = "";
-        $scope.selectedAlias = "";
-        $scope.selectedOrderType="";
+            $scope.orderSeq = "";
+            $scope.selectedAlias = "";
+            $scope.selectedOrderType="";
 
-        $scope.selectedAliasAddr="";
+            $scope.selectedAliasAddr="";
 
-        //alternative alias addr list and selected on addr
-        $scope.AltAliasAddr="";
-        $scope.selectedAltAliasAddr = "";
+            //alternative alias addr list and selected on addr
+            $scope.AltAliasAddr="";
+            $scope.selectedAltAliasAddr = "";
 
-        $scope.notice = "";
+            $scope.notice = "";
 
-        $scope.orderLines = [{ OrderLineNo: $scope.lineNo, CustomerPartNo: "", PartNo: "", Qty: 0, PriAVLCheck: 0, AltAVLCheck: 0 }];
+            $scope.orderLines = [{ OrderLineNo: $scope.lineNo, CustomerPartNo: "", PartNo: "", Qty: 0, PriAVLCheck: null, AltAVLCheck: null }];
 
-        for (var i=0;i< $scope.custAlias.length;i++) {
-            if ( $scope.custAlias[i].DEFAULT_FLAG == "Y")
-            {
-                $scope.selectedAlias = $scope.custAlias[i];
-                break;
+            for (var i=0;i< $scope.custAlias.length;i++) {
+                if ( $scope.custAlias[i].DEFAULT_FLAG == "Y")
+                {
+                    $scope.selectedAlias = $scope.custAlias[i];
+                    break;
+                }
             }
-        }
-        for (var i = 0; i < $scope.orderType.length; i++) {
-            if ($scope.orderType[i].ORDER_TYPE == $scope.defaultOrderType) {
-                $scope.selectedOrderType = $scope.orderType[i];
-                break;
+            for (var i = 0; i < $scope.orderType.length; i++) {
+                if ($scope.orderType[i].ORDER_TYPE == $scope.defaultOrderType) {
+                    $scope.selectedOrderType = $scope.orderType[i];
+                    break;
+                }
             }
-        }
 
         }, 
      function (resp) {
          alert("Fail!");
-        // $scope.resp = resp;
+         // $scope.resp = resp;
      });
 
         $scope.GetAltAliasAddr = function (localDestName, localDestAddr1,aliasName) {
@@ -426,18 +430,17 @@
                 success: function (obj) {
                     $scope.AltAliasAddr = obj;
                     //Remove the primary alias addr
-                    var exist;
                     for (var i = 0; i < $scope.AltAliasAddr.length; i++) {
                         if ($scope.AltAliasAddr[i].AliasName == $scope.selectedAliasAddr.AliasName
                             && $scope.AltAliasAddr[i].SysID == $scope.selectedAliasAddr.SysID
                             && $scope.AltAliasAddr[i].CustomerNo == $scope.selectedAliasAddr.CustomerNo
                             && $scope.AltAliasAddr[i].Bill2Location == $scope.selectedAliasAddr.Bill2Location
                             && $scope.AltAliasAddr[i].Ship2Location == $scope.selectedAliasAddr.Ship2Location) {
-                            exist = i;
+                            $scope.AltAliasAddr.splice(i, 1);
                             break;
                         }
                     }
-                    $scope.AltAliasAddr.splice(i, 1);
+
 
                 },
                 error: function (obj) {
@@ -529,6 +532,8 @@
                 contentType: 'application/json',
                 success: function (obj) {
                     $scope.orderSeq = obj;
+                    debugger;
+                    $scope.AltAliasAddr = [$scope.selectedAltAliasAddr];
                     alert("Success Save Order");
                 },
                 error: function (obj) {
@@ -542,7 +547,7 @@
         $scope.addOLItem = function()
         {
             $scope.lineNo = $scope.lineNo + 1;
-            var newItem = {OrderLineNo:$scope.lineNo, CustomerPartNo: "", PartNo: "", Qty: 0, PriAVLCheck: 0, AltAVLCheck:0};
+            var newItem = {OrderLineNo:$scope.lineNo, CustomerPartNo: "", PartNo: "", Qty: 0, PriAVLCheck: null, AltAVLCheck:null};
             $scope.orderLines.push(newItem);
         };
 
@@ -579,7 +584,10 @@
                     curr.PriAVLCheck = obj.PriAVLCheck;
                     curr.PriAVLCheckColor = obj.PriAVLCheckColor;
                     curr.AltAVLCheck = obj.AltAVLCheck;
-                    curr.AltAVLCheckColer = obj.AltAVLCheckColer;
+                    curr.AltAVLCheckColor = obj.AltAVLCheckColor;
+                    curr.PartNoPlaceHolder = obj.PartNoPlaceHolder;
+                    curr.Description = obj.Description;
+                    curr.DescCN = obj.DescCN;
 
                     curr.LastCheckNo = curr.CustomerPartNo;
                     curr.LastQty = curr.Qty;
@@ -592,14 +600,66 @@
             });
         };
 
+        //Check all lines
+        $scope.batchCheckOrderLines = function () {
+            if ($scope.orderLines == null)
+                return;
+            if ($scope.orderLines.length == 1 && $scope.orderLines[0].CustomerPartNo == "")
+                return;
+
+            $.ajax({
+                url: "/order/BatchCheckOrderLines",
+                data: JSON.stringify({
+                    primarySysID: $scope.selectedAliasAddr.SysID,
+                    primaryWareHouse: $scope.selectedAliasAddr.WareHouse,
+                    altSysID: $scope.selectedAltAliasAddr.SysID,
+                    altWareHosue: $scope.selectedAltAliasAddr.WareHouse,
+                    olItemList: $scope.orderLines
+                }),
+                type: "post",
+                async: false,
+                contentType: 'application/json',
+                success: function (obj) {
+                    $scope.orderLines = obj;
+
+                },
+                error: function (obj) {
+                    curr.PartNo = "Not Find";
+                    //alert(obj.responseText);
+                }
+            });
+        };
+
         $scope.AltAddrRadioChange = function (curr) {
+            //check changed or not
+            if ($scope.selectedAltAliasAddr != null && $scope.selectedAltAliasAddr != "") {
+                if ($("#ssto")[0].checked && isSameAliasAddrSPL($scope.selectedAltAliasAddr, curr))
+                    return;
+                if ((!$("#ssto")[0].checked) && isSameAliasAddrDFLT($scope.selectedAltAliasAddr, curr))
+                    return;
+            }
+
             $scope.selectedAltAliasAddr = curr;
+            $scope.batchCheckOrderLines();
 
         };
 
         $scope.checkAltAddrVisiable = function () {
-            if ($scope.altAddrVisiable == false)
+            if ($scope.altAddrVisiable == false) {
                 $scope.selectedAltAliasAddr = null;
+                //Reset order Lines alt data
+                for (var i = 0; i < $scope.orderLines.length; i++) {
+                    $scope.orderLines[i].AltAVLCheckColor = null;
+                    $scope.orderLines[i].AltAVLCheck = null;
+                }
+                //Reset UI radio status
+                for (var i = 0; i < $(".altAddrRadio").length ; i++) {
+                    if ($(".altAddrRadio")[i].checked) {
+                        $(".altAddrRadio")[i].checked = false;
+                        break;
+                    }
+                }
+            }
         };
 
         $scope.ReadClip = function() {
@@ -639,6 +699,29 @@
 
             return null;
         }
+
+        function isSameAliasAddrSPL(ad1, ad2) {
+            if (ad1.AliasName == ad2.AliasName
+                && ad1.SysID == ad2.SysID
+                && ad1.CustomerNo == ad2.CustomerNo
+                && ad1.Bill2Location == ad2.Bill2Location
+                && ad1.Ship2Location == ad2.Ship2Location
+                && ad1.DestLocation == ad2.DestLocation)
+                return true;
+            else
+                return false;
+        };
+
+        function isSameAliasAddrDFLT(ad1, ad2) {
+            if (ad1.AliasName == ad2.AliasName
+                && ad1.SysID == ad2.SysID
+                && ad1.CustomerNo == ad2.CustomerNo
+                && ad1.Bill2Location == ad2.Bill2Location
+                && ad1.Ship2Location == ad2.Ship2Location)
+                return true;
+            else
+                return false;
+        };
 
 
 

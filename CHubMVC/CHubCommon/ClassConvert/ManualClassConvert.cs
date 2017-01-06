@@ -78,7 +78,8 @@ namespace CHubCommon
             detail.PART_NO = item.PartNo;
             detail.CUSTOMER_PART_NO = item.CustomerPartNo;
             detail.BUY_QTY = item.Qty;
-            detail.DESCRIPTION = null;
+            detail.DESCRIPTION = item.Description;
+            detail.DESC_CN = item.DescCN;
             detail.CREATION_DATE = DateTime.Now;
             detail.CREATED_BY = appUser;
             detail.UPDATED_DATE = null;
@@ -98,6 +99,8 @@ namespace CHubCommon
             dStage.PART_NO = item.PartNo;
             dStage.CUSTOMER_PART_NO = item.CustomerPartNo;
             dStage.BUY_QTY = item.Qty;
+            dStage.DESCRIPTION = item.Description;
+            dStage.DESC_CN = item.DescCN;
             dStage.DESCRIPTION = null;
             dStage.CREATION_DATE = DateTime.Now;
             dStage.CREATED_BY = appUser;

@@ -217,69 +217,48 @@ namespace CHubMVC.Controllers
         [HttpPost]
         public ActionResult CheckOrderLineItem(OrderLineCheckArg olArg)
         {
-            if (string.IsNullOrEmpty(olArg.olItem.PartNo))
-                olArg.olItem.PartNo = GetPartNoFromCustPartNo(olArg.olItem.CustomerPartNo);
-            if (string.IsNullOrEmpty(olArg.olItem.PartNo))
-            {
-                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                return Content("Can't find Part NO");
-            }
-
-            //Do AVL check
-            if (olArg.olItem.Qty > 0)
-            {
-                if (string.IsNullOrEmpty(olArg.primarySysID) || string.IsNullOrEmpty(olArg.primaryWareHouse))
-                {
-                    Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    return Content("No Primary SysID and WareHouse information");
-                }
-
-                CHubEntities db = new CHubEntities();
-                G_NETAVL_BLL netBLL = new G_NETAVL_BLL(db);
-                //Primary AVL check
-                decimal priNet = netBLL.GetSpecifyNETAVL(olArg.primarySysID, olArg.olItem.PartNo, olArg.primaryWareHouse);
-                if (priNet == 0)
-                    olArg.olItem.PriAVLCheckColor = CHubConstValues.NoStockColor;
-                else if (priNet >= olArg.olItem.Qty)
-                    olArg.olItem.PriAVLCheckColor = CHubConstValues.SatisfyStockColor;
-                else
-                    olArg.olItem.PriAVLCheckColor = CHubConstValues.PartialStockColor;
-                olArg.olItem.PriAVLCheck = priNet;
-
-                //if primary is no enough do  Alt AVL check
-                if (priNet < olArg.olItem.Qty)
-                {
-                    if (!(string.IsNullOrEmpty(olArg.altSysID) || string.IsNullOrEmpty(olArg.altWareHosue)))
-                    {
-                        decimal altNet = netBLL.GetSpecifyNETAVL(olArg.altSysID, olArg.olItem.PartNo, olArg.altWareHosue);
-                        if (altNet == 0)
-                            olArg.olItem.AltAVLCheckColer = CHubConstValues.NoStockColor;
-                        else if (altNet >= olArg.olItem.Qty)
-                            olArg.olItem.AltAVLCheckColer = CHubConstValues.SatisfyStockColor;
-                        else
-                            olArg.olItem.AltAVLCheckColer = CHubConstValues.PartialStockColor;
-                        olArg.olItem.AltAVLCheck = altNet;
-                    }
-                    else
-                    {
-                        //reset value
-                        olArg.olItem.AltAVLCheckColer = string.Empty;
-                    }
-                }
-                else
-                {
-                    //reset value
-                    olArg.olItem.AltAVLCheckColer = string.Empty;
-                }
-            }
+            string msg = CheckOrderLineItemAction(olArg);
+            if (string.IsNullOrEmpty(msg))
+                return Json(olArg.olItem);
             else
-                olArg.olItem.PriAVLCheckColor = string.Empty;
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Content(msg);
+            }
+        }
 
-            return Json(olArg.olItem);
+        [HttpPost]
+        public ActionResult BatchCheckOrderLines(OrderLineBatchCheckArg arg)
+        {
+            try
+            {
+                List<OrderLineItem> olList = new List<OrderLineItem>();
+
+                OrderLineCheckArg olArg = new OrderLineCheckArg
+                {
+                    primarySysID = arg.primarySysID,
+                    primaryWareHouse = arg.primaryWareHouse,
+                    altSysID = arg.altSysID,
+                    altWareHosue = arg.altWareHosue
+                };
+                foreach (var item in arg.olItemList)
+                {
+                    olArg.olItem = item;
+                    CheckOrderLineItemAction(olArg);
+                    olList.Add(olArg.olItem);
+                }
+                return Json(olList);
+            }
+            catch (Exception ex)
+            {
+                //log
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Content(ex.Message);
+            }
         }
 
 
-        #region private function
+        #region *** private function ***
         private string GetPartNoFromCustPartNo(string custPartNo)
         {
             if (string.IsNullOrEmpty(custPartNo))
@@ -302,6 +281,84 @@ namespace CHubMVC.Controllers
                 return PartNo;
             }
         }
+
+        public string CheckOrderLineItemAction(OrderLineCheckArg olArg)
+        {
+            //reset 
+            olArg.olItem.PartNo = string.Empty;
+            olArg.olItem.AltAVLCheckColor = string.Empty;
+            olArg.olItem.PriAVLCheckColor = string.Empty;
+            olArg.olItem.PartNoPlaceHolder = string.Empty;
+            olArg.olItem.PriAVLCheck = null;
+            olArg.olItem.AltAVLCheck = null;
+            olArg.olItem.DescCN = string.Empty;
+            olArg.olItem.Description = string.Empty;
+
+            olArg.olItem.LastCheckNo = olArg.olItem.CustomerPartNo;
+            olArg.olItem.LastQty = olArg.olItem.Qty;
+
+            string msg = string.Empty;
+
+            olArg.olItem.PartNo = GetPartNoFromCustPartNo(olArg.olItem.CustomerPartNo);
+
+
+            olArg.olItem.PartNoPlaceHolder = string.Empty;
+            if (string.IsNullOrEmpty(olArg.olItem.PartNo))
+            {
+                olArg.olItem.PartNoPlaceHolder = "Can't find Part NO";
+                return null;
+            }
+            else
+            {
+                CHubEntities db = new CHubEntities();
+                //Get description
+                G_PART_DESCRIPTION_BLL pDescBLL = new G_PART_DESCRIPTION_BLL(db);
+                G_PART_DESCRIPTION pDesc = pDescBLL.GetPartDescription(olArg.olItem.PartNo);
+                olArg.olItem.Description = pDesc.DESCRIPTION;
+                olArg.olItem.DescCN = pDesc.DESC_CN;
+
+                //Do AVL check
+                if (olArg.olItem.Qty > 0)
+                {
+                    if (string.IsNullOrEmpty(olArg.primarySysID) || string.IsNullOrEmpty(olArg.primaryWareHouse))
+                    {
+                        msg = "No Primary SysID and WareHouse information";
+                    }
+
+
+                    G_NETAVL_BLL netBLL = new G_NETAVL_BLL(db);
+                    //Primary AVL check
+                    decimal priNet = netBLL.GetSpecifyNETAVL(olArg.primarySysID, olArg.olItem.PartNo, olArg.primaryWareHouse);
+                    if (priNet == 0)
+                        olArg.olItem.PriAVLCheckColor = CHubConstValues.NoStockColor;
+                    else if (priNet >= olArg.olItem.Qty)
+                        olArg.olItem.PriAVLCheckColor = CHubConstValues.SatisfyStockColor;
+                    else
+                        olArg.olItem.PriAVLCheckColor = CHubConstValues.PartialStockColor;
+                    olArg.olItem.PriAVLCheck = priNet;
+
+                    //if primary is no enough do  Alt AVL check
+                    if (priNet < olArg.olItem.Qty)
+                    {
+                        if (!(string.IsNullOrEmpty(olArg.altSysID) || string.IsNullOrEmpty(olArg.altWareHosue)))
+                        {
+                            decimal altNet = netBLL.GetSpecifyNETAVL(olArg.altSysID, olArg.olItem.PartNo, olArg.altWareHosue);
+                            if (altNet == 0)
+                                olArg.olItem.AltAVLCheckColor = CHubConstValues.NoStockColor;
+                            else if (altNet >= olArg.olItem.Qty)
+                                olArg.olItem.AltAVLCheckColor = CHubConstValues.SatisfyStockColor;
+                            else
+                                olArg.olItem.AltAVLCheckColor = CHubConstValues.PartialStockColor;
+                            olArg.olItem.AltAVLCheck = altNet;
+                        }
+                    }
+                }
+                
+            }
+
+            return msg;
+        }
+
         #endregion
 
 

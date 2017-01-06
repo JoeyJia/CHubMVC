@@ -66,5 +66,17 @@ namespace CHubCommon
             SCHORD
         }
 
+        public enum PartStatusEnum
+        {
+            /// <summary>
+            /// Active
+            /// </summary>
+            A,
+            /// <summary>
+            /// In Active
+            /// </summary>
+            I
+        }
+
     }
 }
