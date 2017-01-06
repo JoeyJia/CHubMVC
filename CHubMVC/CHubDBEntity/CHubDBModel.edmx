@@ -246,6 +246,7 @@
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="20" Nullable="false" />
           <Property Name="UPDATED_DATE" Type="date" />
           <Property Name="UPDATED_BY" Type="varchar2" MaxLength="20" />
+          <Property Name="DESC_CN" Type="varchar2" MaxLength="35" />
         </EntityType>
         <EntityType Name="TS_OR_DETAIL_STAGE">
           <Key>
@@ -263,6 +264,7 @@
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="20" Nullable="false" />
           <Property Name="UPDATED_DATE" Type="date" />
           <Property Name="UPDATED_BY" Type="varchar2" MaxLength="20" />
+          <Property Name="DESC_CN" Type="varchar2" MaxLength="35" />
         </EntityType>
         <EntityType Name="TS_OR_HEADER">
           <Key>
@@ -322,6 +324,7 @@ warning 6002: The table/view 'GWAPP.G_PART_DESCRIPTION' does not have a primary 
           </Key>
           <Property Name="PART_NO" Type="varchar2" MaxLength="75" Nullable="false" />
           <Property Name="DESCRIPTION" Type="varchar2" MaxLength="105" />
+          <Property Name="DESC_CN" Type="varchar2" MaxLength="120" />
           <Property Name="SHORT_DESCRIPTION" Type="varchar2" MaxLength="27" />
           <Property Name="PLANNER_BUYER" Type="varchar2" MaxLength="18" />
           <Property Name="UNIT_MEAS" Type="varchar2" MaxLength="12" />
@@ -1086,6 +1089,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             <DefiningQuery>SELECT 
 "G_PART_DESCRIPTION"."PART_NO" AS "PART_NO", 
 "G_PART_DESCRIPTION"."DESCRIPTION" AS "DESCRIPTION", 
+"G_PART_DESCRIPTION"."DESC_CN" AS "DESC_CN", 
 "G_PART_DESCRIPTION"."SHORT_DESCRIPTION" AS "SHORT_DESCRIPTION", 
 "G_PART_DESCRIPTION"."PLANNER_BUYER" AS "PLANNER_BUYER", 
 "G_PART_DESCRIPTION"."UNIT_MEAS" AS "UNIT_MEAS", 
@@ -1840,6 +1844,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="CURRENT_SALES_STATUS_CODE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="PRINT_PART_NO" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
           <Property Name="RECORD_DATE" Type="DateTime" />
+          <Property Name="DESC_CN" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="G_PART_SUPERSESSION_ALL">
           <Key>
@@ -2669,6 +2674,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="UPDATED_DATE" Type="DateTime" />
           <Property Name="UPDATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="ORDER_LINE_NO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DESC_CN" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="TS_OR_HEADER_R05">
           <End Type="CHubDBModel.APP_CUST_ALIAS" Role="APP_CUST_ALIAS" Multiplicity="1" />
@@ -2746,6 +2752,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="UPDATED_DATE" Type="DateTime" />
           <Property Name="UPDATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DESC_CN" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TS_OR_HEADER_STAGE">
           <Key>
@@ -3002,6 +3009,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="G_PART_DESCRIPTION">
             <EntityTypeMapping TypeName="CHubDBModel.G_PART_DESCRIPTION">
               <MappingFragment StoreEntitySet="G_PART_DESCRIPTION">
+                <ScalarProperty Name="DESC_CN" ColumnName="DESC_CN" />
                 <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
                 <ScalarProperty Name="SHORT_DESCRIPTION" ColumnName="SHORT_DESCRIPTION" />
@@ -3485,6 +3493,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="TS_OR_DETAIL">
             <EntityTypeMapping TypeName="CHubDBModel.TS_OR_DETAIL">
               <MappingFragment StoreEntitySet="TS_OR_DETAIL">
+                <ScalarProperty Name="DESC_CN" ColumnName="DESC_CN" />
                 <ScalarProperty Name="ORDER_LINE_NO" ColumnName="ORDER_LINE_NO" />
                 <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
                 <ScalarProperty Name="UPDATED_DATE" ColumnName="UPDATED_DATE" />
@@ -3502,6 +3511,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="TS_OR_DETAIL_STAGE">
             <EntityTypeMapping TypeName="CHubDBModel.TS_OR_DETAIL_STAGE">
               <MappingFragment StoreEntitySet="TS_OR_DETAIL_STAGE">
+                <ScalarProperty Name="DESC_CN" ColumnName="DESC_CN" />
                 <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
                 <ScalarProperty Name="UPDATED_DATE" ColumnName="UPDATED_DATE" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />

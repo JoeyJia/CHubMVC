@@ -29,5 +29,6 @@ namespace CHubDBEntity
         public string CURRENT_SALES_STATUS_CODE { get; set; }
         public string PRINT_PART_NO { get; set; }
         public Nullable<System.DateTime> RECORD_DATE { get; set; }
+        public string DESC_CN { get; set; }
     }
 }

@@ -25,5 +25,6 @@ namespace CHubDBEntity
         public Nullable<System.DateTime> UPDATED_DATE { get; set; }
         public string UPDATED_BY { get; set; }
         public decimal ORDER_LINE_NO { get; set; }
+        public string DESC_CN { get; set; }
     }
 }
