@@ -56,7 +56,7 @@ namespace CHubMVC.Controllers
         }
 
         [HttpPost]
-        public JsonResult SearchAddrs(string shipName,string addr,string aliasName, bool isSpecialShip)
+        public ActionResult SearchAddrs(string shipName,string addr,string aliasName, bool isSpecialShip)
         {
             List<ExVAliasAddr> list = new List<ExVAliasAddr>();
             CHubEntities db = new CHubEntities();
@@ -73,7 +73,15 @@ namespace CHubMVC.Controllers
 
             //Get from parameter table?
             if (list.Count > 10)
-                return Json("OverFlow");
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Content(string.Format("Result has {0} items, Make Condition more strict",list.Count.ToString()));
+            }
+            if (list.Count == 0)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Content("No result");
+            }
 
             return Json(list);
         }
