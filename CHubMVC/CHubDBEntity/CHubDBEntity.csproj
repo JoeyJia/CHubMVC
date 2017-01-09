@@ -201,6 +201,12 @@
     <Compile Include="V_NAV_ALL.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="V_O_DOWNLOAD_DTL.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_O_DOWNLOAD_HDR.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="V_USER_NAV_ALL.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>

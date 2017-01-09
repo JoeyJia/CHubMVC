@@ -779,6 +779,31 @@ warning 6002: The table/view 'GWAPP.V_NAV_ALL' does not have a primary key defin
           <Property Name="VERION" Type="varchar2" MaxLength="10" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.V_O_DOWNLOAD_DTL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_O_DOWNLOAD_DTL">
+          <Key>
+            <PropertyRef Name="ORDER_REQ_NO" />
+            <PropertyRef Name="SHIPFROM_SEQ" />
+            <PropertyRef Name="ORDER_LINE_NO" />
+          </Key>
+          <Property Name="ORDER_REQ_NO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="SHIPFROM_SEQ" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ORDER_LINE_NO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="TXT" Type="varchar2" MaxLength="92" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.V_O_DOWNLOAD_HDR' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_O_DOWNLOAD_HDR">
+          <Key>
+            <PropertyRef Name="ORDER_REQ_NO" />
+            <PropertyRef Name="SHIPFROM_SEQ" />
+          </Key>
+          <Property Name="ORDER_REQ_NO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="SHIPFROM_SEQ" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="FILE_NAME" Type="varchar2" MaxLength="64" />
+          <Property Name="TXT" Type="varchar2" MaxLength="717" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.V_USER_NAV_ALL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -1464,6 +1489,22 @@ FROM "GWAPP"."V_CHK_DURATION_MISSING" "V_CHK_DURATION_MISSING"</DefiningQuery>
 "V_NAV_ALL"."PUBLICIND" AS "PUBLICIND", 
 "V_NAV_ALL"."VERION" AS "VERION"
 FROM "GWAPP"."V_NAV_ALL" "V_NAV_ALL"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_O_DOWNLOAD_DTL" EntityType="Self.V_O_DOWNLOAD_DTL" store:Type="Views" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"V_O_DOWNLOAD_DTL"."ORDER_REQ_NO" AS "ORDER_REQ_NO", 
+"V_O_DOWNLOAD_DTL"."SHIPFROM_SEQ" AS "SHIPFROM_SEQ", 
+"V_O_DOWNLOAD_DTL"."ORDER_LINE_NO" AS "ORDER_LINE_NO", 
+"V_O_DOWNLOAD_DTL"."TXT" AS "TXT"
+FROM "GWAPP"."V_O_DOWNLOAD_DTL" "V_O_DOWNLOAD_DTL"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_O_DOWNLOAD_HDR" EntityType="Self.V_O_DOWNLOAD_HDR" store:Type="Views" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"V_O_DOWNLOAD_HDR"."ORDER_REQ_NO" AS "ORDER_REQ_NO", 
+"V_O_DOWNLOAD_HDR"."SHIPFROM_SEQ" AS "SHIPFROM_SEQ", 
+"V_O_DOWNLOAD_HDR"."FILE_NAME" AS "FILE_NAME", 
+"V_O_DOWNLOAD_HDR"."TXT" AS "TXT"
+FROM "GWAPP"."V_O_DOWNLOAD_HDR" "V_O_DOWNLOAD_HDR"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="V_USER_NAV_ALL" EntityType="Self.V_USER_NAV_ALL" store:Type="Views" store:Schema="GWAPP">
             <DefiningQuery>SELECT 
@@ -2592,6 +2633,8 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           </AssociationSet>
           <EntitySet Name="TS_OR_DETAIL_STAGE" EntityType="CHubDBModel.TS_OR_DETAIL_STAGE" />
           <EntitySet Name="TS_OR_HEADER_STAGE" EntityType="CHubDBModel.TS_OR_HEADER_STAGE" />
+          <EntitySet Name="V_O_DOWNLOAD_DTL" EntityType="CHubDBModel.V_O_DOWNLOAD_DTL" />
+          <EntitySet Name="V_O_DOWNLOAD_HDR" EntityType="CHubDBModel.V_O_DOWNLOAD_HDR" />
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -2778,6 +2821,27 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="RECORD_DATE" Type="DateTime" />
           <Property Name="UPDATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="ORDER_NOTES" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="V_O_DOWNLOAD_DTL">
+          <Key>
+            <PropertyRef Name="ORDER_REQ_NO" />
+            <PropertyRef Name="SHIPFROM_SEQ" />
+            <PropertyRef Name="ORDER_LINE_NO" />
+          </Key>
+          <Property Name="ORDER_REQ_NO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="SHIPFROM_SEQ" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="ORDER_LINE_NO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="TXT" Type="String" MaxLength="92" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="V_O_DOWNLOAD_HDR">
+          <Key>
+            <PropertyRef Name="ORDER_REQ_NO" />
+            <PropertyRef Name="SHIPFROM_SEQ" />
+          </Key>
+          <Property Name="ORDER_REQ_NO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="SHIPFROM_SEQ" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="FILE_NAME" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="TXT" Type="String" MaxLength="717" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3546,6 +3610,26 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="CUSTOMER_NO" ColumnName="CUSTOMER_NO" />
                 <ScalarProperty Name="ALIAS_NAME" ColumnName="ALIAS_NAME" />
                 <ScalarProperty Name="TO_SYSTEM" ColumnName="TO_SYSTEM" />
+                <ScalarProperty Name="SHIPFROM_SEQ" ColumnName="SHIPFROM_SEQ" />
+                <ScalarProperty Name="ORDER_REQ_NO" ColumnName="ORDER_REQ_NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_O_DOWNLOAD_DTL">
+            <EntityTypeMapping TypeName="CHubDBModel.V_O_DOWNLOAD_DTL">
+              <MappingFragment StoreEntitySet="V_O_DOWNLOAD_DTL">
+                <ScalarProperty Name="TXT" ColumnName="TXT" />
+                <ScalarProperty Name="ORDER_LINE_NO" ColumnName="ORDER_LINE_NO" />
+                <ScalarProperty Name="SHIPFROM_SEQ" ColumnName="SHIPFROM_SEQ" />
+                <ScalarProperty Name="ORDER_REQ_NO" ColumnName="ORDER_REQ_NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_O_DOWNLOAD_HDR">
+            <EntityTypeMapping TypeName="CHubDBModel.V_O_DOWNLOAD_HDR">
+              <MappingFragment StoreEntitySet="V_O_DOWNLOAD_HDR">
+                <ScalarProperty Name="TXT" ColumnName="TXT" />
+                <ScalarProperty Name="FILE_NAME" ColumnName="FILE_NAME" />
                 <ScalarProperty Name="SHIPFROM_SEQ" ColumnName="SHIPFROM_SEQ" />
                 <ScalarProperty Name="ORDER_REQ_NO" ColumnName="ORDER_REQ_NO" />
               </MappingFragment>

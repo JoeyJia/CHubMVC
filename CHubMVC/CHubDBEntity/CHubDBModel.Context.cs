@@ -67,5 +67,7 @@ namespace CHubDBEntity
         public virtual DbSet<TS_OR_DETAIL> TS_OR_DETAIL { get; set; }
         public virtual DbSet<TS_OR_DETAIL_STAGE> TS_OR_DETAIL_STAGE { get; set; }
         public virtual DbSet<TS_OR_HEADER_STAGE> TS_OR_HEADER_STAGE { get; set; }
+        public virtual DbSet<V_O_DOWNLOAD_DTL> V_O_DOWNLOAD_DTL { get; set; }
+        public virtual DbSet<V_O_DOWNLOAD_HDR> V_O_DOWNLOAD_HDR { get; set; }
     }
 }
