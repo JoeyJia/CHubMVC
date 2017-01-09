@@ -19,9 +19,9 @@ namespace CHubMVC.Controllers
         // GET: Order
         public ActionResult Index()
         {
-            //if (Session[CHubConstValues.SessionUser] == null)
-                Session[CHubConstValues.SessionUser] = "lg166";// For test using
-                                                               //return RedirectToAction("Login", "Account");
+            if (Session[CHubConstValues.SessionUser] == null)
+                //Session[CHubConstValues.SessionUser] = "lg166";// For test using
+               return RedirectToAction("Login", "Account");
 
             ViewBag.AppUser = Session[CHubConstValues.SessionUser].ToString();
             return View();

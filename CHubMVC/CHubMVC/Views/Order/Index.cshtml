@@ -285,7 +285,7 @@
                     <button type="button" class="btn btn-primary" ng-click="SaveOrder()">Save Order</button>
                     <button type="button" class="btn btn-primary">Download</button>
                     <button type="button" class="btn btn-primary" ng-click="ReadClip()">Get Data From Clipboard</button>
-                    <button type="button" class="btn btn-primary" ng-click="proTest()">progress</button>
+                    @*<button type="button" class="btn btn-primary" ng-click="proTest()">progress</button>*@
                 </div>
             </div>
 
@@ -549,7 +549,6 @@
                 contentType: 'application/json',
                 success: function (obj) {
                     $scope.orderSeq = obj;
-                    debugger;
                     $scope.AltAliasAddr = [$scope.selectedAltAliasAddr];
                     alert("Success Save Order");
                 },
@@ -705,7 +704,8 @@
                         $scope.checkOrderLineItem($scope.orderLines[$scope.orderLines.length - 1]);
                     }
                     else {
-                        var newItem = { CustomerPartNo: data[0], Qty: data[1] };
+                        $scope.lineNo = $scope.lineNo + 1;
+                        var newItem = {OrderLineNo:$scope.lineNo, CustomerPartNo: data[0], Qty: data[1] };
                         $scope.checkOrderLineItem(newItem);
                         $scope.orderLines.push(newItem);
                     }
@@ -765,7 +765,10 @@
         var shipName = $("#sbShipName").val();
         var addr = $("#sbAddr").val();
         var isSpecialShip = $("#ssto")[0].checked;
-        var aliasName = $("#cAlias")[0].innerText;
+
+        var appElement1 = document.querySelector('[ng-controller=orderCtrl]');
+        var scope1 = angular.element(appElement1).scope();
+        var aliasName = scope1.selectedAlias.ALIAS_NAME;
 
         $.ajax({
             url: "/order/SearchAddrs",
@@ -826,22 +829,6 @@
             searchAddrs();
         if ($("#ssto")[0].checked == false && $("#cAlias")[0].innerText == null)
             alert("Please select a Cus Alias");
-    }
-
-    function ReadClip()
-    {
-        debugger;
-        var str = getClipboard();
-        var len = str.split("\n");
-        debugger;
-    }
-
-    function getClipboard() {
-        if (window.clipboardData) {
-            return (window.clipboardData.getData('Text'));
-        }
-
-        return null;
     }
 
 

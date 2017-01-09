@@ -57,6 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="V_O_DOWNLOAD_DTL_BLL.cs" />
+    <Compile Include="V_O_DOWNLOAD_HDR_BLL.cs" />
     <Compile Include="G_NETAVL_BLL.cs" />
     <Compile Include="G_CATALOG_CUSTOMER_PART_BLL.cs" />
     <Compile Include="TS_OR_DETAIL_STAGE_BLL.cs" />

@@ -5,15 +5,14 @@
     ViewBag.Title = "Log in";
 }
 
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta charset="utf-8">
-<link href="~/Scripts/bootstrap.css" rel="stylesheet">
+@*<link href="~/Scripts/bootstrap.css" rel="stylesheet">*@
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
 
-<style type="text/css">
-    /*button {
-        background: url("~/Images/bg-header.png"); background-repeat: repeat-x; 
-    }*/
-</style>
-
+<title>@ViewBag.Title</title>
 <body style="width:100%;">
     <div id="BgImg" style="height: 70px; width:100%; background-image: url('../../Images/bg-header.png');">
         <a href="/home/index" title="HomePage">

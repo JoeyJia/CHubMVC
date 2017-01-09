@@ -51,8 +51,9 @@ namespace CHubBLL
                 return nextVal;
 
             }
-            catch
+            catch(Exception ex)
             {
+                string msg = ex.Message;
                 return 0;
             }
         }

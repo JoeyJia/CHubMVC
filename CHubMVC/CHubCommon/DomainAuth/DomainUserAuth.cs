@@ -11,13 +11,15 @@ namespace CHubCommon
     {
         public static bool IsAuthenticated(string domain, string username, string pwd)
         {
-            string pathCur = "LDAP://RootDSE";
+            #region for debug get domain path
+            //string pathCur = "LDAP://RootDSE";
+            //DirectoryEntry ent = new DirectoryEntry(pathCur);
+            //String str = ent.Properties["defaultNamingContext"][0].ToString();
 
-            DirectoryEntry ent = new DirectoryEntry(pathCur);
-            String str = ent.Properties["defaultNamingContext"][0].ToString();
+            //string strPathTmp = "LDAP://" + str;
+            #endregion
 
-
-            string strPath = "LDAP://" + str;
+            string strPath = @"LDAP://DC=ced,DC=corp,DC=cummins,DC=com";
             String domainAndUsername = domain + @"\" + username;
             DirectoryEntry entry = new DirectoryEntry(strPath, domainAndUsername, pwd);
 
