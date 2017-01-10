@@ -10,8 +10,16 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/boostrapvalidate")
     @RenderSection("scripts", required: false)
 
+
+    <style typeof="text/css">
+        .RequireRedStar {
+            color:red,
+            padding-left: 2px
+            }
+    </style>
 </head>
 <body style="width:98%;height:98%">
     <div class="navbar navbar-inverse navbar-fixed-top">

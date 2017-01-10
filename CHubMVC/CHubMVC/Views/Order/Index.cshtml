@@ -20,7 +20,7 @@
 <input type="hidden" value="@ViewBag.AppUser" id="hddAppUser" />
 
 <div id="orderBody" ng-app="orderApp" ng-controller="orderCtrl" class="small">
-    <form class="form-horizontal" action="/order/index" method="post">
+    <form class="form-horizontal" id="orderForm">
         <div class="panel panel-default">
             <div class="panel-heading"><b>Quick Order Entry</b></div>
 
@@ -44,9 +44,9 @@
 
             <div class="row">
                 <div class="form-group">
-                    <label for="poNum" class="col-sm-2 control-label">PO No.</label>
+                    <label for="poNum" class="col-sm-2 control-label">PO No.<i class="RequireRedStar">*</i></label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" id="poNum" placeholder="Customer PO No." required>
+                        <input type="text" class="form-control" id="poNum" placeholder="Customer PO No." check-type="required" required-message="Required">
                     </div>
 
                     <label for="orderType" class="col-sm-2 control-label">Order Type</label>
@@ -74,7 +74,7 @@
 
                     <label for="dueDate" class="col-sm-2 control-label">Due Date</label>
                     <div class="col-sm-2 ">
-                        <input type="text" id="dueDate" class="form-control dueDatetime" readonly/>
+                        <input type="text" id="dueDate" class="form-control dueDatetime" readonly required/>
                     </div>
 
                     <label for="cShip" class="col-sm-2 control-label">Complete Ship</label>
@@ -297,22 +297,13 @@
             <!--For button Part start-->
             <div class="row">
                 <div class="col-md-10 col-lg-10 " style="margin-top:10px">
-                    <button type="button" class="btn btn-primary" ng-click="SaveDraft()">Save Draft</button>
+                    <button type="submit" class="btn btn-primary" ng-click="SaveDraft()">Save Draft</button>
                     <button type="button" class="btn btn-primary" ng-click="SaveOrder()">Save Order</button>
                     <button type="button" class="btn btn-primary">Download</button>
                     <button type="button" class="btn btn-primary" ng-click="ReadClip()">Get Data From Clipboard</button>
                     @*<button type="button" class="btn btn-primary" ng-click="proTest()">progress</button>*@
                 </div>
             </div>
-
-            <!--For save button Part start-->
-            @*<div class="row">
-                <div class="col-md-10 col-lg-10 " style="">
-                    <button type="button" class="btn btn-primary" ng-click="saveOrderLines()">Save Lines</button>
-
-                </div>
-            </div>*@
-
 
         </div>
     </form>
@@ -405,6 +396,8 @@
             initialDate:new Date(),
             pickerPosition: "bottom-left"
         });
+
+        $("#orderForm").validation({ icon: true });
 
     });
 
