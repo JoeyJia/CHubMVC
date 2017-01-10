@@ -26,7 +26,7 @@
 
             <div class="row" style="margin-top:20px;">
                 <div class="form-group">
-                    <label for="orderID" class="col-sm-2 control-label">Order SEQ</label>
+                    <label for="orderID" class="col-sm-2 control-label small">Order SEQ</label>
                     <div class="col-sm-2 col-lg-1">
                         <input type="text" class="form-control input-sm" id="orderID" ng-model="orderSeq" placeholder="Auto" disabled>
                     </div>
@@ -35,9 +35,9 @@
 
             <div class="row">
                 <div class="form-group">
-                    <label for="cAlias" class="col-sm-2 control-label">Cus Alias</label>
+                    <label for="cAlias" class="col-sm-2 control-label">Cus Alias<i class="RequireRedStar">*</i></label>
                     <div class="col-sm-2">
-                        <select class="form-control" id="cAlias" ng-model="selectedAlias" ng-options="ca.ALIAS_NAME for ca in custAlias"></select>
+                        <select class="form-control input-sm" id="cAlias" ng-model="selectedAlias" ng-options="ca.ALIAS_NAME for ca in custAlias"></select>
                     </div>
                 </div>
             </div>
@@ -46,40 +46,44 @@
                 <div class="form-group">
                     <label for="poNum" class="col-sm-2 control-label">PO No.<i class="RequireRedStar">*</i></label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" id="poNum" placeholder="Customer PO No." check-type="required" required-message="Required">
+                        <input type="text" class="form-control input-sm" id="poNum" placeholder="Customer PO No." required>
+                    </div>
                     </div>
 
-                    <label for="orderType" class="col-sm-2 control-label">Order Type</label>
+                <div class="form-group">
+                    <label for="orderType" class="col-sm-2 control-label">Order Type<i class="RequireRedStar">*</i></label>
                     <div class="col-sm-2">
-                        <select class="form-control" id="orderType" ng-model="selectedOrderType" ng-options="ot.ORDER_TYPE for ot in orderType"></select>
+                        <select class="form-control input-sm" id="orderType" ng-model="selectedOrderType" ng-options="ot.ORDER_TYPE for ot in orderType"></select>
                     </div>
 
                     @*<label for="dueDate" class="col-sm-2 control-label">Due Date</label>
-                    <div class="col-sm-2">
-                        <input type="text" id="dueDate" class="form-control" />
-                    </div>
+            <div class="col-sm-2">
+                <input type="text" id="dueDate" class="form-control" />
+            </div>
 
-                    <label for="cShip" class="col-sm-2 control-label">Complete Ship</label>
-                    <div class="col-sm-1">
-                        <select class="form-control" id="cShip">
-                            <option>N</option>
-                            <option>Y</option>
-                        </select>
-                    </div>*@
+            <label for="cShip" class="col-sm-2 control-label">Complete Ship</label>
+            <div class="col-sm-1">
+                <select class="form-control" id="cShip">
+                    <option>N</option>
+                    <option>Y</option>
+                </select>
+            </div>*@
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-group">
 
-                    <label for="dueDate" class="col-sm-2 control-label">Due Date</label>
+                    <label for="dueDate" class="col-sm-2 control-label">Due Date<i class="RequireRedStar">*</i></label>
                     <div class="col-sm-2 ">
-                        <input type="text" id="dueDate" class="form-control dueDatetime" readonly required/>
+                        <input type="text" id="dueDate" class="form-control dueDatetime input-sm" readonly required/>
+                    </div>
                     </div>
 
-                    <label for="cShip" class="col-sm-2 control-label">Complete Ship</label>
+                <div class="form-group">
+                    <label for="cShip" class="col-sm-2 control-label">Complete Ship<i class="RequireRedStar">*</i></label>
                     <div class="col-sm-2">
-                        <select class="form-control" style="width:100px" id="cShip">
+                        <select class="form-control small" style="width:100px" id="cShip">
                             <option>N</option>
                             <option>Y</option>
                         </select>
@@ -89,7 +93,7 @@
                 <div class="form-group">
                     <label for="notes" class="col-sm-2 control-label">Notes</label>
                     <div class="col-sm-9 col-lg-9">
-                        <input type="text" class="form-control col-sm-8" id="notes" placeholder="Notes" ng-model="notice" style="width:90%;">
+                        <input type="text" class="form-control col-sm-8 input-sm" id="notes" placeholder="Notes" ng-model="notice" style="width:90%;">
                     </div>
                 </div>
             </div>
@@ -111,14 +115,14 @@
                     <div class="form-group" style="padding-top:10px">
                         <label for="shipName" class="col-sm-2 control-label">Ship Name</label>
                         <div class="col-sm-7 col-lg-7">
-                            <input type="text" class="form-control" id="sbShipName" placeholder="Ship Name">
+                            <input type="text" class="form-control input-sm" id="sbShipName" placeholder="Ship Name">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="sbAddr" class="col-sm-2 control-label">Address</label>
                         <div class="col-sm-7 col-lg-7">
-                            <input type="text" class="form-control" id="sbAddr" placeholder="Address">
+                            <input type="text" class="form-control input-sm" id="sbAddr" placeholder="Address">
                         </div>
 
                         <div class="col-sm-2">
@@ -131,7 +135,7 @@
             <hr />
 
             <div class="row">
-                    <div class="col-md-10 col-lg-10 ">
+                    <div class="col-md-12 col-lg-12 ">
                         <div class="panel panel-default" style="">
                             <div class="panel-heading"><b>Primary Ship From</b></div>
                             <table class="table table-bordered table-striped" style="border-color:black;">
@@ -203,7 +207,7 @@
 
             <!--Alt Alias Address part-->
             <div class="row">
-                <div class="col-md-10  col-lg-10 ">
+                <div class="col-md-12  col-lg-12 ">
                     <div class="panel panel-default" style="">
                         <div class="panel-heading">
                             <label>
@@ -256,7 +260,7 @@
             <hr />
             <!--For Order Lines-->
             <div class="row">
-                <div class="col-md-10 col-lg-10">
+                <div class="col-md-12 col-lg-12">
                     <div class="panel panel-default" style="">
                         <div class="panel-heading"><b>Order Lines</b>
                         </div>
@@ -298,7 +302,7 @@
             <div class="row">
                 <div class="col-md-10 col-lg-10 " style="margin-top:10px">
                     <button type="submit" class="btn btn-primary" ng-click="SaveDraft()">Save Draft</button>
-                    <button type="button" class="btn btn-primary" ng-click="SaveOrder()">Save Order</button>
+                    <button type="submit" class="btn btn-primary" ng-click="SaveOrder()">Save Order</button>
                     <button type="button" class="btn btn-primary">Download</button>
                     <button type="button" class="btn btn-primary" ng-click="ReadClip()">Get Data From Clipboard</button>
                     @*<button type="button" class="btn btn-primary" ng-click="proTest()">progress</button>*@
@@ -397,7 +401,7 @@
             pickerPosition: "bottom-left"
         });
 
-        $("#orderForm").validation({ icon: true });
+        $("#orderForm").validator();
 
     });
 
