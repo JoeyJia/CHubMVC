@@ -22,9 +22,9 @@ namespace CHubBLL
             dal = new TS_OR_DETAIL_DAL(db);
         }
 
-        public bool AddDetail(TS_OR_DETAIL model)
+        public void AddOrUpdateDetail(TS_OR_DETAIL model,bool autoSave = true)
         {
-            return dal.AddDetail(model);
+            dal.AddOrUpdateDetail(model);
         }
 
     }

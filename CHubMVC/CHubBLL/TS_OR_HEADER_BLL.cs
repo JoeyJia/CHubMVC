@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
 using CHubModel.ExtensionModel;
+using static CHubCommon.CHubEnum;
+using System.Data.Entity;
 
 namespace CHubBLL
 {
@@ -67,57 +69,54 @@ namespace CHubBLL
         /// <returns></returns>
         public decimal UpdateHeadersWithDetails(TS_OR_HEADER orHeader, TS_OR_HEADER altORHeader, List<TS_OR_DETAIL> detailList)
         {
-            try
+            TS_OR_HEADER_STAGE_BLL hsBLL = new TS_OR_HEADER_STAGE_BLL(dal.db);
+            //Or Header part => if exist stage =>delete stage and add header. if not exist stage => update header
+            TS_OR_HEADER_STAGE headerStage = hsBLL.GetSpecifyHeaderStage(orHeader.ORDER_REQ_NO, orHeader.SHIPFROM_SEQ);
+            if (headerStage != null)
             {
-                TS_OR_HEADER_STAGE_BLL hsBLL = new TS_OR_HEADER_STAGE_BLL(dal.db);
-                //Or Header part => if exist stage =>delete stage and add header. if not exist stage => update header
-                TS_OR_HEADER_STAGE headerStage = hsBLL.GetSpecifyHeaderStage(orHeader.ORDER_REQ_NO, orHeader.SHIPFROM_SEQ);
-                if (headerStage != null)
-                {
-                    dal.Delete(headerStage, false);
-                    dal.Add(orHeader, false);
-                }
-                else
-                    dal.Update(orHeader, false);
+                //Must be save draft to save order
+                dal.Delete(headerStage, false);
+                dal.Add(orHeader, false);
 
-                //Alt Or header part
-                if (altORHeader != null)
+                TS_OR_HEADER_STAGE altHeaderStage = hsBLL.GetSpecifyHeaderStage(orHeader.ORDER_REQ_NO, (decimal)ShipFromSeqEnum.Alternative);
+                if (altHeaderStage != null)
                 {
-                    TS_OR_HEADER_STAGE altHeaderStage = hsBLL.GetSpecifyHeaderStage(altORHeader.ORDER_REQ_NO, altORHeader.SHIPFROM_SEQ);
-                    if (altHeaderStage != null)
+                    dal.Delete(altHeaderStage, false);
+
+                }
+                if (altORHeader != null)
+                    dal.Add(altORHeader);
+            }
+            else
+            {
+                //Must be override save order
+                dal.Update(orHeader, false);
+                if (altORHeader != null)
+                    dal.AddOrUpdateHeader(altORHeader,false);
+            }
+
+
+            //Detail part
+            TS_OR_DETAIL_DAL detailDal = new TS_OR_DETAIL_DAL(dal.db);
+            if (detailList != null && detailList.Count > 0)
+            {
+                TS_OR_DETAIL_STAGE_BLL dStageBLL = new TS_OR_DETAIL_STAGE_BLL(dal.db);
+                foreach (var item in detailList)
+                {
+                    TS_OR_DETAIL_STAGE dStage = dStageBLL.GetSpecifyDetailStage(item.ORDER_REQ_NO, item.ORDER_LINE_NO);
+                    if (dStage != null)
                     {
-                        dal.Delete(altHeaderStage, false);
-                        dal.Add(altORHeader);
+                        detailDal.Delete(dStage, false);
+                        detailDal.Add(item, false);
                     }
                     else
-                        dal.Update(altORHeader, false);
+                        detailDal.AddOrUpdateDetail(item, false);
+
                 }
-
-                //Detail part
-                if (detailList != null && detailList.Count > 0)
-                {
-                    TS_OR_DETAIL_STAGE_BLL dStageBLL = new TS_OR_DETAIL_STAGE_BLL(dal.db);
-                    foreach (var item in detailList)
-                    {
-                        TS_OR_DETAIL_STAGE dStage = dStageBLL.GetSpecifyDetailStage(item.ORDER_REQ_NO, item.ORDER_LINE_NO);
-                        if (dStage != null)
-                        {
-                            dal.Delete(dStage, false);
-                            dal.Add(item, false);
-                        }
-                        else
-                            dal.Update(item, false);
-
-                    }
-                }
-
-                dal.SaveChanges();
-                return orHeader.ORDER_REQ_NO;
             }
-            catch
-            {
-                return 0;
-            }
+
+            dal.SaveChanges();
+            return orHeader.ORDER_REQ_NO;
         }
 
     }

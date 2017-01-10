@@ -17,7 +17,13 @@ namespace CHubDAL
         public TS_OR_HEADER_DAL(CHubEntities db)
             : base(db) { }
 
-
+        public void AddOrUpdateHeader(TS_OR_HEADER header, bool autoSave = true)
+        {
+            if (db.TS_OR_HEADER.Any(a => a.ORDER_REQ_NO == header.ORDER_REQ_NO && a.SHIPFROM_SEQ == header.SHIPFROM_SEQ))
+                Update(header, autoSave);
+            else
+                Add(header, autoSave);
+        }
 
 
     }

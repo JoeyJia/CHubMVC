@@ -18,13 +18,12 @@ namespace CHubDAL
             : base(db) { }
 
 
-        public bool AddDetailStage(TS_OR_DETAIL_STAGE model)
+        public void AddOrUpdateDetailStage(TS_OR_DETAIL_STAGE model,bool autoSave = true)
         {
             if (db.TS_OR_DETAIL_STAGE.Any(a => a.ORDER_REQ_NO == model.ORDER_REQ_NO && a.ORDER_LINE_NO == model.ORDER_LINE_NO))
-                Update(model);
+                Update(model,autoSave);
             else
-                Add(model);
-            return true;
+                Add(model,autoSave);
         }
 
         public TS_OR_DETAIL_STAGE GetSpecifyDetailStage(decimal seq, decimal lineNO)

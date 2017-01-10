@@ -19,15 +19,15 @@
 
 <input type="hidden" value="@ViewBag.AppUser" id="hddAppUser" />
 
-<div id="orderBody" ng-app="orderApp" ng-controller="orderCtrl">
+<div id="orderBody" ng-app="orderApp" ng-controller="orderCtrl" class="small">
     <form class="form-horizontal" action="/order/index" method="post">
         <div class="panel panel-default">
             <div class="panel-heading"><b>Quick Order Entry</b></div>
 
             <div class="row" style="margin-top:20px;">
                 <div class="form-group">
-                    <label for="orderID" class="col-sm-1 control-label">Order SEQ</label>
-                    <div class="col-sm-1">
+                    <label for="orderID" class="col-sm-2 control-label">Order SEQ</label>
+                    <div class="col-sm-2 col-lg-1">
                         <input type="text" class="form-control input-sm" id="orderID" ng-model="orderSeq" placeholder="Auto" disabled>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
 
             <div class="row">
                 <div class="form-group">
-                    <label for="cAlias" class="col-sm-1 control-label">Cus Alias</label>
+                    <label for="cAlias" class="col-sm-2 control-label">Cus Alias</label>
                     <div class="col-sm-2">
                         <select class="form-control" id="cAlias" ng-model="selectedAlias" ng-options="ca.ALIAS_NAME for ca in custAlias"></select>
                     </div>
@@ -44,34 +44,50 @@
 
             <div class="row">
                 <div class="form-group">
-                    <label for="poNum" class="col-sm-1 control-label">PO No.</label>
+                    <label for="poNum" class="col-sm-2 control-label">PO No.</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control" id="poNum" placeholder="Customer PO No." required>
                     </div>
 
-                    <label for="orderType" class="col-sm-1 control-label">Order Type</label>
-                    <div class="col-sm-1">
+                    <label for="orderType" class="col-sm-2 control-label">Order Type</label>
+                    <div class="col-sm-2">
                         <select class="form-control" id="orderType" ng-model="selectedOrderType" ng-options="ot.ORDER_TYPE for ot in orderType"></select>
                     </div>
 
-                    <label for="dueDate" class="col-sm-1 control-label">Due Date</label>
-                    <div class="col-sm-1">
+                    @*<label for="dueDate" class="col-sm-2 control-label">Due Date</label>
+                    <div class="col-sm-2">
                         <input type="text" id="dueDate" class="form-control" />
                     </div>
 
-                    <label for="cShip" class="col-sm-1 control-label">Complete Ship</label>
+                    <label for="cShip" class="col-sm-2 control-label">Complete Ship</label>
                     <div class="col-sm-1">
                         <select class="form-control" id="cShip">
                             <option>N</option>
                             <option>Y</option>
                         </select>
-                    </div>
+                    </div>*@
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-group">
-                    <label for="notes" class="col-sm-1 control-label">Notes</label>
+
+                    <label for="dueDate" class="col-sm-2 control-label">Due Date</label>
+                    <div class="col-sm-2 ">
+                        <input type="text" id="dueDate" class="form-control dueDatetime" readonly/>
+                    </div>
+
+                    <label for="cShip" class="col-sm-2 control-label">Complete Ship</label>
+                    <div class="col-sm-2">
+                        <select class="form-control" style="width:100px" id="cShip">
+                            <option>N</option>
+                            <option>Y</option>
+                        </select>
+                    </div>
+                </div>
+            </div><div class="row">
+                <div class="form-group">
+                    <label for="notes" class="col-sm-2 control-label">Notes</label>
                     <div class="col-sm-9 col-lg-9">
                         <input type="text" class="form-control col-sm-8" id="notes" placeholder="Notes" ng-model="notice" style="width:90%;">
                     </div>
@@ -80,7 +96,7 @@
 
             <div class="row">
                 <div class="form-group">
-                    <label for="ssto" class="col-sm-1 control-label">SPL Order</label>
+                    <label for="ssto" class="col-sm-2 control-label">SPL Order</label>
                     <div class="checkbox col-md-2 col-lg-2">
                         <label>
                             <input type="checkbox" id="ssto" style="margin-left:1px;" onclick="checkSstoStatu()" checked>
@@ -91,7 +107,7 @@
 
 
             <div class="row" id="searchBox">
-                <div class="panel panel-default col-sm-7 col-sm-offset-1">
+                <div class="panel panel-default col-sm-7 col-sm-offset-2">
                     <div class="form-group" style="padding-top:10px">
                         <label for="shipName" class="col-sm-2 control-label">Ship Name</label>
                         <div class="col-sm-7 col-lg-7">
@@ -224,12 +240,12 @@
                                     <td>{{rd.Distance}}</td>
                                     <td>{{rd.WareHouse}}</td>
                                     <td>{{rd.DestAttention}}</td>
-                                    <td>{{rd.LocalDestName}}</td>
-                                    <td>{{rd.LocalDestAddr1}}</td>
-                                    <td>{{rd.LocalDestAddr2}}</td>
-                                    <td>{{rd.LocalDestAddr3}}</td>
-                                    <td>{{rd.LocalDestCity}}</td>
-                                    <td>{{rd.LocalDestState}}</td>
+                                    <td>{{rd.DestName}}</td>
+                                    <td>{{rd.DestAddr1}}</td>
+                                    <td>{{rd.DestAddr2}}</td>
+                                    <td>{{rd.DestAddr3}}</td>
+                                    <td>{{rd.DestCity}}</td>
+                                    <td>{{rd.DestState}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -253,10 +269,10 @@
                                     <th style="">Part No.</th>
                                     <th style="">Description</th>
                                     <th style="">DescCN</th>
-                                    <th style="width:100px">Qty</th>
+                                    <th style="width:80px">Qty</th>
                                     <th style="width:100px">AVL Check(Pri)</th>
                                     <th style="width:100px">AVL Check(Alt)</th>
-                                    <th>Operation</th>
+                                    <th style="width:60px">Operation</th>
                                 </tr>
                             </thead>
                             <tbody style="">
@@ -353,8 +369,8 @@
                 </table>
                 <div class="row">
                     <div class="col-md-2 col-md-offset-10">
-                        <button type="button" class="btn btn-primary" onclick="ConfirmAddr()">Confirm</button>
-
+                        <button type="button" class="btn btn-primary" onclick="confirmAddr()">Confirm</button>
+                        <button type="button" class="btn btn-primary" onclick="cancelAddr()">Cancel</button>
                     </div>
 
                 </div>
@@ -380,13 +396,14 @@
 
 <script>
     $(document).ready(function () {
-        $('#dueDate').datetimepicker({
+        $('.dueDatetime').datetimepicker({
             format: 'yyyy-mm-dd',
             autoclose: true,
             minView: 'month',
             todayBtn: true,
-            pickerPositioin:'botton-right'
-
+            todayHighlight: true,
+            initialDate:new Date(),
+            pickerPosition: "bottom-left"
         });
 
     });
@@ -801,7 +818,7 @@
         });
     }
 
-    function ConfirmAddr()
+    function confirmAddr()
     {
         for (var i = 0; i < $(".addrRadio").length ; i++) {
             if ($(".addrRadio")[i].checked)
@@ -820,6 +837,11 @@
             }
 
         }
+        $("#aliasSearch").modal("hide");
+    }
+
+    function cancelAddr()
+    {
         $("#aliasSearch").modal("hide");
     }
 

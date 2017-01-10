@@ -58,51 +58,67 @@ namespace CHubMVC.Controllers
         [HttpPost]
         public ActionResult SearchAddrs(string shipName,string addr,string aliasName, bool isSpecialShip)
         {
-            List<ExVAliasAddr> list = new List<ExVAliasAddr>();
-            CHubEntities db = new CHubEntities();
-            if (isSpecialShip)
+            try
             {
-                V_ALIAS_ADDR_SPL_BLL bll = new V_ALIAS_ADDR_SPL_BLL();
-                list = bll.GetAliasAddrSPL(shipName.Trim(), addr.Trim(),aliasName);
-            }
-            else
-            {
-                V_ALIAS_ADDR_DFLT_BLL bll = new V_ALIAS_ADDR_DFLT_BLL();
-                list = bll.GetAliasAddrDFLT(aliasName);
-            }
+                List<ExVAliasAddr> list = new List<ExVAliasAddr>();
+                CHubEntities db = new CHubEntities();
+                if (isSpecialShip)
+                {
+                    V_ALIAS_ADDR_SPL_BLL bll = new V_ALIAS_ADDR_SPL_BLL();
+                    list = bll.GetAliasAddrSPL(shipName.Trim(), addr.Trim(), aliasName);
+                }
+                else
+                {
+                    V_ALIAS_ADDR_DFLT_BLL bll = new V_ALIAS_ADDR_DFLT_BLL();
+                    list = bll.GetAliasAddrDFLT(aliasName);
+                }
 
-            //Get from parameter table?
-            if (list.Count > 10)
-            {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Content(string.Format("Result has {0} items, Make Condition more strict",list.Count.ToString()));
-            }
-            if (list.Count == 0)
-            {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Content("No result");
-            }
+                //Get from parameter table***
+                if (list.Count > 10)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return Content(string.Format("Result has {0} items, Make Condition more strict", list.Count.ToString()));
+                }
+                if (list.Count == 0)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return Content("No result");
+                }
 
-            return Json(list);
+                return Json(list);
+            }
+            catch (Exception ee)
+            {
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Content(ee.Message);
+            }
         }
 
         [HttpPost]
-        public JsonResult GetStrictAddrs(string shipName, string addr, string aliasName, bool isSpecialShip)
+        public ActionResult GetStrictAddrs(string shipName, string addr, string aliasName, bool isSpecialShip)
         {
-            List<ExVAliasAddr> list = new List<ExVAliasAddr>();
-            CHubEntities db = new CHubEntities();
-            if (isSpecialShip)
+            try
             {
-                V_ALIAS_ADDR_SPL_BLL bll = new V_ALIAS_ADDR_SPL_BLL();
-                list = bll.GetStrictAliasAddrSPL(shipName.Trim(), addr.Trim(),aliasName);
-            }
-            else
-            {
-                V_ALIAS_ADDR_DFLT_BLL bll = new V_ALIAS_ADDR_DFLT_BLL();
-                list = bll.GetStrictAliasAddrDFLT(shipName.Trim(), addr.Trim(),aliasName);
-            }
+                List<ExVAliasAddr> list = new List<ExVAliasAddr>();
+                CHubEntities db = new CHubEntities();
+                if (isSpecialShip)
+                {
+                    V_ALIAS_ADDR_SPL_BLL bll = new V_ALIAS_ADDR_SPL_BLL();
+                    list = bll.GetStrictAliasAddrSPL(shipName.Trim(), addr.Trim(), aliasName);
+                }
+                else
+                {
+                    V_ALIAS_ADDR_DFLT_BLL bll = new V_ALIAS_ADDR_DFLT_BLL();
+                    list = bll.GetStrictAliasAddrDFLT(shipName.Trim(), addr.Trim(), aliasName);
+                }
 
-            return Json(list);
+                return Json(list);
+            }
+            catch (Exception ee)
+            {
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Content(ee.Message);
+            }
         }
 
 
@@ -160,7 +176,7 @@ namespace CHubMVC.Controllers
             {
                 //log ee
                 Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                return Content("Fail to save draft");
+                return Content(ee.Message);
             }
         }
 
@@ -218,20 +234,28 @@ namespace CHubMVC.Controllers
             {
                 //log ee
                 Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                return Content("Fail to  order save order");
+                return Content(ee.Message);
             }
         }
 
         [HttpPost]
         public ActionResult CheckOrderLineItem(OrderLineCheckArg olArg)
         {
-            string msg = CheckOrderLineItemAction(olArg);
-            if (string.IsNullOrEmpty(msg))
-                return Json(olArg.olItem);
-            else
+            try
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Content(msg);
+                string msg = CheckOrderLineItemAction(olArg);
+                if (string.IsNullOrEmpty(msg))
+                    return Json(olArg.olItem);
+                else
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return Content(msg);
+                }
+            }
+            catch (Exception ee)
+            {
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Content(ee.Message);
             }
         }
 

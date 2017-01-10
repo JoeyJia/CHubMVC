@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
 using CHubModel.ExtensionModel;
+using static CHubCommon.CHubEnum;
 
 namespace CHubBLL
 {
@@ -30,60 +31,55 @@ namespace CHubBLL
 
         public decimal AddHeadersWithDetailsStage(TS_OR_HEADER_STAGE orHeaderStage, TS_OR_HEADER_STAGE altORHeaderStage, List<TS_OR_DETAIL_STAGE> dStageList)
         {
-            try
-            {
-                decimal nextVal = dal.GetOrderSqeNextVal();
-                orHeaderStage.ORDER_REQ_NO = nextVal;
-                dal.Add(orHeaderStage, false);
+            decimal nextVal = dal.GetOrderSqeNextVal();
+            orHeaderStage.ORDER_REQ_NO = nextVal;
+            dal.Add(orHeaderStage, false);
 
-                if (altORHeaderStage != null)
-                {
-                    altORHeaderStage.ORDER_REQ_NO = nextVal;
-                    dal.Add(altORHeaderStage, false);
-                }
-                //add Detail part
-                if (dStageList != null && dStageList.Count > 0)
-                {
-                    foreach (var item in dStageList)
-                    {
-                        item.ORDER_REQ_NO = nextVal;
-                        dal.Add(item, false);
-                    }
-                }
-
-                dal.SaveChanges();
-                return nextVal;
-            }
-            catch
+            if (altORHeaderStage != null)
             {
-                return 0;
+                altORHeaderStage.ORDER_REQ_NO = nextVal;
+                dal.Add(altORHeaderStage, false);
             }
+            //add Detail part
+            if (dStageList != null && dStageList.Count > 0)
+            {
+                foreach (var item in dStageList)
+                {
+                    item.ORDER_REQ_NO = nextVal;
+                    dal.Add(item, false);
+                }
+            }
+
+            dal.SaveChanges();
+            return nextVal;
+            
         }
 
         public decimal UpdateHeadersWithDetailsStage(TS_OR_HEADER_STAGE orHeaderStage, TS_OR_HEADER_STAGE altORHeaderStage, List<TS_OR_DETAIL_STAGE> dStageList)
         {
-            try
+            dal.Update(orHeaderStage, false);
+            if (altORHeaderStage != null)
+                dal.AddOrUpdateHeaderStage(altORHeaderStage, false);
+            else
             {
-                dal.Update(orHeaderStage, false);
-                if (altORHeaderStage != null)
-                    dal.Update(altORHeaderStage, false);
+                //if from have alt header to no alt header, need to delete exist header items
+                TS_OR_HEADER_STAGE existAlt = GetSpecifyHeaderStage(orHeaderStage.ORDER_REQ_NO, (decimal)ShipFromSeqEnum.Alternative);
+                if (existAlt != null)
+                    dal.Delete(existAlt,false);
+            }
 
-                //Update detail part
-                if (dStageList != null && dStageList.Count > 0)
+            //Update detail part
+            TS_OR_DETAIL_STAGE_DAL dStageDal = new TS_OR_DETAIL_STAGE_DAL(dal.db);
+            if (dStageList != null && dStageList.Count > 0)
+            {
+                foreach (var item in dStageList)
                 {
-                    foreach (var item in dStageList)
-                    {
-                        dal.Update(item, false);
-                    }
+                    dStageDal.AddOrUpdateDetailStage(item, false);
                 }
+            }
 
-                dal.SaveChanges();
-                return orHeaderStage.ORDER_REQ_NO;
-            }
-            catch
-            {
-                return 0;
-            }
+            dal.SaveChanges();
+            return orHeaderStage.ORDER_REQ_NO;
         }
 
 

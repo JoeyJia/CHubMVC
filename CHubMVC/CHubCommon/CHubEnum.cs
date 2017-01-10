@@ -78,5 +78,11 @@ namespace CHubCommon
             I
         }
 
+        public enum ShipFromSeqEnum
+        {
+            Primary = 0,
+            Alternative
+        }
+
     }
 }

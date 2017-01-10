@@ -17,13 +17,12 @@ namespace CHubDAL
         public TS_OR_DETAIL_DAL(CHubEntities db)
             : base(db) { }
 
-        public bool AddDetail(TS_OR_DETAIL model)
+        public void AddOrUpdateDetail(TS_OR_DETAIL model,bool autoSave=true)
         {
             if (db.TS_OR_DETAIL.Any(a => a.ORDER_REQ_NO == model.ORDER_REQ_NO && a.ORDER_LINE_NO == model.ORDER_LINE_NO))
-                Update(model);
+                Update(model, autoSave);
             else
-                Add(model);
-            return true;
+                Add(model, autoSave);
         }
 
     }

@@ -13,26 +13,27 @@
 @Scripts.Render("~/bundles/bootstrap")
 
 <title>@ViewBag.Title</title>
-<body style="width:100%;">
+
+<body>
+
     <div id="BgImg" style="height: 70px; width:100%; background-image: url('../../Images/bg-header.png');">
         <a href="/home/index" title="HomePage">
             <img src="~/Images/cummins-logo-print.gif" style="margin-top:10px; margin-left:150px;height:50px;width:55px">
         </a>
     </div>
 
-
-            <div class="container-fluid" style="height:85%;">
+            <div class="container-fluid" style="height:85%;width:98%">
                 <div class="row" style="margin-top:150px;height:375px">
                     <div class="col-md-12 col-lg-12" style="height:375px;">
                         <div class="row">
 
-                            <div class="col-md-8 text-right">
+                            <div class="col-md-8 col-sm-7 text-right">
                                 <img src="~/Images/LogBack/scenery2.jpg">
                             </div>
 
-                            <div class="col-md-2">
+                            <div class="col-md-3 col-sm-4">
 
-                                <div class="panel panel-default" style="height:375px;background-color:#eee;">
+                                <div class="panel panel-default" style="height:375px;width:290px;background-color:#eee;">
 
                                     <section id="loginForm">
                                         @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
