@@ -27,7 +27,7 @@
             <div class="row" style="margin-top:20px;">
                 <div class="form-group">
                     <label for="orderID" class="col-sm-2 control-label small">Order SEQ</label>
-                    <div class="col-sm-2 col-lg-1">
+                    <div class="col-sm-2 col-lg-2">
                         <input type="text" class="form-control input-sm" id="orderID" ng-model="orderSeq" placeholder="Auto" disabled>
                     </div>
                 </div>
@@ -140,67 +140,70 @@
                     <div class="col-md-12 col-lg-12 ">
                         <div class="panel panel-default" style="">
                             <div class="panel-heading"><b>Primary Ship From</b></div>
-                            <table class="table table-bordered table-striped" style="border-color:black;">
+                            <table class="table table-bordered table-striped .table-condensed" style="border-color:black;">
                                 <tr>
-                                    <td></td>
                                     <td style="width:30px"><b>Duration</b></td>
                                     <td style="width:10px">{{selectedAliasAddr.Days}}</td>
                                     <td style="width:15px"><b>WareHouse</b></td>
                                     <td style="width:15px">{{selectedAliasAddr.WareHouse}}</td>
                                     <td style="width:20px"><b>Customer No.</b></td>
                                     <td style="width:15px">{{selectedAliasAddr.CustomerNo}}</td>
+                                    <td><b>Attention</b></td>
+                                    <td>{{selectedAliasAddr.DestAttention}}</td>
                                 </tr>
                                 <tr>
                                     <td style="width:30px"><b>Ship To Name</b></td>
-                                    <td colspan="6">{{selectedAliasAddr.LocalDestName}}</td>
+                                    <td colspan="7">{{selectedAliasAddr.LocalDestName}}</td>
                                 </tr>
                                 <tr>
                                     <td style="width:30px"><b>Local Addr 1</b></td>
-                                    <td colspan="6">{{selectedAliasAddr.LocalDestAddr1}}</td>
+                                    <td colspan="7">{{selectedAliasAddr.LocalDestAddr1}}</td>
                                 </tr>
                                 <tr>
                                     <td style="width:30px"><b>Local Addr 2</b></td>
-                                    <td colspan="6">{{selectedAliasAddr.LocalDestAddr2}}</td>
+                                    <td colspan="7">{{selectedAliasAddr.LocalDestAddr2}}</td>
                                 </tr>
                                 <tr>
                                     <td style="width:30px"><b>Local Addr 3</b></td>
-                                    <td colspan="6">{{selectedAliasAddr.LocalDestAddr3}}</td>
+                                    <td colspan="7">{{selectedAliasAddr.LocalDestAddr3}}</td>
                                 </tr>
                                 <tr>
                                     <td style="width:30px"><b>Local City</b></td>
-                                    <td colspan="6">{{selectedAliasAddr.LocalDestCity}}</td>
+                                    <td colspan="7">{{selectedAliasAddr.LocalDestCity}}</td>
                                 </tr>
                                 <tr></tr>
                                 <tr>
                                     <td style="width:30px"><b>Ship To Name</b></td>
-                                    <td style="width:30px">{{selectedAliasAddr.DestName}}</td>
+                                    <td style="width:30px" colspan="5">{{selectedAliasAddr.DestName}}</td>
                                     <td style="width:30px"><b>Dest No.</b></td>
-                                    <td style="width:30px" colspan="4">{{selectedAliasAddr.DestLocation}}</td>
+                                    <td style="width:30px" >{{selectedAliasAddr.DestLocation}}</td>
                                 </tr>
                                 <tr>
                                     <td style="width:30px"><b>Addr 1</b></td>
-                                    <td colspan="6">{{selectedAliasAddr.DestAddr1}}</td>
+                                    <td colspan="7">{{selectedAliasAddr.DestAddr1}}</td>
                                 </tr>
                                 <tr>
                                     <td style="width:30px"><b>Addr 2</b></td>
-                                    <td colspan="6">{{selectedAliasAddr.DestAddr2}}</td>
+                                    <td colspan="7">{{selectedAliasAddr.DestAddr2}}</td>
                                 </tr>
                                 <tr>
                                     <td style="width:30px"><b>Addr 3</b></td>
-                                    <td colspan="6">{{selectedAliasAddr.DestAddr3}}</td>
+                                    <td colspan="7">{{selectedAliasAddr.DestAddr3}}</td>
                                 </tr>
                                 <tr>
                                     <td style="width:30px"><b>City</b></td>
                                     <td>{{selectedAliasAddr.DestCity}}</td>
+                                    <td style="width:30px"><b>Country</b></td>
+                                    <td >{{selectedAliasAddr.DestCountry}}</td>
                                     <td style="width:30px"><b>ZIP</b></td>
                                     <td>{{selectedAliasAddr.DestZip}}</td>
                                     <td style="width:30px"><b>State</b></td>
-                                    <td colspan="2">{{selectedAliasAddr.DestState}}</td>
+                                    <td >{{selectedAliasAddr.DestState}}</td>
                                 </tr>
-                                <tr>
+                                @*<tr>
                                     <td style="width:30px"><b>Country</b></td>
                                     <td colspan="6">{{selectedAliasAddr.DestCountry}}</td>
-                                </tr>
+                                </tr>*@
 
                             </table>
                         </div>
@@ -217,7 +220,7 @@
                             </label>
                         <b>Alternative Ship From</b>
                         </div>
-                        <table id="altAliasAddr" ng-show="altAddrVisiable" class="table table-striped table-hover table-bordered">
+                        <table id="altAliasAddr" ng-show="altAddrVisiable" class="table table-striped table-hover table-bordered .table-condensed">
                             <thead>
                                 <tr>
                                     <th style="width:10px"></th>
@@ -267,7 +270,7 @@
                         <div class="panel-heading"><b>Order Lines</b>
                         </div>
 
-                        <table id="dtOrderLines" class="table table-striped table-hover table-bordered">
+                        <table id="dtOrderLines" class="table table-striped table-hover table-bordered .table-condensed">
                             <thead>
                                 <tr>
                                     <th style="width:10px">SEQ</th>
@@ -285,7 +288,7 @@
                                 <tr ng-repeat="ol in orderLines ">
                                     <td style="">{{$index+1}}</td>
                                     <td><input class="form-control" ng-model="ol.CustomerPartNo" ng-blur="checkOrderLineItem(ol)" /></td>
-                                    <td><input class="form-control" ng-model="ol.PartNo" placeholder="{{ol.PartNoPlaceHolder}}" readonly/></td>
+                                    <td><input class="form-control" ng-model="ol.PartNo" placeholder="{{ol.PartNoPlaceHolder}}" ng-style ="{backgroundColor:ol.ItemBackColor}" readonly/></td>
                                     <td><input class="form-control" ng-model="ol.Description" readonly/></td>
                                     <td><input class="form-control" ng-model="ol.DescCN" readonly/></td>
                                     <td><input class="form-control" ng-model="ol.Qty" ng-blur="checkOrderLineItem(ol)" /></td>
@@ -403,7 +406,7 @@
             pickerPosition: "bottom-left"
         });
 
-        $("#orderForm").validator();
+        //$("#orderForm").validator();
 
     });
 
@@ -619,6 +622,7 @@
                     curr.PartNoPlaceHolder = obj.PartNoPlaceHolder;
                     curr.Description = obj.Description;
                     curr.DescCN = obj.DescCN;
+                    curr.ItemBackColor = obj.ItemBackColor;
 
                     curr.LastCheckNo = curr.CustomerPartNo;
                     curr.LastQty = curr.Qty;
@@ -675,7 +679,7 @@
 
         $scope.checkAltAddrVisiable = function () {
             if ($scope.altAddrVisiable == false) {
-                $scope.selectedAltAliasAddr = null;
+                $scope.selectedAltAliasAddr = "";
                 //Reset order Lines alt data
                 for (var i = 0; i < $scope.orderLines.length; i++) {
                     $scope.orderLines[i].AltAVLCheckColor = null;
@@ -700,34 +704,34 @@
         };
 
         $scope.ReadClip = function () {
+            debugger;
             var str = getClipboard();
             if (str == null)
                 alert("No ClipBoard Data");
-            var rows = str.split("\n");
+            var rows = str.split("\r\n");
             if (rows[0].split("\t").length < 2)
                 alert("Wrong Data format");
             if (isNaN(rows[0].split("\t")[1]))
                 alert("Wrong Data Format");
 
-            @*var nl = "@(System.Environment.NewLine)";*@
-
             for (var i = 0; i < rows.length; i++) {
                 var data = rows[i].split("\t");
-                if (data.length > 1) {
-                    if (i == 0 && $scope.orderLines[$scope.orderLines.length - 1].CustomerPartNo == "") {
+                if (data.length > 1 ) {
+                    if (i == 0 && $scope.orderLines.length>0 &&  $scope.orderLines[$scope.orderLines.length - 1].CustomerPartNo == "") {
                         $scope.orderLines[$scope.orderLines.length - 1].CustomerPartNo = data[0];
                         $scope.orderLines[$scope.orderLines.length - 1].Qty = data[1];
-                        $scope.checkOrderLineItem($scope.orderLines[$scope.orderLines.length - 1]);
+                        //$scope.checkOrderLineItem($scope.orderLines[$scope.orderLines.length - 1]);
                     }
                     else {
                         $scope.lineNo = $scope.lineNo + 1;
                         var newItem = {OrderLineNo:$scope.lineNo, CustomerPartNo: data[0], Qty: data[1] };
-                        $scope.checkOrderLineItem(newItem);
+                        //$scope.checkOrderLineItem(newItem);
                         $scope.orderLines.push(newItem);
                     }
                 }
 
             }
+            $scope.batchCheckOrderLines();
         };
 
         function getClipboard() {
@@ -761,6 +765,9 @@
                 return false;
         };
 
+        function AfterSaveAction() {
+    //Set disable status
+        };
 
 
     });
@@ -854,8 +861,9 @@
 
     function checkPOText()
     {
-        debugger;
         var txt = $("#poNum").val();
+        if (txt == "")
+            return;
         //var reg = /^[u4E00-u9FA5]+$/;
         var reg1 = /^[a-zA-Z0-9]{1,25}$/;
         if (!reg1.test(txt)) {

@@ -33,5 +33,7 @@ namespace CHubModel
         public string LastCheckNo { get; set; }
 
         public decimal LastQty { get; set; }
+
+        public string ItemBackColor { get; set; }
     }
 }

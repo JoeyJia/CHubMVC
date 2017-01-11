@@ -325,6 +325,7 @@ namespace CHubMVC.Controllers
             olArg.olItem.AltAVLCheck = null;
             olArg.olItem.DescCN = string.Empty;
             olArg.olItem.Description = string.Empty;
+            olArg.olItem.ItemBackColor = string.Empty;
 
             olArg.olItem.LastCheckNo = olArg.olItem.CustomerPartNo;
             olArg.olItem.LastQty = olArg.olItem.Qty;
@@ -338,6 +339,7 @@ namespace CHubMVC.Controllers
             if (string.IsNullOrEmpty(olArg.olItem.PartNo))
             {
                 olArg.olItem.PartNoPlaceHolder = "Can't find Part NO";
+                olArg.olItem.ItemBackColor = "red";
                 return null;
             }
             else
