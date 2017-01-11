@@ -11,6 +11,7 @@ using CHubModel;
 using CHubCommon;
 using CHubDBEntity;
 using System.Net;
+using System.Text;
 
 namespace CHubMVC.Controllers
 {
@@ -111,7 +112,6 @@ namespace CHubMVC.Controllers
                     V_ALIAS_ADDR_DFLT_BLL bll = new V_ALIAS_ADDR_DFLT_BLL();
                     list = bll.GetStrictAliasAddrDFLT(shipName.Trim(), addr.Trim(), aliasName);
                 }
-
                 return Json(list);
             }
             catch (Exception ee)
@@ -288,6 +288,40 @@ namespace CHubMVC.Controllers
                 return Content(ex.Message);
             }
         }
+
+
+        public FileResult DownLoadOrder(decimal orderSeq,decimal shipFrom = 0)
+        {
+            try
+            {
+
+                CHubEntities db = new CHubEntities();
+                V_O_DOWNLOAD_HDR_BLL hBLL = new V_O_DOWNLOAD_HDR_BLL(db);
+                V_O_DOWNLOAD_HDR hData = hBLL.GetSpecfyHDRData(orderSeq, shipFrom);
+
+                V_O_DOWNLOAD_DTL_BLL dBLL = new V_O_DOWNLOAD_DTL_BLL(db);
+                List<V_O_DOWNLOAD_DTL> dList = dBLL.GetDTLList(orderSeq, shipFrom);
+
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine(hData.TXT);
+                foreach (var item in dList)
+                {
+                    sb.AppendLine(item.TXT);
+                }
+
+                byte[] buffer = Encoding.UTF8.GetBytes(sb.ToString());
+
+                return File(buffer, "text/csv", hData.FILE_NAME);
+            }
+            catch (Exception ee)
+            {
+                return null;
+                //Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                //return Content(ee.Message);
+            }
+        }
+
+
 
 
         #region *** private function ***

@@ -22,6 +22,10 @@ namespace CHubBLL
             dal = new V_O_DOWNLOAD_HDR_DAL(db);
         }
 
+        public V_O_DOWNLOAD_HDR GetSpecfyHDRData(decimal orderSeq, decimal shipFrom)
+        {
+            return dal.GetSpecfyHDRData(orderSeq, shipFrom);
+        }
 
     }
 }

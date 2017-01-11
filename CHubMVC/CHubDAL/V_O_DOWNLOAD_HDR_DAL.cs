@@ -17,6 +17,10 @@ namespace CHubDAL
             : base(db) { }
 
 
+        public V_O_DOWNLOAD_HDR GetSpecfyHDRData(decimal orderSeq, decimal shipFrom)
+        {
+            return db.V_O_DOWNLOAD_HDR.FirstOrDefault(a => a.ORDER_REQ_NO == orderSeq && a.SHIPFROM_SEQ == shipFrom);
+        }
 
     }
 }

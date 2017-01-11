@@ -308,7 +308,10 @@
                 <div class="col-md-10 col-lg-10 " style="margin-top:10px">
                     <button type="submit" class="btn btn-primary" ng-click="SaveDraft()">Save Draft</button>
                     <button type="submit" class="btn btn-primary" ng-click="SaveOrder()">Save Order</button>
-                    <button type="button" class="btn btn-primary">Download</button>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="downloadPri()">Download Pri</button>
+                        <button type="button" class="btn btn-primary" ng-click="downloadAlt()">Download Alt</button>
+                    </div>
                     <button type="button" class="btn btn-primary" ng-click="ReadClip()">Get Data From Clipboard</button>
                     @*<button type="button" class="btn btn-primary" ng-click="proTest()">progress</button>*@
                 </div>
@@ -406,7 +409,7 @@
             pickerPosition: "bottom-left"
         });
 
-        //$("#orderForm").validator();
+        $("#orderForm").validator();
 
     });
 
@@ -428,7 +431,7 @@
             $scope.selectedAliasAddr="";
 
             //alternative alias addr list and selected on addr
-            $scope.AltAliasAddr="";
+            $scope.AltAliasAddr=null;
             $scope.selectedAltAliasAddr = "";
 
             $scope.notice = "";
@@ -490,12 +493,17 @@
 
 
         $scope.SaveDraft = function () {
-            for (var i = 0; i < $(".altAddrRadio").length ; i++) {
-                if ($(".altAddrRadio")[i].checked) {
-                    var seq = $(".altAddrRadio")[i].attributes['seq'].value;
-                    $scope.selectedAltAliasAddr = $scope.AltAliasAddr[seq];
-                    break;
-                }
+            //for (var i = 0; i < $(".altAddrRadio").length ; i++) {
+            //    if ($(".altAddrRadio")[i].checked) {
+            //        var seq = $(".altAddrRadio")[i].attributes['seq'].value;
+            //        $scope.selectedAltAliasAddr = $scope.AltAliasAddr[seq];
+            //        break;
+            //    }
+            //}
+            var msg = checkLinesBeforeSave();
+            if (msg != null) {
+                alert(msg);
+                return;
             }
 
             var dueDate = $("#dueDate")[0].value;
@@ -534,12 +542,17 @@
         };
 
         $scope.SaveOrder = function () {
-            for (var i = 0; i < $(".altAddrRadio").length ; i++) {
-                if ($(".altAddrRadio")[i].checked) {
-                    var seq = $(".altAddrRadio")[i].attributes['seq'].value;
-                    $scope.selectedAltAliasAddr = $scope.AltAliasAddr[seq];
-                    break;
-                }
+            //for (var i = 0; i < $(".altAddrRadio").length ; i++) {
+            //    if ($(".altAddrRadio")[i].checked) {
+            //        var seq = $(".altAddrRadio")[i].attributes['seq'].value;
+            //        $scope.selectedAltAliasAddr = $scope.AltAliasAddr[seq];
+            //        break;
+            //    }
+            //}
+            var msg = checkLinesBeforeSave();
+            if (msg != null) {
+                alert(msg);
+                return;
             }
 
             var dueDate = $("#dueDate")[0].value;
@@ -663,6 +676,30 @@
             });
         };
 
+        $scope.downloadPri = function () {
+                window.location.href = "/order/DownLoadOrder?orderSeq=" + $scope.orderSeq + "&shipFrom=" + 0;
+            //$.ajax({
+            //    url: "/order/DownLoadOrder",
+            //    data: {
+            //        orderSeq: $scope.orderSeq,
+            //        shipFrom: 0
+            //    },
+            //    type: "post",
+            //    async: false,
+ 
+            //    error: function (obj) {
+            //        alert(obj.responseText);
+            //    }
+
+            //});
+        };
+
+        $scope.downloadAlt = function () {
+            window.location.href = "/order/DownLoadOrder?orderSeq=" + $scope.orderSeq + "&shipFrom=" + 1;
+        };
+
+
+
         $scope.AltAddrRadioChange = function (curr) {
             //check changed or not
             if ($scope.selectedAltAliasAddr != null && $scope.selectedAltAliasAddr != "") {
@@ -704,7 +741,6 @@
         };
 
         $scope.ReadClip = function () {
-            debugger;
             var str = getClipboard();
             if (str == null)
                 alert("No ClipBoard Data");
@@ -764,6 +800,17 @@
             else
                 return false;
         };
+
+        function checkLinesBeforeSave()
+        {
+            if ($scope.orderLines.length == 0)
+                return null;
+            for (var i = 0; i < $scope.orderLines.length; i++) {
+                if ($scope.orderLines[i].CustomerPartNo != "" && ($scope.orderLines[i].PartNo == "" || $scope.orderLines[i].PartNo == null))
+                    return "Have error lines";
+            }
+
+        }
 
         function AfterSaveAction() {
     //Set disable status

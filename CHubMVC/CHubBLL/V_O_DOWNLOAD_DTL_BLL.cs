@@ -22,6 +22,10 @@ namespace CHubBLL
             dal = new V_O_DOWNLOAD_DTL_DAL(db);
         }
 
+        public List<V_O_DOWNLOAD_DTL> GetDTLList(decimal orderSeq, decimal shipFrom)
+        {
+            return dal.GetDTLList(orderSeq, shipFrom);
+        }
 
 
     }
