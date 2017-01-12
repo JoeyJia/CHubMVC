@@ -328,6 +328,46 @@ namespace CHubMVC.Controllers
             }
         }
 
+        #region For draft function part
+        public ActionResult Draft()
+        {
+
+            return View();
+        }
+
+        public ActionResult InitDraft()
+        {
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+
+            CHubEntities db = new CHubEntities();
+            TS_OR_HEADER_STAGE_BLL hStageBLL = new TS_OR_HEADER_STAGE_BLL();
+            List<TS_OR_HEADER_STAGE> hStageList = hStageBLL.GetHeaderStageByUser(appUser);
+
+            return Json(hStageList);
+        }
+
+
+        [HttpPost]
+        public ActionResult DeleteDraft(decimal orderSeq, decimal shipFrom)
+        {
+            try
+            {
+                CHubEntities db = new CHubEntities();
+                TS_OR_HEADER_STAGE_BLL hStageBLL = new TS_OR_HEADER_STAGE_BLL();
+                hStageBLL.DeleteDraft(orderSeq, shipFrom);
+
+                return Content("Success");
+            }
+            catch (Exception ee)
+            {
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Content(ee.Message);
+            }
+        }
+
+        #endregion
+
+
 
 
 
@@ -380,14 +420,24 @@ namespace CHubMVC.Controllers
             if (string.IsNullOrEmpty(olArg.olItem.PartNo))
             {
                 olArg.olItem.PartNoPlaceHolder = "Can't find Part NO";
-                olArg.olItem.ItemBackColor = "red";
+                olArg.olItem.ItemBackColor = CHubConstValues.ErrorColor;
                 return null;
             }
             else
             {
                 CHubEntities db = new CHubEntities();
-                //Get description
                 G_PART_DESCRIPTION_BLL pDescBLL = new G_PART_DESCRIPTION_BLL(db);
+
+                //check inactive status
+                if (pDescBLL.IsInActive(olArg.olItem.PartNo))
+                {
+                    olArg.olItem.PartNoPlaceHolder = "InActive ";
+                    olArg.olItem.ItemBackColor = CHubConstValues.ErrorColor;
+                    olArg.olItem.PartNo = string.Empty;
+                    return null;
+                }
+
+                //Get description
                 G_PART_DESCRIPTION pDesc = pDescBLL.GetPartDescription(olArg.olItem.PartNo);
                 olArg.olItem.Description = pDesc.DESCRIPTION;
                 olArg.olItem.DescCN = pDesc.DESC_CN;

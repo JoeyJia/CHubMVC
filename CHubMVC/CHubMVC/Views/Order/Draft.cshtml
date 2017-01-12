@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewBag.Title = "View Draft";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<div id="orderBody" ng-app="draftApp" ng-controller="draftCtrl">
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>View Draft</b></div>
+
+        <!--Draft List-->
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default" style="">
+                    <div class="panel-heading">
+                        <b>Draft List</b>
+                    </div>
+
+                    <table id="tbDraft" class="table table-striped table-hover table-bordered .table-condensed">
+                        <thead>
+                            <tr>
+                                <th style="">SEQ</th>
+                                <th style="">Ship From SEQ</th>
+                                <th style="">To System</th>
+                                <th style="">Alias Name</th>
+                                <th style="">Customer NO.</th>
+                                <th style="">Order Type</th>
+                                <th style="">Cust PO NO.</th>
+                                <th style="">SPL Ind</th>
+                                <th style="">ShipComp Flag</th>
+                                <th style="">Create Date</th>
+                                <th style="">Order Note</th>
+                                <th style="">Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody style="">
+                            <tr ng-repeat="dl in draftList ">
+                                <td style="">{{dl.ORDER_REQ_NO}}</td>
+                                <td>{{dl.SHIPFROM_SEQ}}</td>
+                                <td>{{dl.TO_SYSTEM}}</td>
+                                <td>{{dl.ALIAS_NAME}}</td>
+                                <td>{{dl.CUSTOMER_NO}}</td>
+                                <td>{{dl.ORDER_TYPE}}</td>
+                                <td>{{dl.CUSTOMER_PO_NO}}</td>
+                                <td>{{dl.SPL_IND}}</td>
+                                <td>{{dl.SHIPCOMP_FLAG}}</td>
+                                <td>{{dl.CREATION_DATE}}</td>
+                                <td>{{dl.ORDER_NOTES}}</td>
+                                <td style="text-align:center"><a href="javascript:void(0)" title="Delete" class="removeBtn" ng-click="removeDraft($index)"><span class="glyphicon glyphicon-trash"></span></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    angular.module('draftApp', []).controller('draftCtrl', function ($scope, $http) {
+        $scope.draftList = [];
+
+        $http.post("/order/InitDraft", null, null).then(function (resp) {
+            //debugger;
+            $scope.draftList = resp.data;
+
+        },
+     function (resp) {
+         alert("Fail!");
+         // $scope.resp = resp;
+     });
+
+        $scope.removeDraft = function (seq) {
+            $.ajax({
+                url: "/order/DeleteDraft",
+                data: {
+                    orderSeq: $scope.draftList[seq].ORDER_REQ_NO,
+                    shipFrom: $scope.draftList[seq].SHIPFROM_SEQ,
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    $scope.draftList.splice(seq, 1);
+                    alert(obj);
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+    });
+</script>
+

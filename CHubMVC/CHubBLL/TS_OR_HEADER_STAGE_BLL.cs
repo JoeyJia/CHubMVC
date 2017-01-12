@@ -28,7 +28,15 @@ namespace CHubBLL
             return dal.GetSpecifyHeaderStage(orderSeq, shipFromSeq);
         }
 
+        public List<TS_OR_HEADER_STAGE> GetHeaderStageByUser(string appUser)
+        {
+            return dal.GetHeaderStageByUser(appUser);
+        }
 
+        public void DeleteDraft(decimal orderSeq, decimal shipFrom = 0)
+        {
+            dal.DeleteDraft(orderSeq, shipFrom);
+        }
         public decimal AddHeadersWithDetailsStage(TS_OR_HEADER_STAGE orHeaderStage, TS_OR_HEADER_STAGE altORHeaderStage, List<TS_OR_DETAIL_STAGE> dStageList)
         {
             decimal nextVal = dal.GetOrderSqeNextVal();

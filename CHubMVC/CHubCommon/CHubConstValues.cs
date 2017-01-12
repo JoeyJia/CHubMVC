@@ -21,5 +21,7 @@ namespace CHubCommon
         public static string PartialStockColor = "orange";
         public static string NoStockColor = "red";
 
+        public static string ErrorColor = "red";
+
     }
 }

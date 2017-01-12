@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CHubDBEntity;
+using static CHubCommon.CHubEnum;
 
 namespace CHubDAL
 {
@@ -20,9 +21,15 @@ namespace CHubDAL
             return db.G_PART_DESCRIPTION.Any(a => a.PART_NO == partNo);
         }
 
-        public G_PART_DESCRIPTION GetPartDescription(string partNo,string status)
+        public G_PART_DESCRIPTION GetPartDescription(string partNo)
         {
-            return db.G_PART_DESCRIPTION.FirstOrDefault(a => a.PART_NO == partNo && a.PART_STATUS==status);
+            return db.G_PART_DESCRIPTION.FirstOrDefault(a => a.PART_NO == partNo);
+        }
+
+        public bool IsInActive(string partNo)
+        {
+            string status = PartStatusEnum.I.ToString();
+            return db.G_PART_DESCRIPTION.Any(a => a.PART_NO == partNo && a.PART_STATUS == status);
         }
 
     }

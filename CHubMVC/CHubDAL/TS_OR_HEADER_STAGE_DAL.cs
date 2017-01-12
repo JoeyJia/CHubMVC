@@ -35,5 +35,18 @@ namespace CHubDAL
                 Add(hStage, autoSave);
         }
 
+
+        public List<TS_OR_HEADER_STAGE> GetHeaderStageByUser(string appUser)
+        {
+            return db.TS_OR_HEADER_STAGE.Where(a => a.CREATED_BY == appUser).OrderBy(a => a.ORDER_REQ_NO).ToList();
+        }
+
+        public void DeleteDraft(decimal orderSeq, decimal shipFrom = 0)
+        {
+            TS_OR_HEADER_STAGE hStage = db.TS_OR_HEADER_STAGE.FirstOrDefault(a => a.ORDER_REQ_NO == orderSeq && a.SHIPFROM_SEQ == shipFrom);
+            if (hStage != null)
+                Delete(hStage);
+        }
+
     }
 }

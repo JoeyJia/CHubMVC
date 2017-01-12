@@ -27,10 +27,14 @@ namespace CHubBLL
             return dal.IsPartNoExist(partNo);
         }
 
-        public G_PART_DESCRIPTION GetPartDescription(string partNo, PartStatusEnum status = PartStatusEnum.A)
+        public G_PART_DESCRIPTION GetPartDescription(string partNo)
         {
-            string statusStr = status.ToString();
-            return dal.GetPartDescription(partNo, statusStr);
+            return dal.GetPartDescription(partNo);
+        }
+
+        public bool IsInActive(string partNo)
+        {
+            return dal.IsInActive(partNo);
         }
 
     }

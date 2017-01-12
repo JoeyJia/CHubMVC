@@ -17,7 +17,7 @@
 
 
 
-<input type="hidden" value="@ViewBag.AppUser" id="hddAppUser" />
+@*<input type="hidden" value="@ViewBag.AppUser" id="hddAppUser" />*@
 
 <div id="orderBody" ng-app="orderApp" ng-controller="orderCtrl" class="small">
     <form class="form-horizontal" id="orderForm">
@@ -50,7 +50,7 @@
                         @*<div class="help-block with-errors"></div>*@
 
                     </div>
-                    </div>
+                </div>
 
                 <div class="form-group">
                     <label for="orderType" class="col-sm-2 control-label">Order Type</label>
@@ -59,17 +59,17 @@
                     </div>
 
                     @*<label for="dueDate" class="col-sm-2 control-label">Due Date</label>
-            <div class="col-sm-2">
-                <input type="text" id="dueDate" class="form-control" />
-            </div>
+                <div class="col-sm-2">
+                    <input type="text" id="dueDate" class="form-control" />
+                </div>
 
-            <label for="cShip" class="col-sm-2 control-label">Complete Ship</label>
-            <div class="col-sm-1">
-                <select class="form-control" id="cShip">
-                    <option>N</option>
-                    <option>Y</option>
-                </select>
-            </div>*@
+                <label for="cShip" class="col-sm-2 control-label">Complete Ship</label>
+                <div class="col-sm-1">
+                    <select class="form-control" id="cShip">
+                        <option>N</option>
+                        <option>Y</option>
+                    </select>
+                </div>*@
                 </div>
             </div>
 
@@ -180,16 +180,20 @@
                                 </tr>
                                 <tr>
                                     <td style="width:30px"><b>Addr 1</b></td>
-                                    <td colspan="7">{{selectedAliasAddr.DestAddr1}}</td>
+                                    <td colspan="2">{{selectedAliasAddr.DestAddr1}}</td>
+                                    <td style="width:30px"><b>Addr 2</b></td>
+                                    <td colspan="2">{{selectedAliasAddr.DestAddr2}}</td>
+                                    <td style="width:30px"><b>Addr 3</b></td>
+                                    <td colspan="1">{{selectedAliasAddr.DestAddr3}}</td>
                                 </tr>
-                                <tr>
+                                @*<tr>
                                     <td style="width:30px"><b>Addr 2</b></td>
                                     <td colspan="7">{{selectedAliasAddr.DestAddr2}}</td>
                                 </tr>
                                 <tr>
                                     <td style="width:30px"><b>Addr 3</b></td>
                                     <td colspan="7">{{selectedAliasAddr.DestAddr3}}</td>
-                                </tr>
+                                </tr>*@
                                 <tr>
                                     <td style="width:30px"><b>City</b></td>
                                     <td>{{selectedAliasAddr.DestCity}}</td>
