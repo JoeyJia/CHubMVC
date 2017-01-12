@@ -28,7 +28,7 @@
                         <div class="row">
 
                             <div class="col-md-8 col-sm-7 text-right">
-                                <img src="~/Images/LogBack/scenery2.jpg">
+                                <img id="loginImg" src="~/Images/LogBack/bg_2.jpg">
                             </div>
 
                             <div class="col-md-3 col-sm-4">
@@ -88,3 +88,10 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+<script type="text/javascript">
+  $(document).ready(function(){
+      var random_bg = Math.floor(Math.random() * 10 % 5) + 1;
+      var bg = '../../Images/LogBack/bg_' + random_bg + '.jpg';
+      $("#loginImg").attr("src", bg);
+});
+</script>
