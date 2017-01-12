@@ -85,7 +85,7 @@
                 <div class="form-group">
                     <label for="cShip" class="col-sm-2 control-label">Complete Ship</label>
                     <div class="col-sm-2">
-                        <select class="form-control small" style="width:100px" id="cShip">
+                        <select class="form-control small input-sm" style="width:100px" id="cShip">
                             <option>N</option>
                             <option>Y</option>
                         </select>
@@ -105,7 +105,7 @@
                     <label for="ssto" class="col-sm-2 control-label">SPL Order</label>
                     <div class="checkbox col-md-2 col-lg-2">
                         <label>
-                            <input type="checkbox" id="ssto" style="margin-left:1px;" onclick="checkSstoStatu()" checked>
+                            <input type="checkbox" id="ssto" class="input-sm" style="margin-left:1px;" onclick="checkSstoStatu()" checked>
                         </label>
                     </div>
                 </div>
@@ -128,7 +128,7 @@
                         </div>
 
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-default" onclick="searchAddrs();">Search</button>
+                            <button type="button" class="btn btn-primary input-sm before-save" onclick="searchAddrs();">Search</button>
                         </div>
                     </div>
                 </div>
@@ -216,7 +216,7 @@
                     <div class="panel panel-default" style="">
                         <div class="panel-heading">
                             <label>
-                                <input type="checkbox" id="altCheck" style="margin-left:1px;" ng-model="altAddrVisiable" ng-click="checkAltAddrVisiable()" >
+                                <input type="checkbox" class="input-sm" id="altCheck" style="margin-left:1px;" ng-model="altAddrVisiable" ng-click="checkAltAddrVisiable()" >
                             </label>
                         <b>Alternative Ship From</b>
                         </div>
@@ -294,11 +294,11 @@
                                     <td><input class="form-control" ng-model="ol.Qty" ng-blur="checkOrderLineItem(ol)" /></td>
                                     <td><input class="form-control" ng-model="ol.PriAVLCheck" ng-style ="{color:ol.PriAVLCheckColor}" readonly /></td>
                                     <td><input class="form-control" ng-model="ol.AltAVLCheck" ng-style ="{color:ol.AltAVLCheckColor}" readonly /></td>
-                                    <td style="text-align:center"><a href="javascript:void(0)" title="Delete" ng-click="removeOLItem($index)"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                    <td style="text-align:center"><a href="javascript:void(0)" title="Delete" class="removeBtn" ng-click="removeOLItem($index)"><span class="glyphicon glyphicon-trash"></span></a></td>
                                 </tr>
                             </tbody>
                         </table>
-                        <button type="button" class="btn-primary" ng-click="addOLItem()">NewLine</button>
+                        <button type="button" class="btn-primary input-sm before-save" id="btnNewLine" ng-click="addOLItem()">NewLine</button>
                     </div>
                 </div>
             </div>
@@ -306,14 +306,15 @@
             <!--For button Part start-->
             <div class="row">
                 <div class="col-md-10 col-lg-10 " style="margin-top:10px">
-                    <button type="submit" class="btn btn-primary" ng-click="SaveDraft()">Save Draft</button>
+                    <button type="submit" class="btn btn-primary before-save" ng-click="SaveDraft()">Save Draft</button>
                     <button type="submit" class="btn btn-primary" ng-click="SaveOrder()">Save Order</button>
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary" ng-click="downloadPri()">Download Pri</button>
                         <button type="button" class="btn btn-primary" ng-click="downloadAlt()">Download Alt</button>
                     </div>
-                    <button type="button" class="btn btn-primary" ng-click="ReadClip()">Get Data From Clipboard</button>
+                    <button type="button" class="btn btn-primary before-save" ng-click="ReadClip()">Get Data From Clipboard</button>
                     @*<button type="button" class="btn btn-primary" ng-click="proTest()">progress</button>*@
+                    @*<button type="button" class="btn btn-primary" ng-click="testenable()">Enbale</button>*@
                 </div>
             </div>
 
@@ -408,7 +409,6 @@
             initialDate:new Date(),
             pickerPosition: "bottom-left"
         });
-
         $("#orderForm").validator();
 
     });
@@ -493,13 +493,7 @@
 
 
         $scope.SaveDraft = function () {
-            //for (var i = 0; i < $(".altAddrRadio").length ; i++) {
-            //    if ($(".altAddrRadio")[i].checked) {
-            //        var seq = $(".altAddrRadio")[i].attributes['seq'].value;
-            //        $scope.selectedAltAliasAddr = $scope.AltAliasAddr[seq];
-            //        break;
-            //    }
-            //}
+
             var msg = checkLinesBeforeSave();
             if (msg != null) {
                 alert(msg);
@@ -542,13 +536,7 @@
         };
 
         $scope.SaveOrder = function () {
-            //for (var i = 0; i < $(".altAddrRadio").length ; i++) {
-            //    if ($(".altAddrRadio")[i].checked) {
-            //        var seq = $(".altAddrRadio")[i].attributes['seq'].value;
-            //        $scope.selectedAltAliasAddr = $scope.AltAliasAddr[seq];
-            //        break;
-            //    }
-            //}
+
             var msg = checkLinesBeforeSave();
             if (msg != null) {
                 alert(msg);
@@ -583,6 +571,7 @@
                     $scope.orderSeq = obj;
                     $scope.AltAliasAddr = [$scope.selectedAltAliasAddr];
                     alert("Success Save Order");
+                    AfterSaveAction();
                 },
                 error: function (obj) {
                     alert(obj.responseText);
@@ -678,20 +667,6 @@
 
         $scope.downloadPri = function () {
                 window.location.href = "/order/DownLoadOrder?orderSeq=" + $scope.orderSeq + "&shipFrom=" + 0;
-            //$.ajax({
-            //    url: "/order/DownLoadOrder",
-            //    data: {
-            //        orderSeq: $scope.orderSeq,
-            //        shipFrom: 0
-            //    },
-            //    type: "post",
-            //    async: false,
- 
-            //    error: function (obj) {
-            //        alert(obj.responseText);
-            //    }
-
-            //});
         };
 
         $scope.downloadAlt = function () {
@@ -813,7 +788,13 @@
         }
 
         function AfterSaveAction() {
-    //Set disable status
+            //debugger;
+            //Set disable status
+            $("input").attr("disabled", true);
+            $(".before-save").attr("disabled", true);
+            $("select").attr("disabled", true);
+            $(".removeBtn").hide();
+            $("#btnNewLine").hide();
         };
 
 
