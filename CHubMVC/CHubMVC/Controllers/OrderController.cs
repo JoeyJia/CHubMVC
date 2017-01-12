@@ -290,19 +290,27 @@ namespace CHubMVC.Controllers
         }
 
 
-        public FileResult DownLoadOrder(decimal orderSeq,decimal shipFrom = 0)
+        public ActionResult DownLoadOrder(decimal? orderSeq,decimal shipFrom = 0)
         {
             try
             {
+                StringBuilder sb = new StringBuilder();
+                if (orderSeq == null || orderSeq == 0)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return Content("No order seq data");
+                }
 
                 CHubEntities db = new CHubEntities();
                 V_O_DOWNLOAD_HDR_BLL hBLL = new V_O_DOWNLOAD_HDR_BLL(db);
-                V_O_DOWNLOAD_HDR hData = hBLL.GetSpecfyHDRData(orderSeq, shipFrom);
+                V_O_DOWNLOAD_HDR hData = hBLL.GetSpecfyHDRData(orderSeq.Value, shipFrom);
+                if (hData == null)
+                    throw new Exception("No Header Data");
 
                 V_O_DOWNLOAD_DTL_BLL dBLL = new V_O_DOWNLOAD_DTL_BLL(db);
-                List<V_O_DOWNLOAD_DTL> dList = dBLL.GetDTLList(orderSeq, shipFrom);
+                List<V_O_DOWNLOAD_DTL> dList = dBLL.GetDTLList(orderSeq.Value, shipFrom);
 
-                StringBuilder sb = new StringBuilder();
+
                 sb.AppendLine(hData.TXT);
                 foreach (var item in dList)
                 {
@@ -315,9 +323,8 @@ namespace CHubMVC.Controllers
             }
             catch (Exception ee)
             {
-                return null;
-                //Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                //return Content(ee.Message);
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Content(ee.Message);
             }
         }
 

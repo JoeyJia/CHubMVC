@@ -666,11 +666,41 @@
         };
 
         $scope.downloadPri = function () {
-                window.location.href = "/order/DownLoadOrder?orderSeq=" + $scope.orderSeq + "&shipFrom=" + 0;
+            $.ajax({
+                url: "/order/DownLoadOrder",
+                data: {
+                    orderSeq: $scope.orderSeq,
+                    shipFrom: 0,
+                },
+                type: "get",
+                async: false,
+                success: function () {
+                    window.location.href = "/order/DownLoadOrder?orderSeq=" + $scope.orderSeq + "&shipFrom=" + 0;
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
         };
 
         $scope.downloadAlt = function () {
-            window.location.href = "/order/DownLoadOrder?orderSeq=" + $scope.orderSeq + "&shipFrom=" + 1;
+
+            $.ajax({
+                url: "/order/DownLoadOrder",
+                data: {
+                    orderSeq: $scope.orderSeq,
+                    shipFrom: 1,
+                },
+                type: "get",
+                async: false,
+                success: function () {
+                    window.location.href = "/order/DownLoadOrder?orderSeq=" + $scope.orderSeq + "&shipFrom=" + 1;
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+
         };
 
 
