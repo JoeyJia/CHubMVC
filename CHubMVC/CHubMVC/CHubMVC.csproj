@@ -198,12 +198,11 @@
     <Content Include="Images\cummins-logo-print.gif" />
     <Content Include="Images\cummins-logo.png" />
     <Content Include="Images\Cummins.png" />
-    <Content Include="Images\LogBack\Jolie.jpg" />
-    <Content Include="Images\LogBack\scenery1.jpg" />
-    <Content Include="Images\LogBack\scenery2.jpg" />
-    <Content Include="Images\LogBack\ware1.jpg" />
-    <Content Include="Images\LogBack\ware2.jpg" />
-    <Content Include="Images\LogBack\ware3.jpg" />
+    <Content Include="Images\LogBack\bg_1.jpg" />
+    <Content Include="Images\LogBack\bg_2.jpg" />
+    <Content Include="Images\LogBack\bg_3.jpg" />
+    <Content Include="Images\LogBack\bg_4.jpg" />
+    <Content Include="Images\LogBack\bg_5.jpg" />
     <Content Include="Images\LongBg\bg_1.jpg" />
     <Content Include="Images\LongBg\bg_2.jpg" />
     <Content Include="Images\LongBg\bg_3.jpg" />
