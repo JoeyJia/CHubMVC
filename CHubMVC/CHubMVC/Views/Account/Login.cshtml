@@ -16,31 +16,40 @@
 
 <body>
 
-    <div id="BgImg" style="height: 70px; width:100%; background-image: url('../../Images/bg-header.png');">
+    @*<div id="BgImg" style="height: 70px; width:100%; background-image: url('../../Images/bg-header.png');">
         <a href="/home/index" title="HomePage">
             <img src="~/Images/cummins-logo-print.gif" style="margin-top:10px; margin-left:150px;height:50px;width:55px">
         </a>
-    </div>
+    </div>*@
 
-            <div class="container-fluid" style="height:85%;width:98%">
-                <div class="row" style="margin-top:150px;height:375px;">
-                    <div class="col-md-12 col-lg-12" style="height:375px;">
+            <div class="container-fluid" style="height:70%;width:99%">
+                <div class="row"style="margin-top:100px;height:100px;" >
+                    <div class="col-md-6">
+                            <img src="~/Images/loginMidlogo.png" style="margin-left:40px;height:100px;width:auto">
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <img src="~/Images/hubLogo.png" style="margin-right:150px;margin-top:25px;height:75px;width:auto">
+                    </div>
+                </div>
+
+                <div class="row" style="height:375px;">
+                    <div class="col-md-12 col-lg-12" style="height:375px;background-color:#C32518">
                         <div class="row">
 
                             <div class="col-md-8 col-sm-7 text-right">
-                                <img id="loginImg" src="~/Images/LogBack/bg_2.jpg">
+                                <img id="loginImg" src="~/Images/LongBg/bg_2.jpg">
                             </div>
 
                             <div class="col-md-3 col-sm-4">
 
-                                <div class="panel panel-default" style="height:375px;width:290px;background-color:#eee;">
+                                <div class="panel panel-default" style="height:295px;width:255px;background-color:#eee;margin-top:40px">
 
                                     <section id="loginForm">
                                         @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                                          {
                                             @Html.AntiForgeryToken()
 
-                                            <div class="panel panel-default" style="height:270px;">
+                                            <div class="panel panel-default" style="height:75%;">
                                                 <div class="form-group" style="margin-top:30px">
 
                                                     <div class="input-append col-md-8 col-md-offset-2 col-sm-offset-2 col-sm-8 col-lg-10 col-lg-offset-1">
@@ -91,7 +100,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
       var random_bg = Math.floor(Math.random() * 10 % 5) + 1;
-      var bg = '../../Images/LogBack/bg_' + random_bg + '.jpg';
+      var bg = '../../Images/LongBg/bg_' + random_bg + '.jpg';
       $("#loginImg").attr("src", bg);
 });
 </script>
