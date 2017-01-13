@@ -33,14 +33,14 @@ namespace CHubBLL
         /// </summary>
         /// <param name="domainName"></param>
         /// <returns></returns>
-        public bool AddAppUserWithRole(string domainName)
+        public bool AddAppUserWithRole(string domainName,string firstName,string mail)
         {
             APP_USERS appUser = new APP_USERS()
             {
                 APP_USER = domainName.ToLower(),
-                FIRST_NAME = "User",
+                FIRST_NAME = firstName,
                 LAST_NAME = string.Empty,
-                EMAIL_ADDR = string.Format(CHubConstValues.EmailFormat, domainName),
+                EMAIL_ADDR = mail??string.Format(CHubConstValues.EmailFormat, domainName),
                 CREATED_BY = domainName,
                 CREATE_DATE = DateTime.Now,
                 STATUS = UserStatesEnum.A.ToString()

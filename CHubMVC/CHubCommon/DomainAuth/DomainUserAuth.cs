@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CHubDBEntity;
+using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace CHubCommon
 {
     public class DomainUserAuth
     {
-        public static bool IsAuthenticated(string domain, string username, string pwd)
+        public static APP_USERS IsAuthenticated(string domain, string username, string pwd)
         {
             #region for debug get domain path
             //string pathCur = "LDAP://RootDSE";
@@ -32,21 +33,26 @@ namespace CHubCommon
                 search.Filter = "(SAMAccountName=" + username + ")";
                 search.PropertiesToLoad.Add("cn");
                 SearchResult result = search.FindOne();
-
-                //DirectoryEntry deUser = result.GetDirectoryEntry();
                 if (null == result)
                 {
-                    return false;
+                    return null;
                 }
 
-                //strPath = result.Path;
+                APP_USERS user = new APP_USERS();
+                DirectoryEntry deUser = result.GetDirectoryEntry();
+                if (deUser == null)
+                    return null;
+                user.FIRST_NAME = (deUser.Properties["givenName"]).Value.ToString();
+                user.EMAIL_ADDR = (deUser.Properties["mail"]).Value.ToString();
+
+                return user;
             }
-            catch (Exception ex)
+            catch
             {
-                return false;
+                return null;
             }
 
-            return true;
+            
         }
 
 

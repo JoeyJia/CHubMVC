@@ -12,6 +12,7 @@ using CHubMVC.Models;
 using CHubBLL;
 using CHubDBEntity;
 using CHubCommon;
+using System.Security.Principal;
 
 namespace CHubMVC.Controllers
 {
@@ -44,16 +45,25 @@ namespace CHubMVC.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public  ActionResult Login(LoginViewModel model, string returnUrl)
+        public ActionResult Login(LoginViewModel model, string returnUrl)
         {
-            if (DomainUserAuth.IsAuthenticated("CED", model.UserName, model.Password))
+            APP_USERS appUser = DomainUserAuth.IsAuthenticated("CED", model.UserName, model.Password);
+            if (appUser!=null)
             {
+                //FormsAuthentication.SetAuthCookie(model.UserName, true);
+
+                var claims = new List<Claim>();
+                claims.Add(new Claim(ClaimTypes.Name, appUser.FIRST_NAME));
+
+                ClaimsIdentity cIdentity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
+                AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, cIdentity);
+
                 APP_USERS_BLL userBLL = new APP_USERS_BLL();
                 APP_USERS user = userBLL.GetAppUserByDomainName(model.UserName);
         
                 if (user == null)
                 {
-                    if (!userBLL.AddAppUserWithRole(model.UserName))
+                    if (!userBLL.AddAppUserWithRole(model.UserName, appUser.FIRST_NAME, appUser.EMAIL_ADDR))
                         throw new Exception("Fail to add App User");
                     user = userBLL.GetAppUserByDomainName(model.UserName);
                 }
@@ -290,11 +300,11 @@ namespace CHubMVC.Controllers
         //
         // POST: /Account/LogOff
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         //
