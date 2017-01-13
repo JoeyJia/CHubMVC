@@ -12,6 +12,7 @@ using CHubCommon;
 using CHubDBEntity;
 using System.Net;
 using System.Text;
+using static CHubCommon.CHubEnum;
 
 namespace CHubMVC.Controllers
 {
@@ -34,6 +35,11 @@ namespace CHubMVC.Controllers
             using (CHubEntities db = new CHubEntities())
             {
                 string appUser = Session[CHubConstValues.SessionUser].ToString();
+
+                //add recent page data
+                APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL(db);
+                rpBLL.Add(appUser, PageNameEnum.qkord.ToString(), this.Request.Url.AbsoluteUri);
+
                 APP_CUST_ALIAS_BLL acaBLL = new APP_CUST_ALIAS_BLL(db);
                 List<ExAppCustAlias> acaList = acaBLL.GetAppCustAliasByAppUser(appUser);
 
@@ -310,6 +316,9 @@ namespace CHubMVC.Controllers
                 V_O_DOWNLOAD_DTL_BLL dBLL = new V_O_DOWNLOAD_DTL_BLL(db);
                 List<V_O_DOWNLOAD_DTL> dList = dBLL.GetDTLList(orderSeq.Value, shipFrom);
 
+                if (dList == null || dList.Count == 0)
+                    throw new Exception("No Lines Data");
+
 
                 sb.AppendLine(hData.TXT);
                 foreach (var item in dList)
@@ -323,7 +332,7 @@ namespace CHubMVC.Controllers
             }
             catch (Exception ee)
             {
-                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Content(ee.Message);
             }
         }
