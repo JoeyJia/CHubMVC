@@ -30,8 +30,11 @@ namespace CHubMVC.Controllers
         }
 
         [HttpPost]
-        public JsonResult Init()
+        public ActionResult Init()
         {
+            if (Session[CHubConstValues.SessionUser] == null)
+                return RedirectToAction("Login", "Account");
+
             using (CHubEntities db = new CHubEntities())
             {
                 string appUser = Session[CHubConstValues.SessionUser].ToString();
@@ -340,12 +343,21 @@ namespace CHubMVC.Controllers
         #region For draft function part
         public ActionResult Draft()
         {
+            if (Session[CHubConstValues.SessionUser] == null)
+                return RedirectToAction("Login", "Account");
+
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, PageNameEnum.orddft.ToString(), this.Request.Url.AbsoluteUri);
 
             return View();
         }
 
         public ActionResult InitDraft()
         {
+            if (Session[CHubConstValues.SessionUser] == null)
+                return RedirectToAction("Login", "Account");
+
             string appUser = Session[CHubConstValues.SessionUser].ToString();
 
             CHubEntities db = new CHubEntities();

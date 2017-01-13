@@ -303,6 +303,7 @@ namespace CHubMVC.Controllers
         //[ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            Session[CHubConstValues.SessionUser] = null;
             AuthenticationManager.SignOut();
             return RedirectToAction("Login", "Account");
         }

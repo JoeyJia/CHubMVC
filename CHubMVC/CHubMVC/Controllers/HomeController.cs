@@ -34,9 +34,6 @@ namespace CHubMVC.Controllers
 
             ViewBag.userName = userName;
 
-            //Add recently page data
-            rpBLL.Add(userName,PageNameEnum.usrmnt.ToString(), this.Request.Url.AbsoluteUri);
-
             return View();
         }
 
@@ -46,10 +43,10 @@ namespace CHubMVC.Controllers
         /// <param name="appUser"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult GetLeftNav(string appUser)
+        public ActionResult GetLeftNav(string appUser)
         {
             if (Session[CHubConstValues.SessionUser] == null)
-                throw new Exception("Please Login First");
+                return RedirectToAction("Login", "Account");
 
             appUser = Session[CHubConstValues.SessionUser].ToString();
 
@@ -96,22 +93,22 @@ namespace CHubMVC.Controllers
 
         public ActionResult About()
         {
+            if (Session[CHubConstValues.SessionUser] == null)
+                return RedirectToAction("Login", "Account");
+
             ViewBag.Message = "Your application description page.";
 
-            string userName = Session[CHubConstValues.SessionUser].ToString();
-            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
-            rpBLL.Add(userName, PageNameEnum.invinq.ToString(), this.Request.Url.AbsoluteUri);
 
             return View();
         }
 
         public ActionResult Contact()
         {
+            if (Session[CHubConstValues.SessionUser] == null)
+                return RedirectToAction("Login", "Account");
+
             ViewBag.Message = "Your contact page.";
 
-            string userName = Session[CHubConstValues.SessionUser].ToString();
-            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
-            rpBLL.Add(userName, PageNameEnum.manual.ToString(), this.Request.Url.AbsoluteUri);
 
             return View();
         }

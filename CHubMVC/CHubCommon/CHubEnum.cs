@@ -39,7 +39,8 @@ namespace CHubCommon
             rolemnt,
             manual,
             ordinq,
-            invinq
+            invinq,
+            orddft
         }
 
         public enum OrderStatusEnum
