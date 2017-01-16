@@ -36,8 +36,7 @@ namespace CHubMVC
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                     // "~/Content/site.css",
-                      "~/Script/bootstrap-treeview.css"));
+                      "~/Content/bootstrap-treeview.css"));
 
             bundles.Add(new StyleBundle("~/Content/datatimecss").Include(
                       "~/Content/bootstrap-datetimepicker.css"));
