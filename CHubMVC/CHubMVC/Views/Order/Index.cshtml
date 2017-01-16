@@ -459,14 +459,14 @@
          // $scope.resp = resp;
      });
 
-        $scope.GetAltAliasAddr = function (localDestName, localDestAddr1,aliasName) {
+        $scope.GetAltAliasAddr = function () {
             var isSpecialShip = $("#ssto")[0].checked;
             $.ajax({
                 url: "/order/GetStrictAddrs",
                 data: {
-                    shipName: localDestName,
-                    addr: localDestAddr1,
-                    aliasName:aliasName,
+                    shipName: $scope.selectedAliasAddr.LocalDestName,
+                    addr: $scope.selectedAliasAddr.LocalDestAddr1,
+                    aliasName: $scope.selectedAlias.ALIAS_NAME,
                     isSpecialShip: isSpecialShip
                 },
                 type: "post",
@@ -474,16 +474,6 @@
                 success: function (obj) {
                     $scope.AltAliasAddr = obj;
                     //Remove the primary alias addr
-                    //for (var i = 0; i < $scope.AltAliasAddr.length; i++) {
-                    //    if ($scope.AltAliasAddr[i].AliasName == $scope.selectedAliasAddr.AliasName
-                    //        && $scope.AltAliasAddr[i].SysID == $scope.selectedAliasAddr.SysID
-                    //        && $scope.AltAliasAddr[i].CustomerNo == $scope.selectedAliasAddr.CustomerNo
-                    //        && $scope.AltAliasAddr[i].Bill2Location == $scope.selectedAliasAddr.Bill2Location
-                    //        && $scope.AltAliasAddr[i].Ship2Location == $scope.selectedAliasAddr.Ship2Location) {
-                    //        $scope.AltAliasAddr.splice(i, 1);
-                    //        break;
-                    //    }
-                    //}
                     for (var i = $scope.AltAliasAddr.length - 1; i >= 0 ; i--) {
                         //if (isSpecialShip) {
                         //    if (isSameAliasAddrSPL($scope.selectedAliasAddr, $scope.AltAliasAddr[i]))
@@ -751,6 +741,15 @@
                     }
                 }
             }
+            else {
+                if ($scope.selectedAliasAddr == "") {
+                    alert("Please select a Primary addr");
+                    $scope.altAddrVisiable = false;
+                }
+                else {
+                    $scope.GetAltAliasAddr();
+                }
+            }
         };
 
         $scope.proTest = function () {
@@ -911,7 +910,6 @@
                 var appElement1 = document.querySelector('[ng-controller=orderCtrl]');
                 var scope1 = angular.element(appElement1).scope();
                 scope1.selectedAliasAddr = selected;
-                scope1.GetAltAliasAddr(scope1.selectedAliasAddr.LocalDestName, scope1.selectedAliasAddr.LocalDestAddr1, scope1.selectedAlias.ALIAS_NAME);
                 scope1.$apply();
                 break;
             }
