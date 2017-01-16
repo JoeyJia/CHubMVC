@@ -471,16 +471,31 @@
                 success: function (obj) {
                     $scope.AltAliasAddr = obj;
                     //Remove the primary alias addr
-                    for (var i = 0; i < $scope.AltAliasAddr.length; i++) {
-                        if ($scope.AltAliasAddr[i].AliasName == $scope.selectedAliasAddr.AliasName
-                            && $scope.AltAliasAddr[i].SysID == $scope.selectedAliasAddr.SysID
-                            && $scope.AltAliasAddr[i].CustomerNo == $scope.selectedAliasAddr.CustomerNo
-                            && $scope.AltAliasAddr[i].Bill2Location == $scope.selectedAliasAddr.Bill2Location
-                            && $scope.AltAliasAddr[i].Ship2Location == $scope.selectedAliasAddr.Ship2Location) {
+                    //for (var i = 0; i < $scope.AltAliasAddr.length; i++) {
+                    //    if ($scope.AltAliasAddr[i].AliasName == $scope.selectedAliasAddr.AliasName
+                    //        && $scope.AltAliasAddr[i].SysID == $scope.selectedAliasAddr.SysID
+                    //        && $scope.AltAliasAddr[i].CustomerNo == $scope.selectedAliasAddr.CustomerNo
+                    //        && $scope.AltAliasAddr[i].Bill2Location == $scope.selectedAliasAddr.Bill2Location
+                    //        && $scope.AltAliasAddr[i].Ship2Location == $scope.selectedAliasAddr.Ship2Location) {
+                    //        $scope.AltAliasAddr.splice(i, 1);
+                    //        break;
+                    //    }
+                    //}
+                    for (var i = $scope.AltAliasAddr.length - 1; i >= 0 ; i--) {
+                        //if (isSpecialShip) {
+                        //    if (isSameAliasAddrSPL($scope.selectedAliasAddr, $scope.AltAliasAddr[i]))
+                        //        $scope.AltAliasAddr.splice(i, 1);
+                        //}
+                        //else {
+                        //    if (isSameAliasAddrDFLT($scope.selectedAliasAddr, $scope.AltAliasAddr[i]))
+                        //        $scope.AltAliasAddr.splice(i, 1);
+                        //}
+                        if($scope.AltAliasAddr[i].WareHouse==$scope.selectedAliasAddr.WareHouse)
                             $scope.AltAliasAddr.splice(i, 1);
-                            break;
-                        }
+
+
                     }
+
                 },
                 error: function (obj) {
                     alert("fail to get alt addr Data");
