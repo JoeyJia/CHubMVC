@@ -8,8 +8,6 @@ using CHubDBEntity;
 using CHubBLL;
 using CHubModel.ExtensionModel;
 using CHubModel;
-using CHubCommon;
-using CHubDBEntity;
 using System.Net;
 using System.Text;
 using static CHubCommon.CHubEnum;
