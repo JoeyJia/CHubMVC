@@ -269,6 +269,7 @@
                 <div class="col-md-12 col-lg-12">
                     <div class="panel panel-default" style="">
                         <div class="panel-heading"><b>Order Lines</b>
+                        <b style="color:orange">    Availability Ratio: {{priRatio+altRatio}}% (Primary: {{priRatio}}% + Alternative: {{altRatio}} %)</b>
                         </div>
 
                         <table id="dtOrderLines" class="table table-striped table-hover table-bordered .table-condensed">
@@ -306,7 +307,7 @@
 
             <!--For button Part start-->
             <div class="row">
-                <div class="col-md-10 col-lg-10 " style="margin-top:10px">
+                <div class="col-md-10 col-lg-10 " style="margin-top:10px;margin-bottom:20px">
                     <button type="submit" class="btn btn-primary before-save" ng-click="SaveDraft()">Save Draft</button>
                     <button type="submit" class="btn btn-primary" ng-click="SaveOrder()">Save Order</button>
                     <div class="btn-group">
@@ -420,6 +421,8 @@
 
         $scope.lineNo = 1;
         $scope.altAddrVisiable = false;
+        $scope.priRatio = 0;
+        $scope.altRatio = 0;
         $http.post("/order/init",null,null).then(function (resp) {
             $scope.custAlias = resp.data.custAlias;
             $scope.orderType = resp.data.orderType;
@@ -597,6 +600,7 @@
         {
             $scope.lineNo = $scope.lineNo - 1;
             $scope.orderLines.splice(index, 1);
+            CalulateRatio();
         };
 
 
@@ -634,6 +638,7 @@
 
                     curr.LastCheckNo = curr.CustomerPartNo;
                     curr.LastQty = curr.Qty;
+                    CalulateRatio();
                     //debugger;
                 },
                 error: function (obj) {
@@ -663,6 +668,7 @@
                 contentType: 'application/json',
                 success: function (obj) {
                     $scope.orderLines = obj;
+                    CalulateRatio();
 
                 },
                 error: function (obj) {
@@ -821,8 +827,7 @@
                 return false;
         };
 
-        function checkLinesBeforeSave()
-        {
+        function checkLinesBeforeSave() {
             if ($scope.orderLines.length == 0)
                 return null;
             for (var i = 0; i < $scope.orderLines.length; i++) {
@@ -830,7 +835,7 @@
                     return "Have error lines";
             }
 
-        }
+        };
 
         function AfterSaveAction() {
             //debugger;
@@ -842,6 +847,24 @@
             $("#btnNewLine").hide();
         };
 
+        function CalulateRatio() {
+            if ($scope.orderLines.length == 0)
+                return;
+            var priCount = 0;
+            var altCount = 0;
+            var totalCount = $scope.orderLines.length;
+            for (var i = 0; i < totalCount; i++) {
+                if ($scope.orderLines[i].PriAVLCheck != null && $scope.orderLines[i].PriAVLCheck >= $scope.orderLines[i].Qty)
+                    priCount++;
+                else if ($scope.orderLines[i].AltAVLCheck != null && $scope.orderLines[i].AltAVLCheck >= $scope.orderLines[i].Qty)
+                    altCount++;
+            }
+
+            if (priCount > 0)
+                $scope.priRatio = (priCount / totalCount).toFixed(3)*100;
+            if (altCount > 0)
+                $scope.altRatio = (altCount / totalCount).toFixed(3)*100;
+        };
 
     });
 

@@ -31,5 +31,10 @@ namespace CHubDAL
             return db.TS_OR_DETAIL_STAGE.FirstOrDefault(a => a.ORDER_REQ_NO == seq && a.ORDER_LINE_NO == lineNO);
         }
 
+        public List<TS_OR_DETAIL_STAGE> GetDetailsStageByOrderSeq(decimal seq)
+        {
+            return db.TS_OR_DETAIL_STAGE.Where(a => a.ORDER_REQ_NO == seq ).ToList();
+        }
+
     }
 }

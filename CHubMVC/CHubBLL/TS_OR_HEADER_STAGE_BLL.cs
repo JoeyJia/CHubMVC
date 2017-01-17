@@ -78,11 +78,20 @@ namespace CHubBLL
 
             //Update detail part
             TS_OR_DETAIL_STAGE_DAL dStageDal = new TS_OR_DETAIL_STAGE_DAL(dal.db);
+
+            //Delete exist details
+            List<TS_OR_DETAIL_STAGE> existDetails = dStageDal.GetDetailsStageByOrderSeq(orHeaderStage.ORDER_REQ_NO);
+            foreach (var item in existDetails)
+            {
+                dal.Delete(item, false);
+            }
+
+            //Add current detail list
             if (dStageList != null && dStageList.Count > 0)
             {
                 foreach (var item in dStageList)
                 {
-                    dStageDal.AddOrUpdateDetailStage(item, false);
+                    dal.Add(item, false);
                 }
             }
 

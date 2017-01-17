@@ -86,6 +86,16 @@ namespace CHubBLL
                 }
                 if (altORHeader != null)
                     dal.Add(altORHeader);
+
+                TS_OR_DETAIL_STAGE_DAL dStageDal = new TS_OR_DETAIL_STAGE_DAL(dal.db);
+
+                //Delete exist details
+                List<TS_OR_DETAIL_STAGE> existDetails = dStageDal.GetDetailsStageByOrderSeq(orHeader.ORDER_REQ_NO);
+                foreach (var item in existDetails)
+                {
+                    dal.Delete(item, false);
+                }
+
             }
             else
             {
@@ -100,16 +110,16 @@ namespace CHubBLL
             TS_OR_DETAIL_DAL detailDal = new TS_OR_DETAIL_DAL(dal.db);
             if (detailList != null && detailList.Count > 0)
             {
-                TS_OR_DETAIL_STAGE_BLL dStageBLL = new TS_OR_DETAIL_STAGE_BLL(dal.db);
+                //TS_OR_DETAIL_STAGE_BLL dStageBLL = new TS_OR_DETAIL_STAGE_BLL(dal.db);
                 foreach (var item in detailList)
                 {
-                    TS_OR_DETAIL_STAGE dStage = dStageBLL.GetSpecifyDetailStage(item.ORDER_REQ_NO, item.ORDER_LINE_NO);
-                    if (dStage != null)
-                    {
-                        detailDal.Delete(dStage, false);
-                        detailDal.Add(item, false);
-                    }
-                    else
+                    //TS_OR_DETAIL_STAGE dStage = dStageBLL.GetSpecifyDetailStage(item.ORDER_REQ_NO, item.ORDER_LINE_NO);
+                    //if (dStage != null)
+                    //{
+                    //    detailDal.Delete(dStage, false);
+                    //    detailDal.Add(item, false);
+                    //}
+                    //else
                         detailDal.AddOrUpdateDetail(item, false);
 
                 }
