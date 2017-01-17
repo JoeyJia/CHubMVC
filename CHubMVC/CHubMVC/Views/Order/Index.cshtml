@@ -37,7 +37,7 @@
                 <div class="form-group">
                     <label for="orderID" class="col-sm-2 control-label small">Order SEQ</label>
                     <div class="col-sm-2 col-lg-2">
-                        <input type="text" class="form-control input-sm" id="orderID" ng-model="orderSeq" placeholder="Auto" disabled>
+                        <input type="text" class="form-control input-sm" id="orderID" ng-model="orderSeq" placeholder="Auto" readonly>
                     </div>
                 </div>
             </div>
@@ -315,6 +315,7 @@
                         <button type="button" class="btn btn-primary" ng-click="downloadAlt()">Download Alt</button>
                     </div>
                     <button type="button" class="btn btn-primary before-save" ng-click="ReadClip()">Get Data From Clipboard</button>
+                    <button type="button" class="btn btn-primary" ng-show="isSaved" ng-click="refreshCtrl()">New Order</button>
                     @*<button type="button" class="btn btn-primary" ng-click="proTest()">progress</button>*@
                     @*<button type="button" class="btn btn-primary" ng-click="testenable()">Enbale</button>*@
                 </div>
@@ -419,48 +420,66 @@
     //Angular orderApp start
     angular.module('orderApp', []).controller('orderCtrl', function ($scope, $http) {
 
-        $scope.lineNo = 1;
-        $scope.altAddrVisiable = false;
-        $scope.priRatio = 0;
-        $scope.altRatio = 0;
-        $http.post("/order/init",null,null).then(function (resp) {
-            $scope.custAlias = resp.data.custAlias;
-            $scope.orderType = resp.data.orderType;
-            $scope.defaultOrderType = resp.data.defaultOrderType;
+        InitCtrl();
+        
 
-            $scope.orderSeq = "";
-            $scope.selectedAlias = "";
-            $scope.selectedOrderType="";
+        function InitCtrl() {
+            $http.post("/order/init", null, null).then(function (resp) {
+                $scope.custAlias = resp.data.custAlias;
+                $scope.orderType = resp.data.orderType;
+                $scope.defaultOrderType = resp.data.defaultOrderType;
 
-            $scope.selectedAliasAddr="";
+                $scope.orderSeq = "";
+                $scope.selectedAlias = "";
+                $scope.selectedOrderType = "";
 
-            //alternative alias addr list and selected on addr
-            $scope.AltAliasAddr=null;
-            $scope.selectedAltAliasAddr = "";
+                $scope.selectedAliasAddr = "";
 
-            $scope.notice = "";
+                //alternative alias addr list and selected on addr
+                $scope.AltAliasAddr = null;
+                $scope.selectedAltAliasAddr = "";
 
-            $scope.orderLines = [{ OrderLineNo: $scope.lineNo, CustomerPartNo: "", PartNo: "", Qty: 0, PriAVLCheck: null, AltAVLCheck: null }];
+                $scope.notice = "";
 
-            for (var i=0;i< $scope.custAlias.length;i++) {
-                if ( $scope.custAlias[i].DEFAULT_FLAG == "Y")
-                {
-                    $scope.selectedAlias = $scope.custAlias[i];
-                    break;
+                $scope.lineNo = 1;
+                $scope.altAddrVisiable = false;
+                $scope.priRatio = 0;
+                $scope.altRatio = 0;
+                $scope.isSaved = false;
+
+                $scope.orderLines = [{ OrderLineNo: $scope.lineNo, CustomerPartNo: "", PartNo: "", Qty: 0, PriAVLCheck: null, AltAVLCheck: null }];
+
+                for (var i = 0; i < $scope.custAlias.length; i++) {
+                    if ($scope.custAlias[i].DEFAULT_FLAG == "Y") {
+                        $scope.selectedAlias = $scope.custAlias[i];
+                        break;
+                    }
                 }
-            }
-            for (var i = 0; i < $scope.orderType.length; i++) {
-                if ($scope.orderType[i].ORDER_TYPE == $scope.defaultOrderType) {
-                    $scope.selectedOrderType = $scope.orderType[i];
-                    break;
+                for (var i = 0; i < $scope.orderType.length; i++) {
+                    if ($scope.orderType[i].ORDER_TYPE == $scope.defaultOrderType) {
+                        $scope.selectedOrderType = $scope.orderType[i];
+                        break;
+                    }
                 }
-            }
 
-        },
-     function (resp) {
-         alert("Fail!");
-         // $scope.resp = resp;
-     });
+            },
+             function (resp) {
+                 alert("Fail!");
+                 // $scope.resp = resp;
+             });
+        };
+
+        $scope.refreshCtrl = function ()
+        {
+            ResetControls();
+            InitCtrl();
+
+            $("#poNum").val("");
+            $("#ssto")[0].checked = true;
+            $("#dueDate").val("");
+           $("#sbShipName").val("");
+           $("#sbAddr").val("");
+        }
 
         $scope.GetAltAliasAddr = function () {
             var isSpecialShip = $("#ssto")[0].checked;
@@ -845,6 +864,17 @@
             $("select").attr("disabled", true);
             $(".removeBtn").hide();
             $("#btnNewLine").hide();
+            $scope.isSaved = true;
+        };
+
+        function ResetControls() {
+
+            $("input").attr("disabled", false);
+            $(".before-save").attr("disabled", false);
+            $("select").attr("disabled", false);
+            $(".removeBtn").show();
+            $("#btnNewLine").show();
+            $scope.isSaved = false;
         };
 
         function CalulateRatio() {
