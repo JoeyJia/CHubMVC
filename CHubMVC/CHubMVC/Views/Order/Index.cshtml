@@ -269,7 +269,7 @@
                 <div class="col-md-12 col-lg-12">
                     <div class="panel panel-default" style="">
                         <div class="panel-heading"><b>Order Lines</b>
-                        <b style="color:orange">    Availability Ratio: {{priRatio+altRatio}}% (Primary: {{priRatio}}% + Alternative: {{altRatio}} %)</b>
+                        <b style="color:orange">    Availability Ratio: {{priRatio+altRatio | number:1}}% (Primary: {{priRatio}}% + Alternative: {{altRatio}} %)</b>
                         </div>
 
                         <table id="dtOrderLines" class="table table-striped table-hover table-bordered .table-condensed">
@@ -849,7 +849,12 @@
 
         function CalulateRatio() {
             if ($scope.orderLines.length == 0)
+            {
+                $scope.priRatio = 0;
+                $scope.altRatio = 0;
                 return;
+            }
+                
             var priCount = 0;
             var altCount = 0;
             var totalCount = $scope.orderLines.length;
@@ -860,10 +865,10 @@
                     altCount++;
             }
 
-            if (priCount > 0)
-                $scope.priRatio = (priCount / totalCount).toFixed(3)*100;
-            if (altCount > 0)
-                $scope.altRatio = (altCount / totalCount).toFixed(3)*100;
+            if (priCount >= 0)
+                $scope.priRatio = parseFloat(((priCount / totalCount) * 100).toFixed(1));
+            if (altCount >= 0)
+                $scope.altRatio = parseFloat(((altCount / totalCount) * 100).toFixed(1));
         };
 
     });
