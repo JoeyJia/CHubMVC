@@ -70,6 +70,7 @@
         <EntityTypeShape EntityType="CHubDBModel.TS_OR_HEADER_STAGE" Width="1.5" PointX="22.375" PointY="0.75" />
         <EntityTypeShape EntityType="CHubDBModel.V_O_DOWNLOAD_DTL" Width="1.5" PointX="9.25" PointY="21.75" />
         <EntityTypeShape EntityType="CHubDBModel.V_O_DOWNLOAD_HDR" Width="1.5" PointX="7.375" PointY="21.75" />
+        <EntityTypeShape EntityType="CHubDBModel.M_APPS" Width="1.5" PointX="10.375" PointY="7.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

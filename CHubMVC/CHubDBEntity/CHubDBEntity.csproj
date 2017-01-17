@@ -141,6 +141,9 @@
     <Compile Include="G_PART_SUPERSESSION_ALL.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="M_APPS.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="M_PARAMETER.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>

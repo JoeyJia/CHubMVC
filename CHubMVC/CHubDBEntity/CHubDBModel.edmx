@@ -209,6 +209,18 @@
           <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="CREATION_DATE" Type="date" />
         </EntityType>
+        <EntityType Name="M_APPS">
+          <Key>
+            <PropertyRef Name="APP_NAME" />
+            <PropertyRef Name="APP_DISPLAY" />
+            <PropertyRef Name="URL" />
+          </Key>
+          <Property Name="APP_NAME" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="APP_DISPLAY" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="URL" Type="varchar2" MaxLength="200" Nullable="false" />
+          <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="CREATION_DATE" Type="date" Nullable="false" />
+        </EntityType>
         <EntityType Name="M_PARAMETER">
           <Key>
             <PropertyRef Name="P_NAME" />
@@ -281,7 +293,7 @@
           <Property Name="DEST_LOCATION" Type="number" Precision="38" Scale="0" />
           <Property Name="DUE_DATE" Type="date" Nullable="false" />
           <Property Name="ORDER_TYPE" Type="varchar2" MaxLength="10" Nullable="false" />
-          <Property Name="CUSTOMER_PO_NO" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="CUSTOMER_PO_NO" Type="varchar2" MaxLength="25" Nullable="false" />
           <Property Name="SPL_IND" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="SHIPCOMP_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="ORDER_STATUS" Type="varchar2" MaxLength="1" Nullable="false" />
@@ -306,7 +318,7 @@
           <Property Name="DEST_LOCATION" Type="number" Precision="38" Scale="0" />
           <Property Name="DUE_DATE" Type="date" Nullable="false" />
           <Property Name="ORDER_TYPE" Type="varchar2" MaxLength="10" Nullable="false" />
-          <Property Name="CUSTOMER_PO_NO" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="CUSTOMER_PO_NO" Type="varchar2" MaxLength="25" Nullable="false" />
           <Property Name="SPL_IND" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="SHIPCOMP_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="ORDER_STATUS" Type="varchar2" MaxLength="1" Nullable="false" />
@@ -800,8 +812,8 @@ warning 6002: The table/view 'GWAPP.V_O_DOWNLOAD_HDR' does not have a primary ke
           </Key>
           <Property Name="ORDER_REQ_NO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="SHIPFROM_SEQ" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="FILE_NAME" Type="varchar2" MaxLength="64" />
-          <Property Name="TXT" Type="varchar2" MaxLength="717" />
+          <Property Name="FILE_NAME" Type="varchar2" MaxLength="69" />
+          <Property Name="TXT" Type="varchar2" MaxLength="737" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.V_USER_NAV_ALL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1104,6 +1116,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="APP_WELCOME" EntityType="Self.APP_WELCOME" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="APP_WH" EntityType="Self.APP_WH" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="APP_WORKSPACE" EntityType="Self.APP_WORKSPACE" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="M_APPS" EntityType="Self.M_APPS" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_PARAMETER" EntityType="Self.M_PARAMETER" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_SYSTEM" EntityType="Self.M_SYSTEM" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TS_OR_DETAIL" EntityType="Self.TS_OR_DETAIL" Schema="GWAPP" store:Type="Tables" />
@@ -2635,6 +2648,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySet Name="TS_OR_HEADER_STAGE" EntityType="CHubDBModel.TS_OR_HEADER_STAGE" />
           <EntitySet Name="V_O_DOWNLOAD_DTL" EntityType="CHubDBModel.V_O_DOWNLOAD_DTL" />
           <EntitySet Name="V_O_DOWNLOAD_HDR" EntityType="CHubDBModel.V_O_DOWNLOAD_HDR" />
+          <EntitySet Name="M_APPS" EntityType="CHubDBModel.M_APPS" />
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -2842,6 +2856,18 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="SHIPFROM_SEQ" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="FILE_NAME" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="TXT" Type="String" MaxLength="717" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="M_APPS">
+          <Key>
+            <PropertyRef Name="APP_NAME" />
+            <PropertyRef Name="APP_DISPLAY" />
+            <PropertyRef Name="URL" />
+          </Key>
+          <Property Name="APP_NAME" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="APP_DISPLAY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="URL" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVEIND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="CREATION_DATE" Type="DateTime" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3632,6 +3658,17 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="FILE_NAME" ColumnName="FILE_NAME" />
                 <ScalarProperty Name="SHIPFROM_SEQ" ColumnName="SHIPFROM_SEQ" />
                 <ScalarProperty Name="ORDER_REQ_NO" ColumnName="ORDER_REQ_NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="M_APPS">
+            <EntityTypeMapping TypeName="CHubDBModel.M_APPS">
+              <MappingFragment StoreEntitySet="M_APPS">
+                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
+                <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="APP_DISPLAY" ColumnName="APP_DISPLAY" />
+                <ScalarProperty Name="APP_NAME" ColumnName="APP_NAME" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
