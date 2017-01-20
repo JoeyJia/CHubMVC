@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="M_APPS_DAL.cs" />
     <Compile Include="V_O_DOWNLOAD_HDR_DAL.cs" />
     <Compile Include="V_O_DOWNLOAD_DTL_DAL.cs" />
     <Compile Include="APP_CUST_ALIAS_LINK_DAL.cs" />
