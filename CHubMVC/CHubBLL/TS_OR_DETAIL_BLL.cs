@@ -27,5 +27,10 @@ namespace CHubBLL
             dal.AddOrUpdateDetail(model);
         }
 
+        public List<TS_OR_DETAIL> GetDetailsBySeq(decimal orderSeq)
+        {
+            return dal.GetDetailsBySeq(orderSeq);
+        }
+
     }
 }

@@ -24,6 +24,17 @@ namespace CHubBLL
             dal = new TS_OR_HEADER_DAL(db);
         }
 
+        public List<TS_OR_HEADER> GetHeaders(decimal? orderSeq, string custAlias, string poNum,string appuser)
+        {
+            return dal.GetHeaders(orderSeq, custAlias, poNum,appuser);
+        }
+
+        public List<TS_OR_HEADER> GetHeadersBySeq(decimal orderSeq)
+        {
+            //need to consider stage or not
+            return dal.GetHeadersBySeq(orderSeq);
+        }
+
 
         public decimal AddHeadersWithDetails(TS_OR_HEADER orHeader, TS_OR_HEADER altORHeader, List<TS_OR_DETAIL> detailList)
         {

@@ -33,7 +33,7 @@ namespace CHubDAL
                                                  && a.ACTIVEIND == CHubConstValues.IndY).OrderBy(a => a.DAYS).ToList();
         }
 
-        public V_ALIAS_ADDR_SPL GetSpecifyAliasAddrSPL(string aliasName,string sysID, string cusNo,int? bill2Location,long? ship2Location,long? destLocation )
+        public V_ALIAS_ADDR_SPL GetSpecifyAliasAddrSPL(string aliasName,string sysID, string cusNo,int bill2Location,long ship2Location,long destLocation )
         {
             return db.V_ALIAS_ADDR_SPL.FirstOrDefault(a => a.ALIAS_NAME == aliasName
             && a.SYSID == sysID

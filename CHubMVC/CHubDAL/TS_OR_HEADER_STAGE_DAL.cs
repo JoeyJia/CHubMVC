@@ -22,6 +22,11 @@ namespace CHubDAL
             return db.TS_OR_HEADER_STAGE.FirstOrDefault(a => a.ORDER_REQ_NO == orderSeq && a.SHIPFROM_SEQ == shipFromSeq);
         }
 
+        public List<TS_OR_HEADER_STAGE> GetHeaderStageBySeq(decimal orderSeq)
+        {
+            return db.TS_OR_HEADER_STAGE.Where(a => a.ORDER_REQ_NO == orderSeq).ToList();
+        }
+
         /// <summary>
         /// mainly for alt addr using
         /// </summary>

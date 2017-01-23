@@ -25,6 +25,23 @@ namespace CHubDAL
                 Add(header, autoSave);
         }
 
+        public List<TS_OR_HEADER> GetHeaders(decimal? orderSeq, string custAlias, string poNum,string appUser)
+        {
+            IQueryable<TS_OR_HEADER> result = null;
+            if (orderSeq != null && orderSeq != 0)
+                result = db.TS_OR_HEADER.Where(a => a.ORDER_REQ_NO == orderSeq);
+            if (!string.IsNullOrEmpty(custAlias))
+                result = db.TS_OR_HEADER.Where(a => a.ALIAS_NAME == custAlias);
+            if (!string.IsNullOrEmpty(poNum))
+                result = db.TS_OR_HEADER.Where(a => a.CUSTOMER_PO_NO == poNum);
+            result = db.TS_OR_HEADER.Where(a => a.CREATED_BY == appUser);
+            return result.ToList();
+        }
+
+        public List<TS_OR_HEADER> GetHeadersBySeq(decimal orderSeq)
+        {
+            return db.TS_OR_HEADER.Where(a => a.ORDER_REQ_NO == orderSeq).ToList();
+        }
 
     }
 }

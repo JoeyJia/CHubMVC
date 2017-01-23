@@ -17,13 +17,14 @@ namespace CHubMVC.Controllers
     public class OrderController : BaseController
     {
         // GET: Order
-        public ActionResult Index()
+        public ActionResult Index(decimal? seq)
         {
             if (Session[CHubConstValues.SessionUser] == null)
                 //Session[CHubConstValues.SessionUser] = "lg166";// For test using
                return RedirectToAction("Login", "Account");
 
             ViewBag.AppUser = Session[CHubConstValues.SessionUser].ToString();
+            ViewBag.seq = seq;
             return View();
         }
 
@@ -56,6 +57,61 @@ namespace CHubMVC.Controllers
                     custAlias = acaList,
                     orderType = aotList,
                     defaultOrderType = CHubConstValues.DefaultOrderType
+                };
+
+                return Json(obj);
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult Init(decimal orderSeq)
+        {
+            if (Session[CHubConstValues.SessionUser] == null)
+                return RedirectToAction("Login", "Account");
+
+            using (CHubEntities db = new CHubEntities())
+            {
+                string appUser = Session[CHubConstValues.SessionUser].ToString();
+
+                TS_OR_HEADER_BLL hBLL = new TS_OR_HEADER_BLL(db);
+                List<TS_OR_HEADER> hList = hBLL.GetHeadersBySeq(orderSeq);
+
+                ExVAliasAddr priAddr = null;
+                ExVAliasAddr AltAddr = null;
+                V_ALIAS_ADDR_DFLT_BLL dfltBLL = new V_ALIAS_ADDR_DFLT_BLL(db);
+                V_ALIAS_ADDR_SPL_BLL splBLL = new V_ALIAS_ADDR_SPL_BLL(db);
+
+                //Get primary addr and Alt addr
+                foreach (var item in hList)
+                {
+                    //special ship
+                    if (item.SPL_IND == CHubConstValues.IndY)
+                    {
+                        if (item.SHIPFROM_SEQ == 0)
+                            priAddr = splBLL.GetSpecifyAliasAddrSPL(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION, item.DEST_LOCATION);
+                        if(item.SHIPFROM_SEQ==1)
+                            AltAddr = splBLL.GetSpecifyAliasAddrSPL(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION, item.DEST_LOCATION);
+                    }
+                    else
+                    {
+                        if (item.SHIPFROM_SEQ == 0)
+                            priAddr = dfltBLL.GetSpecifyAliasAddrDFLT(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION);
+                        if (item.SHIPFROM_SEQ == 1)
+                            AltAddr = dfltBLL.GetSpecifyAliasAddrDFLT(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION);
+                    }
+                }
+
+
+                TS_OR_DETAIL_BLL dBLL = new TS_OR_DETAIL_BLL(db);
+                List<TS_OR_DETAIL> dList = dBLL.GetDetailsBySeq(orderSeq);
+
+
+                var obj = new
+                {
+                    priAddr = priAddr,
+                    altAddr = AltAddr,
+                    orderLines = dList
                 };
 
                 return Json(obj);
@@ -382,6 +438,36 @@ namespace CHubMVC.Controllers
                 Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 return Content(ee.Message);
             }
+        }
+
+        #endregion
+
+        #region  For Order List View
+
+        public ActionResult Query()
+        {
+            if (Session[CHubConstValues.SessionUser] == null)
+                return RedirectToAction("Login", "Account");
+
+            //add recent history
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, PageNameEnum.ordinq.ToString(), this.Request.Url.AbsoluteUri);
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult QueryAction(decimal? orderSeq,string custAlias,string poNum)
+        {
+            if (Session[CHubConstValues.SessionUser] == null)
+                return RedirectToAction("Login", "Account");
+
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            CHubEntities db = new CHubEntities();
+            TS_OR_HEADER_BLL hBLL = new TS_OR_HEADER_BLL(db);
+            List<TS_OR_HEADER> result = hBLL.GetHeaders(orderSeq, custAlias, poNum, appUser);
+            return Json(result);
         }
 
         #endregion

@@ -25,5 +25,10 @@ namespace CHubDAL
                 Add(model, autoSave);
         }
 
+        public List<TS_OR_DETAIL> GetDetailsBySeq(decimal orderSeq)
+        {
+            return db.TS_OR_DETAIL.Where(a => a.ORDER_REQ_NO == orderSeq).OrderBy(a => a.ORDER_LINE_NO).ToList();
+        }
+
     }
 }

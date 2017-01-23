@@ -28,6 +28,11 @@ namespace CHubBLL
             return dal.GetSpecifyHeaderStage(orderSeq, shipFromSeq);
         }
 
+        public List<TS_OR_HEADER_STAGE> GetHeaderStageBySeq(decimal orderSeq)
+        {
+            return dal.GetHeaderStageBySeq(orderSeq);
+        }
+
         public List<TS_OR_HEADER_STAGE> GetHeaderStageByUser(string appUser)
         {
             return dal.GetHeaderStageByUser(appUser);

@@ -57,9 +57,13 @@ namespace CHubBLL
             return exList;
         }
 
-        public V_ALIAS_ADDR_DFLT GetSpecifyAliasAddrDFLT(string aliasName, string sysID, string cusNo, int? bill2Location, int? ship2Location)
+        public ExVAliasAddr GetSpecifyAliasAddrDFLT(string aliasName, string sysID, string cusNo, decimal bill2Location, decimal ship2Location)
         {
-            return dal.GetSpecifyAliasAddrDFLT(aliasName, sysID, cusNo, bill2Location, ship2Location);
+            V_ALIAS_ADDR_DFLT addrDFLT =  dal.GetSpecifyAliasAddrDFLT(aliasName, sysID, cusNo, (int)bill2Location, (int)ship2Location);
+            ClassConvertTable cct = new ClassConvertTable();
+            ExVAliasAddr ex = new ExVAliasAddr();
+            ClassConvert.ConvertAction(addrDFLT, ex, cct.AliasAddrDFLTConvert);
+            return ex;
         }
 
     }
