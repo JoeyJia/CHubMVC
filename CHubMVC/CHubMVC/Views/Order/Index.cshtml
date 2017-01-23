@@ -27,6 +27,7 @@
 
 
 @*<input type="hidden" value="@ViewBag.AppUser" id="hddAppUser" />*@
+<input type="hidden" value="@ViewBag.seq" id="hddSeq" />
 
 <div id="orderBody" ng-app="orderApp" ng-controller="orderCtrl" class="small">
     <form class="form-horizontal" id="orderForm">
@@ -414,6 +415,8 @@
         });
         $("#orderForm").validator();
 
+        InitData();
+
     });
 
 
@@ -422,8 +425,7 @@
 
         InitCtrl();
         
-
-        function InitCtrl() {
+         function InitCtrl() {
             $http.post("/order/init", null, null).then(function (resp) {
                 $scope.custAlias = resp.data.custAlias;
                 $scope.orderType = resp.data.orderType;
@@ -462,6 +464,12 @@
                     }
                 }
 
+                debugger;
+                if ($("#hddSeq").val() != "") {
+                    $scope.orderSeq = $("#hddSeq").val();
+                    InitCtrlBySeq();
+                }
+
             },
              function (resp) {
                  alert("Fail!");
@@ -469,17 +477,44 @@
              });
         };
 
-        $scope.refreshCtrl = function ()
-        {
+         function InitCtrlBySeq() {
+            debugger;
+            $.ajax({
+                url: "/order/InitOrder",
+                data: {
+                    orderSeq: $scope.orderSeq
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    debugger;
+                    $scope.selectedAliasAddr = obj.priAddr;
+
+                    //alternative alias addr list and selected on addr
+                    $scope.AltAliasAddr = [obj.altAddr];
+                    $scope.selectedAltAliasAddr = $scope.AltAliasAddr[0];
+                    $scope.isSaved = false;
+
+                    $scope.orderLines = obj.orderLines;
+
+                },
+                error: function (obj) {
+                    alert("fail to get alt addr Data");
+                }
+
+            });
+        };
+
+        $scope.refreshCtrl = function () {
             ResetControls();
             InitCtrl();
 
             $("#poNum").val("");
             $("#ssto")[0].checked = true;
             $("#dueDate").val("");
-           $("#sbShipName").val("");
-           $("#sbAddr").val("");
-        }
+            $("#sbShipName").val("");
+            $("#sbAddr").val("");
+        };
 
         $scope.GetAltAliasAddr = function () {
             var isSpecialShip = $("#ssto")[0].checked;
@@ -1002,6 +1037,22 @@
         }
 
     }
+
+    function InitData() {
+        //debugger;
+        //var appElement = document.querySelector('[ng-controller=orderCtrl]');
+        //var scope = angular.element(appElement).scope();
+        ////scope.InitCtrl();
+
+        //if ($("#hddSeq").val() != "") {
+        //    scope.orderSeq = $("#hddSeq").val();
+        //    scope.$apply();
+        //    scope.InitCtrlBySeq();
+        //}
+        //scope.$apply();
+    }
+
+
 
 
 </script>

@@ -17,7 +17,7 @@ namespace CHubMVC.Controllers
     public class OrderController : BaseController
     {
         // GET: Order
-        public ActionResult Index(decimal? seq)
+        public ActionResult Index(string seq)
         {
             if (Session[CHubConstValues.SessionUser] == null)
                 //Session[CHubConstValues.SessionUser] = "lg166";// For test using
@@ -65,7 +65,7 @@ namespace CHubMVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult Init(decimal orderSeq)
+        public ActionResult InitOrder(decimal orderSeq)
         {
             if (Session[CHubConstValues.SessionUser] == null)
                 return RedirectToAction("Login", "Account");
