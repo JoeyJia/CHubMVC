@@ -91,6 +91,15 @@ namespace CHubMVC.Controllers
             return Json(nodeList);
         }
 
+        [HttpPost]
+        public ActionResult GetApplicationLink()
+        {
+            List<M_APPS> apps = new List<M_APPS>();
+            M_APPS_BLL BLL = new M_APPS_BLL();
+            apps = BLL.GetMAppList();
+            return Json(apps);
+        }
+
         public ActionResult About()
         {
             if (Session[CHubConstValues.SessionUser] == null)

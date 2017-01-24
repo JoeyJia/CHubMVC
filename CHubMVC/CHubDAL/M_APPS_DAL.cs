@@ -17,8 +17,7 @@ namespace CHubDAL
 
         public List<M_APPS> GetMAppsList()
         {
-            //add condition for active ind later
-            return db.M_APPS.OrderBy(a=>a.CREATION_DATE).ToList();
+            return db.M_APPS.Where(a=>a.ACTIVEIND=="Y").OrderBy(a=>a.APP_DISPLAY).ToList();
         }
 
 

@@ -79,6 +79,8 @@ namespace CHubMVC.Controllers
                 List<OrderLineItem> olReslut = new List<OrderLineItem>();
                 bool isSaved = false;
                 bool splInd = true;
+                string poNum = "";
+                string dueDate = "";
 
                 V_ALIAS_ADDR_DFLT_BLL dfltBLL = new V_ALIAS_ADDR_DFLT_BLL(db);
                 V_ALIAS_ADDR_SPL_BLL splBLL = new V_ALIAS_ADDR_SPL_BLL(db);
@@ -96,7 +98,11 @@ namespace CHubMVC.Controllers
                         {
                             splInd = true;
                             if (item.SHIPFROM_SEQ == 0)
+                            {
+                                poNum = item.CUSTOMER_PO_NO;
+                                dueDate = item.DUE_DATE.ToString("yyyy-MM-dd");
                                 priAddr = splBLL.GetSpecifyAliasAddrSPL(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION, item.DEST_LOCATION);
+                            }
                             if (item.SHIPFROM_SEQ == 1)
                                 AltAddr = splBLL.GetSpecifyAliasAddrSPL(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION, item.DEST_LOCATION);
                         }
@@ -104,12 +110,15 @@ namespace CHubMVC.Controllers
                         {
                             splInd = false;
                             if (item.SHIPFROM_SEQ == 0)
+                            {
+                                poNum = item.CUSTOMER_PO_NO;
+                                dueDate = item.DUE_DATE.ToString("yyyy-MM-dd");
                                 priAddr = dfltBLL.GetSpecifyAliasAddrDFLT(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION);
+                            }
                             if (item.SHIPFROM_SEQ == 1)
                                 AltAddr = dfltBLL.GetSpecifyAliasAddrDFLT(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION);
                         }
                     }
-
 
                     TS_OR_DETAIL_BLL dBLL = new TS_OR_DETAIL_BLL(db);
                     List<TS_OR_DETAIL> dList = dBLL.GetDetailsBySeq(orderSeq);
@@ -149,13 +158,21 @@ namespace CHubMVC.Controllers
                             {
                                 splInd = true;
                                 if (item.SHIPFROM_SEQ == 0)
+                                {
+                                    poNum = item.CUSTOMER_PO_NO;
+                                    dueDate = item.DUE_DATE.ToString("yyyy-MM-dd");
                                     priAddr = splBLL.GetSpecifyAliasAddrSPL(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION, item.DEST_LOCATION);
+                                }
                             }
                             else
                             {
                                 splInd = false;
                                 if (item.SHIPFROM_SEQ == 0)
+                                {
+                                    poNum = item.CUSTOMER_PO_NO;
+                                    dueDate = item.DUE_DATE.ToString("yyyy-MM-dd");
                                     priAddr = dfltBLL.GetSpecifyAliasAddrDFLT(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION);
+                                }
                             }
                         }
 
@@ -193,7 +210,9 @@ namespace CHubMVC.Controllers
                     altAddr = AltAddr,
                     orderLines = olReslut,
                     isSaved = isSaved,
-                    splInd = splInd
+                    splInd = splInd,
+                    poNum = poNum,
+                    dueDate = dueDate
                 };
 
                 return Json(obj);

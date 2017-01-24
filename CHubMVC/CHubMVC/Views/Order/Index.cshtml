@@ -503,6 +503,9 @@
 
                     $scope.orderLines = obj.orderLines;
                     $scope.splInd = obj.splInd;
+                    $("#poNum").val(obj.poNum);
+                    $("#dueDate").val(obj.dueDate);
+
                     CalulateRatio();
                 },
                 error: function (obj) {
@@ -963,6 +966,7 @@
 
     //Add second app to document
     angular.bootstrap(document.getElementById("aliasSearch"), ['resultApp']);
+    angular.bootstrap(document.getElementById("orderBody"), ['orderApp']);
 
     //Functions start
     function searchAddrs()
