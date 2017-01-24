@@ -49,7 +49,10 @@
                                 <td>{{dl.SHIPCOMP_FLAG}}</td>
                                 <td>{{dl.CREATION_DATE}}</td>
                                 <td>{{dl.ORDER_NOTES}}</td>
-                                <td style="text-align:center"><a href="javascript:void(0)" title="Delete" class="removeBtn" ng-click="removeDraft($index)"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                <td style="text-align:center">
+                                    <a href="javascript:void(0)" title="Delete" class="removeBtn" ng-click="removeDraft($index)"><span class="glyphicon glyphicon-trash"></span></a>
+                                    <a href="javascript:void(0)" title="Detail" class="detailBtn" ng-click="viewDetail(dl.ORDER_REQ_NO)"><span class="glyphicon glyphicon-send"></span></a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -73,6 +76,10 @@
          alert("Fail!");
          // $scope.resp = resp;
      });
+
+        $scope.viewDetail = function (seq) {
+            window.location.href = "/order/index?seq=" + seq;
+        }
 
         $scope.removeDraft = function (seq) {
             $.ajax({

@@ -21,7 +21,7 @@ namespace CHubDBEntity
         public string CUSTOMER_NO { get; set; }
         public decimal BILL_TO_LOCATION { get; set; }
         public decimal SHIP_TO_LOCATION { get; set; }
-        public Nullable<decimal> DEST_LOCATION { get; set; }
+        public decimal DEST_LOCATION { get; set; }
         public System.DateTime DUE_DATE { get; set; }
         public string ORDER_TYPE { get; set; }
         public string CUSTOMER_PO_NO { get; set; }

@@ -33,5 +33,9 @@ namespace CHubBLL
             return dal.GetSpecifyDetailStage(seq, lineNO);
         }
 
+        public List<TS_OR_DETAIL_STAGE> GetDetailsStageByOrderSeq(decimal seq)
+        {
+            return dal.GetDetailsStageByOrderSeq(seq);
+        }
     }
 }

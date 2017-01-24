@@ -74,44 +74,126 @@ namespace CHubMVC.Controllers
             {
                 string appUser = Session[CHubConstValues.SessionUser].ToString();
 
-                TS_OR_HEADER_BLL hBLL = new TS_OR_HEADER_BLL(db);
-                List<TS_OR_HEADER> hList = hBLL.GetHeadersBySeq(orderSeq);
-
                 ExVAliasAddr priAddr = null;
                 ExVAliasAddr AltAddr = null;
+                List<OrderLineItem> olReslut = new List<OrderLineItem>();
+                bool isSaved = false;
+                bool splInd = true;
+
                 V_ALIAS_ADDR_DFLT_BLL dfltBLL = new V_ALIAS_ADDR_DFLT_BLL(db);
                 V_ALIAS_ADDR_SPL_BLL splBLL = new V_ALIAS_ADDR_SPL_BLL(db);
 
-                //Get primary addr and Alt addr
-                foreach (var item in hList)
+                TS_OR_HEADER_BLL hBLL = new TS_OR_HEADER_BLL(db);
+                List<TS_OR_HEADER> hList = hBLL.GetHeadersBySeq(orderSeq);
+                if (hList != null && hList.Count > 0)
                 {
-                    //special ship
-                    if (item.SPL_IND == CHubConstValues.IndY)
+                    isSaved = true;
+                    //Get primary addr and Alt addr
+                    foreach (var item in hList)
                     {
-                        if (item.SHIPFROM_SEQ == 0)
-                            priAddr = splBLL.GetSpecifyAliasAddrSPL(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION, item.DEST_LOCATION);
-                        if(item.SHIPFROM_SEQ==1)
-                            AltAddr = splBLL.GetSpecifyAliasAddrSPL(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION, item.DEST_LOCATION);
+                        //special ship
+                        if (item.SPL_IND == CHubConstValues.IndY)
+                        {
+                            splInd = true;
+                            if (item.SHIPFROM_SEQ == 0)
+                                priAddr = splBLL.GetSpecifyAliasAddrSPL(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION, item.DEST_LOCATION);
+                            if (item.SHIPFROM_SEQ == 1)
+                                AltAddr = splBLL.GetSpecifyAliasAddrSPL(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION, item.DEST_LOCATION);
+                        }
+                        else
+                        {
+                            splInd = false;
+                            if (item.SHIPFROM_SEQ == 0)
+                                priAddr = dfltBLL.GetSpecifyAliasAddrDFLT(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION);
+                            if (item.SHIPFROM_SEQ == 1)
+                                AltAddr = dfltBLL.GetSpecifyAliasAddrDFLT(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION);
+                        }
+                    }
+
+
+                    TS_OR_DETAIL_BLL dBLL = new TS_OR_DETAIL_BLL(db);
+                    List<TS_OR_DETAIL> dList = dBLL.GetDetailsBySeq(orderSeq);
+
+                    //change detail ot orderLine
+                    OrderLineCheckArg arg = new OrderLineCheckArg();
+                    arg.primarySysID = priAddr.SysID;
+                    arg.primaryWareHouse = priAddr.WareHouse;
+                    if (AltAddr != null)
+                    {
+                        arg.altSysID = AltAddr.SysID;
+                        arg.altWareHosue = AltAddr.WareHouse;
+                    }
+                    foreach (var item in dList)
+                    {
+                        arg.olItem = new OrderLineItem();
+                        arg.olItem.CustomerPartNo = item.CUSTOMER_PART_NO;
+                        arg.olItem.Qty = item.BUY_QTY;
+                        arg.olItem.OrderLineNo = item.ORDER_LINE_NO;
+                        CheckOrderLineItemAction(arg);
+                        olReslut.Add(arg.olItem);
+                    }
+                }
+                else
+                {
+                    TS_OR_HEADER_STAGE_BLL hsBLL = new TS_OR_HEADER_STAGE_BLL(db);
+                    List<TS_OR_HEADER_STAGE> hsList = hsBLL.GetHeaderStageBySeq(orderSeq);
+
+                    if (hsList != null && hsList.Count > 0)
+                    {
+                        isSaved = false;
+                        //Get primary addr and Alt addr stage
+                        foreach (var item in hsList)
+                        {
+                            //special ship
+                            if (item.SPL_IND == CHubConstValues.IndY)
+                            {
+                                splInd = true;
+                                if (item.SHIPFROM_SEQ == 0)
+                                    priAddr = splBLL.GetSpecifyAliasAddrSPL(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION, item.DEST_LOCATION);
+                            }
+                            else
+                            {
+                                splInd = false;
+                                if (item.SHIPFROM_SEQ == 0)
+                                    priAddr = dfltBLL.GetSpecifyAliasAddrDFLT(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION);
+                            }
+                        }
+
+
+                        TS_OR_DETAIL_STAGE_BLL dsBLL = new TS_OR_DETAIL_STAGE_BLL(db);
+                        List<TS_OR_DETAIL_STAGE> dsList = dsBLL.GetDetailsStageByOrderSeq(orderSeq);
+
+                        //change detail ot orderLine
+                        OrderLineCheckArg arg = new OrderLineCheckArg();
+                        arg.primarySysID = priAddr.SysID;
+                        arg.primaryWareHouse = priAddr.WareHouse;
+                        arg.altSysID = null;
+                        arg.altWareHosue = null;
+
+                        foreach (var item in dsList)
+                        {
+                            arg.olItem = new OrderLineItem();
+                            arg.olItem.CustomerPartNo = item.CUSTOMER_PART_NO;
+                            arg.olItem.Qty = item.BUY_QTY;
+                            arg.olItem.OrderLineNo = item.ORDER_LINE_NO;
+                            CheckOrderLineItemAction(arg);
+                            olReslut.Add(arg.olItem);
+                        }
                     }
                     else
                     {
-                        if (item.SHIPFROM_SEQ == 0)
-                            priAddr = dfltBLL.GetSpecifyAliasAddrDFLT(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION);
-                        if (item.SHIPFROM_SEQ == 1)
-                            AltAddr = dfltBLL.GetSpecifyAliasAddrDFLT(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION);
+                        this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        return Content("Wrong Order Seq");
                     }
                 }
-
-
-                TS_OR_DETAIL_BLL dBLL = new TS_OR_DETAIL_BLL(db);
-                List<TS_OR_DETAIL> dList = dBLL.GetDetailsBySeq(orderSeq);
-
 
                 var obj = new
                 {
                     priAddr = priAddr,
                     altAddr = AltAddr,
-                    orderLines = dList
+                    orderLines = olReslut,
+                    isSaved = isSaved,
+                    splInd = splInd
                 };
 
                 return Json(obj);

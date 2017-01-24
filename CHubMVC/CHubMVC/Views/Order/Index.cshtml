@@ -109,7 +109,7 @@
                     <label for="ssto" class="col-sm-2 control-label">SPL Order</label>
                     <div class="checkbox col-md-2 col-lg-2">
                         <label>
-                            <input type="checkbox" id="ssto" class="input-sm" style="margin-left:1px;margin-top:-5px" onclick="checkSstoStatu()" checked>
+                            <input type="checkbox" id="ssto" ng-model="splInd" class="input-sm" style="margin-left:1px;margin-top:-5px" onclick="checkSstoStatu()" >
                         </label>
                     </div>
                 </div>
@@ -246,7 +246,7 @@
                                     <td style="">
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="altOptionsRdios" id="altOptionsRdios$index" class="altAddrRadio" ng-click="AltAddrRadioChange(rd)"  seq="{{$index}}" value="">
+                                                <input type="radio" name="altOptionsRdios" id="altOptionsRdios$index" class="altAddrRadio" ng-click="AltAddrRadioChange(rd)" ng-init="checkAltRadio()"  seq="{{$index}}" value="">
                                             </label>
                                         </div>
                                     </td>
@@ -270,7 +270,7 @@
                 <div class="col-md-12 col-lg-12">
                     <div class="panel panel-default" style="">
                         <div class="panel-heading"><b>Order Lines</b>
-                        <b style="color:orange">    Availability Ratio: {{priRatio+altRatio | number:1}}% (Primary: {{priRatio}}% + Alternative: {{altRatio}} %)</b>
+                        <b style="color:orange">    Availability Ratio: {{totalRatio}} (Primary: {{priRatio}}% + Alternative: {{altRatio}} %)</b>
                         </div>
 
                         <table id="dtOrderLines" class="table table-striped table-hover table-bordered .table-condensed">
@@ -290,14 +290,14 @@
                             <tbody style="">
                                 <tr ng-repeat="ol in orderLines ">
                                     <td style="">{{$index+1}}</td>
-                                    <td><input class="form-control" ng-model="ol.CustomerPartNo" ng-blur="checkOrderLineItem(ol)" /></td>
-                                    <td><input class="form-control" ng-model="ol.PartNo" placeholder="{{ol.PartNoPlaceHolder}}" ng-style ="{backgroundColor:ol.ItemBackColor}" readonly/></td>
+                                    <td><input class="form-control" ng-model="ol.CustomerPartNo" ng-blur="checkOrderLineItem(ol)" ng-disabled="isSaved" /></td>
+                                    <td><input class="form-control" ng-model="ol.PartNo" placeholder="{{ol.PartNoPlaceHolder}}"  ng-style ="{backgroundColor:ol.ItemBackColor}" readonly/></td>
                                     <td><input class="form-control" ng-model="ol.Description" readonly/></td>
                                     <td><input class="form-control" ng-model="ol.DescCN" readonly/></td>
-                                    <td><input class="form-control" ng-model="ol.Qty" ng-blur="checkOrderLineItem(ol)" /></td>
+                                    <td><input class="form-control" ng-model="ol.Qty" ng-blur="checkOrderLineItem(ol)" ng-disabled="isSaved" /></td>
                                     <td><input class="form-control" ng-model="ol.PriAVLCheck" ng-style ="{color:ol.PriAVLCheckColor}" readonly /></td>
                                     <td><input class="form-control" ng-model="ol.AltAVLCheck" ng-style ="{color:ol.AltAVLCheckColor}" readonly /></td>
-                                    <td style="text-align:center"><a href="javascript:void(0)" title="Delete" class="removeBtn" ng-click="removeOLItem($index)"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                    <td style="text-align:center"><a href="javascript:void(0)" title="Delete" class="removeBtn" ng-click="removeOLItem($index)" ng-show="!isSaved"><span class="glyphicon glyphicon-trash"></span></a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -415,13 +415,13 @@
         });
         $("#orderForm").validator();
 
-        InitData();
+
 
     });
 
 
     //Angular orderApp start
-    angular.module('orderApp', []).controller('orderCtrl', function ($scope, $http) {
+    angular.module('orderApp', []).controller('orderCtrl', function ($scope, $http, $timeout) {
 
         InitCtrl();
         
@@ -447,7 +447,9 @@
                 $scope.altAddrVisiable = false;
                 $scope.priRatio = 0;
                 $scope.altRatio = 0;
+                $scope.totalRatio = "";
                 $scope.isSaved = false;
+                $scope.splInd = true;
 
                 $scope.orderLines = [{ OrderLineNo: $scope.lineNo, CustomerPartNo: "", PartNo: "", Qty: 0, PriAVLCheck: null, AltAVLCheck: null }];
 
@@ -464,12 +466,15 @@
                     }
                 }
 
-                debugger;
                 if ($("#hddSeq").val() != "") {
                     $scope.orderSeq = $("#hddSeq").val();
                     InitCtrlBySeq();
                 }
 
+                if ($scope.isSaved) {
+                    $timeout(AfterSaveAction());
+                }
+                
             },
              function (resp) {
                  alert("Fail!");
@@ -478,7 +483,6 @@
         };
 
          function InitCtrlBySeq() {
-            debugger;
             $.ajax({
                 url: "/order/InitOrder",
                 data: {
@@ -487,16 +491,19 @@
                 type: "post",
                 async: false,
                 success: function (obj) {
-                    debugger;
                     $scope.selectedAliasAddr = obj.priAddr;
 
                     //alternative alias addr list and selected on addr
-                    $scope.AltAliasAddr = [obj.altAddr];
-                    $scope.selectedAltAliasAddr = $scope.AltAliasAddr[0];
-                    $scope.isSaved = false;
+                    if (obj.altAddr != null) {
+                        $scope.altAddrVisiable = true;
+                        $scope.AltAliasAddr = [obj.altAddr];
+                        $scope.selectedAltAliasAddr = $scope.AltAliasAddr[0];
+                    }
+                    $scope.isSaved = obj.isSaved;
 
                     $scope.orderLines = obj.orderLines;
-
+                    $scope.splInd = obj.splInd;
+                    CalulateRatio();
                 },
                 error: function (obj) {
                     alert("fail to get alt addr Data");
@@ -504,6 +511,12 @@
 
             });
         };
+
+         $scope.checkAltRadio = function ()
+         {
+             if ($scope.isSaved)
+                 $(".altAddrRadio")[0].checked = true;
+         }
 
         $scope.refreshCtrl = function () {
             ResetControls();
@@ -903,7 +916,7 @@
         };
 
         function ResetControls() {
-
+            $("#hddSeq").val("");
             $("input").attr("disabled", false);
             $(".before-save").attr("disabled", false);
             $("select").attr("disabled", false);
@@ -934,6 +947,9 @@
                 $scope.priRatio = parseFloat(((priCount / totalCount) * 100).toFixed(1));
             if (altCount >= 0)
                 $scope.altRatio = parseFloat(((altCount / totalCount) * 100).toFixed(1));
+
+            var saCount = priCount + altCount;
+            $scope.totalRatio = saCount.toString() + "/" + totalCount.toString();
         };
 
     });
