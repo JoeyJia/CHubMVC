@@ -270,7 +270,7 @@
                 <div class="col-md-12 col-lg-12">
                     <div class="panel panel-default" style="">
                         <div class="panel-heading"><b>Order Lines</b>
-                        <b style="color:orange">    Availability Ratio: {{totalRatio}} (Primary: {{priRatio}}% + Alternative: {{altRatio}} %)</b>
+                        <b style="color:orange">    Availability Ratio: {{totalRatio}} ({{priRatio+altRatio | number:1}}% = Primary: {{priRatio}}% + Alternative: {{altRatio}} %)</b>
                         </div>
 
                         <table id="dtOrderLines" class="table table-striped table-hover table-bordered .table-condensed">
@@ -415,8 +415,6 @@
         });
         $("#orderForm").validator();
 
-
-
     });
 
 
@@ -507,6 +505,7 @@
                     $("#dueDate").val(obj.dueDate);
 
                     CalulateRatio();
+                    $("#orderForm").validator('validate');
                 },
                 error: function (obj) {
                     alert("fail to get alt addr Data");

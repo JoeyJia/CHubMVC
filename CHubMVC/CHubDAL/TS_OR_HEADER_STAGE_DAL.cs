@@ -43,7 +43,7 @@ namespace CHubDAL
 
         public List<TS_OR_HEADER_STAGE> GetHeaderStageByUser(string appUser)
         {
-            return db.TS_OR_HEADER_STAGE.Where(a => a.CREATED_BY == appUser).OrderBy(a => a.ORDER_REQ_NO).ToList();
+            return db.TS_OR_HEADER_STAGE.Where(a => a.CREATED_BY == appUser&&a.SHIPFROM_SEQ==0).OrderBy(a => a.ORDER_REQ_NO).ToList();
         }
 
         public void DeleteDraft(decimal orderSeq, decimal shipFrom = 0)
