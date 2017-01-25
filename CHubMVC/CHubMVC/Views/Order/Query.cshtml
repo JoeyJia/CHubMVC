@@ -1,0 +1,156 @@
+﻿
+@{
+    ViewBag.Title = "Query Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid" id="orderListBody" ng-app="queryApp" ng-controller="queryCtrl">
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>View Orders</b></div>
+
+        <form class="form-horizontal" id="searchForm">
+            <div class="row" style="margin-top:20px;">
+                <div class="form-group">
+                    <label for="orderID" class="col-sm-2 control-label small">Order SEQ</label>
+                    <div class="col-sm-2 col-lg-2">
+                        <input type="text" class="form-control input-sm" id="orderID" ng-model="orderSeq" placeholder="Order SEQ">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="cAlias" class="col-sm-2 control-label">Cus Alias</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="custAlias" ng-model="custAlias" placeholder="Cust Alias">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="poNum" class="col-sm-2 control-label">PO No.</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="poNum" ng-model="poNum" placeholder="Customer PO No.">
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary btn-sm" ng-click="searchAction()">Search</button>
+                    </div>
+                </div>
+
+            </div>
+
+            @*<div class="row">
+                <div class="col-sm-2 col-sm-offset-2">
+                    <button class="btn btn-primary">Search</button>
+                </div>
+            </div>*@
+        </form>
+
+            <!--Order List-->
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <div class="panel panel-default" style="">
+                        <div class="panel-heading">
+                            <b>Order List</b>
+                        </div>
+
+                        <table id="tbOrders" class="table table-striped table-hover table-bordered .table-condensed">
+                            <thead>
+                                <tr>
+                                    <th style="">SEQ</th>
+                                    <th style="">Ship From SEQ</th>
+                                    <th style="">To System</th>
+                                    <th style="">Alias Name</th>
+                                    <th style="">Customer NO.</th>
+                                    <th style="">Order Type</th>
+                                    <th style="">Cust PO NO.</th>
+                                    <th style="">SPL Ind</th>
+                                    <th style="">ShipComp Flag</th>
+                                    <th style="">Create Date</th>
+                                    <th style="">Operation</th>
+                                </tr>
+                            </thead>
+                            <tbody style="">
+                                <tr ng-repeat="r in result ">
+                                    <td style="">{{r.ORDER_REQ_NO}}</td>
+                                    <td>{{r.SHIPFROM_SEQ}}</td>
+                                    <td>{{r.TO_SYSTEM}}</td>
+                                    <td>{{r.ALIAS_NAME}}</td>
+                                    <td>{{r.CUSTOMER_NO}}</td>
+                                    <td>{{r.ORDER_TYPE}}</td>
+                                    <td>{{r.CUSTOMER_PO_NO}}</td>
+                                    <td>{{r.SPL_IND}}</td>
+                                    <td>{{r.SHIPCOMP_FLAG}}</td>
+                                    <td>{{r.CREATION_DATE}}</td>
+                                    <td style="text-align:center">
+                                        <a href="javascript:void(0)" title="Detail" class="detailBtn" ng-click="viewDetail(r.ORDER_REQ_NO)"><span class="glyphicon glyphicon-send"></span></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+</div>
+</div>
+
+<script>
+    
+
+    angular.module('queryApp', []).controller('queryCtrl', function ($scope, $http) {
+        $scope.result = [];
+        $scope.orderSeq = "";
+        $scope.custAlias = "";
+        $scope.poNum = "";
+
+     //   $http.post("/order/InitDraft", null, null).then(function (resp) {
+     //       //debugger;
+     //       $scope.draftList = resp.data;
+
+     //   },
+     //function (resp) {
+     //    alert("Fail!");
+     //    // $scope.resp = resp;
+     //});
+
+        $scope.searchAction = function () {
+            if ($scope.orderSeq == "" && $scope.custAlias == "" && $scope.poNum == "")
+            {
+                alert("No Condition");
+                return;
+            }
+
+
+            $.ajax({
+                url: "/order/QueryAction",
+                data: {
+                    orderSeq: $scope.orderSeq,
+                    custAlias: $scope.custAlias,
+                    poNum:$scope.poNum
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+
+                    $scope.result = obj;
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+        $scope.viewDetail = function(seq)
+        {
+            window.location.href = "/order/index?seq=" + seq;
+        }
+
+    });
+
+    angular.bootstrap(document.getElementById("orderListBody"), ['queryApp']);
+    //add function to load order to order index page
+</script>
+
