@@ -68,7 +68,7 @@ namespace CHubMVC.Controllers
                     user = userBLL.GetAppUserByDomainName(model.UserName);
                 }
                 Session[CHubConstValues.SessionUser] = user.APP_USER;
-                return RedirectToAction("Index", "Home");
+                return RedirectToLocal(returnUrl);
             }
 
             //not success remail login page

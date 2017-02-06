@@ -17,11 +17,12 @@ namespace CHubMVC.Controllers
     public class OrderController : BaseController
     {
         // GET: Order
+        [Authorize]
         public ActionResult Index(string seq)
         {
-            if (Session[CHubConstValues.SessionUser] == null)
-                //Session[CHubConstValues.SessionUser] = "lg166";// For test using
-               return RedirectToAction("Login", "Account");
+            //if (Session[CHubConstValues.SessionUser] == null)
+            //    //Session[CHubConstValues.SessionUser] = "lg166";// For test using
+            //   return RedirectToAction("Login", "Account");
 
             ViewBag.AppUser = Session[CHubConstValues.SessionUser].ToString();
             ViewBag.seq = seq;
@@ -29,15 +30,15 @@ namespace CHubMVC.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Init()
         {
-            if (Session[CHubConstValues.SessionUser] == null)
-                return RedirectToAction("Login", "Account");
+            //if (Session[CHubConstValues.SessionUser] == null)
+            //    return RedirectToAction("Login", "Account");
 
             using (CHubEntities db = new CHubEntities())
             {
                 string appUser = Session[CHubConstValues.SessionUser].ToString();
-
                 //add recent page data
                 APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL(db);
                 rpBLL.Add(appUser, PageNameEnum.qkord.ToString(), this.Request.Url.AbsoluteUri);
@@ -65,10 +66,11 @@ namespace CHubMVC.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult InitOrder(decimal orderSeq)
         {
-            if (Session[CHubConstValues.SessionUser] == null)
-                return RedirectToAction("Login", "Account");
+            //if (Session[CHubConstValues.SessionUser] == null)
+            //    return RedirectToAction("Login", "Account");
 
             using (CHubEntities db = new CHubEntities())
             {
@@ -221,6 +223,7 @@ namespace CHubMVC.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult SearchAddrs(string shipName,string addr,string aliasName, bool isSpecialShip)
         {
             try
@@ -260,6 +263,7 @@ namespace CHubMVC.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult GetStrictAddrs(string shipName, string addr, string aliasName, bool isSpecialShip)
         {
             try
@@ -287,6 +291,7 @@ namespace CHubMVC.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public ActionResult SaveDraft(OrderSaveArg arg)
         {
             try
@@ -345,6 +350,7 @@ namespace CHubMVC.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult SaveOrder(OrderSaveArg arg)
         {
             try
@@ -403,6 +409,7 @@ namespace CHubMVC.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult CheckOrderLineItem(OrderLineCheckArg olArg)
         {
             try
@@ -424,6 +431,7 @@ namespace CHubMVC.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult BatchCheckOrderLines(OrderLineBatchCheckArg arg)
         {
             try
@@ -453,7 +461,7 @@ namespace CHubMVC.Controllers
             }
         }
 
-
+        [Authorize]
         public ActionResult DownLoadOrder(decimal? orderSeq,decimal shipFrom = 0)
         {
             try
@@ -496,10 +504,11 @@ namespace CHubMVC.Controllers
         }
 
         #region For draft function part
+        [Authorize]
         public ActionResult Draft()
         {
-            if (Session[CHubConstValues.SessionUser] == null)
-                return RedirectToAction("Login", "Account");
+            //if (Session[CHubConstValues.SessionUser] == null)
+            //    return RedirectToAction("Login", "Account");
 
             string appUser = Session[CHubConstValues.SessionUser].ToString();
             APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
@@ -508,10 +517,11 @@ namespace CHubMVC.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult InitDraft()
         {
-            if (Session[CHubConstValues.SessionUser] == null)
-                return RedirectToAction("Login", "Account");
+            //if (Session[CHubConstValues.SessionUser] == null)
+            //    return RedirectToAction("Login", "Account");
 
             string appUser = Session[CHubConstValues.SessionUser].ToString();
 
@@ -524,6 +534,7 @@ namespace CHubMVC.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public ActionResult DeleteDraft(decimal orderSeq, decimal shipFrom)
         {
             try
@@ -545,10 +556,11 @@ namespace CHubMVC.Controllers
 
         #region  For Order List View
 
+        [Authorize]
         public ActionResult Query()
         {
-            if (Session[CHubConstValues.SessionUser] == null)
-                return RedirectToAction("Login", "Account");
+            //if (Session[CHubConstValues.SessionUser] == null)
+            //    return RedirectToAction("Login", "Account");
 
             //add recent history
             string appUser = Session[CHubConstValues.SessionUser].ToString();
@@ -559,6 +571,7 @@ namespace CHubMVC.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult QueryAction(decimal? orderSeq,string custAlias,string poNum)
         {
             if (Session[CHubConstValues.SessionUser] == null)

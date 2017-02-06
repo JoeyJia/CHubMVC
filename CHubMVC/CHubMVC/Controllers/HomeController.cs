@@ -13,6 +13,7 @@ namespace CHubMVC.Controllers
 {
     public class HomeController : Controller
     {
+        [Authorize]
         public ActionResult Index()
         {
             if(Session[CHubConstValues.SessionUser]==null)
@@ -42,6 +43,7 @@ namespace CHubMVC.Controllers
         /// </summary>
         /// <param name="appUser"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpPost]
         public ActionResult GetLeftNav(string appUser)
         {
@@ -91,6 +93,7 @@ namespace CHubMVC.Controllers
             return Json(nodeList);
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult GetApplicationLink()
         {
@@ -100,6 +103,7 @@ namespace CHubMVC.Controllers
             return Json(apps);
         }
 
+        [Authorize]
         public ActionResult About()
         {
             if (Session[CHubConstValues.SessionUser] == null)
@@ -111,6 +115,7 @@ namespace CHubMVC.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Contact()
         {
             if (Session[CHubConstValues.SessionUser] == null)
