@@ -12,12 +12,18 @@ namespace CHubDBEntity
     using System;
     using System.Collections.Generic;
     
-    public partial class TC_PART_CATEGORY_STG
+    public partial class M_PART
     {
         public string PART_NO { get; set; }
+        public string DESCRIPTION { get; set; }
+        public System.DateTime REMOTE_CREATE_DATE { get; set; }
+        public Nullable<System.DateTime> LOCAL_CREATE_DATE { get; set; }
+        public string TC_CATEGORY_BY_SYS { get; set; }
         public string TC_CATEGORY_BY_MAN { get; set; }
     
         public virtual TC_PART_CATEGORY TC_PART_CATEGORY { get; set; }
-        public virtual M_PART M_PART { get; set; }
+        public virtual TC_PART_CATEGORY TC_PART_CATEGORY1 { get; set; }
+        public virtual TC_PART_CATEGORY_STG TC_PART_CATEGORY_STG { get; set; }
+        public virtual TC_PART_HS TC_PART_HS { get; set; }
     }
 }

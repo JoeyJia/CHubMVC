@@ -39,5 +39,7 @@ namespace CHubDBEntity
         public Nullable<System.DateTime> RECORD_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string UPDATED_BY { get; set; }
+    
+        public virtual M_PART M_PART { get; set; }
     }
 }

@@ -147,6 +147,9 @@
     <Compile Include="M_PARAMETER.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="M_PART.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="M_SYSTEM.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>

@@ -77,5 +77,6 @@ namespace CHubDBEntity
         public virtual DbSet<V_TC_IMPORT_WITH_HS> V_TC_IMPORT_WITH_HS { get; set; }
         public virtual DbSet<V_TC_MDM_ALL> V_TC_MDM_ALL { get; set; }
         public virtual DbSet<V_TC_PART_HS> V_TC_PART_HS { get; set; }
+        public virtual DbSet<M_PART> M_PART { get; set; }
     }
 }

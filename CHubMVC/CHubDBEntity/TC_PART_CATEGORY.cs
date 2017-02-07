@@ -18,6 +18,8 @@ namespace CHubDBEntity
         public TC_PART_CATEGORY()
         {
             this.TC_PART_CATEGORY_STG = new HashSet<TC_PART_CATEGORY_STG>();
+            this.M_PART = new HashSet<M_PART>();
+            this.M_PART1 = new HashSet<M_PART>();
         }
     
         public string TC_CATEGORY_ID { get; set; }
@@ -27,5 +29,9 @@ namespace CHubDBEntity
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TC_PART_CATEGORY_STG> TC_PART_CATEGORY_STG { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<M_PART> M_PART { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<M_PART> M_PART1 { get; set; }
     }
 }

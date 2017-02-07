@@ -233,6 +233,17 @@
           <Property Name="UPDATED_BY" Type="varchar2" MaxLength="20" />
           <Property Name="DESCRIPTION" Type="varchar2" MaxLength="100" Nullable="false" />
         </EntityType>
+        <EntityType Name="M_PART">
+          <Key>
+            <PropertyRef Name="PART_NO" />
+          </Key>
+          <Property Name="PART_NO" Type="varchar2" MaxLength="25" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="35" Nullable="false" />
+          <Property Name="REMOTE_CREATE_DATE" Type="date" Nullable="false" />
+          <Property Name="LOCAL_CREATE_DATE" Type="date" />
+          <Property Name="TC_CATEGORY_BY_SYS" Type="varchar2" MaxLength="20" />
+          <Property Name="TC_CATEGORY_BY_MAN" Type="varchar2" MaxLength="20" />
+        </EntityType>
         <EntityType Name="M_SYSTEM">
           <Key>
             <PropertyRef Name="SYSID" />
@@ -1177,6 +1188,42 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="M_PART_R01">
+          <End Role="TC_PART_CATEGORY" Type="Self.TC_PART_CATEGORY" Multiplicity="0..1" />
+          <End Role="M_PART" Type="Self.M_PART" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TC_PART_CATEGORY">
+              <PropertyRef Name="TC_CATEGORY_ID" />
+            </Principal>
+            <Dependent Role="M_PART">
+              <PropertyRef Name="TC_CATEGORY_BY_SYS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="M_PART_R02">
+          <End Role="TC_PART_CATEGORY" Type="Self.TC_PART_CATEGORY" Multiplicity="0..1" />
+          <End Role="M_PART" Type="Self.M_PART" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TC_PART_CATEGORY">
+              <PropertyRef Name="TC_CATEGORY_ID" />
+            </Principal>
+            <Dependent Role="M_PART">
+              <PropertyRef Name="TC_CATEGORY_BY_MAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TC_PART_CATEGORY_STG_R01">
+          <End Role="M_PART" Type="Self.M_PART" Multiplicity="1" />
+          <End Role="TC_PART_CATEGORY_STG" Type="Self.TC_PART_CATEGORY_STG" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="M_PART">
+              <PropertyRef Name="PART_NO" />
+            </Principal>
+            <Dependent Role="TC_PART_CATEGORY_STG">
+              <PropertyRef Name="PART_NO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="TC_PART_CATEGORY_STG_R02">
           <End Role="TC_PART_CATEGORY" Type="Self.TC_PART_CATEGORY" Multiplicity="0..1" />
           <End Role="TC_PART_CATEGORY_STG" Type="Self.TC_PART_CATEGORY_STG" Multiplicity="*" />
@@ -1186,6 +1233,18 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Principal>
             <Dependent Role="TC_PART_CATEGORY_STG">
               <PropertyRef Name="TC_CATEGORY_BY_MAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TC_PART_HS_R01">
+          <End Role="M_PART" Type="Self.M_PART" Multiplicity="1" />
+          <End Role="TC_PART_HS" Type="Self.TC_PART_HS" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="M_PART">
+              <PropertyRef Name="PART_NO" />
+            </Principal>
+            <Dependent Role="TC_PART_HS">
+              <PropertyRef Name="PART_NO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1271,6 +1330,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="APP_WORKSPACE" EntityType="Self.APP_WORKSPACE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_APPS" EntityType="Self.M_APPS" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_PARAMETER" EntityType="Self.M_PARAMETER" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="M_PART" EntityType="Self.M_PART" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_SYSTEM" EntityType="Self.M_SYSTEM" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TC_PART_CATEGORY" EntityType="Self.TC_PART_CATEGORY" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TC_PART_CATEGORY_STG" EntityType="Self.TC_PART_CATEGORY_STG" Schema="GWAPP" store:Type="Tables" />
@@ -1838,9 +1898,25 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="APP_USERS" EntitySet="APP_USERS" />
             <End Role="APP_USERS1" EntitySet="APP_USERS" />
           </AssociationSet>
+          <AssociationSet Name="M_PART_R01" Association="Self.M_PART_R01">
+            <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
+            <End Role="M_PART" EntitySet="M_PART" />
+          </AssociationSet>
+          <AssociationSet Name="M_PART_R02" Association="Self.M_PART_R02">
+            <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
+            <End Role="M_PART" EntitySet="M_PART" />
+          </AssociationSet>
+          <AssociationSet Name="TC_PART_CATEGORY_STG_R01" Association="Self.TC_PART_CATEGORY_STG_R01">
+            <End Role="M_PART" EntitySet="M_PART" />
+            <End Role="TC_PART_CATEGORY_STG" EntitySet="TC_PART_CATEGORY_STG" />
+          </AssociationSet>
           <AssociationSet Name="TC_PART_CATEGORY_STG_R02" Association="Self.TC_PART_CATEGORY_STG_R02">
             <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
             <End Role="TC_PART_CATEGORY_STG" EntitySet="TC_PART_CATEGORY_STG" />
+          </AssociationSet>
+          <AssociationSet Name="TC_PART_HS_R01" Association="Self.TC_PART_HS_R01">
+            <End Role="M_PART" EntitySet="M_PART" />
+            <End Role="TC_PART_HS" EntitySet="TC_PART_HS" />
           </AssociationSet>
           <AssociationSet Name="TS_OR_HEADER_R01" Association="Self.TS_OR_HEADER_R01">
             <End Role="APP_SHIP_SEQ" EntitySet="APP_SHIP_SEQ" />
@@ -2801,6 +2877,23 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
             <End Role="TC_PART_CATEGORY_STG" EntitySet="TC_PART_CATEGORY_STG" />
           </AssociationSet>
+          <EntitySet Name="M_PART" EntityType="CHubDBModel.M_PART" />
+          <AssociationSet Name="M_PART_R01" Association="CHubDBModel.M_PART_R01">
+            <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
+            <End Role="M_PART" EntitySet="M_PART" />
+          </AssociationSet>
+          <AssociationSet Name="M_PART_R02" Association="CHubDBModel.M_PART_R02">
+            <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
+            <End Role="M_PART" EntitySet="M_PART" />
+          </AssociationSet>
+          <AssociationSet Name="TC_PART_CATEGORY_STG_R01" Association="CHubDBModel.TC_PART_CATEGORY_STG_R01">
+            <End Role="M_PART" EntitySet="M_PART" />
+            <End Role="TC_PART_CATEGORY_STG" EntitySet="TC_PART_CATEGORY_STG" />
+          </AssociationSet>
+          <AssociationSet Name="TC_PART_HS_R01" Association="CHubDBModel.TC_PART_HS_R01">
+            <End Role="M_PART" EntitySet="M_PART" />
+            <End Role="TC_PART_HS" EntitySet="TC_PART_HS" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -3030,6 +3123,8 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="CATEGORY_NOTE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CREATE_DATE" Type="DateTime" />
           <NavigationProperty Name="TC_PART_CATEGORY_STG" Relationship="CHubDBModel.TC_PART_CATEGORY_STG_R02" FromRole="TC_PART_CATEGORY" ToRole="TC_PART_CATEGORY_STG" />
+          <NavigationProperty Name="M_PART" Relationship="CHubDBModel.M_PART_R01" FromRole="TC_PART_CATEGORY" ToRole="M_PART" />
+          <NavigationProperty Name="M_PART1" Relationship="CHubDBModel.M_PART_R02" FromRole="TC_PART_CATEGORY" ToRole="M_PART" />
         </EntityType>
         <EntityType Name="TC_PART_CATEGORY_STG">
           <Key>
@@ -3038,6 +3133,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="PART_NO" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Name="TC_CATEGORY_BY_MAN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="TC_PART_CATEGORY" Relationship="CHubDBModel.TC_PART_CATEGORY_STG_R02" FromRole="TC_PART_CATEGORY_STG" ToRole="TC_PART_CATEGORY" />
+          <NavigationProperty Name="M_PART" Relationship="CHubDBModel.TC_PART_CATEGORY_STG_R01" FromRole="TC_PART_CATEGORY_STG" ToRole="M_PART" />
         </EntityType>
         <EntityType Name="TC_PART_HS">
           <Key>
@@ -3068,6 +3164,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="RECORD_DATE" Type="DateTime" />
           <Property Name="CREATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="UPDATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="M_PART" Relationship="CHubDBModel.TC_PART_HS_R01" FromRole="TC_PART_HS" ToRole="M_PART" />
         </EntityType>
         <EntityType Name="TC_PART_HS_AUDIT">
           <Key>
@@ -3258,6 +3355,69 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             </Principal>
             <Dependent Role="TC_PART_CATEGORY_STG">
               <PropertyRef Name="TC_CATEGORY_BY_MAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="M_PART">
+          <Key>
+            <PropertyRef Name="PART_NO" />
+          </Key>
+          <Property Name="PART_NO" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="REMOTE_CREATE_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="LOCAL_CREATE_DATE" Type="DateTime" />
+          <Property Name="TC_CATEGORY_BY_SYS" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TC_CATEGORY_BY_MAN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TC_PART_CATEGORY" Relationship="CHubDBModel.M_PART_R01" FromRole="M_PART" ToRole="TC_PART_CATEGORY" />
+          <NavigationProperty Name="TC_PART_CATEGORY1" Relationship="CHubDBModel.M_PART_R02" FromRole="M_PART" ToRole="TC_PART_CATEGORY" />
+          <NavigationProperty Name="TC_PART_CATEGORY_STG" Relationship="CHubDBModel.TC_PART_CATEGORY_STG_R01" FromRole="M_PART" ToRole="TC_PART_CATEGORY_STG" />
+          <NavigationProperty Name="TC_PART_HS" Relationship="CHubDBModel.TC_PART_HS_R01" FromRole="M_PART" ToRole="TC_PART_HS" />
+        </EntityType>
+        <Association Name="M_PART_R01">
+          <End Type="CHubDBModel.TC_PART_CATEGORY" Role="TC_PART_CATEGORY" Multiplicity="0..1" />
+          <End Type="CHubDBModel.M_PART" Role="M_PART" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TC_PART_CATEGORY">
+              <PropertyRef Name="TC_CATEGORY_ID" />
+            </Principal>
+            <Dependent Role="M_PART">
+              <PropertyRef Name="TC_CATEGORY_BY_SYS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="M_PART_R02">
+          <End Type="CHubDBModel.TC_PART_CATEGORY" Role="TC_PART_CATEGORY" Multiplicity="0..1" />
+          <End Type="CHubDBModel.M_PART" Role="M_PART" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TC_PART_CATEGORY">
+              <PropertyRef Name="TC_CATEGORY_ID" />
+            </Principal>
+            <Dependent Role="M_PART">
+              <PropertyRef Name="TC_CATEGORY_BY_MAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TC_PART_CATEGORY_STG_R01">
+          <End Type="CHubDBModel.M_PART" Role="M_PART" Multiplicity="1" />
+          <End Type="CHubDBModel.TC_PART_CATEGORY_STG" Role="TC_PART_CATEGORY_STG" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="M_PART">
+              <PropertyRef Name="PART_NO" />
+            </Principal>
+            <Dependent Role="TC_PART_CATEGORY_STG">
+              <PropertyRef Name="PART_NO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TC_PART_HS_R01">
+          <End Type="CHubDBModel.M_PART" Role="M_PART" Multiplicity="1" />
+          <End Type="CHubDBModel.TC_PART_HS" Role="TC_PART_HS" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="M_PART">
+              <PropertyRef Name="PART_NO" />
+            </Principal>
+            <Dependent Role="TC_PART_HS">
+              <PropertyRef Name="PART_NO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4190,6 +4350,18 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="MFN_RATE" ColumnName="MFN_RATE" />
                 <ScalarProperty Name="HSCODE" ColumnName="HSCODE" />
                 <ScalarProperty Name="DECLARATION_NAME" ColumnName="DECLARATION_NAME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="M_PART">
+            <EntityTypeMapping TypeName="CHubDBModel.M_PART">
+              <MappingFragment StoreEntitySet="M_PART">
+                <ScalarProperty Name="TC_CATEGORY_BY_MAN" ColumnName="TC_CATEGORY_BY_MAN" />
+                <ScalarProperty Name="TC_CATEGORY_BY_SYS" ColumnName="TC_CATEGORY_BY_SYS" />
+                <ScalarProperty Name="LOCAL_CREATE_DATE" ColumnName="LOCAL_CREATE_DATE" />
+                <ScalarProperty Name="REMOTE_CREATE_DATE" ColumnName="REMOTE_CREATE_DATE" />
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
                 <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
               </MappingFragment>
