@@ -42,5 +42,8 @@ namespace CHubDBEntity
         public string LOCAL_SHIP_TO_COUNTRY { get; set; }
         public string LOCAL_SHIP_TO_STATE { get; set; }
         public Nullable<System.DateTime> RECORD_DATE_OSL { get; set; }
+        public Nullable<byte> AUTO_SUPERSESSION_FLAG { get; set; }
+        public bool ORDER_SUPERSEDED_PART_FLAG { get; set; }
+        public string EC_ENTITY_ID { get; set; }
     }
 }

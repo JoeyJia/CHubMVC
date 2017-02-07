@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d7f6e9b31a6d43e79a67a386d41c7d55" Name="Diagram1" ZoomLevel="87">
+      <Diagram DiagramId="d7f6e9b31a6d43e79a67a386d41c7d55" Name="Diagram1" ZoomLevel="68">
         <EntityTypeShape EntityType="CHubDBModel.APP_CUST_ALIAS" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.APP_CUST_ALIAS_LINK" Width="1.5" PointX="8" PointY="4.625" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.APP_DURATION" Width="1.5" PointX="8" PointY="0.75" IsExpanded="true" />
@@ -28,12 +28,9 @@
         <EntityTypeShape EntityType="CHubDBModel.G_PART_SUPERSESSION_ALL" Width="1.5" PointX="7.75" PointY="15.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.P_ADDR_DFLT" Width="1.5" PointX="14.75" PointY="12.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.P_ADDR_SPL" Width="1.5" PointX="15.75" PointY="1.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.P_ASN" Width="1.5" PointX="0.75" PointY="17.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.P_ASN_INTERPDC" Width="1.5" PointX="16.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.P_CATALOG_CUSTOMER_PART" Width="1.5" PointX="9.75" PointY="17.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.R_ADDR_DFLT" Width="1.5" PointX="11.75" PointY="17.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.R_ADDR_SPL" Width="1.5" PointX="16.75" PointY="17.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.R_ASN" Width="1.5" PointX="17.75" PointY="1.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.R_CATALOG_CUSTOMER_PART" Width="1.5" PointX="2.75" PointY="18.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.V_ALIAS_ADDR_DFLT" Width="1.5" PointX="18.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.V_ALIAS_ADDR_SPL" Width="1.5" PointX="18.75" PointY="17.75" IsExpanded="true" />

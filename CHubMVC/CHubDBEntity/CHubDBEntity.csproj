@@ -157,12 +157,6 @@
     <Compile Include="P_ADDR_SPL.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="P_ASN.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="P_ASN_INTERPDC.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="P_CATALOG_CUSTOMER_PART.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
@@ -170,9 +164,6 @@
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="R_ADDR_SPL.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="R_ASN.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="R_CATALOG_CUSTOMER_PART.cs">

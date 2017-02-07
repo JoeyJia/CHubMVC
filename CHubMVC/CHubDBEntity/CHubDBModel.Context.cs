@@ -48,12 +48,9 @@ namespace CHubDBEntity
         public virtual DbSet<G_PART_SUPERSESSION_ALL> G_PART_SUPERSESSION_ALL { get; set; }
         public virtual DbSet<P_ADDR_DFLT> P_ADDR_DFLT { get; set; }
         public virtual DbSet<P_ADDR_SPL> P_ADDR_SPL { get; set; }
-        public virtual DbSet<P_ASN> P_ASN { get; set; }
-        public virtual DbSet<P_ASN_INTERPDC> P_ASN_INTERPDC { get; set; }
         public virtual DbSet<P_CATALOG_CUSTOMER_PART> P_CATALOG_CUSTOMER_PART { get; set; }
         public virtual DbSet<R_ADDR_DFLT> R_ADDR_DFLT { get; set; }
         public virtual DbSet<R_ADDR_SPL> R_ADDR_SPL { get; set; }
-        public virtual DbSet<R_ASN> R_ASN { get; set; }
         public virtual DbSet<R_CATALOG_CUSTOMER_PART> R_CATALOG_CUSTOMER_PART { get; set; }
         public virtual DbSet<V_ALIAS_ADDR_DFLT> V_ALIAS_ADDR_DFLT { get; set; }
         public virtual DbSet<V_ALIAS_ADDR_SPL> V_ALIAS_ADDR_SPL { get; set; }

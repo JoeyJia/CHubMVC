@@ -47,5 +47,8 @@ namespace CHubDBEntity
         public Nullable<decimal> DAYS { get; set; }
         public Nullable<decimal> DISTANCE { get; set; }
         public Nullable<byte> KG_FREIGHT { get; set; }
+        public Nullable<byte> AUTO_SUPERSESSION_FLAG { get; set; }
+        public Nullable<bool> ORDER_SUPERSEDED_PART_FLAG { get; set; }
+        public string EC_ENTITY_ID { get; set; }
     }
 }
