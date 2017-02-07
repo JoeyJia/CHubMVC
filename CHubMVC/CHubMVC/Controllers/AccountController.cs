@@ -68,6 +68,7 @@ namespace CHubMVC.Controllers
                     user = userBLL.GetAppUserByDomainName(model.UserName);
                 }
                 Session[CHubConstValues.SessionUser] = user.APP_USER;
+                LogHelper.WriteLog("log in action, user: "+ user.APP_USER);
                 return RedirectToLocal(returnUrl);
             }
 
