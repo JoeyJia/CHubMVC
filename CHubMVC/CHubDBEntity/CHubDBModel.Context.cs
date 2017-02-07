@@ -67,5 +67,15 @@ namespace CHubDBEntity
         public virtual DbSet<V_O_DOWNLOAD_DTL> V_O_DOWNLOAD_DTL { get; set; }
         public virtual DbSet<V_O_DOWNLOAD_HDR> V_O_DOWNLOAD_HDR { get; set; }
         public virtual DbSet<M_APPS> M_APPS { get; set; }
+        public virtual DbSet<TC_PART_CATEGORY> TC_PART_CATEGORY { get; set; }
+        public virtual DbSet<TC_PART_CATEGORY_STG> TC_PART_CATEGORY_STG { get; set; }
+        public virtual DbSet<TC_PART_HS> TC_PART_HS { get; set; }
+        public virtual DbSet<TC_PART_HS_AUDIT> TC_PART_HS_AUDIT { get; set; }
+        public virtual DbSet<TC_PART_HS_INI> TC_PART_HS_INI { get; set; }
+        public virtual DbSet<TC_PART_HS_STG> TC_PART_HS_STG { get; set; }
+        public virtual DbSet<V_TC_CATEGORY_BY_SYS> V_TC_CATEGORY_BY_SYS { get; set; }
+        public virtual DbSet<V_TC_IMPORT_WITH_HS> V_TC_IMPORT_WITH_HS { get; set; }
+        public virtual DbSet<V_TC_MDM_ALL> V_TC_MDM_ALL { get; set; }
+        public virtual DbSet<V_TC_PART_HS> V_TC_PART_HS { get; set; }
     }
 }

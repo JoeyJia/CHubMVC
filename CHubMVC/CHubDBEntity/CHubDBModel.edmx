@@ -242,6 +242,134 @@
           <Property Name="SYS_TYPE" Type="varchar2" MaxLength="10" />
           <Property Name="DB_LINK" Type="varchar2" MaxLength="50" />
         </EntityType>
+        <EntityType Name="TC_PART_CATEGORY">
+          <Key>
+            <PropertyRef Name="TC_CATEGORY_ID" />
+          </Key>
+          <Property Name="TC_CATEGORY_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="CATEGORY_DESC" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="CATEGORY_NOTE" Type="varchar2" MaxLength="50" />
+          <Property Name="CREATE_DATE" Type="date" />
+        </EntityType>
+        <EntityType Name="TC_PART_CATEGORY_STG">
+          <Key>
+            <PropertyRef Name="PART_NO" />
+          </Key>
+          <Property Name="PART_NO" Type="varchar2" MaxLength="25" Nullable="false" />
+          <Property Name="TC_CATEGORY_BY_MAN" Type="varchar2" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="TC_PART_HS">
+          <Key>
+            <PropertyRef Name="PART_NO" />
+          </Key>
+          <Property Name="PART_NO" Type="varchar2" MaxLength="25" Nullable="false" />
+          <Property Name="DECLARATION_NAME" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="HSCODE" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="MFN_RATE" Type="number" Precision="20" Scale="2" />
+          <Property Name="TAX_RATE" Type="number" Precision="20" Scale="2" />
+          <Property Name="TAX_REFUND_RATE" Type="number" Precision="20" Scale="2" />
+          <Property Name="UOM" Type="varchar2" MaxLength="4" />
+          <Property Name="ELEMENT" Type="varchar2" MaxLength="600" />
+          <Property Name="PRE_CODING1" Type="varchar2" MaxLength="30" />
+          <Property Name="PRE_CODING2" Type="varchar2" MaxLength="30" />
+          <Property Name="PRE_CODING3" Type="varchar2" MaxLength="30" />
+          <Property Name="REGULATION" Type="varchar2" MaxLength="10" />
+          <Property Name="INSPECTION" Type="varchar2" MaxLength="10" />
+          <Property Name="EXPERTISE" Type="varchar2" MaxLength="100" />
+          <Property Name="VOLTAGE" Type="varchar2" MaxLength="20" />
+          <Property Name="NOTE1" Type="varchar2" MaxLength="80" />
+          <Property Name="NOTE2" Type="varchar2" MaxLength="80" />
+          <Property Name="NOTE3" Type="varchar2" MaxLength="80" />
+          <Property Name="FLEX1" Type="varchar2" MaxLength="100" />
+          <Property Name="FLEX2" Type="varchar2" MaxLength="100" />
+          <Property Name="FLEX3" Type="varchar2" MaxLength="100" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="RECORD_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="20" />
+          <Property Name="UPDATED_BY" Type="varchar2" MaxLength="20" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.TC_PART_HS_AUDIT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TC_PART_HS_AUDIT">
+          <Key>
+            <PropertyRef Name="PART_NO" />
+            <PropertyRef Name="ACTIVITY_DATE" />
+            <PropertyRef Name="AUDIT_FIELD" />
+          </Key>
+          <Property Name="PART_NO" Type="varchar2" MaxLength="25" Nullable="false" />
+          <Property Name="ACTIVITY_DATE" Type="date" Nullable="false" />
+          <Property Name="AUDIT_FIELD" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="N_VALUE" Type="varchar2" MaxLength="600" />
+          <Property Name="O_VALUE" Type="varchar2" MaxLength="600" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.TC_PART_HS_INI' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TC_PART_HS_INI">
+          <Key>
+            <PropertyRef Name="PART_NO" />
+            <PropertyRef Name="DECLARATION_NAME" />
+            <PropertyRef Name="HSCODE" />
+          </Key>
+          <Property Name="PART_NO" Type="varchar2" MaxLength="25" Nullable="false" />
+          <Property Name="DECLARATION_NAME" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="HSCODE" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="MFN_RATE" Type="number" Precision="20" Scale="2" />
+          <Property Name="TAX_RATE" Type="number" Precision="20" Scale="2" />
+          <Property Name="TAX_REFUND_RATE" Type="number" Precision="20" Scale="2" />
+          <Property Name="UOM" Type="varchar2" MaxLength="4" />
+          <Property Name="ELEMENT" Type="varchar2" MaxLength="600" />
+          <Property Name="PRE_CODING1" Type="varchar2" MaxLength="30" />
+          <Property Name="PRE_CODING2" Type="varchar2" MaxLength="30" />
+          <Property Name="PRE_CODING3" Type="varchar2" MaxLength="30" />
+          <Property Name="REGULATION" Type="varchar2" MaxLength="10" />
+          <Property Name="INSPECTION" Type="varchar2" MaxLength="10" />
+          <Property Name="EXPERTISE" Type="varchar2" MaxLength="100" />
+          <Property Name="VOLTAGE" Type="varchar2" MaxLength="20" />
+          <Property Name="NOTE1" Type="varchar2" MaxLength="80" />
+          <Property Name="NOTE2" Type="varchar2" MaxLength="80" />
+          <Property Name="NOTE3" Type="varchar2" MaxLength="80" />
+          <Property Name="FLEX1" Type="varchar2" MaxLength="100" />
+          <Property Name="FLEX2" Type="varchar2" MaxLength="100" />
+          <Property Name="FLEX3" Type="varchar2" MaxLength="100" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="RECORD_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="20" />
+          <Property Name="UPDATED_BY" Type="varchar2" MaxLength="20" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.TC_PART_HS_STG' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TC_PART_HS_STG">
+          <Key>
+            <PropertyRef Name="PART_NO" />
+            <PropertyRef Name="DECLARATION_NAME" />
+            <PropertyRef Name="HSCODE" />
+          </Key>
+          <Property Name="PART_NO" Type="varchar2" MaxLength="25" Nullable="false" />
+          <Property Name="DECLARATION_NAME" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="HSCODE" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="MFN_RATE" Type="number" Precision="20" Scale="2" />
+          <Property Name="TAX_RATE" Type="number" Precision="20" Scale="2" />
+          <Property Name="TAX_REFUND_RATE" Type="number" Precision="20" Scale="2" />
+          <Property Name="UOM" Type="varchar2" MaxLength="4" />
+          <Property Name="ELEMENT" Type="varchar2" MaxLength="600" />
+          <Property Name="PRE_CODING1" Type="varchar2" MaxLength="30" />
+          <Property Name="PRE_CODING2" Type="varchar2" MaxLength="30" />
+          <Property Name="PRE_CODING3" Type="varchar2" MaxLength="30" />
+          <Property Name="REGULATION" Type="varchar2" MaxLength="10" />
+          <Property Name="INSPECTION" Type="varchar2" MaxLength="10" />
+          <Property Name="EXPERTISE" Type="varchar2" MaxLength="100" />
+          <Property Name="VOLTAGE" Type="varchar2" MaxLength="20" />
+          <Property Name="NOTE1" Type="varchar2" MaxLength="80" />
+          <Property Name="NOTE2" Type="varchar2" MaxLength="80" />
+          <Property Name="NOTE3" Type="varchar2" MaxLength="80" />
+          <Property Name="FLEX1" Type="varchar2" MaxLength="100" />
+          <Property Name="FLEX2" Type="varchar2" MaxLength="100" />
+          <Property Name="FLEX3" Type="varchar2" MaxLength="100" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="RECORD_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="20" />
+          <Property Name="UPDATED_BY" Type="varchar2" MaxLength="20" />
+        </EntityType>
         <EntityType Name="TS_OR_DETAIL">
           <Key>
             <PropertyRef Name="ORDER_REQ_NO" />
@@ -717,6 +845,118 @@ warning 6002: The table/view 'GWAPP.V_O_DOWNLOAD_HDR' does not have a primary ke
           <Property Name="TXT" Type="varchar2" MaxLength="737" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.V_TC_CATEGORY_BY_SYS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_TC_CATEGORY_BY_SYS">
+          <Key>
+            <PropertyRef Name="PART_NO" />
+            <PropertyRef Name="DESCRIPTION" />
+            <PropertyRef Name="REMOTE_CREATE_DATE" />
+          </Key>
+          <Property Name="PART_NO" Type="varchar2" MaxLength="25" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="35" Nullable="false" />
+          <Property Name="REMOTE_CREATE_DATE" Type="date" Nullable="false" />
+          <Property Name="TC_CATEGORY_BY_SYS" Type="varchar2" MaxLength="20" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.V_TC_IMPORT_WITH_HS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_TC_IMPORT_WITH_HS">
+          <Key>
+            <PropertyRef Name="DESCRIPTION" />
+          </Key>
+          <Property Name="PART_NO" Type="varchar2" MaxLength="35" />
+          <Property Name="LATEST_IMPORT_DATE" Type="date" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="35" Nullable="false" />
+          <Property Name="HSCODE" Type="varchar2" MaxLength="20" />
+          <Property Name="TC_CATEGORY_BY_SYS" Type="varchar2" MaxLength="20" />
+          <Property Name="TC_CATEGORY_BY_MAN" Type="varchar2" MaxLength="20" />
+          <Property Name="DECLARATION_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="MFN_RATE" Type="number" Precision="20" Scale="2" />
+          <Property Name="TAX_RATE" Type="number" Precision="20" Scale="2" />
+          <Property Name="TAX_REFUND_RATE" Type="number" Precision="20" Scale="2" />
+          <Property Name="UOM" Type="varchar2" MaxLength="4" />
+          <Property Name="ELEMENT" Type="varchar2" MaxLength="600" />
+          <Property Name="PRE_CODING1" Type="varchar2" MaxLength="30" />
+          <Property Name="PRE_CODING2" Type="varchar2" MaxLength="30" />
+          <Property Name="PRE_CODING3" Type="varchar2" MaxLength="30" />
+          <Property Name="REGULATION" Type="varchar2" MaxLength="10" />
+          <Property Name="INSPECTION" Type="varchar2" MaxLength="10" />
+          <Property Name="EXPERTISE" Type="varchar2" MaxLength="100" />
+          <Property Name="VOLTAGE" Type="varchar2" MaxLength="20" />
+          <Property Name="NOTE1" Type="varchar2" MaxLength="80" />
+          <Property Name="NOTE2" Type="varchar2" MaxLength="80" />
+          <Property Name="NOTE3" Type="varchar2" MaxLength="80" />
+          <Property Name="FLEX1" Type="varchar2" MaxLength="100" />
+          <Property Name="FLEX2" Type="varchar2" MaxLength="100" />
+          <Property Name="FLEX3" Type="varchar2" MaxLength="100" />
+          <Property Name="REMOTE_CREATE_DATE" Type="date" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.V_TC_MDM_ALL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_TC_MDM_ALL">
+          <Key>
+            <PropertyRef Name="PART_NO" />
+            <PropertyRef Name="DESCRIPTION" />
+            <PropertyRef Name="REMOTE_CREATE_DATE" />
+          </Key>
+          <Property Name="PART_NO" Type="varchar2" MaxLength="25" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="35" Nullable="false" />
+          <Property Name="TC_CATEGORY_BY_SYS" Type="varchar2" MaxLength="20" />
+          <Property Name="TC_CATEGORY_BY_MAN" Type="varchar2" MaxLength="20" />
+          <Property Name="DECLARATION_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="HSCODE" Type="varchar2" MaxLength="20" />
+          <Property Name="MFN_RATE" Type="number" Precision="20" Scale="2" />
+          <Property Name="TAX_RATE" Type="number" Precision="20" Scale="2" />
+          <Property Name="TAX_REFUND_RATE" Type="number" Precision="20" Scale="2" />
+          <Property Name="UOM" Type="varchar2" MaxLength="4" />
+          <Property Name="ELEMENT" Type="varchar2" MaxLength="600" />
+          <Property Name="PRE_CODING1" Type="varchar2" MaxLength="30" />
+          <Property Name="PRE_CODING2" Type="varchar2" MaxLength="30" />
+          <Property Name="PRE_CODING3" Type="varchar2" MaxLength="30" />
+          <Property Name="REGULATION" Type="varchar2" MaxLength="10" />
+          <Property Name="INSPECTION" Type="varchar2" MaxLength="10" />
+          <Property Name="EXPERTISE" Type="varchar2" MaxLength="100" />
+          <Property Name="VOLTAGE" Type="varchar2" MaxLength="20" />
+          <Property Name="NOTE1" Type="varchar2" MaxLength="80" />
+          <Property Name="NOTE2" Type="varchar2" MaxLength="80" />
+          <Property Name="NOTE3" Type="varchar2" MaxLength="80" />
+          <Property Name="FLEX1" Type="varchar2" MaxLength="100" />
+          <Property Name="FLEX2" Type="varchar2" MaxLength="100" />
+          <Property Name="FLEX3" Type="varchar2" MaxLength="100" />
+          <Property Name="REMOTE_CREATE_DATE" Type="date" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.V_TC_PART_HS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_TC_PART_HS">
+          <Key>
+            <PropertyRef Name="PART_NO" />
+            <PropertyRef Name="DESCRIPTION" />
+            <PropertyRef Name="DECLARATION_NAME" />
+            <PropertyRef Name="HSCODE" />
+          </Key>
+          <Property Name="PART_NO" Type="varchar2" MaxLength="25" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="35" Nullable="false" />
+          <Property Name="DECLARATION_NAME" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="HSCODE" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="MFN_RATE" Type="number" Precision="20" Scale="2" />
+          <Property Name="TAX_RATE" Type="number" Precision="20" Scale="2" />
+          <Property Name="TAX_REFUND_RATE" Type="number" Precision="20" Scale="2" />
+          <Property Name="UOM" Type="varchar2" MaxLength="4" />
+          <Property Name="ELEMENT" Type="varchar2" MaxLength="600" />
+          <Property Name="PRE_CODING1" Type="varchar2" MaxLength="30" />
+          <Property Name="PRE_CODING2" Type="varchar2" MaxLength="30" />
+          <Property Name="PRE_CODING3" Type="varchar2" MaxLength="30" />
+          <Property Name="REGULATION" Type="varchar2" MaxLength="10" />
+          <Property Name="INSPECTION" Type="varchar2" MaxLength="10" />
+          <Property Name="EXPERTISE" Type="varchar2" MaxLength="100" />
+          <Property Name="VOLTAGE" Type="varchar2" MaxLength="20" />
+          <Property Name="NOTE1" Type="varchar2" MaxLength="80" />
+          <Property Name="NOTE2" Type="varchar2" MaxLength="80" />
+          <Property Name="NOTE3" Type="varchar2" MaxLength="80" />
+          <Property Name="FLEX1" Type="varchar2" MaxLength="100" />
+          <Property Name="FLEX2" Type="varchar2" MaxLength="100" />
+          <Property Name="FLEX3" Type="varchar2" MaxLength="100" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.V_USER_NAV_ALL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -937,6 +1177,18 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="TC_PART_CATEGORY_STG_R02">
+          <End Role="TC_PART_CATEGORY" Type="Self.TC_PART_CATEGORY" Multiplicity="0..1" />
+          <End Role="TC_PART_CATEGORY_STG" Type="Self.TC_PART_CATEGORY_STG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TC_PART_CATEGORY">
+              <PropertyRef Name="TC_CATEGORY_ID" />
+            </Principal>
+            <Dependent Role="TC_PART_CATEGORY_STG">
+              <PropertyRef Name="TC_CATEGORY_BY_MAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="TS_OR_HEADER_R01">
           <End Role="APP_SHIP_SEQ" Type="Self.APP_SHIP_SEQ" Multiplicity="1" />
           <End Role="TS_OR_HEADER" Type="Self.TS_OR_HEADER" Multiplicity="*" />
@@ -1020,10 +1272,80 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="M_APPS" EntityType="Self.M_APPS" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_PARAMETER" EntityType="Self.M_PARAMETER" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_SYSTEM" EntityType="Self.M_SYSTEM" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="TC_PART_CATEGORY" EntityType="Self.TC_PART_CATEGORY" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="TC_PART_CATEGORY_STG" EntityType="Self.TC_PART_CATEGORY_STG" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="TC_PART_HS" EntityType="Self.TC_PART_HS" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TS_OR_DETAIL" EntityType="Self.TS_OR_DETAIL" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TS_OR_DETAIL_STAGE" EntityType="Self.TS_OR_DETAIL_STAGE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TS_OR_HEADER" EntityType="Self.TS_OR_HEADER" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TS_OR_HEADER_STAGE" EntityType="Self.TS_OR_HEADER_STAGE" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="TC_PART_HS_AUDIT" EntityType="Self.TC_PART_HS_AUDIT" store:Type="Tables" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"TC_PART_HS_AUDIT"."PART_NO" AS "PART_NO", 
+"TC_PART_HS_AUDIT"."ACTIVITY_DATE" AS "ACTIVITY_DATE", 
+"TC_PART_HS_AUDIT"."AUDIT_FIELD" AS "AUDIT_FIELD", 
+"TC_PART_HS_AUDIT"."N_VALUE" AS "N_VALUE", 
+"TC_PART_HS_AUDIT"."O_VALUE" AS "O_VALUE"
+FROM "GWAPP"."TC_PART_HS_AUDIT" "TC_PART_HS_AUDIT"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TC_PART_HS_INI" EntityType="Self.TC_PART_HS_INI" store:Type="Tables" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"TC_PART_HS_INI"."PART_NO" AS "PART_NO", 
+"TC_PART_HS_INI"."DECLARATION_NAME" AS "DECLARATION_NAME", 
+"TC_PART_HS_INI"."HSCODE" AS "HSCODE", 
+"TC_PART_HS_INI"."MFN_RATE" AS "MFN_RATE", 
+"TC_PART_HS_INI"."TAX_RATE" AS "TAX_RATE", 
+"TC_PART_HS_INI"."TAX_REFUND_RATE" AS "TAX_REFUND_RATE", 
+"TC_PART_HS_INI"."UOM" AS "UOM", 
+"TC_PART_HS_INI"."ELEMENT" AS "ELEMENT", 
+"TC_PART_HS_INI"."PRE_CODING1" AS "PRE_CODING1", 
+"TC_PART_HS_INI"."PRE_CODING2" AS "PRE_CODING2", 
+"TC_PART_HS_INI"."PRE_CODING3" AS "PRE_CODING3", 
+"TC_PART_HS_INI"."REGULATION" AS "REGULATION", 
+"TC_PART_HS_INI"."INSPECTION" AS "INSPECTION", 
+"TC_PART_HS_INI"."EXPERTISE" AS "EXPERTISE", 
+"TC_PART_HS_INI"."VOLTAGE" AS "VOLTAGE", 
+"TC_PART_HS_INI"."NOTE1" AS "NOTE1", 
+"TC_PART_HS_INI"."NOTE2" AS "NOTE2", 
+"TC_PART_HS_INI"."NOTE3" AS "NOTE3", 
+"TC_PART_HS_INI"."FLEX1" AS "FLEX1", 
+"TC_PART_HS_INI"."FLEX2" AS "FLEX2", 
+"TC_PART_HS_INI"."FLEX3" AS "FLEX3", 
+"TC_PART_HS_INI"."CREATE_DATE" AS "CREATE_DATE", 
+"TC_PART_HS_INI"."RECORD_DATE" AS "RECORD_DATE", 
+"TC_PART_HS_INI"."CREATED_BY" AS "CREATED_BY", 
+"TC_PART_HS_INI"."UPDATED_BY" AS "UPDATED_BY"
+FROM "GWAPP"."TC_PART_HS_INI" "TC_PART_HS_INI"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TC_PART_HS_STG" EntityType="Self.TC_PART_HS_STG" store:Type="Tables" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"TC_PART_HS_STG"."PART_NO" AS "PART_NO", 
+"TC_PART_HS_STG"."DECLARATION_NAME" AS "DECLARATION_NAME", 
+"TC_PART_HS_STG"."HSCODE" AS "HSCODE", 
+"TC_PART_HS_STG"."MFN_RATE" AS "MFN_RATE", 
+"TC_PART_HS_STG"."TAX_RATE" AS "TAX_RATE", 
+"TC_PART_HS_STG"."TAX_REFUND_RATE" AS "TAX_REFUND_RATE", 
+"TC_PART_HS_STG"."UOM" AS "UOM", 
+"TC_PART_HS_STG"."ELEMENT" AS "ELEMENT", 
+"TC_PART_HS_STG"."PRE_CODING1" AS "PRE_CODING1", 
+"TC_PART_HS_STG"."PRE_CODING2" AS "PRE_CODING2", 
+"TC_PART_HS_STG"."PRE_CODING3" AS "PRE_CODING3", 
+"TC_PART_HS_STG"."REGULATION" AS "REGULATION", 
+"TC_PART_HS_STG"."INSPECTION" AS "INSPECTION", 
+"TC_PART_HS_STG"."EXPERTISE" AS "EXPERTISE", 
+"TC_PART_HS_STG"."VOLTAGE" AS "VOLTAGE", 
+"TC_PART_HS_STG"."NOTE1" AS "NOTE1", 
+"TC_PART_HS_STG"."NOTE2" AS "NOTE2", 
+"TC_PART_HS_STG"."NOTE3" AS "NOTE3", 
+"TC_PART_HS_STG"."FLEX1" AS "FLEX1", 
+"TC_PART_HS_STG"."FLEX2" AS "FLEX2", 
+"TC_PART_HS_STG"."FLEX3" AS "FLEX3", 
+"TC_PART_HS_STG"."CREATE_DATE" AS "CREATE_DATE", 
+"TC_PART_HS_STG"."RECORD_DATE" AS "RECORD_DATE", 
+"TC_PART_HS_STG"."CREATED_BY" AS "CREATED_BY", 
+"TC_PART_HS_STG"."UPDATED_BY" AS "UPDATED_BY"
+FROM "GWAPP"."TC_PART_HS_STG" "TC_PART_HS_STG"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="G_PART_DESCRIPTION" EntityType="Self.G_PART_DESCRIPTION" store:Type="Views" store:Schema="GWAPP">
             <DefiningQuery>SELECT 
 "G_PART_DESCRIPTION"."PART_NO" AS "PART_NO", 
@@ -1334,6 +1656,99 @@ FROM "GWAPP"."V_O_DOWNLOAD_DTL" "V_O_DOWNLOAD_DTL"</DefiningQuery>
 "V_O_DOWNLOAD_HDR"."TXT" AS "TXT"
 FROM "GWAPP"."V_O_DOWNLOAD_HDR" "V_O_DOWNLOAD_HDR"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="V_TC_CATEGORY_BY_SYS" EntityType="Self.V_TC_CATEGORY_BY_SYS" store:Type="Views" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"V_TC_CATEGORY_BY_SYS"."PART_NO" AS "PART_NO", 
+"V_TC_CATEGORY_BY_SYS"."DESCRIPTION" AS "DESCRIPTION", 
+"V_TC_CATEGORY_BY_SYS"."REMOTE_CREATE_DATE" AS "REMOTE_CREATE_DATE", 
+"V_TC_CATEGORY_BY_SYS"."TC_CATEGORY_BY_SYS" AS "TC_CATEGORY_BY_SYS"
+FROM "GWAPP"."V_TC_CATEGORY_BY_SYS" "V_TC_CATEGORY_BY_SYS"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_TC_IMPORT_WITH_HS" EntityType="Self.V_TC_IMPORT_WITH_HS" store:Type="Views" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"V_TC_IMPORT_WITH_HS"."PART_NO" AS "PART_NO", 
+"V_TC_IMPORT_WITH_HS"."LATEST_IMPORT_DATE" AS "LATEST_IMPORT_DATE", 
+"V_TC_IMPORT_WITH_HS"."DESCRIPTION" AS "DESCRIPTION", 
+"V_TC_IMPORT_WITH_HS"."HSCODE" AS "HSCODE", 
+"V_TC_IMPORT_WITH_HS"."TC_CATEGORY_BY_SYS" AS "TC_CATEGORY_BY_SYS", 
+"V_TC_IMPORT_WITH_HS"."TC_CATEGORY_BY_MAN" AS "TC_CATEGORY_BY_MAN", 
+"V_TC_IMPORT_WITH_HS"."DECLARATION_NAME" AS "DECLARATION_NAME", 
+"V_TC_IMPORT_WITH_HS"."MFN_RATE" AS "MFN_RATE", 
+"V_TC_IMPORT_WITH_HS"."TAX_RATE" AS "TAX_RATE", 
+"V_TC_IMPORT_WITH_HS"."TAX_REFUND_RATE" AS "TAX_REFUND_RATE", 
+"V_TC_IMPORT_WITH_HS"."UOM" AS "UOM", 
+"V_TC_IMPORT_WITH_HS"."ELEMENT" AS "ELEMENT", 
+"V_TC_IMPORT_WITH_HS"."PRE_CODING1" AS "PRE_CODING1", 
+"V_TC_IMPORT_WITH_HS"."PRE_CODING2" AS "PRE_CODING2", 
+"V_TC_IMPORT_WITH_HS"."PRE_CODING3" AS "PRE_CODING3", 
+"V_TC_IMPORT_WITH_HS"."REGULATION" AS "REGULATION", 
+"V_TC_IMPORT_WITH_HS"."INSPECTION" AS "INSPECTION", 
+"V_TC_IMPORT_WITH_HS"."EXPERTISE" AS "EXPERTISE", 
+"V_TC_IMPORT_WITH_HS"."VOLTAGE" AS "VOLTAGE", 
+"V_TC_IMPORT_WITH_HS"."NOTE1" AS "NOTE1", 
+"V_TC_IMPORT_WITH_HS"."NOTE2" AS "NOTE2", 
+"V_TC_IMPORT_WITH_HS"."NOTE3" AS "NOTE3", 
+"V_TC_IMPORT_WITH_HS"."FLEX1" AS "FLEX1", 
+"V_TC_IMPORT_WITH_HS"."FLEX2" AS "FLEX2", 
+"V_TC_IMPORT_WITH_HS"."FLEX3" AS "FLEX3", 
+"V_TC_IMPORT_WITH_HS"."REMOTE_CREATE_DATE" AS "REMOTE_CREATE_DATE"
+FROM "GWAPP"."V_TC_IMPORT_WITH_HS" "V_TC_IMPORT_WITH_HS"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_TC_MDM_ALL" EntityType="Self.V_TC_MDM_ALL" store:Type="Views" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"V_TC_MDM_ALL"."PART_NO" AS "PART_NO", 
+"V_TC_MDM_ALL"."DESCRIPTION" AS "DESCRIPTION", 
+"V_TC_MDM_ALL"."TC_CATEGORY_BY_SYS" AS "TC_CATEGORY_BY_SYS", 
+"V_TC_MDM_ALL"."TC_CATEGORY_BY_MAN" AS "TC_CATEGORY_BY_MAN", 
+"V_TC_MDM_ALL"."DECLARATION_NAME" AS "DECLARATION_NAME", 
+"V_TC_MDM_ALL"."HSCODE" AS "HSCODE", 
+"V_TC_MDM_ALL"."MFN_RATE" AS "MFN_RATE", 
+"V_TC_MDM_ALL"."TAX_RATE" AS "TAX_RATE", 
+"V_TC_MDM_ALL"."TAX_REFUND_RATE" AS "TAX_REFUND_RATE", 
+"V_TC_MDM_ALL"."UOM" AS "UOM", 
+"V_TC_MDM_ALL"."ELEMENT" AS "ELEMENT", 
+"V_TC_MDM_ALL"."PRE_CODING1" AS "PRE_CODING1", 
+"V_TC_MDM_ALL"."PRE_CODING2" AS "PRE_CODING2", 
+"V_TC_MDM_ALL"."PRE_CODING3" AS "PRE_CODING3", 
+"V_TC_MDM_ALL"."REGULATION" AS "REGULATION", 
+"V_TC_MDM_ALL"."INSPECTION" AS "INSPECTION", 
+"V_TC_MDM_ALL"."EXPERTISE" AS "EXPERTISE", 
+"V_TC_MDM_ALL"."VOLTAGE" AS "VOLTAGE", 
+"V_TC_MDM_ALL"."NOTE1" AS "NOTE1", 
+"V_TC_MDM_ALL"."NOTE2" AS "NOTE2", 
+"V_TC_MDM_ALL"."NOTE3" AS "NOTE3", 
+"V_TC_MDM_ALL"."FLEX1" AS "FLEX1", 
+"V_TC_MDM_ALL"."FLEX2" AS "FLEX2", 
+"V_TC_MDM_ALL"."FLEX3" AS "FLEX3", 
+"V_TC_MDM_ALL"."REMOTE_CREATE_DATE" AS "REMOTE_CREATE_DATE"
+FROM "GWAPP"."V_TC_MDM_ALL" "V_TC_MDM_ALL"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_TC_PART_HS" EntityType="Self.V_TC_PART_HS" store:Type="Views" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"V_TC_PART_HS"."PART_NO" AS "PART_NO", 
+"V_TC_PART_HS"."DESCRIPTION" AS "DESCRIPTION", 
+"V_TC_PART_HS"."DECLARATION_NAME" AS "DECLARATION_NAME", 
+"V_TC_PART_HS"."HSCODE" AS "HSCODE", 
+"V_TC_PART_HS"."MFN_RATE" AS "MFN_RATE", 
+"V_TC_PART_HS"."TAX_RATE" AS "TAX_RATE", 
+"V_TC_PART_HS"."TAX_REFUND_RATE" AS "TAX_REFUND_RATE", 
+"V_TC_PART_HS"."UOM" AS "UOM", 
+"V_TC_PART_HS"."ELEMENT" AS "ELEMENT", 
+"V_TC_PART_HS"."PRE_CODING1" AS "PRE_CODING1", 
+"V_TC_PART_HS"."PRE_CODING2" AS "PRE_CODING2", 
+"V_TC_PART_HS"."PRE_CODING3" AS "PRE_CODING3", 
+"V_TC_PART_HS"."REGULATION" AS "REGULATION", 
+"V_TC_PART_HS"."INSPECTION" AS "INSPECTION", 
+"V_TC_PART_HS"."EXPERTISE" AS "EXPERTISE", 
+"V_TC_PART_HS"."VOLTAGE" AS "VOLTAGE", 
+"V_TC_PART_HS"."NOTE1" AS "NOTE1", 
+"V_TC_PART_HS"."NOTE2" AS "NOTE2", 
+"V_TC_PART_HS"."NOTE3" AS "NOTE3", 
+"V_TC_PART_HS"."FLEX1" AS "FLEX1", 
+"V_TC_PART_HS"."FLEX2" AS "FLEX2", 
+"V_TC_PART_HS"."FLEX3" AS "FLEX3"
+FROM "GWAPP"."V_TC_PART_HS" "V_TC_PART_HS"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="V_USER_NAV_ALL" EntityType="Self.V_USER_NAV_ALL" store:Type="Views" store:Schema="GWAPP">
             <DefiningQuery>SELECT 
 "V_USER_NAV_ALL"."APP_USER" AS "APP_USER", 
@@ -1422,6 +1837,10 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <AssociationSet Name="C0001" Association="Self.C0001">
             <End Role="APP_USERS" EntitySet="APP_USERS" />
             <End Role="APP_USERS1" EntitySet="APP_USERS" />
+          </AssociationSet>
+          <AssociationSet Name="TC_PART_CATEGORY_STG_R02" Association="Self.TC_PART_CATEGORY_STG_R02">
+            <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
+            <End Role="TC_PART_CATEGORY_STG" EntitySet="TC_PART_CATEGORY_STG" />
           </AssociationSet>
           <AssociationSet Name="TS_OR_HEADER_R01" Association="Self.TS_OR_HEADER_R01">
             <End Role="APP_SHIP_SEQ" EntitySet="APP_SHIP_SEQ" />
@@ -2368,6 +2787,20 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySet Name="V_O_DOWNLOAD_DTL" EntityType="CHubDBModel.V_O_DOWNLOAD_DTL" />
           <EntitySet Name="V_O_DOWNLOAD_HDR" EntityType="CHubDBModel.V_O_DOWNLOAD_HDR" />
           <EntitySet Name="M_APPS" EntityType="CHubDBModel.M_APPS" />
+          <EntitySet Name="TC_PART_CATEGORY" EntityType="CHubDBModel.TC_PART_CATEGORY" />
+          <EntitySet Name="TC_PART_CATEGORY_STG" EntityType="CHubDBModel.TC_PART_CATEGORY_STG" />
+          <EntitySet Name="TC_PART_HS" EntityType="CHubDBModel.TC_PART_HS" />
+          <EntitySet Name="TC_PART_HS_AUDIT" EntityType="CHubDBModel.TC_PART_HS_AUDIT" />
+          <EntitySet Name="TC_PART_HS_INI" EntityType="CHubDBModel.TC_PART_HS_INI" />
+          <EntitySet Name="TC_PART_HS_STG" EntityType="CHubDBModel.TC_PART_HS_STG" />
+          <EntitySet Name="V_TC_CATEGORY_BY_SYS" EntityType="CHubDBModel.V_TC_CATEGORY_BY_SYS" />
+          <EntitySet Name="V_TC_IMPORT_WITH_HS" EntityType="CHubDBModel.V_TC_IMPORT_WITH_HS" />
+          <EntitySet Name="V_TC_MDM_ALL" EntityType="CHubDBModel.V_TC_MDM_ALL" />
+          <EntitySet Name="V_TC_PART_HS" EntityType="CHubDBModel.V_TC_PART_HS" />
+          <AssociationSet Name="TC_PART_CATEGORY_STG_R02" Association="CHubDBModel.TC_PART_CATEGORY_STG_R02">
+            <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
+            <End Role="TC_PART_CATEGORY_STG" EntitySet="TC_PART_CATEGORY_STG" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -2588,6 +3021,246 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="ACTIVEIND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="CREATION_DATE" Type="DateTime" Nullable="false" />
         </EntityType>
+        <EntityType Name="TC_PART_CATEGORY">
+          <Key>
+            <PropertyRef Name="TC_CATEGORY_ID" />
+          </Key>
+          <Property Name="TC_CATEGORY_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CATEGORY_DESC" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CATEGORY_NOTE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CREATE_DATE" Type="DateTime" />
+          <NavigationProperty Name="TC_PART_CATEGORY_STG" Relationship="CHubDBModel.TC_PART_CATEGORY_STG_R02" FromRole="TC_PART_CATEGORY" ToRole="TC_PART_CATEGORY_STG" />
+        </EntityType>
+        <EntityType Name="TC_PART_CATEGORY_STG">
+          <Key>
+            <PropertyRef Name="PART_NO" />
+          </Key>
+          <Property Name="PART_NO" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="TC_CATEGORY_BY_MAN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TC_PART_CATEGORY" Relationship="CHubDBModel.TC_PART_CATEGORY_STG_R02" FromRole="TC_PART_CATEGORY_STG" ToRole="TC_PART_CATEGORY" />
+        </EntityType>
+        <EntityType Name="TC_PART_HS">
+          <Key>
+            <PropertyRef Name="PART_NO" />
+          </Key>
+          <Property Name="PART_NO" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="DECLARATION_NAME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="HSCODE" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MFN_RATE" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="TAX_RATE" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="TAX_REFUND_RATE" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="UOM" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="ELEMENT" Type="String" MaxLength="600" FixedLength="false" Unicode="false" />
+          <Property Name="PRE_CODING1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PRE_CODING2" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PRE_CODING3" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="REGULATION" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="INSPECTION" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EXPERTISE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="VOLTAGE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE1" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE2" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE3" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="FLEX1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FLEX2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FLEX3" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CREATE_DATE" Type="DateTime" />
+          <Property Name="RECORD_DATE" Type="DateTime" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UPDATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TC_PART_HS_AUDIT">
+          <Key>
+            <PropertyRef Name="PART_NO" />
+            <PropertyRef Name="ACTIVITY_DATE" />
+            <PropertyRef Name="AUDIT_FIELD" />
+          </Key>
+          <Property Name="PART_NO" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVITY_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="AUDIT_FIELD" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="N_VALUE" Type="String" MaxLength="600" FixedLength="false" Unicode="false" />
+          <Property Name="O_VALUE" Type="String" MaxLength="600" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TC_PART_HS_INI">
+          <Key>
+            <PropertyRef Name="PART_NO" />
+            <PropertyRef Name="DECLARATION_NAME" />
+            <PropertyRef Name="HSCODE" />
+          </Key>
+          <Property Name="PART_NO" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="DECLARATION_NAME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="HSCODE" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MFN_RATE" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="TAX_RATE" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="TAX_REFUND_RATE" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="UOM" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="ELEMENT" Type="String" MaxLength="600" FixedLength="false" Unicode="false" />
+          <Property Name="PRE_CODING1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PRE_CODING2" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PRE_CODING3" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="REGULATION" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="INSPECTION" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EXPERTISE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="VOLTAGE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE1" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE2" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE3" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="FLEX1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FLEX2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FLEX3" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CREATE_DATE" Type="DateTime" />
+          <Property Name="RECORD_DATE" Type="DateTime" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UPDATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TC_PART_HS_STG">
+          <Key>
+            <PropertyRef Name="PART_NO" />
+            <PropertyRef Name="DECLARATION_NAME" />
+            <PropertyRef Name="HSCODE" />
+          </Key>
+          <Property Name="PART_NO" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="DECLARATION_NAME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="HSCODE" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MFN_RATE" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="TAX_RATE" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="TAX_REFUND_RATE" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="UOM" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="ELEMENT" Type="String" MaxLength="600" FixedLength="false" Unicode="false" />
+          <Property Name="PRE_CODING1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PRE_CODING2" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PRE_CODING3" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="REGULATION" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="INSPECTION" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EXPERTISE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="VOLTAGE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE1" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE2" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE3" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="FLEX1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FLEX2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FLEX3" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CREATE_DATE" Type="DateTime" />
+          <Property Name="RECORD_DATE" Type="DateTime" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UPDATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="V_TC_CATEGORY_BY_SYS">
+          <Key>
+            <PropertyRef Name="PART_NO" />
+            <PropertyRef Name="DESCRIPTION" />
+            <PropertyRef Name="REMOTE_CREATE_DATE" />
+          </Key>
+          <Property Name="PART_NO" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="REMOTE_CREATE_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="TC_CATEGORY_BY_SYS" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="V_TC_IMPORT_WITH_HS">
+          <Key>
+            <PropertyRef Name="DESCRIPTION" />
+          </Key>
+          <Property Name="PART_NO" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="LATEST_IMPORT_DATE" Type="DateTime" />
+          <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="HSCODE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TC_CATEGORY_BY_SYS" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TC_CATEGORY_BY_MAN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DECLARATION_NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="MFN_RATE" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="TAX_RATE" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="TAX_REFUND_RATE" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="UOM" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="ELEMENT" Type="String" MaxLength="600" FixedLength="false" Unicode="false" />
+          <Property Name="PRE_CODING1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PRE_CODING2" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PRE_CODING3" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="REGULATION" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="INSPECTION" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EXPERTISE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="VOLTAGE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE1" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE2" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE3" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="FLEX1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FLEX2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FLEX3" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="REMOTE_CREATE_DATE" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="V_TC_MDM_ALL">
+          <Key>
+            <PropertyRef Name="PART_NO" />
+            <PropertyRef Name="DESCRIPTION" />
+            <PropertyRef Name="REMOTE_CREATE_DATE" />
+          </Key>
+          <Property Name="PART_NO" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="TC_CATEGORY_BY_SYS" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TC_CATEGORY_BY_MAN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DECLARATION_NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="HSCODE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MFN_RATE" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="TAX_RATE" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="TAX_REFUND_RATE" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="UOM" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="ELEMENT" Type="String" MaxLength="600" FixedLength="false" Unicode="false" />
+          <Property Name="PRE_CODING1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PRE_CODING2" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PRE_CODING3" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="REGULATION" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="INSPECTION" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EXPERTISE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="VOLTAGE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE1" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE2" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE3" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="FLEX1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FLEX2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FLEX3" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="REMOTE_CREATE_DATE" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="V_TC_PART_HS">
+          <Key>
+            <PropertyRef Name="PART_NO" />
+            <PropertyRef Name="DESCRIPTION" />
+            <PropertyRef Name="DECLARATION_NAME" />
+            <PropertyRef Name="HSCODE" />
+          </Key>
+          <Property Name="PART_NO" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="DECLARATION_NAME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="HSCODE" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MFN_RATE" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="TAX_RATE" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="TAX_REFUND_RATE" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="UOM" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="ELEMENT" Type="String" MaxLength="600" FixedLength="false" Unicode="false" />
+          <Property Name="PRE_CODING1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PRE_CODING2" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PRE_CODING3" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="REGULATION" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="INSPECTION" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EXPERTISE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="VOLTAGE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE1" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE2" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE3" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="FLEX1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FLEX2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FLEX3" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="TC_PART_CATEGORY_STG_R02">
+          <End Type="CHubDBModel.TC_PART_CATEGORY" Role="TC_PART_CATEGORY" Multiplicity="0..1" />
+          <End Type="CHubDBModel.TC_PART_CATEGORY_STG" Role="TC_PART_CATEGORY_STG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TC_PART_CATEGORY">
+              <PropertyRef Name="TC_CATEGORY_ID" />
+            </Principal>
+            <Dependent Role="TC_PART_CATEGORY_STG">
+              <PropertyRef Name="TC_CATEGORY_BY_MAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3296,6 +3969,229 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="URL" ColumnName="URL" />
                 <ScalarProperty Name="APP_DISPLAY" ColumnName="APP_DISPLAY" />
                 <ScalarProperty Name="APP_NAME" ColumnName="APP_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TC_PART_CATEGORY">
+            <EntityTypeMapping TypeName="CHubDBModel.TC_PART_CATEGORY">
+              <MappingFragment StoreEntitySet="TC_PART_CATEGORY">
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CATEGORY_NOTE" ColumnName="CATEGORY_NOTE" />
+                <ScalarProperty Name="CATEGORY_DESC" ColumnName="CATEGORY_DESC" />
+                <ScalarProperty Name="TC_CATEGORY_ID" ColumnName="TC_CATEGORY_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TC_PART_CATEGORY_STG">
+            <EntityTypeMapping TypeName="CHubDBModel.TC_PART_CATEGORY_STG">
+              <MappingFragment StoreEntitySet="TC_PART_CATEGORY_STG">
+                <ScalarProperty Name="TC_CATEGORY_BY_MAN" ColumnName="TC_CATEGORY_BY_MAN" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TC_PART_HS">
+            <EntityTypeMapping TypeName="CHubDBModel.TC_PART_HS">
+              <MappingFragment StoreEntitySet="TC_PART_HS">
+                <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="RECORD_DATE" ColumnName="RECORD_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="FLEX3" ColumnName="FLEX3" />
+                <ScalarProperty Name="FLEX2" ColumnName="FLEX2" />
+                <ScalarProperty Name="FLEX1" ColumnName="FLEX1" />
+                <ScalarProperty Name="NOTE3" ColumnName="NOTE3" />
+                <ScalarProperty Name="NOTE2" ColumnName="NOTE2" />
+                <ScalarProperty Name="NOTE1" ColumnName="NOTE1" />
+                <ScalarProperty Name="VOLTAGE" ColumnName="VOLTAGE" />
+                <ScalarProperty Name="EXPERTISE" ColumnName="EXPERTISE" />
+                <ScalarProperty Name="INSPECTION" ColumnName="INSPECTION" />
+                <ScalarProperty Name="REGULATION" ColumnName="REGULATION" />
+                <ScalarProperty Name="PRE_CODING3" ColumnName="PRE_CODING3" />
+                <ScalarProperty Name="PRE_CODING2" ColumnName="PRE_CODING2" />
+                <ScalarProperty Name="PRE_CODING1" ColumnName="PRE_CODING1" />
+                <ScalarProperty Name="ELEMENT" ColumnName="ELEMENT" />
+                <ScalarProperty Name="UOM" ColumnName="UOM" />
+                <ScalarProperty Name="TAX_REFUND_RATE" ColumnName="TAX_REFUND_RATE" />
+                <ScalarProperty Name="TAX_RATE" ColumnName="TAX_RATE" />
+                <ScalarProperty Name="MFN_RATE" ColumnName="MFN_RATE" />
+                <ScalarProperty Name="HSCODE" ColumnName="HSCODE" />
+                <ScalarProperty Name="DECLARATION_NAME" ColumnName="DECLARATION_NAME" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TC_PART_HS_AUDIT">
+            <EntityTypeMapping TypeName="CHubDBModel.TC_PART_HS_AUDIT">
+              <MappingFragment StoreEntitySet="TC_PART_HS_AUDIT">
+                <ScalarProperty Name="O_VALUE" ColumnName="O_VALUE" />
+                <ScalarProperty Name="N_VALUE" ColumnName="N_VALUE" />
+                <ScalarProperty Name="AUDIT_FIELD" ColumnName="AUDIT_FIELD" />
+                <ScalarProperty Name="ACTIVITY_DATE" ColumnName="ACTIVITY_DATE" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TC_PART_HS_INI">
+            <EntityTypeMapping TypeName="CHubDBModel.TC_PART_HS_INI">
+              <MappingFragment StoreEntitySet="TC_PART_HS_INI">
+                <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="RECORD_DATE" ColumnName="RECORD_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="FLEX3" ColumnName="FLEX3" />
+                <ScalarProperty Name="FLEX2" ColumnName="FLEX2" />
+                <ScalarProperty Name="FLEX1" ColumnName="FLEX1" />
+                <ScalarProperty Name="NOTE3" ColumnName="NOTE3" />
+                <ScalarProperty Name="NOTE2" ColumnName="NOTE2" />
+                <ScalarProperty Name="NOTE1" ColumnName="NOTE1" />
+                <ScalarProperty Name="VOLTAGE" ColumnName="VOLTAGE" />
+                <ScalarProperty Name="EXPERTISE" ColumnName="EXPERTISE" />
+                <ScalarProperty Name="INSPECTION" ColumnName="INSPECTION" />
+                <ScalarProperty Name="REGULATION" ColumnName="REGULATION" />
+                <ScalarProperty Name="PRE_CODING3" ColumnName="PRE_CODING3" />
+                <ScalarProperty Name="PRE_CODING2" ColumnName="PRE_CODING2" />
+                <ScalarProperty Name="PRE_CODING1" ColumnName="PRE_CODING1" />
+                <ScalarProperty Name="ELEMENT" ColumnName="ELEMENT" />
+                <ScalarProperty Name="UOM" ColumnName="UOM" />
+                <ScalarProperty Name="TAX_REFUND_RATE" ColumnName="TAX_REFUND_RATE" />
+                <ScalarProperty Name="TAX_RATE" ColumnName="TAX_RATE" />
+                <ScalarProperty Name="MFN_RATE" ColumnName="MFN_RATE" />
+                <ScalarProperty Name="HSCODE" ColumnName="HSCODE" />
+                <ScalarProperty Name="DECLARATION_NAME" ColumnName="DECLARATION_NAME" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TC_PART_HS_STG">
+            <EntityTypeMapping TypeName="CHubDBModel.TC_PART_HS_STG">
+              <MappingFragment StoreEntitySet="TC_PART_HS_STG">
+                <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="RECORD_DATE" ColumnName="RECORD_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="FLEX3" ColumnName="FLEX3" />
+                <ScalarProperty Name="FLEX2" ColumnName="FLEX2" />
+                <ScalarProperty Name="FLEX1" ColumnName="FLEX1" />
+                <ScalarProperty Name="NOTE3" ColumnName="NOTE3" />
+                <ScalarProperty Name="NOTE2" ColumnName="NOTE2" />
+                <ScalarProperty Name="NOTE1" ColumnName="NOTE1" />
+                <ScalarProperty Name="VOLTAGE" ColumnName="VOLTAGE" />
+                <ScalarProperty Name="EXPERTISE" ColumnName="EXPERTISE" />
+                <ScalarProperty Name="INSPECTION" ColumnName="INSPECTION" />
+                <ScalarProperty Name="REGULATION" ColumnName="REGULATION" />
+                <ScalarProperty Name="PRE_CODING3" ColumnName="PRE_CODING3" />
+                <ScalarProperty Name="PRE_CODING2" ColumnName="PRE_CODING2" />
+                <ScalarProperty Name="PRE_CODING1" ColumnName="PRE_CODING1" />
+                <ScalarProperty Name="ELEMENT" ColumnName="ELEMENT" />
+                <ScalarProperty Name="UOM" ColumnName="UOM" />
+                <ScalarProperty Name="TAX_REFUND_RATE" ColumnName="TAX_REFUND_RATE" />
+                <ScalarProperty Name="TAX_RATE" ColumnName="TAX_RATE" />
+                <ScalarProperty Name="MFN_RATE" ColumnName="MFN_RATE" />
+                <ScalarProperty Name="HSCODE" ColumnName="HSCODE" />
+                <ScalarProperty Name="DECLARATION_NAME" ColumnName="DECLARATION_NAME" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_TC_CATEGORY_BY_SYS">
+            <EntityTypeMapping TypeName="CHubDBModel.V_TC_CATEGORY_BY_SYS">
+              <MappingFragment StoreEntitySet="V_TC_CATEGORY_BY_SYS">
+                <ScalarProperty Name="TC_CATEGORY_BY_SYS" ColumnName="TC_CATEGORY_BY_SYS" />
+                <ScalarProperty Name="REMOTE_CREATE_DATE" ColumnName="REMOTE_CREATE_DATE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_TC_IMPORT_WITH_HS">
+            <EntityTypeMapping TypeName="CHubDBModel.V_TC_IMPORT_WITH_HS">
+              <MappingFragment StoreEntitySet="V_TC_IMPORT_WITH_HS">
+                <ScalarProperty Name="REMOTE_CREATE_DATE" ColumnName="REMOTE_CREATE_DATE" />
+                <ScalarProperty Name="FLEX3" ColumnName="FLEX3" />
+                <ScalarProperty Name="FLEX2" ColumnName="FLEX2" />
+                <ScalarProperty Name="FLEX1" ColumnName="FLEX1" />
+                <ScalarProperty Name="NOTE3" ColumnName="NOTE3" />
+                <ScalarProperty Name="NOTE2" ColumnName="NOTE2" />
+                <ScalarProperty Name="NOTE1" ColumnName="NOTE1" />
+                <ScalarProperty Name="VOLTAGE" ColumnName="VOLTAGE" />
+                <ScalarProperty Name="EXPERTISE" ColumnName="EXPERTISE" />
+                <ScalarProperty Name="INSPECTION" ColumnName="INSPECTION" />
+                <ScalarProperty Name="REGULATION" ColumnName="REGULATION" />
+                <ScalarProperty Name="PRE_CODING3" ColumnName="PRE_CODING3" />
+                <ScalarProperty Name="PRE_CODING2" ColumnName="PRE_CODING2" />
+                <ScalarProperty Name="PRE_CODING1" ColumnName="PRE_CODING1" />
+                <ScalarProperty Name="ELEMENT" ColumnName="ELEMENT" />
+                <ScalarProperty Name="UOM" ColumnName="UOM" />
+                <ScalarProperty Name="TAX_REFUND_RATE" ColumnName="TAX_REFUND_RATE" />
+                <ScalarProperty Name="TAX_RATE" ColumnName="TAX_RATE" />
+                <ScalarProperty Name="MFN_RATE" ColumnName="MFN_RATE" />
+                <ScalarProperty Name="DECLARATION_NAME" ColumnName="DECLARATION_NAME" />
+                <ScalarProperty Name="TC_CATEGORY_BY_MAN" ColumnName="TC_CATEGORY_BY_MAN" />
+                <ScalarProperty Name="TC_CATEGORY_BY_SYS" ColumnName="TC_CATEGORY_BY_SYS" />
+                <ScalarProperty Name="HSCODE" ColumnName="HSCODE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="LATEST_IMPORT_DATE" ColumnName="LATEST_IMPORT_DATE" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_TC_MDM_ALL">
+            <EntityTypeMapping TypeName="CHubDBModel.V_TC_MDM_ALL">
+              <MappingFragment StoreEntitySet="V_TC_MDM_ALL">
+                <ScalarProperty Name="REMOTE_CREATE_DATE" ColumnName="REMOTE_CREATE_DATE" />
+                <ScalarProperty Name="FLEX3" ColumnName="FLEX3" />
+                <ScalarProperty Name="FLEX2" ColumnName="FLEX2" />
+                <ScalarProperty Name="FLEX1" ColumnName="FLEX1" />
+                <ScalarProperty Name="NOTE3" ColumnName="NOTE3" />
+                <ScalarProperty Name="NOTE2" ColumnName="NOTE2" />
+                <ScalarProperty Name="NOTE1" ColumnName="NOTE1" />
+                <ScalarProperty Name="VOLTAGE" ColumnName="VOLTAGE" />
+                <ScalarProperty Name="EXPERTISE" ColumnName="EXPERTISE" />
+                <ScalarProperty Name="INSPECTION" ColumnName="INSPECTION" />
+                <ScalarProperty Name="REGULATION" ColumnName="REGULATION" />
+                <ScalarProperty Name="PRE_CODING3" ColumnName="PRE_CODING3" />
+                <ScalarProperty Name="PRE_CODING2" ColumnName="PRE_CODING2" />
+                <ScalarProperty Name="PRE_CODING1" ColumnName="PRE_CODING1" />
+                <ScalarProperty Name="ELEMENT" ColumnName="ELEMENT" />
+                <ScalarProperty Name="UOM" ColumnName="UOM" />
+                <ScalarProperty Name="TAX_REFUND_RATE" ColumnName="TAX_REFUND_RATE" />
+                <ScalarProperty Name="TAX_RATE" ColumnName="TAX_RATE" />
+                <ScalarProperty Name="MFN_RATE" ColumnName="MFN_RATE" />
+                <ScalarProperty Name="HSCODE" ColumnName="HSCODE" />
+                <ScalarProperty Name="DECLARATION_NAME" ColumnName="DECLARATION_NAME" />
+                <ScalarProperty Name="TC_CATEGORY_BY_MAN" ColumnName="TC_CATEGORY_BY_MAN" />
+                <ScalarProperty Name="TC_CATEGORY_BY_SYS" ColumnName="TC_CATEGORY_BY_SYS" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_TC_PART_HS">
+            <EntityTypeMapping TypeName="CHubDBModel.V_TC_PART_HS">
+              <MappingFragment StoreEntitySet="V_TC_PART_HS">
+                <ScalarProperty Name="FLEX3" ColumnName="FLEX3" />
+                <ScalarProperty Name="FLEX2" ColumnName="FLEX2" />
+                <ScalarProperty Name="FLEX1" ColumnName="FLEX1" />
+                <ScalarProperty Name="NOTE3" ColumnName="NOTE3" />
+                <ScalarProperty Name="NOTE2" ColumnName="NOTE2" />
+                <ScalarProperty Name="NOTE1" ColumnName="NOTE1" />
+                <ScalarProperty Name="VOLTAGE" ColumnName="VOLTAGE" />
+                <ScalarProperty Name="EXPERTISE" ColumnName="EXPERTISE" />
+                <ScalarProperty Name="INSPECTION" ColumnName="INSPECTION" />
+                <ScalarProperty Name="REGULATION" ColumnName="REGULATION" />
+                <ScalarProperty Name="PRE_CODING3" ColumnName="PRE_CODING3" />
+                <ScalarProperty Name="PRE_CODING2" ColumnName="PRE_CODING2" />
+                <ScalarProperty Name="PRE_CODING1" ColumnName="PRE_CODING1" />
+                <ScalarProperty Name="ELEMENT" ColumnName="ELEMENT" />
+                <ScalarProperty Name="UOM" ColumnName="UOM" />
+                <ScalarProperty Name="TAX_REFUND_RATE" ColumnName="TAX_REFUND_RATE" />
+                <ScalarProperty Name="TAX_RATE" ColumnName="TAX_RATE" />
+                <ScalarProperty Name="MFN_RATE" ColumnName="MFN_RATE" />
+                <ScalarProperty Name="HSCODE" ColumnName="HSCODE" />
+                <ScalarProperty Name="DECLARATION_NAME" ColumnName="DECLARATION_NAME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

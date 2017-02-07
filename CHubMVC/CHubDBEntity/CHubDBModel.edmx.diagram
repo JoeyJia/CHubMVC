@@ -68,6 +68,17 @@
         <EntityTypeShape EntityType="CHubDBModel.V_O_DOWNLOAD_DTL" Width="1.5" PointX="9.25" PointY="21.75" />
         <EntityTypeShape EntityType="CHubDBModel.V_O_DOWNLOAD_HDR" Width="1.5" PointX="7.375" PointY="21.75" />
         <EntityTypeShape EntityType="CHubDBModel.M_APPS" Width="1.5" PointX="10.375" PointY="7.75" />
+        <EntityTypeShape EntityType="CHubDBModel.TC_PART_CATEGORY" Width="1.5" PointX="21.75" PointY="12.875" />
+        <EntityTypeShape EntityType="CHubDBModel.TC_PART_CATEGORY_STG" Width="1.5" PointX="24" PointY="13.125" />
+        <EntityTypeShape EntityType="CHubDBModel.TC_PART_HS" Width="1.5" PointX="0.75" PointY="22.75" />
+        <EntityTypeShape EntityType="CHubDBModel.TC_PART_HS_AUDIT" Width="1.5" PointX="2.75" PointY="22.75" />
+        <EntityTypeShape EntityType="CHubDBModel.TC_PART_HS_INI" Width="1.5" PointX="21.75" PointY="22.75" />
+        <EntityTypeShape EntityType="CHubDBModel.TC_PART_HS_STG" Width="1.5" PointX="23.75" PointY="15.75" />
+        <EntityTypeShape EntityType="CHubDBModel.V_TC_CATEGORY_BY_SYS" Width="1.5" PointX="23.75" PointY="6.75" />
+        <EntityTypeShape EntityType="CHubDBModel.V_TC_IMPORT_WITH_HS" Width="1.5" PointX="23.75" PointY="22.75" />
+        <EntityTypeShape EntityType="CHubDBModel.V_TC_MDM_ALL" Width="1.5" PointX="25.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CHubDBModel.V_TC_PART_HS" Width="1.5" PointX="2.75" PointY="25.75" />
+        <AssociationConnector Association="CHubDBModel.TC_PART_CATEGORY_STG_R02" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
