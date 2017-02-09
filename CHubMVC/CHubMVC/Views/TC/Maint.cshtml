@@ -1,0 +1,410 @@
+﻿
+@{
+    ViewBag.Title = "TC Maint";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid" id="tcMaintBody" ng-app="maintApp" ng-controller="maintCtrl">
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>TC Maintenance</b></div>
+
+        <form class="form-horizontal" id="searchForm">
+            <div class="row" style="margin-top:20px;">
+                <div class="form-group">
+                    <label for="orderID" class="col-sm-2 control-label small">Part No.</label>
+                    <div class="col-sm-2 col-lg-2">
+                        <input type="text" class="form-control input-sm" ng-model="partNo" placeholder="Part No.">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="cAlias" class="col-sm-2 control-label">HS Code</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" ng-model="hsCode" placeholder="HS Code">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="cAlias" class="col-sm-2 control-label">Declaration Name</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" ng-model="declrName" placeholder="Declaration Name">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="poNum" class="col-sm-2 control-label">Element</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" ng-model="element" placeholder="Element">
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary btn-sm" ng-click="searchAction()">Search</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row" style="margin-top:15px;margin-bottom:20px">
+                <div class="col-sm-1 col-sm-offset-1">
+                    <button class="btn btn-primary">Add New Part</button>
+                </div>
+            </div>
+        </form>
+
+        <!--Order List-->
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default" style="">
+                    <div class="panel-heading">
+                        <b>Order List</b>
+                    </div>
+
+                    <table id="tbOrders" class="table table-striped table-hover table-bordered .table-condensed">
+                        <thead>
+                            <tr>
+                                <th style="">Part_No</th>
+                                <th style="">申报品名</th>
+                                <th style="">申报税号</th>
+                                <th style="">最惠国关税</th>
+                                <th style="">关税</th>
+                                <th style="">退税率</th>
+                                <th style="">计量单位</th>
+                                <th style="">申报要素</th>
+                                <th style="">预归类1</th>
+                                <th style="">预归类2</th>
+                                <th style="">预归类3</th>
+                                <th style="">Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody style="">
+                            <tr ng-repeat="r in result ">
+                                <td style="">{{r.PART_NO}}</td>
+                                <td>{{r.DECLARATION_NAME}}</td>
+                                <td>{{r.HSCODE}}</td>
+                                <td>{{r.MFN_RATE}}</td>
+                                <td>{{r.TAX_RATE}}</td>
+                                <td>{{r.TAX_REFUND_RATE}}</td>
+                                <td>{{r.UOM}}</td>
+                                <td>{{r.ELEMENT}}</td>
+                                <td>{{r.PRE_CODING1}}</td>
+                                <td>{{r.PRE_CODING2}}</td>
+                                <td>{{r.PRE_CODING3}}</td>
+                                <td style="text-align:center">
+                                    <a href="javascript:void(0)" title="Detail" class="detailBtn" ng-click="viewDetail(r)"><span class="glyphicon glyphicon-send"></span></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- TC Part HS modal-->
+<div class="modal fade" id="partModal" role="dialog" aria-labelledby="result" aria-hidden="true" ng-app="partFormApp" ng-controller="partFormCtrl">
+    <div class="modal-dialog" style="width:90%" >@*//*@
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>TC Part HS Form</h4>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" id="partDetailForm">
+                    <div class="row" style="margin-top:20px;">
+                        <div class="form-group">
+                            <label for="modalPartNo" class="col-sm-2 control-label small">Part_No</label>
+                            <div class="col-sm-3 col-lg-3">
+                                <input type="text" class="form-control input-sm" id="modalPartNo" ng-model="currentData.PART_NO" placeholder="Part No.">
+                            </div>
+
+                            <label for="modalDesc" class="col-sm-2 control-label">Description</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-sm" id="modalDesc" ng-model="currentData.DESCRIPTION" placeholder="Description">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalDesc" class="col-sm-3 control-label">Description</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalDesc" ng-model="currentData.DESCRIPTION" placeholder="Description">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalDeclrName" class="col-sm-3 control-label">申报品名</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalDeclrName" ng-model="currentData.DECLARATION_NAME" placeholder="Declaration Name">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalHSCode" class="col-sm-3 control-label">申报税号</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalHSCode" ng-model="currentData.HSCODE" placeholder="HSCode">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalMFNRate" class="col-sm-3 control-label">最惠国关税</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalMFNRate" ng-model="currentData.MFN_RATE" placeholder="MFN Rate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalTaxRate" class="col-sm-3 control-label">关税</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalTaxRate" ng-model="currentData.TAX_RATE" placeholder="Tax Rate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalTaxRFRate" class="col-sm-3 control-label">退税率</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalTaxRFRate" ng-model="currentData.TAX_REFUND_RATE" placeholder="Tax Refund Rate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalUOM" class="col-sm-3 control-label">计量单位</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalUOM" ng-model="currentData.UOM" placeholder="UOM">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalElement" class="col-sm-3 control-label">申报要素</label>
+                            <div class="col-sm-6">
+                                <textarea class="form-control input-sm" id="modalElement" rows="5" ng-model="currentData.ELEMENT" placeholder="Element"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalPreCoding1" class="col-sm-3 control-label">预归类1</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalPreCoding1" ng-model="currentData.PRE_CODING1" placeholder="Pre Coding1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalPreCoding2" class="col-sm-3 control-label">预归类2</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalPreCoding2" ng-model="currentData.PRE_CODING2" placeholder="Pre Coding2">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalPreCoding3" class="col-sm-3 control-label">预归类3</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalPreCoding3" ng-model="currentData.PRE_CODING3" placeholder="Pre Coding3">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalRegulation" class="col-sm-3 control-label">监管条件</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalRegulation" ng-model="currentData.REGULATION" placeholder="Regulation">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalInspection" class="col-sm-3 control-label">检验检疫</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalInspection" ng-model="currentData.INSPECTION" placeholder="Inspection">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalExpertise" class="col-sm-3 control-label">专家意见</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalExpertise" ng-model="currentData.EXPERTISE" placeholder="Expertise">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalVoltage" class="col-sm-3 control-label">额定电压</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalVoltage" ng-model="currentData.VOLTAGE" placeholder="Voltage">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalNote1" class="col-sm-3 control-label">备注1</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalNote1" ng-model="currentData.NOTE1" placeholder="Note1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalNote2" class="col-sm-3 control-label">备注2</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalNote2" ng-model="currentData.NOTE2" placeholder="Note2">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalNote3" class="col-sm-3 control-label">备注3</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalNote3" ng-model="currentData.NOTE3" placeholder="Note3">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalFlex1" class="col-sm-3 control-label">预留字段1</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalFlex1" ng-model="currentData.FLEX1" placeholder="Flex1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalFlex2" class="col-sm-3 control-label">预留字段2</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalFlex2" ng-model="currentData.FLEX2" placeholder="Flex2">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalFlex3" class="col-sm-3 control-label">预留字段3</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="modalFlex3" ng-model="currentData.FLEX3" placeholder="Flex3">
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-5">
+                        <button type="button" class="btn btn-primary" onclick="">Confirm</button>
+                        <button type="button" class="btn btn-primary" onclick="">Cancel</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+
+    angular.module('maintApp', []).controller('maintCtrl', function ($scope, $http) {
+        $scope.result = [];
+        $scope.partNo = "";
+        $scope.hsCode = "";
+        $scope.declrName = "";
+        $scope.element = "";
+
+     //   $http.post("/order/InitDraft", null, null).then(function (resp) {
+     //       //debugger;
+     //       $scope.draftList = resp.data;
+
+     //   },
+     //function (resp) {
+     //    alert("Fail!");
+     //    // $scope.resp = resp;
+     //});
+
+        $scope.searchAction = function () {
+            if ($scope.partNo == "" && $scope.hsCode == "" && $scope.declrName == "" && $scope.element == "")
+            {
+                alert("No Condition");
+                return;
+            }
+
+
+            $.ajax({
+                url: "/TC/QueryAction",
+                data: {
+                    partNo: $scope.partNo,
+                    hsCode: $scope.hsCode,
+                    declrName: $scope.declrName,
+                    element: $scope.element
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+
+                    $scope.result = obj;
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+        $scope.viewDetail = function(obj)
+        {
+            var appElement = document.querySelector('[ng-controller=partFormCtrl]');
+            var scope = angular.element(appElement).scope();
+            scope.currentData = obj;
+
+            scope.$apply();
+            $("#partModal").modal("show");
+        }
+
+    });
+
+    //manual load app
+    angular.bootstrap(document.getElementById("tcMaintBody"), ['maintApp']);
+
+    //For part modal part
+    angular.module('partFormApp', []).controller('partFormCtrl', function ($scope, $http) {
+        //Alias addres list
+        $scope.currentData = "";
+
+    });
+
+    //Add second app to document
+    angular.bootstrap(document.getElementById("partModal"), ['partFormApp']);
+</script>
+

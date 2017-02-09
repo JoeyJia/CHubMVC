@@ -22,6 +22,11 @@ namespace CHubBLL
             dal = new V_TC_MDM_ALL_DAL(db);
         }
 
+        public List<V_TC_MDM_ALL> GetTCMDMList(string partNo, string hsCode, string declrName, string element)
+        {
+            return dal.GetTCMDMList(partNo, hsCode, declrName, element);
+        }
+
 
     }
 }

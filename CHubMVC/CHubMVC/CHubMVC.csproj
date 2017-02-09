@@ -172,6 +172,7 @@
     <Compile Include="Common\BaseController.cs" />
     <Compile Include="Common\JsonNetResult.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\TCController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Global.asax.cs">
@@ -273,6 +274,7 @@
     <Content Include="Views\Order\Index.cshtml" />
     <Content Include="Views\Order\Draft.cshtml" />
     <Content Include="Views\Order\Query.cshtml" />
+    <Content Include="Views\TC\Maint.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
