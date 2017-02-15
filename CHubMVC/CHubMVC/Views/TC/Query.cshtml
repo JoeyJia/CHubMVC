@@ -1,13 +1,13 @@
 ﻿
 @{
-    ViewBag.Title = "TC Maint";
+    ViewBag.Title = "TC Query";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-<div class="container-fluid" id="tcMaintBody" ng-app="maintApp" ng-controller="maintCtrl">
+<div class="container-fluid" id="tcQueryBody" ng-app="tcQueryApp" ng-controller="tcQueryCtrl">
     <div class="panel panel-default">
-        <div class="panel-heading"><b>TC Maintenance</b></div>
+        <div class="panel-heading"><b>TC Query</b></div>
 
         <form class="form-horizontal" id="searchForm">
             <div class="row" style="margin-top:20px;">
@@ -50,52 +50,7 @@
 
             </div>
         </form>
-      <hr />
-        <div class="row">
-            <form class="form-inline" id="hsUpload" enctype="multipart/form-data" method="post" action="/tc/UploadHSFile">
-                <div class="col-sm-2 text-right">
-                    <label style="margin-left:20px">HS Upload</label>
-                </div>
-                <div class="form-group">
-                    <label class="sr-only" for="hsFile">HS Upload</label>
-                    <input type="file" name="fileInput" id="hsFile">
-                </div>
-                <button class="btn btn-primary btn-sm" onclick="uploadHSFile()">Upload</button>
-                <button class="btn btn-primary btn-sm">Download Template</button>
-            </form>
-        </div>
-
-        <div class="row" style="margin-top:10px">
-            <form class="form-inline" id="tcCateUpload11" enctype="multipart/form-data" method="post" action="/tc/UploadTCCateFile">
-                <div class="col-sm-2 text-right">
-                    <label style="margin-left:20px">File input</label>
-                </div>
-                <div class="form-group">
-                    <label class="sr-only" for="exampleInputFile">File input</label>
-                    <input type="file" name="fileInput" id="exampleInputFile">
-                </div>
-                <button type="submit" class="btn btn-primary btn-sm">Upload</button>
-                <button class="btn btn-primary btn-sm">Download Template</button>
-            </form>
-
-        </div>
-
-        <div class="row" style="margin-top:15px;">
-            <div class="col-sm-2 text-left">
-                <button class="btn btn-primary" onclick="addNewPart()">Add New Part</button>
-            </div>
-        </div>
         
-        @*<div class="row">
-            <form id="upfrom" class="form-horizontal" enctype="multipart/form-data" method="post" action="/tc/UploadTCCateFile">
-                 <input name="fileUpload" type="file" />
-               <input type="submit" class="btn btn-primary btn-sm" value="upload" name="upload"  />
-                
-            </form>
-
-        </div>*@
-        
-
         <!--Order List-->
         <div class="row">
             <div class="col-md-12 col-lg-12">
@@ -104,7 +59,7 @@
                         <b>Order List</b>
                     </div>
 
-                    <table id="tbOrders" class="table table-striped table-hover table-bordered .table-condensed">
+                    <table id="tbMDMAll" class="table table-striped table-hover table-bordered .table-condensed">
                         <thead>
                             <tr>
                                 <th style="">Part_No</th>
@@ -138,7 +93,7 @@
 </div>
 
 <!-- TC Part HS modal-->
-<div class="modal fade" id="partModal" role="dialog" aria-labelledby="result" aria-hidden="true" ng-app="partFormApp" ng-controller="partFormCtrl">
+<div class="modal fade" id="partReadModal" role="dialog" aria-labelledby="result" aria-hidden="true" ng-app="partReadFormApp" ng-controller="partReadFormCtrl">
     <div class="modal-dialog" style="width:90%" >@*//*@
         <div class="modal-content">
             <div class="modal-header">
@@ -151,12 +106,12 @@
                         <div class="form-group">
                             <label for="modalPartNo" class="col-sm-2 control-label small">Part_No</label>
                             <div class="col-sm-3 col-lg-3">
-                                <input type="text" class="form-control input-sm" id="modalPartNo" ng-model="currentData.PART_NO" placeholder="Part No.">
+                                <input type="text" class="form-control input-sm" id="modalPartNo" ng-model="currentData.PART_NO" ng-readonly="isReadOnly" placeholder="Part No.">
                             </div>
 
                             <label for="modalDesc" class="col-sm-2 control-label">Description</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalDesc" ng-model="currentData.DESCRIPTION" placeholder="Description">
+                                <input type="text" class="form-control input-sm" id="modalDesc" ng-model="currentData.DESCRIPTION" ng-readonly="isReadOnly" placeholder="Description">
                             </div>
                         </div>
                     </div>
@@ -165,12 +120,12 @@
                         <div class="form-group">
                             <label for="modalDeclrName" class="col-sm-2 control-label">申报品名</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalDeclrName" ng-model="currentData.DECLARATION_NAME" placeholder="Declaration Name">
+                                <input type="text" class="form-control input-sm" id="modalDeclrName" ng-model="currentData.DECLARATION_NAME" ng-readonly="isReadOnly" placeholder="Declaration Name">
                             </div>
 
                             <label for="modalHSCode" class="col-sm-2 control-label">申报税号</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalHSCode" ng-model="currentData.HSCODE" placeholder="HSCode">
+                                <input type="text" class="form-control input-sm" id="modalHSCode" ng-model="currentData.HSCODE" ng-readonly="isReadOnly" placeholder="HSCode">
                             </div>
                         </div>
                     </div>
@@ -179,12 +134,12 @@
                         <div class="form-group">
                             <label for="modalMFNRate" class="col-sm-2 control-label">最惠国关税</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalMFNRate" ng-model="currentData.MFN_RATE" placeholder="MFN Rate">
+                                <input type="text" class="form-control input-sm" id="modalMFNRate" ng-model="currentData.MFN_RATE" ng-readonly="isReadOnly" placeholder="MFN Rate">
                             </div>
 
                             <label for="modalTaxRate" class="col-sm-2 control-label">关税</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalTaxRate" ng-model="currentData.TAX_RATE" placeholder="Tax Rate">
+                                <input type="text" class="form-control input-sm" id="modalTaxRate" ng-model="currentData.TAX_RATE" ng-readonly="isReadOnly" placeholder="Tax Rate">
                             </div>
                         </div>
                     </div>
@@ -195,12 +150,12 @@
                         <div class="form-group">
                             <label for="modalTaxRFRate" class="col-sm-2 control-label">退税率</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalTaxRFRate" ng-model="currentData.TAX_REFUND_RATE" placeholder="Tax Refund Rate">
+                                <input type="text" class="form-control input-sm" id="modalTaxRFRate" ng-model="currentData.TAX_REFUND_RATE" ng-readonly="isReadOnly" placeholder="Tax Refund Rate">
                             </div>
 
                             <label for="modalUOM" class="col-sm-2 control-label">计量单位</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalUOM" ng-model="currentData.UOM" placeholder="UOM">
+                                <input type="text" class="form-control input-sm" id="modalUOM" ng-model="currentData.UOM" ng-readonly="isReadOnly" placeholder="UOM">
                             </div>
                         </div>
                     </div>
@@ -210,7 +165,7 @@
                         <div class="form-group">
                             <label for="modalElement" class="col-sm-2 control-label">申报要素</label>
                             <div class="col-sm-8">
-                                <textarea class="form-control input-sm" id="modalElement" rows="3" ng-model="currentData.ELEMENT" placeholder="Element"></textarea>
+                                <textarea class="form-control input-sm" id="modalElement" rows="3" ng-model="currentData.ELEMENT" ng-readonly="isReadOnly" placeholder="Element"></textarea>
                             </div>
 
                             
@@ -222,12 +177,12 @@
                         <div class="form-group">
                             <label for="modalPreCoding1" class="col-sm-2 control-label">预归类1</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalPreCoding1" ng-model="currentData.PRE_CODING1" placeholder="Pre Coding1">
+                                <input type="text" class="form-control input-sm" id="modalPreCoding1" ng-model="currentData.PRE_CODING1" ng-readonly="isReadOnly" placeholder="Pre Coding1">
                             </div>
 
                             <label for="modalPreCoding2" class="col-sm-2 control-label">预归类2</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalPreCoding2" ng-model="currentData.PRE_CODING2" placeholder="Pre Coding2">
+                                <input type="text" class="form-control input-sm" id="modalPreCoding2" ng-model="currentData.PRE_CODING2" ng-readonly="isReadOnly" placeholder="Pre Coding2">
                             </div>
                         </div>
                     </div>
@@ -236,12 +191,12 @@
                         <div class="form-group">
                             <label for="modalPreCoding3" class="col-sm-2 control-label">预归类3</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalPreCoding3" ng-model="currentData.PRE_CODING3" placeholder="Pre Coding3">
+                                <input type="text" class="form-control input-sm" id="modalPreCoding3" ng-model="currentData.PRE_CODING3" ng-readonly="isReadOnly" placeholder="Pre Coding3">
                             </div>
 
                             <label for="modalRegulation" class="col-sm-2 control-label">监管条件</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalRegulation" ng-model="currentData.REGULATION" placeholder="Regulation">
+                                <input type="text" class="form-control input-sm" id="modalRegulation" ng-model="currentData.REGULATION" ng-readonly="isReadOnly" placeholder="Regulation">
                             </div>
                         </div>
                     </div>
@@ -250,12 +205,12 @@
                         <div class="form-group">
                             <label for="modalInspection" class="col-sm-2 control-label">检验检疫</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalInspection" ng-model="currentData.INSPECTION" placeholder="Inspection">
+                                <input type="text" class="form-control input-sm" id="modalInspection" ng-model="currentData.INSPECTION" ng-readonly="isReadOnly" placeholder="Inspection">
                             </div>
 
                             <label for="modalExpertise" class="col-sm-2 control-label">专家意见</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalExpertise" ng-model="currentData.EXPERTISE" placeholder="Expertise">
+                                <input type="text" class="form-control input-sm" id="modalExpertise" ng-model="currentData.EXPERTISE" ng-readonly="isReadOnly" placeholder="Expertise">
                             </div>
                         </div>
                     </div>
@@ -264,12 +219,12 @@
                         <div class="form-group">
                             <label for="modalVoltage" class="col-sm-2 control-label">额定电压</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalVoltage" ng-model="currentData.VOLTAGE" placeholder="Voltage">
+                                <input type="text" class="form-control input-sm" id="modalVoltage" ng-model="currentData.VOLTAGE" ng-readonly="isReadOnly" placeholder="Voltage">
                             </div>
 
                             <label for="modalNote1" class="col-sm-2 control-label">备注1</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalNote1" ng-model="currentData.NOTE1" placeholder="Note1">
+                                <input type="text" class="form-control input-sm" id="modalNote1" ng-model="currentData.NOTE1" ng-readonly="isReadOnly" placeholder="Note1">
                             </div>
                         </div>
                     </div>
@@ -278,12 +233,12 @@
                         <div class="form-group">
                             <label for="modalNote2" class="col-sm-2 control-label">备注2</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalNote2" ng-model="currentData.NOTE2" placeholder="Note2">
+                                <input type="text" class="form-control input-sm" id="modalNote2" ng-model="currentData.NOTE2" ng-readonly="isReadOnly" placeholder="Note2">
                             </div>
 
                             <label for="modalNote3" class="col-sm-2 control-label">备注3</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalNote3" ng-model="currentData.NOTE3" placeholder="Note3">
+                                <input type="text" class="form-control input-sm" id="modalNote3" ng-model="currentData.NOTE3" ng-readonly="isReadOnly" placeholder="Note3">
                             </div>
                         </div>
                     </div>
@@ -292,12 +247,12 @@
                         <div class="form-group">
                             <label for="modalFlex1" class="col-sm-2 control-label">预留字段1</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalFlex1" ng-model="currentData.FLEX1" placeholder="Flex1">
+                                <input type="text" class="form-control input-sm" id="modalFlex1" ng-model="currentData.FLEX1" ng-readonly="isReadOnly" placeholder="Flex1">
                             </div>
 
                             <label for="modalFlex2" class="col-sm-2 control-label">预留字段2</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalFlex2" ng-model="currentData.FLEX2" placeholder="Flex2">
+                                <input type="text" class="form-control input-sm" id="modalFlex2" ng-model="currentData.FLEX2" ng-readonly="isReadOnly" placeholder="Flex2">
                             </div>
                         </div>
                     </div>
@@ -306,7 +261,7 @@
                         <div class="form-group">
                             <label for="modalFlex3" class="col-sm-2 control-label">预留字段3</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalFlex3" ng-model="currentData.FLEX3" placeholder="Flex3">
+                                <input type="text" class="form-control input-sm" id="modalFlex3" ng-model="currentData.FLEX3" ng-readonly="isReadOnly" placeholder="Flex3">
                             </div>
                         </div>
                     </div>
@@ -315,12 +270,12 @@
                         <div class="form-group">
                             <label for="modalCateSys" class="col-sm-2 control-label">CategoryBySys</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalCateSys" ng-model="currentData.TC_CATEGORY_BY_SYS" readonly>
+                                <input type="text" class="form-control input-sm" id="modalCateSys" ng-model="currentData.TC_CATEGORY_BY_SYS" ng-readonly="isReadOnly" readonly>
                             </div>
 
                             <label for="modalCateMan" class="col-sm-2 control-label">CategoryByMan</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalCateMan" ng-model="currentData.TC_CATEGORY_BY_MAN" placeholder="Category By Man">
+                                <input type="text" class="form-control input-sm" id="modalCateMan" ng-model="currentData.TC_CATEGORY_BY_MAN" ng-readonly="isReadOnly" placeholder="Category By Man">
                             </div>
                         </div>
                     </div>
@@ -329,8 +284,7 @@
                 <div class="row">
                     <div class="col-md-4 col-md-offset-5">
                         <button type="button" class="btn btn-primary" onclick="">Audit</button>
-                        <button type="button" class="btn btn-primary" ng-click="saveAction()">Save</button>
-                        <button type="button" class="btn btn-primary" ng-click="cancel()">Cancel</button>
+                        <button type="button" class="btn btn-primary" ng-click="cancel()">Close</button>
                     </div>
 
                 </div>
@@ -342,7 +296,7 @@
 <script>
     
 
-    angular.module('maintApp', []).controller('maintCtrl', function ($scope, $http) {
+    angular.module('tcQueryApp', []).controller('tcQueryCtrl', function ($scope, $http) {
         $scope.result = [];
         $scope.partNo = "";
         $scope.hsCode = "";
@@ -389,68 +343,34 @@
 
         $scope.viewDetail = function(obj)
         {
-            var appElement = document.querySelector('[ng-controller=partFormCtrl]');
+            var appElement = document.querySelector('[ng-controller=partReadFormCtrl]');
             var scope = angular.element(appElement).scope();
             scope.currentData = obj;
 
             scope.$apply();
-            $("#partModal").modal("show");
+            $("#partReadModal").modal("show");
         }
 
     });
 
     //manual load app
-    angular.bootstrap(document.getElementById("tcMaintBody"), ['maintApp']);
+    angular.bootstrap(document.getElementById("tcQueryBody"), ['tcQueryApp']);
 
     //For part modal part
-    angular.module('partFormApp', []).controller('partFormCtrl', function ($scope, $http) {
+    angular.module('partReadFormApp', []).controller('partReadFormCtrl', function ($scope, $http) {
         //Alias addres list
         $scope.currentData = "";
+        $scope.isReadOnly = true;
 
         //Get sys man status list
 
-        $scope.saveAction = function () {
-            //debugger;
-            $.ajax({
-                url: "/TC/SaveAction",
-                data: JSON.stringify({ mdmAll: $scope.currentData }),
-                type: "post",
-                async: false,
-                contentType: 'application/json',
-                success: function (obj) {
-                    alert(obj);
-                    //debugger;
-                },
-                error: function (obj) {
-                    alert(obj.responseText);
-                }
-            });
-        };
-
-        $scope.cancel = function ()
-        {
-            $scope.currentData = "";
-            $("#partModal").modal("hide");
+        $scope.cancel = function () {
+            $("#partReadModal").modal("hide");
         }
 
 
     });
 
     //Add second app to document
-    angular.bootstrap(document.getElementById("partModal"), ['partFormApp']);
-</script>
-
-<script>
-    function uploadHSFile() {
-        $("#hsUpload").ajaxSubmit(function (obj) {
-            alert(obj);
-        });
-        return false;
-    }
-
-    function addNewPart()
-    {
-        $("#partModal").modal("show");
-    }
-
+    angular.bootstrap(document.getElementById("partReadModal"), ['partReadFormApp']);
 </script>

@@ -15,5 +15,15 @@ namespace CHubDAL
 
         public M_PART_DAL(CHubEntities db)
             : base(db) { }
+
+        public bool Exist(string partNo)
+        {
+            return db.M_PART.Any(a => a.PART_NO == partNo);
+        }
+
+        public M_PART GetMPartByPartNo(string partNo)
+        {
+            return db.M_PART.FirstOrDefault(a => a.PART_NO == partNo);
+        }
     }
 }

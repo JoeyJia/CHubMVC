@@ -22,5 +22,20 @@ namespace CHubBLL
             dal = new TC_PART_HS_DAL(db);
         }
 
+        public bool Exist(string partNo)
+        {
+            return dal.Exist(partNo);
+        }
+
+        public void update(TC_PART_HS model,bool autoSave=true)
+        {
+            dal.Update(model,autoSave);
+        }
+
+        public void Add(TC_PART_HS model,bool autoSave = true)
+        {
+            dal.Add(model,autoSave);
+        }
+
     }
 }

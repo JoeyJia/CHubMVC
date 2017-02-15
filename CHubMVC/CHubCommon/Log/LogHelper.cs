@@ -32,5 +32,13 @@ namespace CHubCommon
                 logerror.Error(info, se);
             }
         }
+
+        public static void WriteErrorLog(string info)
+        {
+            if (logerror.IsErrorEnabled)
+            {
+                logerror.Error(info);
+            }
+        }
     }
 }

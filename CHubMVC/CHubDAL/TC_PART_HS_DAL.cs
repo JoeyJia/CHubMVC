@@ -16,6 +16,10 @@ namespace CHubDAL
         public TC_PART_HS_DAL(CHubEntities db)
             : base(db) { }
 
+        public bool Exist(string partNo)
+        {
+            return db.TC_PART_HS.Any(a => a.PART_NO == partNo);
+        }
 
     }
 }

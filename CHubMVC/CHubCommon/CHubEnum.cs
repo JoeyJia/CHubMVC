@@ -40,7 +40,9 @@ namespace CHubCommon
             manual,
             ordinq,
             invinq,
-            orddft
+            orddft,
+            tcmnt,
+            tcinq
         }
 
         public enum OrderStatusEnum

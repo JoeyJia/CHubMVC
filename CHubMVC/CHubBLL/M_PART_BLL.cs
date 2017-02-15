@@ -22,5 +22,20 @@ namespace CHubBLL
             dal = new M_PART_DAL(db);
         }
 
+        public bool Exist(string partNo)
+        {
+            return dal.Exist(partNo);
+        }
+
+        public M_PART GetMPartByPartNo(string partNo)
+        {
+            return dal.GetMPartByPartNo(partNo);
+        }
+
+        public void Update(M_PART model,bool autoSave = true)
+        {
+            dal.Update(model,autoSave);
+        }
+
     }
 }

@@ -28,5 +28,53 @@ namespace CHubCommon
             }
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        public static void DrawObj(object from, object to)
+        {
+            try
+            {
+                PropertyInfo[] piArray = to.GetType().GetProperties();
+
+                foreach (var item in piArray)
+                {
+                    if (from.GetType().GetProperty(item.Name) != null)
+                    {
+                        item.SetValue(to, from.GetType().GetProperty(item.Name).GetValue(from));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void DrawObj(object from, object to,List<String> skipList)
+        {
+            try
+            {
+                PropertyInfo[] piArray = to.GetType().GetProperties();
+
+                foreach (var item in piArray)
+                {
+                    if (skipList.Contains(item.Name))
+                        continue;
+                    if (from.GetType().GetProperty(item.Name) != null)
+                    {
+                        item.SetValue(to, from.GetType().GetProperty(item.Name).GetValue(from));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
