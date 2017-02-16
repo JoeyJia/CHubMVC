@@ -37,12 +37,19 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult QueryAction(string partNo, string hsCode, string declrName, string element)
+        public ActionResult QueryAction(string partNo, string hsCode, string declrName, string element,int currentPage,int pageSize)
         {
             CHubEntities db = new CHubEntities();
             V_TC_MDM_ALL_BLL mdmBLL = new V_TC_MDM_ALL_BLL(db);
-            List<V_TC_MDM_ALL> result = mdmBLL.GetTCMDMList(partNo, hsCode, declrName, element);
-            return Json(result);
+            int totalCount = 0;
+            List<V_TC_MDM_ALL> result = mdmBLL.GetTCMDMList(partNo, hsCode, declrName, element, currentPage, pageSize,out totalCount);
+
+            var obj = new
+            {
+                result = result,
+                totalCount = totalCount
+            };
+            return Json(obj);
         }
 
         public ActionResult SaveAction(V_TC_MDM_ALL mdmAll)
@@ -145,6 +152,14 @@ namespace CHubMVC.Controllers
             string fileName = CHubConstValues.MPartExcelTemplateName;
 
             return File(templateFolder + fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",fileName);
+        }
+
+        public ActionResult GetPartAuditLog(string partNo)
+        {
+
+            TC_PART_HS_AUDIT_BLL auditBLL = new TC_PART_HS_AUDIT_BLL();
+            return Json(auditBLL.GetAuditLog(partNo));
+
         }
 
 

@@ -346,14 +346,31 @@
 <!--Audit Log Modal-->
 <div class="modal fade" id="auditLogModal" role="dialog" aria-labelledby="result" aria-hidden="true" ng-app="auditLogApp" ng-controller="auditLogCtrl">
     <div class="modal-dialog">
-        @*/style="width:90%" /*@
         <div class="modal-content">
             <div class="modal-header">
-                <h4>TC Part HS Form</h4>
+                <h4>Audit Log Form {{partNo}}</h4>
             </div>
 
             <div class="modal-body">
-                <h1>test</h1>
+                
+                <table id="tbAuditLog" class="table table-striped table-hover table-bordered .table-condensed">
+                    <thead>
+                        <tr>
+                            <th style="">Part_No</th>
+                            <th style="">Audit Field</th>
+                            <th style="">New Value</th>
+                            <th style="">Old Value</th>
+                        </tr>
+                    </thead>
+                    <tbody style="">
+                        <tr ng-repeat="al in auditLog ">
+                            <td style="">{{al.PART_NO}}</td>
+                            <td>{{al.AUDIT_FIELD}}</td>
+                            <td>{{al.N_VALUE}}</td>
+                            <td>{{al.O_VALUE}}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
             </div>
         </div>
@@ -369,19 +386,12 @@
         $scope.hsCode = "";
         $scope.declrName = "";
         $scope.element = "";
+        $scope.loading = true;
 
-     //   $http.post("/order/InitDraft", null, null).then(function (resp) {
-     //       //debugger;
-     //       $scope.draftList = resp.data;
 
-     //   },
-     //function (resp) {
-     //    alert("Fail!");
-     //    // $scope.resp = resp;
-        //});
         $scope.paginationConf = {
-            currentPage:0,
-            itemsPerPage:5,
+            currentPage:1,
+            itemsPerPage:10,
             totalItems: 0,
             pagesLength:3,
             perPageOptions: [10, 20, 30, 40, 50],
@@ -389,14 +399,21 @@
 
         };
 
-        $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', test);
+        $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', searchHSPart);
 
-        function test()
+
+        $scope.searchAction = function ()
         {
-            alert($scope.paginationConf.currentPage);
+            searchHSPart();
         }
 
-        $scope.searchAction = function () {
+         function  searchHSPart() {
+            if ($scope.loading)
+            {
+                //first time load ignore
+                $scope.loading = false;
+                return;
+            }
             if ($scope.partNo == "" && $scope.hsCode == "" && $scope.declrName == "" && $scope.element == "")
             {
                 alert("No Condition");
@@ -410,13 +427,17 @@
                     partNo: $scope.partNo,
                     hsCode: $scope.hsCode,
                     declrName: $scope.declrName,
-                    element: $scope.element
+                    element: $scope.element,
+                    currentPage: $scope.paginationConf.currentPage,
+                    pageSize: $scope.paginationConf.itemsPerPage
                 },
                 type: "post",
                 async: false,
                 success: function (obj) {
 
-                    $scope.result = obj;
+                    $scope.result = obj.result;
+                    $scope.paginationConf.totalItems = obj.totalCount;
+
                 },
                 error: function (obj) {
                     alert(obj.responseText);
@@ -433,6 +454,7 @@
 
             scope.$apply();
             $("#partModal").modal("show");
+
         }
 
     });
@@ -475,6 +497,12 @@
 
         $scope.showAuditLog = function ()
         {
+            //debugger;
+            var appElement = document.querySelector('[ng-controller=auditLogCtrl]');
+            var scope = angular.element(appElement).scope();
+            scope.partNo = $scope.currentData.PART_NO;
+            scope.loadAuditLog();
+            scope.$apply();
             $("#auditLogModal").modal("show");
         }
 
@@ -482,6 +510,34 @@
 
     //Add second app to document
     angular.bootstrap(document.getElementById("partModal"), ['partFormApp']);
+
+    //Audit log part
+    angular.module('auditLogApp', []).controller('auditLogCtrl', function ($scope, $http) {
+        
+        $scope.partNo = "";
+        $scope.auditLog = [];
+
+        $scope.loadAuditLog = function () {
+            
+            $.ajax({
+                url: "/TC/GetPartAuditLog",
+                data: { partNo: $scope.partNo },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    debugger;
+                    $scope.auditLog = obj;
+                    //debugger;
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+    });
+
+    angular.bootstrap(document.getElementById("auditLogModal"), ['auditLogApp']);
 </script>
 
 <script>
