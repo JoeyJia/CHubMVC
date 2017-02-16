@@ -277,9 +277,12 @@
     <Content Include="Views\Order\Query.cshtml" />
     <Content Include="Views\TC\Maint.cshtml" />
     <Content Include="Views\TC\Query.cshtml" />
+    <Content Include="Template\TC_HS_DB_template_V1.xlsx" />
+    <Content Include="Template\TC_MPart_template_V1.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="temp\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

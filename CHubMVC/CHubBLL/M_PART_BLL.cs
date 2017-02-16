@@ -37,5 +37,10 @@ namespace CHubBLL
             dal.Update(model,autoSave);
         }
 
+        public void Add(M_PART model, bool autoSave = true)
+        {
+            dal.Add(model, autoSave);
+        }
+
     }
 }

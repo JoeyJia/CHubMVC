@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -76,5 +77,37 @@ namespace CHubCommon
             }
         }
 
+
+        public static List<T> ConvertDT2List<T>(DataTable dt) 
+        {
+            PropertyInfo[] properties = typeof(T).GetProperties();
+            List<T> list = new List<T>();
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                object obj = Activator.CreateInstance(typeof(T));
+                foreach (var item in properties)
+                {
+                    try
+                    {
+                        if (dt.Rows[i][item.Name] != null)
+                        {
+                            if (item.PropertyType == typeof(Nullable<decimal>))
+                            {
+                                item.SetValue(obj, decimal.Parse(dt.Rows[i][item.Name].ToString()));
+                            }
+                            else
+                                item.SetValue(obj, dt.Rows[i][item.Name]);
+                        }
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+                }
+                list.Add((T)obj);
+            }
+            return list;
+        }
     }
 }

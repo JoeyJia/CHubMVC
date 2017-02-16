@@ -51,8 +51,10 @@
             </div>
         </form>
       <hr />
+
+        <!--HS part upload form-->
         <div class="row">
-            <form class="form-inline" id="hsUpload" enctype="multipart/form-data" method="post" action="/tc/UploadHSFile">
+            <form class="form-inline" name="hsForm" id="hsUpload"  >@*//method="post" action="/tc/UploadHSFile" enctype="multipart/form-data"*@
                 <div class="col-sm-2 text-right">
                     <label style="margin-left:20px">HS Upload</label>
                 </div>
@@ -65,16 +67,17 @@
             </form>
         </div>
 
+        <!--TC Category upload form-->
         <div class="row" style="margin-top:10px">
-            <form class="form-inline" id="tcCateUpload11" enctype="multipart/form-data" method="post" action="/tc/UploadTCCateFile">
+            <form class="form-inline" name="tcCateForm" id="tcCateUpload" >@*enctype="multipart/form-data" method="post" action="/tc/UploadTCCateFile"*@
                 <div class="col-sm-2 text-right">
-                    <label style="margin-left:20px">File input</label>
+                    <label style="margin-left:20px">TC Category Upload</label>
                 </div>
                 <div class="form-group">
-                    <label class="sr-only" for="exampleInputFile">File input</label>
+                    <label class="sr-only" for="exampleInputFile">TC Category Upload</label>
                     <input type="file" name="fileInput" id="exampleInputFile">
                 </div>
-                <button type="submit" class="btn btn-primary btn-sm">Upload</button>
+                <button  class="btn btn-primary btn-sm" onclick="uploadTCCateFile()">Upload</button>
                 <button class="btn btn-primary btn-sm">Download Template</button>
             </form>
 
@@ -442,10 +445,33 @@
 
 <script>
     function uploadHSFile() {
-        $("#hsUpload").ajaxSubmit(function (obj) {
-            alert(obj);
-        });
-        return false;
+        var form = $("form[name=hsForm]");
+                var options  = {    
+                    url: '/tc/UploadHSFile',
+                        type: 'post',
+                        enctype:"multipart/form-data",
+                    success:function(data)    
+                    {
+                        debugger;
+                        alert(data);
+                            }    
+                    };    
+                form.ajaxSubmit(options);  
+    }
+
+    function uploadTCCateFile()
+    {
+        var form = $("form[name=tcCateForm]");
+        var options = {
+            url: '/tc/UploadTCCateFile',
+            type: 'post',
+            enctype: "multipart/form-data",
+            success: function (data) {
+                debugger;
+                alert(data);
+            }
+        };
+        form.ajaxSubmit(options);
     }
 
     function addNewPart()
