@@ -13,7 +13,8 @@ namespace CHubMVC
                         "~/Scripts/jquery.form.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
-                        "~/Scripts/angular.js"));
+                        "~/Scripts/angular.js",
+                        "~/Scripts/tm.pagination.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/datetime").Include(
                         "~/Scripts/bootstrap-datetimepicker.js"));

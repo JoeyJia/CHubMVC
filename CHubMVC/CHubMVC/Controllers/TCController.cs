@@ -71,13 +71,10 @@ namespace CHubMVC.Controllers
         {
             HttpPostedFileBase fb = Request.Files[0];
             string tempGuid = Guid.NewGuid().ToString();
-            string folderPath = @"C:\Users\oo450\Source\Repos\CHubMVC\CHubMVC\CHubMVC\temp\";//For temp folder path.
+            string folderPath = Server.MapPath(CHubConstValues.ChubTempFolder); 
             FileInfo folder = new FileInfo(folderPath);
             if (!Directory.Exists(folder.FullName))
                 Directory.CreateDirectory(folder.FullName);
-
-            string folderPath1 = @"~/temp/";//For temp folder path.
-            FileInfo folder1 = new FileInfo(folderPath1);
 
             string fileFullName = folder.FullName + tempGuid + ".xlsx";
             fb.SaveAs(fileFullName);
@@ -99,6 +96,13 @@ namespace CHubMVC.Controllers
             return Content(string.Format("Total Count:{0}, Success Count:{1}, Fail Count:{2}",partList.Count,successCount,failCount));
         }
 
+        public ActionResult DownloadHSFileTemplate()
+        {
+            string templateFolder = Server.MapPath(CHubConstValues.ChubTemplateFolder);
+            string fileName = CHubConstValues.HSPartExcelTemplateName;
+
+            return File(templateFolder+fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",fileName);
+        }
         /// <summary>
         /// TC Category Upload
         /// </summary>
@@ -108,7 +112,7 @@ namespace CHubMVC.Controllers
             HttpPostedFileBase fb = Request.Files[0];
             //HttpPostedFileBase fb = fileInput.ToArray()[0];
             string tempGuid = Guid.NewGuid().ToString();
-            string folderPath = @"C:\Users\oo450\Source\Repos\CHubMVC\CHubMVC\CHubMVC\temp\";//For temp folder path.
+            string folderPath = Server.MapPath(CHubConstValues.ChubTempFolder); 
             FileInfo folder = new FileInfo(folderPath);
             if (!Directory.Exists(folder.FullName))
                 Directory.CreateDirectory(folder.FullName);
@@ -133,6 +137,14 @@ namespace CHubMVC.Controllers
             }
 
             return Content(string.Format("Total Count:{0}, Success Count:{1}, Fail Count:{2}", dt.Rows.Count, successCount, failCount));
+        }
+
+        public ActionResult DownloadMPartFileTemplate()
+        {
+            string templateFolder = Server.MapPath(CHubConstValues.ChubTemplateFolder);
+            string fileName = CHubConstValues.MPartExcelTemplateName;
+
+            return File(templateFolder + fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",fileName);
         }
 
 

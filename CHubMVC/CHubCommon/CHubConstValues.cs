@@ -23,5 +23,11 @@ namespace CHubCommon
 
         public static string ErrorColor = "red";
 
+        public static string ChubTempFolder = "~/temp/";
+        public static string ChubTemplateFolder = "~/Template/";
+
+        public static string HSPartExcelTemplateName = "TC_HS_DB_template_V1.xlsx";
+        public static string MPartExcelTemplateName = "TC_MPart_template_V1.xlsx";
+
     }
 }
