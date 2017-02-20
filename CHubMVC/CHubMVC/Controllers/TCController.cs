@@ -13,7 +13,7 @@ using System.Data;
 
 namespace CHubMVC.Controllers
 {
-    public class TCController : Controller
+    public class TCController : BaseController
     {
         [Authorize]
         public ActionResult Maint()
@@ -50,6 +50,13 @@ namespace CHubMVC.Controllers
                 totalCount = totalCount
             };
             return Json(obj);
+        }
+
+        public ActionResult InitTCPartForm()
+        {
+            TC_PART_CATEGORY_BLL cateBLL = new TC_PART_CATEGORY_BLL();
+            List<TC_PART_CATEGORY> cateList = cateBLL.GetTCPartCategory();
+            return Json(cateList);
         }
 
         public ActionResult SaveAction(V_TC_MDM_ALL mdmAll)

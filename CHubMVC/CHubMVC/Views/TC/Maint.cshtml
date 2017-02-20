@@ -324,7 +324,9 @@
 
                             <label for="modalCateMan" class="col-sm-2 control-label">CategoryByMan</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalCateMan" ng-model="currentData.TC_CATEGORY_BY_MAN" placeholder="Category By Man">
+                                <select class="form-control input-sm" id="orderType" ng-model="currentData.TC_CATEGORY_BY_MAN" ng-options="ot.TC_CATEGORY_ID for ot in cateList"></select>
+
+                                @*<input type="text" class="form-control input-sm" id="modalCateMan" ng-model="currentData.TC_CATEGORY_BY_MAN" placeholder="Category By Man">*@
                             </div>
                         </div>
                     </div>
@@ -388,15 +390,12 @@
         $scope.element = "";
         $scope.loading = true;
 
-
         $scope.paginationConf = {
             currentPage:1,
             itemsPerPage:10,
             totalItems: 0,
             pagesLength:3,
             perPageOptions: [10, 20, 30, 40, 50],
-
-
         };
 
         $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', searchHSPart);
@@ -447,6 +446,7 @@
 
         $scope.viewDetail = function(obj)
         {
+           
             var appElement = document.querySelector('[ng-controller=partFormCtrl]');
             var scope = angular.element(appElement).scope();
             scope.currentData = obj;
@@ -469,6 +469,15 @@
         $scope.editAction = false;
 
         //Get sys man status list
+        $http.post("/tc/InitTCPartForm", null, null).then(function (resp) {
+            debugger;
+            $scope.cateList = resp.data;
+        },
+             function (resp) {
+                 debugger;
+                 alert("Fail!");
+                 // $scope.resp = resp;
+             });
 
         $scope.saveAction = function () {
             //debugger;

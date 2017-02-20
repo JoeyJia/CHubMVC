@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="M_PART_BLL.cs" />
     <Compile Include="TC_PART_HS_AUDIT_BLL.cs" />
+    <Compile Include="TC_PART_CATEGORY_BLL.cs" />
     <Compile Include="TC_PART_HS_BLL.cs" />
     <Compile Include="V_TC_MDM_ALL_BLL.cs" />
     <Compile Include="M_APPS_BLL.cs" />

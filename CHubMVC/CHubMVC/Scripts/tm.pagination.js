@@ -5,7 +5,7 @@
 angular.module('tm.pagination', []).directive('tmPagination',[function(){
     return {
         restrict: 'EA',
-        template: '<div class="page-list">' +
+        template: '<div class="row page-list">' +
             '<ul class="pagination" ng-show="conf.totalItems > 0">' +
             '<li ng-class="{disabled: conf.currentPage == 1}" ng-click="prevPage()"><span>&laquo;</span></li>' +
             '<li ng-repeat="item in pageList track by $index" ng-class="{active: item == conf.currentPage, separate: item == \'...\'}" ' +
@@ -16,7 +16,7 @@ angular.module('tm.pagination', []).directive('tmPagination',[function(){
             '</ul>' +
             '<div class="page-total" ng-show="conf.totalItems > 0">' +
             'PerPage<select ng-model="conf.itemsPerPage" ng-options="option for option in conf.perPageOptions " ng-change="changeItemsPerPage()"></select>' +
-            '/Total<strong>{{ conf.totalItems }}</strong>Items ' +
+            '/Total<strong>{{ conf.totalItems }}</strong> Items ' +
             'Go To<input type="text" ng-model="jumpPageNum" ng-keyup="jumpPageKeyUp($event)"/>' +
             '</div>' +
             '<div class="no-items" ng-show="conf.totalItems <= 0">No Data</div>' +

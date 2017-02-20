@@ -11,6 +11,7 @@ namespace CHubDBEntity
 {
     using System;
     using System.Collections.Generic;
+    using Newtonsoft.Json;
     
     public partial class TC_PART_CATEGORY
     {
@@ -27,10 +28,13 @@ namespace CHubDBEntity
         public string CATEGORY_NOTE { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
     
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TC_PART_CATEGORY_STG> TC_PART_CATEGORY_STG { get; set; }
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<M_PART> M_PART { get; set; }
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<M_PART> M_PART1 { get; set; }
     }
