@@ -18,15 +18,15 @@ namespace CHubDAL
 
         public List<V_TC_MDM_ALL> GetTCMDMList(string partNo, string hsCode, string declrName, string element, int currentPage, int pageSize,out int totalCount)
         {
-            IQueryable<V_TC_MDM_ALL> result = null;
+            IQueryable<V_TC_MDM_ALL> result = db.V_TC_MDM_ALL;
             if (!string.IsNullOrEmpty(partNo))
-                result = db.V_TC_MDM_ALL.Where(a => a.PART_NO==partNo);
+                result = result.Where(a => a.PART_NO==partNo);
             if (!string.IsNullOrEmpty(hsCode))
-                result = db.V_TC_MDM_ALL.Where(a => a.HSCODE==hsCode);
+                result = result.Where(a => a.HSCODE==hsCode);
             if (!string.IsNullOrEmpty(declrName))
-                result = db.V_TC_MDM_ALL.Where(a => a.DECLARATION_NAME.Contains(declrName));
+                result = result.Where(a => a.DECLARATION_NAME.Contains(declrName));
             if (!string.IsNullOrEmpty(element))
-                result = db.V_TC_MDM_ALL.Where(a => a.ELEMENT.Contains(element));
+                result = result.Where(a => a.ELEMENT.Contains(element));
 
             totalCount = result.Count();
 
