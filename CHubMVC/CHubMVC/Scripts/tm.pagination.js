@@ -5,8 +5,19 @@
 angular.module('tm.pagination', []).directive('tmPagination',[function(){
     return {
         restrict: 'EA',
-        template: '<div class="row page-list">' +
-            '<ul class="pagination" ng-show="conf.totalItems > 0">' +
+        template:
+            '<div class="page-list">' +
+            '<div class="row">' +
+            '<div class="page-total" ng-show="conf.totalItems > 0">' +
+            'PerPage<select ng-model="conf.itemsPerPage" ng-options="option for option in conf.perPageOptions " ng-change="changeItemsPerPage()"></select>' +
+            ' | Total <strong>{{ conf.totalItems }}</strong> Items ' +
+            ' | Go To<input type="text" style="width:50px;margin-left:10px;margin-top:5px;" ng-model="jumpPageNum" ng-keyup="jumpPageKeyUp($event)"/>' +
+            '</div>' +
+            '<div class="no-items" ng-show="conf.totalItems <= 0"></div>' +
+            '</div>' +
+
+            '<div class="row">' +
+            '<ul class="pagination" style="margin-top:5px;" ng-show="conf.totalItems > 0">' +
             '<li ng-class="{disabled: conf.currentPage == 1}" ng-click="prevPage()"><span>&laquo;</span></li>' +
             '<li ng-repeat="item in pageList track by $index" ng-class="{active: item == conf.currentPage, separate: item == \'...\'}" ' +
             'ng-click="changeCurrentPage(item)">' +
@@ -14,12 +25,8 @@ angular.module('tm.pagination', []).directive('tmPagination',[function(){
             '</li>' +
             '<li ng-class="{disabled: conf.currentPage == conf.numberOfPages}" ng-click="nextPage()"><span>&raquo;</span></li>' +
             '</ul>' +
-            '<div class="page-total" ng-show="conf.totalItems > 0">' +
-            'PerPage<select ng-model="conf.itemsPerPage" ng-options="option for option in conf.perPageOptions " ng-change="changeItemsPerPage()"></select>' +
-            '/Total<strong>{{ conf.totalItems }}</strong> Items ' +
-            'Go To<input type="text" ng-model="jumpPageNum" ng-keyup="jumpPageKeyUp($event)"/>' +
             '</div>' +
-            '<div class="no-items" ng-show="conf.totalItems <= 0">No Data</div>' +
+            
             '</div>',
         replace: true,
         scope: {

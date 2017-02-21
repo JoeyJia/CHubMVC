@@ -54,6 +54,8 @@ namespace CHubMVC.Controllers
 
                 var claims = new List<Claim>();
                 claims.Add(new Claim(ClaimTypes.Name, appUser.FIRST_NAME));
+                claims.Add(new Claim(ClaimTypes.Email, appUser.EMAIL_ADDR));
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, model.UserName));
 
                 ClaimsIdentity cIdentity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
                 AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, cIdentity);

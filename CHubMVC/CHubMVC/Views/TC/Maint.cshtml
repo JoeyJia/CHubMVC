@@ -133,7 +133,9 @@
                             </tr>
                         </tbody>
                     </table>
-                    <tm-pagination conf="paginationConf"></tm-pagination>
+                    <div style="margin-left:20px;margin-top:5px;">
+                        <tm-pagination conf="paginationConf"></tm-pagination>
+                    </div>
                 </div>
             </div>
         </div>
@@ -160,7 +162,7 @@
 
                             <label for="modalDesc" class="col-sm-2 control-label">Description</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalDesc" ng-model="currentData.DESCRIPTION" ng-readonly="editAction" placeholder="Description">
+                                <input type="text" class="form-control input-sm" id="modalDesc" ng-model="currentData.DESCRIPTION"  placeholder="Description" readonly>
                             </div>
                         </div>
                     </div>
@@ -324,7 +326,9 @@
 
                             <label for="modalCateMan" class="col-sm-2 control-label">CategoryByMan</label>
                             <div class="col-sm-3">
-                                <select class="form-control input-sm" id="orderType" ng-model="currentData.TC_CATEGORY_BY_MAN" ng-options="ot.TC_CATEGORY_ID for ot in cateList"></select>
+                                <select class="form-control input-sm" ng-change="onCateChange()" id="orderType" ng-model="selectCate" ng-options="ot.TC_CATEGORY_ID for ot in cateList">
+                                    <option value="">---Please select---</option>
+                                </select>
 
                                 @*<input type="text" class="form-control input-sm" id="modalCateMan" ng-model="currentData.TC_CATEGORY_BY_MAN" placeholder="Category By Man">*@
                             </div>
@@ -336,7 +340,7 @@
                     <div class="col-md-4 col-md-offset-5">
                         <button type="button" class="btn btn-primary" ng-click="showAuditLog()">Audit Log</button>
                         <button type="button" class="btn btn-primary" ng-click="saveAction()">Save</button>
-                        <button type="button" class="btn btn-primary" ng-click="cancel()">Cancel</button>
+                        <button type="button" class="btn btn-primary" ng-click="cancel()">Close</button>
                     </div>
 
                 </div>
@@ -450,7 +454,7 @@
             var appElement = document.querySelector('[ng-controller=partFormCtrl]');
             var scope = angular.element(appElement).scope();
             scope.currentData = obj;
-            scope.editAction = true;
+            scope.beginEdit();
 
             scope.$apply();
             $("#partModal").modal("show");
@@ -467,17 +471,52 @@
         //Alias addres list
         $scope.currentData = "";
         $scope.editAction = false;
+        $scope.selectCate = "";
+        $scope.cateList = [];
 
         //Get sys man status list
         $http.post("/tc/InitTCPartForm", null, null).then(function (resp) {
-            debugger;
+            //debugger;
             $scope.cateList = resp.data;
         },
              function (resp) {
-                 debugger;
+                 //debugger;
                  alert("Fail!");
                  // $scope.resp = resp;
              });
+
+        $scope.onCateChange = function ()
+        {
+            //debugger;
+            if ($scope.selectCate != null)
+                $scope.currentData.TC_CATEGORY_BY_MAN = $scope.selectCate.TC_CATEGORY_ID;
+            else
+                $scope.currentData.TC_CATEGORY_BY_MAN = null;
+        }
+
+        $scope.beginEdit = function()
+        {
+            //debugger;
+            $scope.editAction = true;
+            if ($scope.currentData.TC_CATEGORY_BY_MAN != null)
+            {
+                for (var i = 0; i < $scope.cateList.length; i++) {
+                    if ($scope.cateList[i].TC_CATEGORY_ID == $scope.currentData.TC_CATEGORY_BY_MAN)
+                    {
+                        $scope.selectCate = $scope.cateList[i];
+                        break;
+                    }
+
+                }
+            }
+        }
+
+        $scope.beginAdd = function ()
+        {
+            $scope.currentData = "";
+            $scope.selectCate = "";
+            $scope.editAction = false;
+        }
 
         $scope.saveAction = function () {
             //debugger;
@@ -488,6 +527,7 @@
                 async: false,
                 contentType: 'application/json',
                 success: function (obj) {
+                    $("#partModal").modal("hide");
                     alert(obj);
                     //debugger;
                 },
@@ -499,8 +539,6 @@
 
         $scope.cancel = function ()
         {
-            $scope.currentData = "";
-            $scope.editAction = false;
             $("#partModal").modal("hide");
         }
 
@@ -534,7 +572,7 @@
                 type: "post",
                 async: false,
                 success: function (obj) {
-                    debugger;
+                    //debugger;
                     $scope.auditLog = obj;
                     //debugger;
                 },
@@ -582,6 +620,11 @@
 
     function addNewPart()
     {
+        var appElement = document.querySelector('[ng-controller=partFormCtrl]');
+        var scope = angular.element(appElement).scope();
+        scope.beginAdd();
+
+        scope.$apply();
         $("#partModal").modal("show");
     }
 
