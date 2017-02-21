@@ -215,12 +215,15 @@ namespace CHubMVC.Controllers
                         if (pHSBLL.Exist(partHS.PART_NO))
                         {
                             //update
+                            partHS.UPDATED_BY = Session[CHubConstValues.SessionUser].ToString();
                             pHSBLL.update(partHS,false);
 
                         }
                         else
                         {
                             //add
+                            partHS.CREATED_BY = Session[CHubConstValues.SessionUser].ToString();
+                            partHS.CREATE_DATE = DateTime.Now;
                             pHSBLL.Add(partHS,false);
                         }
                     }

@@ -83,20 +83,12 @@
 
         </div>
 
-        <div class="row" style="margin-top:15px;margin-bottom:10px">
+        @*<div class="row" style="margin-top:15px;margin-bottom:10px">
             <div class="col-sm-2 text-left">
                 <button class="btn btn-primary" onclick="addNewPart()">Add New Part</button>
             </div>
-        </div>
-        
-        @*<div class="row">
-            <form id="upfrom" class="form-horizontal" enctype="multipart/form-data" method="post" action="/tc/UploadTCCateFile">
-                 <input name="fileUpload" type="file" />
-               <input type="submit" class="btn btn-primary btn-sm" value="upload" name="upload"  />
-                
-            </form>
-
         </div>*@
+        
         
 
         <!--Order List-->
@@ -484,6 +476,7 @@
                  // $scope.resp = resp;
              });
 
+        //only For add function using  , can delete 
         $scope.checkPartNo = function ()
         {
             if ($scope.currentData.PART_NO == "" || $scope.currentData.PART_NO == null)
@@ -530,6 +523,7 @@
             }
         }
 
+        //For add function using  , can delete 
         $scope.beginAdd = function ()
         {
             $scope.currentData = {
