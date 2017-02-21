@@ -157,7 +157,7 @@
                         <div class="form-group">
                             <label for="modalPartNo" class="col-sm-2 control-label small">Part_No</label>
                             <div class="col-sm-3 col-lg-3">
-                                <input type="text" class="form-control input-sm" id="modalPartNo" ng-model="currentData.PART_NO" ng-readonly="editAction" placeholder="Part No.">
+                                <input type="text" class="form-control input-sm" id="modalPartNo" ng-blur="checkPartNo()" ng-model="currentData.PART_NO" ng-readonly="editAction" placeholder="Part No.">
                             </div>
 
                             <label for="modalDesc" class="col-sm-2 control-label">Description</label>
@@ -476,7 +476,6 @@
 
         //Get sys man status list
         $http.post("/tc/InitTCPartForm", null, null).then(function (resp) {
-            //debugger;
             $scope.cateList = resp.data;
         },
              function (resp) {
@@ -484,6 +483,26 @@
                  alert("Fail!");
                  // $scope.resp = resp;
              });
+
+        $scope.checkPartNo = function ()
+        {
+            if ($scope.currentData.PART_NO == "" || $scope.currentData.PART_NO == null)
+                return;
+    
+            $.ajax({
+                url: "/TC/CheckPartNo",
+                data: { partNo: $scope.currentData.PART_NO },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    $scope.currentData.DESCRIPTION = obj;  
+                },
+                error: function (obj) {
+                    alert("wrong part No.");
+                    //alert(obj.responseText);
+                }
+            });
+        }
 
         $scope.onCateChange = function ()
         {
@@ -513,7 +532,17 @@
 
         $scope.beginAdd = function ()
         {
-            $scope.currentData = "";
+            $scope.currentData = {
+                PART_NO: "", DESCRIPTION: "", TC_CATEGORY_BY_SYS: "", TC_CATEGORY_BY_MAN: "", DECLARATION_NAME: "", HSCODE: "",
+                MFN_RATE: "", TAX_RATE: "", TAX_REFUND_RATE: "",
+                UOM: "", ELEMENT: "", PRE_CODING1: "", PRE_CODING2: "", PRE_CODING3: "",
+                REGULATION: "",
+                INSPECTION: "",
+                EXPERTISE: "",
+                VOLTAGE: "",
+                NOTE1: "", NOTE2: "", NOTE3: "",
+                FLEX1: "", FLEX2: "", FLEX3: ""
+            };
             $scope.selectCate = "";
             $scope.editAction = false;
         }

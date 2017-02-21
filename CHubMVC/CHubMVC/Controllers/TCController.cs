@@ -10,6 +10,7 @@ using CHubCommon;
 using static CHubCommon.CHubEnum;
 using System.IO;
 using System.Data;
+using System.Net;
 
 namespace CHubMVC.Controllers
 {
@@ -52,6 +53,8 @@ namespace CHubMVC.Controllers
             return Json(obj);
         }
 
+        [HttpPost]
+        [Authorize]
         public ActionResult InitTCPartForm()
         {
             TC_PART_CATEGORY_BLL cateBLL = new TC_PART_CATEGORY_BLL();
@@ -59,6 +62,21 @@ namespace CHubMVC.Controllers
             return Json(cateList);
         }
 
+        public ActionResult CheckPartNo(string partNo)
+        {
+            M_PART_BLL mPartBLL = new M_PART_BLL();
+            M_PART mPart = mPartBLL.GetMPartByPartNo(partNo);
+            if (mPart != null)
+                return Content(mPart.DESCRIPTION);
+            else
+            {
+                this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Content("wrong part No.");
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
         public ActionResult SaveAction(V_TC_MDM_ALL mdmAll)
         {
             TC_PART_HS partHS = new TC_PART_HS();
@@ -81,6 +99,8 @@ namespace CHubMVC.Controllers
         /// </summary>
         /// <param name="fileInput"></param>
         /// <returns></returns>
+        [HttpPost]
+        [Authorize]
         public ActionResult UploadHSFile(IEnumerable<HttpPostedFileBase> fileInput)
         {
             HttpPostedFileBase fb = Request.Files[0];
@@ -121,6 +141,8 @@ namespace CHubMVC.Controllers
         /// TC Category Upload
         /// </summary>
         /// <returns></returns>
+        [HttpPost]
+        [Authorize]
         public ActionResult UploadTCCateFile()
         {
             HttpPostedFileBase fb = Request.Files[0];
@@ -161,6 +183,8 @@ namespace CHubMVC.Controllers
             return File(templateFolder + fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",fileName);
         }
 
+        [HttpPost]
+        [Authorize]
         public ActionResult GetPartAuditLog(string partNo)
         {
 
