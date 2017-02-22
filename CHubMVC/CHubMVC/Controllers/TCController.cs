@@ -103,31 +103,39 @@ namespace CHubMVC.Controllers
         [Authorize]
         public ActionResult UploadHSFile(IEnumerable<HttpPostedFileBase> fileInput)
         {
-            HttpPostedFileBase fb = Request.Files[0];
-            string tempGuid = Guid.NewGuid().ToString();
-            string folderPath = Server.MapPath(CHubConstValues.ChubTempFolder); 
-            FileInfo folder = new FileInfo(folderPath);
-            if (!Directory.Exists(folder.FullName))
-                Directory.CreateDirectory(folder.FullName);
-
-            string fileFullName = folder.FullName + tempGuid + ".xlsx";
-            fb.SaveAs(fileFullName);
-            DataTable dt = ExcelHelper.GetDTFromExcel(fileFullName);
-            List<TC_PART_HS> partList = ClassConvert.ConvertDT2List<TC_PART_HS>(dt);
-            //Delete temp file
-            System.IO.File.Delete(fileFullName);
-
-            int successCount = 0;
-            int failCount = 0;
-            foreach (var item in partList)
+            try
             {
-                if (SaveTCPartData(item, null))
-                    successCount++;
-                else
-                    failCount++;
-            }
+                HttpPostedFileBase fb = Request.Files[0];
+                string tempGuid = Guid.NewGuid().ToString();
+                string folderPath = Server.MapPath(CHubConstValues.ChubTempFolder);
+                FileInfo folder = new FileInfo(folderPath);
+                if (!Directory.Exists(folder.FullName))
+                    Directory.CreateDirectory(folder.FullName);
 
-            return Content(string.Format("Total Count:{0}, Success Count:{1}, Fail Count:{2}",partList.Count,successCount,failCount));
+                string fileFullName = folder.FullName + tempGuid + ".xlsx";
+                fb.SaveAs(fileFullName);
+                DataTable dt = ExcelHelper.GetDTFromExcel(fileFullName);
+                List<TC_PART_HS> partList = ClassConvert.ConvertDT2List<TC_PART_HS>(dt);
+                //Delete temp file
+                System.IO.File.Delete(fileFullName);
+
+                int successCount = 0;
+                int failCount = 0;
+                foreach (var item in partList)
+                {
+                    if (SaveTCPartData(item, null))
+                        successCount++;
+                    else
+                        failCount++;
+                }
+
+                return Content(string.Format("Total Count:{0}, Success Count:{1}, Fail Count:{2}", partList.Count, successCount, failCount));
+            }
+            catch (Exception ex)
+            {
+                this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Content(ex.Message);
+            }
         }
 
         public ActionResult DownloadHSFileTemplate()
@@ -223,7 +231,7 @@ namespace CHubMVC.Controllers
                         {
                             //add
                             partHS.CREATED_BY = Session[CHubConstValues.SessionUser].ToString();
-                            partHS.CREATE_DATE = DateTime.Now;
+                            partHS.CREATE_DATE = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"));
                             pHSBLL.Add(partHS,false);
                         }
                     }

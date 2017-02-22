@@ -20,9 +20,9 @@ namespace CHubDAL
         {
             IQueryable<V_TC_MDM_ALL> result = db.V_TC_MDM_ALL;
             if (!string.IsNullOrEmpty(partNo))
-                result = result.Where(a => a.PART_NO==partNo);
+                result = result.Where(a => a.PART_NO.Contains(partNo));
             if (!string.IsNullOrEmpty(hsCode))
-                result = result.Where(a => a.HSCODE==hsCode);
+                result = result.Where(a => a.HSCODE.Contains(hsCode));
             if (!string.IsNullOrEmpty(declrName))
                 result = result.Where(a => a.DECLARATION_NAME.Contains(declrName));
             if (!string.IsNullOrEmpty(element))
