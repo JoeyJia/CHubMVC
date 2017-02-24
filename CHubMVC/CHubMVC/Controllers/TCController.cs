@@ -114,7 +114,10 @@ namespace CHubMVC.Controllers
 
                 string fileFullName = folder.FullName + tempGuid + ".xlsx";
                 fb.SaveAs(fileFullName);
-                DataTable dt = ExcelHelper.GetDTFromExcel(fileFullName);
+
+                NPOIExcelHelper excelHelper = new NPOIExcelHelper(fileFullName);
+                DataTable dt = excelHelper.ExcelToDataTable();
+                //DataTable dt = ExcelHelper.GetDTFromExcel(fileFullName);
                 List<TC_PART_HS> partList = ClassConvert.ConvertDT2List<TC_PART_HS>(dt);
                 //Delete temp file
                 System.IO.File.Delete(fileFullName);
@@ -163,7 +166,9 @@ namespace CHubMVC.Controllers
 
             string fileFullName = folder.FullName + tempGuid + ".xlsx";
             fb.SaveAs(fileFullName);
-            DataTable dt = ExcelHelper.GetDTFromExcel(fileFullName);
+            NPOIExcelHelper excelHelper = new NPOIExcelHelper(fileFullName);
+            DataTable dt = excelHelper.ExcelToDataTable();
+            //DataTable dt = ExcelHelper.GetDTFromExcel(fileFullName);
             //delete temp file
             System.IO.File.Delete(fileFullName);
 

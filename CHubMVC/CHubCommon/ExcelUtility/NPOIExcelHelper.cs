@@ -39,9 +39,9 @@ namespace CHubCommon
             ISheet sheet = null;
 
             fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            if (fileName.IndexOf(".xlsx") > 0) // 2007版本
+            if (fileName.IndexOf(".xlsx") > 0) // for xlsx type
                 workbook = new XSSFWorkbook();
-            else if (fileName.IndexOf(".xls") > 0) // 2003版本
+            else if (fileName.IndexOf(".xls") > 0) // for xls  type
                 workbook = new HSSFWorkbook();
 
             try
