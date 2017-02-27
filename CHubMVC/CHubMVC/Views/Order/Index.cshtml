@@ -279,6 +279,7 @@
                                     <th style="width:10px">SEQ</th>
                                     <th style="">Customer Part No.</th>
                                     <th style="">Part No.</th>
+                                    <th style="">Message</th>
                                     <th style="">Description</th>
                                     <th style="">DescCN</th>
                                     <th style="width:80px">Qty</th>
@@ -292,6 +293,7 @@
                                     <td style="">{{$index+1}}</td>
                                     <td><input class="form-control" ng-model="ol.CustomerPartNo" ng-blur="checkOrderLineItem(ol)" ng-disabled="isSaved" /></td>
                                     <td><input class="form-control" ng-model="ol.PartNo" placeholder="{{ol.PartNoPlaceHolder}}"  ng-style ="{backgroundColor:ol.ItemBackColor}" readonly/></td>
+                                    <td><input class="form-control" ng-model="ol.WarningMsg" ng-style ="{backgroundColor:ol.WarningColor}" readonly /></td>
                                     <td><input class="form-control" ng-model="ol.Description" readonly/></td>
                                     <td><input class="form-control" ng-model="ol.DescCN" readonly/></td>
                                     <td><input class="form-control" ng-model="ol.Qty" ng-blur="checkOrderLineItem(ol)" ng-disabled="isSaved" /></td>
@@ -704,6 +706,8 @@
                     curr.Description = obj.Description;
                     curr.DescCN = obj.DescCN;
                     curr.ItemBackColor = obj.ItemBackColor;
+                    curr.WarningMsg = obj.WarningMsg;
+                    curr.WarningColor = obj.WarningColor;
 
                     curr.LastCheckNo = curr.CustomerPartNo;
                     curr.LastQty = curr.Qty;

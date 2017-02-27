@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="G_OESALES_CATALOG_DAL.cs" />
     <Compile Include="M_PART_DAL.cs" />
     <Compile Include="TC_PART_HS_AUDIT_DAL.cs" />
     <Compile Include="TC_PART_CATEGORY_DAL.cs" />

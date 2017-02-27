@@ -647,19 +647,18 @@ namespace CHubMVC.Controllers
                 CHubEntities db = new CHubEntities();
                 G_PART_DESCRIPTION_BLL pDescBLL = new G_PART_DESCRIPTION_BLL(db);
 
-                //check inactive status
-                if (pDescBLL.IsInActive(olArg.olItem.PartNo))
-                {
-                    olArg.olItem.PartNoPlaceHolder = "InActive ";
-                    olArg.olItem.ItemBackColor = CHubConstValues.ErrorColor;
-                    olArg.olItem.PartNo = string.Empty;
-                    return null;
-                }
-
                 //Get description
                 G_PART_DESCRIPTION pDesc = pDescBLL.GetPartDescription(olArg.olItem.PartNo);
                 olArg.olItem.Description = pDesc.DESCRIPTION;
                 olArg.olItem.DescCN = pDesc.DESC_CN;
+
+                //check inactive status
+                if (pDesc.PART_STATUS == PartStatusEnum.I.ToString())
+                {
+                    olArg.olItem.WarningMsg = string.Format("SSC:{0}", pDesc.CURRENT_SALES_STATUS_CODE);
+                    olArg.olItem.WarningColor = CHubConstValues.WarningColor;
+                    
+                }
 
                 //Do AVL check
                 if (olArg.olItem.Qty > 0)

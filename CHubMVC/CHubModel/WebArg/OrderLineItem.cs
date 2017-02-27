@@ -35,5 +35,9 @@ namespace CHubModel
         public decimal LastQty { get; set; }
 
         public string ItemBackColor { get; set; }
+
+        public string WarningMsg { get; set; }
+
+        public string WarningColor { get; set; }
     }
 }

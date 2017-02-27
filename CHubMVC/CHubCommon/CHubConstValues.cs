@@ -22,6 +22,7 @@ namespace CHubCommon
         public static string NoStockColor = "red";
 
         public static string ErrorColor = "red";
+        public static string WarningColor = "orange";
 
         public static string ChubTempFolder = "~/temp/";
         public static string ChubTemplateFolder = "~/Template/";
