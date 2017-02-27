@@ -11,6 +11,7 @@ using CHubModel;
 using System.Net;
 using System.Text;
 using static CHubCommon.CHubEnum;
+using CHubMVC.Validations;
 
 namespace CHubMVC.Controllers
 {
@@ -655,11 +656,12 @@ namespace CHubMVC.Controllers
                 //check inactive status
                 if (pDesc.PART_STATUS == PartStatusEnum.I.ToString())
                 {
-                    olArg.olItem.WarningMsg = string.Format("SSC:{0}", pDesc.CURRENT_SALES_STATUS_CODE);
-                    olArg.olItem.WarningColor = CHubConstValues.WarningColor;
+                    olArg.olItem.WarningMsg = string.Format("SSC:{0},", pDesc.CURRENT_SALES_STATUS_CODE);
+                    //olArg.olItem.WarningColor = CHubConstValues.WarningColor;
                     
                 }
 
+                string usingSysID = olArg.primarySysID;
                 //Do AVL check
                 if (olArg.olItem.Qty > 0)
                 {
@@ -689,14 +691,22 @@ namespace CHubMVC.Controllers
                             if (altNet == 0)
                                 olArg.olItem.AltAVLCheckColor = CHubConstValues.NoStockColor;
                             else if (altNet >= olArg.olItem.Qty)
+                            {
                                 olArg.olItem.AltAVLCheckColor = CHubConstValues.SatisfyStockColor;
+                                usingSysID = olArg.altSysID;
+                            }
                             else
                                 olArg.olItem.AltAVLCheckColor = CHubConstValues.PartialStockColor;
                             olArg.olItem.AltAVLCheck = altNet;
                         }
                     }
                 }
-                
+
+                //Do G_OESALES_CATALOG_VALIDATION
+                G_OESALES_CATALOG_VALIDATION oeSaleValidation = new G_OESALES_CATALOG_VALIDATION(usingSysID, olArg.olItem.PartNo);
+                olArg.olItem.WarningMsg += oeSaleValidation.ValidationAction();
+                if(!string.IsNullOrEmpty(olArg.olItem.WarningMsg))
+                    olArg.olItem.WarningColor = CHubConstValues.WarningColor;
             }
 
             return msg;

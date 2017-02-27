@@ -117,10 +117,17 @@ namespace CHubMVC.Controllers
 
                 NPOIExcelHelper excelHelper = new NPOIExcelHelper(fileFullName);
                 DataTable dt = excelHelper.ExcelToDataTable();
-                //DataTable dt = ExcelHelper.GetDTFromExcel(fileFullName);
-                List<TC_PART_HS> partList = ClassConvert.ConvertDT2List<TC_PART_HS>(dt);
                 //Delete temp file
                 System.IO.File.Delete(fileFullName);
+
+                if (dt == null || dt.Rows.Count == 0)
+                    return Content("No data in excel");
+
+                //DataTable dt = ExcelHelper.GetDTFromExcel(fileFullName);
+                List<TC_PART_HS> partList = ClassConvert.ConvertDT2List<TC_PART_HS>(dt);
+
+                if (partList == null || partList.Count == 0)
+                    return Content("wrong excel strut");
 
                 int successCount = 0;
                 int failCount = 0;
@@ -171,6 +178,18 @@ namespace CHubMVC.Controllers
             //DataTable dt = ExcelHelper.GetDTFromExcel(fileFullName);
             //delete temp file
             System.IO.File.Delete(fileFullName);
+
+            //validate dt struct
+            if (dt == null || dt.Rows.Count == 0)
+            {
+                return Content("No data in excel");
+            }
+            else
+            {
+                if (dt.Columns.Count != 2)
+                    return Content("wrong excel struct");
+            }
+
 
             int successCount = 0;
             int failCount = 0;

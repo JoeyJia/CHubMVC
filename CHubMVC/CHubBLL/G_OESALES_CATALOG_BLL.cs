@@ -22,6 +22,10 @@ namespace CHubBLL
             dal = new G_OESALES_CATALOG_DAL(db);
         }
 
+        public G_OESALES_CATALOG GetOESalesCatalog(string sysId, string partNo)
+        {
+            return dal.GetOESalesCatalog(sysId, partNo);
+        }
 
     }
 }
