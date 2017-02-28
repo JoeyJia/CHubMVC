@@ -16,6 +16,8 @@ namespace CHubModel
 
         public string altWareHosue { get; set; }
 
+        public string customerNo { get; set; }
+
         public OrderLineItem olItem { get; set; }
     }
 }

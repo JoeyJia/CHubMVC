@@ -444,7 +444,8 @@ namespace CHubMVC.Controllers
                     primarySysID = arg.primarySysID,
                     primaryWareHouse = arg.primaryWareHouse,
                     altSysID = arg.altSysID,
-                    altWareHosue = arg.altWareHosue
+                    altWareHosue = arg.altWareHosue,
+                    customerNo = arg.customerNo
                 };
                 foreach (var item in arg.olItemList)
                 {
@@ -592,14 +593,14 @@ namespace CHubMVC.Controllers
 
 
         #region *** private function ***
-        private string GetPartNoFromCustPartNo(string custPartNo)
+        private string GetPartNoFromCustPartNo(string custPartNo,string customerNo)
         {
             if (string.IsNullOrEmpty(custPartNo))
                 return string.Empty;
             using (CHubEntities db = new CHubEntities())
             {
                 G_CATALOG_CUSTOMER_PART_BLL custBLL = new G_CATALOG_CUSTOMER_PART_BLL(db);
-                string PartNo = custBLL.GetPartNoFromCustPartNo(custPartNo);
+                string PartNo = custBLL.GetPartNoFromCustPartNo(custPartNo,customerNo);
                 if (string.IsNullOrEmpty(PartNo))
                 {
                     G_PART_DESCRIPTION_BLL partBLL = new G_PART_DESCRIPTION_BLL(db);
@@ -627,13 +628,15 @@ namespace CHubMVC.Controllers
             olArg.olItem.DescCN = string.Empty;
             olArg.olItem.Description = string.Empty;
             olArg.olItem.ItemBackColor = string.Empty;
+            olArg.olItem.WarningMsg = string.Empty;
+            olArg.olItem.WarningColor = string.Empty;
 
             olArg.olItem.LastCheckNo = olArg.olItem.CustomerPartNo;
             olArg.olItem.LastQty = olArg.olItem.Qty;
 
             string msg = string.Empty;
 
-            olArg.olItem.PartNo = GetPartNoFromCustPartNo(olArg.olItem.CustomerPartNo);
+            olArg.olItem.PartNo = GetPartNoFromCustPartNo(olArg.olItem.CustomerPartNo,olArg.customerNo);
 
 
             olArg.olItem.PartNoPlaceHolder = string.Empty;

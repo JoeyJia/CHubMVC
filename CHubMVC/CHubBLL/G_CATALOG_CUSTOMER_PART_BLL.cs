@@ -22,9 +22,9 @@ namespace CHubBLL
             dal = new G_CATALOG_CUSTOMER_PART_DAL(db);
         }
 
-        public string GetPartNoFromCustPartNo(string custPartNo)
+        public string GetPartNoFromCustPartNo(string custPartNo, string customerNo)
         {
-            return dal.GetPartNoFromCustPartNo(custPartNo);
+            return dal.GetPartNoFromCustPartNo(custPartNo,customerNo);
         }
 
 

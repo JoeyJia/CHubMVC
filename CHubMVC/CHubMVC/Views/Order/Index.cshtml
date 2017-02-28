@@ -293,7 +293,7 @@
                                     <td style="">{{$index+1}}</td>
                                     <td><input class="form-control" ng-model="ol.CustomerPartNo" ng-blur="checkOrderLineItem(ol)" ng-disabled="isSaved" /></td>
                                     <td><input class="form-control" ng-model="ol.PartNo" placeholder="{{ol.PartNoPlaceHolder}}"  ng-style ="{backgroundColor:ol.ItemBackColor}" readonly/></td>
-                                    <td><input class="form-control" ng-model="ol.WarningMsg" ng-style ="{backgroundColor:ol.WarningColor}" readonly /></td>
+                                    <td><input class="form-control" ng-model="ol.WarningMsg" ng-style ="{backgroundColor:ol.WarningColor}" title="{{ol.WarningMsg}}" readonly /></td>
                                     <td><input class="form-control" ng-model="ol.Description" readonly/></td>
                                     <td><input class="form-control" ng-model="ol.DescCN" readonly/></td>
                                     <td><input class="form-control" ng-model="ol.Qty" ng-blur="checkOrderLineItem(ol)" ng-disabled="isSaved" /></td>
@@ -691,6 +691,7 @@
                     primaryWareHouse: $scope.selectedAliasAddr.WareHouse,
                     altSysID: $scope.selectedAltAliasAddr.SysID,
                     altWareHosue: $scope.selectedAltAliasAddr.WareHouse,
+                    customerNo:$scope.selectedAliasAddr.CustomerNo,
                     olItem: curr
                 }),
                 type: "post",
@@ -734,6 +735,7 @@
                     primaryWareHouse: $scope.selectedAliasAddr.WareHouse,
                     altSysID: $scope.selectedAltAliasAddr.SysID,
                     altWareHosue: $scope.selectedAltAliasAddr.WareHouse,
+                    customerNo: $scope.selectedAliasAddr.CustomerNo,
                     olItemList: $scope.orderLines
                 }),
                 type: "post",
