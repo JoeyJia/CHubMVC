@@ -21,5 +21,10 @@ namespace CHubDAL
             return db.TC_PART_HS.Any(a => a.PART_NO == partNo);
         }
 
+        public TC_PART_HS GetTCPartHS(string partNo)
+        {
+            return db.TC_PART_HS.FirstOrDefault(a => a.PART_NO == partNo);
+        }
+
     }
 }

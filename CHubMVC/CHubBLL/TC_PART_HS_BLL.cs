@@ -27,6 +27,11 @@ namespace CHubBLL
             return dal.Exist(partNo);
         }
 
+        public TC_PART_HS GetTCPartHS(string partNo)
+        {
+            return dal.GetTCPartHS(partNo);
+        }
+
         public void update(TC_PART_HS model,bool autoSave=true)
         {
             dal.Update(model,autoSave);

@@ -247,8 +247,19 @@ namespace CHubMVC.Controllers
                         if (pHSBLL.Exist(partHS.PART_NO))
                         {
                             //update
-                            partHS.UPDATED_BY = Session[CHubConstValues.SessionUser].ToString();
-                            pHSBLL.update(partHS,false);
+                            TC_PART_HS existModel = pHSBLL.GetTCPartHS(partHS.PART_NO);
+                            List<string> skipList = new List<string>();
+                            skipList.Add("PART_NO");
+                            skipList.Add("CREATED_BY");
+                            skipList.Add("CREATE_DATE");
+                            skipList.Add("UPDATED_BY");
+                            skipList.Add("RECORD_DATE");
+
+                            ClassConvert.DrawObj(partHS, existModel, skipList);
+
+                            existModel.UPDATED_BY = Session[CHubConstValues.SessionUser].ToString();
+                            existModel.RECORD_DATE = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"));
+                            pHSBLL.update(existModel, false);
 
                         }
                         else
@@ -256,6 +267,8 @@ namespace CHubMVC.Controllers
                             //add
                             partHS.CREATED_BY = Session[CHubConstValues.SessionUser].ToString();
                             partHS.CREATE_DATE = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"));
+                            partHS.UPDATED_BY = Session[CHubConstValues.SessionUser].ToString();
+                            partHS.RECORD_DATE = partHS.CREATE_DATE;
                             pHSBLL.Add(partHS,false);
                         }
                     }

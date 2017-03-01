@@ -31,7 +31,7 @@ namespace CHubCommon
 
 
         /// <summary>
-        /// 
+        /// "from" obj include or equal "to" obj
         /// </summary>
         /// <param name="from"></param>
         /// <param name="to"></param>
