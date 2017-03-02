@@ -78,5 +78,13 @@ namespace CHubDBEntity
         public virtual DbSet<V_TC_MDM_ALL> V_TC_MDM_ALL { get; set; }
         public virtual DbSet<V_TC_PART_HS> V_TC_PART_HS { get; set; }
         public virtual DbSet<M_PART> M_PART { get; set; }
+        public virtual DbSet<ITT_SHIPPING_D_SNAP> ITT_SHIPPING_D_SNAP { get; set; }
+        public virtual DbSet<ITT_SHIPPING_H> ITT_SHIPPING_H { get; set; }
+        public virtual DbSet<ITT_SHIPPING_H_SNAP> ITT_SHIPPING_H_SNAP { get; set; }
+        public virtual DbSet<ITT_TRAN_TYPE> ITT_TRAN_TYPE { get; set; }
+        public virtual DbSet<ITT_CUST_LOAD> ITT_CUST_LOAD { get; set; }
+        public virtual DbSet<ITT_SHIPPING_D> ITT_SHIPPING_D { get; set; }
+        public virtual DbSet<ITT_TRAN_LOAD> ITT_TRAN_LOAD { get; set; }
+        public virtual DbSet<V_ITT_SHIPPING_SMRY> V_ITT_SHIPPING_SMRY { get; set; }
     }
 }

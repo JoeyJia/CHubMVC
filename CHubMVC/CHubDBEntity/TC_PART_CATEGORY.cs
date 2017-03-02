@@ -12,7 +12,7 @@ namespace CHubDBEntity
     using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
-    
+
     public partial class TC_PART_CATEGORY
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -27,6 +27,7 @@ namespace CHubDBEntity
         public string CATEGORY_DESC { get; set; }
         public string CATEGORY_NOTE { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
+        public string TC_GROUP { get; set; }
     
         [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

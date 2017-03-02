@@ -20,6 +20,9 @@ namespace CHubDBEntity
             this.APP_CUST_ALIAS_LINK = new HashSet<APP_CUST_ALIAS_LINK>();
             this.APP_WH = new HashSet<APP_WH>();
             this.TS_OR_HEADER = new HashSet<TS_OR_HEADER>();
+            this.ITT_SHIPPING_H = new HashSet<ITT_SHIPPING_H>();
+            this.ITT_SHIPPING_D = new HashSet<ITT_SHIPPING_D>();
+            this.ITT_TRAN_LOAD = new HashSet<ITT_TRAN_LOAD>();
         }
     
         public string SYSID { get; set; }
@@ -33,5 +36,11 @@ namespace CHubDBEntity
         public virtual ICollection<APP_WH> APP_WH { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TS_OR_HEADER> TS_OR_HEADER { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ITT_SHIPPING_H> ITT_SHIPPING_H { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ITT_SHIPPING_D> ITT_SHIPPING_D { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ITT_TRAN_LOAD> ITT_TRAN_LOAD { get; set; }
     }
 }

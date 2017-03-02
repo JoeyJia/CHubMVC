@@ -141,6 +141,27 @@
     <Compile Include="G_PART_SUPERSESSION_ALL.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ITT_CUST_LOAD.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ITT_SHIPPING_D.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ITT_SHIPPING_D_SNAP.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ITT_SHIPPING_H.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ITT_SHIPPING_H_SNAP.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ITT_TRAN_LOAD.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ITT_TRAN_TYPE.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="M_APPS.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
@@ -212,6 +233,9 @@
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_CHK_DURATION_MISSING.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_ITT_SHIPPING_SMRY.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_NAV_ALL.cs">
