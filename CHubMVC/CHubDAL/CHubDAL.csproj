@@ -58,6 +58,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="G_OESALES_CATALOG_DAL.cs" />
+    <Compile Include="M_SYSTEM_DAL.cs" />
+    <Compile Include="ITT_SHIPPING_D_DAL.cs" />
+    <Compile Include="ITT_SHIPPING_D_SNAP_DAL.cs" />
+    <Compile Include="V_ITT_SHIPPING_SMRY_DAL.cs" />
+    <Compile Include="ITT_SHIPPING_H_SNAP_DAL.cs" />
+    <Compile Include="ITT_SHIPPING_H_DAL.cs" />
     <Compile Include="M_PART_DAL.cs" />
     <Compile Include="TC_PART_HS_AUDIT_DAL.cs" />
     <Compile Include="TC_PART_CATEGORY_DAL.cs" />
