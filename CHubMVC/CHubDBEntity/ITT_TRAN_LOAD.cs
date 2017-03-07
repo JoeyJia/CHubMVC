@@ -9,9 +9,10 @@
 
 namespace CHubDBEntity
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
-    
+
     public partial class ITT_TRAN_LOAD
     {
         public decimal LOAD_BATCH_TOKEN { get; set; }
@@ -25,7 +26,9 @@ namespace CHubDBEntity
         public Nullable<System.DateTime> LOAD_DATE { get; set; }
         public string FROM_SYSTEM { get; set; }
     
+        [JsonIgnore]
         public virtual ITT_TRAN_TYPE ITT_TRAN_TYPE { get; set; }
+        [JsonIgnore]
         public virtual M_SYSTEM M_SYSTEM { get; set; }
     }
 }

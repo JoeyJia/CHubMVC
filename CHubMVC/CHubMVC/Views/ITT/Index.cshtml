@@ -5,43 +5,17 @@
 }
 
 
-<div class="container-fluid" id="tcMaintBody" ng-app="maintApp" ng-controller="maintCtrl">
+<div class="container-fluid" id="ittIndexBody" ng-app="ittApp" ng-controller="ittCtrl">
     <div class="panel panel-default">
         <div class="panel-heading"><b>ITT Index</b></div>
 
         <form class="form-horizontal" id="searchForm">
-            <div class="row" style="margin-top:20px;">
-                <div class="form-group">
-                    <label for="orderID" class="col-sm-2 control-label small">Part No.</label>
-                    <div class="col-sm-2 col-lg-2">
-                        <input type="text" class="form-control input-sm" ng-model="partNo" placeholder="Part No.">
-                    </div>
-                </div>
-            </div>
 
             <div class="row">
                 <div class="form-group">
-                    <label for="cAlias" class="col-sm-2 control-label">HS Code</label>
+                    <label for="txtWillBillNo" class="col-sm-2 control-label">Will Bill No.</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control input-sm" ng-model="hsCode" placeholder="HS Code">
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group">
-                    <label for="cAlias" class="col-sm-2 control-label">Declaration Name</label>
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control input-sm" ng-model="declrName" placeholder="Declaration Name">
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group">
-                    <label for="poNum" class="col-sm-2 control-label">Element</label>
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control input-sm" ng-model="element" placeholder="Element">
+                        <input type="text" class="form-control input-sm" id="txtWillBillNo" ng-model="willBillNo" placeholder="Element">
                     </div>
                     <div class="col-sm-2">
                         <button class="btn btn-primary btn-sm" ng-click="searchAction()">Search</button>
@@ -52,20 +26,6 @@
         </form>
       <hr />
 
-        <!--HS part upload form-->
-        <div class="row">
-            <form class="form-inline" name="hsForm" id="hsUpload"  >@*//method="post" action="/tc/UploadHSFile" enctype="multipart/form-data"*@
-                <div class="col-sm-2 text-right">
-                    <label style="margin-left:20px">HS Upload</label>
-                </div>
-                <div class="form-group">
-                    <label class="sr-only" for="hsFile">HS Upload</label>
-                    <input type="file" name="fileInput" id="hsFile">
-                </div>
-                <button class="btn btn-primary btn-sm" onclick="uploadHSFile()">Upload</button>
-                <button class="btn btn-primary btn-sm" onclick="downloadHSPartTemplate()">Download Template</button>
-            </form>
-        </div>
 
         <!--TC Category upload form-->
         <div class="row" style="margin-top:10px;margin-bottom:10px">
@@ -84,41 +44,177 @@
         </div>
         
         
-
-        <!--Order List-->
+        <!--Header-->
         <div class="row">
             <div class="col-md-12 col-lg-12">
                 <div class="panel panel-default" style="">
-                    @*<div class="panel-heading">
-                        <b>Order List</b>
-                    </div>*@
+                    <div class="panel-heading">
+                        <b>Header</b>
+                    </div>
 
-                    <table id="tbOrders" class="table table-striped table-hover table-bordered .table-condensed">
+                    <table id="tbWillBillHeader" class="table table-striped table-hover table-bordered .table-condensed">
                         <thead>
                             <tr>
-                                <th style="">Part_No</th>
-                                <th style="">申报品名</th>
-                                <th style="">申报税号</th>
-                                <th style="">申报要素</th>
-                                <th style="">预归类1</th>
-                                <th style="">预归类2</th>
-                                <th style="">Operation</th>
+                                <th style="">Will Bill No.</th>
+                                <th style="">From</th>
+                                <th style="">Ship To</th>
+                                <th style="">Ship Date</th>
+                                <th style="">Depart Date</th>
+                                <th style="">Arrival Date</th>
+                                <th style="">Transport</th>
+                                <th style="">Carrier Code</th>
+                            </tr>
+                        </thead>
+                        <tbody style="" ng-show="hasData">
+                            <tr>
+                                <td style="">{{result[0].WILL_BILL_NO}}</td>
+                                <td>{{result[0].FROM_SYSTEM}}</td>
+                                <td>{{result[0].SHIP_TO_ABBR}}</td>
+                                <td>{{result[0].SHIPMENT_DATE}}</td>
+                                <td>{{result[0].S00_DEPART_DATE}}</td>
+                                <td>{{result[0].S10_PORT_ARRIVAL_DATE}}</td>
+                                <td>{{result[0].TRAN_TYPE}}</td>
+                                <td>{{result[0].CARRIER_CODE}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <!--Details-->
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default" style="">
+                    <div class="panel-heading">
+                        <b>Details List</b>
+                    </div>
+
+                    <table id="tbWillBillDetails" class="table table-striped table-hover table-bordered .table-condensed">
+                        <thead>
+                            <tr>
+                                <th style="">Shipment No.</th>
+                                <th style="">Invoice NO.</th>
+                                <th style="">Type</th>
+                                <th style="">DO Release Date</th>
+                                <th style="">Arrival Date(300)</th>
+                                <th style="">Out Date(300)</th>
+                                <th style="">Arrival Date(305)</th>
+                                <th style="">Lines</th>
                             </tr>
                         </thead>
                         <tbody style="">
                             <tr ng-repeat="r in result ">
-                                <td style="">{{r.PART_NO}}</td>
-                                <td>{{r.DECLARATION_NAME}}</td>
-                                <td>{{r.HSCODE}}</td>
-                                <td>{{r.ELEMENT}}</td>
-                                <td>{{r.PRE_CODING1}}</td>
-                                <td>{{r.PRE_CODING2}}</td>
-                                <td style="text-align:center">
-                                    <a href="javascript:void(0)" title="Detail" class="detailBtn" ng-click="viewDetail(r)"><span class="glyphicon glyphicon-send"></span></a>
-                                </td>
+                                <td style="">{{r.SHIPMENT_NO}}</td>
+                                <td>{{r.INVOICE_NO}}</td>
+                                <td>{{r.TC_GROUP}}</td>
+                                <td>{{r.S20_DO_RELEASE_DATE}}</td>
+                                <td>{{r.S30_BND_ARRIVAL_DATE}}</td>
+                                <td>{{r.S40_BND_OUT_DATE}}</td>
+                                <td>{{r.S50_NBND_ARRIVAL_DATE}}</td>
+                                <td>{{r.SHIP_LINES}}</td> 
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+
+        <!--Transprottation part-->
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <button class="btn btn-primary" ng-click="transportClick()">Transportation</button>
+                <div class="panel panel-default" style="">
+                    <div class="panel-heading">
+                        <b>Transportation</b>
+                    </div>
+
+                    <table id="tbTransportation" ng-show="showTran" class="table table-striped table-hover table-bordered .table-condensed">
+                        <thead>
+                            <tr>
+                                <th style="">From</th>
+                                <th style="">Will Bill No.</th>
+                                <th style="">Invoice No.</th>
+                                <th style="">Depart Date</th>
+                                <th style="">Arrival Date</th>
+                                <th style="">Note</th>
+                                <th style="">Transport Method</th>
+                                <th style="">Load Date</th>
+                                <th style="">Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody style="">
+                            <tr ng-repeat="tran in ittTranLoadArray ">
+                                <td style=""><input class="form-control" ng-model="tran.FROM_SYSTEM" ng-disabled="hasData" /></td>
+                                <td><input class="form-control" ng-model="tran.WILL_BILL_NO" ng-disabled="hasData" /></td>
+                                <td><input class="form-control" ng-model="tran.INVOICE_NO" /></td>
+                                <td><input class="form-control" ng-model="tran.DEPART_DATE"  /></td>
+                                <td><input class="form-control" ng-model="tran.ARRIVAL_DATE" /></td>
+                                <td><input class="form-control" ng-model="tran.NOTE" /></td>
+                                <td><input class="form-control" ng-model="tran.TRAN_TYPE" /></td>
+                                <td><input class="form-control" ng-model="tran.LOAD_DATE" /></td>
+                                <td><a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="saveTranLoad($index)" ><span class="glyphicon glyphicon-floppy-save"></span></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn-primary input-sm " id="btnNewLine" ng-click="addNewTran()">Add</button>
+                </div>
+            </div>
+        </div>
+        <!--Tran Load upload form-->
+        <div class="row">
+            <form class="form-inline" name="tranLoadForm" id="tranLoadUpload">
+                <div class="col-sm-2 text-right">
+                    <label style="margin-left:20px">Tran Load Upload</label>
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="hsFile">Tran Load Upload</label>
+                    <input type="file" name="fileInput" id="tranLoadFile">
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="uploadTranLoadFile()">Upload</button>
+                <button class="btn btn-primary btn-sm" onclick="downloadTranLoadTemplate()">Download Template</button>
+            </form>
+        </div>
+
+        <!--Cust Load part-->
+        <div class="row" style="margin-top:10px;">
+            <div class="col-md-12 col-lg-12">
+                <button class="btn btn-primary" ng-click="customProcessClick()">Custom Process</button>
+                <div class="panel panel-default" style="">
+                    <div class="panel-heading">
+                        <b>Custom Process</b>
+                    </div>
+
+                    <table id="tbCustomeProcess" ng-show="showCustomProcess" class="table table-striped table-hover table-bordered .table-condensed">
+                        <thead>
+                            <tr>
+                                <th style="">From</th>
+                                <th style="">Will Bill No.</th>
+                                <th style="">Invoice No.</th>
+                                <th style="">Depart Date</th>
+                                <th style="">Arrival Date</th>
+                                <th style="">Note</th>
+                                <th style="">Transport Method</th>
+                                <th style="">Load Date</th>
+                                <th style="">Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody style="">
+                            <tr ng-repeat="tran in ittTranLoadArray ">
+                                <td style=""><input class="form-control" ng-model="tran.FROM_SYSTEM" ng-disabled="hasData" /></td>
+                                <td><input class="form-control" ng-model="tran.WILL_BILL_NO" ng-disabled="hasData" /></td>
+                                <td><input class="form-control" ng-model="tran.INVOICE_NO" /></td>
+                                <td><input class="form-control" ng-model="tran.DEPART_DATE" /></td>
+                                <td><input class="form-control" ng-model="tran.ARRIVAL_DATE" /></td>
+                                <td><input class="form-control" ng-model="tran.NOTE" /></td>
+                                <td><input class="form-control" ng-model="tran.TRAN_TYPE" /></td>
+                                <td><input class="form-control" ng-model="tran.LOAD_DATE" /></td>
+                                <td><a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="saveTranLoad($index)"><span class="glyphicon glyphicon-floppy-save"></span></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn-primary input-sm " id="btnNewLine" ng-click="addNewTran()">Add</button>
                 </div>
             </div>
         </div>
@@ -129,26 +225,99 @@
 <script>
     
 
-    angular.module('maintApp', []).controller('maintCtrl', function ($scope, $http) {
+    angular.module('ittApp', []).controller('ittCtrl', function ($scope, $http) {
         $scope.result = [];
-        $scope.partNo = "";
-        $scope.hsCode = "";
-        $scope.declrName = "";
-        $scope.element = "";
-        $scope.loading = true;
+        $scope.willBillNo = "";
+        $scope.hasData = false;
+
+        $scope.showTran = false;
+        $scope.ittTranLoadArray = [];
+
+        $scope.showCustomProcess = false;
+        $scope.ittCustomerProcessArray = [];
+
+
+        $scope.searchAction = function () {
+            $.ajax({
+                url: "/itt/SearchWillBill",
+                data: {
+                    willBillNo: $scope.willBillNo
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    debugger;
+                    $scope.result = obj;
+                    if ($scope.result != null && $scope.result.length>0)
+                         $scope.hasData=true;
+                },
+                error: function (obj) {
+                    alert("fail to get will bill Data");
+                }
+
+            });
+
+        };
+
+        $scope.transportClick = function () {
+            GetTranLoad();
+            $scope.showTran = true;
+
+        };
+
+        $scope.addNewTran = function () {
+            var newItem = {
+                LOAD_BATCH_TOKEN: "",
+                WILL_BILL_NO: "",
+                INVOICE_NO: "",
+                DEPART_DATE: "",
+                ARRIVAL_DATE: "",
+                NOTE: "",
+                TRAN_TYPE: "",
+                FROM_SYSTEM: ""
+            };
+            $scope.ittTranLoadArray.push(newItem);
+        };
+
+        $scope.saveTranLoad = function (index) {
+
+        };
+
+
+        //function part
+        function GetTranLoad() {
+            $.ajax({
+                url: "/itt/GetTranLoadList",
+                data: {
+                    willBillNo: $scope.willBillNo
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    debugger;
+                    $scope.ittTranLoadArray = obj;
+                },
+                error: function (obj) {
+                    alert("fail to get will bill Data");
+                }
+
+            });
+        };
+
+
 
     });
 
     //manual load app
-    angular.bootstrap(document.getElementById("tcMaintBody"), ['maintApp']);
+    angular.bootstrap(document.getElementById('ittIndexBody'), ['ittApp']);
 
 </script>
 
 <script>
-    function uploadHSFile() {
-        var form = $("form[name=hsForm]");
+    function uploadTranLoadFile() {
+        var form = $("form[name=tranLoadForm]");
                 var options  = {
-                    url: '/tc/UploadHSFile',
+                    url: '/itt/UploadTranLoadFile',
                         type: 'post',
                         enctype:"multipart/form-data",
                     success:function(data)
@@ -177,17 +346,8 @@
         //$(function () {setInterval("link()",1000) });
     }
 
-    function addNewPart()
-    {
-        var appElement = document.querySelector('[ng-controller=partFormCtrl]');
-        var scope = angular.element(appElement).scope();
-        scope.beginAdd();
 
-        scope.$apply();
-        $("#partModal").modal("show");
-    }
-
-    function downloadHSPartTemplate()
+    function downloadTranLoadTemplate()
     {
      window.location.href = "/tc/DownloadHSFileTemplate";
     }

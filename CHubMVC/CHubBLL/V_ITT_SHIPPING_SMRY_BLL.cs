@@ -22,5 +22,10 @@ namespace CHubBLL
             dal = new V_ITT_SHIPPING_SMRY_DAL(db);
         }
 
+        public List<V_ITT_SHIPPING_SMRY> GetWillBillList(string willBillNo)
+        {
+            return dal.GetWillBillList(willBillNo);
+        }
+
     }
 }
