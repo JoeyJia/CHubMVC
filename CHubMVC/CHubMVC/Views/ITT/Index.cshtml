@@ -5,13 +5,13 @@
 }
 
 
-<div class="container-fluid" id="ittIndexBody" ng-app="ittApp" ng-controller="ittCtrl">
+<div class="container-fluid" id="ittIndexBody" ng-app="ittApp" ng-controller="ittCtrl" style="overflow:scroll">
     <div class="panel panel-default">
-        <div class="panel-heading"><b>ITT Index</b></div>
+        <div class="panel-heading"><b>Will Bill Entry</b></div>
 
         <form class="form-horizontal" id="searchForm">
 
-            <div class="row">
+            <div class="row" style="margin-top:30px;">
                 <div class="form-group">
                     <label for="txtWillBillNo" class="col-sm-2 control-label">Will Bill No.</label>
                     <div class="col-sm-2">
@@ -25,31 +25,13 @@
             </div>
         </form>
       <hr />
-
-
-        <!--TC Category upload form-->
-        <div class="row" style="margin-top:10px;margin-bottom:10px">
-            <form class="form-inline" name="tcCateForm" id="tcCateUpload" >@*enctype="multipart/form-data" method="post" action="/tc/UploadTCCateFile"*@
-                <div class="col-sm-2 text-right">
-                    <label style="margin-left:20px">TC Category Upload</label>
-                </div>
-                <div class="form-group">
-                    <label class="sr-only" for="exampleInputFile">TC Category Upload</label>
-                    <input type="file" name="fileInput" id="exampleInputFile">
-                </div>
-                <button  class="btn btn-primary btn-sm" onclick="uploadTCCateFile()">Upload</button>
-                <button class="btn btn-primary btn-sm" onclick="downloadMPartTemplate()">Download Template</button>
-            </form>
-
-        </div>
-        
         
         <!--Header-->
         <div class="row">
             <div class="col-md-12 col-lg-12">
                 <div class="panel panel-default" style="">
                     <div class="panel-heading">
-                        <b>Header</b>
+                        <b>Will Bill Header</b>
                     </div>
 
                     <table id="tbWillBillHeader" class="table table-striped table-hover table-bordered .table-condensed">
@@ -88,7 +70,7 @@
             <div class="col-md-12 col-lg-12">
                 <div class="panel panel-default" style="">
                     <div class="panel-heading">
-                        <b>Details List</b>
+                        <b>Will Bill Detail</b>
                     </div>
 
                     <table id="tbWillBillDetails" class="table table-striped table-hover table-bordered .table-condensed">
@@ -125,7 +107,7 @@
         <div class="row">
             <div class="col-md-12 col-lg-12">
                 <button class="btn btn-primary" ng-click="transportClick()">Transportation</button>
-                <div class="panel panel-default" style="">
+                <div class="panel panel-default" style="" ng-show="showTran">
                     <div class="panel-heading">
                         <b>Transportation</b>
                     </div>
@@ -135,11 +117,11 @@
                             <tr>
                                 <th style="">From</th>
                                 <th style="">Will Bill No.</th>
+                                <th style="">Transport Method</th>
                                 <th style="">Invoice No.</th>
                                 <th style="">Depart Date</th>
                                 <th style="">Arrival Date</th>
                                 <th style="">Note</th>
-                                <th style="">Transport Method</th>
                                 <th style="">Load Date</th>
                                 <th style="">Operation</th>
                             </tr>
@@ -148,13 +130,14 @@
                             <tr ng-repeat="tran in ittTranLoadArray ">
                                 <td style=""><input class="form-control" ng-model="tran.FROM_SYSTEM" ng-disabled="hasData" /></td>
                                 <td><input class="form-control" ng-model="tran.WILL_BILL_NO" ng-disabled="hasData" /></td>
+                                <td><input class="form-control" ng-model="tran.TRAN_TYPE" /></td>
                                 <td><input class="form-control" ng-model="tran.INVOICE_NO" /></td>
                                 <td><input class="form-control" ng-model="tran.DEPART_DATE"  /></td>
                                 <td><input class="form-control" ng-model="tran.ARRIVAL_DATE" /></td>
                                 <td><input class="form-control" ng-model="tran.NOTE" /></td>
-                                <td><input class="form-control" ng-model="tran.TRAN_TYPE" /></td>
+                                
                                 <td><input class="form-control" ng-model="tran.LOAD_DATE" /></td>
-                                <td><a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="saveTranLoad($index)" ><span class="glyphicon glyphicon-floppy-save"></span></a></td>
+                                <td class="text-center"><a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="saveTranLoad(tran)" ><span class="glyphicon glyphicon-floppy-save"></span></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -163,7 +146,7 @@
             </div>
         </div>
         <!--Tran Load upload form-->
-        <div class="row">
+        <div class="row" ng-show="showTran">
             <form class="form-inline" name="tranLoadForm" id="tranLoadUpload">
                 <div class="col-sm-2 text-right">
                     <label style="margin-left:20px">Tran Load Upload</label>
@@ -176,12 +159,12 @@
                 <button class="btn btn-primary btn-sm" onclick="downloadTranLoadTemplate()">Download Template</button>
             </form>
         </div>
-
+        <hr />
         <!--Cust Load part-->
         <div class="row" style="margin-top:10px;">
             <div class="col-md-12 col-lg-12">
-                <button class="btn btn-primary" ng-click="customProcessClick()">Custom Process</button>
-                <div class="panel panel-default" style="">
+                <button class="btn btn-primary" ng-click="customProcessClick()" ng-disabled="!hasData">Custom Process</button>
+                <div class="panel panel-default" style="" ng-show="showCustomProcess">
                     <div class="panel-heading">
                         <b>Custom Process</b>
                     </div>
@@ -189,42 +172,52 @@
                     <table id="tbCustomeProcess" ng-show="showCustomProcess" class="table table-striped table-hover table-bordered .table-condensed">
                         <thead>
                             <tr>
-                                <th style="">From</th>
                                 <th style="">Will Bill No.</th>
-                                <th style="">Invoice No.</th>
-                                <th style="">Depart Date</th>
-                                <th style="">Arrival Date</th>
-                                <th style="">Note</th>
-                                <th style="">Transport Method</th>
+                                <th style="">Type</th>
+                                <th style="">DO Release Date</th>
+                                <th style="">Arrival Date(300)</th>
+                                <th style="">Out Date(300)</th>
+                                <th style="">Arrival Date(305)</th>
                                 <th style="">Load Date</th>
                                 <th style="">Operation</th>
                             </tr>
                         </thead>
                         <tbody style="">
-                            <tr ng-repeat="tran in ittTranLoadArray ">
-                                <td style=""><input class="form-control" ng-model="tran.FROM_SYSTEM" ng-disabled="hasData" /></td>
-                                <td><input class="form-control" ng-model="tran.WILL_BILL_NO" ng-disabled="hasData" /></td>
-                                <td><input class="form-control" ng-model="tran.INVOICE_NO" /></td>
-                                <td><input class="form-control" ng-model="tran.DEPART_DATE" /></td>
-                                <td><input class="form-control" ng-model="tran.ARRIVAL_DATE" /></td>
-                                <td><input class="form-control" ng-model="tran.NOTE" /></td>
-                                <td><input class="form-control" ng-model="tran.TRAN_TYPE" /></td>
-                                <td><input class="form-control" ng-model="tran.LOAD_DATE" /></td>
-                                <td><a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="saveTranLoad($index)"><span class="glyphicon glyphicon-floppy-save"></span></a></td>
+                            <tr ng-repeat="cust in ittCustomerProcessArray ">
+                                <td><input class="form-control" ng-model="cust.WILL_BILL_NO" ng-disabled="hasData" /></td>
+                                <td><input class="form-control" ng-model="cust.TC_GROUP" /></td>
+                                <td><input class="form-control" ng-model="cust.DO_RELEASE_DATE" /></td>
+                                <td><input class="form-control" ng-model="cust.BND_ARRIVAL_DATE" /></td>
+                                <td><input class="form-control" ng-model="cust.BND_OUT_DATE" /></td>
+                                <td><input class="form-control" ng-model="cust.NBND_ARRIVAL_DATE" /></td>
+                                <td><input class="form-control" ng-model="cust.LOAD_DATE" /></td>
+                                <td class="text-center"><a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="saveCustLoad(cust)"><span class="glyphicon glyphicon-floppy-save"></span></a></td>
                             </tr>
                         </tbody>
                     </table>
-                    <button type="button" class="btn-primary input-sm " id="btnNewLine" ng-click="addNewTran()">Add</button>
+                    <button type="button" class="btn-primary input-sm " id="btnNewLine" ng-click="addNewCustProcess()">Add</button>
                 </div>
             </div>
+        </div>
+        <!--Cust process upload form-->
+        <div class="row" ng-show="showCustomProcess">
+            <form class="form-inline" name="custForm" id="custUpload">
+                <div class="col-sm-2 text-right">
+                    <label style="margin-left:20px">Cust Process Upload</label>
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="hsFile">Cust Process Upload</label>
+                    <input type="file" name="fileInput" id="tranLoadFile">
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="uploadCustFile()">Upload</button>
+                <button class="btn btn-primary btn-sm" onclick="downloadCustTemplate()">Download Template</button>
+            </form>
         </div>
 
     </div>
 </div>
 
 <script>
-    
-
     angular.module('ittApp', []).controller('ittCtrl', function ($scope, $http) {
         $scope.result = [];
         $scope.willBillNo = "";
@@ -246,7 +239,6 @@
                 type: "post",
                 async: false,
                 success: function (obj) {
-                    debugger;
                     $scope.result = obj;
                     if ($scope.result != null && $scope.result.length>0)
                          $scope.hasData=true;
@@ -267,7 +259,7 @@
 
         $scope.addNewTran = function () {
             var newItem = {
-                LOAD_BATCH_TOKEN: "",
+                LOAD_BATCH_TOKEN: 0,
                 WILL_BILL_NO: "",
                 INVOICE_NO: "",
                 DEPART_DATE: "",
@@ -279,7 +271,45 @@
             $scope.ittTranLoadArray.push(newItem);
         };
 
-        $scope.saveTranLoad = function (index) {
+        $scope.saveTranLoad = function (curr) {
+            $.ajax({
+                url: "/itt/SaveTranLoad",
+                data: JSON.stringify({
+                    model: curr
+                }),
+                type: "post",
+                async: false,
+                contentType: 'application/json',
+                success: function (obj) {
+                    alert("Success Action");
+                },
+                error: function (obj) {
+                    alert("fail to Save Data");
+                }
+
+            });
+        };
+
+        $scope.customProcessClick = function () {
+            GetCustProcess();
+            $scope.showCustomProcess = true;
+        };
+
+        $scope.addNewCustProcess = function () {
+            var newItem = {
+                LOAD_BATCH_TOKEN :0,
+                WILL_BILL_NO :"",
+                TC_GROUP :"",
+                DO_RELEASE_DATE :"",
+                BND_ARRIVAL_DATE :"",
+                BND_OUT_DATE :"",
+                NBND_ARRIVAL_DATE :"",
+                NOTE :""
+            };
+            $scope.ittCustomerProcessArray.push(newItem);
+        }
+
+        $scope.saveCustLoad = function (curr) {
 
         };
 
@@ -294,8 +324,25 @@
                 type: "post",
                 async: false,
                 success: function (obj) {
-                    debugger;
                     $scope.ittTranLoadArray = obj;
+                },
+                error: function (obj) {
+                    alert("fail to get will bill Data");
+                }
+
+            });
+        };
+
+        function GetCustProcess() {
+            $.ajax({
+                url: "/itt/GetCustList",
+                data: {
+                    willBillNo: $scope.willBillNo
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    $scope.ittCustomerProcessArray = obj;
                 },
                 error: function (obj) {
                     alert("fail to get will bill Data");
@@ -329,9 +376,9 @@
                 form.ajaxSubmit(options);
     }
 
-    function uploadTCCateFile()
+    function uploadCustFile()
     {
-        var form = $("form[name=tcCateForm]");
+        var form = $("form[name=custForm]");
         var options = {
             url: '/tc/UploadTCCateFile',
             type: 'post',

@@ -50,11 +50,6 @@ a.NoLine:hover {text-decoration: none}
                 </div>
             </div>
 
-        </div>
-
-        @*Right notice Part*@
-        <div class="col-md-4 col-lg-4">
-
             <div class="row" style="margin-top:0px;">
                 <div class="col-md-12">
                     @*<p class="text-left"><strong>Notice</strong></p>*@
@@ -72,11 +67,11 @@ a.NoLine:hover {text-decoration: none}
                                 @{ int index = 1;}
                                 @foreach (var item in ViewBag.noticeList)
                                 {
-                                    <tr>
-                                        <td>@index</td>
-                                        <td class="poptd" data-toggle="popover" data-trigger="hover" data-content="@item.NOTICE_TEXT" data-title="Notice Content" data-placement="left" data-container="td">@item.NOTICE_TOPIC</td>
-                                    </tr>
-                                    index++;
+                                <tr>
+                                    <td>@index</td>
+                                    <td class="poptd" data-toggle="popover" data-trigger="hover" data-content="@item.NOTICE_TEXT" data-title="Notice Content" data-placement="left" data-container="td">@item.NOTICE_TOPIC</td>
+                                </tr>
+                                index++;
                                 }
 
                             </tbody>
@@ -87,6 +82,7 @@ a.NoLine:hover {text-decoration: none}
             </div>
 
         </div>
+
     </div>
 
 

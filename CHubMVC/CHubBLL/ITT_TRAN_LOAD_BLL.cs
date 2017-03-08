@@ -26,5 +26,16 @@ namespace CHubBLL
             return dal.GetTranLoadList(willBillNo);
         }
 
+        public void Save(ITT_TRAN_LOAD model)
+        {
+            if (model.LOAD_BATCH_TOKEN == 0)
+            {
+                model.LOAD_BATCH_TOKEN = dal.GetTranLoadSqeNextVal();
+                dal.Add(model);
+            }
+            else
+                dal.Update(model);
+        }
+
     }
 }

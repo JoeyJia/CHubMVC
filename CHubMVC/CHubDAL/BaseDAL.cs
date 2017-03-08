@@ -112,19 +112,21 @@ namespace CHubDAL
             return result; 
         }
 
-        public decimal GetOrderSqeCurrVal()
+        public decimal GetCustLoadSqeNextVal()
         {
-            try
-            {
-                List<decimal> nextVal = db.Database.SqlQuery<decimal>("select ORDER_SEQ_NO.currval from dual", string.Empty).ToList();
-                decimal result = nextVal[0];
-                return result;
-            }
-            catch
-            {
-                return 0.00M;
-            }
+            List<decimal> nextVal = db.Database.SqlQuery<decimal>("select CUST_LOAD_SEQ.nextval from dual", string.Empty).ToList();
+            decimal result = nextVal[0];
+            return result;
         }
+
+        public decimal GetTranLoadSqeNextVal()
+        {
+            List<decimal> nextVal = db.Database.SqlQuery<decimal>("select TRAN_LOAD_SEQ.nextval from dual", string.Empty).ToList();
+            decimal result = nextVal[0];
+            return result;
+        }
+
+
 
     }
 }

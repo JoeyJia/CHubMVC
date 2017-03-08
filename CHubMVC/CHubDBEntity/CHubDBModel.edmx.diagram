@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d7f6e9b31a6d43e79a67a386d41c7d55" Name="Diagram1" ZoomLevel="68">
+      <Diagram DiagramId="d7f6e9b31a6d43e79a67a386d41c7d55" Name="Diagram1" ZoomLevel="89">
         <EntityTypeShape EntityType="CHubDBModel.APP_CUST_ALIAS" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.APP_CUST_ALIAS_LINK" Width="1.5" PointX="8" PointY="4.625" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.APP_DURATION" Width="1.5" PointX="8" PointY="0.75" IsExpanded="true" />

@@ -215,7 +215,6 @@ warning 6002: The table/view 'GWAPP.ITT_CUST_LOAD' does not have a primary key d
           <Key>
             <PropertyRef Name="LOAD_BATCH_TOKEN" />
             <PropertyRef Name="WILL_BILL_NO" />
-            <PropertyRef Name="TC_GROUP" />
           </Key>
           <Property Name="LOAD_BATCH_TOKEN" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="WILL_BILL_NO" Type="varchar2" MaxLength="30" Nullable="false" />
@@ -3837,7 +3836,6 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Key>
             <PropertyRef Name="LOAD_BATCH_TOKEN" />
             <PropertyRef Name="WILL_BILL_NO" />
-            <PropertyRef Name="TC_GROUP" />
           </Key>
           <Property Name="LOAD_BATCH_TOKEN" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="WILL_BILL_NO" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />

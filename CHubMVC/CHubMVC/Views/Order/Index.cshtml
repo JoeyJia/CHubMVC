@@ -318,9 +318,8 @@
                         <button type="button" class="btn btn-primary" ng-click="downloadAlt()">Download Alt</button>
                     </div>
                     <button type="button" class="btn btn-primary before-save" ng-click="ReadClip()">Get Data From Clipboard</button>
+                    <button type="button" class="btn btn-primary" ng-click="clearLines()">Clear Data</button>
                     <button type="button" class="btn btn-primary" ng-show="isSaved" ng-click="refreshCtrl()">New Order</button>
-                    @*<button type="button" class="btn btn-primary" ng-click="proTest()">progress</button>*@
-                    @*<button type="button" class="btn btn-primary" ng-click="testenable()">Enbale</button>*@
                 </div>
             </div>
 
@@ -532,6 +531,10 @@
             $("#sbShipName").val("");
             $("#sbAddr").val("");
         };
+
+        $scope.clearLines = function (){
+            $scope.orderLines = [];
+        }
 
         $scope.GetAltAliasAddr = function () {
             var isSpecialShip = $("#ssto")[0].checked;

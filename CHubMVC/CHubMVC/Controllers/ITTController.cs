@@ -44,6 +44,25 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
+        public ActionResult SaveTranLoad(ITT_TRAN_LOAD model)
+        {
+            try
+            {
+                model.LOADED_BY = Session[CHubConstValues.SessionUser].ToString();
+                model.LOAD_DATE = DateTime.Now;
+                ITT_TRAN_LOAD_BLL tranBLL = new ITT_TRAN_LOAD_BLL();
+                tranBLL.Save(model);
+                return Content("1");
+            }
+            catch (Exception ex)
+            {
+                this.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Content(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
         public ActionResult UploadTranLoadFile()
         {
             try
@@ -91,6 +110,37 @@ namespace CHubMVC.Controllers
                 return Content(ex.Message);
             }
         }
+
+
+        //Custom process part
+        [HttpPost]
+        [Authorize]
+        public ActionResult GetCustList(string willBillNo)
+        {
+            ITT_CUST_LOAD_BLL custBLL = new ITT_CUST_LOAD_BLL();
+            List<ITT_CUST_LOAD> result = custBLL.GetCustList(willBillNo);
+            return Json(result);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult SaveCustLoad(ITT_CUST_LOAD model)
+        {
+            try
+            {
+                model.LOADED_BY = Session[CHubConstValues.SessionUser].ToString();
+                model.LOAD_DATE = DateTime.Now;
+                ITT_CUST_LOAD_BLL tranBLL = new ITT_CUST_LOAD_BLL();
+                tranBLL.Save(model);
+                return Content("1");
+            }
+            catch (Exception ex)
+            {
+                this.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Content(ex.Message);
+            }
+        }
+
 
     }
 }
