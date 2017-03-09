@@ -346,6 +346,14 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="CREATION_DATE" Type="date" Nullable="false" />
         </EntityType>
+        <EntityType Name="M_CALENDAR">
+          <Key>
+            <PropertyRef Name="CAL_DATE" />
+          </Key>
+          <Property Name="CAL_DATE" Type="date" Nullable="false" />
+          <Property Name="WORK_DAY_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="COMMENTS" Type="varchar2" MaxLength="20" />
+        </EntityType>
         <EntityType Name="M_PARAMETER">
           <Key>
             <PropertyRef Name="P_NAME" />
@@ -1545,6 +1553,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="ITT_TRAN_LOAD" EntityType="Self.ITT_TRAN_LOAD" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_TRAN_TYPE" EntityType="Self.ITT_TRAN_TYPE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_APPS" EntityType="Self.M_APPS" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="M_CALENDAR" EntityType="Self.M_CALENDAR" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_PARAMETER" EntityType="Self.M_PARAMETER" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_PART" EntityType="Self.M_PART" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_SYSTEM" EntityType="Self.M_SYSTEM" Schema="GWAPP" store:Type="Tables" />
@@ -3214,6 +3223,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_TRAN_LOAD" EntitySet="ITT_TRAN_LOAD" />
           </AssociationSet>
+          <EntitySet Name="M_CALENDAR" EntityType="CHubDBModel.M_CALENDAR" />
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -3954,6 +3964,14 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="M_CALENDAR">
+          <Key>
+            <PropertyRef Name="CAL_DATE" />
+          </Key>
+          <Property Name="CAL_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="WORK_DAY_FLAG" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="COMMENTS" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5042,6 +5060,15 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="FILE_NAME" ColumnName="FILE_NAME" />
                 <ScalarProperty Name="SHIPFROM_SEQ" ColumnName="SHIPFROM_SEQ" />
                 <ScalarProperty Name="ORDER_REQ_NO" ColumnName="ORDER_REQ_NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="M_CALENDAR">
+            <EntityTypeMapping TypeName="CHubDBModel.M_CALENDAR">
+              <MappingFragment StoreEntitySet="M_CALENDAR">
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="WORK_DAY_FLAG" ColumnName="WORK_DAY_FLAG" />
+                <ScalarProperty Name="CAL_DATE" ColumnName="CAL_DATE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -165,6 +165,9 @@
     <Compile Include="M_APPS.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="M_CALENDAR.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="M_PARAMETER.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
@@ -275,7 +278,9 @@
     <None Include="CHubDBModel.edmx.diagram">
       <DependentUpon>CHubDBModel.edmx</DependentUpon>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="CHubDBModel.Context.tt">
