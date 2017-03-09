@@ -60,6 +60,7 @@
     <Compile Include="G_OESALES_CATALOG_DAL.cs" />
     <Compile Include="ITT_CUST_LOAD_DAL.cs" />
     <Compile Include="ITT_TRAN_LOAD_DAL.cs" />
+    <Compile Include="ITT_TRAN_TYPE_DAL.cs" />
     <Compile Include="M_SYSTEM_DAL.cs" />
     <Compile Include="ITT_SHIPPING_D_DAL.cs" />
     <Compile Include="ITT_SHIPPING_D_SNAP_DAL.cs" />

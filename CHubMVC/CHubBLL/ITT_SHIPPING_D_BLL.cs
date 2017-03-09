@@ -22,5 +22,10 @@ namespace CHubBLL
             dal = new ITT_SHIPPING_D_DAL(db);
         }
 
+        public bool ExistInvoiceNo(string invoiceNo)
+        {
+            return dal.ExistInvoiceNo(invoiceNo);
+        }
+
     }
 }
