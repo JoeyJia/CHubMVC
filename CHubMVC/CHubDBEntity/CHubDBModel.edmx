@@ -209,12 +209,9 @@
           <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="CREATION_DATE" Type="date" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'GWAPP.ITT_CUST_LOAD' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ITT_CUST_LOAD">
           <Key>
             <PropertyRef Name="LOAD_BATCH_TOKEN" />
-            <PropertyRef Name="WILL_BILL_NO" />
           </Key>
           <Property Name="LOAD_BATCH_TOKEN" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="WILL_BILL_NO" Type="varchar2" MaxLength="30" Nullable="false" />
@@ -315,13 +312,9 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="TRAN_PROCESS_ID" Type="varchar2" MaxLength="20" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'GWAPP.ITT_TRAN_LOAD' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ITT_TRAN_LOAD">
           <Key>
             <PropertyRef Name="LOAD_BATCH_TOKEN" />
-            <PropertyRef Name="WILL_BILL_NO" />
-            <PropertyRef Name="FROM_SYSTEM" />
           </Key>
           <Property Name="LOAD_BATCH_TOKEN" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="WILL_BILL_NO" Type="varchar2" MaxLength="30" Nullable="false" />
@@ -850,6 +843,7 @@ warning 6002: The table/view 'GWAPP.V_ALIAS_ADDR_DFLT' does not have a primary k
             <PropertyRef Name="CUSTOMER_NO" />
             <PropertyRef Name="BILL_TO_LOCATION" />
             <PropertyRef Name="SHIP_TO_LOCATION" />
+            
           </Key>
           <Property Name="DAYS" Type="number" Precision="38" Scale="0" />
           <Property Name="DISTANCE" Type="number" Precision="38" Scale="0" />
@@ -898,6 +892,7 @@ warning 6002: The table/view 'GWAPP.V_ALIAS_ADDR_SPL' does not have a primary ke
             <PropertyRef Name="BILL_TO_LOCATION" />
             <PropertyRef Name="SHIP_TO_LOCATION" />
             <PropertyRef Name="DEST_LOCATION" />
+            
           </Key>
           <Property Name="DAYS" Type="number" Precision="38" Scale="0" />
           <Property Name="DISTANCE" Type="number" Precision="38" Scale="0" />
@@ -1415,7 +1410,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0013895">
+        <Association Name="SYS_C0014257">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1543,9 +1538,11 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="APP_WELCOME" EntityType="Self.APP_WELCOME" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="APP_WH" EntityType="Self.APP_WH" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="APP_WORKSPACE" EntityType="Self.APP_WORKSPACE" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="ITT_CUST_LOAD" EntityType="Self.ITT_CUST_LOAD" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_SHIPPING_D_SNAP" EntityType="Self.ITT_SHIPPING_D_SNAP" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_SHIPPING_H" EntityType="Self.ITT_SHIPPING_H" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_SHIPPING_H_SNAP" EntityType="Self.ITT_SHIPPING_H_SNAP" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="ITT_TRAN_LOAD" EntityType="Self.ITT_TRAN_LOAD" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_TRAN_TYPE" EntityType="Self.ITT_TRAN_TYPE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_APPS" EntityType="Self.M_APPS" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_PARAMETER" EntityType="Self.M_PARAMETER" Schema="GWAPP" store:Type="Tables" />
@@ -1558,20 +1555,6 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="TS_OR_DETAIL_STAGE" EntityType="Self.TS_OR_DETAIL_STAGE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TS_OR_HEADER" EntityType="Self.TS_OR_HEADER" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TS_OR_HEADER_STAGE" EntityType="Self.TS_OR_HEADER_STAGE" Schema="GWAPP" store:Type="Tables" />
-          <EntitySet Name="ITT_CUST_LOAD" EntityType="Self.ITT_CUST_LOAD" store:Type="Tables" store:Schema="GWAPP">
-            <DefiningQuery>SELECT 
-"ITT_CUST_LOAD"."LOAD_BATCH_TOKEN" AS "LOAD_BATCH_TOKEN", 
-"ITT_CUST_LOAD"."WILL_BILL_NO" AS "WILL_BILL_NO", 
-"ITT_CUST_LOAD"."TC_GROUP" AS "TC_GROUP", 
-"ITT_CUST_LOAD"."DO_RELEASE_DATE" AS "DO_RELEASE_DATE", 
-"ITT_CUST_LOAD"."BND_ARRIVAL_DATE" AS "BND_ARRIVAL_DATE", 
-"ITT_CUST_LOAD"."BND_OUT_DATE" AS "BND_OUT_DATE", 
-"ITT_CUST_LOAD"."NBND_ARRIVAL_DATE" AS "NBND_ARRIVAL_DATE", 
-"ITT_CUST_LOAD"."NOTE" AS "NOTE", 
-"ITT_CUST_LOAD"."LOADED_BY" AS "LOADED_BY", 
-"ITT_CUST_LOAD"."LOAD_DATE" AS "LOAD_DATE"
-FROM "GWAPP"."ITT_CUST_LOAD" "ITT_CUST_LOAD"</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="ITT_SHIPPING_D" EntityType="Self.ITT_SHIPPING_D" store:Type="Tables" store:Schema="GWAPP">
             <DefiningQuery>SELECT 
 "ITT_SHIPPING_D"."FROM_SYSTEM" AS "FROM_SYSTEM", 
@@ -1604,20 +1587,6 @@ FROM "GWAPP"."ITT_CUST_LOAD" "ITT_CUST_LOAD"</DefiningQuery>
 "ITT_SHIPPING_D"."WILL_BILL_NO" AS "WILL_BILL_NO", 
 "ITT_SHIPPING_D"."WB_LAST_CHANGED" AS "WB_LAST_CHANGED"
 FROM "GWAPP"."ITT_SHIPPING_D" "ITT_SHIPPING_D"</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="ITT_TRAN_LOAD" EntityType="Self.ITT_TRAN_LOAD" store:Type="Tables" store:Schema="GWAPP">
-            <DefiningQuery>SELECT 
-"ITT_TRAN_LOAD"."LOAD_BATCH_TOKEN" AS "LOAD_BATCH_TOKEN", 
-"ITT_TRAN_LOAD"."WILL_BILL_NO" AS "WILL_BILL_NO", 
-"ITT_TRAN_LOAD"."INVOICE_NO" AS "INVOICE_NO", 
-"ITT_TRAN_LOAD"."DEPART_DATE" AS "DEPART_DATE", 
-"ITT_TRAN_LOAD"."ARRIVAL_DATE" AS "ARRIVAL_DATE", 
-"ITT_TRAN_LOAD"."NOTE" AS "NOTE", 
-"ITT_TRAN_LOAD"."TRAN_TYPE" AS "TRAN_TYPE", 
-"ITT_TRAN_LOAD"."LOADED_BY" AS "LOADED_BY", 
-"ITT_TRAN_LOAD"."LOAD_DATE" AS "LOAD_DATE", 
-"ITT_TRAN_LOAD"."FROM_SYSTEM" AS "FROM_SYSTEM"
-FROM "GWAPP"."ITT_TRAN_LOAD" "ITT_TRAN_LOAD"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="TC_PART_HS_AUDIT" EntityType="Self.TC_PART_HS_AUDIT" store:Type="Tables" store:Schema="GWAPP">
             <DefiningQuery>SELECT 
@@ -2222,7 +2191,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
             <End Role="M_PART" EntitySet="M_PART" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0013895" Association="Self.SYS_C0013895">
+          <AssociationSet Name="SYS_C0014257" Association="Self.SYS_C0014257">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -3835,7 +3804,6 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
         <EntityType Name="ITT_CUST_LOAD">
           <Key>
             <PropertyRef Name="LOAD_BATCH_TOKEN" />
-            <PropertyRef Name="WILL_BILL_NO" />
           </Key>
           <Property Name="LOAD_BATCH_TOKEN" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="WILL_BILL_NO" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
@@ -3890,8 +3858,6 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
         <EntityType Name="ITT_TRAN_LOAD">
           <Key>
             <PropertyRef Name="LOAD_BATCH_TOKEN" />
-            <PropertyRef Name="WILL_BILL_NO" />
-            <PropertyRef Name="FROM_SYSTEM" />
           </Key>
           <Property Name="LOAD_BATCH_TOKEN" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="WILL_BILL_NO" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
