@@ -127,8 +127,6 @@ namespace CHubMVC.Controllers
                                 LogHelper.WriteErrorLog(msgInside);
                             }
                         }
-
-
                     }
                     else
                     {
@@ -143,7 +141,7 @@ namespace CHubMVC.Controllers
                     }
                 }
 
-                return Content(string.Format("Total Count:{0}, Success Count:{1}, Fail Count:{2}", modelList.Count, successCount, failCount));
+                return Content(string.Format("Total Lines:{0}, Success items:{1}, Fail items:{2}", modelList.Count, successCount, failCount));
             }
             catch (Exception ex)
             {
@@ -253,7 +251,7 @@ namespace CHubMVC.Controllers
                     }
                 }
 
-                return Content(string.Format("Total Count:{0}, Success Count:{1}, Fail Count:{2}", modelList.Count, successCount, failCount));
+                return Content(string.Format("Total Lines:{0}, Success items:{1}, Fail items:{2}", modelList.Count, successCount, failCount));
             }
             catch (Exception ex)
             {
