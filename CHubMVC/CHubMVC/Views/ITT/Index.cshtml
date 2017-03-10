@@ -53,9 +53,9 @@
                                 <td style="">{{result[0].WILL_BILL_NO}}</td>
                                 <td>{{result[0].FROM_SYSTEM}}</td>
                                 <td>{{result[0].SHIP_TO_ABBR}}</td>
-                                <td>{{result[0].SHIPMENT_DATE}}</td>
-                                <td>{{result[0].S00_DEPART_DATE}}</td>
-                                <td>{{result[0].S10_PORT_ARRIVAL_DATE}}</td>
+                                <td>{{result[0].SHIPMENT_DATE | date:'yyyy-MM-dd'}}</td>
+                                <td>{{result[0].S00_DEPART_DATE | date:'yyyy-MM-dd'}}</td>
+                                <td>{{result[0].S10_PORT_ARRIVAL_DATE | date:'yyyy-MM-dd'}}</td>
                                 <td>{{result[0].TRAN_TYPE}}</td>
                                 <td>{{result[0].CARRIER_CODE}}</td>
                             </tr>
@@ -92,10 +92,10 @@
                                 <td style="">{{r.SHIPMENT_NO}}</td>
                                 <td>{{r.INVOICE_NO}}</td>
                                 <td>{{r.TC_GROUP}}</td>
-                                <td>{{r.S20_DO_RELEASE_DATE}}</td>
-                                <td>{{r.S30_BND_ARRIVAL_DATE}}</td>
-                                <td>{{r.S40_BND_OUT_DATE}}</td>
-                                <td>{{r.S50_NBND_ARRIVAL_DATE}}</td>
+                                <td>{{r.S20_DO_RELEASE_DATE | date:'yyyy-MM-dd'}}</td>
+                                <td>{{r.S30_BND_ARRIVAL_DATE | date:'yyyy-MM-dd'}}</td>
+                                <td>{{r.S40_BND_OUT_DATE | date:'yyyy-MM-dd'}}</td>
+                                <td>{{r.S50_NBND_ARRIVAL_DATE | date:'yyyy-MM-dd'}}</td>
                                 <td>{{r.SHIP_LINES}}</td> 
                             </tr>
                         </tbody>
@@ -134,8 +134,7 @@
                                 <td>
                                     <select class="form-control input-sm" ng-model="tran.TRAN_TYPE" ng-options="tt.TRAN_TYPE as tt.TRAN_TYPE for tt in ittTranTypeArray"></select>
                                 </td>
-                                <td><input class="form-control" ng-model="tran.INVOICE_NO" /></td>
-                                @*<td><input class="form-control ittDatetime" type="text" value="{{tran.DEPART_DATE}}"   /></td>*@@*//ng-model="tran.DEPART_DATE"*@
+                                <td><input class="form-control" ng-model="tran.INVOICE_NO" /></td> 
                                 <td>
                                     <div class="dropdown">
                                         <a class="dropdown-toggle" id="dropdown$index" role="button" data-toggle="dropdown" data-target="#" href="#">
@@ -214,7 +213,6 @@
                         <tbody style="">
                             <tr ng-repeat="cust in ittCustomerProcessArray ">
                                 <td><input class="form-control" ng-model="cust.WILL_BILL_NO" ng-disabled="hasData" /></td>
-                                @*<td><input class="form-control" ng-model="cust.TC_GROUP" /></td>*@
                                 <td>
                                     <select class="form-control input-sm" ng-model="cust.TC_GROUP" ng-options="tg as tg for tg in TCGroupList"></select>
                                 </td>
