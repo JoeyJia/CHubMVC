@@ -343,7 +343,7 @@
 
 <!--Audit Log Modal-->
 <div class="modal fade" id="auditLogModal" role="dialog" aria-labelledby="result" aria-hidden="true" ng-app="auditLogApp" ng-controller="auditLogCtrl">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="width:60%">
         <div class="modal-content">
             <div class="modal-header">
                 <h4>Audit Log Form {{partNo}}</h4>
@@ -358,6 +358,7 @@
                             <th style="">Audit Field</th>
                             <th style="">New Value</th>
                             <th style="">Old Value</th>
+                            <th style="">Activity Date</th>
                         </tr>
                     </thead>
                     <tbody style="">
@@ -366,6 +367,7 @@
                             <td>{{al.AUDIT_FIELD}}</td>
                             <td>{{al.N_VALUE}}</td>
                             <td>{{al.O_VALUE}}</td>
+                            <td>{{al.ACTIVITY_DATE | date:'yyyy-MM-dd'}}</td>
                         </tr>
                     </tbody>
                 </table>
