@@ -97,13 +97,37 @@ namespace CHubMVC.Controllers
                 int failCount = 0;
                 foreach (var item in modelList)
                 {
-                    string msg = SaveTranLoadAction(item);
-                    if (string.IsNullOrEmpty(msg))
-                        successCount++;
+                    if (item.INVOICE_NO.Contains("/"))
+                    {
+                        string[] invoiceArray = item.INVOICE_NO.Split('/');
+                        foreach (var inNo in invoiceArray)
+                        {
+                            ITT_TRAN_LOAD model = new ITT_TRAN_LOAD();
+                            ClassConvert.DrawObj(item, model);
+                            model.INVOICE_NO = inNo.Trim();
+
+                            string msgInside = SaveTranLoadAction(model);
+                            if (string.IsNullOrEmpty(msgInside))
+                                successCount++;
+                            else
+                            {
+                                failCount++;
+                                LogHelper.WriteErrorLog(msgInside);
+                            }
+                        }
+
+
+                    }
                     else
                     {
-                        failCount++;
-                        LogHelper.WriteErrorLog(msg);
+                        string msg = SaveTranLoadAction(item);
+                        if (string.IsNullOrEmpty(msg))
+                            successCount++;
+                        else
+                        {
+                            failCount++;
+                            LogHelper.WriteErrorLog(msg);
+                        }
                     }
                 }
 
@@ -114,6 +138,14 @@ namespace CHubMVC.Controllers
                 this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Content(ex.Message);
             }
+        }
+
+        public ActionResult DownloadTranLoadTemplate()
+        {
+            string templateFolder = Server.MapPath(CHubConstValues.ChubTemplateFolder);
+            string fileName = CHubConstValues.TranLoadExcelTemplateName;
+
+            return File(templateFolder + fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
 
 
@@ -136,6 +168,13 @@ namespace CHubMVC.Controllers
                 string msg = SaveCustLoadAction(model);
                 if (!string.IsNullOrEmpty(msg))
                     return Json(new RequestResult(false, msg));
+
+                if (model.BND_OUT_DATE != null && model.NBND_ARRIVAL_DATE == null)
+                {
+                    M_CALENDAR_BLL calBLL = new M_CALENDAR_BLL();
+                    model.NBND_ARRIVAL_DATE = calBLL.GetArrivalDateFromOutDate(model.BND_OUT_DATE.Value);
+                }
+
                 return Json(new RequestResult(true));
             }
             catch (Exception ex)
@@ -197,6 +236,14 @@ namespace CHubMVC.Controllers
                 this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Content(ex.Message);
             }
+        }
+
+        public ActionResult DownloadCustLoadTemplate()
+        {
+            string templateFolder = Server.MapPath(CHubConstValues.ChubTemplateFolder);
+            string fileName = CHubConstValues.CustLoadExcelTemplateName;
+
+            return File(templateFolder + fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
 
 

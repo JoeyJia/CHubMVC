@@ -952,6 +952,7 @@ warning 6002: The table/view 'GWAPP.V_ITT_SHIPPING_SMRY' does not have a primary
           <Key>
             <PropertyRef Name="FROM_SYSTEM" />
             <PropertyRef Name="SHIPMENT_NO" />
+            <PropertyRef Name="SHIP_LINES" />
           </Key>
           <Property Name="SHIPMENT_DATE" Type="date" />
           <Property Name="FROM_SYSTEM" Type="varchar2" MaxLength="10" Nullable="false" />
@@ -968,7 +969,7 @@ warning 6002: The table/view 'GWAPP.V_ITT_SHIPPING_SMRY' does not have a primary
           <Property Name="S30_BND_ARRIVAL_DATE" Type="date" />
           <Property Name="S40_BND_OUT_DATE" Type="date" />
           <Property Name="S50_NBND_ARRIVAL_DATE" Type="date" />
-          <Property Name="SHIP_LINES" Type="number" Precision="38" Scale="0" />
+          <Property Name="SHIP_LINES" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.V_NAV_ALL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -3886,6 +3887,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Key>
             <PropertyRef Name="FROM_SYSTEM" />
             <PropertyRef Name="SHIPMENT_NO" />
+            <PropertyRef Name="SHIP_LINES" />
           </Key>
           <Property Name="SHIPMENT_DATE" Type="DateTime" />
           <Property Name="FROM_SYSTEM" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
@@ -3902,7 +3904,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="S30_BND_ARRIVAL_DATE" Type="DateTime" />
           <Property Name="S40_BND_OUT_DATE" Type="DateTime" />
           <Property Name="S50_NBND_ARRIVAL_DATE" Type="DateTime" />
-          <Property Name="SHIP_LINES" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="SHIP_LINES" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <Association Name="ITT_SHIPPING_H_R03">
           <End Type="CHubDBModel.ITT_TRAN_TYPE" Role="ITT_TRAN_TYPE" Multiplicity="0..1" />

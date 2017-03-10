@@ -29,6 +29,6 @@ namespace CHubDBEntity
         public Nullable<System.DateTime> S30_BND_ARRIVAL_DATE { get; set; }
         public Nullable<System.DateTime> S40_BND_OUT_DATE { get; set; }
         public Nullable<System.DateTime> S50_NBND_ARRIVAL_DATE { get; set; }
-        public Nullable<decimal> SHIP_LINES { get; set; }
+        public decimal SHIP_LINES { get; set; }
     }
 }

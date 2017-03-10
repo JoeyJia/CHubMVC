@@ -29,6 +29,8 @@ namespace CHubCommon
 
         public static string HSPartExcelTemplateName = "TC_HS_DB_template_V1.xlsx";
         public static string MPartExcelTemplateName = "TC_MPart_template_V1.xlsx";
+        public static string TranLoadExcelTemplateName = "ITT_Tran_Load_template_v1.xlsx";
+        public static string CustLoadExcelTemplateName = "ITT_cust_load_template_v1.xlsx";
 
     }
 }

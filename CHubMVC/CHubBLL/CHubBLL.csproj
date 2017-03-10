@@ -61,6 +61,7 @@
     <Compile Include="ITT_CUST_LOAD_BLL.cs" />
     <Compile Include="ITT_TRAN_LOAD_BLL.cs" />
     <Compile Include="ITT_TRAN_TYPE_BLL.cs" />
+    <Compile Include="M_CALENDAR_BLL.cs" />
     <Compile Include="M_SYSTEM_BLL.cs" />
     <Compile Include="V_ITT_SHIPPING_SMRY_BLL.cs" />
     <Compile Include="ITT_SHIPPING_D_BLL.cs" />

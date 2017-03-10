@@ -19,6 +19,12 @@ namespace CHubMVC
             bundles.Add(new ScriptBundle("~/bundles/datetime").Include(
                         "~/Scripts/bootstrap-datetimepicker.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/ngdatetime").Include(
+                        "~/Scripts/moment.js",
+                        "~/Scripts/datetimepicker.js",
+                        "~/Scripts/datetimepicker.templates.js"
+                        ));
+
             bundles.Add(new ScriptBundle("~/bundles/progressbar").Include(
                         "~/Scripts/bootstrap-progressbar.js"));
 
@@ -42,6 +48,9 @@ namespace CHubMVC
 
             bundles.Add(new StyleBundle("~/Content/datatimecss").Include(
                       "~/Content/bootstrap-datetimepicker.css"));
+
+            bundles.Add(new StyleBundle("~/Content/ngdatatimecss").Include(
+                      "~/Content/datetimepicker.css"));
 
             bundles.Add(new StyleBundle("~/Content/progressbarcss").Include(
                       "~/Content/bootstrap-progressbar-3.3.4.css"));

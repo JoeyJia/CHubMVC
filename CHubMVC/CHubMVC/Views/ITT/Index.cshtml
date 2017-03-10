@@ -3,7 +3,8 @@
     ViewBag.Title = "ITT Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@Styles.Render("~/Content/ngdatatimecss")
+@Scripts.Render("~/bundles/ngdatetime")
 
 <div class="container-fluid" id="ittIndexBody" ng-app="ittApp" ng-controller="ittCtrl" style="overflow:scroll">
     <div class="panel panel-default">
@@ -132,11 +133,38 @@
                                 <td><input class="form-control" ng-model="tran.WILL_BILL_NO" ng-disabled="hasData" /></td>
                                 <td><input class="form-control" ng-model="tran.TRAN_TYPE" /></td>
                                 <td><input class="form-control" ng-model="tran.INVOICE_NO" /></td>
-                                <td><input class="form-control" ng-model="tran.DEPART_DATE | date:'yyyy-MM-dd'"  /></td>
-                                <td><input class="form-control" ng-model="tran.ARRIVAL_DATE | date:'yyyy-MM-dd'" /></td>
+                                @*<td><input class="form-control ittDatetime" type="text" value="{{tran.DEPART_DATE}}"   /></td>*@@*//ng-model="tran.DEPART_DATE"*@
+                                <td>
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" id="dropdown$index" role="button" data-toggle="dropdown" data-target="#" href="#">
+                                            <div class="input-group">
+                                                <input type="text" id="date$index" name="date" class="form-control" data-ng-model="tran.DEPART_DATE | date:'yyyy-MM-dd'">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                            </div>
+                                        </a>
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                            <datetimepicker data-ng-model="tran.DEPART_DATE"
+                                                            data-datetimepicker-config="{ dropdownSelector: '#dropdown',minView:'day' }"></datetimepicker>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" id="dropdown$index" role="button" data-toggle="dropdown" data-target="#" href="#">
+                                            <div class="input-group">
+                                                <input type="text" id="date$index" name="date" class="form-control" data-ng-model="tran.ARRIVAL_DATE | date:'yyyy-MM-dd'">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                            </div>
+                                        </a>
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                            <datetimepicker data-ng-model="tran.ARRIVAL_DATE"
+                                                            data-datetimepicker-config="{ dropdownSelector: '#dropdown',minView:'day' }"></datetimepicker>
+                                        </ul>
+                                    </div>
+                                </td>
                                 <td><input class="form-control" ng-model="tran.NOTE" /></td>
                                 <td><input class="form-control" ng-model="tran.LOAD_DATE | date:'yyyy-MM-dd'" readonly/></td>
-                                <td class="text-center"><a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="saveTranLoad(tran)" ><span class="glyphicon glyphicon-floppy-save"></span></a></td>
+                                <td class="text-center"><a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="saveTranLoad(tran)" ><span class="glyphicon glyphicon-floppy-disk"></span></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -185,12 +213,64 @@
                             <tr ng-repeat="cust in ittCustomerProcessArray ">
                                 <td><input class="form-control" ng-model="cust.WILL_BILL_NO" ng-disabled="hasData" /></td>
                                 <td><input class="form-control" ng-model="cust.TC_GROUP" /></td>
-                                <td><input class="form-control" ng-model="cust.DO_RELEASE_DATE | date:'yyyy-MM-dd'" /></td>
-                                <td><input class="form-control" ng-model="cust.BND_ARRIVAL_DATE | date:'yyyy-MM-dd'" /></td>
-                                <td><input class="form-control" ng-model="cust.BND_OUT_DATE | date:'yyyy-MM-dd'" /></td>
-                                <td><input class="form-control" ng-model="cust.NBND_ARRIVAL_DATE | date:'yyyy-MM-dd'" /></td>
+                                <td>
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" id="dropdown$index" role="button" data-toggle="dropdown" data-target="#" href="#">
+                                            <div class="input-group">
+                                                <input type="text" id="date$index" name="date" class="form-control" data-ng-model="cust.DO_RELEASE_DATE | date:'yyyy-MM-dd'">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                            </div>
+                                        </a>
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                            <datetimepicker data-ng-model="cust.DO_RELEASE_DATE"
+                                                            data-datetimepicker-config="{ dropdownSelector: '#dropdown',minView:'day' }"></datetimepicker>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" id="dropdown$index" role="button" data-toggle="dropdown" data-target="#" href="#">
+                                            <div class="input-group">
+                                                <input type="text" id="date$index" name="date" class="form-control" data-ng-model="cust.BND_ARRIVAL_DATE | date:'yyyy-MM-dd'">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                            </div>
+                                        </a>
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                            <datetimepicker data-ng-model="cust.BND_ARRIVAL_DATE"
+                                                            data-datetimepicker-config="{ dropdownSelector: '#dropdown',minView:'day' }"></datetimepicker>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" id="dropdown$index" role="button" data-toggle="dropdown" data-target="#" href="#">
+                                            <div class="input-group">
+                                                <input type="text" id="date$index" name="date" class="form-control" data-ng-model="cust.BND_OUT_DATE | date:'yyyy-MM-dd'">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                            </div>
+                                        </a>
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                            <datetimepicker data-ng-model="cust.BND_OUT_DATE"
+                                                            data-datetimepicker-config="{ dropdownSelector: '#dropdown',minView:'day' }"></datetimepicker>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" id="dropdown$index" role="button" data-toggle="dropdown" data-target="#" href="#">
+                                            <div class="input-group">
+                                                <input type="text" id="date$index" name="date" class="form-control" data-ng-model="cust.NBND_ARRIVAL_DATE | date:'yyyy-MM-dd'">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                            </div>
+                                        </a>
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                            <datetimepicker data-ng-model="cust.NBND_ARRIVAL_DATE"
+                                                            data-datetimepicker-config="{ dropdownSelector: '#dropdown',minView:'day' }"></datetimepicker>
+                                        </ul>
+                                    </div>
+                                </td>
                                 <td><input class="form-control" ng-model="cust.LOAD_DATE | date:'yyyy-MM-dd'"  readonly/></td>
-                                <td class="text-center"><a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="saveCustLoad(cust)"><span class="glyphicon glyphicon-floppy-save"></span></a></td>
+                                <td class="text-center"><a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="saveCustLoad(cust)"><span class="glyphicon glyphicon-floppy-disk"></span></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -209,7 +289,7 @@
                     <input type="file" name="fileInput" id="tranLoadFile">
                 </div>
                 <button class="btn btn-primary btn-sm" onclick="uploadCustFile()">Upload</button>
-                <button class="btn btn-primary btn-sm" onclick="downloadCustTemplate()">Download Template</button>
+                <button class="btn btn-primary btn-sm" onclick="downloadCustLoadTemplate()">Download Template</button>
             </form>
         </div>
 
@@ -217,7 +297,8 @@
 </div>
 
 <script>
-    angular.module('ittApp', []).controller('ittCtrl', function ($scope, $http) {
+
+    angular.module('ittApp', ['ui.bootstrap.datetimepicker']).controller('ittCtrl', function ($scope, $http,$timeout) {
         $scope.result = [];
         $scope.willBillNo = "";
         $scope.hasData = false;
@@ -253,7 +334,6 @@
         $scope.transportClick = function () {
             GetTranLoad();
             $scope.showTran = true;
-
         };
 
         $scope.addNewTran = function () {
@@ -397,7 +477,6 @@
                         enctype:"multipart/form-data",
                     success:function(data)
                     {
-                        debugger;
                         alert(data);
                             }
                     };
@@ -412,7 +491,6 @@
             type: 'post',
             enctype: "multipart/form-data",
             success: function (data) {
-                debugger;
                 alert(data);
             }
         };
@@ -424,12 +502,12 @@
 
     function downloadTranLoadTemplate()
     {
-     window.location.href = "/tc/DownloadHSFileTemplate";
+        window.location.href = "/itt/DownloadTranLoadTemplate";
     }
 
-    function downloadMPartTemplate()
+    function downloadCustLoadTemplate()
     {
-     window.location.href = "/tc/DownloadMPartFileTemplate";
+        window.location.href = "/itt/DownloadCustLoadTemplate";
     }
 
 </script>
