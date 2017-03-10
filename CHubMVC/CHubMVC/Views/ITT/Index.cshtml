@@ -132,10 +132,10 @@
                                 <td><input class="form-control" ng-model="tran.WILL_BILL_NO" ng-disabled="hasData" /></td>
                                 <td><input class="form-control" ng-model="tran.TRAN_TYPE" /></td>
                                 <td><input class="form-control" ng-model="tran.INVOICE_NO" /></td>
-                                <td><input class="form-control" ng-model="tran.DEPART_DATE"  /></td>
-                                <td><input class="form-control" ng-model="tran.ARRIVAL_DATE" /></td>
+                                <td><input class="form-control" ng-model="tran.DEPART_DATE | date:'yyyy-MM-dd'"  /></td>
+                                <td><input class="form-control" ng-model="tran.ARRIVAL_DATE | date:'yyyy-MM-dd'" /></td>
                                 <td><input class="form-control" ng-model="tran.NOTE" /></td>
-                                <td><input class="form-control" ng-model="tran.LOAD_DATE" /></td>
+                                <td><input class="form-control" ng-model="tran.LOAD_DATE | date:'yyyy-MM-dd'" readonly/></td>
                                 <td class="text-center"><a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="saveTranLoad(tran)" ><span class="glyphicon glyphicon-floppy-save"></span></a></td>
                             </tr>
                         </tbody>
@@ -185,11 +185,11 @@
                             <tr ng-repeat="cust in ittCustomerProcessArray ">
                                 <td><input class="form-control" ng-model="cust.WILL_BILL_NO" ng-disabled="hasData" /></td>
                                 <td><input class="form-control" ng-model="cust.TC_GROUP" /></td>
-                                <td><input class="form-control" ng-model="cust.DO_RELEASE_DATE" /></td>
-                                <td><input class="form-control" ng-model="cust.BND_ARRIVAL_DATE" /></td>
-                                <td><input class="form-control" ng-model="cust.BND_OUT_DATE" /></td>
-                                <td><input class="form-control" ng-model="cust.NBND_ARRIVAL_DATE" /></td>
-                                <td><input class="form-control" ng-model="cust.LOAD_DATE" /></td>
+                                <td><input class="form-control" ng-model="cust.DO_RELEASE_DATE | date:'yyyy-MM-dd'" /></td>
+                                <td><input class="form-control" ng-model="cust.BND_ARRIVAL_DATE | date:'yyyy-MM-dd'" /></td>
+                                <td><input class="form-control" ng-model="cust.BND_OUT_DATE | date:'yyyy-MM-dd'" /></td>
+                                <td><input class="form-control" ng-model="cust.NBND_ARRIVAL_DATE | date:'yyyy-MM-dd'" /></td>
+                                <td><input class="form-control" ng-model="cust.LOAD_DATE | date:'yyyy-MM-dd'"  readonly/></td>
                                 <td class="text-center"><a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="saveCustLoad(cust)"><span class="glyphicon glyphicon-floppy-save"></span></a></td>
                             </tr>
                         </tbody>
@@ -267,6 +267,12 @@
                 TRAN_TYPE: "",
                 FROM_SYSTEM: ""
             };
+            if ($scope.ittTranLoadArray.length > 0) {
+                newItem.WILL_BILL_NO = $scope.ittTranLoadArray[0].WILL_BILL_NO;
+                newItem.FROM_SYSTEM = $scope.ittTranLoadArray[0].FROM_SYSTEM;
+            }
+
+
             $scope.ittTranLoadArray.push(newItem);
         };
 
@@ -280,7 +286,10 @@
                 async: false,
                 contentType: 'application/json',
                 success: function (obj) {
-                    alert("Success Action");
+                    if (obj.Success)
+                        alert("Success Action");
+                    else
+                        alert(obj.Msg);
                 },
                 error: function (obj) {
                     alert("fail to Save Data");
@@ -305,11 +314,31 @@
                 NBND_ARRIVAL_DATE :"",
                 NOTE :""
             };
+            if ($scope.ittCustomerProcessArray.length > 0)
+                newItem.WILL_BILL_NO = $scope.ittCustomerProcessArray[0].WILL_BILL_NO;
             $scope.ittCustomerProcessArray.push(newItem);
         }
 
         $scope.saveCustLoad = function (curr) {
+            $.ajax({
+                url: "/itt/SaveCustLoad",
+                data: JSON.stringify({
+                    model: curr
+                }),
+                type: "post",
+                async: false,
+                contentType: 'application/json',
+                success: function (obj) {
+                    if (obj.Success)
+                        alert("Success Action");
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (obj) {
+                    alert("fail to Save Data");
+                }
 
+            });
         };
 
 
@@ -379,7 +408,7 @@
     {
         var form = $("form[name=custForm]");
         var options = {
-            url: '/tc/UploadTCCateFile',
+            url: '/tc/UploadCustLoadFile',
             type: 'post',
             enctype: "multipart/form-data",
             success: function (data) {
