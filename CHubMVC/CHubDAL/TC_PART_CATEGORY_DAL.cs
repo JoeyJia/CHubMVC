@@ -21,5 +21,13 @@ namespace CHubDAL
             return db.TC_PART_CATEGORY.ToList();
         }
 
+        public List<string> GetTCGroupList()
+        {
+            var result = (from cate in db.TC_PART_CATEGORY
+                          select cate.TC_GROUP
+                          ).Distinct();
+            return result.ToList();
+        }
+
     }
 }

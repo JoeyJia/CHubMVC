@@ -26,5 +26,10 @@ namespace CHubBLL
         {
             return dal.GetTCPartCategory();
         }
+
+        public List<string> GetTCGroupList()
+        {
+            return dal.GetTCGroupList();
+        }
     }
 }

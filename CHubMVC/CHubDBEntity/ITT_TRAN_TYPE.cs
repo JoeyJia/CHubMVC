@@ -9,9 +9,10 @@
 
 namespace CHubDBEntity
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
-    
+
     public partial class ITT_TRAN_TYPE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -24,8 +25,10 @@ namespace CHubDBEntity
         public string TRAN_TYPE { get; set; }
         public string TRAN_DESC { get; set; }
     
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ITT_SHIPPING_H> ITT_SHIPPING_H { get; set; }
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ITT_TRAN_LOAD> ITT_TRAN_LOAD { get; set; }
     }

@@ -21,5 +21,10 @@ namespace CHubBLL
             dal = new ITT_TRAN_TYPE_DAL(db);
         }
 
+        public List<ITT_TRAN_TYPE> GetTranType()
+        {
+            return dal.GetTranType();
+        }
+
     }
 }

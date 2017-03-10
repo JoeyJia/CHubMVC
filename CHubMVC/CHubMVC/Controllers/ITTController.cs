@@ -46,10 +46,22 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
+        public ActionResult GetTranTypeList()
+        {
+            ITT_TRAN_TYPE_BLL typeBLL = new ITT_TRAN_TYPE_BLL();
+            List<ITT_TRAN_TYPE> result = typeBLL.GetTranType();
+            return Json(result);
+        }
+
+        [HttpPost]
+        [Authorize]
         public ActionResult SaveTranLoad(ITT_TRAN_LOAD model)
         {
             try
             {
+                if(model.WILL_BILL_NO==null||model.FROM_SYSTEM==null)
+                    return Json(new RequestResult(false, "Invalid input"));
+
                 string msg = SaveTranLoadAction(model);
                 if(!string.IsNullOrEmpty(msg))
                      return Json(new RequestResult(false, msg));
@@ -161,10 +173,22 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
+        public ActionResult GetTCGroupTypeList()
+        {
+            TC_PART_CATEGORY_BLL tcCateBLL = new TC_PART_CATEGORY_BLL();
+            List<string> result = tcCateBLL.GetTCGroupList();
+            return Json(result);
+        }
+
+        [HttpPost]
+        [Authorize]
         public ActionResult SaveCustLoad(ITT_CUST_LOAD model)
         {
             try
             {
+                if (model.WILL_BILL_NO == null)
+                    return Json(new RequestResult(false, "Invalid input"));
+
                 string msg = SaveCustLoadAction(model);
                 if (!string.IsNullOrEmpty(msg))
                     return Json(new RequestResult(false, msg));
