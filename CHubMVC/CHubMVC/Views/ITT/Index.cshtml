@@ -248,13 +248,14 @@
                                     <div class="dropdown">
                                         <a class="dropdown-toggle" id="dropdown$index" role="button" data-toggle="dropdown" data-target="#" href="#">
                                             <div class="input-group">
-                                                <input type="text" id="date$index" name="date" class="form-control" data-ng-model="cust.BND_OUT_DATE | date:'yyyy-MM-dd'">
+                                                <input type="text" id="date$index" name="date" class="form-control" data-ng-model="cust.BND_OUT_DATE | date:'yyyy-MM-dd'" ng-change="onOutDateChange(cust)">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                             </div>
                                         </a>
                                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                             <datetimepicker data-ng-model="cust.BND_OUT_DATE"
-                                                            data-datetimepicker-config="{ dropdownSelector: '#dropdown',minView:'day' }"></datetimepicker>
+                                                            data-datetimepicker-config="{ dropdownSelector: '#dropdown',minView:'day' }"
+                                                            data-on-set-time="onOutDateChange(cust)"></datetimepicker>
                                         </ul>
                                     </div>
                                 </td>
@@ -352,9 +353,9 @@
                 TRAN_TYPE: "",
                 FROM_SYSTEM: ""
             };
-            if ($scope.ittTranLoadArray.length > 0) {
-                newItem.WILL_BILL_NO = $scope.ittTranLoadArray[0].WILL_BILL_NO;
-                newItem.FROM_SYSTEM = $scope.ittTranLoadArray[0].FROM_SYSTEM;
+            if ($scope.hasData) {
+                newItem.WILL_BILL_NO = $scope.result[0].WILL_BILL_NO;
+                newItem.FROM_SYSTEM = $scope.result[0].FROM_SYSTEM;
             }
 
 
@@ -400,8 +401,8 @@
                 NBND_ARRIVAL_DATE :"",
                 NOTE :""
             };
-            if ($scope.ittCustomerProcessArray.length > 0)
-                newItem.WILL_BILL_NO = $scope.ittCustomerProcessArray[0].WILL_BILL_NO;
+            if ($scope.hasData)
+                newItem.WILL_BILL_NO = $scope.result[0].WILL_BILL_NO;
             $scope.ittCustomerProcessArray.push(newItem);
         }
 
@@ -426,6 +427,31 @@
 
             });
         };
+
+        $scope.onOutDateChange = function (curr)
+        {
+            //debugger;
+            if ((curr.BND_OUT_DATE != null&&curr.BND_OUT_DATE !="") && (curr.NBND_ARRIVAL_DATE == null || curr.NBND_ARRIVAL_DATE == ""))
+            {
+                $.ajax({
+                    url: "/itt/GetArrivalDateFromOutDate",
+                    data: JSON.stringify({
+                        outDate: curr.BND_OUT_DATE
+                    }),
+                    type: "post",
+                    async: false,
+                    contentType: 'application/json',
+                    success: function (obj) {
+                       
+                        curr.NBND_ARRIVAL_DATE = obj;
+                    },
+                    error: function (obj) {
+                        alert("fail to Save Data");
+                    }
+
+                });
+            }
+        }
 
 
         //function part

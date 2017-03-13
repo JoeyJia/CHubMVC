@@ -19,9 +19,9 @@ namespace CHubMVC.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            
-            //APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
-            //rpBLL.Add(appUser, CHubEnum.PageNameEnum.tcmnt.ToString(), this.Request.Url.AbsoluteUri);
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, CHubEnum.PageNameEnum.wbentry.ToString(), this.Request.Url.AbsoluteUri);
 
             return View();
         }
@@ -41,6 +41,11 @@ namespace CHubMVC.Controllers
         {
             ITT_TRAN_LOAD_BLL tranBLL = new ITT_TRAN_LOAD_BLL();
             List<ITT_TRAN_LOAD> result = tranBLL.GetTranLoadList(willBillNo);
+            foreach (var item in result)
+            {
+                if (item.LOAD_DATE == null)
+                    item.LOAD_DATE = DateTime.Now;
+            }
             return Json(result);
         }
 
@@ -60,7 +65,7 @@ namespace CHubMVC.Controllers
             try
             {
                 if(model.WILL_BILL_NO==null||model.FROM_SYSTEM==null)
-                    return Json(new RequestResult(false, "Invalid input"));
+                    return Json(new RequestResult(false, "WillBillNo or FromSystem can't be empty"));
 
                 string msg = SaveTranLoadAction(model);
                 if(!string.IsNullOrEmpty(msg))
@@ -166,6 +171,11 @@ namespace CHubMVC.Controllers
         {
             ITT_CUST_LOAD_BLL custBLL = new ITT_CUST_LOAD_BLL();
             List<ITT_CUST_LOAD> result = custBLL.GetCustList(willBillNo);
+            foreach (var item in result)
+            {
+                if (item.LOAD_DATE == null)
+                    item.LOAD_DATE = DateTime.Now;
+            }
             return Json(result);
         }
 
@@ -185,17 +195,13 @@ namespace CHubMVC.Controllers
             try
             {
                 if (model.WILL_BILL_NO == null)
-                    return Json(new RequestResult(false, "Invalid input"));
+                    return Json(new RequestResult(false, "WillBillNo can't be empty"));
 
                 string msg = SaveCustLoadAction(model);
                 if (!string.IsNullOrEmpty(msg))
                     return Json(new RequestResult(false, msg));
 
-                if (model.BND_OUT_DATE != null && model.NBND_ARRIVAL_DATE == null)
-                {
-                    M_CALENDAR_BLL calBLL = new M_CALENDAR_BLL();
-                    model.NBND_ARRIVAL_DATE = calBLL.GetArrivalDateFromOutDate(model.BND_OUT_DATE.Value);
-                }
+               
 
                 return Json(new RequestResult(true));
             }
@@ -268,6 +274,15 @@ namespace CHubMVC.Controllers
             return File(templateFolder + fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
 
+        [HttpPost]
+        [Authorize]
+        public ActionResult GetArrivalDateFromOutDate(DateTime outDate)
+        {
+            M_CALENDAR_BLL calBLL = new M_CALENDAR_BLL();
+            DateTime arrDate = calBLL.GetArrivalDateFromOutDate(outDate).Value;
+            return Json(arrDate);
+        }
+
 
         #region private function part
 
@@ -303,6 +318,12 @@ namespace CHubMVC.Controllers
                 if (!string.IsNullOrEmpty(msg))
                 {
                     return msg;
+                }
+
+                if (model.BND_OUT_DATE != null && model.NBND_ARRIVAL_DATE == null)
+                {
+                    M_CALENDAR_BLL calBLL = new M_CALENDAR_BLL();
+                    model.NBND_ARRIVAL_DATE = calBLL.GetArrivalDateFromOutDate(model.BND_OUT_DATE.Value);
                 }
 
                 model.LOADED_BY = Session[CHubConstValues.SessionUser].ToString();

@@ -8,6 +8,10 @@
 a.NoLine:link { text-decoration: none}
 a.NoLine:visited { text-decoration: none}
 a.NoLine:hover {text-decoration: none}
+
+.popover{
+    max-width: 60%; /* Max Width of the popover (depending on the container!) */
+}
 </style>
 
 <div class="container-fluid body-content">
@@ -69,7 +73,7 @@ a.NoLine:hover {text-decoration: none}
                                 {
                                 <tr>
                                     <td>@index</td>
-                                    <td class="poptd" data-toggle="popover" data-trigger="hover" data-content="@item.NOTICE_TEXT" data-title="Notice Content" data-placement="left" data-container="td">@item.NOTICE_TOPIC</td>
+                                    <td class="poptd" data-toggle="popover" data-trigger="hover" data-content="@item.NOTICE_TEXT" data-title="Notice Content" data-placement="top" data-container="td">@item.NOTICE_TOPIC</td>
                                 </tr>
                                 index++;
                                 }
