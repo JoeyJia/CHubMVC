@@ -540,10 +540,12 @@
                     url: '/itt/UploadTranLoadFile',
                         type: 'post',
                         enctype:"multipart/form-data",
-                    success:function(data)
-                    {
-                        alert(data);
-                            }
+                        success: function (data) {
+                            if (data.Success)
+                                alert(data.Msg);
+                            else
+                                alert(data.Msg);
+                        }
                     };
                 form.ajaxSubmit(options);
     }

@@ -114,7 +114,7 @@ namespace CHubMVC.Controllers
                 int failCount = 0;
                 foreach (var item in modelList)
                 {
-                    if (item.INVOICE_NO.Contains("/"))
+                    if (item.INVOICE_NO!=null&&item.INVOICE_NO.Contains("/"))
                     {
                         string[] invoiceArray = item.INVOICE_NO.Split('/');
                         foreach (var inNo in invoiceArray)
@@ -129,7 +129,7 @@ namespace CHubMVC.Controllers
                             else
                             {
                                 failCount++;
-                                LogHelper.WriteErrorLog(msgInside);
+                                LogHelper.WriteErrorLog(string.Format("willBillNo:{0},message:{1}", item.WILL_BILL_NO, msgInside));
                             }
                         }
                     }
@@ -141,17 +141,17 @@ namespace CHubMVC.Controllers
                         else
                         {
                             failCount++;
-                            LogHelper.WriteErrorLog(msg);
+                            LogHelper.WriteErrorLog(string.Format("willBillNo:{0},message:{1}", item.WILL_BILL_NO, msg));
                         }
                     }
                 }
-
-                return Content(string.Format("Total Lines:{0}, Success items:{1}, Fail items:{2}", modelList.Count, successCount, failCount));
+                return Json(new RequestResult(true, string.Format("Total Lines:{0}, Success items:{1}, Fail items:{2}", modelList.Count, successCount, failCount)));
+                //return Content(string.Format("Total Lines:{0}, Success items:{1}, Fail items:{2}", modelList.Count, successCount, failCount));
             }
             catch (Exception ex)
             {
-                this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Content(ex.Message);
+                LogHelper.WriteLog("UploadTranLoadFile", ex);
+                return Json(new RequestResult(false, ex.Message));
             }
         }
 
@@ -253,7 +253,7 @@ namespace CHubMVC.Controllers
                     else
                     {
                         failCount++;
-                        LogHelper.WriteErrorLog(msg);
+                        LogHelper.WriteErrorLog(string.Format("willBillNo:{0},message:{1}",item.WILL_BILL_NO,msg));
                     }
                 }
 

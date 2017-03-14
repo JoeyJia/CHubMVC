@@ -19,6 +19,19 @@
             color:red;
             padding-left: 2px
             }
+
+        .indexLeft, .indexRight {
+            padding:0px;
+        }
+
+        .indexLeft {
+            width:20%;
+            float:left;
+        }
+        .indexRight {
+            width:78%;
+            float:right;
+        }
     </style>
 </head>
 <body style="width:98%;height:98%">
@@ -49,13 +62,16 @@
     </div>
     <div class="container-fluid body-content">
         <div class="row" style="margin-top:60px;">
-            <div class="col-sm-4 col-md-4 col-lg-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">WorkSpace</div>
-                    <div id="tree"></div>
+
+                <div class="panel panel-default indexLeft" id="leftTree">
+                    <div class="panel-heading">WorkSpace
+                        <div class="treeBtn1" style="text-align:right" title="Collapse"><<</div>
+                    </div>
+                    <div id="tree" ></div>
                 </div>
-            </div>
-            <div class="col-sm-8 col-md-8 col-lg-9">
+            <div class="treeBtn2" style="margin-left:5px" title="Collapse" hidden>>></div>
+
+            <div class="panel panel-default indexRight" >@*style="overflow:scroll"*@
                 @RenderBody()
                 <hr />
             </div>
@@ -115,6 +131,42 @@
 
         });
 
+        ///////
+        $(".treeBtn1").click(function () {
+
+                $("#leftTree").slideUp();
+                //$(".indexLeft").animate({
+                //    width: "0%"
+                //}, 1000);
+                $(".indexRight").animate({
+                    width: "98%",
+                }, 100);
+                //setTimeout(function () {
+                //    $(".indexLeft").css("border", "0px");
+                //}, 1000)
+                $(".indexRight").css("float", "left");
+                $(".indexRight").css("margin-left", "20px");
+                $(".treeBtn2").css("margin-left", "20px");
+                $(".treeBtn2").show();
+                
+        })
+
+        $(".treeBtn2").click(function () {
+
+            $(".indexLeft").css("border", "1px solid #ccc");
+            //$(".indexLeft").animate({
+            //    width: "20%"
+            //}, 1000);
+            $("#leftTree").slideDown();
+            $(".indexRight").animate({
+                width: "78%"
+            }, 100);
+            $(".indexRight").css("float", "right");
+            $(".indexRight").css("margin-left", "0px");
+            //$(".treeBtn").css("margin-left", "5px");
+            $(".treeBtn2").hide();
+
+        })
 
     </script>
 </body>

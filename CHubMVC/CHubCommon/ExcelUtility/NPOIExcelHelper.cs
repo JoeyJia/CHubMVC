@@ -165,10 +165,9 @@ namespace CHubCommon
 
                 return data;
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine("Exception: " + ex.Message);
-                return null;
+                throw;
             }
         }
 
