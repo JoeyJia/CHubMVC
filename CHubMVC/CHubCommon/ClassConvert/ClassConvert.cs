@@ -96,6 +96,11 @@ namespace CHubCommon
                             {
                                 item.SetValue(obj, decimal.Parse(dt.Rows[i][item.Name].ToString()));
                             }
+                            if (item.PropertyType == typeof(DateTime) || item.PropertyType == typeof(Nullable<DateTime>))
+                            {
+                                //dt form NPOI , the format of datetime is "yy-M月-yyyy"
+                                item.SetValue(obj, DateTime.ParseExact(dt.Rows[i][item.Name].ToString().Replace("月", ""),"dd-M-yyyy", System.Globalization.CultureInfo.CurrentCulture));
+                            }
                             else
                                 item.SetValue(obj, dt.Rows[i][item.Name]);
                         }
