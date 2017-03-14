@@ -108,7 +108,7 @@ namespace CHubMVC.Controllers
                 List<ITT_TRAN_LOAD> modelList = ClassConvert.ConvertDT2List<ITT_TRAN_LOAD>(dt);
 
                 if (modelList == null || modelList.Count == 0)
-                    return Json(new RequestResult(false, "wrong excel strut"));
+                    return Json(new RequestResult(false, "wrong excel struct"));
 
                 int successCount = 0;
                 int failCount = 0;
