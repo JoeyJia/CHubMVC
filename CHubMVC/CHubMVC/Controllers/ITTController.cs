@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 
 namespace CHubMVC.Controllers
 {
@@ -98,6 +99,8 @@ namespace CHubMVC.Controllers
 
                 NPOIExcelHelper excelHelper = new NPOIExcelHelper(fileFullName);
                 DataTable dt = excelHelper.ExcelToDataTable();
+
+                //LogHelper.WriteLog("DT data:"+dt.Rows[0][3].ToString() +"|"+ dt.Rows[0][4].ToString() + "|" + dt.Rows[0][5].ToString());
                 //Delete temp file
                 System.IO.File.Delete(fileFullName);
 
@@ -125,11 +128,14 @@ namespace CHubMVC.Controllers
 
                             string msgInside = SaveTranLoadAction(model);
                             if (string.IsNullOrEmpty(msgInside))
+                            {
                                 successCount++;
+                                LogHelper.WriteLog(string.Format("willBillNo:{0},Data:{1}", item.WILL_BILL_NO, JsonConvert.SerializeObject(item)));
+                            }
                             else
                             {
                                 failCount++;
-                                LogHelper.WriteErrorLog(string.Format("willBillNo:{0},message:{1}", item.WILL_BILL_NO, msgInside));
+                                LogHelper.WriteErrorLog(string.Format("willBillNo:{0},message:{1},data:{2}", item.WILL_BILL_NO, msgInside, JsonConvert.SerializeObject(item)));
                             }
                         }
                     }
@@ -137,11 +143,14 @@ namespace CHubMVC.Controllers
                     {
                         string msg = SaveTranLoadAction(item);
                         if (string.IsNullOrEmpty(msg))
+                        {
                             successCount++;
+                            LogHelper.WriteLog(string.Format("willBillNo:{0},Data:{1}", item.WILL_BILL_NO, JsonConvert.SerializeObject(item)));
+                        }
                         else
                         {
                             failCount++;
-                            LogHelper.WriteErrorLog(string.Format("willBillNo:{0},message:{1}", item.WILL_BILL_NO, msg));
+                            LogHelper.WriteErrorLog(string.Format("willBillNo:{0},message:{1},data:{2}", item.WILL_BILL_NO, msg, JsonConvert.SerializeObject(item)));
                         }
                     }
                 }
@@ -249,11 +258,14 @@ namespace CHubMVC.Controllers
                 {
                     string msg = SaveCustLoadAction(item);
                     if (string.IsNullOrEmpty(msg))
+                    {
                         successCount++;
+                        LogHelper.WriteLog(string.Format("willBillNo:{0},data:{2}", item.WILL_BILL_NO,JsonConvert.SerializeObject(item)));
+                    }
                     else
                     {
                         failCount++;
-                        LogHelper.WriteErrorLog(string.Format("willBillNo:{0},message:{1}",item.WILL_BILL_NO,msg));
+                        LogHelper.WriteErrorLog(string.Format("willBillNo:{0},message:{1},data:{2}", item.WILL_BILL_NO, msg, JsonConvert.SerializeObject(item)));
                     }
                 }
 

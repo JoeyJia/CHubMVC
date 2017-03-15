@@ -7,6 +7,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CHubCommon
@@ -73,7 +74,7 @@ namespace CHubCommon
                 {
                     IRow row = sheet.CreateRow(count);
                     for (j = 0; j < data.Columns.Count; ++j)
-                    {
+                    {   
                         row.CreateCell(j).SetCellValue(data.Rows[i][j].ToString());
                     }
                     ++count;
@@ -96,6 +97,7 @@ namespace CHubCommon
         /// <returns>返回的DataTable</returns>
         public DataTable ExcelToDataTable(bool isFirstRowColumn = true, string sheetName = null)
         {
+            Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
             ISheet sheet = null;
             DataTable data = new DataTable();
             int startRow = 0;
