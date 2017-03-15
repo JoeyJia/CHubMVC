@@ -260,7 +260,7 @@ namespace CHubMVC.Controllers
                     if (string.IsNullOrEmpty(msg))
                     {
                         successCount++;
-                        LogHelper.WriteLog(string.Format("willBillNo:{0},data:{2}", item.WILL_BILL_NO,JsonConvert.SerializeObject(item)));
+                        LogHelper.WriteLog(string.Format("willBillNo:{0},data:{1}", item.WILL_BILL_NO,JsonConvert.SerializeObject(item)));
                     }
                     else
                     {
@@ -273,7 +273,7 @@ namespace CHubMVC.Controllers
             }
             catch (Exception ex)
             {
-                this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                LogHelper.WriteLog("save Cust load", ex);
                 return Content(ex.Message);
             }
         }

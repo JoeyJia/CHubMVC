@@ -19,6 +19,8 @@ namespace CHubMVC.Validations
         {
             if (model == null)
                 return "Data is null";
+            if (string.IsNullOrEmpty(model.WILL_BILL_NO))
+                return "No will Bill No";
 
             if (model.NBND_ARRIVAL_DATE != null && model.BND_OUT_DATE != null)
             {

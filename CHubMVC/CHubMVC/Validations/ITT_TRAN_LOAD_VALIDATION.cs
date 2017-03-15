@@ -21,6 +21,9 @@ namespace CHubMVC.Validations
             if (model == null)
                 return "Data is null";
 
+            if (string.IsNullOrEmpty(model.WILL_BILL_NO)  || string.IsNullOrEmpty(model.FROM_SYSTEM))
+                return "No will Bill No or Form System Data";
+
             if (!string.IsNullOrEmpty(model.INVOICE_NO))
             {
                 ITT_SHIPPING_D_BLL sdBLL = new ITT_SHIPPING_D_BLL();
