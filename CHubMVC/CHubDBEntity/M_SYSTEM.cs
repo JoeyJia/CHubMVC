@@ -29,6 +29,7 @@ namespace CHubDBEntity
         public string DESCRIPTION { get; set; }
         public string SYS_TYPE { get; set; }
         public string DB_LINK { get; set; }
+        public string INTERPDC_FLAG { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<APP_CUST_ALIAS_LINK> APP_CUST_ALIAS_LINK { get; set; }

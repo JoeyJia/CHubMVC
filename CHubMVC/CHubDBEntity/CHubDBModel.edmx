@@ -385,6 +385,7 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           <Property Name="DESCRIPTION" Type="varchar2" MaxLength="40" />
           <Property Name="SYS_TYPE" Type="varchar2" MaxLength="10" />
           <Property Name="DB_LINK" Type="varchar2" MaxLength="50" />
+          <Property Name="INTERPDC_FLAG" Type="varchar2" MaxLength="1" />
         </EntityType>
         <EntityType Name="TC_PART_CATEGORY">
           <Key>
@@ -619,6 +620,7 @@ warning 6002: The table/view 'GWAPP.G_PART_DESCRIPTION' does not have a primary 
           <Property Name="PART_HEIGHT" Type="number" Precision="24" Scale="8" />
           <Property Name="PART_LENGTH" Type="number" Precision="24" Scale="8" />
           <Property Name="PART_WIDTH" Type="number" Precision="24" Scale="8" />
+          <Property Name="LWH" Type="varchar2" MaxLength="122" />
           <Property Name="PART_WEIGHT" Type="number" Precision="24" Scale="8" />
           <Property Name="CURRENT_SALES_STATUS_CODE" Type="varchar2" MaxLength="30" />
           <Property Name="PRINT_PART_NO" Type="varchar2" MaxLength="75" />
@@ -1419,7 +1421,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0014257">
+        <Association Name="SYS_C0014930">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1679,6 +1681,7 @@ FROM "GWAPP"."TC_PART_HS_STG" "TC_PART_HS_STG"</DefiningQuery>
 "G_PART_DESCRIPTION"."PART_HEIGHT" AS "PART_HEIGHT", 
 "G_PART_DESCRIPTION"."PART_LENGTH" AS "PART_LENGTH", 
 "G_PART_DESCRIPTION"."PART_WIDTH" AS "PART_WIDTH", 
+"G_PART_DESCRIPTION"."LWH" AS "LWH", 
 "G_PART_DESCRIPTION"."PART_WEIGHT" AS "PART_WEIGHT", 
 "G_PART_DESCRIPTION"."CURRENT_SALES_STATUS_CODE" AS "CURRENT_SALES_STATUS_CODE", 
 "G_PART_DESCRIPTION"."PRINT_PART_NO" AS "PRINT_PART_NO", 
@@ -2201,7 +2204,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
             <End Role="M_PART" EntitySet="M_PART" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0014257" Association="Self.SYS_C0014257">
+          <AssociationSet Name="SYS_C0014930" Association="Self.SYS_C0014930">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -2490,6 +2493,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <NavigationProperty Name="ITT_SHIPPING_H" Relationship="CHubDBModel.SYS_C0013895" FromRole="M_SYSTEM" ToRole="ITT_SHIPPING_H" />
           <NavigationProperty Name="ITT_SHIPPING_D" Relationship="CHubDBModel.ITT_SHIPPING_D_R01" FromRole="M_SYSTEM" ToRole="ITT_SHIPPING_D" />
           <NavigationProperty Name="ITT_TRAN_LOAD" Relationship="CHubDBModel.ITT_TRAN_LOAD_R02" FromRole="M_SYSTEM" ToRole="ITT_TRAN_LOAD" />
+          <Property Name="INTERPDC_FLAG" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="G_PART_DESCRIPTION">
           <Key>
@@ -2512,6 +2516,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="RECORD_DATE" Type="DateTime" />
           <Property Name="DESC_CN" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
           <Property Name="CREATE_DATE" Type="DateTime" />
+          <Property Name="LWH" Type="String" MaxLength="122" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="G_PART_SUPERSESSION_ALL">
           <Key>
@@ -4194,6 +4199,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="M_SYSTEM">
             <EntityTypeMapping TypeName="CHubDBModel.M_SYSTEM">
               <MappingFragment StoreEntitySet="M_SYSTEM">
+                <ScalarProperty Name="INTERPDC_FLAG" ColumnName="INTERPDC_FLAG" />
                 <ScalarProperty Name="SYSID" ColumnName="SYSID" />
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
                 <ScalarProperty Name="SYS_TYPE" ColumnName="SYS_TYPE" />
@@ -4204,6 +4210,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="G_PART_DESCRIPTION">
             <EntityTypeMapping TypeName="CHubDBModel.G_PART_DESCRIPTION">
               <MappingFragment StoreEntitySet="G_PART_DESCRIPTION">
+                <ScalarProperty Name="LWH" ColumnName="LWH" />
                 <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="DESC_CN" ColumnName="DESC_CN" />
                 <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />

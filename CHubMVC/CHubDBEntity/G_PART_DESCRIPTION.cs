@@ -31,5 +31,6 @@ namespace CHubDBEntity
         public Nullable<System.DateTime> RECORD_DATE { get; set; }
         public string DESC_CN { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
+        public string LWH { get; set; }
     }
 }
