@@ -116,6 +116,7 @@
                     <table id="tbTransportation" ng-show="showTran" class="table table-striped table-hover table-bordered .table-condensed">
                         <thead>
                             <tr>
+                                <th style="">Token</th>
                                 <th style="">From</th>
                                 <th style="">Will Bill No.</th>
                                 <th style="">Transport Method</th>
@@ -129,6 +130,7 @@
                         </thead>
                         <tbody style="">
                             <tr ng-repeat="tran in ittTranLoadArray ">
+                                <td><input class="form-control" ng-model="tran.LOAD_BATCH_TOKEN" disabled /></td>
                                 <td style=""><input class="form-control" ng-model="tran.FROM_SYSTEM" ng-disabled="hasData" /></td>
                                 <td><input class="form-control" ng-model="tran.WILL_BILL_NO" ng-disabled="hasData" /></td>
                                 <td>
@@ -200,6 +202,7 @@
                     <table id="tbCustomeProcess" ng-show="showCustomProcess" class="table table-striped table-hover table-bordered .table-condensed">
                         <thead>
                             <tr>
+                                <th>Token</th>
                                 <th style="">Will Bill No.</th>
                                 <th style="">Type</th>
                                 <th style="">DO Release Date</th>
@@ -212,9 +215,10 @@
                         </thead>
                         <tbody style="">
                             <tr ng-repeat="cust in ittCustomerProcessArray ">
+                                <td><input class="form-control" ng-model="cust.LOAD_BATCH_TOKEN" disabled /></td>
                                 <td><input class="form-control" ng-model="cust.WILL_BILL_NO" ng-disabled="hasData" /></td>
                                 <td>
-                                    <select class="form-control input-sm" ng-model="cust.TC_GROUP" ng-options="tg as tg for tg in TCGroupList"></select>
+                                    <select class="form-control input-sm" ng-model="cust.TC_GROUP" ng-disabled="is4083" ng-options="tg as tg for tg in TCGroupList"></select>
                                 </td>
                                 <td>
                                     <div class="dropdown">
@@ -314,8 +318,17 @@
         $scope.showCustomProcess = false;
         $scope.ittCustomerProcessArray = [];
         $scope.TCGroupList = [];
+        $scope.is4083 = false;
 
         $scope.searchAction = function () {
+            if ($scope.willBillNo == "") {
+                return;
+            }
+            $scope.ittTranLoadArray = [];
+            $scope.ittCustomerProcessArray = [];
+            $scope.showTran = false;
+            $scope.showCustomProcess = false;
+
             $.ajax({
                 url: "/itt/SearchWillBill",
                 data: {
@@ -325,8 +338,15 @@
                 async: false,
                 success: function (obj) {
                     $scope.result = obj;
-                    if ($scope.result != null && $scope.result.length>0)
-                         $scope.hasData=true;
+                    if ($scope.result != null && $scope.result.length > 0) {
+                        $scope.hasData = true;
+                        if ($scope.result[0].SHIP_TO_ABBR == "4083")
+                            $scope.is4083 = true;
+                        else
+                            $scope.is4083 = false;
+                    }
+                    else
+                        $scope.hasData = false;
                 },
                 error: function (obj) {
                     alert("fail to get will bill Data");
@@ -356,8 +376,16 @@
             if ($scope.hasData) {
                 newItem.WILL_BILL_NO = $scope.result[0].WILL_BILL_NO;
                 newItem.FROM_SYSTEM = $scope.result[0].FROM_SYSTEM;
-            }
+                if ($scope.ittTranLoadArray != null && $scope.ittTranLoadArray.length > 0)
+                {
+                    var lastIndex = $scope.ittTranLoadArray.length - 1;
+                    newItem.INVOICE_NO = $scope.ittTranLoadArray[lastIndex].INVOICE_NO;
+                    newItem.DEPART_DATE = $scope.ittTranLoadArray[lastIndex].DEPART_DATE;
+                    newItem.ARRIVAL_DATE = $scope.ittTranLoadArray[lastIndex].ARRIVAL_DATE;
+                    newItem.TRAN_TYPE = $scope.ittTranLoadArray[lastIndex].TRAN_TYPE;
+                }
 
+            }
 
             $scope.ittTranLoadArray.push(newItem);
         };
@@ -401,8 +429,12 @@
                 NBND_ARRIVAL_DATE :"",
                 NOTE :""
             };
-            if ($scope.hasData)
+            if ($scope.hasData) {
                 newItem.WILL_BILL_NO = $scope.result[0].WILL_BILL_NO;
+                if ($scope.is4083) {
+                    newItem.TC_GROUP = "Normal";
+                }
+            }
             $scope.ittCustomerProcessArray.push(newItem);
         }
 
