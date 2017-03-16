@@ -15,6 +15,14 @@ namespace CHubDAL
         public M_SYSTEM_DAL(CHubEntities db)
             : base(db) { }
 
+        public List<string> GetITTSysIDList()
+        {
+            var result = (from m in db.M_SYSTEM
+                where m.INTERPDC_FLAG =="Y"
+                select m.SYSID
+                );
+            return result.ToList();
+        }
 
     }
 }

@@ -22,5 +22,9 @@ namespace CHubBLL
             dal = new M_SYSTEM_DAL(db);
         }
 
+        public List<string> GetITTSysIDList()
+        {
+            return dal.GetITTSysIDList();
+        }
     }
 }

@@ -199,6 +199,15 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
+        public ActionResult GetITTSysIDList()
+        {
+            M_SYSTEM_BLL msBLL = new M_SYSTEM_BLL();
+            List<string> result = msBLL.GetITTSysIDList();
+            return Json(result);
+        }
+
+        [HttpPost]
+        [Authorize]
         public ActionResult SaveCustLoad(ITT_CUST_LOAD model)
         {
             try

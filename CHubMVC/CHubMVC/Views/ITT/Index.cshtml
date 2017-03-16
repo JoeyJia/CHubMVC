@@ -131,7 +131,9 @@
                         <tbody style="">
                             <tr ng-repeat="tran in ittTranLoadArray ">
                                 <td><input class="form-control" ng-model="tran.LOAD_BATCH_TOKEN" disabled /></td>
-                                <td style=""><input class="form-control" ng-model="tran.FROM_SYSTEM" ng-disabled="hasData" /></td>
+                                <td>
+                                    <select class="form-control input-sm" ng-model="tran.FROM_SYSTEM" ng-disabled="hasData" ng-options="si as si for si in sysIDList"></select>
+                                </td>
                                 <td><input class="form-control" ng-model="tran.WILL_BILL_NO" ng-disabled="hasData" /></td>
                                 <td>
                                     <select class="form-control input-sm" ng-model="tran.TRAN_TYPE" ng-options="tt.TRAN_TYPE as tt.TRAN_TYPE for tt in ittTranTypeArray"></select>
@@ -309,6 +311,7 @@
     angular.module('ittApp', ['ui.bootstrap.datetimepicker']).controller('ittCtrl', function ($scope, $http,$timeout) {
         $scope.result = [];
         $scope.willBillNo = "";
+        $scope.searchedWillBillNo = "";
         $scope.hasData = false;
 
         $scope.showTran = false;
@@ -319,6 +322,7 @@
         $scope.ittCustomerProcessArray = [];
         $scope.TCGroupList = [];
         $scope.is4083 = false;
+        $scope.sysIDList = [];
 
         $scope.searchAction = function () {
             if ($scope.willBillNo == "") {
@@ -347,6 +351,7 @@
                     }
                     else
                         $scope.hasData = false;
+                    $scope.searchedWillBillNo = $scope.willBillNo;
                 },
                 error: function (obj) {
                     alert("fail to get will bill Data");
@@ -358,6 +363,7 @@
 
         $scope.transportClick = function () {
             GetTranTypeList();
+            GetSysIDList();
             GetTranLoad();
             $scope.showTran = true;
         };
@@ -491,7 +497,7 @@
             $.ajax({
                 url: "/itt/GetTranLoadList",
                 data: {
-                    willBillNo: $scope.willBillNo
+                    willBillNo: $scope.searchedWillBillNo
                 },
                 type: "post",
                 async: false,
@@ -538,11 +544,27 @@
             });
         };
 
+        function GetSysIDList() {
+            $.ajax({
+                url: "/itt/GetITTSysIDList",
+                data: {},
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    $scope.sysIDList = obj;
+                },
+                error: function (obj) {
+                    alert("fail to get Sys ID List Data");
+                }
+
+            });
+        };
+
         function GetCustProcess() {
             $.ajax({
                 url: "/itt/GetCustList",
                 data: {
-                    willBillNo: $scope.willBillNo
+                    willBillNo: $scope.searchedWillBillNo
                 },
                 type: "post",
                 async: false,
