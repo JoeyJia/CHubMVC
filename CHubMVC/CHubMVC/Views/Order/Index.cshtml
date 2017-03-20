@@ -299,7 +299,10 @@
                                     <td><input class="form-control" ng-model="ol.Qty" ng-blur="checkOrderLineItem(ol)" ng-disabled="isSaved" /></td>
                                     <td><input class="form-control" ng-model="ol.PriAVLCheck" ng-style ="{color:ol.PriAVLCheckColor}" readonly /></td>
                                     <td><input class="form-control" ng-model="ol.AltAVLCheck" ng-style ="{color:ol.AltAVLCheckColor}" readonly /></td>
-                                    <td style="text-align:center"><a href="javascript:void(0)" title="Delete" class="removeBtn" ng-click="removeOLItem($index)" ng-show="!isSaved"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                    <td style="text-align:center">
+                                        <a href="javascript:void(0)" title="Delete" class="removeBtn" ng-click="removeOLItem($index)" ng-show="!isSaved"><span class="glyphicon glyphicon-trash"></span></a>
+                                        <a href="javascript:void(0)" title="Insert" class="insertBtn" ng-click="insertOLItem($index)" ng-show="!isSaved"><span class="glyphicon glyphicon-collapse-up"></span></a>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -676,6 +679,13 @@
             $scope.orderLines.splice(index, 1);
             CalulateRatio();
         };
+
+        $scope.insertOLItem = function (index)
+        {
+            $scope.lineNo = $scope.lineNo + 1;
+            var newItem = { OrderLineNo: $scope.lineNo, CustomerPartNo: "", PartNo: "", Qty: 0, PriAVLCheck: null, AltAVLCheck: null };
+            $scope.orderLines.splice(index, 0, newItem);
+        }
 
 
         //Get PartNo from CustPartNo

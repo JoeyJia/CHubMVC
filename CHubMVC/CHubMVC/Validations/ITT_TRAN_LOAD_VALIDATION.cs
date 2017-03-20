@@ -22,7 +22,7 @@ namespace CHubMVC.Validations
                 return "Data is null";
 
             if (string.IsNullOrEmpty(model.WILL_BILL_NO)  || string.IsNullOrEmpty(model.FROM_SYSTEM))
-                return "No will Bill No or Form System Data";
+                return "No Way Bill No or Form System Data";
 
             if (!string.IsNullOrEmpty(model.INVOICE_NO))
             {

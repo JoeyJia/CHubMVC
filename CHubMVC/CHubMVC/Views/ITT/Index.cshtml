@@ -8,13 +8,13 @@
 
 <div class="container-fluid" id="ittIndexBody" ng-app="ittApp" ng-controller="ittCtrl" style="overflow:scroll">
     <div class="panel panel-default">
-        <div class="panel-heading"><b>Will Bill Entry</b></div>
+        <div class="panel-heading"><b>Way Bill Entry</b></div>
 
         <form class="form-horizontal" id="searchForm">
 
             <div class="row" style="margin-top:30px;">
                 <div class="form-group">
-                    <label for="txtWillBillNo" class="col-sm-2 control-label">Will Bill No.</label>
+                    <label for="txtWillBillNo" class="col-sm-2 control-label">Way Bill No.</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtWillBillNo" ng-model="willBillNo" placeholder="Element">
                     </div>
@@ -32,13 +32,13 @@
             <div class="col-md-12 col-lg-12">
                 <div class="panel panel-default" style="">
                     <div class="panel-heading">
-                        <b>Will Bill Header</b>
+                        <b>Way Bill Header</b>
                     </div>
 
                     <table id="tbWillBillHeader" class="table table-striped table-hover table-bordered .table-condensed">
                         <thead>
                             <tr>
-                                <th style="">Will Bill No.</th>
+                                <th style="">Way Bill No.</th>
                                 <th style="">From</th>
                                 <th style="">Ship To</th>
                                 <th style="">Ship Date</th>
@@ -71,7 +71,7 @@
             <div class="col-md-12 col-lg-12">
                 <div class="panel panel-default" style="">
                     <div class="panel-heading">
-                        <b>Will Bill Detail</b>
+                        <b>Way Bill Detail</b>
                     </div>
 
                     <table id="tbWillBillDetails" class="table table-striped table-hover table-bordered .table-condensed">
@@ -118,7 +118,7 @@
                             <tr>
                                 <th style="">Token</th>
                                 <th style="">From</th>
-                                <th style="">Will Bill No.</th>
+                                <th style="">Way Bill No.</th>
                                 <th style="">Transport Method</th>
                                 <th style="">Invoice No.</th>
                                 <th style="">Depart Date</th>
@@ -205,7 +205,7 @@
                         <thead>
                             <tr>
                                 <th>Token</th>
-                                <th style="">Will Bill No.</th>
+                                <th style="">Way Bill No.</th>
                                 <th style="">Type</th>
                                 <th style="">DO Release Date</th>
                                 <th style="">Arrival Date(300)</th>
@@ -244,7 +244,7 @@
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                             </div>
                                         </a>
-                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" ng-disabled="is4083">
                                             <datetimepicker data-ng-model="cust.BND_ARRIVAL_DATE"
                                                             data-datetimepicker-config="{ dropdownSelector: '#dropdown',minView:'day' }"></datetimepicker>
                                         </ul>
@@ -254,12 +254,12 @@
                                     <div class="dropdown">
                                         <a class="dropdown-toggle" id="dropdown$index" role="button" data-toggle="dropdown" data-target="#" href="#">
                                             <div class="input-group">
-                                                <input type="text" id="date$index" name="date" class="form-control" data-ng-model="cust.BND_OUT_DATE | date:'yyyy-MM-dd'" ng-change="onOutDateChange(cust)">
+                                                <input type="text" id="date$index" name="date" class="form-control" ng-disabled="is4083" data-ng-model="cust.BND_OUT_DATE | date:'yyyy-MM-dd'" ng-change="onOutDateChange(cust)">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                             </div>
                                         </a>
-                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                            <datetimepicker data-ng-model="cust.BND_OUT_DATE"
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" ng-disabled="is4083">
+                                            <datetimepicker data-ng-show="!is4083" data-ng-model="cust.BND_OUT_DATE"
                                                             data-datetimepicker-config="{ dropdownSelector: '#dropdown',minView:'day' }"
                                                             data-on-set-time="onOutDateChange(cust)"></datetimepicker>
                                         </ul>
@@ -269,12 +269,12 @@
                                     <div class="dropdown">
                                         <a class="dropdown-toggle" id="dropdown$index" role="button" data-toggle="dropdown" data-target="#" href="#">
                                             <div class="input-group">
-                                                <input type="text" id="date$index" name="date" class="form-control" data-ng-model="cust.NBND_ARRIVAL_DATE | date:'yyyy-MM-dd'">
+                                                <input type="text" id="date$index" name="date" class="form-control" ng-disabled="is4083" data-ng-model="cust.NBND_ARRIVAL_DATE | date:'yyyy-MM-dd'">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                             </div>
                                         </a>
                                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                            <datetimepicker data-ng-model="cust.NBND_ARRIVAL_DATE"
+                                            <datetimepicker data-ng-show="!is4083" data-ng-model="cust.NBND_ARRIVAL_DATE"
                                                             data-datetimepicker-config="{ dropdownSelector: '#dropdown',minView:'day' }"></datetimepicker>
                                         </ul>
                                     </div>
@@ -354,7 +354,7 @@
                     $scope.searchedWillBillNo = $scope.willBillNo;
                 },
                 error: function (obj) {
-                    alert("fail to get will bill Data");
+                    alert("fail to get Way Bill Data");
                 }
 
             });
@@ -505,7 +505,7 @@
                     $scope.ittTranLoadArray = obj;
                 },
                 error: function (obj) {
-                    alert("fail to get will bill Data");
+                    alert("fail to get Way Bill Data");
                 }
 
             });
@@ -572,7 +572,7 @@
                     $scope.ittCustomerProcessArray = obj;
                 },
                 error: function (obj) {
-                    alert("fail to get will bill Data");
+                    alert("fail to get Way Bill Data");
                 }
 
             });

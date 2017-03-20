@@ -12,12 +12,14 @@ namespace CHubMVC.Validations
     {
         private string SysID;
         private string PartNo;
+        private decimal Qty;
         public G_OESALES_CATALOG model;
 
-        public G_OESALES_CATALOG_VALIDATION(string sysID, string partNo)
+        public G_OESALES_CATALOG_VALIDATION(string sysID, string partNo,decimal qty)
         {
             this.SysID = sysID;
             this.PartNo = partNo;
+            this.Qty = qty;
         }
 
         public string ValidationAction()
@@ -30,7 +32,11 @@ namespace CHubMVC.Validations
             model = bll.GetOESalesCatalog(SysID, PartNo);
 
             if (model.MOQ > 1)
-                msg += string.Format("MOQ:{0},", model.MOQ);
+            {
+                //if qty can be divide exactly by moq, skip warning
+                if (Qty != 0 && Qty % model.MOQ != 0)
+                    msg += string.Format("MOQ:{0},", model.MOQ);
+            }
 
             if (model.MANUAL_ALLOCATED_FLAG == CHubConstValues.IndY)
                 msg += "Manual Allocated,";

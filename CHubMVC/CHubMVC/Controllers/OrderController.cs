@@ -706,7 +706,7 @@ namespace CHubMVC.Controllers
                 }
 
                 //Do G_OESALES_CATALOG_VALIDATION
-                G_OESALES_CATALOG_VALIDATION oeSaleValidation = new G_OESALES_CATALOG_VALIDATION(usingSysID, olArg.olItem.PartNo);
+                G_OESALES_CATALOG_VALIDATION oeSaleValidation = new G_OESALES_CATALOG_VALIDATION(usingSysID, olArg.olItem.PartNo,olArg.olItem.Qty);
                 olArg.olItem.WarningMsg += oeSaleValidation.ValidationAction();
                 if(!string.IsNullOrEmpty(olArg.olItem.WarningMsg))
                     olArg.olItem.WarningColor = CHubConstValues.WarningColor;
