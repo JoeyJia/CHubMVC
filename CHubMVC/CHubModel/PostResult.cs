@@ -20,6 +20,13 @@ namespace CHubModel
             Data = data;
         }
 
+        public RequestResult( object data)
+        {
+            Success = true;
+            Msg = null;
+            Data = data;
+        }
+
         public bool Success { get; set; }
 
         public string Msg { get; set; }

@@ -119,20 +119,21 @@ namespace CHubBLL
 
             //Detail part
             TS_OR_DETAIL_DAL detailDal = new TS_OR_DETAIL_DAL(dal.db);
+            //delete old part will insert new data
+            List<TS_OR_DETAIL> oldDetails = detailDal.GetDetailsBySeq(orHeader.ORDER_REQ_NO);
+            if (oldDetails != null && oldDetails.Count > 0)
+            {
+                foreach (var item in oldDetails)
+                {
+                    detailDal.Delete(item, false);
+                }
+            }
+
             if (detailList != null && detailList.Count > 0)
             {
-                //TS_OR_DETAIL_STAGE_BLL dStageBLL = new TS_OR_DETAIL_STAGE_BLL(dal.db);
                 foreach (var item in detailList)
                 {
-                    //TS_OR_DETAIL_STAGE dStage = dStageBLL.GetSpecifyDetailStage(item.ORDER_REQ_NO, item.ORDER_LINE_NO);
-                    //if (dStage != null)
-                    //{
-                    //    detailDal.Delete(dStage, false);
-                    //    detailDal.Add(item, false);
-                    //}
-                    //else
-                        detailDal.AddOrUpdateDetail(item, false);
-
+                    detailDal.Add(item, false);
                 }
             }
 

@@ -636,6 +636,15 @@
             var custPONO = $("#poNum").val();
             var isSpecialShip = $("#ssto")[0].checked;
 
+            debugger;
+            //Re calulate order_Line_No
+            if ($scope.orderLines != null && $scope.orderLines.length > 0)
+            {
+                for (var i = 0; i < $scope.orderLines.length; i++) {
+                    $scope.orderLines[i].OrderLineNo = i + 1;
+                }
+            }
+
 
             $.ajax({
                 url: "/order/SaveOrder",
@@ -1009,12 +1018,12 @@
             type:"post",
             async:false,
             success: function (obj) {
-                if (obj == "OverFlow")
-                    alert("Please make condition more strict");
+                if (!obj.Success)
+                    alert(obj.Msg);
                 else {
                     var appElement = document.querySelector('[ng-controller=searchResultCtrl]');
                     var scope = angular.element(appElement).scope();
-                    scope.resultData = obj;
+                    scope.resultData = obj.Data;
 
                     scope.$apply();
                     $("#aliasSearch").modal("show");

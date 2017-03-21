@@ -36,7 +36,7 @@ namespace CHubDAL
                 result = result.Where(a => a.CUSTOMER_PO_NO == poNum);
 
             totalCount = result.Count();
-            return result.ToList();
+             return result.OrderBy(a => a.ORDER_REQ_NO).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
         }
 
         public List<TS_OR_HEADER> GetHeadersBySeq(decimal orderSeq)

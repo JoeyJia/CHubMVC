@@ -133,6 +133,7 @@ namespace CHubMVC.Controllers
                     OrderLineCheckArg arg = new OrderLineCheckArg();
                     arg.primarySysID = priAddr.SysID;
                     arg.primaryWareHouse = priAddr.WareHouse;
+                    arg.customerNo = priAddr.CustomerNo;
                     if (AltAddr != null)
                     {
                         arg.altSysID = AltAddr.SysID;
@@ -192,6 +193,7 @@ namespace CHubMVC.Controllers
                         OrderLineCheckArg arg = new OrderLineCheckArg();
                         arg.primarySysID = priAddr.SysID;
                         arg.primaryWareHouse = priAddr.WareHouse;
+                        arg.customerNo = priAddr.CustomerNo;
                         arg.altSysID = null;
                         arg.altWareHosue = null;
 
@@ -249,23 +251,20 @@ namespace CHubMVC.Controllers
                 }
 
                 //Get from parameter table***
-                if (list.Count > 10)
+                if (list.Count > 20)
                 {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    return Content(string.Format("Result has {0} items, Make Condition more strict", list.Count.ToString()));
+                    return Json(new RequestResult(false, string.Format("Result has {0} items, Make Condition more strict", list.Count.ToString())));
                 }
                 if (list.Count == 0)
                 {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    return Content("No result");
+                    return Json(new RequestResult(false, "No result"));
                 }
 
-                return Json(list);
+                return Json(new RequestResult(list));
             }
             catch (Exception ee)
             {
-                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                return Content(ee.Message);
+                return Json(new RequestResult(false, ee.Message));
             }
         }
 
