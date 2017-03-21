@@ -84,6 +84,7 @@ namespace CHubMVC.Controllers
                 bool splInd = true;
                 string poNum = "";
                 string dueDate = "";
+                string note = "";
 
                 V_ALIAS_ADDR_DFLT_BLL dfltBLL = new V_ALIAS_ADDR_DFLT_BLL(db);
                 V_ALIAS_ADDR_SPL_BLL splBLL = new V_ALIAS_ADDR_SPL_BLL(db);
@@ -104,6 +105,7 @@ namespace CHubMVC.Controllers
                             {
                                 poNum = item.CUSTOMER_PO_NO;
                                 dueDate = item.DUE_DATE.ToString("yyyy-MM-dd");
+                                note = item.ORDER_NOTES;
                                 priAddr = splBLL.GetSpecifyAliasAddrSPL(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION, item.DEST_LOCATION);
                             }
                             if (item.SHIPFROM_SEQ == 1)
@@ -116,6 +118,7 @@ namespace CHubMVC.Controllers
                             {
                                 poNum = item.CUSTOMER_PO_NO;
                                 dueDate = item.DUE_DATE.ToString("yyyy-MM-dd");
+                                note = item.ORDER_NOTES;
                                 priAddr = dfltBLL.GetSpecifyAliasAddrDFLT(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION);
                             }
                             if (item.SHIPFROM_SEQ == 1)
@@ -164,6 +167,7 @@ namespace CHubMVC.Controllers
                                 {
                                     poNum = item.CUSTOMER_PO_NO;
                                     dueDate = item.DUE_DATE.ToString("yyyy-MM-dd");
+                                    note = item.ORDER_NOTES;
                                     priAddr = splBLL.GetSpecifyAliasAddrSPL(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION, item.DEST_LOCATION);
                                 }
                             }
@@ -174,6 +178,7 @@ namespace CHubMVC.Controllers
                                 {
                                     poNum = item.CUSTOMER_PO_NO;
                                     dueDate = item.DUE_DATE.ToString("yyyy-MM-dd");
+                                    note = item.ORDER_NOTES;
                                     priAddr = dfltBLL.GetSpecifyAliasAddrDFLT(item.ALIAS_NAME, item.TO_SYSTEM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION);
                                 }
                             }
@@ -215,7 +220,8 @@ namespace CHubMVC.Controllers
                     isSaved = isSaved,
                     splInd = splInd,
                     poNum = poNum,
-                    dueDate = dueDate
+                    dueDate = dueDate,
+                    note = note
                 };
 
                 return Json(obj);
@@ -574,16 +580,22 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult QueryAction(decimal? orderSeq,string custAlias,string poNum)
+        public ActionResult QueryAction(decimal? orderSeq,string custAlias,string poNum, int currentPage, int pageSize)
         {
             if (Session[CHubConstValues.SessionUser] == null)
                 return RedirectToAction("Login", "Account");
 
-            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            int totalCount = 0;
             CHubEntities db = new CHubEntities();
             TS_OR_HEADER_BLL hBLL = new TS_OR_HEADER_BLL(db);
-            List<TS_OR_HEADER> result = hBLL.GetHeaders(orderSeq, custAlias, poNum, appUser);
-            return Json(result);
+            List<TS_OR_HEADER> result = hBLL.GetHeaders(orderSeq, custAlias, poNum,  currentPage,  pageSize,out totalCount);
+
+            var obj = new
+            {
+                result = result,
+                totalCount = totalCount
+            };
+            return Json(obj);
         }
 
         #endregion

@@ -90,6 +90,9 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div style="margin-left:20px;margin-top:5px;">
+                            <tm-pagination conf="paginationConf"></tm-pagination>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -100,42 +103,55 @@
 <script>
     
 
-    angular.module('queryApp', []).controller('queryCtrl', function ($scope, $http) {
+    angular.module('queryApp', ['tm.pagination']).controller('queryCtrl', function ($scope, $http) {
         $scope.result = [];
         $scope.orderSeq = "";
         $scope.custAlias = "";
         $scope.poNum = "";
 
-     //   $http.post("/order/InitDraft", null, null).then(function (resp) {
-     //       //debugger;
-     //       $scope.draftList = resp.data;
+        $scope.loading = true;
 
-     //   },
-     //function (resp) {
-     //    alert("Fail!");
-     //    // $scope.resp = resp;
-     //});
+        $scope.paginationConf = {
+            currentPage: 1,
+            itemsPerPage: 10,
+            totalItems: 0,
+            pagesLength: 3,
+            perPageOptions: [10, 20, 30, 40, 50],
+        };
+
+        $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', searchHDR);
 
         $scope.searchAction = function () {
+            searchHDR();
+        }
+
+        function searchHDR() {
+            if ($scope.loading) {
+                //first time load ignore
+                $scope.loading = false;
+                return;
+            }
             if ($scope.orderSeq == "" && $scope.custAlias == "" && $scope.poNum == "")
             {
                 alert("No Condition");
                 return;
             }
 
-
             $.ajax({
                 url: "/order/QueryAction",
                 data: {
                     orderSeq: $scope.orderSeq,
                     custAlias: $scope.custAlias,
-                    poNum:$scope.poNum
+                    poNum: $scope.poNum,
+                    currentPage: $scope.paginationConf.currentPage,
+                    pageSize: $scope.paginationConf.itemsPerPage
                 },
                 type: "post",
                 async: false,
                 success: function (obj) {
-
-                    $scope.result = obj;
+                   
+                    $scope.result = obj.result;
+                    $scope.paginationConf.totalItems = obj.totalCount;
                 },
                 error: function (obj) {
                     alert(obj.responseText);

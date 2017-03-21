@@ -10,6 +10,13 @@ namespace CHubCommon
 {
     public class ClassConvert
     {
+        static Dictionary<string, string> SpecialMapping = new Dictionary<string, string>();
+
+        static ClassConvert()
+        {
+            //class property, template property(excel)
+            SpecialMapping.Add("WILL_BILL_NO", "WAY_BILL_NO");
+        }
         public static void ConvertAction(object from, object to, Dictionary<string, string> converter)
         {
             try
@@ -78,10 +85,12 @@ namespace CHubCommon
         }
 
 
-        public static List<T> ConvertDT2List<T>(DataTable dt) 
+        public static List<T> ConvertDT2List<T>(DataTable dt, bool hasSpecial = true) 
         {
             PropertyInfo[] properties = typeof(T).GetProperties();
             List<T> list = new List<T>();
+
+            List<string> colNames = GetDTColumnName(dt);
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -90,7 +99,7 @@ namespace CHubCommon
                 {
                     try
                     {
-                        if (dt.Rows[i][item.Name] != null)
+                        if (colNames.Contains(item.Name) || SpecialMapping.Keys.ToList().Contains(item.Name))
                         {
                             if (item.PropertyType == typeof(Nullable<decimal>))
                             {
@@ -100,10 +109,17 @@ namespace CHubCommon
                             {
                                 //dt form NPOI , the format of datetime is "yy-M月-yyyy" 
                                 //tem.SetValue(obj, DateTime.ParseExact(dt.Rows[i][item.Name].ToString().Replace("月", ""),"dd-M-yyyy", System.Globalization.CultureInfo.CurrentCulture));
-                                item.SetValue(obj, DateTime.Parse(dt.Rows[i][item.Name].ToString(),System.Globalization.CultureInfo.InvariantCulture));
+                                item.SetValue(obj, DateTime.Parse(dt.Rows[i][item.Name].ToString(), System.Globalization.CultureInfo.InvariantCulture));
                             }
                             else
-                                item.SetValue(obj, dt.Rows[i][item.Name]);
+                            {
+                                if (hasSpecial && SpecialMapping.Keys.ToList().Contains(item.Name))
+                                {
+                                    item.SetValue(obj, dt.Rows[i][SpecialMapping[item.Name]]);
+                                }
+                                else
+                                    item.SetValue(obj, dt.Rows[i][item.Name]);
+                            }
                         }
                     }
                     catch
@@ -115,5 +131,20 @@ namespace CHubCommon
             }
             return list;
         }
+
+
+        private static List<string> GetDTColumnName(DataTable dt)
+        {
+            List<string> result = new List<string>();
+            if (dt.Columns == null || dt.Columns.Count == 0)
+                return null;
+
+            foreach (DataColumn item in dt.Columns)
+            {
+                result.Add(item.ColumnName);
+            }
+            return result;
+        }
+
     }
 }

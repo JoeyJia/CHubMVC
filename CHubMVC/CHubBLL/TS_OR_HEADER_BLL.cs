@@ -24,9 +24,9 @@ namespace CHubBLL
             dal = new TS_OR_HEADER_DAL(db);
         }
 
-        public List<TS_OR_HEADER> GetHeaders(decimal? orderSeq, string custAlias, string poNum,string appuser)
+        public List<TS_OR_HEADER> GetHeaders(decimal? orderSeq, string custAlias, string poNum, int currentPage, int pageSize, out int totalCount)
         {
-            return dal.GetHeaders(orderSeq, custAlias, poNum,appuser);
+            return dal.GetHeaders(orderSeq, custAlias, poNum,  currentPage,  pageSize, out totalCount);
         }
 
         public List<TS_OR_HEADER> GetHeadersBySeq(decimal orderSeq)
