@@ -19,6 +19,15 @@ namespace CHubModel
             Msg = msg;
             Data = data;
         }
+        public RequestResult(bool success)
+        {
+            Success = success;
+            if (success)
+                Msg = "Success";
+            else
+                Msg = "Fail";
+            Data = null;
+        }
 
         public RequestResult( object data)
         {

@@ -16,6 +16,9 @@ namespace CHubCommon
         public static string IndY = "Y";
         public static string IndN = "N";
 
+        public static string SuccessMsg = "Success";
+        public static string FailMsg = "Fail";
+
         //Stock Tip color
         public static string SatisfyStockColor = "green";
         public static string PartialStockColor = "orange";

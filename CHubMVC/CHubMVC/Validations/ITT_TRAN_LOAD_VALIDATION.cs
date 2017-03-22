@@ -33,8 +33,8 @@ namespace CHubMVC.Validations
 
             if (model.DEPART_DATE != null && model.ARRIVAL_DATE != null)
             {
-                if (DateTime.Compare(model.ARRIVAL_DATE.Value, model.DEPART_DATE.Value) <= 0)
-                    return "Depart Date need less than Arrival Date";
+                if (DateTime.Compare(model.ARRIVAL_DATE.Value, model.DEPART_DATE.Value) < 0)
+                    return "Depart Date need less than or equal Arrival Date";
             }
             return string.Empty;
         }

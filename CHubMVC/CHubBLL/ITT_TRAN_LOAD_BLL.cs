@@ -37,5 +37,11 @@ namespace CHubBLL
                 dal.Update(model);
         }
 
+        public void Delete(string token)
+        {
+            ITT_TRAN_LOAD model = dal.GetTranLoad(decimal.Parse(token));
+            dal.Delete(model);
+        }
+
     }
 }

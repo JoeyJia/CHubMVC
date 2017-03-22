@@ -21,5 +21,10 @@ namespace CHubDAL
             return db.ITT_CUST_LOAD.Where(a => a.WILL_BILL_NO == willBillNo).OrderBy(a=>a.LOAD_BATCH_TOKEN).ToList();
         }
 
+        public ITT_CUST_LOAD GetCustLoad(decimal token)
+        {
+            return db.ITT_CUST_LOAD.FirstOrDefault(a => a.LOAD_BATCH_TOKEN == token);
+        }
+
     }
 }

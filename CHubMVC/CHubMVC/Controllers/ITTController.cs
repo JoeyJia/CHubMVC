@@ -83,6 +83,24 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
+        public ActionResult DeleteTranLoad(string token)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(token))
+                    return Json(new RequestResult(false, "token is empty"));
+                ITT_TRAN_LOAD_BLL tranBLL = new ITT_TRAN_LOAD_BLL();
+                tranBLL.Delete(token);
+                return Json(new RequestResult(true));
+            }
+            catch (Exception ex)
+            {
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
         public ActionResult UploadTranLoadFile()
         {
             try
@@ -227,6 +245,24 @@ namespace CHubMVC.Controllers
             {
                 //this.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 //return Content(ex.Message);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult DeleteCustLoad(string token)
+        {
+            try
+            {
+                if(string.IsNullOrEmpty(token))
+                    return Json(new RequestResult(false,"token is empty"));
+                ITT_CUST_LOAD_BLL custBLL = new ITT_CUST_LOAD_BLL();
+                custBLL.Delete(token);
+                return Json(new RequestResult(true));
+            }
+            catch (Exception ex)
+            {
                 return Json(new RequestResult(false, ex.Message));
             }
         }

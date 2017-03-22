@@ -132,7 +132,7 @@
                             <tr ng-repeat="tran in ittTranLoadArray ">
                                 <td><input class="form-control" ng-model="tran.LOAD_BATCH_TOKEN" disabled /></td>
                                 <td>
-                                    <select class="form-control input-sm" ng-model="tran.FROM_SYSTEM" ng-disabled="hasData" ng-options="si as si for si in sysIDList"></select>
+                                    <select class="form-control input-sm" ng-model="tran.FROM_SYSTEM" ng-options="si as si for si in sysIDList"></select>
                                 </td>
                                 <td><input class="form-control" ng-model="tran.WILL_BILL_NO" ng-disabled="hasData" /></td>
                                 <td>
@@ -169,7 +169,10 @@
                                 </td>
                                 <td><input class="form-control" ng-model="tran.NOTE" /></td>
                                 <td><input class="form-control" ng-model="tran.LOAD_DATE | date:'yyyy-MM-dd'" readonly/></td>
-                                <td class="text-center"><a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="saveTranLoad(tran)" ><span class="glyphicon glyphicon-floppy-disk"></span></a></td>
+                                <td class="text-center">
+                                    <a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="saveTranLoad(tran)"><span class="glyphicon glyphicon-floppy-disk"></span></a>
+                                    <a href="javascript:void(0)" title="Delete" class="removeBtn" ng-click="removeTranLoad($index)"><span class="glyphicon glyphicon-trash"></span></a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -280,7 +283,10 @@
                                     </div>
                                 </td>
                                 <td><input class="form-control" ng-model="cust.LOAD_DATE | date:'yyyy-MM-dd'"  readonly/></td>
-                                <td class="text-center"><a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="saveCustLoad(cust)"><span class="glyphicon glyphicon-floppy-disk"></span></a></td>
+                                <td class="text-center">
+                                    <a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="saveCustLoad(cust)"><span class="glyphicon glyphicon-floppy-disk"></span></a>
+                                    <a href="javascript:void(0)" title="Delete" class="removeBtn" ng-click="removeCustLoad($index)"><span class="glyphicon glyphicon-trash"></span></a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -385,7 +391,6 @@
                 if ($scope.ittTranLoadArray != null && $scope.ittTranLoadArray.length > 0)
                 {
                     var lastIndex = $scope.ittTranLoadArray.length - 1;
-                    newItem.INVOICE_NO = $scope.ittTranLoadArray[lastIndex].INVOICE_NO;
                     newItem.DEPART_DATE = $scope.ittTranLoadArray[lastIndex].DEPART_DATE;
                     newItem.ARRIVAL_DATE = $scope.ittTranLoadArray[lastIndex].ARRIVAL_DATE;
                     newItem.TRAN_TYPE = $scope.ittTranLoadArray[lastIndex].TRAN_TYPE;
@@ -418,6 +423,36 @@
             });
         };
 
+        $scope.removeTranLoad = function (index) {
+            var curr = $scope.ittTranLoadArray[index];
+            if (curr.LOAD_BATCH_TOKEN == 0)
+                $scope.ittTranLoadArray.splice(index, 1);
+            else
+            {
+                $.ajax({
+                    url: "/itt/DeleteTranLoad",
+                    data: {
+                        token: curr.LOAD_BATCH_TOKEN
+                    },
+                    type: "post",
+                    async: false,
+                    success: function (obj) {
+                        if (obj.Success) {
+                            $scope.ittTranLoadArray.splice(index, 1);
+                            alert(obj.Msg);
+                        }
+                        else
+                            alert(obj.Msg);
+                    },
+                    error: function (obj) {
+                        alert("fail to Delete Data");
+                    }
+
+                });
+            }
+        };
+
+        //Cust Part
         $scope.customProcessClick = function () {
             GetTCGroupList();
             GetCustProcess();
@@ -464,6 +499,35 @@
                 }
 
             });
+        };
+
+        $scope.removeCustLoad = function (index) {
+
+            var curr = $scope.ittCustomerProcessArray[index];
+            if (curr.LOAD_BATCH_TOKEN == 0)
+                $scope.ittCustomerProcessArray.splice(index, 1);
+            else {
+                $.ajax({
+                    url: "/itt/DeleteCustLoad",
+                    data: {
+                        token: curr.LOAD_BATCH_TOKEN
+                    },
+                    type: "post",
+                    async: false,
+                    success: function (obj) {
+                        if (obj.Success) {
+                            $scope.ittCustomerProcessArray.splice(index, 1);
+                            alert(obj.Msg);
+                        }
+                        else
+                            alert(obj.Msg);
+                    },
+                    error: function (obj) {
+                        alert("fail to Delete Data");
+                    }
+
+                });
+            }
         };
 
         $scope.onOutDateChange = function (curr)
