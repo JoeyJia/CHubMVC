@@ -411,8 +411,11 @@
                 async: false,
                 contentType: 'application/json',
                 success: function (obj) {
-                    if (obj.Success)
+                    if (obj.Success) {
+                        if (curr.LOAD_BATCH_TOKEN == 0)
+                            curr.LOAD_BATCH_TOKEN = obj.Data;
                         alert("Success Action");
+                    }
                     else
                         alert(obj.Msg);
                 },
@@ -424,6 +427,9 @@
         };
 
         $scope.removeTranLoad = function (index) {
+            if (!confirm("Confirm Delete Action?"))
+                return;
+
             var curr = $scope.ittTranLoadArray[index];
             if (curr.LOAD_BATCH_TOKEN == 0)
                 $scope.ittTranLoadArray.splice(index, 1);
@@ -489,8 +495,11 @@
                 async: false,
                 contentType: 'application/json',
                 success: function (obj) {
-                    if (obj.Success)
+                    if (obj.Success) {
+                        if (curr.LOAD_BATCH_TOKEN == 0)
+                            curr.LOAD_BATCH_TOKEN = obj.Data;
                         alert("Success Action");
+                    }
                     else
                         alert(obj.Msg);
                 },
@@ -502,6 +511,8 @@
         };
 
         $scope.removeCustLoad = function (index) {
+            if (!confirm("Confirm Delete Action?"))
+                return;
 
             var curr = $scope.ittCustomerProcessArray[index];
             if (curr.LOAD_BATCH_TOKEN == 0)
@@ -515,6 +526,7 @@
                     type: "post",
                     async: false,
                     success: function (obj) {
+                        
                         if (obj.Success) {
                             $scope.ittCustomerProcessArray.splice(index, 1);
                             alert(obj.Msg);

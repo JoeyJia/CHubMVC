@@ -71,7 +71,7 @@ namespace CHubMVC.Controllers
                 string msg = SaveTranLoadAction(model);
                 if(!string.IsNullOrEmpty(msg))
                      return Json(new RequestResult(false, msg));
-                return Json(new RequestResult(true));
+                return Json(new RequestResult(true,null,model.LOAD_BATCH_TOKEN));
             }
             catch (Exception ex)
             {
@@ -239,7 +239,7 @@ namespace CHubMVC.Controllers
 
                
 
-                return Json(new RequestResult(true));
+                return Json(new RequestResult(true,null,model.LOAD_BATCH_TOKEN));
             }
             catch (Exception ex)
             {
