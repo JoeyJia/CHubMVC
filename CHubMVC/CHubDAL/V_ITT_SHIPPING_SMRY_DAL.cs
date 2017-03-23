@@ -16,9 +16,19 @@ namespace CHubDAL
             : base(db) { }
 
 
-        public List<V_ITT_SHIPPING_SMRY> GetWillBillList(string willBillNo)
+        public List<V_ITT_SHIPPING_SMRY> GetWillBillList(string willBillNo,string invoiceNo)
         {
-            return db.V_ITT_SHIPPING_SMRY.Where(a => a.WILL_BILL_NO == willBillNo).ToList();
+            IQueryable<V_ITT_SHIPPING_SMRY> result = db.V_ITT_SHIPPING_SMRY;
+            if (!string.IsNullOrEmpty(willBillNo))
+            {
+                result = result.Where(a => a.WILL_BILL_NO == willBillNo);
+            }
+            if (!string.IsNullOrEmpty(invoiceNo))
+            {
+                result = result.Where(a => a.INVOICE_NO == invoiceNo);
+            }
+
+            return result.ToList();
         }
 
     }

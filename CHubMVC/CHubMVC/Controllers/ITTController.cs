@@ -12,6 +12,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace CHubMVC.Controllers
 {
@@ -29,10 +30,10 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult SearchWillBill(string willBillNo)
+        public ActionResult SearchWillBill(string willBillNo,string invoiceNo)
         {
             V_ITT_SHIPPING_SMRY_BLL ittBLL = new V_ITT_SHIPPING_SMRY_BLL();
-            List<V_ITT_SHIPPING_SMRY> result = ittBLL.GetWillBillList(willBillNo);
+            List<V_ITT_SHIPPING_SMRY> result = ittBLL.GetWillBillList(willBillNo,invoiceNo);
             return Json(result);
         }
 
@@ -111,6 +112,13 @@ namespace CHubMVC.Controllers
                 FileInfo folder = new FileInfo(folderPath);
                 if (!Directory.Exists(folder.FullName))
                     Directory.CreateDirectory(folder.FullName);
+                //fb.filename - to get short file name parse string
+                 string errorLogName = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss") + tempGuid + ".txt";
+                string errorLogWebName = "/temp/" + errorLogName;
+                string errorLogFullName = folder.FullName + errorLogName;
+                TxtLog txtLog = new TxtLog();
+                StringBuilder errorMsg = new StringBuilder();
+                errorMsg.AppendLine(string.Format("Current User:{0}", Session[CHubConstValues.SessionUser].ToString()));
 
                 string fileFullName = folder.FullName + tempGuid + ".xlsx";
                 fb.SaveAs(fileFullName);
@@ -154,6 +162,8 @@ namespace CHubMVC.Controllers
                             {
                                 failCount++;
                                 LogHelper.WriteErrorLog(string.Format("willBillNo:{0},message:{1},data:{2}", item.WILL_BILL_NO, msgInside, JsonConvert.SerializeObject(item)));
+                                errorMsg.AppendLine(string.Format("willBillNo:{0},message:{1},data:{2}", item.WILL_BILL_NO, msgInside, JsonConvert.SerializeObject(item)));
+                                //txtLog.log(string.Format("willBillNo:{0},message:{1},data:{2}", item.WILL_BILL_NO, msgInside, JsonConvert.SerializeObject(item)), errorLogFullName);
                             }
                         }
                     }
@@ -169,11 +179,18 @@ namespace CHubMVC.Controllers
                         {
                             failCount++;
                             LogHelper.WriteErrorLog(string.Format("willBillNo:{0},message:{1},data:{2}", item.WILL_BILL_NO, msg, JsonConvert.SerializeObject(item)));
+                            errorMsg.AppendLine(string.Format("willBillNo:{0},message:{1},data:{2}", item.WILL_BILL_NO, msg, JsonConvert.SerializeObject(item)));
                         }
                     }
                 }
-                return Json(new RequestResult(true, string.Format("Total Lines:{0}, Success items:{1}, Fail items:{2}", modelList.Count, successCount, failCount)));
-                //return Content(string.Format("Total Lines:{0}, Success items:{1}, Fail items:{2}", modelList.Count, successCount, failCount));
+
+                bool success = true;
+                if (failCount > 0)
+                {
+                    txtLog.log(errorMsg.ToString(), errorLogFullName);
+                    success = false;
+                }
+                return Json(new RequestResult(success, string.Format("Total Lines:{0}, Success items:{1}, Fail items:{2}", modelList.Count, successCount, failCount), errorLogWebName));
             }
             catch (Exception ex)
             {

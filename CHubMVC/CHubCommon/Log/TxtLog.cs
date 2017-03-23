@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CHubCommon.Log
+namespace CHubCommon
 {
     public class TxtLog
     {
@@ -13,17 +13,16 @@ namespace CHubCommon.Log
         private StreamWriter writer;
         private FileStream fileStream = null;
 
-        public TxtLog(string fileName)
+        public TxtLog()
         {
-            logFile = fileName;
-            CreateDirectory(logFile);
+           
         }
 
-        public void log(string info)
+        public void log(string info,string fullPath)
         {
             try
             {
-                System.IO.FileInfo fileInfo = new System.IO.FileInfo(logFile);
+                System.IO.FileInfo fileInfo = new System.IO.FileInfo(fullPath);
                 if (!fileInfo.Exists)
                 {
                     fileStream = fileInfo.Create();
@@ -34,7 +33,8 @@ namespace CHubCommon.Log
                     fileStream = fileInfo.Open(FileMode.Append, FileAccess.Write);
                     writer = new StreamWriter(fileStream);
                 }
-                writer.WriteLine(DateTime.Now + ": " + info);
+                writer.WriteLine("Time:" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                writer.WriteLine(info);
                 writer.WriteLine("----------------------------------");
             }
             finally

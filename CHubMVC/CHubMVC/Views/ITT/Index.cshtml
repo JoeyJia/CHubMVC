@@ -16,7 +16,17 @@
                 <div class="form-group">
                     <label for="txtWillBillNo" class="col-sm-2 control-label">Way Bill No.</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control input-sm" id="txtWillBillNo" ng-model="willBillNo" placeholder="Element">
+                        <input type="text" class="form-control input-sm" id="txtWillBillNo" ng-model="willBillNo" placeholder="Way Bill No.">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row" style="margin-top:10px;">
+                <div class="form-group">
+                    <label for="txtInvoiceNo" class="col-sm-2 control-label">Invoice No.</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtInvoiceNo" ng-model="invoiceNo" placeholder="Invoice No.">
                     </div>
                     <div class="col-sm-2">
                         <button class="btn btn-primary btn-sm" ng-click="searchAction()">Search</button>
@@ -317,7 +327,9 @@
     angular.module('ittApp', ['ui.bootstrap.datetimepicker']).controller('ittCtrl', function ($scope, $http,$timeout) {
         $scope.result = [];
         $scope.willBillNo = "";
+        $scope.invoiceNo = "";
         $scope.searchedWillBillNo = "";
+        $scope.searchedInvoiceNo = "";
         $scope.hasData = false;
 
         $scope.showTran = false;
@@ -331,7 +343,7 @@
         $scope.sysIDList = [];
 
         $scope.searchAction = function () {
-            if ($scope.willBillNo == "") {
+            if ($scope.willBillNo == "" && $scope.invoiceNo=="") {
                 return;
             }
             $scope.ittTranLoadArray = [];
@@ -342,7 +354,8 @@
             $.ajax({
                 url: "/itt/SearchWillBill",
                 data: {
-                    willBillNo: $scope.willBillNo
+                    willBillNo: $scope.willBillNo,
+                    invoiceNo: $scope.invoiceNo
                 },
                 type: "post",
                 async: false,
@@ -358,6 +371,7 @@
                     else
                         $scope.hasData = false;
                     $scope.searchedWillBillNo = $scope.willBillNo;
+                    $scope.searchedInvoiceNo = $scope.invoiceNo;
                 },
                 error: function (obj) {
                     alert("fail to get Way Bill Data");
@@ -673,8 +687,12 @@
                         success: function (data) {
                             if (data.Success)
                                 alert(data.Msg);
-                            else
-                                alert(data.Msg);
+                            else {
+                                if (!confirm(data.Msg + "\r\n" + "Open Log file?"))
+                                    return;
+                                window.open(data.Data);
+                            }
+                            
                         }
                     };
                 form.ajaxSubmit(options);
