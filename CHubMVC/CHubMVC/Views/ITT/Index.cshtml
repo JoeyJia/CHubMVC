@@ -361,8 +361,18 @@
                 async: false,
                 success: function (obj) {
                     $scope.result = obj;
+                    debugger;
                     if ($scope.result != null && $scope.result.length > 0) {
-                        $scope.hasData = true;
+                        if ($scope.result[0].WILL_BILL_NO != null && $scope.result[0].WILL_BILL_NO != "" && $scope.result[0].WILL_BILL_NO != "null") {
+                            $scope.hasData = true;
+                            $scope.searchedWillBillNo = $scope.willBillNo;
+                            $scope.searchedInvoiceNo = $scope.invoiceNo;
+                        }
+                        else {
+                            $scope.hasData = false;
+                            $scope.searchedWillBillNo = "";
+                            $scope.searchedInvoiceNo = "";
+                        }
                         if ($scope.result[0].SHIP_TO_ABBR == "4083")
                             $scope.is4083 = true;
                         else
@@ -370,8 +380,7 @@
                     }
                     else
                         $scope.hasData = false;
-                    $scope.searchedWillBillNo = $scope.willBillNo;
-                    $scope.searchedInvoiceNo = $scope.invoiceNo;
+                   
                 },
                 error: function (obj) {
                     alert("fail to get Way Bill Data");
@@ -584,6 +593,8 @@
 
         //function part
         function GetTranLoad() {
+            if ($scope.searchedWillBillNo == "")
+                return;
             $.ajax({
                 url: "/itt/GetTranLoadList",
                 data: {
@@ -706,7 +717,13 @@
             type: 'post',
             enctype: "multipart/form-data",
             success: function (data) {
-                alert(data);
+                if (data.Success)
+                    alert(data.Msg);
+                else {
+                    if (!confirm(data.Msg + "\r\n" + "Open Log file?"))
+                        return;
+                    window.open(data.Data);
+                }
             }
         };
         form.ajaxSubmit(options);
