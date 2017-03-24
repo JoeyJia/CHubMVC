@@ -87,5 +87,6 @@ namespace CHubDBEntity
         public virtual DbSet<ITT_TRAN_LOAD> ITT_TRAN_LOAD { get; set; }
         public virtual DbSet<V_ITT_SHIPPING_SMRY> V_ITT_SHIPPING_SMRY { get; set; }
         public virtual DbSet<M_CALENDAR> M_CALENDAR { get; set; }
+        public virtual DbSet<V_SHIPPING_ALL_BASE> V_SHIPPING_ALL_BASE { get; set; }
     }
 }

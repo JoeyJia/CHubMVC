@@ -318,11 +318,11 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           </Key>
           <Property Name="LOAD_BATCH_TOKEN" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="WILL_BILL_NO" Type="varchar2" MaxLength="30" Nullable="false" />
-          <Property Name="INVOICE_NO" Type="varchar2" MaxLength="26" />
+          <Property Name="INVOICE_NO" Type="varchar2" MaxLength="26" Nullable="false" />
           <Property Name="DEPART_DATE" Type="date" />
           <Property Name="ARRIVAL_DATE" Type="date" />
           <Property Name="NOTE" Type="varchar2" MaxLength="50" />
-          <Property Name="TRAN_TYPE" Type="varchar2" MaxLength="20" />
+          <Property Name="TRAN_TYPE" Type="varchar2" MaxLength="20" Nullable="false" />
           <Property Name="LOADED_BY" Type="varchar2" MaxLength="20" />
           <Property Name="LOAD_DATE" Type="date" />
           <Property Name="FROM_SYSTEM" Type="varchar2" MaxLength="10" Nullable="false" />
@@ -1017,6 +1017,47 @@ warning 6002: The table/view 'GWAPP.V_O_DOWNLOAD_HDR' does not have a primary ke
           <Property Name="TXT" Type="varchar2" MaxLength="737" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.V_SHIPPING_ALL_BASE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_SHIPPING_ALL_BASE">
+          <Key>
+            <PropertyRef Name="FROM_SYSTEM" />
+            <PropertyRef Name="SHIP_TO_ABBR" />
+            <PropertyRef Name="SHIPMENT_NO" />
+            <PropertyRef Name="SHIP_DATE" />
+            <PropertyRef Name="REMOTE_CREATE_DATE" />
+          </Key>
+          <Property Name="FROM_SYSTEM" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="SHIP_TO_ABBR" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="ORDER_NO" Type="varchar2" MaxLength="12" />
+          <Property Name="LINE_NO" Type="number" Precision="11" Scale="0" />
+          <Property Name="SHIPMENT_NO" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="SHIPMENT_LINE_NO" Type="number" Precision="11" Scale="0" />
+          <Property Name="PART_NO" Type="varchar2" MaxLength="35" />
+          <Property Name="QTY_SHIPPED" Type="number" Precision="24" Scale="8" />
+          <Property Name="SERIAL_NO" Type="varchar2" MaxLength="15" />
+          <Property Name="SHIP_DATE" Type="date" Nullable="false" />
+          <Property Name="PACKING_LIST_NO" Type="varchar2" MaxLength="50" />
+          <Property Name="INVOICE_NO" Type="varchar2" MaxLength="26" />
+          <Property Name="INVOICE_ITEM" Type="number" Precision="38" Scale="0" />
+          <Property Name="COUNTRY_OF_ORIGIN" Type="varchar2" MaxLength="5" />
+          <Property Name="SU_LP" Type="varchar2" MaxLength="12" />
+          <Property Name="LODNUM" Type="varchar2" MaxLength="30" />
+          <Property Name="REMOTE_CREATE_DATE" Type="date" Nullable="false" />
+          <Property Name="LOCAL_CREATE_DATE" Type="date" />
+          <Property Name="S40_BND_OUT_DATE" Type="date" />
+          <Property Name="S50_NBND_ARRIVAL_DATE" Type="date" />
+          <Property Name="FLEX_DATE" Type="date" />
+          <Property Name="NOTE" Type="varchar2" MaxLength="50" />
+          <Property Name="TRACKING_NO" Type="varchar2" MaxLength="30" />
+          <Property Name="S00_DEPART_DATE" Type="date" />
+          <Property Name="S10_PORT_ARRIVAL_DATE" Type="date" />
+          <Property Name="S20_DO_RELEASE_DATE" Type="date" />
+          <Property Name="S30_BND_ARRIVAL_DATE" Type="date" />
+          <Property Name="WILL_BILL_NO" Type="varchar2" MaxLength="30" />
+          <Property Name="WB_LAST_CHANGED" Type="date" />
+          <Property Name="TRAN_TYPE" Type="varchar2" MaxLength="10" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.V_TC_CATEGORY_BY_SYS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_TC_CATEGORY_BY_SYS">
           <Key>
@@ -1374,7 +1415,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           </ReferentialConstraint>
         </Association>
         <Association Name="ITT_TRAN_LOAD_R01">
-          <End Role="ITT_TRAN_TYPE" Type="Self.ITT_TRAN_TYPE" Multiplicity="0..1" />
+          <End Role="ITT_TRAN_TYPE" Type="Self.ITT_TRAN_TYPE" Multiplicity="1" />
           <End Role="ITT_TRAN_LOAD" Type="Self.ITT_TRAN_LOAD" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ITT_TRAN_TYPE">
@@ -1421,7 +1462,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0014930">
+        <Association Name="SYS_C0015614">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1998,6 +2039,40 @@ FROM "GWAPP"."V_O_DOWNLOAD_DTL" "V_O_DOWNLOAD_DTL"</DefiningQuery>
 "V_O_DOWNLOAD_HDR"."TXT" AS "TXT"
 FROM "GWAPP"."V_O_DOWNLOAD_HDR" "V_O_DOWNLOAD_HDR"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="V_SHIPPING_ALL_BASE" EntityType="Self.V_SHIPPING_ALL_BASE" store:Type="Views" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"V_SHIPPING_ALL_BASE"."FROM_SYSTEM" AS "FROM_SYSTEM", 
+"V_SHIPPING_ALL_BASE"."SHIP_TO_ABBR" AS "SHIP_TO_ABBR", 
+"V_SHIPPING_ALL_BASE"."ORDER_NO" AS "ORDER_NO", 
+"V_SHIPPING_ALL_BASE"."LINE_NO" AS "LINE_NO", 
+"V_SHIPPING_ALL_BASE"."SHIPMENT_NO" AS "SHIPMENT_NO", 
+"V_SHIPPING_ALL_BASE"."SHIPMENT_LINE_NO" AS "SHIPMENT_LINE_NO", 
+"V_SHIPPING_ALL_BASE"."PART_NO" AS "PART_NO", 
+"V_SHIPPING_ALL_BASE"."QTY_SHIPPED" AS "QTY_SHIPPED", 
+"V_SHIPPING_ALL_BASE"."SERIAL_NO" AS "SERIAL_NO", 
+"V_SHIPPING_ALL_BASE"."SHIP_DATE" AS "SHIP_DATE", 
+"V_SHIPPING_ALL_BASE"."PACKING_LIST_NO" AS "PACKING_LIST_NO", 
+"V_SHIPPING_ALL_BASE"."INVOICE_NO" AS "INVOICE_NO", 
+"V_SHIPPING_ALL_BASE"."INVOICE_ITEM" AS "INVOICE_ITEM", 
+"V_SHIPPING_ALL_BASE"."COUNTRY_OF_ORIGIN" AS "COUNTRY_OF_ORIGIN", 
+"V_SHIPPING_ALL_BASE"."SU_LP" AS "SU_LP", 
+"V_SHIPPING_ALL_BASE"."LODNUM" AS "LODNUM", 
+"V_SHIPPING_ALL_BASE"."REMOTE_CREATE_DATE" AS "REMOTE_CREATE_DATE", 
+"V_SHIPPING_ALL_BASE"."LOCAL_CREATE_DATE" AS "LOCAL_CREATE_DATE", 
+"V_SHIPPING_ALL_BASE"."S40_BND_OUT_DATE" AS "S40_BND_OUT_DATE", 
+"V_SHIPPING_ALL_BASE"."S50_NBND_ARRIVAL_DATE" AS "S50_NBND_ARRIVAL_DATE", 
+"V_SHIPPING_ALL_BASE"."FLEX_DATE" AS "FLEX_DATE", 
+"V_SHIPPING_ALL_BASE"."NOTE" AS "NOTE", 
+"V_SHIPPING_ALL_BASE"."TRACKING_NO" AS "TRACKING_NO", 
+"V_SHIPPING_ALL_BASE"."S00_DEPART_DATE" AS "S00_DEPART_DATE", 
+"V_SHIPPING_ALL_BASE"."S10_PORT_ARRIVAL_DATE" AS "S10_PORT_ARRIVAL_DATE", 
+"V_SHIPPING_ALL_BASE"."S20_DO_RELEASE_DATE" AS "S20_DO_RELEASE_DATE", 
+"V_SHIPPING_ALL_BASE"."S30_BND_ARRIVAL_DATE" AS "S30_BND_ARRIVAL_DATE", 
+"V_SHIPPING_ALL_BASE"."WILL_BILL_NO" AS "WILL_BILL_NO", 
+"V_SHIPPING_ALL_BASE"."WB_LAST_CHANGED" AS "WB_LAST_CHANGED", 
+"V_SHIPPING_ALL_BASE"."TRAN_TYPE" AS "TRAN_TYPE"
+FROM "GWAPP"."V_SHIPPING_ALL_BASE" "V_SHIPPING_ALL_BASE"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="V_TC_CATEGORY_BY_SYS" EntityType="Self.V_TC_CATEGORY_BY_SYS" store:Type="Views" store:Schema="GWAPP">
             <DefiningQuery>SELECT 
 "V_TC_CATEGORY_BY_SYS"."PART_NO" AS "PART_NO", 
@@ -2204,7 +2279,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
             <End Role="M_PART" EntitySet="M_PART" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0014930" Association="Self.SYS_C0014930">
+          <AssociationSet Name="SYS_C0015614" Association="Self.SYS_C0015614">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -3230,6 +3305,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="ITT_TRAN_LOAD" EntitySet="ITT_TRAN_LOAD" />
           </AssociationSet>
           <EntitySet Name="M_CALENDAR" EntityType="CHubDBModel.M_CALENDAR" />
+          <EntitySet Name="V_SHIPPING_ALL_BASE" EntityType="CHubDBModel.V_SHIPPING_ALL_BASE" />
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -3978,6 +4054,45 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="CAL_DATE" Type="DateTime" Nullable="false" />
           <Property Name="WORK_DAY_FLAG" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="COMMENTS" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="V_SHIPPING_ALL_BASE">
+          <Key>
+            <PropertyRef Name="FROM_SYSTEM" />
+            <PropertyRef Name="SHIP_TO_ABBR" />
+            <PropertyRef Name="SHIPMENT_NO" />
+            <PropertyRef Name="SHIP_DATE" />
+            <PropertyRef Name="REMOTE_CREATE_DATE" />
+          </Key>
+          <Property Name="FROM_SYSTEM" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="SHIP_TO_ABBR" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ORDER_NO" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="LINE_NO" Type="Int64" />
+          <Property Name="SHIPMENT_NO" Type="Int64" Nullable="false" />
+          <Property Name="SHIPMENT_LINE_NO" Type="Int64" />
+          <Property Name="PART_NO" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="QTY_SHIPPED" Type="Decimal" Precision="24" Scale="8" />
+          <Property Name="SERIAL_NO" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="SHIP_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="PACKING_LIST_NO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="INVOICE_NO" Type="String" MaxLength="26" FixedLength="false" Unicode="false" />
+          <Property Name="INVOICE_ITEM" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="COUNTRY_OF_ORIGIN" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="SU_LP" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="LODNUM" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="REMOTE_CREATE_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="LOCAL_CREATE_DATE" Type="DateTime" />
+          <Property Name="S40_BND_OUT_DATE" Type="DateTime" />
+          <Property Name="S50_NBND_ARRIVAL_DATE" Type="DateTime" />
+          <Property Name="FLEX_DATE" Type="DateTime" />
+          <Property Name="NOTE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TRACKING_NO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="S00_DEPART_DATE" Type="DateTime" />
+          <Property Name="S10_PORT_ARRIVAL_DATE" Type="DateTime" />
+          <Property Name="S20_DO_RELEASE_DATE" Type="DateTime" />
+          <Property Name="S30_BND_ARRIVAL_DATE" Type="DateTime" />
+          <Property Name="WILL_BILL_NO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="WB_LAST_CHANGED" Type="DateTime" />
+          <Property Name="TRAN_TYPE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -5078,6 +5193,42 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
                 <ScalarProperty Name="WORK_DAY_FLAG" ColumnName="WORK_DAY_FLAG" />
                 <ScalarProperty Name="CAL_DATE" ColumnName="CAL_DATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_SHIPPING_ALL_BASE">
+            <EntityTypeMapping TypeName="CHubDBModel.V_SHIPPING_ALL_BASE">
+              <MappingFragment StoreEntitySet="V_SHIPPING_ALL_BASE">
+                <ScalarProperty Name="TRAN_TYPE" ColumnName="TRAN_TYPE" />
+                <ScalarProperty Name="WB_LAST_CHANGED" ColumnName="WB_LAST_CHANGED" />
+                <ScalarProperty Name="WILL_BILL_NO" ColumnName="WILL_BILL_NO" />
+                <ScalarProperty Name="S30_BND_ARRIVAL_DATE" ColumnName="S30_BND_ARRIVAL_DATE" />
+                <ScalarProperty Name="S20_DO_RELEASE_DATE" ColumnName="S20_DO_RELEASE_DATE" />
+                <ScalarProperty Name="S10_PORT_ARRIVAL_DATE" ColumnName="S10_PORT_ARRIVAL_DATE" />
+                <ScalarProperty Name="S00_DEPART_DATE" ColumnName="S00_DEPART_DATE" />
+                <ScalarProperty Name="TRACKING_NO" ColumnName="TRACKING_NO" />
+                <ScalarProperty Name="NOTE" ColumnName="NOTE" />
+                <ScalarProperty Name="FLEX_DATE" ColumnName="FLEX_DATE" />
+                <ScalarProperty Name="S50_NBND_ARRIVAL_DATE" ColumnName="S50_NBND_ARRIVAL_DATE" />
+                <ScalarProperty Name="S40_BND_OUT_DATE" ColumnName="S40_BND_OUT_DATE" />
+                <ScalarProperty Name="LOCAL_CREATE_DATE" ColumnName="LOCAL_CREATE_DATE" />
+                <ScalarProperty Name="REMOTE_CREATE_DATE" ColumnName="REMOTE_CREATE_DATE" />
+                <ScalarProperty Name="LODNUM" ColumnName="LODNUM" />
+                <ScalarProperty Name="SU_LP" ColumnName="SU_LP" />
+                <ScalarProperty Name="COUNTRY_OF_ORIGIN" ColumnName="COUNTRY_OF_ORIGIN" />
+                <ScalarProperty Name="INVOICE_ITEM" ColumnName="INVOICE_ITEM" />
+                <ScalarProperty Name="INVOICE_NO" ColumnName="INVOICE_NO" />
+                <ScalarProperty Name="PACKING_LIST_NO" ColumnName="PACKING_LIST_NO" />
+                <ScalarProperty Name="SHIP_DATE" ColumnName="SHIP_DATE" />
+                <ScalarProperty Name="SERIAL_NO" ColumnName="SERIAL_NO" />
+                <ScalarProperty Name="QTY_SHIPPED" ColumnName="QTY_SHIPPED" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+                <ScalarProperty Name="SHIPMENT_LINE_NO" ColumnName="SHIPMENT_LINE_NO" />
+                <ScalarProperty Name="SHIPMENT_NO" ColumnName="SHIPMENT_NO" />
+                <ScalarProperty Name="LINE_NO" ColumnName="LINE_NO" />
+                <ScalarProperty Name="ORDER_NO" ColumnName="ORDER_NO" />
+                <ScalarProperty Name="SHIP_TO_ABBR" ColumnName="SHIP_TO_ABBR" />
+                <ScalarProperty Name="FROM_SYSTEM" ColumnName="FROM_SYSTEM" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

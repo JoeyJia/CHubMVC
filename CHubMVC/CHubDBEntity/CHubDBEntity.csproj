@@ -250,6 +250,9 @@
     <Compile Include="V_O_DOWNLOAD_HDR.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="V_SHIPPING_ALL_BASE.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="V_TC_CATEGORY_BY_SYS.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
