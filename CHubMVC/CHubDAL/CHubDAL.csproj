@@ -61,6 +61,7 @@
     <Compile Include="ITT_CUST_LOAD_DAL.cs" />
     <Compile Include="ITT_TRAN_LOAD_DAL.cs" />
     <Compile Include="ITT_TRAN_TYPE_DAL.cs" />
+    <Compile Include="V_SHIPPING_ALL_BASE_DAL.cs" />
     <Compile Include="M_CALENDAR_DAL.cs" />
     <Compile Include="M_SYSTEM_DAL.cs" />
     <Compile Include="ITT_SHIPPING_D_DAL.cs" />

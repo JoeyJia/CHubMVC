@@ -127,10 +127,12 @@
                         <thead>
                             <tr>
                                 <th style="">Token</th>
-                                <th style="">From</th>
                                 <th style="">Way Bill No.</th>
-                                <th style="">Transport Method</th>
                                 <th style="">Invoice No.</th>
+                                <th style="">From</th>
+                                
+                                <th style="">Transport Method</th>
+                                
                                 <th style="">Depart Date</th>
                                 <th style="">Arrival Date</th>
                                 <th style="">Note</th>
@@ -141,14 +143,14 @@
                         <tbody style="">
                             <tr ng-repeat="tran in ittTranLoadArray ">
                                 <td><input class="form-control" ng-model="tran.LOAD_BATCH_TOKEN" disabled /></td>
+                                <td><input class="form-control" ng-model="tran.WILL_BILL_NO" ng-disabled="hasData" /></td>
+                                <td><input class="form-control" ng-model="tran.INVOICE_NO" /></td> 
                                 <td>
                                     <select class="form-control input-sm" ng-model="tran.FROM_SYSTEM" ng-options="si as si for si in sysIDList"></select>
                                 </td>
-                                <td><input class="form-control" ng-model="tran.WILL_BILL_NO" ng-disabled="hasData" /></td>
                                 <td>
                                     <select class="form-control input-sm" ng-model="tran.TRAN_TYPE" ng-options="tt.TRAN_TYPE as tt.TRAN_TYPE for tt in ittTranTypeArray"></select>
                                 </td>
-                                <td><input class="form-control" ng-model="tran.INVOICE_NO" /></td> 
                                 <td>
                                     <div class="dropdown">
                                         <a class="dropdown-toggle" id="dropdown$index" role="button" data-toggle="dropdown" data-target="#" href="#">
