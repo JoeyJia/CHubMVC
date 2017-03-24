@@ -2567,8 +2567,8 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <NavigationProperty Name="TS_OR_HEADER" Relationship="CHubDBModel.TS_OR_HEADER_R03" FromRole="M_SYSTEM" ToRole="TS_OR_HEADER" />
           <NavigationProperty Name="ITT_SHIPPING_H" Relationship="CHubDBModel.SYS_C0013895" FromRole="M_SYSTEM" ToRole="ITT_SHIPPING_H" />
           <NavigationProperty Name="ITT_SHIPPING_D" Relationship="CHubDBModel.ITT_SHIPPING_D_R01" FromRole="M_SYSTEM" ToRole="ITT_SHIPPING_D" />
-          <NavigationProperty Name="ITT_TRAN_LOAD" Relationship="CHubDBModel.ITT_TRAN_LOAD_R02" FromRole="M_SYSTEM" ToRole="ITT_TRAN_LOAD" />
           <Property Name="INTERPDC_FLAG" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ITT_TRAN_LOAD" Relationship="CHubDBModel.ITT_TRAN_LOAD_R02" FromRole="M_SYSTEM" ToRole="ITT_TRAN_LOAD" />
         </EntityType>
         <EntityType Name="G_PART_DESCRIPTION">
           <Key>
@@ -3282,7 +3282,6 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySet Name="ITT_TRAN_TYPE" EntityType="CHubDBModel.ITT_TRAN_TYPE" />
           <EntitySet Name="ITT_CUST_LOAD" EntityType="CHubDBModel.ITT_CUST_LOAD" />
           <EntitySet Name="ITT_SHIPPING_D" EntityType="CHubDBModel.ITT_SHIPPING_D" />
-          <EntitySet Name="ITT_TRAN_LOAD" EntityType="CHubDBModel.ITT_TRAN_LOAD" />
           <EntitySet Name="V_ITT_SHIPPING_SMRY" EntityType="CHubDBModel.V_ITT_SHIPPING_SMRY" />
           <AssociationSet Name="ITT_SHIPPING_H_R03" Association="CHubDBModel.ITT_SHIPPING_H_R03">
             <End Role="ITT_TRAN_TYPE" EntitySet="ITT_TRAN_TYPE" />
@@ -3292,20 +3291,21 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
-          <AssociationSet Name="ITT_TRAN_LOAD_R01" Association="CHubDBModel.ITT_TRAN_LOAD_R01">
-            <End Role="ITT_TRAN_TYPE" EntitySet="ITT_TRAN_TYPE" />
-            <End Role="ITT_TRAN_LOAD" EntitySet="ITT_TRAN_LOAD" />
-          </AssociationSet>
           <AssociationSet Name="ITT_SHIPPING_D_R01" Association="CHubDBModel.ITT_SHIPPING_D_R01">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_D" EntitySet="ITT_SHIPPING_D" />
+          </AssociationSet>
+          <EntitySet Name="M_CALENDAR" EntityType="CHubDBModel.M_CALENDAR" />
+          <EntitySet Name="V_SHIPPING_ALL_BASE" EntityType="CHubDBModel.V_SHIPPING_ALL_BASE" />
+          <EntitySet Name="ITT_TRAN_LOAD" EntityType="CHubDBModel.ITT_TRAN_LOAD" />
+          <AssociationSet Name="ITT_TRAN_LOAD_R01" Association="CHubDBModel.ITT_TRAN_LOAD_R01">
+            <End Role="ITT_TRAN_TYPE" EntitySet="ITT_TRAN_TYPE" />
+            <End Role="ITT_TRAN_LOAD" EntitySet="ITT_TRAN_LOAD" />
           </AssociationSet>
           <AssociationSet Name="ITT_TRAN_LOAD_R02" Association="CHubDBModel.ITT_TRAN_LOAD_R02">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_TRAN_LOAD" EntitySet="ITT_TRAN_LOAD" />
           </AssociationSet>
-          <EntitySet Name="M_CALENDAR" EntityType="CHubDBModel.M_CALENDAR" />
-          <EntitySet Name="V_SHIPPING_ALL_BASE" EntityType="CHubDBModel.V_SHIPPING_ALL_BASE" />
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -3947,23 +3947,6 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="WB_LAST_CHANGED" Type="DateTime" />
           <NavigationProperty Name="M_SYSTEM" Relationship="CHubDBModel.ITT_SHIPPING_D_R01" FromRole="ITT_SHIPPING_D" ToRole="M_SYSTEM" />
         </EntityType>
-        <EntityType Name="ITT_TRAN_LOAD">
-          <Key>
-            <PropertyRef Name="LOAD_BATCH_TOKEN" />
-          </Key>
-          <Property Name="LOAD_BATCH_TOKEN" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="WILL_BILL_NO" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="INVOICE_NO" Type="String" MaxLength="26" FixedLength="false" Unicode="false" />
-          <Property Name="DEPART_DATE" Type="DateTime" />
-          <Property Name="ARRIVAL_DATE" Type="DateTime" />
-          <Property Name="NOTE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TRAN_TYPE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="LOADED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="LOAD_DATE" Type="DateTime" />
-          <Property Name="FROM_SYSTEM" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ITT_TRAN_TYPE" Relationship="CHubDBModel.ITT_TRAN_LOAD_R01" FromRole="ITT_TRAN_LOAD" ToRole="ITT_TRAN_TYPE" />
-          <NavigationProperty Name="M_SYSTEM" Relationship="CHubDBModel.ITT_TRAN_LOAD_R02" FromRole="ITT_TRAN_LOAD" ToRole="M_SYSTEM" />
-        </EntityType>
         <EntityType Name="V_ITT_SHIPPING_SMRY">
           <Key>
             <PropertyRef Name="FROM_SYSTEM" />
@@ -4011,18 +3994,6 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="ITT_TRAN_LOAD_R01">
-          <End Type="CHubDBModel.ITT_TRAN_TYPE" Role="ITT_TRAN_TYPE" Multiplicity="0..1" />
-          <End Type="CHubDBModel.ITT_TRAN_LOAD" Role="ITT_TRAN_LOAD" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ITT_TRAN_TYPE">
-              <PropertyRef Name="TRAN_TYPE" />
-            </Principal>
-            <Dependent Role="ITT_TRAN_LOAD">
-              <PropertyRef Name="TRAN_TYPE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="ITT_SHIPPING_D_R01">
           <End Type="CHubDBModel.M_SYSTEM" Role="M_SYSTEM" Multiplicity="1" />
           <End Type="CHubDBModel.ITT_SHIPPING_D" Role="ITT_SHIPPING_D" Multiplicity="*" />
@@ -4031,18 +4002,6 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
               <PropertyRef Name="SYSID" />
             </Principal>
             <Dependent Role="ITT_SHIPPING_D">
-              <PropertyRef Name="FROM_SYSTEM" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ITT_TRAN_LOAD_R02">
-          <End Type="CHubDBModel.M_SYSTEM" Role="M_SYSTEM" Multiplicity="1" />
-          <End Type="CHubDBModel.ITT_TRAN_LOAD" Role="ITT_TRAN_LOAD" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_SYSTEM">
-              <PropertyRef Name="SYSID" />
-            </Principal>
-            <Dependent Role="ITT_TRAN_LOAD">
               <PropertyRef Name="FROM_SYSTEM" />
             </Dependent>
           </ReferentialConstraint>
@@ -4094,6 +4053,47 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="WB_LAST_CHANGED" Type="DateTime" />
           <Property Name="TRAN_TYPE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="ITT_TRAN_LOAD">
+          <Key>
+            <PropertyRef Name="LOAD_BATCH_TOKEN" />
+          </Key>
+          <Property Name="LOAD_BATCH_TOKEN" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="WILL_BILL_NO" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="INVOICE_NO" Type="String" Nullable="false" MaxLength="26" FixedLength="false" Unicode="false" />
+          <Property Name="DEPART_DATE" Type="DateTime" />
+          <Property Name="ARRIVAL_DATE" Type="DateTime" />
+          <Property Name="NOTE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TRAN_TYPE" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LOADED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LOAD_DATE" Type="DateTime" />
+          <Property Name="FROM_SYSTEM" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ITT_TRAN_TYPE" Relationship="CHubDBModel.ITT_TRAN_LOAD_R01" FromRole="ITT_TRAN_LOAD" ToRole="ITT_TRAN_TYPE" />
+          <NavigationProperty Name="M_SYSTEM" Relationship="CHubDBModel.ITT_TRAN_LOAD_R02" FromRole="ITT_TRAN_LOAD" ToRole="M_SYSTEM" />
+        </EntityType>
+        <Association Name="ITT_TRAN_LOAD_R01">
+          <End Type="CHubDBModel.ITT_TRAN_TYPE" Role="ITT_TRAN_TYPE" Multiplicity="1" />
+          <End Type="CHubDBModel.ITT_TRAN_LOAD" Role="ITT_TRAN_LOAD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ITT_TRAN_TYPE">
+              <PropertyRef Name="TRAN_TYPE" />
+            </Principal>
+            <Dependent Role="ITT_TRAN_LOAD">
+              <PropertyRef Name="TRAN_TYPE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ITT_TRAN_LOAD_R02">
+          <End Type="CHubDBModel.M_SYSTEM" Role="M_SYSTEM" Multiplicity="1" />
+          <End Type="CHubDBModel.ITT_TRAN_LOAD" Role="ITT_TRAN_LOAD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_SYSTEM">
+              <PropertyRef Name="SYSID" />
+            </Principal>
+            <Dependent Role="ITT_TRAN_LOAD">
+              <PropertyRef Name="FROM_SYSTEM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5049,22 +5049,6 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ITT_TRAN_LOAD">
-            <EntityTypeMapping TypeName="CHubDBModel.ITT_TRAN_LOAD">
-              <MappingFragment StoreEntitySet="ITT_TRAN_LOAD">
-                <ScalarProperty Name="FROM_SYSTEM" ColumnName="FROM_SYSTEM" />
-                <ScalarProperty Name="LOAD_DATE" ColumnName="LOAD_DATE" />
-                <ScalarProperty Name="LOADED_BY" ColumnName="LOADED_BY" />
-                <ScalarProperty Name="TRAN_TYPE" ColumnName="TRAN_TYPE" />
-                <ScalarProperty Name="NOTE" ColumnName="NOTE" />
-                <ScalarProperty Name="ARRIVAL_DATE" ColumnName="ARRIVAL_DATE" />
-                <ScalarProperty Name="DEPART_DATE" ColumnName="DEPART_DATE" />
-                <ScalarProperty Name="INVOICE_NO" ColumnName="INVOICE_NO" />
-                <ScalarProperty Name="WILL_BILL_NO" ColumnName="WILL_BILL_NO" />
-                <ScalarProperty Name="LOAD_BATCH_TOKEN" ColumnName="LOAD_BATCH_TOKEN" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="V_ITT_SHIPPING_SMRY">
             <EntityTypeMapping TypeName="CHubDBModel.V_ITT_SHIPPING_SMRY">
               <MappingFragment StoreEntitySet="V_ITT_SHIPPING_SMRY">
@@ -5229,6 +5213,22 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="ORDER_NO" ColumnName="ORDER_NO" />
                 <ScalarProperty Name="SHIP_TO_ABBR" ColumnName="SHIP_TO_ABBR" />
                 <ScalarProperty Name="FROM_SYSTEM" ColumnName="FROM_SYSTEM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ITT_TRAN_LOAD">
+            <EntityTypeMapping TypeName="CHubDBModel.ITT_TRAN_LOAD">
+              <MappingFragment StoreEntitySet="ITT_TRAN_LOAD">
+                <ScalarProperty Name="FROM_SYSTEM" ColumnName="FROM_SYSTEM" />
+                <ScalarProperty Name="LOAD_DATE" ColumnName="LOAD_DATE" />
+                <ScalarProperty Name="LOADED_BY" ColumnName="LOADED_BY" />
+                <ScalarProperty Name="TRAN_TYPE" ColumnName="TRAN_TYPE" />
+                <ScalarProperty Name="NOTE" ColumnName="NOTE" />
+                <ScalarProperty Name="ARRIVAL_DATE" ColumnName="ARRIVAL_DATE" />
+                <ScalarProperty Name="DEPART_DATE" ColumnName="DEPART_DATE" />
+                <ScalarProperty Name="INVOICE_NO" ColumnName="INVOICE_NO" />
+                <ScalarProperty Name="WILL_BILL_NO" ColumnName="WILL_BILL_NO" />
+                <ScalarProperty Name="LOAD_BATCH_TOKEN" ColumnName="LOAD_BATCH_TOKEN" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

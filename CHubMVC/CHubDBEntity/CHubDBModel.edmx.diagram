@@ -90,15 +90,15 @@
         <EntityTypeShape EntityType="CHubDBModel.ITT_TRAN_TYPE" Width="1.5" PointX="14.75" PointY="29.875" />
         <EntityTypeShape EntityType="CHubDBModel.ITT_CUST_LOAD" Width="1.5" PointX="11.375" PointY="30" />
         <EntityTypeShape EntityType="CHubDBModel.ITT_SHIPPING_D" Width="1.5" PointX="8" PointY="35.375" />
-        <EntityTypeShape EntityType="CHubDBModel.ITT_TRAN_LOAD" Width="1.5" PointX="14" PointY="1.125" />
         <EntityTypeShape EntityType="CHubDBModel.V_ITT_SHIPPING_SMRY" Width="1.5" PointX="26.375" PointY="12" />
         <AssociationConnector Association="CHubDBModel.ITT_SHIPPING_H_R03" />
         <AssociationConnector Association="CHubDBModel.SYS_C0013895" />
-        <AssociationConnector Association="CHubDBModel.ITT_TRAN_LOAD_R01" />
         <AssociationConnector Association="CHubDBModel.ITT_SHIPPING_D_R01" />
-        <AssociationConnector Association="CHubDBModel.ITT_TRAN_LOAD_R02" />
         <EntityTypeShape EntityType="CHubDBModel.M_CALENDAR" Width="1.5" PointX="23.375" PointY="9.75" />
         <EntityTypeShape EntityType="CHubDBModel.V_SHIPPING_ALL_BASE" Width="1.5" PointX="26.375" PointY="17.75" />
+        <EntityTypeShape EntityType="CHubDBModel.ITT_TRAN_LOAD" Width="1.5" PointX="17" PointY="26.25" />
+        <AssociationConnector Association="CHubDBModel.ITT_TRAN_LOAD_R01" />
+        <AssociationConnector Association="CHubDBModel.ITT_TRAN_LOAD_R02" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
