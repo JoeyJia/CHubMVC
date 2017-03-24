@@ -361,7 +361,7 @@
                 async: false,
                 success: function (obj) {
                     $scope.result = obj;
-                    debugger;
+
                     if ($scope.result != null && $scope.result.length > 0) {
                         if ($scope.result[0].WILL_BILL_NO != null && $scope.result[0].WILL_BILL_NO != "" && $scope.result[0].WILL_BILL_NO != "null") {
                             $scope.hasData = true;
