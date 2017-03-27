@@ -13,6 +13,7 @@ using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using System.Text;
+using CHubModel.ExtensionModel;
 
 namespace CHubMVC.Controllers
 {
@@ -58,6 +59,32 @@ namespace CHubMVC.Controllers
             ITT_TRAN_TYPE_BLL typeBLL = new ITT_TRAN_TYPE_BLL();
             List<ITT_TRAN_TYPE> result = typeBLL.GetTranType();
             return Json(result);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult PreFillTranLoad(string wayBillNo)
+        {
+            try
+            {
+                V_SHIPPING_ALL_BASE_BLL saBLL = new V_SHIPPING_ALL_BASE_BLL();
+                V_SHIPPING_ALL_BASE sa = saBLL.GetFirstBaseInfo(wayBillNo);
+                TranLoadPreFill result = new TranLoadPreFill();
+                if (sa != null)
+                {
+                    result.InvoiceNo = sa.INVOICE_NO;
+                    result.TranType = sa.TRAN_TYPE;
+                    result.FromSystem = sa.FROM_SYSTEM;
+                }
+                result.Msg = "";//Do check invoice No work
+
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("Pre Fill TranLoad", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
         }
 
         [HttpPost]

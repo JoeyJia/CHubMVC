@@ -143,7 +143,7 @@
                         <tbody style="">
                             <tr ng-repeat="tran in ittTranLoadArray ">
                                 <td><input class="form-control" ng-model="tran.LOAD_BATCH_TOKEN" disabled /></td>
-                                <td><input class="form-control" ng-model="tran.WILL_BILL_NO" ng-disabled="hasData" /></td>
+                                <td><input class="form-control" ng-model="tran.WILL_BILL_NO" ng-blur="Prefill(tran)" ng-disabled="hasData" /></td>
                                 <td><input class="form-control" ng-model="tran.INVOICE_NO" /></td> 
                                 <td>
                                     <select class="form-control input-sm" ng-model="tran.FROM_SYSTEM" ng-options="si as si for si in sysIDList"></select>
@@ -425,6 +425,32 @@
 
             $scope.ittTranLoadArray.push(newItem);
         };
+
+        $scope.Prefill = function (curr)
+        {
+            $.ajax({
+                url: "/itt/PreFillTranLoad",
+                data:{
+                    wayBillNo: curr.WILL_BILL_NO
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    if (obj.Success) {
+                        curr.INVOICE_NO = obj.Data.InvoiceNo;
+                        curr.TRAN_TYPE = obj.Data.TranType;
+                        curr.FROM_SYSTEM = obj.Data.FromSystem;
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (obj) {
+                    alert("fail to Save Data");
+                }
+
+            });
+
+        }
 
         $scope.saveTranLoad = function (curr) {
             $.ajax({
