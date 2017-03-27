@@ -26,5 +26,15 @@ namespace CHubDAL
             return db.ITT_TRAN_LOAD.FirstOrDefault(a => a.LOAD_BATCH_TOKEN == token);
         }
 
+        public ITT_TRAN_LOAD GetTranLoadByInvoice(string invoiceNo)
+        {
+            return db.ITT_TRAN_LOAD.FirstOrDefault(a => a.INVOICE_NO == invoiceNo);
+        }
+
+        public bool ExistInvoiceNo(string invoiceNo)
+        {
+            return db.ITT_TRAN_LOAD.Any(a => a.INVOICE_NO == invoiceNo);
+        }
+
     }
 }

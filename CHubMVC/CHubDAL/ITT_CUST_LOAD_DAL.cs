@@ -26,5 +26,15 @@ namespace CHubDAL
             return db.ITT_CUST_LOAD.FirstOrDefault(a => a.LOAD_BATCH_TOKEN == token);
         }
 
+        public bool ExistCustLoad(string WayBillNo, string tcGroup)
+        {
+            return db.ITT_CUST_LOAD.Any(a => a.WILL_BILL_NO == WayBillNo && a.TC_GROUP == tcGroup);
+        }
+
+        public ITT_CUST_LOAD GetCustLoadbyConstraint(string WayBillNo, string tcGroup)
+        {
+            return db.ITT_CUST_LOAD.FirstOrDefault(a => a.WILL_BILL_NO == WayBillNo && a.TC_GROUP == tcGroup);
+        }
+
     }
 }

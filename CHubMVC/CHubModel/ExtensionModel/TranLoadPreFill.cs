@@ -17,5 +17,7 @@ namespace CHubModel.ExtensionModel
         public string FromSystem { get; set; }
 
         public string Msg { get; set; }
+
+        public string BackColor { get; set; }
     }
 }

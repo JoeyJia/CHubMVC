@@ -67,17 +67,7 @@ namespace CHubMVC.Controllers
         {
             try
             {
-                V_SHIPPING_ALL_BASE_BLL saBLL = new V_SHIPPING_ALL_BASE_BLL();
-                V_SHIPPING_ALL_BASE sa = saBLL.GetFirstBaseInfo(wayBillNo);
-                TranLoadPreFill result = new TranLoadPreFill();
-                if (sa != null)
-                {
-                    result.InvoiceNo = sa.INVOICE_NO;
-                    result.TranType = sa.TRAN_TYPE;
-                    result.FromSystem = sa.FROM_SYSTEM;
-                }
-                result.Msg = "";//Do check invoice No work
-
+                TranLoadPreFill result = PreFillTranLoadAction(wayBillNo);
                 return Json(new RequestResult(result));
             }
             catch (Exception ex)
@@ -196,6 +186,26 @@ namespace CHubMVC.Controllers
                     }
                     else
                     {
+                        //If no invoce no , do a prefill ation
+                        if (string.IsNullOrEmpty(item.INVOICE_NO))
+                        {
+                            TranLoadPreFill result = PreFillTranLoadAction(item.WILL_BILL_NO);
+                            if (!string.IsNullOrEmpty(result.Msg))
+                            {
+                                failCount++;
+                                LogHelper.WriteErrorLog(string.Format("willBillNo:{0},message:{1},data:{2}", item.WILL_BILL_NO, result.Msg, JsonConvert.SerializeObject(item)));
+                                errorMsg.AppendLine(string.Format("willBillNo:{0},message:{1},data:{2}", item.WILL_BILL_NO, result.Msg, JsonConvert.SerializeObject(item)));
+                                continue;
+                            }
+                            else
+                            {
+                                //prefill action
+                                item.INVOICE_NO = result.InvoiceNo;
+                                item.TRAN_TYPE = result.TranType;
+                                item.FROM_SYSTEM = result.FromSystem;
+                            }
+                        }
+
                         string msg = SaveTranLoadAction(item);
                         if (string.IsNullOrEmpty(msg))
                         {
@@ -276,6 +286,10 @@ namespace CHubMVC.Controllers
             {
                 if (model.WILL_BILL_NO == null)
                     return Json(new RequestResult(false, "WillBillNo can't be empty"));
+
+                ITT_CUST_LOAD_BLL ctBLL = new ITT_CUST_LOAD_BLL();
+                if (ctBLL.ExistCustLoad(model.WILL_BILL_NO, model.TC_GROUP))
+                    return Json(new RequestResult(false, "Exist same wayBillNO and TC Group Items"));
 
                 string msg = SaveCustLoadAction(model);
                 if (!string.IsNullOrEmpty(msg))
@@ -425,6 +439,38 @@ namespace CHubMVC.Controllers
                 return string.Format("Fail Saved:{0}", ex.Message);
             }
         }
+
+        public TranLoadPreFill PreFillTranLoadAction(string wayBillNo)
+        {
+            V_SHIPPING_ALL_BASE_BLL saBLL = new V_SHIPPING_ALL_BASE_BLL();
+            V_SHIPPING_ALL_BASE sa = saBLL.GetFirstBaseInfo(wayBillNo);
+            TranLoadPreFill result = new TranLoadPreFill();
+            if (sa != null)
+            {
+                result.InvoiceNo = sa.INVOICE_NO;
+                result.TranType = sa.TRAN_TYPE;
+                result.FromSystem = sa.FROM_SYSTEM;
+                result.Msg = "";
+                result.BackColor = "";
+
+                if (!string.IsNullOrEmpty(result.InvoiceNo))
+                {
+                    ITT_TRAN_LOAD_BLL tlBLL = new ITT_TRAN_LOAD_BLL();
+                    if (tlBLL.ExistInvoiceNo(result.InvoiceNo))
+                    {
+                        result.Msg = "Invoice No is exist";
+                        result.BackColor = CHubConstValues.ErrorColor;
+                    }
+                }
+            }
+            else
+            {
+                result.Msg = "Can't Find Invoice No from WayBillNo";
+                result.BackColor = "";
+            }
+            return result;
+        }
+
 
         private string SaveCustLoadAction(ITT_CUST_LOAD model)
         {
