@@ -440,17 +440,19 @@
                 async: false,
                 success: function (obj) {
                     if (obj.Success) {
-                        curr.INVOICE_NO = obj.Data.InvoiceNo;
-                        curr.TRAN_TYPE = obj.Data.TranType;
-                        curr.FROM_SYSTEM = obj.Data.FromSystem;
-                        curr.BackColor = obj.Data.BackColor;
-                        
-                        if (obj.Data.BackColor=="red") {
-                            alert(obj.Data.Msg);
+                        if (obj.Data.InvoiceNo != null) {
+                            curr.INVOICE_NO = obj.Data.InvoiceNo;
+                            curr.TRAN_TYPE = obj.Data.TranType;
+                            curr.FROM_SYSTEM = obj.Data.FromSystem;
+                            curr.BackColor = obj.Data.BackColor;
+
+                            if (obj.Data.BackColor == "red") {
+                                alert(obj.Data.Msg);
+                            }
                         }
                     }
                     else
-                        alert(obj.Msg);
+                        alert(obj.Data.Msg);
                 },
                 error: function (obj) {
                     alert("fail to do prefill action");
