@@ -79,6 +79,22 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
+        public ActionResult CheckInvoiceNoStatus(string invoiceNo)
+        {
+            TranLoadPreFill result = new TranLoadPreFill();
+            ITT_TRAN_LOAD_BLL tlBLL = new ITT_TRAN_LOAD_BLL();
+            if (tlBLL.ExistInvoiceNo(invoiceNo))
+            {
+                result.Msg = "Invoice No is exist";
+                result.BackColor = CHubConstValues.ErrorColor;
+                return Json(new RequestResult(false, null, result));
+            }
+            return Json(new RequestResult(true));
+                
+            }
+
+        [HttpPost]
+        [Authorize]
         public ActionResult SaveTranLoad(ITT_TRAN_LOAD model)
         {
             try

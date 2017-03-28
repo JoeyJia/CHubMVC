@@ -144,7 +144,7 @@
                             <tr ng-repeat="tran in ittTranLoadArray ">
                                 <td><input class="form-control" ng-model="tran.LOAD_BATCH_TOKEN" disabled /></td>
                                 <td><input class="form-control" ng-model="tran.WILL_BILL_NO" ng-blur="Prefill(tran)" ng-disabled="hasData" /></td>
-                                <td><input class="form-control" ng-model="tran.INVOICE_NO" ng-style ="{backgroundColor:tran.BackColor}" /></td> 
+                                <td><input class="form-control" ng-model="tran.INVOICE_NO" ng-blur="checkInvoiceNo(tran)" ng-style ="{backgroundColor:tran.BackColor}" /></td> 
                                 <td>
                                     <select class="form-control input-sm" ng-model="tran.FROM_SYSTEM" ng-options="si as si for si in sysIDList" ng-disabled="tran.FROM_SYSTEM!=''"></select>
                                 </td>
@@ -367,8 +367,8 @@
                     if ($scope.result != null && $scope.result.length > 0) {
                         if ($scope.result[0].WILL_BILL_NO != null && $scope.result[0].WILL_BILL_NO != "" && $scope.result[0].WILL_BILL_NO != "null") {
                             $scope.hasData = true;
-                            $scope.searchedWillBillNo = $scope.willBillNo;
-                            $scope.searchedInvoiceNo = $scope.invoiceNo;
+                            $scope.searchedWillBillNo = $scope.result[0].WILL_BILL_NO;
+                            $scope.searchedInvoiceNo = $scope.result[0].INVOICE_NO;
                         }
                         else {
                             $scope.hasData = false;
@@ -445,7 +445,7 @@
                         curr.FROM_SYSTEM = obj.Data.FromSystem;
                         curr.BackColor = obj.Data.BackColor;
                         
-                        if (obj.Data.Msg != "" && obj.Data.Msg != "null" && obj.Data.Msg != null) {
+                        if (obj.Data.BackColor=="red") {
                             alert(obj.Data.Msg);
                         }
                     }
@@ -453,11 +453,41 @@
                         alert(obj.Msg);
                 },
                 error: function (obj) {
-                    alert("fail to Save Data");
+                    alert("fail to do prefill action");
                 }
 
             });
 
+        }
+
+        $scope.checkInvoiceNo = function (curr)
+        {
+            if (curr.INVOICE_NO == "")
+                return;
+
+            $.ajax({
+                url: "/itt/CheckInvoiceNoStatus",
+                data: {
+                    invoiceNo: curr.INVOICE_NO
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    if (!obj.Success) {
+                        curr.BackColor = obj.Data.BackColor;
+                        if (obj.Data.BackColor == "red") {
+                            alert(obj.Data.Msg);
+                        }
+                    }
+                    else
+                        curr.BackColor = "";
+                   
+                },
+                error: function (obj) {
+                    alert("fail to check invoiceNo");
+                }
+
+            });
         }
 
         $scope.saveTranLoad = function (curr) {
