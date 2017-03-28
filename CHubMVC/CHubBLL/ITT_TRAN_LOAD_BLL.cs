@@ -60,6 +60,10 @@ namespace CHubBLL
             dal.Delete(model);
         }
 
+        public bool ExistWayBillNo(string wayBillNo)
+        {
+            return dal.ExistWayBillNo(wayBillNo);
+        }
         public bool ExistInvoiceNo(string invoiceNo)
         {
             return dal.ExistInvoiceNo(invoiceNo);

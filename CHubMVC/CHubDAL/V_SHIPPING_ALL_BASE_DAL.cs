@@ -20,6 +20,10 @@ namespace CHubDAL
             return db.V_SHIPPING_ALL_BASE.FirstOrDefault(a => a.TRACKING_NO == wayBillNo);
         }
 
+        public V_SHIPPING_ALL_BASE GetFirstBaseInfoByInvoice(string invoiceNo)
+        {
+            return db.V_SHIPPING_ALL_BASE.FirstOrDefault(a => a.INVOICE_NO == invoiceNo);
+        }
 
     }
 }

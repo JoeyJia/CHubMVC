@@ -31,6 +31,11 @@ namespace CHubBLL
             return dal.ExistCustLoad(WayBillNo, tcGroup);
         }
 
+        public ITT_CUST_LOAD GetCustLoadbyConstraint(string WayBillNo, string tcGroup)
+        {
+            return dal.GetCustLoadbyConstraint(WayBillNo, tcGroup);
+        }
+
         public void Save(ITT_CUST_LOAD model)
         {
             if (model.LOAD_BATCH_TOKEN == 0 && !dal.ExistCustLoad(model.WILL_BILL_NO, model.TC_GROUP))

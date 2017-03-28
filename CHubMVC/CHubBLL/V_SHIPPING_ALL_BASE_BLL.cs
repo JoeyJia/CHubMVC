@@ -26,6 +26,10 @@ namespace CHubBLL
             return dal.GetFirstBaseInfo(wayBillNo);
         }
 
+        public V_SHIPPING_ALL_BASE GetFirstBaseInfoByInvoice(string invoiceNo)
+        {
+            return dal.GetFirstBaseInfoByInvoice(invoiceNo);
+        }
 
     }
 }

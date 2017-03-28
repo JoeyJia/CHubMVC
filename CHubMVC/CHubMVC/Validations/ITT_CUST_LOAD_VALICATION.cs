@@ -1,4 +1,5 @@
-﻿using CHubDBEntity;
+﻿using CHubBLL;
+using CHubDBEntity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,10 @@ namespace CHubMVC.Validations
                 return "Data is null";
             if (string.IsNullOrEmpty(model.WILL_BILL_NO))
                 return "No Way Bill No";
+
+            ITT_TRAN_LOAD_BLL tlBLL = new ITT_TRAN_LOAD_BLL();
+            if (!tlBLL.ExistWayBillNo(model.WILL_BILL_NO))
+                return "WillBillNo doesn't exist in Transportation";
 
             if (model.NBND_ARRIVAL_DATE != null && model.BND_OUT_DATE != null)
             {

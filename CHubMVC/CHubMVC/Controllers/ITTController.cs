@@ -79,19 +79,41 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult CheckInvoiceNoStatus(string invoiceNo)
+        public ActionResult PrefillByInovice(string invoiceNo)
         {
-            TranLoadPreFill result = new TranLoadPreFill();
-            ITT_TRAN_LOAD_BLL tlBLL = new ITT_TRAN_LOAD_BLL();
-            if (tlBLL.ExistInvoiceNo(invoiceNo))
+            try
             {
-                result.Msg = "Invoice No is exist";
-                result.BackColor = CHubConstValues.ErrorColor;
-                return Json(new RequestResult(false, null, result));
+                V_SHIPPING_ALL_BASE_BLL saBLL = new V_SHIPPING_ALL_BASE_BLL();
+                V_SHIPPING_ALL_BASE sa = saBLL.GetFirstBaseInfoByInvoice(invoiceNo);
+                TranLoadPreFill result = new TranLoadPreFill();
+                if (sa != null)
+                {
+                    result.InvoiceNo = sa.INVOICE_NO;
+                    result.TranType = sa.TRAN_TYPE;
+                    result.FromSystem = sa.FROM_SYSTEM;
+                    result.Msg = "";
+                    result.BackColor = "";
+
+                    ITT_TRAN_LOAD_BLL tlBLL = new ITT_TRAN_LOAD_BLL();
+                    if (tlBLL.ExistInvoiceNo(result.InvoiceNo))
+                    {
+                        result.Msg = "Invoice No is exist";
+                        result.BackColor = CHubConstValues.ErrorColor;
+                    }
+                }
+                else
+                {
+                    result.Msg = "Invalid invoice No";
+                    result.BackColor = CHubConstValues.ErrorColor;
+                }
+                return Json(new RequestResult(result));
             }
-            return Json(new RequestResult(true));
-                
+            catch (Exception ex)
+            {
+                return Json(new RequestResult(false, ex.Message));
             }
+        }
+          
 
         [HttpPost]
         [Authorize]
@@ -305,13 +327,15 @@ namespace CHubMVC.Controllers
 
                 ITT_CUST_LOAD_BLL ctBLL = new ITT_CUST_LOAD_BLL();
                 if (ctBLL.ExistCustLoad(model.WILL_BILL_NO, model.TC_GROUP))
-                    return Json(new RequestResult(false, "Exist same wayBillNO and TC Group Items"));
+                {
+                    ITT_CUST_LOAD temp = ctBLL.GetCustLoadbyConstraint(model.WILL_BILL_NO, model.TC_GROUP);
+                    if (model.LOAD_BATCH_TOKEN != temp.LOAD_BATCH_TOKEN)
+                        return Json(new RequestResult(false, "Exist same wayBillNO and TC Group Items"));
+                }
 
                 string msg = SaveCustLoadAction(model);
                 if (!string.IsNullOrEmpty(msg))
                     return Json(new RequestResult(false, msg));
-
-               
 
                 return Json(new RequestResult(true,null,model.LOAD_BATCH_TOKEN));
             }
