@@ -17,12 +17,22 @@ namespace CHubDAL
             : base(db) { }
 
 
-        public List<V_ALIAS_ADDR_SPL> GetAliasAddrSPL(string localDestName, string addr,string aliasName)
+        public List<V_ALIAS_ADDR_SPL> GetAliasAddrSPL(string localDestName, string addr,string destName,long? destLocation,string aliasName)
         {
-            return db.V_ALIAS_ADDR_SPL.Where(a => a.LOCAL_DEST_NAME.Contains(localDestName)
-                                               && a.LOCAL_DEST_ADDR_1.Contains(addr) 
-                                               &&a.ALIAS_NAME == aliasName
-                                               && a.ACTIVEIND== CHubConstValues.IndY).OrderBy(a=>a.DAYS).ToList();
+
+            IQueryable<V_ALIAS_ADDR_SPL> result = db.V_ALIAS_ADDR_SPL.Where(a => a.LOCAL_DEST_NAME.Contains(localDestName)
+                                               && a.LOCAL_DEST_ADDR_1.Contains(addr)
+                                               &&a.DEST_NAME.Contains(destName)
+                                               && a.ALIAS_NAME == aliasName
+                                               && a.ACTIVEIND == CHubConstValues.IndY);
+            if (destLocation != null && destLocation != 0)
+                result = result.Where(a => a.DEST_LOCATION == destLocation.Value);
+
+            //get from parameter table
+            if (result.Count()>20)
+                throw new Exception(string.Format("Result has {0} items, Make Condition more strict", result.Count().ToString()));
+
+            return result.OrderBy(a => a.DAYS).ToList();
         }
 
         public List<V_ALIAS_ADDR_SPL> GetStictAliasAddrSPL(string localDestName, string addr, string aliasName)

@@ -233,7 +233,7 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult SearchAddrs(string shipName,string addr,string aliasName, bool isSpecialShip)
+        public ActionResult SearchAddrs(string shipName, string addr,string aliasName, bool isSpecialShip,string destName, long? destLocation)
         {
             try
             {
@@ -242,7 +242,7 @@ namespace CHubMVC.Controllers
                 if (isSpecialShip)
                 {
                     V_ALIAS_ADDR_SPL_BLL bll = new V_ALIAS_ADDR_SPL_BLL();
-                    list = bll.GetAliasAddrSPL(shipName.Trim(), addr.Trim(), aliasName);
+                    list = bll.GetAliasAddrSPL(shipName.Trim(), addr.Trim(),destName.Trim(),destLocation, aliasName);
                 }
                 else
                 {

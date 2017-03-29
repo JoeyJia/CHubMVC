@@ -308,7 +308,7 @@
         </div>
         <!--Cust process upload form-->
         <div class="row" ng-show="showCustomProcess">
-            <form class="form-inline" name="custForm" id="custUpload">
+            <form style="margin-bottom:20px" class="form-inline" name="custForm" id="custUpload">
                 <div class="col-sm-2 text-right">
                     <label style="margin-left:20px">Cust Process Upload</label>
                 </div>
@@ -322,6 +322,13 @@
         </div>
 
     </div>
+    <!--For place to  show datetime control-->
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
 </div>
 
 <script>
@@ -420,8 +427,15 @@
                     newItem.ARRIVAL_DATE = $scope.ittTranLoadArray[lastIndex].ARRIVAL_DATE;
                     newItem.TRAN_TYPE = $scope.ittTranLoadArray[lastIndex].TRAN_TYPE;
                 }
-
             }
+            else if ($scope.ittTranLoadArray != null && $scope.ittTranLoadArray.length > 0)
+            {
+                var lastIndex = $scope.ittTranLoadArray.length - 1;
+                newItem.WILL_BILL_NO = $scope.ittTranLoadArray[lastIndex].WILL_BILL_NO;
+                newItem.DEPART_DATE = $scope.ittTranLoadArray[lastIndex].DEPART_DATE;
+                newItem.ARRIVAL_DATE = $scope.ittTranLoadArray[lastIndex].ARRIVAL_DATE;  
+            }
+
 
             $scope.ittTranLoadArray.push(newItem);
         };

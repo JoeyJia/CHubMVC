@@ -23,9 +23,9 @@ namespace CHubBLL
             dal = new V_ALIAS_ADDR_SPL_DAL(db);
         }
 
-        public List<ExVAliasAddr> GetAliasAddrSPL(string localDestName, string addr, string aliasName)
+        public List<ExVAliasAddr> GetAliasAddrSPL(string localDestName, string addr, string destName, long? destLocation, string aliasName)
         {
-            List<V_ALIAS_ADDR_SPL>  list = dal.GetAliasAddrSPL(localDestName, addr,aliasName);
+            List<V_ALIAS_ADDR_SPL>  list = dal.GetAliasAddrSPL(localDestName, addr,destName,destLocation, aliasName);
             List<ExVAliasAddr> exList = new List<ExVAliasAddr>();
 
             ClassConvertTable cct = new ClassConvertTable();

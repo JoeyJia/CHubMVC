@@ -117,17 +117,27 @@
 
 
             <div class="row" id="searchBox">
-                <div class="panel panel-default col-sm-9 col-sm-offset-2">
+                <div class="panel panel-default col-sm-10 col-sm-offset-1">
                     <div class="form-group" style="padding-top:10px">
-                        <label for="shipName" class="col-sm-2 control-label">Ship Name</label>
-                        <div class="col-sm-7 col-lg-7">
-                            <input type="text" class="form-control input-sm" id="sbShipName" placeholder="Ship Name">
+                        <label for="sbDestLocation" class="col-sm-2 control-label">SPL No.</label>
+                        <div class="col-sm-3 col-lg-3">
+                            <input type="text" class="form-control input-sm" id="sbDestLocation" placeholder="Ship Name">
+                        </div>
+
+                        <label for="sbDestName" class="col-sm-2 control-label">Ship Name</label>
+                        <div class="col-sm-3 col-lg-3">
+                            <input type="text" class="form-control input-sm" id="sbDestName" placeholder="Ship Name">
                         </div>
                     </div>
 
                     <div class="form-group" style="margin-top:-10px;">
-                        <label for="sbAddr" class="col-sm-2 control-label">Address</label>
-                        <div class="col-sm-7 col-lg-7">
+                        <label for="shipName" class="col-sm-2 control-label">Local Ship Name</label>
+                        <div class="col-sm-3 col-lg-3">
+                            <input type="text" class="form-control input-sm" id="sbShipName" placeholder="Ship Name">
+                        </div>
+
+                        <label for="sbAddr" class="col-sm-2 control-label">Local Address</label>
+                        <div class="col-sm-3 col-lg-3">
                             <input type="text" class="form-control input-sm" id="sbAddr" placeholder="Address">
                         </div>
 
@@ -1001,6 +1011,16 @@
     {
         var shipName = $("#sbShipName").val();
         var addr = $("#sbAddr").val();
+        var destName = $("#sbDestName").val();
+        var destLocation = $("#sbDestLocation").val();
+        
+        if (isNaN(destLocation))
+        {
+            alert("SPL NO. is invalid");
+            return;
+        }
+            
+
         var isSpecialShip = $("#ssto")[0].checked;
 
         var appElement1 = document.querySelector('[ng-controller=orderCtrl]');
@@ -1013,7 +1033,9 @@
                 shipName: shipName,
                 addr: addr,
                 aliasName:aliasName,
-                isSpecialShip: isSpecialShip
+                isSpecialShip: isSpecialShip,
+                destName: destName,
+                destLocation:destLocation
             },
             type:"post",
             async:false,
