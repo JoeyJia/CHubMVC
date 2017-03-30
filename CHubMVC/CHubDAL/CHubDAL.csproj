@@ -61,6 +61,17 @@
     <Compile Include="ITT_CUST_LOAD_DAL.cs" />
     <Compile Include="ITT_TRAN_LOAD_DAL.cs" />
     <Compile Include="ITT_TRAN_TYPE_DAL.cs" />
+    <Compile Include="ITT_EASY_QUERY_LOG_DAL.cs" />
+    <Compile Include="ITT_EASY_WATCHING_DAL.cs" />
+    <Compile Include="M_INV_DAL.cs" />
+    <Compile Include="V_INV_RDC_DAL.cs" />
+    <Compile Include="V_INV_PDC_DAL.cs" />
+    <Compile Include="V_OPEN_QTY_SO_RDC_DAL.cs" />
+    <Compile Include="V_OPEN_QTY_SO_PDC_DAL.cs" />
+    <Compile Include="V_OPEN_QTY_PO_RDC_DAL.cs" />
+    <Compile Include="V_OPEN_QTY_PO_PDC_DAL.cs" />
+    <Compile Include="V_OPEN_QTY_ASN_RDC_DAL.cs" />
+    <Compile Include="V_OPEN_QTY_ASN_PDC_DAL.cs" />
     <Compile Include="V_SHIPPING_ALL_BASE_DAL.cs" />
     <Compile Include="M_CALENDAR_DAL.cs" />
     <Compile Include="M_SYSTEM_DAL.cs" />
