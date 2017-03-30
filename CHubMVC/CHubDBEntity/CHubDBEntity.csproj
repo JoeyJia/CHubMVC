@@ -144,6 +144,12 @@
     <Compile Include="ITT_CUST_LOAD.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ITT_EASY_QUERY_LOG.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ITT_EASY_WATCHING.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ITT_SHIPPING_D.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
@@ -166,6 +172,9 @@
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="M_CALENDAR.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="M_INV.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="M_PARAMETER.cs">
@@ -242,6 +251,18 @@
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_NAV_ALL.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_OPEN_QTY_ASN_PDC.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_OPEN_QTY_ASN_RDC.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_OPEN_QTY_PO_PDC.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_OPEN_QTY_PO_RDC.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_O_DOWNLOAD_DTL.cs">

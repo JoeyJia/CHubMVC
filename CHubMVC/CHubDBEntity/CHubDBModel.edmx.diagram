@@ -99,6 +99,13 @@
         <EntityTypeShape EntityType="CHubDBModel.ITT_TRAN_LOAD" Width="1.5" PointX="17" PointY="26.25" />
         <AssociationConnector Association="CHubDBModel.ITT_TRAN_LOAD_R01" />
         <AssociationConnector Association="CHubDBModel.ITT_TRAN_LOAD_R02" />
+        <EntityTypeShape EntityType="CHubDBModel.ITT_EASY_QUERY_LOG" Width="1.5" PointX="5.375" PointY="26.125" />
+        <EntityTypeShape EntityType="CHubDBModel.M_INV" Width="1.5" PointX="11.375" PointY="26.125" />
+        <EntityTypeShape EntityType="CHubDBModel.ITT_EASY_WATCHING" Width="1.5" PointX="13.375" PointY="26.125" />
+        <EntityTypeShape EntityType="CHubDBModel.V_OPEN_QTY_ASN_PDC" Width="1.5" PointX="26.375" PointY="8.125" />
+        <EntityTypeShape EntityType="CHubDBModel.V_OPEN_QTY_ASN_RDC" Width="1.5" PointX="26.375" PointY="26.125" />
+        <EntityTypeShape EntityType="CHubDBModel.V_OPEN_QTY_PO_PDC" Width="1.5" PointX="28.375" PointY="1.125" />
+        <EntityTypeShape EntityType="CHubDBModel.V_OPEN_QTY_PO_RDC" Width="1.5" PointX="28.375" PointY="5.125" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

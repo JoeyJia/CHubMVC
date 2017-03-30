@@ -88,5 +88,12 @@ namespace CHubDBEntity
         public virtual DbSet<M_CALENDAR> M_CALENDAR { get; set; }
         public virtual DbSet<V_SHIPPING_ALL_BASE> V_SHIPPING_ALL_BASE { get; set; }
         public virtual DbSet<ITT_TRAN_LOAD> ITT_TRAN_LOAD { get; set; }
+        public virtual DbSet<ITT_EASY_QUERY_LOG> ITT_EASY_QUERY_LOG { get; set; }
+        public virtual DbSet<M_INV> M_INV { get; set; }
+        public virtual DbSet<ITT_EASY_WATCHING> ITT_EASY_WATCHING { get; set; }
+        public virtual DbSet<V_OPEN_QTY_ASN_PDC> V_OPEN_QTY_ASN_PDC { get; set; }
+        public virtual DbSet<V_OPEN_QTY_ASN_RDC> V_OPEN_QTY_ASN_RDC { get; set; }
+        public virtual DbSet<V_OPEN_QTY_PO_PDC> V_OPEN_QTY_PO_PDC { get; set; }
+        public virtual DbSet<V_OPEN_QTY_PO_RDC> V_OPEN_QTY_PO_RDC { get; set; }
     }
 }

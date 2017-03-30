@@ -224,6 +224,30 @@
           <Property Name="LOADED_BY" Type="varchar2" MaxLength="20" />
           <Property Name="LOAD_DATE" Type="date" />
         </EntityType>
+        <EntityType Name="ITT_EASY_QUERY_LOG">
+          <Key>
+            <PropertyRef Name="EASY_QUERY_TOKEN" />
+          </Key>
+          <Property Name="EASY_QUERY_TOKEN" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="QUERY_DATE" Type="date" Nullable="false" />
+          <Property Name="PART_NO" Type="varchar2" MaxLength="25" Nullable="false" />
+          <Property Name="USER_ID" Type="varchar2" MaxLength="20" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.ITT_EASY_WATCHING' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ITT_EASY_WATCHING">
+          <Key>
+            <PropertyRef Name="EASY_QUREY_TOKEN" />
+            <PropertyRef Name="PART_NO" />
+            <PropertyRef Name="WATCH_MSG" />
+          </Key>
+          <Property Name="EASY_QUREY_TOKEN" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="PART_NO" Type="varchar2" MaxLength="25" Nullable="false" />
+          <Property Name="WATCH_MSG" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="WATCH_DETAIL" Type="varchar2" MaxLength="200" />
+          <Property Name="COLOR" Type="varchar2" MaxLength="1" />
+          <Property Name="CREATE_DATE" Type="date" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ITT_SHIPPING_D">
@@ -353,6 +377,25 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           <Property Name="CAL_DATE" Type="date" Nullable="false" />
           <Property Name="WORK_DAY_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="COMMENTS" Type="varchar2" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="M_INV">
+          <Key>
+            <PropertyRef Name="SYS_ID" />
+            <PropertyRef Name="PART_NO" />
+            <PropertyRef Name="WAREHOUSE" />
+            <PropertyRef Name="BAY_NO" />
+          </Key>
+          <Property Name="SYS_ID" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="PART_NO" Type="varchar2" MaxLength="25" Nullable="false" />
+          <Property Name="WAREHOUSE" Type="varchar2" MaxLength="15" Nullable="false" />
+          <Property Name="WH_ALIAS" Type="varchar2" MaxLength="15" Nullable="false" />
+          <Property Name="BAY_NO" Type="varchar2" MaxLength="3" Nullable="false" />
+          <Property Name="QTY_AVL" Type="number" Precision="38" Scale="0" />
+          <Property Name="QTY_ONHAND" Type="number" Precision="24" Scale="8" />
+          <Property Name="QTY_RESERVED" Type="number" Precision="24" Scale="8" />
+          <Property Name="QTY_IN_RECEIVING" Type="number" Precision="24" Scale="8" />
+          <Property Name="QTY_IN_QA" Type="number" Precision="24" Scale="8" />
+          <Property Name="LOAD_DATE" Type="date" />
         </EntityType>
         <EntityType Name="M_PARAMETER">
           <Key>
@@ -949,6 +992,36 @@ warning 6002: The table/view 'GWAPP.V_CHK_DURATION_MISSING' does not have a prim
           <Property Name="TO_CITY" Type="varchar2" MaxLength="140" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6013: The table/view 'GWAPP.V_INV_PDC' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="V_INV_PDC">
+          <Property Name="SYS_ID" Type="varchar2" MaxLength="10" />
+          <Property Name="PART_NO" Type="varchar2" MaxLength="75" />
+          <Property Name="WAREHOUSE" Type="varchar2" MaxLength="45" />
+          <Property Name="WH_ALIAS" Type="varchar2" MaxLength="45" />
+          <Property Name="BAY_NO" Type="varchar2" MaxLength="9" />
+          <Property Name="QTY_AVL" Type="number" Precision="38" Scale="0" />
+          <Property Name="QTY_ONHAND" Type="number" Precision="24" Scale="8" />
+          <Property Name="QTY_RESERVED" Type="number" Precision="24" Scale="8" />
+          <Property Name="QTY_IN_RECEIVING" Type="number" Precision="24" Scale="8" />
+          <Property Name="QTY_IN_QA" Type="number" Precision="24" Scale="8" />
+          <Property Name="LOAD_DATE" Type="date" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'GWAPP.V_INV_RDC' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="V_INV_RDC">
+          <Property Name="SYS_ID" Type="varchar2" MaxLength="10" />
+          <Property Name="PART_NO" Type="varchar2" MaxLength="75" />
+          <Property Name="WAREHOUSE" Type="varchar2" MaxLength="45" />
+          <Property Name="WH_ALIAS" Type="varchar2" MaxLength="45" />
+          <Property Name="BAY_NO" Type="varchar2" MaxLength="9" />
+          <Property Name="QTY_AVL" Type="number" Precision="38" Scale="0" />
+          <Property Name="QTY_ONHAND" Type="number" Precision="24" Scale="8" />
+          <Property Name="QTY_RESERVED" Type="number" Precision="24" Scale="8" />
+          <Property Name="QTY_IN_RECEIVING" Type="number" Precision="24" Scale="8" />
+          <Property Name="QTY_IN_QA" Type="number" Precision="24" Scale="8" />
+          <Property Name="LOAD_DATE" Type="date" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.V_ITT_SHIPPING_SMRY' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_ITT_SHIPPING_SMRY">
           <Key>
@@ -1015,6 +1088,62 @@ warning 6002: The table/view 'GWAPP.V_O_DOWNLOAD_HDR' does not have a primary ke
           <Property Name="SHIPFROM_SEQ" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="FILE_NAME" Type="varchar2" MaxLength="69" />
           <Property Name="TXT" Type="varchar2" MaxLength="737" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.V_OPEN_QTY_ASN_PDC' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_OPEN_QTY_ASN_PDC">
+          <Key>
+            <PropertyRef Name="BUY_FROM_COMPANY" />
+          </Key>
+          <Property Name="BUY_FROM_COMPANY" Type="varchar2" MaxLength="36" Nullable="false" />
+          <Property Name="WAREHOUSE" Type="varchar2" MaxLength="45" />
+          <Property Name="WH_ALIAS" Type="varchar2" MaxLength="45" />
+          <Property Name="PART_NO" Type="varchar2" MaxLength="75" />
+          <Property Name="QTY_SHIPPED" Type="number" Precision="38" Scale="0" />
+          <Property Name="QTY_RECEIVED" Type="number" Precision="38" Scale="0" />
+          <Property Name="OPEN_QTY" Type="number" Precision="38" Scale="0" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.V_OPEN_QTY_ASN_RDC' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_OPEN_QTY_ASN_RDC">
+          <Key>
+            <PropertyRef Name="BUY_FROM_COMPANY" />
+          </Key>
+          <Property Name="BUY_FROM_COMPANY" Type="varchar2" MaxLength="36" Nullable="false" />
+          <Property Name="WAREHOUSE" Type="varchar2" MaxLength="45" />
+          <Property Name="WH_ALIAS" Type="varchar2" MaxLength="45" />
+          <Property Name="PART_NO" Type="varchar2" MaxLength="75" />
+          <Property Name="QTY_SHIPPED" Type="number" Precision="38" Scale="0" />
+          <Property Name="QTY_RECEIVED" Type="number" Precision="38" Scale="0" />
+          <Property Name="OPEN_QTY" Type="number" Precision="38" Scale="0" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.V_OPEN_QTY_PO_PDC' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_OPEN_QTY_PO_PDC">
+          <Key>
+            <PropertyRef Name="WAREHOUSE" />
+          </Key>
+          <Property Name="WAREHOUSE" Type="varchar2" MaxLength="45" Nullable="false" />
+          <Property Name="WH_ALIAS" Type="varchar2" MaxLength="45" />
+          <Property Name="BUY_FROM_COMPANY" Type="varchar2" MaxLength="36" />
+          <Property Name="COMPANY_NAME" Type="varchar2" MaxLength="105" />
+          <Property Name="PART_NO" Type="varchar2" MaxLength="75" />
+          <Property Name="RELEASE_QTY" Type="number" Precision="38" Scale="0" />
+          <Property Name="REMAINING_QTY" Type="number" Precision="38" Scale="0" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.V_OPEN_QTY_PO_RDC' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_OPEN_QTY_PO_RDC">
+          <Key>
+            <PropertyRef Name="WAREHOUSE" />
+          </Key>
+          <Property Name="WAREHOUSE" Type="varchar2" MaxLength="45" Nullable="false" />
+          <Property Name="WH_ALIAS" Type="varchar2" MaxLength="45" />
+          <Property Name="BUY_FROM_COMPANY" Type="varchar2" MaxLength="36" />
+          <Property Name="COMPANY_NAME" Type="varchar2" MaxLength="105" />
+          <Property Name="PART_NO" Type="varchar2" MaxLength="75" />
+          <Property Name="RELEASE_QTY" Type="number" Precision="38" Scale="0" />
+          <Property Name="REMAINING_QTY" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.V_SHIPPING_ALL_BASE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1462,7 +1591,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0015614">
+        <Association Name="SYS_C0016015">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1591,6 +1720,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="APP_WH" EntityType="Self.APP_WH" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="APP_WORKSPACE" EntityType="Self.APP_WORKSPACE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_CUST_LOAD" EntityType="Self.ITT_CUST_LOAD" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="ITT_EASY_QUERY_LOG" EntityType="Self.ITT_EASY_QUERY_LOG" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_SHIPPING_D_SNAP" EntityType="Self.ITT_SHIPPING_D_SNAP" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_SHIPPING_H" EntityType="Self.ITT_SHIPPING_H" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_SHIPPING_H_SNAP" EntityType="Self.ITT_SHIPPING_H_SNAP" Schema="GWAPP" store:Type="Tables" />
@@ -1598,6 +1728,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="ITT_TRAN_TYPE" EntityType="Self.ITT_TRAN_TYPE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_APPS" EntityType="Self.M_APPS" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_CALENDAR" EntityType="Self.M_CALENDAR" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="M_INV" EntityType="Self.M_INV" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_PARAMETER" EntityType="Self.M_PARAMETER" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_PART" EntityType="Self.M_PART" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_SYSTEM" EntityType="Self.M_SYSTEM" Schema="GWAPP" store:Type="Tables" />
@@ -1608,6 +1739,16 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="TS_OR_DETAIL_STAGE" EntityType="Self.TS_OR_DETAIL_STAGE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TS_OR_HEADER" EntityType="Self.TS_OR_HEADER" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TS_OR_HEADER_STAGE" EntityType="Self.TS_OR_HEADER_STAGE" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="ITT_EASY_WATCHING" EntityType="Self.ITT_EASY_WATCHING" store:Type="Tables" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"ITT_EASY_WATCHING"."EASY_QUREY_TOKEN" AS "EASY_QUREY_TOKEN", 
+"ITT_EASY_WATCHING"."PART_NO" AS "PART_NO", 
+"ITT_EASY_WATCHING"."WATCH_MSG" AS "WATCH_MSG", 
+"ITT_EASY_WATCHING"."WATCH_DETAIL" AS "WATCH_DETAIL", 
+"ITT_EASY_WATCHING"."COLOR" AS "COLOR", 
+"ITT_EASY_WATCHING"."CREATE_DATE" AS "CREATE_DATE"
+FROM "GWAPP"."ITT_EASY_WATCHING" "ITT_EASY_WATCHING"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="ITT_SHIPPING_D" EntityType="Self.ITT_SHIPPING_D" store:Type="Tables" store:Schema="GWAPP">
             <DefiningQuery>SELECT 
 "ITT_SHIPPING_D"."FROM_SYSTEM" AS "FROM_SYSTEM", 
@@ -2039,6 +2180,50 @@ FROM "GWAPP"."V_O_DOWNLOAD_DTL" "V_O_DOWNLOAD_DTL"</DefiningQuery>
 "V_O_DOWNLOAD_HDR"."TXT" AS "TXT"
 FROM "GWAPP"."V_O_DOWNLOAD_HDR" "V_O_DOWNLOAD_HDR"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="V_OPEN_QTY_ASN_PDC" EntityType="Self.V_OPEN_QTY_ASN_PDC" store:Type="Views" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"V_OPEN_QTY_ASN_PDC"."BUY_FROM_COMPANY" AS "BUY_FROM_COMPANY", 
+"V_OPEN_QTY_ASN_PDC"."WAREHOUSE" AS "WAREHOUSE", 
+"V_OPEN_QTY_ASN_PDC"."WH_ALIAS" AS "WH_ALIAS", 
+"V_OPEN_QTY_ASN_PDC"."PART_NO" AS "PART_NO", 
+"V_OPEN_QTY_ASN_PDC"."QTY_SHIPPED" AS "QTY_SHIPPED", 
+"V_OPEN_QTY_ASN_PDC"."QTY_RECEIVED" AS "QTY_RECEIVED", 
+"V_OPEN_QTY_ASN_PDC"."OPEN_QTY" AS "OPEN_QTY"
+FROM "GWAPP"."V_OPEN_QTY_ASN_PDC" "V_OPEN_QTY_ASN_PDC"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_OPEN_QTY_ASN_RDC" EntityType="Self.V_OPEN_QTY_ASN_RDC" store:Type="Views" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"V_OPEN_QTY_ASN_RDC"."BUY_FROM_COMPANY" AS "BUY_FROM_COMPANY", 
+"V_OPEN_QTY_ASN_RDC"."WAREHOUSE" AS "WAREHOUSE", 
+"V_OPEN_QTY_ASN_RDC"."WH_ALIAS" AS "WH_ALIAS", 
+"V_OPEN_QTY_ASN_RDC"."PART_NO" AS "PART_NO", 
+"V_OPEN_QTY_ASN_RDC"."QTY_SHIPPED" AS "QTY_SHIPPED", 
+"V_OPEN_QTY_ASN_RDC"."QTY_RECEIVED" AS "QTY_RECEIVED", 
+"V_OPEN_QTY_ASN_RDC"."OPEN_QTY" AS "OPEN_QTY"
+FROM "GWAPP"."V_OPEN_QTY_ASN_RDC" "V_OPEN_QTY_ASN_RDC"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_OPEN_QTY_PO_PDC" EntityType="Self.V_OPEN_QTY_PO_PDC" store:Type="Views" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"V_OPEN_QTY_PO_PDC"."WAREHOUSE" AS "WAREHOUSE", 
+"V_OPEN_QTY_PO_PDC"."WH_ALIAS" AS "WH_ALIAS", 
+"V_OPEN_QTY_PO_PDC"."BUY_FROM_COMPANY" AS "BUY_FROM_COMPANY", 
+"V_OPEN_QTY_PO_PDC"."COMPANY_NAME" AS "COMPANY_NAME", 
+"V_OPEN_QTY_PO_PDC"."PART_NO" AS "PART_NO", 
+"V_OPEN_QTY_PO_PDC"."RELEASE_QTY" AS "RELEASE_QTY", 
+"V_OPEN_QTY_PO_PDC"."REMAINING_QTY" AS "REMAINING_QTY"
+FROM "GWAPP"."V_OPEN_QTY_PO_PDC" "V_OPEN_QTY_PO_PDC"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_OPEN_QTY_PO_RDC" EntityType="Self.V_OPEN_QTY_PO_RDC" store:Type="Views" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"V_OPEN_QTY_PO_RDC"."WAREHOUSE" AS "WAREHOUSE", 
+"V_OPEN_QTY_PO_RDC"."WH_ALIAS" AS "WH_ALIAS", 
+"V_OPEN_QTY_PO_RDC"."BUY_FROM_COMPANY" AS "BUY_FROM_COMPANY", 
+"V_OPEN_QTY_PO_RDC"."COMPANY_NAME" AS "COMPANY_NAME", 
+"V_OPEN_QTY_PO_RDC"."PART_NO" AS "PART_NO", 
+"V_OPEN_QTY_PO_RDC"."RELEASE_QTY" AS "RELEASE_QTY", 
+"V_OPEN_QTY_PO_RDC"."REMAINING_QTY" AS "REMAINING_QTY"
+FROM "GWAPP"."V_OPEN_QTY_PO_RDC" "V_OPEN_QTY_PO_RDC"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="V_SHIPPING_ALL_BASE" EntityType="Self.V_SHIPPING_ALL_BASE" store:Type="Views" store:Schema="GWAPP">
             <DefiningQuery>SELECT 
 "V_SHIPPING_ALL_BASE"."FROM_SYSTEM" AS "FROM_SYSTEM", 
@@ -2279,7 +2464,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
             <End Role="M_PART" EntitySet="M_PART" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0015614" Association="Self.SYS_C0015614">
+          <AssociationSet Name="SYS_C0016015" Association="Self.SYS_C0016015">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -3306,6 +3491,13 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_TRAN_LOAD" EntitySet="ITT_TRAN_LOAD" />
           </AssociationSet>
+          <EntitySet Name="ITT_EASY_QUERY_LOG" EntityType="CHubDBModel.ITT_EASY_QUERY_LOG" />
+          <EntitySet Name="M_INV" EntityType="CHubDBModel.M_INV" />
+          <EntitySet Name="ITT_EASY_WATCHING" EntityType="CHubDBModel.ITT_EASY_WATCHING" />
+          <EntitySet Name="V_OPEN_QTY_ASN_PDC" EntityType="CHubDBModel.V_OPEN_QTY_ASN_PDC" />
+          <EntitySet Name="V_OPEN_QTY_ASN_RDC" EntityType="CHubDBModel.V_OPEN_QTY_ASN_RDC" />
+          <EntitySet Name="V_OPEN_QTY_PO_PDC" EntityType="CHubDBModel.V_OPEN_QTY_PO_PDC" />
+          <EntitySet Name="V_OPEN_QTY_PO_RDC" EntityType="CHubDBModel.V_OPEN_QTY_PO_RDC" />
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -4094,6 +4286,95 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ITT_EASY_QUERY_LOG">
+          <Key>
+            <PropertyRef Name="EASY_QUERY_TOKEN" />
+          </Key>
+          <Property Name="EASY_QUERY_TOKEN" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="QUERY_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="PART_NO" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="USER_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="M_INV">
+          <Key>
+            <PropertyRef Name="SYS_ID" />
+            <PropertyRef Name="PART_NO" />
+            <PropertyRef Name="WAREHOUSE" />
+            <PropertyRef Name="BAY_NO" />
+          </Key>
+          <Property Name="SYS_ID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PART_NO" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="WAREHOUSE" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="WH_ALIAS" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="BAY_NO" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="QTY_AVL" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="QTY_ONHAND" Type="Decimal" Precision="24" Scale="8" />
+          <Property Name="QTY_RESERVED" Type="Decimal" Precision="24" Scale="8" />
+          <Property Name="QTY_IN_RECEIVING" Type="Decimal" Precision="24" Scale="8" />
+          <Property Name="QTY_IN_QA" Type="Decimal" Precision="24" Scale="8" />
+          <Property Name="LOAD_DATE" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="ITT_EASY_WATCHING">
+          <Key>
+            <PropertyRef Name="EASY_QUREY_TOKEN" />
+            <PropertyRef Name="PART_NO" />
+            <PropertyRef Name="WATCH_MSG" />
+          </Key>
+          <Property Name="EASY_QUREY_TOKEN" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="PART_NO" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="WATCH_MSG" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="WATCH_DETAIL" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="COLOR" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="CREATE_DATE" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="V_OPEN_QTY_ASN_PDC">
+          <Key>
+            <PropertyRef Name="BUY_FROM_COMPANY" />
+          </Key>
+          <Property Name="BUY_FROM_COMPANY" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="WAREHOUSE" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="WH_ALIAS" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="PART_NO" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+          <Property Name="QTY_SHIPPED" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="QTY_RECEIVED" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="OPEN_QTY" Type="Decimal" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="V_OPEN_QTY_ASN_RDC">
+          <Key>
+            <PropertyRef Name="BUY_FROM_COMPANY" />
+          </Key>
+          <Property Name="BUY_FROM_COMPANY" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="WAREHOUSE" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="WH_ALIAS" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="PART_NO" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+          <Property Name="QTY_SHIPPED" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="QTY_RECEIVED" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="OPEN_QTY" Type="Decimal" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="V_OPEN_QTY_PO_PDC">
+          <Key>
+            <PropertyRef Name="WAREHOUSE" />
+          </Key>
+          <Property Name="WAREHOUSE" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="WH_ALIAS" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="BUY_FROM_COMPANY" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="COMPANY_NAME" Type="String" MaxLength="105" FixedLength="false" Unicode="false" />
+          <Property Name="PART_NO" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+          <Property Name="RELEASE_QTY" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="REMAINING_QTY" Type="Decimal" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="V_OPEN_QTY_PO_RDC">
+          <Key>
+            <PropertyRef Name="WAREHOUSE" />
+          </Key>
+          <Property Name="WAREHOUSE" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="WH_ALIAS" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="BUY_FROM_COMPANY" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="COMPANY_NAME" Type="String" MaxLength="105" FixedLength="false" Unicode="false" />
+          <Property Name="PART_NO" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+          <Property Name="RELEASE_QTY" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="REMAINING_QTY" Type="Decimal" Precision="38" Scale="0" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5229,6 +5510,97 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="INVOICE_NO" ColumnName="INVOICE_NO" />
                 <ScalarProperty Name="WILL_BILL_NO" ColumnName="WILL_BILL_NO" />
                 <ScalarProperty Name="LOAD_BATCH_TOKEN" ColumnName="LOAD_BATCH_TOKEN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ITT_EASY_QUERY_LOG">
+            <EntityTypeMapping TypeName="CHubDBModel.ITT_EASY_QUERY_LOG">
+              <MappingFragment StoreEntitySet="ITT_EASY_QUERY_LOG">
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+                <ScalarProperty Name="QUERY_DATE" ColumnName="QUERY_DATE" />
+                <ScalarProperty Name="EASY_QUERY_TOKEN" ColumnName="EASY_QUERY_TOKEN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="M_INV">
+            <EntityTypeMapping TypeName="CHubDBModel.M_INV">
+              <MappingFragment StoreEntitySet="M_INV">
+                <ScalarProperty Name="LOAD_DATE" ColumnName="LOAD_DATE" />
+                <ScalarProperty Name="QTY_IN_QA" ColumnName="QTY_IN_QA" />
+                <ScalarProperty Name="QTY_IN_RECEIVING" ColumnName="QTY_IN_RECEIVING" />
+                <ScalarProperty Name="QTY_RESERVED" ColumnName="QTY_RESERVED" />
+                <ScalarProperty Name="QTY_ONHAND" ColumnName="QTY_ONHAND" />
+                <ScalarProperty Name="QTY_AVL" ColumnName="QTY_AVL" />
+                <ScalarProperty Name="BAY_NO" ColumnName="BAY_NO" />
+                <ScalarProperty Name="WH_ALIAS" ColumnName="WH_ALIAS" />
+                <ScalarProperty Name="WAREHOUSE" ColumnName="WAREHOUSE" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+                <ScalarProperty Name="SYS_ID" ColumnName="SYS_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ITT_EASY_WATCHING">
+            <EntityTypeMapping TypeName="CHubDBModel.ITT_EASY_WATCHING">
+              <MappingFragment StoreEntitySet="ITT_EASY_WATCHING">
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="COLOR" ColumnName="COLOR" />
+                <ScalarProperty Name="WATCH_DETAIL" ColumnName="WATCH_DETAIL" />
+                <ScalarProperty Name="WATCH_MSG" ColumnName="WATCH_MSG" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+                <ScalarProperty Name="EASY_QUREY_TOKEN" ColumnName="EASY_QUREY_TOKEN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_OPEN_QTY_ASN_PDC">
+            <EntityTypeMapping TypeName="CHubDBModel.V_OPEN_QTY_ASN_PDC">
+              <MappingFragment StoreEntitySet="V_OPEN_QTY_ASN_PDC">
+                <ScalarProperty Name="OPEN_QTY" ColumnName="OPEN_QTY" />
+                <ScalarProperty Name="QTY_RECEIVED" ColumnName="QTY_RECEIVED" />
+                <ScalarProperty Name="QTY_SHIPPED" ColumnName="QTY_SHIPPED" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+                <ScalarProperty Name="WH_ALIAS" ColumnName="WH_ALIAS" />
+                <ScalarProperty Name="WAREHOUSE" ColumnName="WAREHOUSE" />
+                <ScalarProperty Name="BUY_FROM_COMPANY" ColumnName="BUY_FROM_COMPANY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_OPEN_QTY_ASN_RDC">
+            <EntityTypeMapping TypeName="CHubDBModel.V_OPEN_QTY_ASN_RDC">
+              <MappingFragment StoreEntitySet="V_OPEN_QTY_ASN_RDC">
+                <ScalarProperty Name="OPEN_QTY" ColumnName="OPEN_QTY" />
+                <ScalarProperty Name="QTY_RECEIVED" ColumnName="QTY_RECEIVED" />
+                <ScalarProperty Name="QTY_SHIPPED" ColumnName="QTY_SHIPPED" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+                <ScalarProperty Name="WH_ALIAS" ColumnName="WH_ALIAS" />
+                <ScalarProperty Name="WAREHOUSE" ColumnName="WAREHOUSE" />
+                <ScalarProperty Name="BUY_FROM_COMPANY" ColumnName="BUY_FROM_COMPANY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_OPEN_QTY_PO_PDC">
+            <EntityTypeMapping TypeName="CHubDBModel.V_OPEN_QTY_PO_PDC">
+              <MappingFragment StoreEntitySet="V_OPEN_QTY_PO_PDC">
+                <ScalarProperty Name="REMAINING_QTY" ColumnName="REMAINING_QTY" />
+                <ScalarProperty Name="RELEASE_QTY" ColumnName="RELEASE_QTY" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+                <ScalarProperty Name="COMPANY_NAME" ColumnName="COMPANY_NAME" />
+                <ScalarProperty Name="BUY_FROM_COMPANY" ColumnName="BUY_FROM_COMPANY" />
+                <ScalarProperty Name="WH_ALIAS" ColumnName="WH_ALIAS" />
+                <ScalarProperty Name="WAREHOUSE" ColumnName="WAREHOUSE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_OPEN_QTY_PO_RDC">
+            <EntityTypeMapping TypeName="CHubDBModel.V_OPEN_QTY_PO_RDC">
+              <MappingFragment StoreEntitySet="V_OPEN_QTY_PO_RDC">
+                <ScalarProperty Name="REMAINING_QTY" ColumnName="REMAINING_QTY" />
+                <ScalarProperty Name="RELEASE_QTY" ColumnName="RELEASE_QTY" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+                <ScalarProperty Name="COMPANY_NAME" ColumnName="COMPANY_NAME" />
+                <ScalarProperty Name="BUY_FROM_COMPANY" ColumnName="BUY_FROM_COMPANY" />
+                <ScalarProperty Name="WH_ALIAS" ColumnName="WH_ALIAS" />
+                <ScalarProperty Name="WAREHOUSE" ColumnName="WAREHOUSE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
