@@ -454,6 +454,24 @@ namespace CHubMVC.Controllers
             return Json(arrDate);
         }
 
+        //easy query part
+        [Authorize]
+        public ActionResult EasyQuery()
+        {
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, CHubEnum.PageNameEnum.ittezinq.ToString(), this.Request.Url.AbsoluteUri);
+
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult FuzzyQueryParNo(string fuzzypartNo)
+        {
+            G_PART_DESCRIPTION_BLL gpBLL = new G_PART_DESCRIPTION_BLL();
+            return Json(gpBLL.fuzzyqueryByPartNo(fuzzypartNo));
+        }
 
         #region private function part
 

@@ -32,6 +32,11 @@ namespace CHubBLL
             return dal.GetPartDescription(partNo);
         }
 
+        public List<G_PART_DESCRIPTION> fuzzyqueryByPartNo(string fuzzyPartNo)
+        {
+            return dal.fuzzyqueryByPartNo(fuzzyPartNo);
+        }
+
         public bool IsInActive(string partNo)
         {
             return dal.IsInActive(partNo);

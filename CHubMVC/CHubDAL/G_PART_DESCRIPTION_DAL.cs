@@ -26,6 +26,11 @@ namespace CHubDAL
             return db.G_PART_DESCRIPTION.FirstOrDefault(a => a.PART_NO == partNo);
         }
 
+        public List<G_PART_DESCRIPTION> fuzzyqueryByPartNo(string fuzzyPartNo)
+        {
+            return db.G_PART_DESCRIPTION.Where(a => a.PART_NO.Contains(fuzzyPartNo)).ToList();
+        }
+
         public bool IsInActive(string partNo)
         {
             string status = PartStatusEnum.I.ToString();

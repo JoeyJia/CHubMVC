@@ -287,6 +287,7 @@
     <Content Include="Template\TC_HS_DB_template_V1.xlsx" />
     <Content Include="Template\TC_MPart_template_V1.xlsx" />
     <Content Include="Views\ITT\Index.cshtml" />
+    <Content Include="Views\ITT\EasyQuery.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

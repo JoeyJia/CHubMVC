@@ -43,7 +43,8 @@ namespace CHubCommon
             orddft,
             tcmnt,
             tcinq,
-            wbentry
+            wbentry,
+            ittezinq
         }
 
         public enum OrderStatusEnum
