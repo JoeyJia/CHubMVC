@@ -21,6 +21,5 @@ namespace CHubDBEntity
         public string PART_NO { get; set; }
         public Nullable<decimal> RELEASE_QTY { get; set; }
         public Nullable<decimal> REMAINING_QTY { get; set; }
-        public Nullable<System.DateTime> LATEST_ETA { get; set; }
     }
 }
