@@ -646,6 +646,11 @@ warning 6002: The table/view 'GWAPP.TC_PART_HS_STG' does not have a primary key 
           <Property Name="ORDER_NOTES" Type="varchar2" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6006: The facet 'MaxLength' with a value '0' is outside the range 1-32767 specified by the facet description.  The column 'REMARK1' in the table 'GWAPP.G_PART_DESCRIPTION' was excluded.
+warning 6006: The facet 'MaxLength' with a value '0' is outside the range 1-32767 specified by the facet description.  The column 'REMARK2' in the table 'GWAPP.G_PART_DESCRIPTION' was excluded.
+warning 6006: The facet 'MaxLength' with a value '0' is outside the range 1-32767 specified by the facet description.  The column 'REMARK3' in the table 'GWAPP.G_PART_DESCRIPTION' was excluded.
+warning 6006: The facet 'MaxLength' with a value '0' is outside the range 1-32767 specified by the facet description.  The column 'REMARK4' in the table 'GWAPP.G_PART_DESCRIPTION' was excluded.
+warning 6006: The facet 'MaxLength' with a value '0' is outside the range 1-32767 specified by the facet description.  The column 'REMARK5' in the table 'GWAPP.G_PART_DESCRIPTION' was excluded.
 warning 6002: The table/view 'GWAPP.G_PART_DESCRIPTION' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="G_PART_DESCRIPTION">
           <Key>
@@ -663,12 +668,16 @@ warning 6002: The table/view 'GWAPP.G_PART_DESCRIPTION' does not have a primary 
           <Property Name="PART_HEIGHT" Type="number" Precision="24" Scale="8" />
           <Property Name="PART_LENGTH" Type="number" Precision="24" Scale="8" />
           <Property Name="PART_WIDTH" Type="number" Precision="24" Scale="8" />
-          <Property Name="LWH" Type="varchar2" MaxLength="122" />
           <Property Name="PART_WEIGHT" Type="number" Precision="24" Scale="8" />
+          <Property Name="LWH" Type="varchar2" MaxLength="366" />
           <Property Name="CURRENT_SALES_STATUS_CODE" Type="varchar2" MaxLength="30" />
           <Property Name="PRINT_PART_NO" Type="varchar2" MaxLength="75" />
+          <Property Name="MIN_ORDER_QTY" Type="number" Precision="24" Scale="8" />
+          <Property Name="QTY_IN_CARTON" Type="number" Precision="24" Scale="8" />
+          <Property Name="TRANSP_PART_CODE" Type="varchar2" MaxLength="132" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="RECORD_DATE" Type="date" />
+          <Property Name="NOTE_TEXT" Type="varchar2" MaxLength="942" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.G_PART_SUPERSESSION_ALL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -992,36 +1001,6 @@ warning 6002: The table/view 'GWAPP.V_CHK_DURATION_MISSING' does not have a prim
           <Property Name="TO_CITY" Type="varchar2" MaxLength="140" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6013: The table/view 'GWAPP.V_INV_PDC' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="V_INV_PDC">
-          <Property Name="SYS_ID" Type="varchar2" MaxLength="10" />
-          <Property Name="PART_NO" Type="varchar2" MaxLength="75" />
-          <Property Name="WAREHOUSE" Type="varchar2" MaxLength="45" />
-          <Property Name="WH_ALIAS" Type="varchar2" MaxLength="45" />
-          <Property Name="BAY_NO" Type="varchar2" MaxLength="9" />
-          <Property Name="QTY_AVL" Type="number" Precision="38" Scale="0" />
-          <Property Name="QTY_ONHAND" Type="number" Precision="24" Scale="8" />
-          <Property Name="QTY_RESERVED" Type="number" Precision="24" Scale="8" />
-          <Property Name="QTY_IN_RECEIVING" Type="number" Precision="24" Scale="8" />
-          <Property Name="QTY_IN_QA" Type="number" Precision="24" Scale="8" />
-          <Property Name="LOAD_DATE" Type="date" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'GWAPP.V_INV_RDC' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="V_INV_RDC">
-          <Property Name="SYS_ID" Type="varchar2" MaxLength="10" />
-          <Property Name="PART_NO" Type="varchar2" MaxLength="75" />
-          <Property Name="WAREHOUSE" Type="varchar2" MaxLength="45" />
-          <Property Name="WH_ALIAS" Type="varchar2" MaxLength="45" />
-          <Property Name="BAY_NO" Type="varchar2" MaxLength="9" />
-          <Property Name="QTY_AVL" Type="number" Precision="38" Scale="0" />
-          <Property Name="QTY_ONHAND" Type="number" Precision="24" Scale="8" />
-          <Property Name="QTY_RESERVED" Type="number" Precision="24" Scale="8" />
-          <Property Name="QTY_IN_RECEIVING" Type="number" Precision="24" Scale="8" />
-          <Property Name="QTY_IN_QA" Type="number" Precision="24" Scale="8" />
-          <Property Name="LOAD_DATE" Type="date" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.V_ITT_SHIPPING_SMRY' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_ITT_SHIPPING_SMRY">
           <Key>
@@ -1130,6 +1109,7 @@ warning 6002: The table/view 'GWAPP.V_OPEN_QTY_PO_PDC' does not have a primary k
           <Property Name="PART_NO" Type="varchar2" MaxLength="75" />
           <Property Name="RELEASE_QTY" Type="number" Precision="38" Scale="0" />
           <Property Name="REMAINING_QTY" Type="number" Precision="38" Scale="0" />
+          <Property Name="LATEST_ETA" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.V_OPEN_QTY_PO_RDC' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1144,6 +1124,7 @@ warning 6002: The table/view 'GWAPP.V_OPEN_QTY_PO_RDC' does not have a primary k
           <Property Name="PART_NO" Type="varchar2" MaxLength="75" />
           <Property Name="RELEASE_QTY" Type="number" Precision="38" Scale="0" />
           <Property Name="REMAINING_QTY" Type="number" Precision="38" Scale="0" />
+          <Property Name="LATEST_ETA" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.V_SHIPPING_ALL_BASE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1591,7 +1572,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0016015">
+        <Association Name="SYS_C0017257">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1863,12 +1844,16 @@ FROM "GWAPP"."TC_PART_HS_STG" "TC_PART_HS_STG"</DefiningQuery>
 "G_PART_DESCRIPTION"."PART_HEIGHT" AS "PART_HEIGHT", 
 "G_PART_DESCRIPTION"."PART_LENGTH" AS "PART_LENGTH", 
 "G_PART_DESCRIPTION"."PART_WIDTH" AS "PART_WIDTH", 
-"G_PART_DESCRIPTION"."LWH" AS "LWH", 
 "G_PART_DESCRIPTION"."PART_WEIGHT" AS "PART_WEIGHT", 
+"G_PART_DESCRIPTION"."LWH" AS "LWH", 
 "G_PART_DESCRIPTION"."CURRENT_SALES_STATUS_CODE" AS "CURRENT_SALES_STATUS_CODE", 
 "G_PART_DESCRIPTION"."PRINT_PART_NO" AS "PRINT_PART_NO", 
+"G_PART_DESCRIPTION"."MIN_ORDER_QTY" AS "MIN_ORDER_QTY", 
+"G_PART_DESCRIPTION"."QTY_IN_CARTON" AS "QTY_IN_CARTON", 
+"G_PART_DESCRIPTION"."TRANSP_PART_CODE" AS "TRANSP_PART_CODE", 
 "G_PART_DESCRIPTION"."CREATE_DATE" AS "CREATE_DATE", 
-"G_PART_DESCRIPTION"."RECORD_DATE" AS "RECORD_DATE"
+"G_PART_DESCRIPTION"."RECORD_DATE" AS "RECORD_DATE", 
+"G_PART_DESCRIPTION"."NOTE_TEXT" AS "NOTE_TEXT"
 FROM "GWAPP"."G_PART_DESCRIPTION" "G_PART_DESCRIPTION"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="G_PART_SUPERSESSION_ALL" EntityType="Self.G_PART_SUPERSESSION_ALL" store:Type="Views" store:Schema="GWAPP">
@@ -2210,7 +2195,8 @@ FROM "GWAPP"."V_OPEN_QTY_ASN_RDC" "V_OPEN_QTY_ASN_RDC"</DefiningQuery>
 "V_OPEN_QTY_PO_PDC"."COMPANY_NAME" AS "COMPANY_NAME", 
 "V_OPEN_QTY_PO_PDC"."PART_NO" AS "PART_NO", 
 "V_OPEN_QTY_PO_PDC"."RELEASE_QTY" AS "RELEASE_QTY", 
-"V_OPEN_QTY_PO_PDC"."REMAINING_QTY" AS "REMAINING_QTY"
+"V_OPEN_QTY_PO_PDC"."REMAINING_QTY" AS "REMAINING_QTY", 
+"V_OPEN_QTY_PO_PDC"."LATEST_ETA" AS "LATEST_ETA"
 FROM "GWAPP"."V_OPEN_QTY_PO_PDC" "V_OPEN_QTY_PO_PDC"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="V_OPEN_QTY_PO_RDC" EntityType="Self.V_OPEN_QTY_PO_RDC" store:Type="Views" store:Schema="GWAPP">
@@ -2221,7 +2207,8 @@ FROM "GWAPP"."V_OPEN_QTY_PO_PDC" "V_OPEN_QTY_PO_PDC"</DefiningQuery>
 "V_OPEN_QTY_PO_RDC"."COMPANY_NAME" AS "COMPANY_NAME", 
 "V_OPEN_QTY_PO_RDC"."PART_NO" AS "PART_NO", 
 "V_OPEN_QTY_PO_RDC"."RELEASE_QTY" AS "RELEASE_QTY", 
-"V_OPEN_QTY_PO_RDC"."REMAINING_QTY" AS "REMAINING_QTY"
+"V_OPEN_QTY_PO_RDC"."REMAINING_QTY" AS "REMAINING_QTY", 
+"V_OPEN_QTY_PO_RDC"."LATEST_ETA" AS "LATEST_ETA"
 FROM "GWAPP"."V_OPEN_QTY_PO_RDC" "V_OPEN_QTY_PO_RDC"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="V_SHIPPING_ALL_BASE" EntityType="Self.V_SHIPPING_ALL_BASE" store:Type="Views" store:Schema="GWAPP">
@@ -2464,7 +2451,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
             <End Role="M_PART" EntitySet="M_PART" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0016015" Association="Self.SYS_C0016015">
+          <AssociationSet Name="SYS_C0017257" Association="Self.SYS_C0017257">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -2777,6 +2764,10 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="DESC_CN" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
           <Property Name="CREATE_DATE" Type="DateTime" />
           <Property Name="LWH" Type="String" MaxLength="122" FixedLength="false" Unicode="false" />
+          <Property Name="MIN_ORDER_QTY" Type="Decimal" Precision="24" Scale="8" />
+          <Property Name="QTY_IN_CARTON" Type="Decimal" Precision="24" Scale="8" />
+          <Property Name="TRANSP_PART_CODE" Type="String" MaxLength="132" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE_TEXT" Type="String" MaxLength="942" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="G_PART_SUPERSESSION_ALL">
           <Key>
@@ -4362,6 +4353,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="PART_NO" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
           <Property Name="RELEASE_QTY" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="REMAINING_QTY" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="LATEST_ETA" Type="DateTime" />
         </EntityType>
         <EntityType Name="V_OPEN_QTY_PO_RDC">
           <Key>
@@ -4374,6 +4366,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="PART_NO" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
           <Property Name="RELEASE_QTY" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="REMAINING_QTY" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="LATEST_ETA" Type="DateTime" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -4606,6 +4599,10 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="G_PART_DESCRIPTION">
             <EntityTypeMapping TypeName="CHubDBModel.G_PART_DESCRIPTION">
               <MappingFragment StoreEntitySet="G_PART_DESCRIPTION">
+                <ScalarProperty Name="NOTE_TEXT" ColumnName="NOTE_TEXT" />
+                <ScalarProperty Name="TRANSP_PART_CODE" ColumnName="TRANSP_PART_CODE" />
+                <ScalarProperty Name="QTY_IN_CARTON" ColumnName="QTY_IN_CARTON" />
+                <ScalarProperty Name="MIN_ORDER_QTY" ColumnName="MIN_ORDER_QTY" />
                 <ScalarProperty Name="LWH" ColumnName="LWH" />
                 <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="DESC_CN" ColumnName="DESC_CN" />
@@ -5581,6 +5578,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="V_OPEN_QTY_PO_PDC">
             <EntityTypeMapping TypeName="CHubDBModel.V_OPEN_QTY_PO_PDC">
               <MappingFragment StoreEntitySet="V_OPEN_QTY_PO_PDC">
+                <ScalarProperty Name="LATEST_ETA" ColumnName="LATEST_ETA" />
                 <ScalarProperty Name="REMAINING_QTY" ColumnName="REMAINING_QTY" />
                 <ScalarProperty Name="RELEASE_QTY" ColumnName="RELEASE_QTY" />
                 <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
@@ -5594,6 +5592,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="V_OPEN_QTY_PO_RDC">
             <EntityTypeMapping TypeName="CHubDBModel.V_OPEN_QTY_PO_RDC">
               <MappingFragment StoreEntitySet="V_OPEN_QTY_PO_RDC">
+                <ScalarProperty Name="LATEST_ETA" ColumnName="LATEST_ETA" />
                 <ScalarProperty Name="REMAINING_QTY" ColumnName="REMAINING_QTY" />
                 <ScalarProperty Name="RELEASE_QTY" ColumnName="RELEASE_QTY" />
                 <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />

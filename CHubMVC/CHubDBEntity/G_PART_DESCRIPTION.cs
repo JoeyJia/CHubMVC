@@ -32,5 +32,9 @@ namespace CHubDBEntity
         public string DESC_CN { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public string LWH { get; set; }
+        public Nullable<decimal> MIN_ORDER_QTY { get; set; }
+        public Nullable<decimal> QTY_IN_CARTON { get; set; }
+        public string TRANSP_PART_CODE { get; set; }
+        public string NOTE_TEXT { get; set; }
     }
 }
