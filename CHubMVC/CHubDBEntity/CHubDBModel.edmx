@@ -1001,6 +1001,84 @@ warning 6002: The table/view 'GWAPP.V_CHK_DURATION_MISSING' does not have a prim
           <Property Name="TO_CITY" Type="varchar2" MaxLength="140" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.V_ITT_SHIPPING_ALLIN1' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_ITT_SHIPPING_ALLIN1">
+          <Key>
+            <PropertyRef Name="FROM_SYSTEM" />
+            <PropertyRef Name="SHIPMENT_NO" />
+            <PropertyRef Name="SHIP_DATE" />
+          </Key>
+          <Property Name="FROM_SYSTEM" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="SHIPMENT_NO" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="SHIPMENT_LINE_NO" Type="number" Precision="11" Scale="0" />
+          <Property Name="SHIP_DATE" Type="date" Nullable="false" />
+          <Property Name="BILL_OF_LADING" Type="number" Precision="38" Scale="0" />
+          <Property Name="SHIP_TO_ABBR" Type="varchar2" MaxLength="10" />
+          <Property Name="CARRIER_CODE" Type="varchar2" MaxLength="6" />
+          <Property Name="CARRIER_PRO_NO" Type="varchar2" MaxLength="30" />
+          <Property Name="WEIGHT_SHIPPED" Type="number" Precision="24" Scale="8" />
+          <Property Name="NO_OF_CARTONS" Type="number" Precision="6" Scale="0" />
+          <Property Name="TRAN_TYPE" Type="varchar2" MaxLength="10" />
+          <Property Name="ORDER_NO" Type="varchar2" MaxLength="12" />
+          <Property Name="LINE_NO" Type="number" Precision="11" Scale="0" />
+          <Property Name="PART_NO" Type="varchar2" MaxLength="35" />
+          <Property Name="QTY_SHIPPED" Type="number" Precision="24" Scale="8" />
+          <Property Name="SERIAL_NO" Type="varchar2" MaxLength="15" />
+          <Property Name="PACKING_LIST_NO" Type="varchar2" MaxLength="50" />
+          <Property Name="INVOICE_NO" Type="varchar2" MaxLength="26" />
+          <Property Name="INVOICE_ITEM" Type="number" Precision="38" Scale="0" />
+          <Property Name="COUNTRY_OF_ORIGIN" Type="varchar2" MaxLength="5" />
+          <Property Name="SU_LP" Type="varchar2" MaxLength="12" />
+          <Property Name="LODNUM" Type="varchar2" MaxLength="30" />
+          <Property Name="S00_DEPART_DATE" Type="date" />
+          <Property Name="S10_PORT_ARRIVAL_DATE" Type="date" />
+          <Property Name="S20_DO_RELEASE_DATE" Type="date" />
+          <Property Name="S30_BND_ARRIVAL_DATE" Type="date" />
+          <Property Name="S40_BND_OUT_DATE" Type="date" />
+          <Property Name="S50_NBND_ARRIVAL_DATE" Type="date" />
+          <Property Name="EST_S10_PORT_ARRIVAL_DATE" Type="date" />
+          <Property Name="EST_S60_AVL_DATE" Type="date" />
+          <Property Name="S00_DISPLAY" Type="varchar2" MaxLength="62" />
+          <Property Name="S10_DISPLAY" Type="varchar2" MaxLength="103" />
+          <Property Name="S20_DISPLAY" Type="varchar2" MaxLength="62" />
+          <Property Name="S30_DISPLAY" Type="varchar2" MaxLength="103" />
+          <Property Name="S40_DISPLAY" Type="varchar2" MaxLength="62" />
+          <Property Name="S50_DISPLAY" Type="varchar2" MaxLength="103" />
+          <Property Name="TRACKING_NO" Type="varchar2" MaxLength="30" />
+          <Property Name="WILL_BILL_NO" Type="varchar2" MaxLength="30" />
+          <Property Name="WB_LAST_CHANGED" Type="date" />
+          <Property Name="TRAN_PROCESS_ID" Type="varchar2" MaxLength="20" />
+          <Property Name="CUSTOM_PROCESS_ID" Type="varchar2" MaxLength="20" />
+          <Property Name="S00_DEPART_DAYS" Type="number" Precision="38" Scale="0" />
+          <Property Name="S10_PORT_ARRIVAL_DAYS" Type="number" Precision="38" Scale="0" />
+          <Property Name="S20_DO_RELEASE_DAYS" Type="number" Precision="38" Scale="0" />
+          <Property Name="S30_BND_ARRIVAL_DAYS" Type="number" Precision="38" Scale="0" />
+          <Property Name="S40_BND_OUT_DAYS" Type="number" Precision="38" Scale="0" />
+          <Property Name="S50_NBND_ARRIVAL_DAYS" Type="number" Precision="38" Scale="0" />
+          <Property Name="T_TARGET_S10" Type="number" Precision="38" Scale="0" />
+          <Property Name="T_IND_G" Type="number" Precision="10" Scale="2" />
+          <Property Name="T_IND_Y" Type="number" Precision="10" Scale="2" />
+          <Property Name="T_ICON1" Type="varchar2" MaxLength="20" />
+          <Property Name="T_ICON2" Type="varchar2" MaxLength="20" />
+          <Property Name="C_TARGET_S30" Type="number" Precision="38" Scale="0" />
+          <Property Name="C_TARGET_S50" Type="number" Precision="38" Scale="0" />
+          <Property Name="C_TARGET_S60" Type="number" Precision="38" Scale="0" />
+          <Property Name="C_IND_G" Type="number" Precision="10" Scale="2" />
+          <Property Name="C_IND_Y" Type="number" Precision="10" Scale="2" />
+          <Property Name="C_ICON1" Type="varchar2" MaxLength="20" />
+          <Property Name="C_ICON2" Type="varchar2" MaxLength="20" />
+          <Property Name="C_ICON3" Type="varchar2" MaxLength="20" />
+          <Property Name="COLOR_10" Type="char" MaxLength="1" />
+          <Property Name="COLOR_30" Type="char" MaxLength="1" />
+          <Property Name="COLOR_50" Type="char" MaxLength="1" />
+          <Property Name="TP_CATEGORY1" Type="varchar2" MaxLength="20" />
+          <Property Name="TP_CATEGORY2" Type="varchar2" MaxLength="20" />
+          <Property Name="CP_CATEGORY1" Type="varchar2" MaxLength="20" />
+          <Property Name="CP_CATEGORY2" Type="varchar2" MaxLength="20" />
+          <Property Name="CP_CATEGORY3" Type="varchar2" MaxLength="20" />
+          <Property Name="RATIO_SHIP2PORT" Type="number" Precision="38" Scale="0" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.V_ITT_SHIPPING_SMRY' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_ITT_SHIPPING_SMRY">
           <Key>
@@ -2115,6 +2193,79 @@ FROM "GWAPP"."V_ALIAS_ADDR_SPL" "V_ALIAS_ADDR_SPL"</DefiningQuery>
 "V_CHK_DURATION_MISSING"."FROM_SITE" AS "FROM_SITE", 
 "V_CHK_DURATION_MISSING"."TO_CITY" AS "TO_CITY"
 FROM "GWAPP"."V_CHK_DURATION_MISSING" "V_CHK_DURATION_MISSING"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_ITT_SHIPPING_ALLIN1" EntityType="Self.V_ITT_SHIPPING_ALLIN1" store:Type="Views" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"V_ITT_SHIPPING_ALLIN1"."FROM_SYSTEM" AS "FROM_SYSTEM", 
+"V_ITT_SHIPPING_ALLIN1"."SHIPMENT_NO" AS "SHIPMENT_NO", 
+"V_ITT_SHIPPING_ALLIN1"."SHIPMENT_LINE_NO" AS "SHIPMENT_LINE_NO", 
+"V_ITT_SHIPPING_ALLIN1"."SHIP_DATE" AS "SHIP_DATE", 
+"V_ITT_SHIPPING_ALLIN1"."BILL_OF_LADING" AS "BILL_OF_LADING", 
+"V_ITT_SHIPPING_ALLIN1"."SHIP_TO_ABBR" AS "SHIP_TO_ABBR", 
+"V_ITT_SHIPPING_ALLIN1"."CARRIER_CODE" AS "CARRIER_CODE", 
+"V_ITT_SHIPPING_ALLIN1"."CARRIER_PRO_NO" AS "CARRIER_PRO_NO", 
+"V_ITT_SHIPPING_ALLIN1"."WEIGHT_SHIPPED" AS "WEIGHT_SHIPPED", 
+"V_ITT_SHIPPING_ALLIN1"."NO_OF_CARTONS" AS "NO_OF_CARTONS", 
+"V_ITT_SHIPPING_ALLIN1"."TRAN_TYPE" AS "TRAN_TYPE", 
+"V_ITT_SHIPPING_ALLIN1"."ORDER_NO" AS "ORDER_NO", 
+"V_ITT_SHIPPING_ALLIN1"."LINE_NO" AS "LINE_NO", 
+"V_ITT_SHIPPING_ALLIN1"."PART_NO" AS "PART_NO", 
+"V_ITT_SHIPPING_ALLIN1"."QTY_SHIPPED" AS "QTY_SHIPPED", 
+"V_ITT_SHIPPING_ALLIN1"."SERIAL_NO" AS "SERIAL_NO", 
+"V_ITT_SHIPPING_ALLIN1"."PACKING_LIST_NO" AS "PACKING_LIST_NO", 
+"V_ITT_SHIPPING_ALLIN1"."INVOICE_NO" AS "INVOICE_NO", 
+"V_ITT_SHIPPING_ALLIN1"."INVOICE_ITEM" AS "INVOICE_ITEM", 
+"V_ITT_SHIPPING_ALLIN1"."COUNTRY_OF_ORIGIN" AS "COUNTRY_OF_ORIGIN", 
+"V_ITT_SHIPPING_ALLIN1"."SU_LP" AS "SU_LP", 
+"V_ITT_SHIPPING_ALLIN1"."LODNUM" AS "LODNUM", 
+"V_ITT_SHIPPING_ALLIN1"."S00_DEPART_DATE" AS "S00_DEPART_DATE", 
+"V_ITT_SHIPPING_ALLIN1"."S10_PORT_ARRIVAL_DATE" AS "S10_PORT_ARRIVAL_DATE", 
+"V_ITT_SHIPPING_ALLIN1"."S20_DO_RELEASE_DATE" AS "S20_DO_RELEASE_DATE", 
+"V_ITT_SHIPPING_ALLIN1"."S30_BND_ARRIVAL_DATE" AS "S30_BND_ARRIVAL_DATE", 
+"V_ITT_SHIPPING_ALLIN1"."S40_BND_OUT_DATE" AS "S40_BND_OUT_DATE", 
+"V_ITT_SHIPPING_ALLIN1"."S50_NBND_ARRIVAL_DATE" AS "S50_NBND_ARRIVAL_DATE", 
+"V_ITT_SHIPPING_ALLIN1"."EST_S10_PORT_ARRIVAL_DATE" AS "EST_S10_PORT_ARRIVAL_DATE", 
+"V_ITT_SHIPPING_ALLIN1"."EST_S60_AVL_DATE" AS "EST_S60_AVL_DATE", 
+"V_ITT_SHIPPING_ALLIN1"."S00_DISPLAY" AS "S00_DISPLAY", 
+"V_ITT_SHIPPING_ALLIN1"."S10_DISPLAY" AS "S10_DISPLAY", 
+"V_ITT_SHIPPING_ALLIN1"."S20_DISPLAY" AS "S20_DISPLAY", 
+"V_ITT_SHIPPING_ALLIN1"."S30_DISPLAY" AS "S30_DISPLAY", 
+"V_ITT_SHIPPING_ALLIN1"."S40_DISPLAY" AS "S40_DISPLAY", 
+"V_ITT_SHIPPING_ALLIN1"."S50_DISPLAY" AS "S50_DISPLAY", 
+"V_ITT_SHIPPING_ALLIN1"."TRACKING_NO" AS "TRACKING_NO", 
+"V_ITT_SHIPPING_ALLIN1"."WILL_BILL_NO" AS "WILL_BILL_NO", 
+"V_ITT_SHIPPING_ALLIN1"."WB_LAST_CHANGED" AS "WB_LAST_CHANGED", 
+"V_ITT_SHIPPING_ALLIN1"."TRAN_PROCESS_ID" AS "TRAN_PROCESS_ID", 
+"V_ITT_SHIPPING_ALLIN1"."CUSTOM_PROCESS_ID" AS "CUSTOM_PROCESS_ID", 
+"V_ITT_SHIPPING_ALLIN1"."S00_DEPART_DAYS" AS "S00_DEPART_DAYS", 
+"V_ITT_SHIPPING_ALLIN1"."S10_PORT_ARRIVAL_DAYS" AS "S10_PORT_ARRIVAL_DAYS", 
+"V_ITT_SHIPPING_ALLIN1"."S20_DO_RELEASE_DAYS" AS "S20_DO_RELEASE_DAYS", 
+"V_ITT_SHIPPING_ALLIN1"."S30_BND_ARRIVAL_DAYS" AS "S30_BND_ARRIVAL_DAYS", 
+"V_ITT_SHIPPING_ALLIN1"."S40_BND_OUT_DAYS" AS "S40_BND_OUT_DAYS", 
+"V_ITT_SHIPPING_ALLIN1"."S50_NBND_ARRIVAL_DAYS" AS "S50_NBND_ARRIVAL_DAYS", 
+"V_ITT_SHIPPING_ALLIN1"."T_TARGET_S10" AS "T_TARGET_S10", 
+"V_ITT_SHIPPING_ALLIN1"."T_IND_G" AS "T_IND_G", 
+"V_ITT_SHIPPING_ALLIN1"."T_IND_Y" AS "T_IND_Y", 
+"V_ITT_SHIPPING_ALLIN1"."T_ICON1" AS "T_ICON1", 
+"V_ITT_SHIPPING_ALLIN1"."T_ICON2" AS "T_ICON2", 
+"V_ITT_SHIPPING_ALLIN1"."C_TARGET_S30" AS "C_TARGET_S30", 
+"V_ITT_SHIPPING_ALLIN1"."C_TARGET_S50" AS "C_TARGET_S50", 
+"V_ITT_SHIPPING_ALLIN1"."C_TARGET_S60" AS "C_TARGET_S60", 
+"V_ITT_SHIPPING_ALLIN1"."C_IND_G" AS "C_IND_G", 
+"V_ITT_SHIPPING_ALLIN1"."C_IND_Y" AS "C_IND_Y", 
+"V_ITT_SHIPPING_ALLIN1"."C_ICON1" AS "C_ICON1", 
+"V_ITT_SHIPPING_ALLIN1"."C_ICON2" AS "C_ICON2", 
+"V_ITT_SHIPPING_ALLIN1"."C_ICON3" AS "C_ICON3", 
+"V_ITT_SHIPPING_ALLIN1"."COLOR_10" AS "COLOR_10", 
+"V_ITT_SHIPPING_ALLIN1"."COLOR_30" AS "COLOR_30", 
+"V_ITT_SHIPPING_ALLIN1"."COLOR_50" AS "COLOR_50", 
+"V_ITT_SHIPPING_ALLIN1"."TP_CATEGORY1" AS "TP_CATEGORY1", 
+"V_ITT_SHIPPING_ALLIN1"."TP_CATEGORY2" AS "TP_CATEGORY2", 
+"V_ITT_SHIPPING_ALLIN1"."CP_CATEGORY1" AS "CP_CATEGORY1", 
+"V_ITT_SHIPPING_ALLIN1"."CP_CATEGORY2" AS "CP_CATEGORY2", 
+"V_ITT_SHIPPING_ALLIN1"."CP_CATEGORY3" AS "CP_CATEGORY3", 
+"V_ITT_SHIPPING_ALLIN1"."RATIO_SHIP2PORT" AS "RATIO_SHIP2PORT"
+FROM "GWAPP"."V_ITT_SHIPPING_ALLIN1" "V_ITT_SHIPPING_ALLIN1"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="V_ITT_SHIPPING_SMRY" EntityType="Self.V_ITT_SHIPPING_SMRY" store:Type="Views" store:Schema="GWAPP">
             <DefiningQuery>SELECT 
@@ -3489,6 +3640,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySet Name="V_OPEN_QTY_ASN_RDC" EntityType="CHubDBModel.V_OPEN_QTY_ASN_RDC" />
           <EntitySet Name="V_OPEN_QTY_PO_PDC" EntityType="CHubDBModel.V_OPEN_QTY_PO_PDC" />
           <EntitySet Name="V_OPEN_QTY_PO_RDC" EntityType="CHubDBModel.V_OPEN_QTY_PO_RDC" />
+          <EntitySet Name="V_ITT_SHIPPING_ALLIN1" EntityType="CHubDBModel.V_ITT_SHIPPING_ALLIN1" />
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -4367,6 +4519,82 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="RELEASE_QTY" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="REMAINING_QTY" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="LATEST_ETA" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="V_ITT_SHIPPING_ALLIN1">
+          <Key>
+            <PropertyRef Name="FROM_SYSTEM" />
+            <PropertyRef Name="SHIPMENT_NO" />
+            <PropertyRef Name="SHIP_DATE" />
+          </Key>
+          <Property Name="FROM_SYSTEM" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="SHIPMENT_NO" Type="Int64" Nullable="false" />
+          <Property Name="SHIPMENT_LINE_NO" Type="Int64" />
+          <Property Name="SHIP_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="BILL_OF_LADING" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="SHIP_TO_ABBR" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CARRIER_CODE" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="CARRIER_PRO_NO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="WEIGHT_SHIPPED" Type="Decimal" Precision="24" Scale="8" />
+          <Property Name="NO_OF_CARTONS" Type="Int32" />
+          <Property Name="TRAN_TYPE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ORDER_NO" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="LINE_NO" Type="Int64" />
+          <Property Name="PART_NO" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="QTY_SHIPPED" Type="Decimal" Precision="24" Scale="8" />
+          <Property Name="SERIAL_NO" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="PACKING_LIST_NO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="INVOICE_NO" Type="String" MaxLength="26" FixedLength="false" Unicode="false" />
+          <Property Name="INVOICE_ITEM" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="COUNTRY_OF_ORIGIN" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="SU_LP" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="LODNUM" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="S00_DEPART_DATE" Type="DateTime" />
+          <Property Name="S10_PORT_ARRIVAL_DATE" Type="DateTime" />
+          <Property Name="S20_DO_RELEASE_DATE" Type="DateTime" />
+          <Property Name="S30_BND_ARRIVAL_DATE" Type="DateTime" />
+          <Property Name="S40_BND_OUT_DATE" Type="DateTime" />
+          <Property Name="S50_NBND_ARRIVAL_DATE" Type="DateTime" />
+          <Property Name="EST_S10_PORT_ARRIVAL_DATE" Type="DateTime" />
+          <Property Name="EST_S60_AVL_DATE" Type="DateTime" />
+          <Property Name="S00_DISPLAY" Type="String" MaxLength="62" FixedLength="false" Unicode="false" />
+          <Property Name="S10_DISPLAY" Type="String" MaxLength="103" FixedLength="false" Unicode="false" />
+          <Property Name="S20_DISPLAY" Type="String" MaxLength="62" FixedLength="false" Unicode="false" />
+          <Property Name="S30_DISPLAY" Type="String" MaxLength="103" FixedLength="false" Unicode="false" />
+          <Property Name="S40_DISPLAY" Type="String" MaxLength="62" FixedLength="false" Unicode="false" />
+          <Property Name="S50_DISPLAY" Type="String" MaxLength="103" FixedLength="false" Unicode="false" />
+          <Property Name="TRACKING_NO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="WILL_BILL_NO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="WB_LAST_CHANGED" Type="DateTime" />
+          <Property Name="TRAN_PROCESS_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CUSTOM_PROCESS_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="S00_DEPART_DAYS" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="S10_PORT_ARRIVAL_DAYS" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="S20_DO_RELEASE_DAYS" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="S30_BND_ARRIVAL_DAYS" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="S40_BND_OUT_DAYS" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="S50_NBND_ARRIVAL_DAYS" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="T_TARGET_S10" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="T_IND_G" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="T_IND_Y" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="T_ICON1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="T_ICON2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="C_TARGET_S30" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="C_TARGET_S50" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="C_TARGET_S60" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="C_IND_G" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="C_IND_Y" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="C_ICON1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="C_ICON2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="C_ICON3" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="COLOR_10" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="COLOR_30" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="COLOR_50" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="TP_CATEGORY1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TP_CATEGORY2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CP_CATEGORY1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CP_CATEGORY2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CP_CATEGORY3" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="RATIO_SHIP2PORT" Type="Decimal" Precision="38" Scale="0" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -5600,6 +5828,81 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="BUY_FROM_COMPANY" ColumnName="BUY_FROM_COMPANY" />
                 <ScalarProperty Name="WH_ALIAS" ColumnName="WH_ALIAS" />
                 <ScalarProperty Name="WAREHOUSE" ColumnName="WAREHOUSE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_ITT_SHIPPING_ALLIN1">
+            <EntityTypeMapping TypeName="CHubDBModel.V_ITT_SHIPPING_ALLIN1">
+              <MappingFragment StoreEntitySet="V_ITT_SHIPPING_ALLIN1">
+                <ScalarProperty Name="RATIO_SHIP2PORT" ColumnName="RATIO_SHIP2PORT" />
+                <ScalarProperty Name="CP_CATEGORY3" ColumnName="CP_CATEGORY3" />
+                <ScalarProperty Name="CP_CATEGORY2" ColumnName="CP_CATEGORY2" />
+                <ScalarProperty Name="CP_CATEGORY1" ColumnName="CP_CATEGORY1" />
+                <ScalarProperty Name="TP_CATEGORY2" ColumnName="TP_CATEGORY2" />
+                <ScalarProperty Name="TP_CATEGORY1" ColumnName="TP_CATEGORY1" />
+                <ScalarProperty Name="COLOR_50" ColumnName="COLOR_50" />
+                <ScalarProperty Name="COLOR_30" ColumnName="COLOR_30" />
+                <ScalarProperty Name="COLOR_10" ColumnName="COLOR_10" />
+                <ScalarProperty Name="C_ICON3" ColumnName="C_ICON3" />
+                <ScalarProperty Name="C_ICON2" ColumnName="C_ICON2" />
+                <ScalarProperty Name="C_ICON1" ColumnName="C_ICON1" />
+                <ScalarProperty Name="C_IND_Y" ColumnName="C_IND_Y" />
+                <ScalarProperty Name="C_IND_G" ColumnName="C_IND_G" />
+                <ScalarProperty Name="C_TARGET_S60" ColumnName="C_TARGET_S60" />
+                <ScalarProperty Name="C_TARGET_S50" ColumnName="C_TARGET_S50" />
+                <ScalarProperty Name="C_TARGET_S30" ColumnName="C_TARGET_S30" />
+                <ScalarProperty Name="T_ICON2" ColumnName="T_ICON2" />
+                <ScalarProperty Name="T_ICON1" ColumnName="T_ICON1" />
+                <ScalarProperty Name="T_IND_Y" ColumnName="T_IND_Y" />
+                <ScalarProperty Name="T_IND_G" ColumnName="T_IND_G" />
+                <ScalarProperty Name="T_TARGET_S10" ColumnName="T_TARGET_S10" />
+                <ScalarProperty Name="S50_NBND_ARRIVAL_DAYS" ColumnName="S50_NBND_ARRIVAL_DAYS" />
+                <ScalarProperty Name="S40_BND_OUT_DAYS" ColumnName="S40_BND_OUT_DAYS" />
+                <ScalarProperty Name="S30_BND_ARRIVAL_DAYS" ColumnName="S30_BND_ARRIVAL_DAYS" />
+                <ScalarProperty Name="S20_DO_RELEASE_DAYS" ColumnName="S20_DO_RELEASE_DAYS" />
+                <ScalarProperty Name="S10_PORT_ARRIVAL_DAYS" ColumnName="S10_PORT_ARRIVAL_DAYS" />
+                <ScalarProperty Name="S00_DEPART_DAYS" ColumnName="S00_DEPART_DAYS" />
+                <ScalarProperty Name="CUSTOM_PROCESS_ID" ColumnName="CUSTOM_PROCESS_ID" />
+                <ScalarProperty Name="TRAN_PROCESS_ID" ColumnName="TRAN_PROCESS_ID" />
+                <ScalarProperty Name="WB_LAST_CHANGED" ColumnName="WB_LAST_CHANGED" />
+                <ScalarProperty Name="WILL_BILL_NO" ColumnName="WILL_BILL_NO" />
+                <ScalarProperty Name="TRACKING_NO" ColumnName="TRACKING_NO" />
+                <ScalarProperty Name="S50_DISPLAY" ColumnName="S50_DISPLAY" />
+                <ScalarProperty Name="S40_DISPLAY" ColumnName="S40_DISPLAY" />
+                <ScalarProperty Name="S30_DISPLAY" ColumnName="S30_DISPLAY" />
+                <ScalarProperty Name="S20_DISPLAY" ColumnName="S20_DISPLAY" />
+                <ScalarProperty Name="S10_DISPLAY" ColumnName="S10_DISPLAY" />
+                <ScalarProperty Name="S00_DISPLAY" ColumnName="S00_DISPLAY" />
+                <ScalarProperty Name="EST_S60_AVL_DATE" ColumnName="EST_S60_AVL_DATE" />
+                <ScalarProperty Name="EST_S10_PORT_ARRIVAL_DATE" ColumnName="EST_S10_PORT_ARRIVAL_DATE" />
+                <ScalarProperty Name="S50_NBND_ARRIVAL_DATE" ColumnName="S50_NBND_ARRIVAL_DATE" />
+                <ScalarProperty Name="S40_BND_OUT_DATE" ColumnName="S40_BND_OUT_DATE" />
+                <ScalarProperty Name="S30_BND_ARRIVAL_DATE" ColumnName="S30_BND_ARRIVAL_DATE" />
+                <ScalarProperty Name="S20_DO_RELEASE_DATE" ColumnName="S20_DO_RELEASE_DATE" />
+                <ScalarProperty Name="S10_PORT_ARRIVAL_DATE" ColumnName="S10_PORT_ARRIVAL_DATE" />
+                <ScalarProperty Name="S00_DEPART_DATE" ColumnName="S00_DEPART_DATE" />
+                <ScalarProperty Name="LODNUM" ColumnName="LODNUM" />
+                <ScalarProperty Name="SU_LP" ColumnName="SU_LP" />
+                <ScalarProperty Name="COUNTRY_OF_ORIGIN" ColumnName="COUNTRY_OF_ORIGIN" />
+                <ScalarProperty Name="INVOICE_ITEM" ColumnName="INVOICE_ITEM" />
+                <ScalarProperty Name="INVOICE_NO" ColumnName="INVOICE_NO" />
+                <ScalarProperty Name="PACKING_LIST_NO" ColumnName="PACKING_LIST_NO" />
+                <ScalarProperty Name="SERIAL_NO" ColumnName="SERIAL_NO" />
+                <ScalarProperty Name="QTY_SHIPPED" ColumnName="QTY_SHIPPED" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+                <ScalarProperty Name="LINE_NO" ColumnName="LINE_NO" />
+                <ScalarProperty Name="ORDER_NO" ColumnName="ORDER_NO" />
+                <ScalarProperty Name="TRAN_TYPE" ColumnName="TRAN_TYPE" />
+                <ScalarProperty Name="NO_OF_CARTONS" ColumnName="NO_OF_CARTONS" />
+                <ScalarProperty Name="WEIGHT_SHIPPED" ColumnName="WEIGHT_SHIPPED" />
+                <ScalarProperty Name="CARRIER_PRO_NO" ColumnName="CARRIER_PRO_NO" />
+                <ScalarProperty Name="CARRIER_CODE" ColumnName="CARRIER_CODE" />
+                <ScalarProperty Name="SHIP_TO_ABBR" ColumnName="SHIP_TO_ABBR" />
+                <ScalarProperty Name="BILL_OF_LADING" ColumnName="BILL_OF_LADING" />
+                <ScalarProperty Name="SHIP_DATE" ColumnName="SHIP_DATE" />
+                <ScalarProperty Name="SHIPMENT_LINE_NO" ColumnName="SHIPMENT_LINE_NO" />
+                <ScalarProperty Name="SHIPMENT_NO" ColumnName="SHIPMENT_NO" />
+                <ScalarProperty Name="FROM_SYSTEM" ColumnName="FROM_SYSTEM" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

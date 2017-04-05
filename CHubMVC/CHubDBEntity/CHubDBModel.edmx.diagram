@@ -106,6 +106,7 @@
         <EntityTypeShape EntityType="CHubDBModel.V_OPEN_QTY_ASN_RDC" Width="1.5" PointX="26.375" PointY="26.125" />
         <EntityTypeShape EntityType="CHubDBModel.V_OPEN_QTY_PO_PDC" Width="1.5" PointX="28.375" PointY="1.125" />
         <EntityTypeShape EntityType="CHubDBModel.V_OPEN_QTY_PO_RDC" Width="1.5" PointX="28.375" PointY="5.125" />
+        <EntityTypeShape EntityType="CHubDBModel.V_ITT_SHIPPING_ALLIN1" Width="1.5" PointX="28.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
