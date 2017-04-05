@@ -43,6 +43,7 @@
     <Compile Include="ExtensionModel\ExAppCustAlias.cs" />
     <Compile Include="ExtensionModel\ExOrderDetail.cs" />
     <Compile Include="ExtensionModel\ExVAliasAddr.cs" />
+    <Compile Include="ExtensionModel\OpeningQtySnapshot.cs" />
     <Compile Include="ExtensionModel\TranLoadPreFill.cs" />
     <Compile Include="PostResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

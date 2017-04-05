@@ -33,5 +33,9 @@ namespace CHubDAL
             return result.OrderBy(a=>a.PART_NO).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
         }
 
+        public V_TC_MDM_ALL GetSpecifyMDM(string partNo)
+        {
+            return db.V_TC_MDM_ALL.FirstOrDefault(a => a.PART_NO == partNo);
+        }
     }
 }

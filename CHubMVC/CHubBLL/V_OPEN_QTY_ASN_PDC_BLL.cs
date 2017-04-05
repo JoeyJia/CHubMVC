@@ -21,5 +21,10 @@ namespace CHubBLL
             dal = new V_OPEN_QTY_ASN_PDC_DAL(db);
         }
 
+        public List<V_OPEN_QTY_ASN_PDC> GetOpenPDCData(string partNo)
+        {
+            return dal.GetOpenPDCData(partNo);
+        }
+
     }
 }

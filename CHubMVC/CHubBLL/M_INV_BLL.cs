@@ -21,5 +21,10 @@ namespace CHubBLL
             dal = new M_INV_DAL(db);
         }
 
+        public List<M_INV> GetInterPDCData(string partNo)
+        {
+            return dal.GetInterPDCData(partNo);
+        }
+
     }
 }

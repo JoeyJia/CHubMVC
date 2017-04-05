@@ -11,9 +11,9 @@ namespace CHubDBEntity.UnmanagedModel
         public string PART_NO { get; set; }
         public string WAREHOUSE { get; set; }
         public string WH_ALIAS { get; set; }
-        public string QTY_BACKORDERED { get; set; }
-        public string QTY_OPENING { get; set; }
-        public string QTY_RESERVED { get; set; }
-        public string QTY_IN_PICKING { get; set; }
+        public decimal QTY_BACKORDERED { get; set; }
+        public decimal QTY_OPENING { get; set; }
+        public decimal QTY_RESERVED { get; set; }
+        public decimal QTY_IN_PICKING { get; set; }
     }
 }

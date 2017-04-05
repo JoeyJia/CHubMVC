@@ -21,5 +21,10 @@ namespace CHubBLL
             dal = new ITT_EASY_WATCHING_DAL(db);
         }
 
+        public List<ITT_EASY_WATCHING> GetWatchingList(decimal token)
+        {
+            return dal.GetWatchingList(token);
+        }
+
     }
 }

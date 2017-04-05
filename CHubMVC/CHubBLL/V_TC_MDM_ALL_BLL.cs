@@ -27,6 +27,11 @@ namespace CHubBLL
             return dal.GetTCMDMList(partNo, hsCode, declrName, element,currentPage,pageSize,out totalCount);
         }
 
+        public V_TC_MDM_ALL GetSpecifyMDM(string partNo)
+        {
+            return dal.GetSpecifyMDM(partNo);
+        }
+
 
     }
 }

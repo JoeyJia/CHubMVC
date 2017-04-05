@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
+using CHubDBEntity.UnmanagedModel;
 
 namespace CHubBLL
 {
@@ -19,6 +20,11 @@ namespace CHubBLL
         public V_INV_PDC_BLL(CHubEntities db)
         {
             dal = new V_INV_PDC_DAL(db);
+        }
+
+        public List<V_INV_PDC> GetPDCData(string partNo)
+        {
+            return dal.GetPDCData(partNo);
         }
 
     }

@@ -126,6 +126,14 @@ namespace CHubDAL
             return result;
         }
 
+        public decimal GetEasyQuerySqeNextVal()
+        {
+            List<decimal> nextVal = db.Database.SqlQuery<decimal>("select EASY_QUREY.nextval from dual", string.Empty).ToList();
+            decimal result = nextVal[0];
+            return result;
+        }
+
+
 
 
     }

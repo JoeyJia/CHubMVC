@@ -23,5 +23,19 @@ namespace CHubCommon
             return sValue == "Y" ? true : false;
         }
 
+        static public string GetColorFullName(string shortNfame)
+        {
+            switch (shortNfame)
+            {
+                case "R":
+                    return "red";
+                case "Y":
+                    return "yellow";
+                case "G":
+                    return "green";
+                default:
+                    return "green";
+            }
+        }
     }
 }

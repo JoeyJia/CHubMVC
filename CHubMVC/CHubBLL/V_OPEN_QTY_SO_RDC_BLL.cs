@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
+using CHubDBEntity.UnmanagedModel;
 
 namespace CHubBLL
 {
@@ -19,6 +20,11 @@ namespace CHubBLL
         public V_OPEN_QTY_SO_RDC_BLL(CHubEntities db)
         {
             dal = new V_OPEN_QTY_SO_RDC_DAL(db);
+        }
+
+        public List<V_OPEN_QTY_SO_RDC> GetOpenRDCData(string partNo)
+        {
+            return dal.GetOpenRDCData(partNo);
         }
 
     }

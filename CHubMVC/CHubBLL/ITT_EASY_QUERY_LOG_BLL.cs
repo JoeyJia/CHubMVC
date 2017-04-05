@@ -21,5 +21,12 @@ namespace CHubBLL
             dal = new ITT_EASY_QUERY_LOG_DAL(db);
         }
 
+        public decimal Add(ITT_EASY_QUERY_LOG model)
+        {
+            decimal seq =  model.EASY_QUERY_TOKEN = dal.GetEasyQuerySqeNextVal();
+            dal.Add(model);
+            return seq;
+        }
+
     }
 }

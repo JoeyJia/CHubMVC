@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
+using CHubDBEntity.UnmanagedModel;
 
 namespace CHubBLL
 {
@@ -21,5 +22,9 @@ namespace CHubBLL
             dal = new V_OPEN_QTY_SO_PDC_DAL(db);
         }
 
+        public List<V_OPEN_QTY_SO_PDC> GetOpenPDCData(string partNo)
+        {
+            return dal.GetOpenPDCData(partNo);
+        }
     }
 }

@@ -15,5 +15,10 @@ namespace CHubDAL
         public V_OPEN_QTY_ASN_PDC_DAL(CHubEntities db)
             : base(db) { }
 
+        public List<V_OPEN_QTY_ASN_PDC> GetOpenPDCData(string partNo)
+        {
+            return db.V_OPEN_QTY_ASN_PDC.Where(a => a.PART_NO == partNo).ToList();
+        }
+
     }
 }

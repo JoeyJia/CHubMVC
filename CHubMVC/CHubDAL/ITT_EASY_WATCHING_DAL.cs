@@ -15,5 +15,9 @@ namespace CHubDAL
         public ITT_EASY_WATCHING_DAL(CHubEntities db)
             : base(db) { }
 
+        public List<ITT_EASY_WATCHING> GetWatchingList(decimal token)
+        {
+            return db.ITT_EASY_WATCHING.Where(a => a.EASY_QUREY_TOKEN == token).ToList();
+        }
     }
 }

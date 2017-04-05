@@ -14,6 +14,7 @@ using System.Web.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 using CHubModel.ExtensionModel;
+using CHubDBEntity.UnmanagedModel;
 
 namespace CHubMVC.Controllers
 {
@@ -472,6 +473,259 @@ namespace CHubMVC.Controllers
             G_PART_DESCRIPTION_BLL gpBLL = new G_PART_DESCRIPTION_BLL();
             return Json(gpBLL.fuzzyqueryByPartNo(fuzzypartNo));
         }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult InitAllPageData(string partNo)
+        {
+
+            return Json(new RequestResult(true));
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult AddEasyQueryLog(string partNo)
+        {
+            try
+            {
+                ITT_EASY_QUERY_LOG_BLL eqLogBLL = new ITT_EASY_QUERY_LOG_BLL();
+                ITT_EASY_QUERY_LOG model = new ITT_EASY_QUERY_LOG();
+                model.PART_NO = partNo;
+                model.QUERY_DATE = DateTime.Now;
+                model.USER_ID = Session[CHubConstValues.SessionUser].ToString();
+                decimal logNo = eqLogBLL.Add(model);
+
+                return Json(new RequestResult(logNo));
+            }
+            catch (Exception ex)
+            {
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult GetWatchingOutList(decimal token)
+        {
+            try
+            {
+                ITT_EASY_WATCHING_BLL wBLL = new ITT_EASY_WATCHING_BLL();
+                List<ITT_EASY_WATCHING> result = wBLL.GetWatchingList(token);
+                foreach (var item in result)
+                {
+                    item.COLOR = ValueConvert.GetColorFullName(item.COLOR);
+                }
+
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("getWatchingOutList", ex);
+                return Json(new RequestResult(false,ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult GetMDMData(string partNo)
+        {
+            try
+            {
+                V_TC_MDM_ALL_BLL mdmBLL = new V_TC_MDM_ALL_BLL();
+                V_TC_MDM_ALL model = mdmBLL.GetSpecifyMDM(partNo);
+                return Json(new RequestResult(model));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("getMDMData", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult GetInvSnapShotData(string partNo)
+        {
+            try
+            {
+                int pdcConstCount = 2;
+                int rdcConstCount = 4;
+                int interPDCConstCount = 3;
+                using (CHubEntities db = new CHubEntities())
+                {
+                    V_INV_PDC_BLL pdcBLL = new V_INV_PDC_BLL(db);
+                    List<V_INV_PDC> pdcList = pdcBLL.GetPDCData(partNo);
+                    // fill count if not enough
+                    if ( pdcList!=null && pdcList.Count < pdcConstCount)
+                    {
+                        int times = pdcConstCount - pdcList.Count;
+                        for (int i = 0; i < times; i++)
+                        {
+                            pdcList.Add(new V_INV_PDC());
+                        }
+                    }
+
+                    V_INV_RDC_BLL rdcBLL = new V_INV_RDC_BLL(db);
+                    List<V_INV_RDC> rdcList = rdcBLL.GetRDCData(partNo);
+                    // fill count if not enough
+                    if (rdcList != null && rdcList.Count < rdcConstCount)
+                    {
+                        int times = rdcConstCount - rdcList.Count;
+                        for (int i = 0; i < times; i++)
+                        {
+                            rdcList.Add(new V_INV_RDC());
+                        }
+                    }
+
+                    M_INV_BLL miBLL = new M_INV_BLL();
+                    List<M_INV> interPDCList = miBLL.GetInterPDCData(partNo);
+                    // fill count if not enough
+                    if (interPDCList != null && interPDCList.Count < interPDCConstCount)
+                    {
+                        int times = interPDCConstCount - interPDCList.Count;
+                        for (int i = 0; i < times; i++)
+                        {
+                            interPDCList.Add(new M_INV());
+                        }
+                    }
+
+                    var obj = new
+                    {
+                        pdcList = pdcList,
+                        rdcList = rdcList,
+                        interPDCList = interPDCList
+                    };
+
+                    return Json(new RequestResult(obj));
+                }    
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("GetSnapShot", ex);
+                return Json(new RequestResult(false,ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult GetOpenSnapShotData(string partNo)
+        {
+            try
+            {
+                using (CHubEntities db = new CHubEntities())
+                {
+                    List<OpeningQtySnapshot> openPDCList = new List<OpeningQtySnapshot>();
+                    int pdcConstCount = 2;
+                    List<OpeningQtySnapshot> openRDCList = new List<OpeningQtySnapshot>();
+                    int rdcConstCount = 4;
+
+                    //PDC part
+                    V_OPEN_QTY_SO_PDC_BLL soPDCBLL = new V_OPEN_QTY_SO_PDC_BLL(db);
+                    List<V_OPEN_QTY_SO_PDC> soPDCList = soPDCBLL.GetOpenPDCData(partNo);
+
+                    V_OPEN_QTY_PO_PDC_BLL poPDCBLL = new V_OPEN_QTY_PO_PDC_BLL(db);
+                    List<V_OPEN_QTY_PO_PDC> poPDCList = poPDCBLL.GetOpenPDCData(partNo);
+
+                    V_OPEN_QTY_ASN_PDC_BLL asnPDCBLL = new V_OPEN_QTY_ASN_PDC_BLL();
+                    List<V_OPEN_QTY_ASN_PDC> asnPDCList = asnPDCBLL.GetOpenPDCData(partNo);
+
+                    foreach (var item in soPDCList)
+                    {
+                        OpeningQtySnapshot openSS = new OpeningQtySnapshot();
+                        openSS.WHAlias = item.WH_ALIAS;
+                        openSS.BackOrderedQty = item.QTY_BACKORDERED;
+                        openSS.OpeningQty = item.QTY_OPENING;
+                        openSS.ReservedQty = item.QTY_RESERVED;
+                        openSS.InPickingQty = item.QTY_IN_PICKING;
+
+                        V_OPEN_QTY_PO_PDC poData = poPDCList.FirstOrDefault(a => a.WAREHOUSE == item.WAREHOUSE);
+                        V_OPEN_QTY_ASN_PDC asnData = asnPDCList.FirstOrDefault(a => a.WAREHOUSE == item.WAREHOUSE);
+                        if (poData != null)
+                        {
+                            openSS.RemainingQty = poData.REMAINING_QTY.Value;
+                            openSS.LatestETA = poData.LATEST_ETA.Value.ToString("yyyy-MM-dd");
+                            //intransit will have logic later
+                            openSS.InTransit = poData.REMAINING_QTY.Value;
+                        }
+                        if (asnData != null)
+                        {
+                            //Get the min value
+                            openSS.InTransit = openSS.InTransit < asnData.OPEN_QTY ? openSS.InTransit : asnData.OPEN_QTY.Value;
+                        }
+                        openPDCList.Add(openSS);
+                    }
+                    // fill count if not enough
+                    if (openPDCList.Count < pdcConstCount)
+                    {
+                        int times = pdcConstCount - openPDCList.Count;
+                        for (int i = 0; i < times; i++)
+                        {
+                            openPDCList.Add(new OpeningQtySnapshot());
+                        }
+                    }
+
+                    //RDC part
+                    V_OPEN_QTY_SO_RDC_BLL soRDCBLL = new V_OPEN_QTY_SO_RDC_BLL(db);
+                    List<V_OPEN_QTY_SO_RDC> soRDCList = soRDCBLL.GetOpenRDCData(partNo);
+
+                    V_OPEN_QTY_PO_RDC_BLL poRDCBLL = new V_OPEN_QTY_PO_RDC_BLL(db);
+                    List<V_OPEN_QTY_PO_RDC> poRDCList = poRDCBLL.GetOpenRDCData(partNo);
+
+                    V_OPEN_QTY_ASN_RDC_BLL asnRDCBLL = new V_OPEN_QTY_ASN_RDC_BLL();
+                    List<V_OPEN_QTY_ASN_RDC> asnRDCList = asnRDCBLL.GetOpenRDCData(partNo);
+
+                    foreach (var item in soRDCList)
+                    {
+                        OpeningQtySnapshot openSS = new OpeningQtySnapshot();
+                        openSS.WHAlias = item.WH_ALIAS;
+                        openSS.BackOrderedQty = item.QTY_BACKORDERED;
+                        openSS.OpeningQty = item.QTY_OPENING;
+                        openSS.ReservedQty = item.QTY_RESERVED;
+                        openSS.InPickingQty = item.QTY_IN_PICKING;
+
+                        V_OPEN_QTY_PO_RDC poData = poRDCList.FirstOrDefault(a => a.WAREHOUSE == item.WAREHOUSE);
+                        V_OPEN_QTY_ASN_RDC asnData = asnRDCList.FirstOrDefault(a => a.WAREHOUSE == item.WAREHOUSE);
+                        if (poData != null)
+                        {
+                            openSS.RemainingQty = poData.REMAINING_QTY.Value;
+                            openSS.LatestETA = poData.LATEST_ETA.Value.ToString("yyyy-MM-dd");
+                            //intransit will have logic later
+                            openSS.InTransit = poData.REMAINING_QTY.Value;
+                        }
+                        if (asnData != null)
+                        {
+                            //Get the min value
+                            openSS.InTransit = openSS.InTransit < asnData.OPEN_QTY ? openSS.InTransit : asnData.OPEN_QTY.Value;
+                        }
+                        openRDCList.Add(openSS);
+                    }
+
+                    // fill count if not enough
+                    if (openRDCList.Count < rdcConstCount)
+                    {
+                        int times = rdcConstCount - openRDCList.Count;
+                        for (int i = 0; i < times; i++)
+                        {
+                            openRDCList.Add(new OpeningQtySnapshot());
+                        }
+                    }
+
+                    var obj = new
+                    {
+                        pdcList = openPDCList,
+                        rdcList = openRDCList
+                    };
+
+                    return Json(new RequestResult(obj));
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("GetOpenSnapShotData", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
 
         #region private function part
 

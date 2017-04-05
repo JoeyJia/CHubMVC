@@ -27,10 +27,10 @@
         
         <!--Page body-->
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading"><b>Part Basic Info</b></div>
-                    <table class="table table-bordered table-striped .table-condensed" style="border-color:black;">
+                    <table class="table table-bordered table-striped .table-condensed" >
 
                         <tr>
                             <td style=""><b>PartNo</b></td>
@@ -64,13 +64,13 @@
                             <td style=""><b>Make to Order</b></td>
                             <td>{{selectedPart.MAKE_TO_FLAG}}</td>
                             <td style=""><b>Tran Code</b></td>
-                            <td>{{selectedPart.PART_NO}}</td>
+                            <td>{{selectedPart.TRANSP_PART_CODE}}</td>
                         </tr>
                         <tr>
                             <td style=""><b>Release Date</b></td>
-                            <td>{{selectedPart.PART_NO}}</td>
+                            <td>{{selectedPart.CREATE_DATE}}</td>
                             <td style=""><b>Note</b></td>
-                            <td>{{selectedPart.PART_NO}}</td>
+                            <td>{{selectedPart.NOTE_TEXT}}</td>
                         </tr>
                         <tr>
                             <td style=""><b>Remark 1</b></td>
@@ -94,17 +94,17 @@
                         </tr>
                         <tr>
                             <td style="">Declaration Name</td>
-                            <td></td>
+                            <td>{{mdmData.DECLARATION_NAME}}</td>
                             <td style="">HS Code</td>
-                            <td></td>
+                            <td>{{mdmData.HSCODE}}</td>
                         </tr>
                         <tr>
                             <td style="">TC Category Identified</td>
-                            <td></td>
+                            <td>{{mdmData.TC_CATEGORY_BY_MAN}}</td>
                         </tr>
                         <tr>
                             <td style="">Note</td>
-                            <td></td>
+                            <td>{{mdmData.NOTE1}}</td>
                         </tr>
 
 
@@ -121,9 +121,9 @@
                                 <th>Details</th>
                             </tr>
                         </thead>
-                        <tr>
-                            <td style=""><b>PartNo</b></td>
-                            <td colspan="3">123</td>
+                        <tr ng-repeat="w in watchingList ">
+                            <td style="">{{w.WATCH_MSG}}</td>
+                            <td ng-style ="{backgroundColor:w.COLOR}">{{w.WATCH_DETAIL}}</td>
                         </tr>
 
 
@@ -151,85 +151,85 @@
                         </thead>
                         <tr>
                             <td rowspan="2">China PDC</td>
-                            <td>305</td>
-                            <td>AVL</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{invPDCList[0].WH_ALIAS}}</td>
+                            <td>{{invPDCList[0].BAY_NO}}</td>
+                            <td>{{invPDCList[0].QTY_AVL}}</td>
+                            <td>{{invPDCList[0].QTY_ONHAND}}</td>
+                            <td>{{invPDCList[0].QTY_RESERVED}}</td>
+                            <td>{{invPDCList[0].QTY_IN_RECEIVING}}</td>
                         </tr>
                         <tr>
                           
-                            <td>300</td>
-                            <td>AVL</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{invPDCList[1].WH_ALIAS}}</td>
+                            <td>{{invPDCList[1].BAY_NO}}</td>
+                            <td>{{invPDCList[1].QTY_AVL}}</td>
+                            <td>{{invPDCList[1].QTY_ONHAND}}</td>
+                            <td>{{invPDCList[1].QTY_RESERVED}}</td>
+                            <td>{{invPDCList[1].QTY_IN_RECEIVING}}</td>
                         </tr>
                         <tr>
                             <td rowspan="4">China RDC</td>
-                            <td>BJRDC</td>
-                            <td>AVL</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{invRDCList[0].WH_ALIAS}}</td>
+                            <td>{{invRDCList[0].BAY_NO}}</td>
+                            <td>{{invRDCList[0].QTY_AVL}}</td>
+                            <td>{{invRDCList[0].QTY_ONHAND}}</td>
+                            <td>{{invRDCList[0].QTY_RESERVED}}</td>
+                            <td>{{invRDCList[0].QTY_IN_RECEIVING}}</td>
                         </tr>
                         <tr>
                           
-                            <td>SYRDC</td>
-                            <td>AVL</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{invRDCList[1].WH_ALIAS}}</td>
+                            <td>{{invRDCList[1].BAY_NO}}</td>
+                            <td>{{invRDCList[1].QTY_AVL}}</td>
+                            <td>{{invRDCList[1].QTY_ONHAND}}</td>
+                            <td>{{invRDCList[1].QTY_RESERVED}}</td>
+                            <td>{{invRDCList[1].QTY_IN_RECEIVING}}</td>
                         </tr>
                         <tr>
                            
-                            <td>XARDC</td>
-                            <td>AVL</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{invRDCList[2].WH_ALIAS}}</td>
+                            <td>{{invRDCList[2].BAY_NO}}</td>
+                            <td>{{invRDCList[2].QTY_AVL}}</td>
+                            <td>{{invRDCList[2].QTY_ONHAND}}</td>
+                            <td>{{invRDCList[2].QTY_RESERVED}}</td>
+                            <td>{{invRDCList[2].QTY_IN_RECEIVING}}</td>
                         </tr>
                         <tr>
                             
-                            <td>CSWRDC</td>
-                            <td>AVL</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{invRDCList[3].WH_ALIAS}}</td>
+                            <td>{{invRDCList[3].BAY_NO}}</td>
+                            <td>{{invRDCList[3].QTY_AVL}}</td>
+                            <td>{{invRDCList[3].QTY_ONHAND}}</td>
+                            <td>{{invRDCList[3].QTY_RESERVED}}</td>
+                            <td>{{invRDCList[3].QTY_IN_RECEIVING}}</td>
                         </tr>
 
                         <tr>
                             <td rowspan="3">Inter PDC</td>
-                            <td>MDC</td>
-                            <td>AVL</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{invInterPDCList[0].WH_ALIAS}}</td>
+                            <td>{{invInterPDCList[0].BAY_NO}}</td>
+                            <td>{{invInterPDCList[0].QTY_AVL}}</td>
+                            <td>{{invInterPDCList[0].QTY_ONHAND}}</td>
+                            <td>{{invInterPDCList[0].QTY_RESERVED}}</td>
+                            <td>{{invInterPDCList[0].QTY_IN_RECEIVING}}</td>
                         </tr>
                         <tr>
                             
-                            <td>MPDC</td>
-                            <td>AVL</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{invInterPDCList[1].WH_ALIAS}}</td>
+                            <td>{{invInterPDCList[1].BAY_NO}}</td>
+                            <td>{{invInterPDCList[1].QTY_AVL}}</td>
+                            <td>{{invInterPDCList[1].QTY_ONHAND}}</td>
+                            <td>{{invInterPDCList[1].QTY_RESERVED}}</td>
+                            <td>{{invInterPDCList[1].QTY_IN_RECEIVING}}</td>
                         </tr>
                         <tr>
                             
-                            <td>SPDC</td>
-                            <td>AVL</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{invInterPDCList[2].WH_ALIAS}}</td>
+                            <td>{{invInterPDCList[2].BAY_NO}}</td>
+                            <td>{{invInterPDCList[2].QTY_AVL}}</td>
+                            <td>{{invInterPDCList[2].QTY_ONHAND}}</td>
+                            <td>{{invInterPDCList[2].QTY_RESERVED}}</td>
+                            <td>{{invInterPDCList[2].QTY_IN_RECEIVING}}</td>
                         </tr>
                        
                     </table>
@@ -260,70 +260,70 @@
                         </tr>
                         <tr>
                             <td rowspan="2">China PDC</td>
-                            <td>305</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{openPDCList[0].WHAlias}}</td>
+                            <td>{{openPDCList[0].BackOrderedQty}}</td>
+                            <td>{{openPDCList[0].OpeningQty}}</td>
+                            <td>{{openPDCList[0].ReservedQty}}</td>
+                            <td>{{openPDCList[0].InPickingQty}}</td>
+                            <td>{{openPDCList[0].RemainingQty}}</td>
+                            <td>{{openPDCList[0].LatestETA}}</td>
+                            <td>{{openPDCList[0].InTransit}}</td>
                         </tr>
                         <tr>
 
-                            <td>300</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{openPDCList[1].WHAlias}}</td>
+                            <td>{{openPDCList[1].BackOrderedQty}}</td>
+                            <td>{{openPDCList[1].OpeningQty}}</td>
+                            <td>{{openPDCList[1].ReservedQty}}</td>
+                            <td>{{openPDCList[1].InPickingQty}}</td>
+                            <td>{{openPDCList[1].RemainingQty}}</td>
+                            <td>{{openPDCList[1].LatestETA}}</td>
+                            <td>{{openPDCList[1].InTransit}}</td>
                         </tr>
 
                         <tr>
                             <td rowspan="4">China RDC</td>
-                            <td>BJRDC</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{openRDCList[0].WHAlias}}</td>
+                            <td>{{openRDCList[0].BackOrderedQty}}</td>
+                            <td>{{openRDCList[0].OpeningQty}}</td>
+                            <td>{{openRDCList[0].ReservedQty}}</td>
+                            <td>{{openRDCList[0].InPickingQty}}</td>
+                            <td>{{openRDCList[0].RemainingQty}}</td>
+                            <td>{{openRDCList[0].LatestETA}}</td>
+                            <td>{{openRDCList[0].InTransit}}</td>
                         </tr>
                         <tr>
 
-                            <td>SYRDC</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{openRDCList[1].WHAlias}}</td>
+                            <td>{{openRDCList[1].BackOrderedQty}}</td>
+                            <td>{{openRDCList[1].OpeningQty}}</td>
+                            <td>{{openRDCList[1].ReservedQty}}</td>
+                            <td>{{openRDCList[1].InPickingQty}}</td>
+                            <td>{{openRDCList[1].RemainingQty}}</td>
+                            <td>{{openRDCList[1].LatestETA}}</td>
+                            <td>{{openRDCList[1].InTransit}}</td>
                         </tr>
                         <tr>
 
-                            <td>XARDC</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{openRDCList[2].WHAlias}}</td>
+                            <td>{{openRDCList[2].BackOrderedQty}}</td>
+                            <td>{{openRDCList[2].OpeningQty}}</td>
+                            <td>{{openRDCList[2].ReservedQty}}</td>
+                            <td>{{openRDCList[2].InPickingQty}}</td>
+                            <td>{{openRDCList[2].RemainingQty}}</td>
+                            <td>{{openRDCList[2].LatestETA}}</td>
+                            <td>{{openRDCList[2].InTransit}}</td>
                         </tr>
                         <tr>
 
-                            <td>CSWRDC</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{openRDCList[3].WHAlias}}</td>
+                            <td>{{openRDCList[3].BackOrderedQty}}</td>
+                            <td>{{openRDCList[3].OpeningQty}}</td>
+                            <td>{{openRDCList[3].ReservedQty}}</td>
+                            <td>{{openRDCList[3].InPickingQty}}</td>
+                            <td>{{openRDCList[3].RemainingQty}}</td>
+                            <td>{{openRDCList[3].LatestETA}}</td>
+                            <td>{{openRDCList[3].InTransit}}</td>
                         </tr>
 
                     </table>
@@ -337,18 +337,14 @@
                     <div class="panel-heading"><b>SO/PO Opening Qty Snap Shot</b></div>
 
                     <ul class="nav nav-pills" role="tablist">
-                        <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">Home</a></li>
-                        <li role="presentation"><a href="#profile" role="tab" data-toggle="tab">Profile</a></li>
-                        <li role="presentation"><a href="#messages" role="tab" data-toggle="tab">Messages</a></li>
-                        <li role="presentation"><a href="#settings" role="tab" data-toggle="tab">Settings</a></li>
+                        <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">By Shipments</a></li>
+                        <li role="presentation"><a href="#profile" role="tab" data-toggle="tab">By Purchasing</a></li>
                     </ul>
 
                     <!---->
                     <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="home">...1</div>
-                        <div role="tabpanel" class="tab-pane" id="profile">...2</div>
-                        <div role="tabpanel" class="tab-pane" id="messages">...3</div>
-                        <div role="tabpanel" class="tab-pane" id="settings">...4</div>
+                        <div role="tabpanel" class="tab-pane active" id="home">Shipment Content</div>
+                        <div role="tabpanel" class="tab-pane" id="profile">Purchasing content</div>
                     </div> 
                     </div>
                 </div>
@@ -423,7 +419,18 @@
         $scope.result = [];
         $scope.partNo = "";
         $scope.selectedPart = "";
+        $scope.logSeq = 0;
         
+        $scope.watchingList = [];
+        $scope.mdmData = "";
+
+        $scope.invPDCList = [];
+        $scope.invRDCList = [];
+        $scope.invInterPDCList = [];
+
+        $scope.openPDCList = [];
+        $scope.openRDCList = [];
+
 
         $scope.fuzzySearch = function () {
             if ($scope.partNo == "")
@@ -439,12 +446,18 @@
                 success: function (obj) {
                     debugger;
                     $scope.result = obj;
-                    
-                    var appElement = document.querySelector('[ng-controller=partListCtrl]');
+                    if ($scope.result != null && $scope.result.length == 1) {
+                        $scope.selectedPart = $scope.result[0];
+                        $scope.initAlldata();
+                        //initAlldata();
+                    }
+                    else {
+                        var appElement = document.querySelector('[ng-controller=partListCtrl]');
                         var scope = angular.element(appElement).scope();
                         scope.partList = $scope.result;
                         scope.$apply();
                         $("#partListModal").modal("show");
+                    }
 
                 },
                 error: function (obj) {
@@ -452,9 +465,154 @@
                 }
             });
 
+        };
+
+        $scope.initAlldata = function()
+        {
+            debugger;
+            addEQLog();
+            getWatchingout();
+            getMDMData();
+            getInvSnapShot();
+            getOpenSnapShot();
+
+        };
+
+        //function part
+        function addEQLog()
+        {
+            if ($scope.selectedPart == "")
+                return;
+
+            $.ajax({
+                url: "/itt/AddEasyQueryLog",
+                data: {
+                    partNo: $scope.selectedPart.PART_NO,
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    if (obj.Success) {
+                        
+                        $scope.logSeq = obj.Data;
+                    }
+                    else
+                        alert(obj.Msg);
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
         }
 
+        function getWatchingout()
+        {
+            if ($scope.logSeq == 0)
+                return;
 
+            $.ajax({
+                url: "/itt/GetWatchingOutList",
+                data: {
+                    token: $scope.logSeq,
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    
+                    if (obj.Success) {
+                        $scope.watchingList = obj.Data;
+                    }
+                    else
+                        alert(obj.Msg);
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        }
+
+        function getMDMData() {
+            if ($scope.selectedPart == "")
+                return;
+
+            $.ajax({
+                url: "/itt/GetMDMData",
+                data: {
+                    partNo: $scope.selectedPart.PART_NO,
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                   
+                    if (obj.Success) {
+                        $scope.mdmData = obj.Data;
+                    }
+                    else
+                        alert(obj.Msg);
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        }
+
+        function getInvSnapShot() {
+            if ($scope.selectedPart == "")
+                return;
+
+            $.ajax({
+                url: "/itt/GetInvSnapShotData",
+                data: {
+                    partNo: $scope.selectedPart.PART_NO,
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    debugger;
+                    if (obj.Success) {
+                        $scope.invPDCList = obj.Data.pdcList;
+                        $scope.invRDCList = obj.Data.rdcList;
+                        $scope.invInterPDCList = obj.Data.interPDCList;
+                    }
+                    else
+                        alert(obj.Msg);
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+        function getOpenSnapShot() {
+            if ($scope.selectedPart == "")
+                return;
+
+            $.ajax({
+                url: "/itt/GetOpenSnapShotData",
+                data: {
+                    partNo: $scope.selectedPart.PART_NO,
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    debugger;
+                    if (obj.Success) {
+                        $scope.openPDCList = obj.Data.pdcList;
+                        $scope.openRDCList = obj.Data.rdcList;
+                    }
+                    else
+                        alert(obj.Msg);
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
 
     });
 
@@ -499,7 +657,9 @@
                 var appElement1 = document.querySelector('[ng-controller=easyQueryCtrl]');
                 var scope1 = angular.element(appElement1).scope();
                 scope1.selectedPart = selected;
+                
                 scope1.$apply();
+                scope1.initAlldata();
                 break;
             }
 

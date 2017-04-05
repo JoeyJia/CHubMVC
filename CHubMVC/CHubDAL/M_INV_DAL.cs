@@ -15,5 +15,10 @@ namespace CHubDAL
         public M_INV_DAL(CHubEntities db)
             : base(db) { }
 
+        public List<M_INV> GetInterPDCData(string partNo)
+        {
+            return db.M_INV.Where(a => a.PART_NO == partNo).ToList();
+        }
+
     }
 }
