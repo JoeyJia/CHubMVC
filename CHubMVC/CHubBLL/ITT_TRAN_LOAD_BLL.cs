@@ -42,15 +42,20 @@ namespace CHubBLL
             {
                 //override existTL, but if a property in model(new) has no value, user existTL proerty value
                 ITT_TRAN_LOAD existTL = dal.GetTranLoadByInvoice(model.INVOICE_NO);
-                existTL.WILL_BILL_NO = model.WILL_BILL_NO;
-                existTL.DEPART_DATE = model.DEPART_DATE != null ? model.DEPART_DATE : existTL.DEPART_DATE;
-                existTL.ARRIVAL_DATE = model.ARRIVAL_DATE != null ? model.ARRIVAL_DATE : existTL.ARRIVAL_DATE;
-                existTL.NOTE = !string.IsNullOrEmpty(model.NOTE) ? model.NOTE : existTL.NOTE;
-                existTL.TRAN_TYPE = !string.IsNullOrEmpty(model.TRAN_TYPE) ? model.TRAN_TYPE : existTL.TRAN_TYPE;
-                existTL.FROM_SYSTEM = !string.IsNullOrEmpty(model.FROM_SYSTEM) ? model.FROM_SYSTEM : existTL.FROM_SYSTEM;
-                existTL.LOADED_BY = model.LOADED_BY;
-                existTL.LOAD_DATE = model.LOAD_DATE;
-                dal.Update(existTL);
+                model.LOAD_BATCH_TOKEN = existTL.LOAD_BATCH_TOKEN;
+                if (existTL.HasChanges(model))
+                {
+                    existTL.WILL_BILL_NO = model.WILL_BILL_NO;
+                    existTL.DEPART_DATE = model.DEPART_DATE != null ? model.DEPART_DATE : existTL.DEPART_DATE;
+                    existTL.ARRIVAL_DATE = model.ARRIVAL_DATE != null ? model.ARRIVAL_DATE : existTL.ARRIVAL_DATE;
+                    existTL.NOTE = !string.IsNullOrEmpty(model.NOTE) ? model.NOTE : existTL.NOTE;
+                    existTL.TRAN_TYPE = !string.IsNullOrEmpty(model.TRAN_TYPE) ? model.TRAN_TYPE : existTL.TRAN_TYPE;
+                    existTL.FROM_SYSTEM = !string.IsNullOrEmpty(model.FROM_SYSTEM) ? model.FROM_SYSTEM : existTL.FROM_SYSTEM;
+                    existTL.LOADED_BY = model.LOADED_BY;
+                    existTL.LOAD_DATE = model.LOAD_DATE;
+                    dal.Update(existTL);
+                }
+
             }
         }
 

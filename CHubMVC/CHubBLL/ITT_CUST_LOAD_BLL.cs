@@ -46,14 +46,18 @@ namespace CHubBLL
             else
             {
                 ITT_CUST_LOAD existCL = dal.GetCustLoadbyConstraint(model.WILL_BILL_NO, model.TC_GROUP);
-                existCL.DO_RELEASE_DATE = model.DO_RELEASE_DATE != null ? model.DO_RELEASE_DATE : existCL.DO_RELEASE_DATE;
-                existCL.BND_ARRIVAL_DATE = model.BND_ARRIVAL_DATE != null ? model.BND_ARRIVAL_DATE : existCL.BND_ARRIVAL_DATE;
-                existCL.BND_OUT_DATE = model.BND_OUT_DATE != null ? model.BND_OUT_DATE : existCL.BND_OUT_DATE;
-                existCL.NBND_ARRIVAL_DATE = model.NBND_ARRIVAL_DATE != null ? model.NBND_ARRIVAL_DATE : existCL.NBND_ARRIVAL_DATE;
-                existCL.NOTE = !string.IsNullOrEmpty(model.NOTE) ? model.NOTE : existCL.NOTE;
-                existCL.LOADED_BY = model.LOADED_BY;
-                existCL.LOAD_DATE = model.LOAD_DATE;
-                dal.Update(existCL);
+                model.LOAD_BATCH_TOKEN = existCL.LOAD_BATCH_TOKEN;
+                if (existCL.HasChanges(model))
+                {
+                    existCL.DO_RELEASE_DATE = model.DO_RELEASE_DATE != null ? model.DO_RELEASE_DATE : existCL.DO_RELEASE_DATE;
+                    existCL.BND_ARRIVAL_DATE = model.BND_ARRIVAL_DATE != null ? model.BND_ARRIVAL_DATE : existCL.BND_ARRIVAL_DATE;
+                    existCL.BND_OUT_DATE = model.BND_OUT_DATE != null ? model.BND_OUT_DATE : existCL.BND_OUT_DATE;
+                    existCL.NBND_ARRIVAL_DATE = model.NBND_ARRIVAL_DATE != null ? model.NBND_ARRIVAL_DATE : existCL.NBND_ARRIVAL_DATE;
+                    existCL.NOTE = !string.IsNullOrEmpty(model.NOTE) ? model.NOTE : existCL.NOTE;
+                    existCL.LOADED_BY = model.LOADED_BY;
+                    existCL.LOAD_DATE = model.LOAD_DATE;
+                    dal.Update(existCL);
+                }
             }
         }
 

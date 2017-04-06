@@ -24,12 +24,12 @@ namespace CHubMVC.Validations
             if (string.IsNullOrEmpty(model.WILL_BILL_NO)  || string.IsNullOrEmpty(model.FROM_SYSTEM)||string.IsNullOrEmpty(model.INVOICE_NO))
                 return "No Way Bill No or Form System Data or invoice No";
 
-            if (!string.IsNullOrEmpty(model.INVOICE_NO))
-            {
-                ITT_SHIPPING_D_BLL sdBLL = new ITT_SHIPPING_D_BLL();
-                if (!sdBLL.ExistInvoiceNo(model.INVOICE_NO))
-                    return "InvoiceNo. Not Exist";
-            }
+            //if (!string.IsNullOrEmpty(model.INVOICE_NO))
+            //{
+            //    ITT_SHIPPING_D_BLL sdBLL = new ITT_SHIPPING_D_BLL();
+            //    if (!sdBLL.ExistInvoiceNo(model.INVOICE_NO))
+            //        return "InvoiceNo. Not Exist";
+            //}
 
             if (model.DEPART_DATE != null && model.ARRIVAL_DATE != null)
             {

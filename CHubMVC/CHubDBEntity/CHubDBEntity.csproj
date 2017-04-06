@@ -186,6 +186,8 @@
     <Compile Include="M_SYSTEM.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="OtherPartials\ITT_CUST_LOAD.cs" />
+    <Compile Include="OtherPartials\ITT_TRAN_LOAD.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="P_ADDR_DFLT.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>

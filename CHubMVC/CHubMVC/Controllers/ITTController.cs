@@ -95,12 +95,12 @@ namespace CHubMVC.Controllers
                     result.Msg = "";
                     result.BackColor = "";
 
-                    ITT_TRAN_LOAD_BLL tlBLL = new ITT_TRAN_LOAD_BLL();
-                    if (tlBLL.ExistInvoiceNo(result.InvoiceNo))
-                    {
-                        result.Msg = "Invoice No is exist";
-                        result.BackColor = CHubConstValues.ErrorColor;
-                    }
+                    //ITT_TRAN_LOAD_BLL tlBLL = new ITT_TRAN_LOAD_BLL();
+                    //if (tlBLL.ExistInvoiceNo(result.InvoiceNo))
+                    //{
+                    //    result.Msg = "Invoice No is exist";
+                    //    result.BackColor = CHubConstValues.ErrorColor;
+                    //}
                 }
                 else
                 {
@@ -765,15 +765,15 @@ namespace CHubMVC.Controllers
                 result.Msg = "";
                 result.BackColor = "";
 
-                if (!string.IsNullOrEmpty(result.InvoiceNo))
-                {
-                    ITT_TRAN_LOAD_BLL tlBLL = new ITT_TRAN_LOAD_BLL();
-                    if (tlBLL.ExistInvoiceNo(result.InvoiceNo))
-                    {
-                        result.Msg = "Invoice No is exist";
-                        result.BackColor = CHubConstValues.ErrorColor;
-                    }
-                }
+                //if (!string.IsNullOrEmpty(result.InvoiceNo))
+                //{
+                //    ITT_TRAN_LOAD_BLL tlBLL = new ITT_TRAN_LOAD_BLL();
+                //    if (tlBLL.ExistInvoiceNo(result.InvoiceNo))
+                //    {
+                //        result.Msg = "Invoice No is exist";
+                //        result.BackColor = CHubConstValues.ErrorColor;
+                //    }
+                //}
             }
             else
             {
