@@ -90,7 +90,7 @@
                         </tr>
                         <!--CIQ Features part-->
                         <tr>
-                            <td style="" colspan="4"><b>CIQ Features</b></td>
+                            <td style="" colspan="4"><b>TC Features</b></td>
                         </tr>
                         <tr>
                             <td style="">Declaration Name</td>
@@ -112,35 +112,36 @@
                 </div>
             </div>
             <div class="col-md-5">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><b>Watching Out</b></div>
-                    <table class="table table-bordered table-striped .table-condensed" style="border-color:black;">
-                        <thead>
-                            <tr>
-                                <th>Message</th>
-                                <th>Details</th>
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><b>Watching Out</b></div>
+                        <table class="table table-bordered table-condensed">
+                            <thead style="background-color:#C32518">
+                                <tr>
+                                    <th>Message</th>
+                                    <th>Details</th>
+                                </tr>
+                            </thead>
+                            <tr ng-repeat="w in watchingList ">
+                                <td ng-style="{backgroundColor:w.COLOR}">{{w.WATCH_MSG}}</td>
+                                <td ng-style="{backgroundColor:w.COLOR}">{{w.WATCH_DETAIL}}</td>
                             </tr>
-                        </thead>
-                        <tr ng-repeat="w in watchingList ">
-                            <td style="">{{w.WATCH_MSG}}</td>
-                            <td ng-style ="{backgroundColor:w.COLOR}">{{w.WATCH_DETAIL}}</td>
-                        </tr>
-
-
-                    </table>
+                        </table>
+                    </div>
                 </div>
+
             </div>
         </div>
 
         <!--Inventory Shapshot Part-->
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-11">
                 <div class="panel panel-default">
                     <div class="panel-heading"><b>Inventory Shapshot</b></div>
-                    <table class="table table-bordered table-striped .table-condensed" style="border-color:black;">
-                        <thead>
+                    <table class="table table-bordered table-condensed">
+                        <thead style="background-color:#C32518">
                             <tr>
-                                <th></th>
+                                
                                 <th>Ware House</th>
                                 <th>Bay No</th>
                                 <th>Qty Available</th>
@@ -149,87 +150,34 @@
                                 <th>Qty In Receiving</th>
                             </tr>
                         </thead>
-                        <tr>
-                            <td rowspan="2">China PDC</td>
-                            <td>{{invPDCList[0].WH_ALIAS}}</td>
-                            <td>{{invPDCList[0].BAY_NO}}</td>
-                            <td>{{invPDCList[0].QTY_AVL}}</td>
-                            <td>{{invPDCList[0].QTY_ONHAND}}</td>
-                            <td>{{invPDCList[0].QTY_RESERVED}}</td>
-                            <td>{{invPDCList[0].QTY_IN_RECEIVING}}</td>
-                        </tr>
-                        <tr>
-                          
-                            <td>{{invPDCList[1].WH_ALIAS}}</td>
-                            <td>{{invPDCList[1].BAY_NO}}</td>
-                            <td>{{invPDCList[1].QTY_AVL}}</td>
-                            <td>{{invPDCList[1].QTY_ONHAND}}</td>
-                            <td>{{invPDCList[1].QTY_RESERVED}}</td>
-                            <td>{{invPDCList[1].QTY_IN_RECEIVING}}</td>
-                        </tr>
-                        <tr>
-                            <td rowspan="4">China RDC</td>
-                            <td>{{invRDCList[0].WH_ALIAS}}</td>
-                            <td>{{invRDCList[0].BAY_NO}}</td>
-                            <td>{{invRDCList[0].QTY_AVL}}</td>
-                            <td>{{invRDCList[0].QTY_ONHAND}}</td>
-                            <td>{{invRDCList[0].QTY_RESERVED}}</td>
-                            <td>{{invRDCList[0].QTY_IN_RECEIVING}}</td>
-                        </tr>
-                        <tr>
-                          
-                            <td>{{invRDCList[1].WH_ALIAS}}</td>
-                            <td>{{invRDCList[1].BAY_NO}}</td>
-                            <td>{{invRDCList[1].QTY_AVL}}</td>
-                            <td>{{invRDCList[1].QTY_ONHAND}}</td>
-                            <td>{{invRDCList[1].QTY_RESERVED}}</td>
-                            <td>{{invRDCList[1].QTY_IN_RECEIVING}}</td>
-                        </tr>
-                        <tr>
+                        <tr style="background-color:bisque" ng-repeat="ip in invPDCList" >
                            
-                            <td>{{invRDCList[2].WH_ALIAS}}</td>
-                            <td>{{invRDCList[2].BAY_NO}}</td>
-                            <td>{{invRDCList[2].QTY_AVL}}</td>
-                            <td>{{invRDCList[2].QTY_ONHAND}}</td>
-                            <td>{{invRDCList[2].QTY_RESERVED}}</td>
-                            <td>{{invRDCList[2].QTY_IN_RECEIVING}}</td>
+                            <td>{{ip.WH_ALIAS}}</td>
+                            <td>{{ip.BAY_NO}}</td>
+                            <td>{{ip.QTY_AVL}}</td>
+                            <td>{{ip.QTY_ONHAND}}</td>
+                            <td>{{ip.QTY_RESERVED}}</td>
+                            <td>{{ip.QTY_IN_RECEIVING}}</td>
                         </tr>
-                        <tr>
+                        
+                        <tr style="background-color:#DEA681" ng-repeat="ir in invRDCList">
                             
-                            <td>{{invRDCList[3].WH_ALIAS}}</td>
-                            <td>{{invRDCList[3].BAY_NO}}</td>
-                            <td>{{invRDCList[3].QTY_AVL}}</td>
-                            <td>{{invRDCList[3].QTY_ONHAND}}</td>
-                            <td>{{invRDCList[3].QTY_RESERVED}}</td>
-                            <td>{{invRDCList[3].QTY_IN_RECEIVING}}</td>
+                            <td>{{ir.WH_ALIAS}}</td>
+                            <td>{{ir.BAY_NO}}</td>
+                            <td>{{ir.QTY_AVL}}</td>
+                            <td>{{ir.QTY_ONHAND}}</td>
+                            <td>{{ir.QTY_RESERVED}}</td>
+                            <td>{{ir.QTY_IN_RECEIVING}}</td>
                         </tr>
 
-                        <tr>
-                            <td rowspan="3">Inter PDC</td>
-                            <td>{{invInterPDCList[0].WH_ALIAS}}</td>
-                            <td>{{invInterPDCList[0].BAY_NO}}</td>
-                            <td>{{invInterPDCList[0].QTY_AVL}}</td>
-                            <td>{{invInterPDCList[0].QTY_ONHAND}}</td>
-                            <td>{{invInterPDCList[0].QTY_RESERVED}}</td>
-                            <td>{{invInterPDCList[0].QTY_IN_RECEIVING}}</td>
-                        </tr>
-                        <tr>
-                            
-                            <td>{{invInterPDCList[1].WH_ALIAS}}</td>
-                            <td>{{invInterPDCList[1].BAY_NO}}</td>
-                            <td>{{invInterPDCList[1].QTY_AVL}}</td>
-                            <td>{{invInterPDCList[1].QTY_ONHAND}}</td>
-                            <td>{{invInterPDCList[1].QTY_RESERVED}}</td>
-                            <td>{{invInterPDCList[1].QTY_IN_RECEIVING}}</td>
-                        </tr>
-                        <tr>
-                            
-                            <td>{{invInterPDCList[2].WH_ALIAS}}</td>
-                            <td>{{invInterPDCList[2].BAY_NO}}</td>
-                            <td>{{invInterPDCList[2].QTY_AVL}}</td>
-                            <td>{{invInterPDCList[2].QTY_ONHAND}}</td>
-                            <td>{{invInterPDCList[2].QTY_RESERVED}}</td>
-                            <td>{{invInterPDCList[2].QTY_IN_RECEIVING}}</td>
+                        <tr style="background-color:bisque" ng-repeat="iip in invInterPDCList">
+                           
+                            <td>{{iip.WH_ALIAS}}</td>
+                            <td>{{iip.BAY_NO}}</td>
+                            <td>{{iip.QTY_AVL}}</td>
+                            <td>{{iip.QTY_ONHAND}}</td>
+                            <td>{{iip.QTY_RESERVED}}</td>
+                            <td>{{iip.QTY_IN_RECEIVING}}</td>
                         </tr>
                        
                     </table>
@@ -242,9 +190,9 @@
             <div class="col-md-11">
                 <div class="panel panel-default">
                     <div class="panel-heading"><b>SO/PO Opening Qty Snap Shot</b></div>
-                    <table class="table table-bordered table-striped .table-condensed" style="border-color:black;">
+                    <table class="table table-bordered table-condensed" >
                         <tr>
-                            <td rowspan="2">Item</td>
+                            
                             <td rowspan="2">Warehouse</td>
                             <td colspan="4">Sales Orders</td>
                             <td colspan="3">Purchasing Orders</td>
@@ -258,74 +206,30 @@
                             <td>Latest ETA</td>
                             <td>IN Transit</td>
                         </tr>
-                        <tr>
-                            <td rowspan="2">China PDC</td>
-                            <td>{{openPDCList[0].WHAlias}}</td>
-                            <td>{{openPDCList[0].BackOrderedQty}}</td>
-                            <td>{{openPDCList[0].OpeningQty}}</td>
-                            <td>{{openPDCList[0].ReservedQty}}</td>
-                            <td>{{openPDCList[0].InPickingQty}}</td>
-                            <td>{{openPDCList[0].RemainingQty}}</td>
-                            <td>{{openPDCList[0].LatestETA}}</td>
-                            <td>{{openPDCList[0].InTransit}}</td>
-                        </tr>
-                        <tr>
-
-                            <td>{{openPDCList[1].WHAlias}}</td>
-                            <td>{{openPDCList[1].BackOrderedQty}}</td>
-                            <td>{{openPDCList[1].OpeningQty}}</td>
-                            <td>{{openPDCList[1].ReservedQty}}</td>
-                            <td>{{openPDCList[1].InPickingQty}}</td>
-                            <td>{{openPDCList[1].RemainingQty}}</td>
-                            <td>{{openPDCList[1].LatestETA}}</td>
-                            <td>{{openPDCList[1].InTransit}}</td>
+                        <tr style="background-color:bisque" ng-repeat="or in openPDCList">
+                            
+                            <td>{{op.WHAlias}}</td>
+                            <td>{{op.BackOrderedQty}}</td>
+                            <td>{{op.OpeningQty}}</td>
+                            <td>{{op.ReservedQty}}</td>
+                            <td>{{op.InPickingQty}}</td>
+                            <td>{{op.RemainingQty}}</td>
+                            <td>{{op.LatestETA}}</td>
+                            <td>{{op.InTransit}}</td>
                         </tr>
 
-                        <tr>
-                            <td rowspan="4">China RDC</td>
-                            <td>{{openRDCList[0].WHAlias}}</td>
-                            <td>{{openRDCList[0].BackOrderedQty}}</td>
-                            <td>{{openRDCList[0].OpeningQty}}</td>
-                            <td>{{openRDCList[0].ReservedQty}}</td>
-                            <td>{{openRDCList[0].InPickingQty}}</td>
-                            <td>{{openRDCList[0].RemainingQty}}</td>
-                            <td>{{openRDCList[0].LatestETA}}</td>
-                            <td>{{openRDCList[0].InTransit}}</td>
+                        <tr style="background-color:#DEA681" ng-repeat="or in openRDCList">
+                            
+                            <td>{{or.WHAlias}}</td>
+                            <td>{{or.BackOrderedQty}}</td>
+                            <td>{{or.OpeningQty}}</td>
+                            <td>{{or.ReservedQty}}</td>
+                            <td>{{or.InPickingQty}}</td>
+                            <td>{{or.RemainingQty}}</td>
+                            <td>{{or.LatestETA}}</td>
+                            <td>{{or.InTransit}}</td>
                         </tr>
-                        <tr>
-
-                            <td>{{openRDCList[1].WHAlias}}</td>
-                            <td>{{openRDCList[1].BackOrderedQty}}</td>
-                            <td>{{openRDCList[1].OpeningQty}}</td>
-                            <td>{{openRDCList[1].ReservedQty}}</td>
-                            <td>{{openRDCList[1].InPickingQty}}</td>
-                            <td>{{openRDCList[1].RemainingQty}}</td>
-                            <td>{{openRDCList[1].LatestETA}}</td>
-                            <td>{{openRDCList[1].InTransit}}</td>
-                        </tr>
-                        <tr>
-
-                            <td>{{openRDCList[2].WHAlias}}</td>
-                            <td>{{openRDCList[2].BackOrderedQty}}</td>
-                            <td>{{openRDCList[2].OpeningQty}}</td>
-                            <td>{{openRDCList[2].ReservedQty}}</td>
-                            <td>{{openRDCList[2].InPickingQty}}</td>
-                            <td>{{openRDCList[2].RemainingQty}}</td>
-                            <td>{{openRDCList[2].LatestETA}}</td>
-                            <td>{{openRDCList[2].InTransit}}</td>
-                        </tr>
-                        <tr>
-
-                            <td>{{openRDCList[3].WHAlias}}</td>
-                            <td>{{openRDCList[3].BackOrderedQty}}</td>
-                            <td>{{openRDCList[3].OpeningQty}}</td>
-                            <td>{{openRDCList[3].ReservedQty}}</td>
-                            <td>{{openRDCList[3].InPickingQty}}</td>
-                            <td>{{openRDCList[3].RemainingQty}}</td>
-                            <td>{{openRDCList[3].LatestETA}}</td>
-                            <td>{{openRDCList[3].InTransit}}</td>
-                        </tr>
-
+                        
                     </table>
                 </div>
             </div>
@@ -464,7 +368,7 @@
                 type: "post",
                 async: false,
                 success: function (obj) {
-                    debugger;
+                    //debugger;
                     $scope.result = obj;
                     if ($scope.result != null && $scope.result.length == 1) {
                         $scope.selectedPart = $scope.result[0];
@@ -489,12 +393,15 @@
 
         $scope.initAlldata = function()
         {
-            debugger;
+            //debugger;
+            windows.body.style.cursor = "wait"
             addEQLog();
             getWatchingout();
             getMDMData();
             getInvSnapShot();
             getOpenSnapShot();
+            windows.body.style.cursor = "default"
+    
 
         };
 
@@ -591,7 +498,7 @@
                 type: "post",
                 async: false,
                 success: function (obj) {
-                    debugger;
+                    //debugger;
                     if (obj.Success) {
                         $scope.invPDCList = obj.Data.pdcList;
                         $scope.invRDCList = obj.Data.rdcList;
@@ -619,7 +526,7 @@
                 type: "post",
                 async: false,
                 success: function (obj) {
-                    debugger;
+                    //debugger;
                     if (obj.Success) {
                         $scope.openPDCList = obj.Data.pdcList;
                         $scope.openRDCList = obj.Data.rdcList;

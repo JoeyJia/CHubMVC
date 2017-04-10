@@ -548,46 +548,20 @@ namespace CHubMVC.Controllers
         {
             try
             {
-                int pdcConstCount = 2;
-                int rdcConstCount = 4;
-                int interPDCConstCount = 3;
+                
                 using (CHubEntities db = new CHubEntities())
                 {
                     V_INV_PDC_BLL pdcBLL = new V_INV_PDC_BLL(db);
                     List<V_INV_PDC> pdcList = pdcBLL.GetPDCData(partNo);
-                    // fill count if not enough
-                    if ( pdcList!=null && pdcList.Count < pdcConstCount)
-                    {
-                        int times = pdcConstCount - pdcList.Count;
-                        for (int i = 0; i < times; i++)
-                        {
-                            pdcList.Add(new V_INV_PDC());
-                        }
-                    }
+                    
 
                     V_INV_RDC_BLL rdcBLL = new V_INV_RDC_BLL(db);
                     List<V_INV_RDC> rdcList = rdcBLL.GetRDCData(partNo);
-                    // fill count if not enough
-                    if (rdcList != null && rdcList.Count < rdcConstCount)
-                    {
-                        int times = rdcConstCount - rdcList.Count;
-                        for (int i = 0; i < times; i++)
-                        {
-                            rdcList.Add(new V_INV_RDC());
-                        }
-                    }
+
 
                     M_INV_BLL miBLL = new M_INV_BLL();
                     List<M_INV> interPDCList = miBLL.GetInterPDCData(partNo);
-                    // fill count if not enough
-                    if (interPDCList != null && interPDCList.Count < interPDCConstCount)
-                    {
-                        int times = interPDCConstCount - interPDCList.Count;
-                        for (int i = 0; i < times; i++)
-                        {
-                            interPDCList.Add(new M_INV());
-                        }
-                    }
+                    
 
                     var obj = new
                     {
@@ -615,9 +589,9 @@ namespace CHubMVC.Controllers
                 using (CHubEntities db = new CHubEntities())
                 {
                     List<OpeningQtySnapshot> openPDCList = new List<OpeningQtySnapshot>();
-                    int pdcConstCount = 2;
+                    
                     List<OpeningQtySnapshot> openRDCList = new List<OpeningQtySnapshot>();
-                    int rdcConstCount = 4;
+                    
 
                     //PDC part
                     V_OPEN_QTY_SO_PDC_BLL soPDCBLL = new V_OPEN_QTY_SO_PDC_BLL(db);
@@ -654,15 +628,7 @@ namespace CHubMVC.Controllers
                         }
                         openPDCList.Add(openSS);
                     }
-                    // fill count if not enough
-                    if (openPDCList.Count < pdcConstCount)
-                    {
-                        int times = pdcConstCount - openPDCList.Count;
-                        for (int i = 0; i < times; i++)
-                        {
-                            openPDCList.Add(new OpeningQtySnapshot());
-                        }
-                    }
+                   
 
                     //RDC part
                     V_OPEN_QTY_SO_RDC_BLL soRDCBLL = new V_OPEN_QTY_SO_RDC_BLL(db);
@@ -700,15 +666,6 @@ namespace CHubMVC.Controllers
                         openRDCList.Add(openSS);
                     }
 
-                    // fill count if not enough
-                    if (openRDCList.Count < rdcConstCount)
-                    {
-                        int times = rdcConstCount - openRDCList.Count;
-                        for (int i = 0; i < times; i++)
-                        {
-                            openRDCList.Add(new OpeningQtySnapshot());
-                        }
-                    }
 
                     var obj = new
                     {
