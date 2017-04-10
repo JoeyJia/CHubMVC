@@ -3,6 +3,15 @@
     ViewBag.Title = "Easy Query";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style typeof="text/css">
+    .titleTD {
+        background-color: #FFCC99;
+    }
+
+</style>
+
+
+
 
 
 <div class="container-fluid" id="easyQueryBody" ng-app="easyQueryApp" ng-controller="easyQueryCtrl">
@@ -30,210 +39,214 @@
             <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading"><b>Part Basic Info</b></div>
-                    <table class="table table-bordered table-striped .table-condensed" >
+                    <table class="table table-bordered table-condensed" >
 
                         <tr>
-                            <td style=""><b>PartNo</b></td>
+                            <td class="titleTD"><b>PartNo</b></td>
                             <td colspan="3">{{selectedPart.PART_NO}}</td>
                         </tr>
                         <tr>
-                            <td style=""><b>Description</b></td>
+                            <td style="width:180px" class="titleTD"><b>Description</b></td>
                             <td >{{selectedPart.DESCRIPTION}}</td>
-                            <td style=""><b>Chinese Desc</b></td>
+                            <td style="width:150px" class="titleTD"><b>Chinese Desc</b></td>
                             <td >{{selectedPart.DESC_CN}}</td>
                         </tr>
                         <tr>
-                            <td style=""><b>Buyer</b></td>
+                            <td class="titleTD"><b>Buyer</b></td>
                             <td>{{selectedPart.PLANNER_BUYER}}</td>
-                            <td style=""><b>Print Part No.</b></td>
+                            <td class="titleTD"><b>Print Part No.</b></td>
                             <td>{{selectedPart.PRINT_PART_NO}}</td>
                         </tr>
                         <tr>
-                            <td style=""><b>SSC</b></td>
+                            <td class="titleTD"><b>SSC</b></td>
                             <td>{{selectedPart.CURRENT_SALES_STATUS_CODE}}</td>
-                            <td style=""><b>Part Status</b></td>
+                            <td class="titleTD"><b>Part Status</b></td>
                             <td>{{selectedPart.PART_STATUS}}</td>
                         </tr>
                         <tr>
-                            <td style=""><b>L*W*H</b></td>
+                            <td class="titleTD"><b>L*W*H</b></td>
                             <td>{{selectedPart.LWH}}</td>
-                            <td style=""><b>Weight</b></td>
+                            <td class="titleTD"><b>Weight</b></td>
                             <td>{{selectedPart.PART_WEIGHT}}</td>
                         </tr>
                         <tr>
-                            <td style=""><b>Make to Order</b></td>
+                            <td class="titleTD"><b>Make to Order</b></td>
                             <td>{{selectedPart.MAKE_TO_FLAG}}</td>
-                            <td style=""><b>Tran Code</b></td>
+                            <td class="titleTD"><b>Tran Code</b></td>
                             <td>{{selectedPart.TRANSP_PART_CODE}}</td>
                         </tr>
                         <tr>
-                            <td style=""><b>Release Date</b></td>
+                            <td class="titleTD"><b>Release Date</b></td>
                             <td>{{selectedPart.CREATE_DATE}}</td>
-                            <td style=""><b>Note</b></td>
+                            <td class="titleTD"><b>Note</b></td>
                             <td>{{selectedPart.NOTE_TEXT}}</td>
                         </tr>
                         <tr>
-                            <td style=""><b>Remark 1</b></td>
+                            <td class="titleTD"><b>Remark 1</b></td>
                             <td>{{selectedPart.PART_NO}}</td>
-                            <td style=""><b>Remark 2</b></td>
-                            <td>{{selectedPart.PART_NO}}</td>
-                        </tr>
-                        <tr>
-                            <td style=""><b>Remark 3</b></td>
-                            <td>{{selectedPart.PART_NO}}</td>
-                            <td style=""><b>Remark 4</b></td>
+                            <td class="titleTD"><b>Remark 2</b></td>
                             <td>{{selectedPart.PART_NO}}</td>
                         </tr>
                         <tr>
-                            <td style=""><b>Remark 5</b></td>
+                            <td class="titleTD"><b>Remark 3</b></td>
                             <td>{{selectedPart.PART_NO}}</td>
+                            <td class="titleTD"><b>Remark 4</b></td>
+                            <td>{{selectedPart.PART_NO}}</td>
+                        </tr>
+                        <tr>
+                            <td class="titleTD"><b>Remark 5</b></td>
+                            <td colspan="3">{{selectedPart.PART_NO}}</td>
                         </tr>
                         <!--CIQ Features part-->
                         <tr>
-                            <td style="" colspan="4"><b>TC Features</b></td>
+                            <td style="background-color:#DCDCDC" colspan="4"><b>TC Features</b></td>
                         </tr>
                         <tr>
-                            <td style="">Declaration Name</td>
+                            <td class="titleTD"><b>Declaration Name</b></td>
                             <td>{{mdmData.DECLARATION_NAME}}</td>
-                            <td style="">HS Code</td>
+                            <td class="titleTD"><b>HS Code</b></td>
                             <td>{{mdmData.HSCODE}}</td>
                         </tr>
                         <tr>
-                            <td style="">TC Category Identified</td>
-                            <td>{{mdmData.TC_CATEGORY_BY_MAN}}</td>
+                            <td class="titleTD"><b>TC Category Identified</b></td>
+                            <td colspan="3">{{mdmData.TC_CATEGORY_BY_MAN}}</td>
                         </tr>
                         <tr>
-                            <td style="">Note</td>
-                            <td>{{mdmData.NOTE1}}</td>
+                            <td class="titleTD"><b>Note</b></td>
+                            <td colspan="3">{{mdmData.NOTE1}}</td>
                         </tr>
 
 
                     </table>
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <div class="row">
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><b>Watching Out</b></div>
-                        <table class="table table-bordered table-condensed">
-                            <thead style="background-color:#C32518">
-                                <tr>
-                                    <th>Message</th>
-                                    <th>Details</th>
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><b>Watching Out</b></div>
+                            <table class="table table-bordered table-condensed">
+                                <thead style="background-color:#C32518">
+                                    <tr>
+                                        <th>Message</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tr ng-repeat="w in watchingList ">
+                                    <td ng-style="{backgroundColor:w.COLOR}">{{w.WATCH_MSG}}</td>
+                                    <td ng-style="{backgroundColor:w.COLOR}">{{w.WATCH_DETAIL}}</td>
                                 </tr>
-                            </thead>
-                            <tr ng-repeat="w in watchingList ">
-                                <td ng-style="{backgroundColor:w.COLOR}">{{w.WATCH_MSG}}</td>
-                                <td ng-style="{backgroundColor:w.COLOR}">{{w.WATCH_DETAIL}}</td>
-                            </tr>
-                        </table>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Inventory Shapshot Part-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><b>Inventory Shapshot</b></div>
+                            <table class="table table-bordered table-condensed">
+                                <thead style="background-color:#C32518">
+                                    <tr>
+
+                                        <th>Ware House</th>
+                                        <th>Bay No</th>
+                                        <th>Qty Available</th>
+                                        <th>Qty Onhand</th>
+                                        <th>Qty Reserved</th>
+                                        <th>Qty In Receiving</th>
+                                    </tr>
+                                </thead>
+                                <tr style="background-color:#FFCC99" ng-repeat="ip in invPDCList">
+
+                                    <td>{{ip.WH_ALIAS}}</td>
+                                    <td>{{ip.BAY_NO}}</td>
+                                    <td>{{ip.QTY_AVL}}</td>
+                                    <td>{{ip.QTY_ONHAND}}</td>
+                                    <td>{{ip.QTY_RESERVED}}</td>
+                                    <td>{{ip.QTY_IN_RECEIVING}}</td>
+                                </tr>
+
+                                <tr style="background-color:#FF9999" ng-repeat="ir in invRDCList">
+
+                                    <td>{{ir.WH_ALIAS}}</td>
+                                    <td>{{ir.BAY_NO}}</td>
+                                    <td>{{ir.QTY_AVL}}</td>
+                                    <td>{{ir.QTY_ONHAND}}</td>
+                                    <td>{{ir.QTY_RESERVED}}</td>
+                                    <td>{{ir.QTY_IN_RECEIVING}}</td>
+                                </tr>
+
+                                <tr style="background-color:#FFCCCC" ng-repeat="iip in invInterPDCList">
+
+                                    <td>{{iip.WH_ALIAS}}</td>
+                                    <td>{{iip.BAY_NO}}</td>
+                                    <td>{{iip.QTY_AVL}}</td>
+                                    <td>{{iip.QTY_ONHAND}}</td>
+                                    <td>{{iip.QTY_RESERVED}}</td>
+                                    <td>{{iip.QTY_IN_RECEIVING}}</td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!--SO/PO Opening Qty Snap Shot Part-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><b>SO/PO Opening Qty Snap Shot</b></div>
+                            <table class="table table-bordered table-condensed">
+                                <tr>
+
+                                    <td rowspan="2">Warehouse</td>
+                                    <td colspan="4">Sales Orders</td>
+                                    <td colspan="3">Purchasing Orders</td>
+                                </tr>
+                                <tr>
+                                    <td>Qty BackOrdered</td>
+                                    <td>Qty Opening</td>
+                                    <td>Qty Reserved</td>
+                                    <td>Qty in Picking</td>
+                                    <td>Remaining Qtys</td>
+                                    <td>Latest ETA</td>
+                                    <td>IN Transit</td>
+                                </tr>
+                                <tr style="background-color:#FFCC99" ng-repeat="op in openPDCList">
+
+                                    <td>{{op.WHAlias}}</td>
+                                    <td>{{op.BackOrderedQty}}</td>
+                                    <td>{{op.OpeningQty}}</td>
+                                    <td>{{op.ReservedQty}}</td>
+                                    <td>{{op.InPickingQty}}</td>
+                                    <td>{{op.RemainingQty}}</td>
+                                    <td>{{op.LatestETA}}</td>
+                                    <td>{{op.InTransit}}</td>
+                                </tr>
+
+                                <tr style="background-color:#FF9999" ng-repeat="or in openRDCList">
+
+                                    <td>{{or.WHAlias}}</td>
+                                    <td>{{or.BackOrderedQty}}</td>
+                                    <td>{{or.OpeningQty}}</td>
+                                    <td>{{or.ReservedQty}}</td>
+                                    <td>{{or.InPickingQty}}</td>
+                                    <td>{{or.RemainingQty}}</td>
+                                    <td>{{or.LatestETA}}</td>
+                                    <td>{{or.InTransit}}</td>
+                                </tr>
+
+                            </table>
+                        </div>
                     </div>
                 </div>
 
             </div>
         </div>
 
-        <!--Inventory Shapshot Part-->
-        <div class="row">
-            <div class="col-md-11">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><b>Inventory Shapshot</b></div>
-                    <table class="table table-bordered table-condensed">
-                        <thead style="background-color:#C32518">
-                            <tr>
-                                
-                                <th>Ware House</th>
-                                <th>Bay No</th>
-                                <th>Qty Available</th>
-                                <th>Qty Onhand</th>
-                                <th>Qty Reserved</th>
-                                <th>Qty In Receiving</th>
-                            </tr>
-                        </thead>
-                        <tr style="background-color:bisque" ng-repeat="ip in invPDCList" >
-                           
-                            <td>{{ip.WH_ALIAS}}</td>
-                            <td>{{ip.BAY_NO}}</td>
-                            <td>{{ip.QTY_AVL}}</td>
-                            <td>{{ip.QTY_ONHAND}}</td>
-                            <td>{{ip.QTY_RESERVED}}</td>
-                            <td>{{ip.QTY_IN_RECEIVING}}</td>
-                        </tr>
-                        
-                        <tr style="background-color:#DEA681" ng-repeat="ir in invRDCList">
-                            
-                            <td>{{ir.WH_ALIAS}}</td>
-                            <td>{{ir.BAY_NO}}</td>
-                            <td>{{ir.QTY_AVL}}</td>
-                            <td>{{ir.QTY_ONHAND}}</td>
-                            <td>{{ir.QTY_RESERVED}}</td>
-                            <td>{{ir.QTY_IN_RECEIVING}}</td>
-                        </tr>
 
-                        <tr style="background-color:bisque" ng-repeat="iip in invInterPDCList">
-                           
-                            <td>{{iip.WH_ALIAS}}</td>
-                            <td>{{iip.BAY_NO}}</td>
-                            <td>{{iip.QTY_AVL}}</td>
-                            <td>{{iip.QTY_ONHAND}}</td>
-                            <td>{{iip.QTY_RESERVED}}</td>
-                            <td>{{iip.QTY_IN_RECEIVING}}</td>
-                        </tr>
-                       
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!--SO/PO Opening Qty Snap Shot Part-->
-        <div class="row">
-            <div class="col-md-11">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><b>SO/PO Opening Qty Snap Shot</b></div>
-                    <table class="table table-bordered table-condensed" >
-                        <tr>
-                            
-                            <td rowspan="2">Warehouse</td>
-                            <td colspan="4">Sales Orders</td>
-                            <td colspan="3">Purchasing Orders</td>
-                        </tr>
-                        <tr>
-                            <td>Qty BackOrdered</td>
-                            <td>Qty Opening</td>
-                            <td>Qty Reserved</td>
-                            <td>Qty in Picking</td>
-                            <td>Remaining Qtys</td>
-                            <td>Latest ETA</td>
-                            <td>IN Transit</td>
-                        </tr>
-                        <tr style="background-color:bisque" ng-repeat="or in openPDCList">
-                            
-                            <td>{{op.WHAlias}}</td>
-                            <td>{{op.BackOrderedQty}}</td>
-                            <td>{{op.OpeningQty}}</td>
-                            <td>{{op.ReservedQty}}</td>
-                            <td>{{op.InPickingQty}}</td>
-                            <td>{{op.RemainingQty}}</td>
-                            <td>{{op.LatestETA}}</td>
-                            <td>{{op.InTransit}}</td>
-                        </tr>
-
-                        <tr style="background-color:#DEA681" ng-repeat="or in openRDCList">
-                            
-                            <td>{{or.WHAlias}}</td>
-                            <td>{{or.BackOrderedQty}}</td>
-                            <td>{{or.OpeningQty}}</td>
-                            <td>{{or.ReservedQty}}</td>
-                            <td>{{or.InPickingQty}}</td>
-                            <td>{{or.RemainingQty}}</td>
-                            <td>{{or.LatestETA}}</td>
-                            <td>{{or.InTransit}}</td>
-                        </tr>
-                        
-                    </table>
-                </div>
-            </div>
-        </div>
 
         <div class="row">
             <div class="col-md-11">
@@ -394,13 +407,13 @@
         $scope.initAlldata = function()
         {
             //debugger;
-            windows.body.style.cursor = "wait"
+            //windows.body.style.cursor = "wait"
             addEQLog();
             getWatchingout();
             getMDMData();
             getInvSnapShot();
             getOpenSnapShot();
-            windows.body.style.cursor = "default"
+            //windows.body.style.cursor = "default"
     
 
         };
