@@ -36,5 +36,10 @@ namespace CHubDBEntity
         public Nullable<decimal> QTY_IN_CARTON { get; set; }
         public string TRANSP_PART_CODE { get; set; }
         public string NOTE_TEXT { get; set; }
+        public string REMARK1 { get; set; }
+        public string REMARK2 { get; set; }
+        public string REMARK3 { get; set; }
+        public string REMARK4 { get; set; }
+        public string REMARK5 { get; set; }
     }
 }

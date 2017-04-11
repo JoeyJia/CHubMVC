@@ -646,11 +646,6 @@ warning 6002: The table/view 'GWAPP.TC_PART_HS_STG' does not have a primary key 
           <Property Name="ORDER_NOTES" Type="varchar2" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6006: The facet 'MaxLength' with a value '0' is outside the range 1-32767 specified by the facet description.  The column 'REMARK1' in the table 'GWAPP.G_PART_DESCRIPTION' was excluded.
-warning 6006: The facet 'MaxLength' with a value '0' is outside the range 1-32767 specified by the facet description.  The column 'REMARK2' in the table 'GWAPP.G_PART_DESCRIPTION' was excluded.
-warning 6006: The facet 'MaxLength' with a value '0' is outside the range 1-32767 specified by the facet description.  The column 'REMARK3' in the table 'GWAPP.G_PART_DESCRIPTION' was excluded.
-warning 6006: The facet 'MaxLength' with a value '0' is outside the range 1-32767 specified by the facet description.  The column 'REMARK4' in the table 'GWAPP.G_PART_DESCRIPTION' was excluded.
-warning 6006: The facet 'MaxLength' with a value '0' is outside the range 1-32767 specified by the facet description.  The column 'REMARK5' in the table 'GWAPP.G_PART_DESCRIPTION' was excluded.
 warning 6002: The table/view 'GWAPP.G_PART_DESCRIPTION' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="G_PART_DESCRIPTION">
           <Key>
@@ -678,6 +673,11 @@ warning 6002: The table/view 'GWAPP.G_PART_DESCRIPTION' does not have a primary 
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="RECORD_DATE" Type="date" />
           <Property Name="NOTE_TEXT" Type="varchar2" MaxLength="942" />
+          <Property Name="REMARK1" Type="char" MaxLength="150" />
+          <Property Name="REMARK2" Type="char" MaxLength="150" />
+          <Property Name="REMARK3" Type="char" MaxLength="150" />
+          <Property Name="REMARK4" Type="char" MaxLength="150" />
+          <Property Name="REMARK5" Type="char" MaxLength="150" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.G_PART_SUPERSESSION_ALL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1084,8 +1084,8 @@ warning 6002: The table/view 'GWAPP.V_ITT_SHIPPING_SMRY' does not have a primary
           <Key>
             <PropertyRef Name="FROM_SYSTEM" />
             <PropertyRef Name="SHIPMENT_NO" />
-            <PropertyRef Name="SHIP_LINES" />
             <PropertyRef Name="TC_GROUP" />
+            <PropertyRef Name="SHIP_LINES" />
           </Key>
           <Property Name="SHIPMENT_DATE" Type="date" />
           <Property Name="FROM_SYSTEM" Type="varchar2" MaxLength="10" Nullable="false" />
@@ -1651,7 +1651,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0017257">
+        <Association Name="SYS_C0017646">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1932,7 +1932,12 @@ FROM "GWAPP"."TC_PART_HS_STG" "TC_PART_HS_STG"</DefiningQuery>
 "G_PART_DESCRIPTION"."TRANSP_PART_CODE" AS "TRANSP_PART_CODE", 
 "G_PART_DESCRIPTION"."CREATE_DATE" AS "CREATE_DATE", 
 "G_PART_DESCRIPTION"."RECORD_DATE" AS "RECORD_DATE", 
-"G_PART_DESCRIPTION"."NOTE_TEXT" AS "NOTE_TEXT"
+"G_PART_DESCRIPTION"."NOTE_TEXT" AS "NOTE_TEXT", 
+"G_PART_DESCRIPTION"."REMARK1" AS "REMARK1", 
+"G_PART_DESCRIPTION"."REMARK2" AS "REMARK2", 
+"G_PART_DESCRIPTION"."REMARK3" AS "REMARK3", 
+"G_PART_DESCRIPTION"."REMARK4" AS "REMARK4", 
+"G_PART_DESCRIPTION"."REMARK5" AS "REMARK5"
 FROM "GWAPP"."G_PART_DESCRIPTION" "G_PART_DESCRIPTION"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="G_PART_SUPERSESSION_ALL" EntityType="Self.G_PART_SUPERSESSION_ALL" store:Type="Views" store:Schema="GWAPP">
@@ -2603,7 +2608,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
             <End Role="M_PART" EntitySet="M_PART" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0017257" Association="Self.SYS_C0017257">
+          <AssociationSet Name="SYS_C0017646" Association="Self.SYS_C0017646">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -2920,6 +2925,11 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="QTY_IN_CARTON" Type="Decimal" Precision="24" Scale="8" />
           <Property Name="TRANSP_PART_CODE" Type="String" MaxLength="132" FixedLength="false" Unicode="false" />
           <Property Name="NOTE_TEXT" Type="String" MaxLength="942" FixedLength="false" Unicode="false" />
+          <Property Name="REMARK1" Type="String" MaxLength="150" FixedLength="true" Unicode="false" />
+          <Property Name="REMARK2" Type="String" MaxLength="150" FixedLength="true" Unicode="false" />
+          <Property Name="REMARK3" Type="String" MaxLength="150" FixedLength="true" Unicode="false" />
+          <Property Name="REMARK4" Type="String" MaxLength="150" FixedLength="true" Unicode="false" />
+          <Property Name="REMARK5" Type="String" MaxLength="150" FixedLength="true" Unicode="false" />
         </EntityType>
         <EntityType Name="G_PART_SUPERSESSION_ALL">
           <Key>
@@ -4829,6 +4839,11 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="G_PART_DESCRIPTION">
             <EntityTypeMapping TypeName="CHubDBModel.G_PART_DESCRIPTION">
               <MappingFragment StoreEntitySet="G_PART_DESCRIPTION">
+                <ScalarProperty Name="REMARK5" ColumnName="REMARK5" />
+                <ScalarProperty Name="REMARK4" ColumnName="REMARK4" />
+                <ScalarProperty Name="REMARK3" ColumnName="REMARK3" />
+                <ScalarProperty Name="REMARK2" ColumnName="REMARK2" />
+                <ScalarProperty Name="REMARK1" ColumnName="REMARK1" />
                 <ScalarProperty Name="NOTE_TEXT" ColumnName="NOTE_TEXT" />
                 <ScalarProperty Name="TRANSP_PART_CODE" ColumnName="TRANSP_PART_CODE" />
                 <ScalarProperty Name="QTY_IN_CARTON" ColumnName="QTY_IN_CARTON" />
