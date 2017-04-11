@@ -10,13 +10,15 @@
 
 </style>
 
-
-
+@Styles.Render("~/Content/progressbarcss")
+@Scripts.Render("~/bundles/progressbar")
 
 
 <div class="container-fluid" id="easyQueryBody" ng-app="easyQueryApp" ng-controller="easyQueryCtrl">
     <div class="panel panel-default">
         <div class="panel-heading"><b>Easy Query</b></div>
+
+        
 
         <form class="form-horizontal" id="searchForm">
             <div class="row" style="margin-top:20px;margin-bottom:20px">
@@ -32,7 +34,15 @@
 
             </div>
         </form>
-        <hr>
+        <div style="margin-bottom:-20px" class="tab-pane fade in active" id="h-default-basic" role="tabpanel" hidden>
+            <div class="bs-example">
+                <div class="">
+                    <div class="progress"><div class="progress-bar" role="progressbar" data-transitiongoal-backup="100"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <hr />
         
         <!--Page body-->
         <div class="row">
@@ -83,19 +93,19 @@
                         </tr>
                         <tr>
                             <td class="titleTD"><b>Remark 1</b></td>
-                            <td>{{selectedPart.PART_NO}}</td>
+                            <td></td>
                             <td class="titleTD"><b>Remark 2</b></td>
-                            <td>{{selectedPart.PART_NO}}</td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td class="titleTD"><b>Remark 3</b></td>
-                            <td>{{selectedPart.PART_NO}}</td>
+                            <td></td>
                             <td class="titleTD"><b>Remark 4</b></td>
-                            <td>{{selectedPart.PART_NO}}</td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td class="titleTD"><b>Remark 5</b></td>
-                            <td colspan="3">{{selectedPart.PART_NO}}</td>
+                            <td colspan="3"></td>
                         </tr>
                         <!--CIQ Features part-->
                         <tr>
@@ -372,6 +382,8 @@
         $scope.fuzzySearch = function () {
             if ($scope.partNo == "")
                 return;
+            showPB();
+            $('#h-default-basic .progress-bar').attr('data-transitiongoal', 5).progressbar();
 
             $.ajax({
                 url: "/itt/FuzzyQueryParNo",
@@ -383,6 +395,7 @@
                 success: function (obj) {
                     //debugger;
                     $scope.result = obj;
+                    $('#h-default-basic .progress-bar').attr('data-transitiongoal', 10).progressbar();
                     if ($scope.result != null && $scope.result.length == 1) {
                         $scope.selectedPart = $scope.result[0];
                         $scope.initAlldata();
@@ -407,18 +420,30 @@
         $scope.initAlldata = function()
         {
             //debugger;
-            //windows.body.style.cursor = "wait"
+            
             addEQLog();
+            $('#h-default-basic .progress-bar').attr('data-transitiongoal', 20).progressbar();
             getWatchingout();
+            $('#h-default-basic .progress-bar').attr('data-transitiongoal', 30).progressbar();
             getMDMData();
+            $('#h-default-basic .progress-bar').attr('data-transitiongoal', 40).progressbar();
             getInvSnapShot();
+            $('#h-default-basic .progress-bar').attr('data-transitiongoal', 80).progressbar();
             getOpenSnapShot();
-            //windows.body.style.cursor = "default"
-    
+            $('#h-default-basic .progress-bar').attr('data-transitiongoal', 100).progressbar();
+
+            setTimeout(hidePB, 2000);
 
         };
 
         //function part
+        function hidePB() {
+            $('#h-default-basic .progress-bar').attr('data-transitiongoal', 0).progressbar();
+            $("#h-default-basic").attr('hidden', true);   
+        }
+        function showPB() {
+            $("#h-default-basic").attr('hidden', false);
+        }
         function addEQLog()
         {
             if ($scope.selectedPart == "")
@@ -563,22 +588,6 @@
     angular.module('partListApp', []).controller('partListCtrl', function ($scope, $http) {
         $scope.partList = [];
 
-
-        //$scope.cancel = function () {
-        //    $("#partReadModal").modal("hide");
-        //}
-
-        //$scope.showAuditLog = function () {
-        //    //debugger;
-        //    var appElement = document.querySelector('[ng-controller=auditLogCtrl]');
-        //    var scope = angular.element(appElement).scope();
-        //    scope.partNo = $scope.currentData.PART_NO;
-        //    scope.loadAuditLog();
-        //    scope.$apply();
-        //    $("#auditLogModal").modal("show");
-        //}
-
-
     });
 
     //Add second app to document
@@ -586,9 +595,17 @@
 </script>
 <script>
 
+    $(document).ready(function () {
+        $('.progress .progress-bar').progressbar();
+        $('.progress .progress-bar').progressbar({ display_text: 'center' });
+    });
+
+
     function confirmAddr() {
         for (var i = 0; i < $(".partRadio").length ; i++) {
             if ($(".partRadio")[i].checked) {
+                $("#partListModal").modal("hide");
+
                 var seq = $(".partRadio")[i].attributes['seq'].value;
                 var appElement = document.querySelector('[ng-controller=partListCtrl]');
                 var scope = angular.element(appElement).scope();
@@ -596,15 +613,13 @@
 
                 var appElement1 = document.querySelector('[ng-controller=easyQueryCtrl]');
                 var scope1 = angular.element(appElement1).scope();
-                scope1.selectedPart = selected;
+                scope1.selectedPart = selected;             
                 
-                scope1.$apply();
                 scope1.initAlldata();
+                scope1.$apply();
                 break;
             }
-
-        }
-        $("#partListModal").modal("hide");
+        }      
     }
 
     function cancelAddr() {
