@@ -5,7 +5,13 @@
 }
 <style typeof="text/css">
     .titleTD {
-        background-color: #FFCC99;
+        background-color: #F5F5F5;
+    }
+    .title {
+        background-color: #F5F5F5;
+    }
+    .silver {
+        background-color: #C0C0C0;
     }
 
 </style>
@@ -13,10 +19,9 @@
 @Styles.Render("~/Content/progressbarcss")
 @Scripts.Render("~/bundles/progressbar")
 
-
 <div class="container-fluid" id="easyQueryBody" ng-app="easyQueryApp" ng-controller="easyQueryCtrl">
     <div class="panel panel-default">
-        <div class="panel-heading"><b>Easy Query</b></div>
+        <div class="panel-heading" style="background-color:silver"><b>Easy Query</b></div>
 
         
 
@@ -48,7 +53,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><b>Part Basic Info</b></div>
+                    <div class="panel-heading" style="background-color:silver"><b>Part Basic Info</b></div>
                     <table class="table table-bordered table-condensed" >
 
                         <tr>
@@ -87,29 +92,29 @@
                         </tr>
                         <tr>
                             <td class="titleTD"><b>Release Date</b></td>
-                            <td>{{selectedPart.CREATE_DATE}}</td>
+                            <td>{{selectedPart.CREATE_DATE | date:'yyyy-MM-dd'}}</td>
                             <td class="titleTD"><b>Note</b></td>
                             <td>{{selectedPart.NOTE_TEXT}}</td>
                         </tr>
                         <tr>
                             <td class="titleTD"><b>Remark 1</b></td>
-                            <td></td>
+                            <td>{{selectedPart.REMARK1}}</td>
                             <td class="titleTD"><b>Remark 2</b></td>
-                            <td></td>
+                            <td>{{selectedPart.REMARK2}}</td>
                         </tr>
                         <tr>
                             <td class="titleTD"><b>Remark 3</b></td>
-                            <td></td>
+                            <td>{{selectedPart.REMARK3}}</td>
                             <td class="titleTD"><b>Remark 4</b></td>
-                            <td></td>
+                            <td>{{selectedPart.REMARK4}}</td>
                         </tr>
                         <tr>
                             <td class="titleTD"><b>Remark 5</b></td>
-                            <td colspan="3"></td>
+                            <td colspan="3">{{selectedPart.REMARK5}}</td>
                         </tr>
                         <!--CIQ Features part-->
                         <tr>
-                            <td style="background-color:#DCDCDC" colspan="4"><b>TC Features</b></td>
+                            <td style="background-color:#C0C0C0" colspan="4"><b>TC Features</b></td>
                         </tr>
                         <tr>
                             <td class="titleTD"><b>Declaration Name</b></td>
@@ -134,9 +139,9 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel panel-default">
-                            <div class="panel-heading"><b>Watching Out</b></div>
+                            <div class="panel-heading" style="background-color:silver"><b>Watching Out</b></div>
                             <table class="table table-bordered table-condensed">
-                                <thead style="background-color:#C32518">
+                                <thead class="title">
                                     <tr>
                                         <th>Message</th>
                                         <th>Details</th>
@@ -155,9 +160,9 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel panel-default">
-                            <div class="panel-heading"><b>Inventory Shapshot</b></div>
+                            <div class="panel-heading" style="background-color:silver"><b>Inventory Shapshot</b></div>
                             <table class="table table-bordered table-condensed">
-                                <thead style="background-color:#C32518">
+                                <thead class="title">
                                     <tr>
 
                                         <th>Ware House</th>
@@ -168,7 +173,7 @@
                                         <th>Qty In Receiving</th>
                                     </tr>
                                 </thead>
-                                <tr style="background-color:#FFCC99" ng-repeat="ip in invPDCList">
+                                <tr style="background-color:#F0FFFF" ng-repeat="ip in invPDCList">
 
                                     <td>{{ip.WH_ALIAS}}</td>
                                     <td>{{ip.BAY_NO}}</td>
@@ -178,7 +183,7 @@
                                     <td>{{ip.QTY_IN_RECEIVING}}</td>
                                 </tr>
 
-                                <tr style="background-color:#FF9999" ng-repeat="ir in invRDCList">
+                                <tr style="background-color:#FDF5E6" ng-repeat="ir in invRDCList">
 
                                     <td>{{ir.WH_ALIAS}}</td>
                                     <td>{{ir.BAY_NO}}</td>
@@ -188,7 +193,7 @@
                                     <td>{{ir.QTY_IN_RECEIVING}}</td>
                                 </tr>
 
-                                <tr style="background-color:#FFCCCC" ng-repeat="iip in invInterPDCList">
+                                <tr style="background-color:#FAFAD2" ng-repeat="iip in invInterPDCList">
 
                                     <td>{{iip.WH_ALIAS}}</td>
                                     <td>{{iip.BAY_NO}}</td>
@@ -207,15 +212,15 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel panel-default">
-                            <div class="panel-heading"><b>SO/PO Opening Qty Snap Shot</b></div>
+                            <div class="panel-heading" style="background-color:silver"><b>SO/PO Opening Qty Snap Shot</b></div>
                             <table class="table table-bordered table-condensed">
-                                <tr>
+                                <tr class="title">
 
                                     <td rowspan="2">Warehouse</td>
                                     <td colspan="4">Sales Orders</td>
                                     <td colspan="3">Purchasing Orders</td>
                                 </tr>
-                                <tr>
+                                <tr class="title">
                                     <td>Qty BackOrdered</td>
                                     <td>Qty Opening</td>
                                     <td>Qty Reserved</td>
@@ -224,7 +229,7 @@
                                     <td>Latest ETA</td>
                                     <td>IN Transit</td>
                                 </tr>
-                                <tr style="background-color:#FFCC99" ng-repeat="op in openPDCList">
+                                <tr style="background-color:#F0FFFF" ng-repeat="op in openPDCList">
 
                                     <td>{{op.WHAlias}}</td>
                                     <td>{{op.BackOrderedQty}}</td>
@@ -236,7 +241,7 @@
                                     <td>{{op.InTransit}}</td>
                                 </tr>
 
-                                <tr style="background-color:#FF9999" ng-repeat="or in openRDCList">
+                                <tr style="background-color:#FAFAD2" ng-repeat="or in openRDCList">
 
                                     <td>{{or.WHAlias}}</td>
                                     <td>{{or.BackOrderedQty}}</td>
@@ -259,9 +264,9 @@
 
 
         <div class="row">
-            <div class="col-md-11">
+            <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><b>SO/PO Opening Qty Snap Shot</b></div>
+                    <div class="panel-heading" style="background-color:silver"><b>SO/PO Opening Qty Snap Shot</b></div>
 
                     <ul class="nav nav-pills" role="tablist">
                         <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">By Shipments</a></li>
@@ -432,8 +437,7 @@
             getOpenSnapShot();
             $('#h-default-basic .progress-bar').attr('data-transitiongoal', 100).progressbar();
 
-            setTimeout(hidePB, 2000);
-
+            setTimeout(hidePB, 3000);
         };
 
         //function part
