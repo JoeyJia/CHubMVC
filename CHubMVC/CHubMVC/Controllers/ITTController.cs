@@ -603,6 +603,15 @@ namespace CHubMVC.Controllers
                     V_OPEN_QTY_ASN_PDC_BLL asnPDCBLL = new V_OPEN_QTY_ASN_PDC_BLL();
                     List<V_OPEN_QTY_ASN_PDC> asnPDCList = asnPDCBLL.GetOpenPDCData(partNo);
 
+                    //do union operation
+                    foreach (var item in poPDCList)
+                    {
+                        if (!soPDCList.Any(a => a.WAREHOUSE == item.WAREHOUSE))
+                        {
+                            soPDCList.Add(new V_OPEN_QTY_SO_PDC { WAREHOUSE = item.WAREHOUSE,WH_ALIAS=item.WH_ALIAS});
+                        }
+                    }
+
                     foreach (var item in soPDCList)
                     {
                         OpeningQtySnapshot openSS = new OpeningQtySnapshot();
@@ -639,6 +648,15 @@ namespace CHubMVC.Controllers
 
                     V_OPEN_QTY_ASN_RDC_BLL asnRDCBLL = new V_OPEN_QTY_ASN_RDC_BLL();
                     List<V_OPEN_QTY_ASN_RDC> asnRDCList = asnRDCBLL.GetOpenRDCData(partNo);
+
+                    //do union operation
+                    foreach (var item in poRDCList)
+                    {
+                        if (!soRDCList.Any(a => a.WAREHOUSE == item.WAREHOUSE))
+                        {
+                            soRDCList.Add(new V_OPEN_QTY_SO_RDC { WAREHOUSE = item.WAREHOUSE, WH_ALIAS = item.WH_ALIAS });
+                        }
+                    }
 
                     foreach (var item in soRDCList)
                     {

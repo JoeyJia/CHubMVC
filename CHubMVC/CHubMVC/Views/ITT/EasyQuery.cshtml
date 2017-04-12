@@ -165,7 +165,7 @@
                                 <thead class="title">
                                     <tr>
 
-                                        <th>Ware House</th>
+                                        <th>Site</th>
                                         <th>Bay No</th>
                                         <th>Qty Available</th>
                                         <th>Qty Onhand</th>
@@ -216,18 +216,18 @@
                             <table class="table table-bordered table-condensed">
                                 <tr class="title">
 
-                                    <td rowspan="2">Warehouse</td>
-                                    <td colspan="4">Sales Orders</td>
-                                    <td colspan="3">Purchasing Orders</td>
+                                    <td rowspan="2" style="text-align:center"><b>Site</b></td>
+                                    <td colspan="4" style="text-align:center"><b>Sales Orders</b></td>
+                                    <td colspan="3" style="text-align:center"><b>Purchasing Orders</b></td>
                                 </tr>
                                 <tr class="title">
-                                    <td>Qty BackOrdered</td>
-                                    <td>Qty Opening</td>
-                                    <td>Qty Reserved</td>
-                                    <td>Qty in Picking</td>
-                                    <td>Remaining Qtys</td>
-                                    <td>Latest ETA</td>
-                                    <td>IN Transit</td>
+                                    <td><b>Qty BackOrdered</b></td>
+                                    <td><b>Qty Opening</b></td>
+                                    <td><b>Qty Reserved</b></td>
+                                    <td><b>Qty in Picking</b></td>
+                                    <td><b>Remaining Qtys</b></td>
+                                    <td><b>Latest ETA</b></td>
+                                    <td><b>IN Transit</b></td>
                                 </tr>
                                 <tr style="background-color:#F0FFFF" ng-repeat="op in openPDCList">
 
@@ -269,8 +269,8 @@
                     <div class="panel-heading" style="background-color:silver"><b>SO/PO Opening Qty Snap Shot</b></div>
 
                     <ul class="nav nav-pills" role="tablist">
-                        <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">By Shipments</a></li>
-                        <li role="presentation"><a href="#profile" role="tab" data-toggle="tab">By Purchasing</a></li>
+                        <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">by shipments(InterPDC only)</a></li>
+                        <li role="presentation"><a href="#profile" role="tab" data-toggle="tab">by POs</a></li>
                     </ul>
 
                     <!---->
