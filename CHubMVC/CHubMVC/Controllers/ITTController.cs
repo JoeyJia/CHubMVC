@@ -715,9 +715,12 @@ namespace CHubMVC.Controllers
                     string icoPath = Server.MapPath(CHubConstValues.ChubIcoFolder);
                     foreach (var item in result)
                     {
-                        item.COLOR_10 = ValueConvert.GetColorFullName(item.COLOR_10);
-                        item.COLOR_30 = ValueConvert.GetColorFullName(item.COLOR_30);
-                        item.COLOR_50 = ValueConvert.GetColorFullName(item.COLOR_50);
+                        if (item.S10_DISPLAY != null)
+                            item.COLOR_10 = ValueConvert.GetColorFullName(item.COLOR_10);
+                        if (item.S30_DISPLAY != null)
+                            item.COLOR_30 = ValueConvert.GetColorFullName(item.COLOR_30);
+                        if (item.S50_DISPLAY != null)
+                            item.COLOR_50 = ValueConvert.GetColorFullName(item.COLOR_50);
                     }
                 }
                 return Json(new RequestResult(result));

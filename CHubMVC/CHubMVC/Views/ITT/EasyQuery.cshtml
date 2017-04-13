@@ -275,7 +275,7 @@
                     <!---->
                     <div class="tab-content" style="overflow-x:auto;">
                         <div role="tabpanel" class="tab-pane active" id="home">
-                            <div class="row" style="margin-top:30px">
+                            <div class="row" style="margin-top:20px">
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label text-right">From:</label>
                                     <div class="col-sm-9">
@@ -326,7 +326,7 @@
                                             <input type="radio" name="tranOptions" id="tranRadio3" ng-model="tranArg" value="Ocean-F">Ocean-Full
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio" name="tranOptions" id="tranRadio3" ng-model="tranArg" value="Ocean_L">Ocean_Less
+                                            <input type="radio" name="tranOptions" id="tranRadio3" ng-model="tranArg" value="Ocean-L">Ocean-Less
                                         </label>
                                     </div>
                                 </div>
@@ -350,7 +350,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
+                                <div class="row" style="margin-bottom:10px;">
                                     <div class="form-group">
                                         <label for="txtWayBillNo" class="col-sm-2 control-label text-right">Way Bill No.</label>
                                         <div class="col-sm-3">
@@ -367,9 +367,10 @@
                                     <div class="" style="width:3000px;margin-left:12px;">
                                         <div class="panel panel-default">
                                             <div class="panel-heading" style="background-color:silver"><b>Result</b></div>
-                                            <table class="table table-bordered table-condensed">
+                                            <table class="table table-bordered table-striped table-condensed">
                                                 <thead class="title">
                                                     <tr>
+                                                        <th>Index</th>
                                                         <th>Icons</th>
                                                         <th>From System</th>
                                                         <th>Shipment No.</th>
@@ -397,8 +398,9 @@
                                                     </tr>
                                                 </thead>
                                                 <tr ng-repeat="sl in shipmentList ">
-                                                    <td style="word-break:keep-all">
-                                                        <ul class="list-inline">
+                                                    <td>{{$index+1}}</td>
+                                                    <td style="word-break:keep-all;">
+                                                        <ul class="list-inline" style="margin-bottom:-8px;">
                                                             <li ng-show="sl.T_ICON1!=null"><img src="~/Images/ico/{{sl.T_ICON1}}" class="img-responsive" alt="Responsive image"></li>
                                                             <li ng-show="sl.T_ICON2!=null"><img src="~/Images/ico/{{sl.T_ICON2}}" class="img-responsive" alt="Responsive image"></li>
                                                             <li ng-show="sl.C_ICON1!=null"><img src="~/Images/ico/{{sl.C_ICON1}}" class="img-responsive" alt="Responsive image"></li>
@@ -418,12 +420,12 @@
                                                     <td>{{sl.EST_S60_AVL_DATE | date:'yyyy-MM-dd'}}</td>
                                                     <td>{{sl.INVOICE_NO}}</td>
                                                     <td>{{sl.LODNUM}}</td>
-                                                    <td>{{sl.S00_DISPLAY}}</td>
-                                                    <td ng-style="{backgroundColor:sl.COLOR_10}">{{sl.S10_DISPLAY}}</td>
-                                                    <td>{{sl.S20_DISPLAY}}</td>
-                                                    <td ng-style="{backgroundColor:sl.COLOR_30}">{{sl.S30_DISPLAY}}</td>
+                                                    <td>{{sl.S00_DISPLAY | date:'yyyy-MM-dd'}}</td>
+                                                    <td ng-style="{backgroundColor:sl.COLOR_10}">{{sl.S10_DISPLAY | date:'yyyy-MM-dd'}}</td>
+                                                    <td>{{sl.S20_DISPLAY | date:'yyyy-MM-dd'}}</td>
+                                                    <td ng-style="{backgroundColor:sl.COLOR_30}">{{sl.S30_DISPLAY | date:'yyyy-MM-dd'}}</td>
                                                     <td>{{sl.S40_DISPLAY}}</td>
-                                                    <td ng-style="{backgroundColor:sl.COLOR_50}">{{sl.S50_DISPLAY}}</td>
+                                                    <td ng-style="{backgroundColor:sl.COLOR_50}">{{sl.S50_DISPLAY | date:'yyyy-MM-dd'}}</td>
                                                     <td>{{sl.TRACKING_NO}}</td>
                                                     <td>{{sl.WILL_BILL_NO}}</td>
                                                     <td>{{sl.CARRIER_CODE}}</td>
@@ -594,11 +596,11 @@
 
         $scope.submitFilter = function ()
         {
-            debugger;
+            //debugger;
             //if($scope.fromArg=="All"&& $scope.toArg=="All"
             //    && $scope.tranArg=="All"&& $scope.inNoArg==""
             //    && $scope.shipArg==""&& $scope.WayNoArg=="")
-            $scope.shipmentList = $scope.shipmentBackup;
+            $scope.shipmentList = $scope.shipmentBackup.slice(0);
 
             if ($scope.fromArg != "All")
             {
