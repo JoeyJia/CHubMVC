@@ -373,6 +373,9 @@
                                                         <th>Index</th>
                                                         <th>Icons</th>
                                                         <th>From System</th>
+                                                        <th>Act. Port Arrival</th>
+                                                        <th>Act.300 Arrival Date</th>
+                                                        <th>Act. 305 Arrival Date</th>
                                                         <th>Shipment No.</th>
                                                         <th>Ship Date</th>
                                                         <th>Ship To Abbr</th>
@@ -385,11 +388,11 @@
                                                         <th>Invoice No.</th>
                                                         <th>Lod No.</th>
                                                         <th>Act. Depart Date</th>
-                                                        <th>Act. Port Arrival</th>
+                                                        
                                                         <th>Act. Do Release Date</th>
-                                                        <th>Act.300 Arrival Date</th>
+                                                        
                                                         <th>Act. 300 Out Date</th>
-                                                        <th>Act. 305 Arrival Date</th>
+                                                        
                                                         <th>Tracking No.</th>
                                                         <th>Way Bill No.</th>
                                                         <th>Carrier Code</th>
@@ -409,6 +412,10 @@
                                                         </ul>
                                                     </td>
                                                     <td>{{sl.FROM_SYSTEM}}</td>
+                                                    <td ng-style="{backgroundColor:sl.COLOR_10}">{{sl.S10_DISPLAY | date:'yyyy-MM-dd'}}</td>
+                                                    <td ng-style="{backgroundColor:sl.COLOR_30}">{{sl.S30_DISPLAY | date:'yyyy-MM-dd'}}</td>
+                                                    <td ng-style="{backgroundColor:sl.COLOR_50}">{{sl.S50_DISPLAY }}</td>
+
                                                     <td>{{sl.SHIPMENT_NO}}</td>
                                                     <td>{{sl.SHIP_DATE | date:'yyyy-MM-dd'}}</td>
                                                     <td>{{sl.SHIP_TO_ABBR}}</td>
@@ -421,11 +428,11 @@
                                                     <td>{{sl.INVOICE_NO}}</td>
                                                     <td>{{sl.LODNUM}}</td>
                                                     <td>{{sl.S00_DISPLAY | date:'yyyy-MM-dd'}}</td>
-                                                    <td ng-style="{backgroundColor:sl.COLOR_10}">{{sl.S10_DISPLAY | date:'yyyy-MM-dd'}}</td>
+                                                    
                                                     <td>{{sl.S20_DISPLAY | date:'yyyy-MM-dd'}}</td>
-                                                    <td ng-style="{backgroundColor:sl.COLOR_30}">{{sl.S30_DISPLAY | date:'yyyy-MM-dd'}}</td>
-                                                    <td>{{sl.S40_DISPLAY}}</td>
-                                                    <td ng-style="{backgroundColor:sl.COLOR_50}">{{sl.S50_DISPLAY | date:'yyyy-MM-dd'}}</td>
+                                                    
+                                                    <td>{{sl.S40_DISPLAY | date:'yyyy-MM-dd'}}</td>
+                                                    
                                                     <td>{{sl.TRACKING_NO}}</td>
                                                     <td>{{sl.WILL_BILL_NO}}</td>
                                                     <td>{{sl.CARRIER_CODE}}</td>
