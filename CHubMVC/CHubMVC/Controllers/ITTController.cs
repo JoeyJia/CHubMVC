@@ -702,6 +702,35 @@ namespace CHubMVC.Controllers
         }
 
 
+        [HttpPost]
+        [Authorize]
+        public ActionResult GetShipmentData(string partNo)
+        {
+            try
+            {
+                V_ITT_SHIPPING_ALLIN1_BLL shipBLL = new V_ITT_SHIPPING_ALLIN1_BLL();
+                List<V_ITT_SHIPPING_ALLIN1> result = shipBLL.GetShipmentData(partNo);
+                if (result != null)
+                {
+                    string icoPath = Server.MapPath(CHubConstValues.ChubIcoFolder);
+                    foreach (var item in result)
+                    {
+                        item.COLOR_10 = ValueConvert.GetColorFullName(item.COLOR_10);
+                        item.COLOR_30 = ValueConvert.GetColorFullName(item.COLOR_30);
+                        item.COLOR_50 = ValueConvert.GetColorFullName(item.COLOR_50);
+                    }
+                }
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("GetShipmentData", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+
+            
+        }
+
         #region private function part
 
         private string SaveTranLoadAction(ITT_TRAN_LOAD model)

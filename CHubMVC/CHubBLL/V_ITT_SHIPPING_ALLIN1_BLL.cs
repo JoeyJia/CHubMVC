@@ -21,5 +21,10 @@ namespace CHubBLL
             dal = new V_ITT_SHIPPING_ALLIN1_DAL(db);
         }
 
+        public List<V_ITT_SHIPPING_ALLIN1> GetShipmentData(string partNo)
+        {
+            return dal.GetShipmentData(partNo);
+        }
+
     }
 }

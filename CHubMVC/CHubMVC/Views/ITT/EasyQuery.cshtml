@@ -262,7 +262,6 @@
         </div>
 
 
-
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
@@ -274,28 +273,170 @@
                     </ul>
 
                     <!---->
-                    <div class="tab-content">
+                    <div class="tab-content" style="overflow-x:auto;">
                         <div role="tabpanel" class="tab-pane active" id="home">
-                            <div class="row">
-                                <div class="col-md-10">
-                                    From:
-                                    <label class="radio-inline">
-                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">All
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">MDC
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">MPDC
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">SPDC
-                                    </label>
+                            <div class="row" style="margin-top:30px">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label text-right">From:</label>
+                                    <div class="col-sm-9">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="fromOptions" id="fromRadio1" ng-model="fromArg" value="All">All
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="fromOptions" id="fromRadio2" ng-model="fromArg" value="MDC">MDC
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="fromOptions" id="fromRadio3" ng-model="fromArg" value="MPDC">MPDC
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="fromOptions" id="fromRadio3" ng-model="fromArg" value="SPDC">SPDC
+                                        </label>
+                                        </div>
+                                    </div>
+                            </div>
 
-                                    
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label text-right">To:</label>
+                                    <div class="col-sm-9">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="toOptions" id="toRadio1" ng-model="toArg" value="All">All
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="toOptions" id="toRadio2" ng-model="toArg" value="4544">4544(Non-Bonded)
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="toOptions" id="toRadio3" ng-model="toArg" value="4083">4083(Bonded)
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label text-right">Transportation Type:</label>
+                                    <div class="col-sm-9">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="tranOptions" id="tranRadio1" ng-model="tranArg" value="All">All
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="tranOptions" id="tranRadio2" ng-model="tranArg" value="Air">Air
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="tranOptions" id="tranRadio3" ng-model="tranArg" value="Ocean-F">Ocean-Full
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="tranOptions" id="tranRadio3" ng-model="tranArg" value="Ocean_L">Ocean_Less
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="txtInvoiceNo" class="col-sm-2 control-label text-right">Invoice No.</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control input-sm" id="txtInvoiceNo" ng-model="inNoArg" placeholder="Invoice No.">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="txtShipmentNo" class="col-sm-2 control-label text-right">Shipment No.</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control input-sm" id="txtShipmentNo" ng-model="shipArg" placeholder="Shipment No.">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="txtWayBillNo" class="col-sm-2 control-label text-right">Way Bill No.</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control input-sm" id="txtWayBillNo" ng-model="WayNoArg" placeholder="Way Bill No.">
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button class="btn btn-primary btn-sm" ng-click="submitFilter()">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--result part-->
+                                <div class="row">
+                                    <div class="" style="width:3000px;margin-left:12px;">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading" style="background-color:silver"><b>Result</b></div>
+                                            <table class="table table-bordered table-condensed">
+                                                <thead class="title">
+                                                    <tr>
+                                                        <th>Icons</th>
+                                                        <th>From System</th>
+                                                        <th>Shipment No.</th>
+                                                        <th>Ship Date</th>
+                                                        <th>Ship To Abbr</th>
+                                                        <th>Tran Type</th>
+                                                        <th>Shipment Line No.</th>
+                                                        <th>Part No.</th>
+                                                        <th>Qty Shipped</th>
+                                                        <th>Est.Port Arrival</th>
+                                                        <th>Est. AVL Date</th>
+                                                        <th>Invoice No.</th>
+                                                        <th>Lod No.</th>
+                                                        <th>Act. Depart Date</th>
+                                                        <th>Act. Port Arrival</th>
+                                                        <th>Act. Do Release Date</th>
+                                                        <th>Act.300 Arrival Date</th>
+                                                        <th>Act. 300 Out Date</th>
+                                                        <th>Act. 305 Arrival Date</th>
+                                                        <th>Tracking No.</th>
+                                                        <th>Way Bill No.</th>
+                                                        <th>Carrier Code</th>
+                                                        <th>Tran Process</th>
+                                                        <th>CT process</th>
+                                                    </tr>
+                                                </thead>
+                                                <tr ng-repeat="sl in shipmentList ">
+                                                    <td style="word-break:keep-all">
+                                                        <ul class="list-inline">
+                                                            <li ng-show="sl.T_ICON1!=null"><img src="~/Images/ico/{{sl.T_ICON1}}" class="img-responsive" alt="Responsive image"></li>
+                                                            <li ng-show="sl.T_ICON2!=null"><img src="~/Images/ico/{{sl.T_ICON2}}" class="img-responsive" alt="Responsive image"></li>
+                                                            <li ng-show="sl.C_ICON1!=null"><img src="~/Images/ico/{{sl.C_ICON1}}" class="img-responsive" alt="Responsive image"></li>
+                                                            <li ng-show="sl.C_ICON2!=null"><img src="~/Images/ico/{{sl.C_ICON2}}" class="img-responsive" alt="Responsive image"></li>
+                                                            <li ng-show="sl.C_ICON3!=null"><img src="~/Images/ico/{{sl.C_ICON3}}" class="img-responsive" alt="Responsive image"></li>
+                                                        </ul>
+                                                    </td>
+                                                    <td>{{sl.FROM_SYSTEM}}</td>
+                                                    <td>{{sl.SHIPMENT_NO}}</td>
+                                                    <td>{{sl.SHIP_DATE | date:'yyyy-MM-dd'}}</td>
+                                                    <td>{{sl.SHIP_TO_ABBR}}</td>
+                                                    <td>{{sl.TRAN_TYPE}}</td>
+                                                    <td>{{sl.SHIPMENT_LINE_NO}}</td>
+                                                    <td>{{sl.PART_NO}}</td>
+                                                    <td>{{sl.QTY_SHIPPED}}</td>
+                                                    <td>{{sl.EST_S10_PORT_ARRIVAL_DATE | date:'yyyy-MM-dd'}}</td>
+                                                    <td>{{sl.EST_S60_AVL_DATE | date:'yyyy-MM-dd'}}</td>
+                                                    <td>{{sl.INVOICE_NO}}</td>
+                                                    <td>{{sl.LODNUM}}</td>
+                                                    <td>{{sl.S00_DISPLAY}}</td>
+                                                    <td ng-style="{backgroundColor:sl.COLOR_10}">{{sl.S10_DISPLAY}}</td>
+                                                    <td>{{sl.S20_DISPLAY}}</td>
+                                                    <td ng-style="{backgroundColor:sl.COLOR_30}">{{sl.S30_DISPLAY}}</td>
+                                                    <td>{{sl.S40_DISPLAY}}</td>
+                                                    <td ng-style="{backgroundColor:sl.COLOR_50}">{{sl.S50_DISPLAY}}</td>
+                                                    <td>{{sl.TRACKING_NO}}</td>
+                                                    <td>{{sl.WILL_BILL_NO}}</td>
+                                                    <td>{{sl.CARRIER_CODE}}</td>
+                                                    <td>{{sl.TRAN_PROCESS_ID}}</td>
+                                                    <td>{{sl.CUSTOM_PROCESS_ID}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
                         <div role="tabpanel" class="tab-pane" id="profile">Purchasing content</div>
                     </div> 
                     </div>
@@ -383,6 +524,16 @@
         $scope.openPDCList = [];
         $scope.openRDCList = [];
 
+        $scope.shipmentList = [];
+        $scope.shipmentBackup = [];
+        //Filter args
+        $scope.fromArg = "All";
+        $scope.toArg = "All";
+        $scope.tranArg = "All";
+        $scope.inNoArg = "";
+        $scope.shipArg = "";
+        $scope.WayNoArg = "";
+
 
         $scope.fuzzySearch = function () {
             if ($scope.partNo == "")
@@ -435,10 +586,64 @@
             getInvSnapShot();
             $('#h-default-basic .progress-bar').attr('data-transitiongoal', 80).progressbar();
             getOpenSnapShot();
+            $('#h-default-basic .progress-bar').attr('data-transitiongoal', 90).progressbar();
+            getShipmentData();
             $('#h-default-basic .progress-bar').attr('data-transitiongoal', 100).progressbar();
-
             setTimeout(hidePB, 3000);
         };
+
+        $scope.submitFilter = function ()
+        {
+            debugger;
+            //if($scope.fromArg=="All"&& $scope.toArg=="All"
+            //    && $scope.tranArg=="All"&& $scope.inNoArg==""
+            //    && $scope.shipArg==""&& $scope.WayNoArg=="")
+            $scope.shipmentList = $scope.shipmentBackup;
+
+            if ($scope.fromArg != "All")
+            {
+                for (var i = $scope.shipmentList.length-1; i >=0; i--) {
+                    if ($scope.shipmentList[i].FROM_SYSTEM != $scope.fromArg)
+                        $scope.shipmentList.splice(i, 1);
+                }
+            }
+
+            if ($scope.toArg != "All") {
+                for (var i = $scope.shipmentList.length - 1; i >= 0; i--) {
+                    if ($scope.shipmentList[i].SHIP_TO_ABBR != $scope.toArg)
+                        $scope.shipmentList.splice(i, 1);
+                }
+            }
+
+            if ($scope.tranArg != "All") {
+                for (var i = $scope.shipmentList.length - 1; i >= 0; i--) {
+                    if ($scope.shipmentList[i].TRAN_TYPE != $scope.tranArg)
+                        $scope.shipmentList.splice(i, 1);
+                }
+            }
+
+            if ($scope.inNoArg != "") {
+                for (var i = $scope.shipmentList.length - 1; i >= 0; i--) {
+                    if ($scope.shipmentList[i].INVOICE_NO != $scope.inNoArg)
+                        $scope.shipmentList.splice(i, 1);
+                }
+            }
+
+            if ($scope.shipArg != "") {
+                for (var i = $scope.shipmentList.length - 1; i >= 0; i--) {
+                    if ($scope.shipmentList[i].SHIPMENT_NO != $scope.shipArg)
+                        $scope.shipmentList.splice(i, 1);
+                }
+            }
+
+            if ($scope.WayNoArg != "") {
+                for (var i = $scope.shipmentList.length - 1; i >= 0; i--) {
+                    if ($scope.shipmentList[i].WILL_BILL_NO != $scope.WayNoArg)
+                        $scope.shipmentList.splice(i, 1);
+                }
+            }
+
+        }
 
         //function part
         function hidePB() {
@@ -572,6 +777,33 @@
                     if (obj.Success) {
                         $scope.openPDCList = obj.Data.pdcList;
                         $scope.openRDCList = obj.Data.rdcList;
+                    }
+                    else
+                        alert(obj.Msg);
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+        function getShipmentData() {
+            if ($scope.selectedPart == "")
+                return;
+
+            $.ajax({
+                url: "/itt/GetShipmentData",
+                data: {
+                    partNo: $scope.selectedPart.PART_NO,
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    //debugger;
+                    if (obj.Success) {
+                        $scope.shipmentList = obj.Data;
+                        $scope.shipmentBackup = obj.Data;
                     }
                     else
                         alert(obj.Msg);
