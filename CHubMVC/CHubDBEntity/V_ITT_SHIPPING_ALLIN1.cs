@@ -16,7 +16,7 @@ namespace CHubDBEntity
     {
         public string FROM_SYSTEM { get; set; }
         public long SHIPMENT_NO { get; set; }
-        public Nullable<long> SHIPMENT_LINE_NO { get; set; }
+        public long SHIPMENT_LINE_NO { get; set; }
         public System.DateTime SHIP_DATE { get; set; }
         public Nullable<decimal> BILL_OF_LADING { get; set; }
         public string SHIP_TO_ABBR { get; set; }

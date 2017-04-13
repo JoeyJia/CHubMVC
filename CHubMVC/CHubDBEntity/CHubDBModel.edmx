@@ -1007,10 +1007,11 @@ warning 6002: The table/view 'GWAPP.V_ITT_SHIPPING_ALLIN1' does not have a prima
             <PropertyRef Name="FROM_SYSTEM" />
             <PropertyRef Name="SHIPMENT_NO" />
             <PropertyRef Name="SHIP_DATE" />
+            <PropertyRef Name="SHIPMENT_LINE_NO" />
           </Key>
           <Property Name="FROM_SYSTEM" Type="varchar2" MaxLength="10" Nullable="false" />
           <Property Name="SHIPMENT_NO" Type="number" Precision="11" Scale="0" Nullable="false" />
-          <Property Name="SHIPMENT_LINE_NO" Type="number" Precision="11" Scale="0" />
+          <Property Name="SHIPMENT_LINE_NO" Type="number" Precision="11" Scale="0" Nullable="false" />
           <Property Name="SHIP_DATE" Type="date" Nullable="false" />
           <Property Name="BILL_OF_LADING" Type="number" Precision="38" Scale="0" />
           <Property Name="SHIP_TO_ABBR" Type="varchar2" MaxLength="10" />
@@ -4537,10 +4538,11 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <PropertyRef Name="FROM_SYSTEM" />
             <PropertyRef Name="SHIPMENT_NO" />
             <PropertyRef Name="SHIP_DATE" />
+            <PropertyRef Name="SHIPMENT_LINE_NO" />
           </Key>
           <Property Name="FROM_SYSTEM" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="SHIPMENT_NO" Type="Int64" Nullable="false" />
-          <Property Name="SHIPMENT_LINE_NO" Type="Int64" />
+          <Property Name="SHIPMENT_LINE_NO" Type="Int64" Nullable="false" />
           <Property Name="SHIP_DATE" Type="DateTime" Nullable="false" />
           <Property Name="BILL_OF_LADING" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="SHIP_TO_ABBR" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
