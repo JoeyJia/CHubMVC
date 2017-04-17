@@ -83,5 +83,8 @@ namespace CHubDBEntity
         public string CP_CATEGORY2 { get; set; }
         public string CP_CATEGORY3 { get; set; }
         public Nullable<decimal> RATIO_SHIP2PORT { get; set; }
+        public Nullable<System.DateTime> AVL_DATE { get; set; }
+        public string SHIP_STATUS { get; set; }
+        public string COLOR_60 { get; set; }
     }
 }

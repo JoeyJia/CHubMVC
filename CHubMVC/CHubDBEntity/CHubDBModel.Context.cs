@@ -96,5 +96,7 @@ namespace CHubDBEntity
         public virtual DbSet<V_OPEN_QTY_PO_PDC> V_OPEN_QTY_PO_PDC { get; set; }
         public virtual DbSet<V_OPEN_QTY_PO_RDC> V_OPEN_QTY_PO_RDC { get; set; }
         public virtual DbSet<V_ITT_SHIPPING_ALLIN1> V_ITT_SHIPPING_ALLIN1 { get; set; }
+        public virtual DbSet<ITT_PO> ITT_PO { get; set; }
+        public virtual DbSet<ITT_SO> ITT_SO { get; set; }
     }
 }

@@ -150,6 +150,9 @@
     <Compile Include="ITT_EASY_WATCHING.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ITT_PO.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ITT_SHIPPING_D.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
@@ -160,6 +163,9 @@
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ITT_SHIPPING_H_SNAP.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ITT_SO.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ITT_TRAN_LOAD.cs">

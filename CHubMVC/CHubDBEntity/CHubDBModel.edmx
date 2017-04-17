@@ -248,6 +248,37 @@ warning 6002: The table/view 'GWAPP.ITT_EASY_WATCHING' does not have a primary k
           <Property Name="COLOR" Type="varchar2" MaxLength="1" />
           <Property Name="CREATE_DATE" Type="date" />
         </EntityType>
+        <EntityType Name="ITT_PO">
+          <Key>
+            <PropertyRef Name="PUR_ORDER_ID" />
+            <PropertyRef Name="PUR_ORDER_LINE_NO" />
+            <PropertyRef Name="PUR_RELEASE_NO" />
+            <PropertyRef Name="WAREHOUSE" />
+          </Key>
+          <Property Name="PUR_ORDER_ID" Type="varchar2" MaxLength="12" Nullable="false" />
+          <Property Name="PUR_ORDER_LINE_NO" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="PUR_RELEASE_NO" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="WAREHOUSE" Type="varchar2" MaxLength="15" Nullable="false" />
+          <Property Name="BUYER_CODE" Type="varchar2" MaxLength="6" />
+          <Property Name="EC_PUR_ORDER_TYPE_CODE" Type="varchar2" MaxLength="6" />
+          <Property Name="EC_PUR_ORDER_TYPE_DESC" Type="varchar2" MaxLength="35" />
+          <Property Name="BUY_FROM_COMPANY" Type="varchar2" MaxLength="12" />
+          <Property Name="COMPANY_NAME" Type="varchar2" MaxLength="35" />
+          <Property Name="PART_NO" Type="varchar2" MaxLength="25" />
+          <Property Name="PUR_ORDER_DESC" Type="varchar2" MaxLength="35" />
+          <Property Name="RELEASE_DATE" Type="date" />
+          <Property Name="RELEASE_QTY" Type="number" Precision="24" Scale="8" />
+          <Property Name="REMAINING_QTY" Type="number" Precision="24" Scale="8" />
+          <Property Name="UOM_CODE" Type="varchar2" MaxLength="4" />
+          <Property Name="REVISED_DUE_DATE" Type="date" />
+          <Property Name="ETA_DATE" Type="date" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="RECEIVING_DATE" Type="date" />
+          <Property Name="LOAD_DATE" Type="date" />
+          <Property Name="BUY_FOR" Type="varchar2" MaxLength="20" />
+          <Property Name="SUPPLIER_TYPE" Type="varchar2" MaxLength="20" />
+          <Property Name="PO_STATUS" Type="varchar2" MaxLength="10" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ITT_SHIPPING_D">
@@ -335,6 +366,30 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           <Property Name="SHIPMENT_NO" Type="number" Precision="11" Scale="0" Nullable="false" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="TRAN_PROCESS_ID" Type="varchar2" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="ITT_SO">
+          <Key>
+            <PropertyRef Name="FROM_SYSTEM" />
+            <PropertyRef Name="ORDER_NO" />
+            <PropertyRef Name="LINE_NO" />
+          </Key>
+          <Property Name="FROM_SYSTEM" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="ORDER_NO" Type="varchar2" MaxLength="12" Nullable="false" />
+          <Property Name="SHIP_TO_ABBR" Type="varchar2" MaxLength="20" />
+          <Property Name="LINE_NO" Type="number" Precision="11" Scale="0" Nullable="false" />
+          <Property Name="PART_NO" Type="varchar2" MaxLength="30" />
+          <Property Name="CUSTOMER_PO_NO" Type="varchar2" MaxLength="25" />
+          <Property Name="CUST_PO_LINE_NO" Type="number" Precision="38" Scale="0" />
+          <Property Name="DUE_DATE_CODE" Type="varchar2" MaxLength="6" />
+          <Property Name="STATUS_CODE" Type="number" Precision="38" Scale="0" />
+          <Property Name="CREATE_DATE" Type="date" />
+          <Property Name="BUY_QTY" Type="number" Precision="38" Scale="0" />
+          <Property Name="RDD" Type="date" />
+          <Property Name="ESD" Type="date" />
+          <Property Name="QTY_RESERVED" Type="number" Precision="38" Scale="0" />
+          <Property Name="QTY_PICKED" Type="number" Precision="38" Scale="0" />
+          <Property Name="QTY_SHIPPED" Type="number" Precision="38" Scale="0" />
+          <Property Name="LOAD_DATE" Type="date" />
         </EntityType>
         <EntityType Name="ITT_TRAN_LOAD">
           <Key>
@@ -1037,6 +1092,8 @@ warning 6002: The table/view 'GWAPP.V_ITT_SHIPPING_ALLIN1' does not have a prima
           <Property Name="S30_BND_ARRIVAL_DATE" Type="date" />
           <Property Name="S40_BND_OUT_DATE" Type="date" />
           <Property Name="S50_NBND_ARRIVAL_DATE" Type="date" />
+          <Property Name="AVL_DATE" Type="date" />
+          <Property Name="SHIP_STATUS" Type="varchar2" MaxLength="8" />
           <Property Name="EST_S10_PORT_ARRIVAL_DATE" Type="date" />
           <Property Name="EST_S60_AVL_DATE" Type="date" />
           <Property Name="S00_DISPLAY" Type="varchar2" MaxLength="62" />
@@ -1059,8 +1116,8 @@ warning 6002: The table/view 'GWAPP.V_ITT_SHIPPING_ALLIN1' does not have a prima
           <Property Name="T_TARGET_S10" Type="number" Precision="38" Scale="0" />
           <Property Name="T_IND_G" Type="number" Precision="10" Scale="2" />
           <Property Name="T_IND_Y" Type="number" Precision="10" Scale="2" />
-          <Property Name="T_ICON1" Type="varchar2" MaxLength="20" />
-          <Property Name="T_ICON2" Type="varchar2" MaxLength="20" />
+          <Property Name="T_ICON1" Type="varchar2" MaxLength="10" />
+          <Property Name="T_ICON2" Type="varchar2" MaxLength="12" />
           <Property Name="C_TARGET_S30" Type="number" Precision="38" Scale="0" />
           <Property Name="C_TARGET_S50" Type="number" Precision="38" Scale="0" />
           <Property Name="C_TARGET_S60" Type="number" Precision="38" Scale="0" />
@@ -1072,6 +1129,7 @@ warning 6002: The table/view 'GWAPP.V_ITT_SHIPPING_ALLIN1' does not have a prima
           <Property Name="COLOR_10" Type="char" MaxLength="1" />
           <Property Name="COLOR_30" Type="char" MaxLength="1" />
           <Property Name="COLOR_50" Type="char" MaxLength="1" />
+          <Property Name="COLOR_60" Type="char" MaxLength="1" />
           <Property Name="TP_CATEGORY1" Type="varchar2" MaxLength="20" />
           <Property Name="TP_CATEGORY2" Type="varchar2" MaxLength="20" />
           <Property Name="CP_CATEGORY1" Type="varchar2" MaxLength="20" />
@@ -1652,7 +1710,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0017646">
+        <Association Name="SYS_C0018343">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1782,9 +1840,11 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="APP_WORKSPACE" EntityType="Self.APP_WORKSPACE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_CUST_LOAD" EntityType="Self.ITT_CUST_LOAD" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_EASY_QUERY_LOG" EntityType="Self.ITT_EASY_QUERY_LOG" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="ITT_PO" EntityType="Self.ITT_PO" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_SHIPPING_D_SNAP" EntityType="Self.ITT_SHIPPING_D_SNAP" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_SHIPPING_H" EntityType="Self.ITT_SHIPPING_H" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_SHIPPING_H_SNAP" EntityType="Self.ITT_SHIPPING_H_SNAP" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="ITT_SO" EntityType="Self.ITT_SO" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_TRAN_LOAD" EntityType="Self.ITT_TRAN_LOAD" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_TRAN_TYPE" EntityType="Self.ITT_TRAN_TYPE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_APPS" EntityType="Self.M_APPS" Schema="GWAPP" store:Type="Tables" />
@@ -2231,6 +2291,8 @@ FROM "GWAPP"."V_CHK_DURATION_MISSING" "V_CHK_DURATION_MISSING"</DefiningQuery>
 "V_ITT_SHIPPING_ALLIN1"."S30_BND_ARRIVAL_DATE" AS "S30_BND_ARRIVAL_DATE", 
 "V_ITT_SHIPPING_ALLIN1"."S40_BND_OUT_DATE" AS "S40_BND_OUT_DATE", 
 "V_ITT_SHIPPING_ALLIN1"."S50_NBND_ARRIVAL_DATE" AS "S50_NBND_ARRIVAL_DATE", 
+"V_ITT_SHIPPING_ALLIN1"."AVL_DATE" AS "AVL_DATE", 
+"V_ITT_SHIPPING_ALLIN1"."SHIP_STATUS" AS "SHIP_STATUS", 
 "V_ITT_SHIPPING_ALLIN1"."EST_S10_PORT_ARRIVAL_DATE" AS "EST_S10_PORT_ARRIVAL_DATE", 
 "V_ITT_SHIPPING_ALLIN1"."EST_S60_AVL_DATE" AS "EST_S60_AVL_DATE", 
 "V_ITT_SHIPPING_ALLIN1"."S00_DISPLAY" AS "S00_DISPLAY", 
@@ -2266,6 +2328,7 @@ FROM "GWAPP"."V_CHK_DURATION_MISSING" "V_CHK_DURATION_MISSING"</DefiningQuery>
 "V_ITT_SHIPPING_ALLIN1"."COLOR_10" AS "COLOR_10", 
 "V_ITT_SHIPPING_ALLIN1"."COLOR_30" AS "COLOR_30", 
 "V_ITT_SHIPPING_ALLIN1"."COLOR_50" AS "COLOR_50", 
+"V_ITT_SHIPPING_ALLIN1"."COLOR_60" AS "COLOR_60", 
 "V_ITT_SHIPPING_ALLIN1"."TP_CATEGORY1" AS "TP_CATEGORY1", 
 "V_ITT_SHIPPING_ALLIN1"."TP_CATEGORY2" AS "TP_CATEGORY2", 
 "V_ITT_SHIPPING_ALLIN1"."CP_CATEGORY1" AS "CP_CATEGORY1", 
@@ -2609,7 +2672,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
             <End Role="M_PART" EntitySet="M_PART" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0017646" Association="Self.SYS_C0017646">
+          <AssociationSet Name="SYS_C0018343" Association="Self.SYS_C0018343">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -3653,6 +3716,8 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySet Name="V_OPEN_QTY_PO_PDC" EntityType="CHubDBModel.V_OPEN_QTY_PO_PDC" />
           <EntitySet Name="V_OPEN_QTY_PO_RDC" EntityType="CHubDBModel.V_OPEN_QTY_PO_RDC" />
           <EntitySet Name="V_ITT_SHIPPING_ALLIN1" EntityType="CHubDBModel.V_ITT_SHIPPING_ALLIN1" />
+          <EntitySet Name="ITT_PO" EntityType="CHubDBModel.ITT_PO" />
+          <EntitySet Name="ITT_SO" EntityType="CHubDBModel.ITT_SO" />
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -4609,6 +4674,64 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="CP_CATEGORY2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="CP_CATEGORY3" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="RATIO_SHIP2PORT" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="AVL_DATE" Type="DateTime" />
+          <Property Name="SHIP_STATUS" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="COLOR_60" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ITT_PO">
+          <Key>
+            <PropertyRef Name="PUR_ORDER_ID" />
+            <PropertyRef Name="PUR_ORDER_LINE_NO" />
+            <PropertyRef Name="PUR_RELEASE_NO" />
+            <PropertyRef Name="WAREHOUSE" />
+          </Key>
+          <Property Name="PUR_ORDER_ID" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="PUR_ORDER_LINE_NO" Type="Int64" Nullable="false" />
+          <Property Name="PUR_RELEASE_NO" Type="Int64" Nullable="false" />
+          <Property Name="WAREHOUSE" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="BUYER_CODE" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="EC_PUR_ORDER_TYPE_CODE" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="EC_PUR_ORDER_TYPE_DESC" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="BUY_FROM_COMPANY" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="COMPANY_NAME" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="PART_NO" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="PUR_ORDER_DESC" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="RELEASE_DATE" Type="DateTime" />
+          <Property Name="RELEASE_QTY" Type="Decimal" Precision="24" Scale="8" />
+          <Property Name="REMAINING_QTY" Type="Decimal" Precision="24" Scale="8" />
+          <Property Name="UOM_CODE" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="REVISED_DUE_DATE" Type="DateTime" />
+          <Property Name="ETA_DATE" Type="DateTime" />
+          <Property Name="CREATE_DATE" Type="DateTime" />
+          <Property Name="RECEIVING_DATE" Type="DateTime" />
+          <Property Name="LOAD_DATE" Type="DateTime" />
+          <Property Name="BUY_FOR" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SUPPLIER_TYPE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PO_STATUS" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ITT_SO">
+          <Key>
+            <PropertyRef Name="FROM_SYSTEM" />
+            <PropertyRef Name="ORDER_NO" />
+            <PropertyRef Name="LINE_NO" />
+          </Key>
+          <Property Name="FROM_SYSTEM" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ORDER_NO" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="SHIP_TO_ABBR" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LINE_NO" Type="Int64" Nullable="false" />
+          <Property Name="PART_NO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CUSTOMER_PO_NO" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="CUST_PO_LINE_NO" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="DUE_DATE_CODE" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="STATUS_CODE" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="CREATE_DATE" Type="DateTime" />
+          <Property Name="BUY_QTY" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="RDD" Type="DateTime" />
+          <Property Name="ESD" Type="DateTime" />
+          <Property Name="QTY_RESERVED" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="QTY_PICKED" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="QTY_SHIPPED" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="LOAD_DATE" Type="DateTime" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -5853,6 +5976,9 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="V_ITT_SHIPPING_ALLIN1">
             <EntityTypeMapping TypeName="CHubDBModel.V_ITT_SHIPPING_ALLIN1">
               <MappingFragment StoreEntitySet="V_ITT_SHIPPING_ALLIN1">
+                <ScalarProperty Name="COLOR_60" ColumnName="COLOR_60" />
+                <ScalarProperty Name="SHIP_STATUS" ColumnName="SHIP_STATUS" />
+                <ScalarProperty Name="AVL_DATE" ColumnName="AVL_DATE" />
                 <ScalarProperty Name="RATIO_SHIP2PORT" ColumnName="RATIO_SHIP2PORT" />
                 <ScalarProperty Name="CP_CATEGORY3" ColumnName="CP_CATEGORY3" />
                 <ScalarProperty Name="CP_CATEGORY2" ColumnName="CP_CATEGORY2" />
@@ -5921,6 +6047,58 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="SHIP_DATE" ColumnName="SHIP_DATE" />
                 <ScalarProperty Name="SHIPMENT_LINE_NO" ColumnName="SHIPMENT_LINE_NO" />
                 <ScalarProperty Name="SHIPMENT_NO" ColumnName="SHIPMENT_NO" />
+                <ScalarProperty Name="FROM_SYSTEM" ColumnName="FROM_SYSTEM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ITT_PO">
+            <EntityTypeMapping TypeName="CHubDBModel.ITT_PO">
+              <MappingFragment StoreEntitySet="ITT_PO">
+                <ScalarProperty Name="PO_STATUS" ColumnName="PO_STATUS" />
+                <ScalarProperty Name="SUPPLIER_TYPE" ColumnName="SUPPLIER_TYPE" />
+                <ScalarProperty Name="BUY_FOR" ColumnName="BUY_FOR" />
+                <ScalarProperty Name="LOAD_DATE" ColumnName="LOAD_DATE" />
+                <ScalarProperty Name="RECEIVING_DATE" ColumnName="RECEIVING_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="ETA_DATE" ColumnName="ETA_DATE" />
+                <ScalarProperty Name="REVISED_DUE_DATE" ColumnName="REVISED_DUE_DATE" />
+                <ScalarProperty Name="UOM_CODE" ColumnName="UOM_CODE" />
+                <ScalarProperty Name="REMAINING_QTY" ColumnName="REMAINING_QTY" />
+                <ScalarProperty Name="RELEASE_QTY" ColumnName="RELEASE_QTY" />
+                <ScalarProperty Name="RELEASE_DATE" ColumnName="RELEASE_DATE" />
+                <ScalarProperty Name="PUR_ORDER_DESC" ColumnName="PUR_ORDER_DESC" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+                <ScalarProperty Name="COMPANY_NAME" ColumnName="COMPANY_NAME" />
+                <ScalarProperty Name="BUY_FROM_COMPANY" ColumnName="BUY_FROM_COMPANY" />
+                <ScalarProperty Name="EC_PUR_ORDER_TYPE_DESC" ColumnName="EC_PUR_ORDER_TYPE_DESC" />
+                <ScalarProperty Name="EC_PUR_ORDER_TYPE_CODE" ColumnName="EC_PUR_ORDER_TYPE_CODE" />
+                <ScalarProperty Name="BUYER_CODE" ColumnName="BUYER_CODE" />
+                <ScalarProperty Name="WAREHOUSE" ColumnName="WAREHOUSE" />
+                <ScalarProperty Name="PUR_RELEASE_NO" ColumnName="PUR_RELEASE_NO" />
+                <ScalarProperty Name="PUR_ORDER_LINE_NO" ColumnName="PUR_ORDER_LINE_NO" />
+                <ScalarProperty Name="PUR_ORDER_ID" ColumnName="PUR_ORDER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ITT_SO">
+            <EntityTypeMapping TypeName="CHubDBModel.ITT_SO">
+              <MappingFragment StoreEntitySet="ITT_SO">
+                <ScalarProperty Name="LOAD_DATE" ColumnName="LOAD_DATE" />
+                <ScalarProperty Name="QTY_SHIPPED" ColumnName="QTY_SHIPPED" />
+                <ScalarProperty Name="QTY_PICKED" ColumnName="QTY_PICKED" />
+                <ScalarProperty Name="QTY_RESERVED" ColumnName="QTY_RESERVED" />
+                <ScalarProperty Name="ESD" ColumnName="ESD" />
+                <ScalarProperty Name="RDD" ColumnName="RDD" />
+                <ScalarProperty Name="BUY_QTY" ColumnName="BUY_QTY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="DUE_DATE_CODE" ColumnName="DUE_DATE_CODE" />
+                <ScalarProperty Name="CUST_PO_LINE_NO" ColumnName="CUST_PO_LINE_NO" />
+                <ScalarProperty Name="CUSTOMER_PO_NO" ColumnName="CUSTOMER_PO_NO" />
+                <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
+                <ScalarProperty Name="LINE_NO" ColumnName="LINE_NO" />
+                <ScalarProperty Name="SHIP_TO_ABBR" ColumnName="SHIP_TO_ABBR" />
+                <ScalarProperty Name="ORDER_NO" ColumnName="ORDER_NO" />
                 <ScalarProperty Name="FROM_SYSTEM" ColumnName="FROM_SYSTEM" />
               </MappingFragment>
             </EntityTypeMapping>
