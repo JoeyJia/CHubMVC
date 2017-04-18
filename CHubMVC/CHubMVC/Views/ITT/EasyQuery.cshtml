@@ -543,47 +543,41 @@
 
                             <!--result part-->
                             <div class="row">
-                                <div class="" style="width:3000px;margin-left:12px;">
+                                <div class="" style="width:2000px;margin-left:12px;">
                                     <div class="panel panel-default">
                                         <div class="panel-heading" style="background-color:silver"><b>Result</b></div>
                                         <table class="table table-bordered table-striped table-condensed">
                                             <thead class="title">
                                                 <tr>
                                                     <th>Index</th>
-                                                    <th>Icons</th>
-                                                    <th>From System</th>
-                                                    <th>Act. Port Arrival</th>
-                                                    <th>Act.300 Arrival Date</th>
-                                                    <th>Act. 305 Arrival Date</th>
-                                                    <th>Shipment No.</th>
-                                                    <th>Ship Date</th>
-                                                    <th>Ship To Abbr</th>
-                                                    <th>Tran Type</th>
-                                                    <th>Shipment Line No.</th>
-                                                    <th>Part No.</th>
-                                                    <th>Qty Shipped</th>
-                                                    <th>Est.Port Arrival</th>
-                                                    <th>Est. AVL Date</th>
-                                                    <th>Invoice No.</th>
-                                                    <th>Lod No.</th>
-                                                    <th>Act. Depart Date</th>
-
-                                                    <th>Act. Do Release Date</th>
-
-                                                    <th>Act. 300 Out Date</th>
-
-                                                    <th>Tracking No.</th>
-                                                    <th>Way Bill No.</th>
-                                                    <th>Carrier Code</th>
-                                                    <th>Tran Process</th>
-                                                    <th>CT process</th>
+                                                    <th>Buy For</th>
+                                                    <th>PO Number</th>
+                                                    <th>WareHouse</th>
+                                                    <th>Buy From</th>
+                                                    <th>Company Name</th>
+                                                    <th>PO Type</th>
+                                                    <th>Buyer Code</th>
+                                                    <th>Supplier Type</th>
+                                                    
                                                 </tr>
                                             </thead>
-                                            @*
-                                            <tr ng-repeat="sl in shipmentList ">
+                                            
 
-                                                <td>{{sl.CUSTOM_PROCESS_ID}}</td>
-                                            </tr>*@
+                                            <tr ng-repeat="p1 in poLevel1List ">
+                                                <td>{{$index+1}}</td>
+                                                <td>{{p1.BUY_FOR}}</td>
+                                                <td>{{p1.PUR_ORDER_ID}}</td>
+                                                <td>{{p1.WAREHOUSE}}</td>
+                                                <td>{{p1.BUY_FROM_COMPANY}}</td>
+                                                <td>{{p1.COMPANY_NAME}}</td>
+                                                <td>{{p1.EC_PUR_ORDER_TYPE_CODE}}</td>
+                                                <td>{{p1.BUYER_CODE}}</td>
+                                                <td>{{p1.SUPPLIER_TYPE}}</td>
+                                                
+                                            </tr>
+                                            <tr>
+                                                <td> this is some content<td>
+                                            <tr>
                                         </table>
                                     </div>
                                 </div>
@@ -687,6 +681,13 @@
         $scope.shipArg = "";
         $scope.WayNoArg = "";
 
+        //PO part
+        $scope.poLevel1List = [];
+        $scope.poLevel1Backup = [];
+
+        $scope.poLevel2List = [];
+
+
 
         $scope.fuzzySearch = function () {
             if ($scope.partNo == "")
@@ -741,6 +742,7 @@
             getOpenSnapShot();
             $('#h-default-basic .progress-bar').attr('data-transitiongoal', 90).progressbar();
             getShipmentData();
+            getPOLevel1Data();
             $('#h-default-basic .progress-bar').attr('data-transitiongoal', 100).progressbar();
             setTimeout(hidePB, 3000);
         };
@@ -957,6 +959,63 @@
                     if (obj.Success) {
                         $scope.shipmentList = obj.Data;
                         $scope.shipmentBackup = obj.Data;
+                    }
+                    else
+                        alert(obj.Msg);
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+        //Po part function
+
+        function getPOLevel1Data() {
+            if ($scope.selectedPart == "")
+                return;
+
+            $.ajax({
+                url: "/itt/GetPOLevel1Data",
+                data: {
+                    partNo: $scope.selectedPart.PART_NO,
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    //debugger;
+                    if (obj.Success) {
+                        $scope.poLevel1List = obj.Data;
+                        $scope.poLevel1Backup = obj.Data;
+                    }
+                    else
+                        alert(obj.Msg);
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+        function getPOLevel2Data() {
+            if ($scope.selectedPart == "")
+                return;
+
+            $.ajax({
+                url: "/itt/GetPOLevel2Data",
+                data: {
+                    partNo: $scope.selectedPart.PART_NO,
+                    poNo:'11'
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    //debugger;
+                    if (obj.Success) {
+                        $scope.poLevel2List = obj.Data;
+                        
                     }
                     else
                         alert(obj.Msg);

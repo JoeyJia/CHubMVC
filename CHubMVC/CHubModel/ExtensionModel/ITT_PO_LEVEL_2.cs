@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CHubModel.ExtensionModel
 {
-    class ITT_PO_LEVEL_2
+    public class ITT_PO_LEVEL_2
     {
         public decimal PUR_ORDER_LINE_NO { get; set; }
 

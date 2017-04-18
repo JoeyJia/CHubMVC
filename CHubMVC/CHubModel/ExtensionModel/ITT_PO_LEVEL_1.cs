@@ -21,5 +21,7 @@ namespace CHubModel.ExtensionModel
         public string EC_PUR_ORDER_TYPE_CODE { get; set; }
 
         public string BUYER_CODE { get; set; }
+
+        public string SUPPLIER_TYPE { get; set; }
     }
 }
