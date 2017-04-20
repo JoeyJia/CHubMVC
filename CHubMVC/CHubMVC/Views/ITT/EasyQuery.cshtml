@@ -545,39 +545,11 @@
                             <div class="row">
                                 <div class="" style="width:2000px;margin-left:12px;">
                                     <div class="panel panel-default">
-                                        <div class="panel-heading" style="background-color:silver"><b>Result</b></div>
-                                        <table class="table table-bordered table-striped table-condensed">
-                                            <thead class="title">
-                                                <tr>
-                                                    <th>Index</th>
-                                                    <th>Buy For</th>
-                                                    <th>PO Number</th>
-                                                    <th>WareHouse</th>
-                                                    <th>Buy From</th>
-                                                    <th>Company Name</th>
-                                                    <th>PO Type</th>
-                                                    <th>Buyer Code</th>
-                                                    <th>Supplier Type</th>
-                                                    
-                                                </tr>
-                                            </thead>
+                                        <div class="panel-heading" style="background-color:silver"><b>Po Header</b></div>
+                                        <table id="tablePO" class="table table-bordered table-condensed"
+                                               data-detail-view="true"
+                                               undefinedText="''" >
                                             
-
-                                            <tr ng-repeat="p1 in poLevel1List ">
-                                                <td>{{$index+1}}</td>
-                                                <td>{{p1.BUY_FOR}}</td>
-                                                <td>{{p1.PUR_ORDER_ID}}</td>
-                                                <td>{{p1.WAREHOUSE}}</td>
-                                                <td>{{p1.BUY_FROM_COMPANY}}</td>
-                                                <td>{{p1.COMPANY_NAME}}</td>
-                                                <td>{{p1.EC_PUR_ORDER_TYPE_CODE}}</td>
-                                                <td>{{p1.BUYER_CODE}}</td>
-                                                <td>{{p1.SUPPLIER_TYPE}}</td>
-                                                
-                                            </tr>
-                                            <tr>
-                                                <td> this is some content<td>
-                                            <tr>
                                         </table>
                                     </div>
                                 </div>
@@ -687,6 +659,10 @@
 
         $scope.poLevel2List = [];
 
+        $scope.soLevel3List = [];
+
+        $scope.v1Level4List = [];
+
 
 
         $scope.fuzzySearch = function () {
@@ -743,6 +719,7 @@
             $('#h-default-basic .progress-bar').attr('data-transitiongoal', 90).progressbar();
             getShipmentData();
             getPOLevel1Data();
+            initPoTab();
             $('#h-default-basic .progress-bar').attr('data-transitiongoal', 100).progressbar();
             setTimeout(hidePB, 3000);
         };
@@ -999,7 +976,7 @@
             });
         };
 
-        function getPOLevel2Data() {
+        function getPOLevel2Data(poNo) {
             if ($scope.selectedPart == "")
                 return;
 
@@ -1007,18 +984,22 @@
                 url: "/itt/GetPOLevel2Data",
                 data: {
                     partNo: $scope.selectedPart.PART_NO,
-                    poNo:'11'
+                    poNo:poNo
                 },
                 type: "post",
                 async: false,
                 success: function (obj) {
                     //debugger;
                     if (obj.Success) {
+                        //debugger;
                         $scope.poLevel2List = obj.Data;
-                        
+                        return obj.Data.slice(0);
+
                     }
-                    else
+                    else {
                         alert(obj.Msg);
+                        return [];
+                    }
 
                 },
                 error: function (obj) {
@@ -1026,6 +1007,392 @@
                 }
             });
         };
+
+        function getPOLevel3Data(poNo,poLineNo) {
+            if ($scope.selectedPart == "")
+                return;
+            //debugger;
+            $.ajax({
+                url: "/itt/GetPOLevel3Data",
+                data: {
+                    partNo: $scope.selectedPart.PART_NO,
+                    poNo: poNo,
+                    poLineNo: poLineNo
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    //debugger;
+                    if (obj.Success) {
+                        //debugger;
+                        $scope.soLevel3List = obj.Data;
+                        return obj.Data.slice(0);
+
+                    }
+                    else {
+                        alert(obj.Msg);
+                        return [];
+                    }
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+        function getPOLevel4Data(orderNo, lineNo) {
+            if ($scope.selectedPart == "")
+                return;
+            //debugger;
+            $.ajax({
+                url: "/itt/GetPOLevel4Data",
+                data: {
+                    partNo: $scope.selectedPart.PART_NO,
+                    orderNo: orderNo,
+                    lineNo: lineNo
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    //debugger;
+                    if (obj.Success) {
+                        //debugger;
+                        $scope.sv1Level4List = obj.Data;
+                        return obj.Data.slice(0);
+
+                    }
+                    else {
+                        alert(obj.Msg);
+                        return [];
+                    }
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+
+        function initPoTab() {
+            var $table = $('#tablePO');
+            //debugger;
+                buildTable($table);
+        };
+
+        function expandlevel4($detail, pRow, index) {
+            //debugger;
+            $t = $detail.html('<div class="panel panel-default" style="margin-left:25px"><div class="panel-heading" style="background-color:silver"><b> shipment ( interPDC only)</b></div><table></table></div>').find('table');
+            //$t.attr("class", "table table-bordered table-condensed");
+            $t.attr("bgcolor", "#FAFAD2");
+            //$t.attr("width", "450px");
+            var columns = [];
+            var data = [];
+            columns.push({
+                field: 'FROM_SYSTEM',
+                title: 'From'
+            });
+            columns.push({
+                field: 'SHIPMENT_NO',
+                title: 'Shipment No'
+
+            });
+            columns.push({
+                field: 'SHIP_DATE',
+                title: 'Ship Date',
+                formatter: dateFormatter
+
+            });
+            columns.push({
+                field: 'SHIP_TO_ABBR',
+                title: 'Abbr'
+            });
+            columns.push({
+                field: 'TRAN_TYPE',
+                title: 'Tran Type'
+            });
+            columns.push({
+                field: 'SHIPMENT_LINE_NO',
+                title: 'Shipment Line No'
+            });
+            columns.push({
+                field: 'PART_NO',
+                title: 'Part No'
+            });
+            columns.push({
+                field: 'QTY_SHIPPED',
+                title: 'Qty Shipped'
+            });
+            columns.push({
+                field: 'EST_S10_PORT_ARRVIAL_DATE',
+                title: 'Est. Port Arrival',
+                formatter: dateFormatter
+            });
+            columns.push({
+                field: 'EST_S60_AVL_DATE',
+                title: 'Est. AVL Date',
+                formatter: dateFormatter
+            });
+            columns.push({
+                field: 'INVOICE_NO',
+                title: 'Invoice no'
+            });
+            columns.push({
+                field: 'LODNUM',
+                title: 'Lod Number'
+            });
+            columns.push({
+                field: 'S00_DISPLAY',
+                title: 'Act. Depart Date',
+                formatter: dateFormatter
+            });
+            columns.push({
+                field: 'S10_DISPLAY',
+                title: 'Act. Port Arrival',
+                formatter: dateFormatter
+            });
+            columns.push({
+                field: 'S20_DISPLAY',
+                title: 'Act. Do relase date',
+                formatter: dateFormatter
+            });
+            columns.push({
+                field: 'S30_DISPLAY',
+                title: 'Act. 300 arrival date',
+                formatter: dateFormatter
+            });
+            columns.push({
+                field: 'S40_DISPLAY',
+                title: 'Act. 300 out date',
+                formatter: dateFormatter
+            });
+            columns.push({
+                field: 'S50_DISPLAY',
+                title: 'Act. 305 arrival date',
+                formatter: dateFormatter
+            });
+            columns.push({
+                field: 'TRACKING_NO',
+                title: 'Tracking No',
+            });
+            columns.push({
+                field: 'WILL_BILL_NO',
+                title: 'Way Bill No'
+            });
+            columns.push({
+                field: 'CARRIER_CODE',
+                title: 'Carrier code'
+            });
+            columns.push({
+                field: 'TRAN_PROCESS_ID',
+                title: 'Tran Process'
+            });
+            columns.push({
+                field: 'CUSTOM_PROCESS_ID',
+                title: 'CT Process'
+            });
+            
+            var level4Data = [];
+            //debugger;
+            level4Data = getPOLevel4Data(pRow.ORDER_NO, pRow.LINE_NO);
+
+            $t.bootstrapTable({
+                columns: columns,
+                data: $scope.sv1Level4List.slice(0),
+                detailView: false
+                
+            });
+            $t.bootstrapTable('hideLoading');
+        }
+
+        function expandlevel3($detail, pRow, index,poNo)
+        {
+            //debugger;
+            //var poNo = row.PUR_ORDER_ID;
+            $t = $detail.html('<div class="panel panel-default" style="margin-left:25px"><div class="panel-heading" style="background-color:silver"><b>InterPDC SO</b></div><table></table></div>').find('table');
+            //$t.attr("class", "table table-bordered table-condensed");
+            $t.attr("bgcolor", "#FDF5E6");
+            //$t.attr("width", "450px");
+            var columns = [];
+            var data = [];
+            columns.push({
+                field: 'FROM_SYSTEM',
+                title: 'from interPDC'
+
+            });
+            columns.push({
+                field: 'ORDER_NO',
+                title: 'Order No'
+
+            });
+            columns.push({
+                field: 'LINE_NO',
+                title: 'Order Line No'
+            });
+            columns.push({
+                field: 'SHIP_TO_ABBR',
+                title: 'Ship to Abbr'
+            });
+            columns.push({
+                field: 'DUE_DATE_CODE',
+                title: 'Order Type'
+            });
+            columns.push({
+                field: 'BUY_QTY',
+                title: 'Buy Qty'
+            });
+            columns.push({
+                field: 'QTY_RESERVED',
+                title: 'QTY Reserved'
+            });
+            columns.push({
+                field: 'QTY_PICKED',
+                title: 'QTY Picked'
+            });
+            columns.push({
+                field: 'QTY_SHIPPED',
+                title: 'Qty Shipped'
+            });
+            columns.push({
+                field: 'RDD',
+                title: 'RDD',
+                formatter:dateFormatter
+            });
+            columns.push({
+                field: 'ESD',
+                title: 'ESD',
+                formatter: dateFormatter
+                
+            });
+            var level3Data =[];
+            //debugger;
+            level3Data = getPOLevel3Data(poNo, pRow.PUR_ORDER_LINE_NO);
+
+            $t.bootstrapTable({
+                columns: columns,
+                data: $scope.soLevel3List.slice(0),
+                detailView: $scope.soLevel3List.length > 0,
+                onExpandRow: function (index, row, $detail) {
+                    expandlevel4($detail, row, index);
+                }
+            });
+            $t.bootstrapTable('hideLoading');
+        }
+
+        function expandlevel2($detail,pRow, index) {
+            //debugger;
+            var poNo = pRow.PUR_ORDER_ID;
+            $t = $detail.html('<div class="panel panel-default" style="margin-left:25px"><div class="panel-heading" style="background-color:silver"><b>PO Lines</b></div><table></table></div>').find('table');
+            //$t.attr("class", "table table-bordered table-condensed");
+            $t.attr("margin-left", "200px");
+            $detail.attr("bgcolor", "#FAFAD2");
+            $detail.attr("margin-left", "200px");
+            //debugger;
+            var columns = [];
+            var data = [];
+            columns.push({
+                field: 'PUR_ORDER_LINE_NO',
+                title: 'Line No',
+                width: '100'
+
+            });
+            columns.push({
+                field: 'PART_NO',
+                title: 'Part No',
+                width: '100'
+
+            });
+            columns.push({
+                field: 'PUR_ORDER_DESC',
+                title: 'Description',
+                width: '100'
+
+            });
+            columns.push({
+                field: 'UOM_CODE',
+                title: 'UOM',
+                width: '100'
+            });
+            columns.push({
+                field: '',
+                title: '',
+                width: '1550'
+            });
+            var level2Data =[];
+            //debugger;
+            level2Data = getPOLevel2Data(pRow.PUR_ORDER_ID);
+
+            $t.bootstrapTable({
+                columns: columns,
+                data: $scope.poLevel2List.slice(0),
+                detailView: $scope.poLevel2List.length > 0,
+                onExpandRow: function (index, row, $detail) {
+                    expandlevel3($detail, row, index, poNo);
+                }
+            });
+            $t.bootstrapTable('hideLoading');
+
+        };
+
+
+        function buildTable($t) {
+            var columns = [];
+            var data = [];
+            columns.push({
+                field: 'BUY_FOR',
+                title: 'Buy For'
+            });
+            columns.push({
+                field: 'PUR_ORDER_ID',
+                title: 'PO Number'
+            });
+            columns.push({
+                field: 'WAREHOUSE',
+                title: 'WareHouse'
+            });
+            columns.push({
+                field: 'BUY_FROM_COMPANY',
+                title: 'Buy From'
+            });
+            columns.push({
+                field: 'COMPANY_NAME',
+                title: 'Company Name'
+            });
+            columns.push({
+                field: 'EC_PUR_ORDER_TYPE_CODE',
+                title: 'PO Type'
+            });
+            columns.push({
+                field: 'BUYER_CODE',
+                title: 'Buyer Code'
+            });
+            columns.push({
+                field: 'SUPPLIER_TYPE',
+                title: 'Supplier Type'
+            });
+
+            $t.bootstrapTable({
+                columns: columns,
+                data: $scope.poLevel1List,
+                detailView: $scope.poLevel1List.length > 0,
+                onExpandRow: function (index, row, $detail) {
+                    expandlevel2($detail, row, index);
+                }
+            });
+            $t.bootstrapTable('hideLoading');
+        };
+
+        //Formatter
+        function dateFormatter(value,row,index) {
+            //debugger;
+            if (value == undefined)
+                return "";
+            if (value.length < 10)
+                return value;
+            return value.substr(0, 10);
+        }
+
 
     });
 

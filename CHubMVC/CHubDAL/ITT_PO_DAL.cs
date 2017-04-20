@@ -33,7 +33,7 @@ namespace CHubDAL
                  BUYER_CODE = p.BUYER_CODE,
                  SUPPLIER_TYPE = p.SUPPLIER_TYPE
                 }
-                ).Distinct().ToList();
+                ).Distinct().OrderByDescending(a=>a.PUR_ORDER_ID).ToList();
             return result;
         }
 

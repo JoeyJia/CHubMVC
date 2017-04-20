@@ -15,6 +15,12 @@ namespace CHubDAL
         public ITT_SO_DAL(CHubEntities db)
             : base(db) { }
 
+        public List<ITT_SO> GetLevel3Data(string partNo, string poNo, decimal poLineNo)
+        {
+            return db.ITT_SO.Where(a => a.PART_NO == partNo 
+            && a.CUSTOMER_PO_NO == poNo 
+            && a.CUST_PO_LINE_NO == poLineNo).ToList();
+        }
 
     }
 }

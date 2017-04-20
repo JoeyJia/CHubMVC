@@ -770,6 +770,42 @@ namespace CHubMVC.Controllers
             }
         }
 
+        [HttpPost]
+        [Authorize]
+        public ActionResult GetPOLevel3Data(string partNo, string poNo,decimal poLineNo)
+        {
+            try
+            {
+                ITT_SO_BLL soBLL = new ITT_SO_BLL();
+                List<ITT_SO> result = soBLL.GetLevel3Data(partNo, poNo,poLineNo);
+
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("GetPOLevel2Data", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult GetPOLevel4Data(string partNo, string orderNo, long lineNo)
+        {
+            try
+            {
+                V_ITT_SHIPPING_ALLIN1_BLL v1BLL = new V_ITT_SHIPPING_ALLIN1_BLL();
+                List<V_ITT_SHIPPING_ALLIN1> result = v1BLL.GetLevel4Data(partNo, orderNo, lineNo);
+
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("GetPOLevel2Data", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
         #region private function part
 
         private string SaveTranLoadAction(ITT_TRAN_LOAD model)

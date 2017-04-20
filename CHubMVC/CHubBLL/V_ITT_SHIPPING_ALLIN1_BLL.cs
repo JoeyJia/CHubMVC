@@ -26,5 +26,10 @@ namespace CHubBLL
             return dal.GetShipmentData(partNo);
         }
 
+        public List<V_ITT_SHIPPING_ALLIN1> GetLevel4Data(string partNo, string orderNo, long lineNo)
+        {
+            return dal.GetLevel4Data(partNo, orderNo, lineNo);
+        }
+
     }
 }

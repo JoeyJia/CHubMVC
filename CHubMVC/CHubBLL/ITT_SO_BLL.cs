@@ -21,5 +21,10 @@ namespace CHubBLL
             dal = new ITT_SO_DAL(db);
         }
 
+        public List<ITT_SO> GetLevel3Data(string partNo, string poNo, decimal poLineNo)
+        {
+            return dal.GetLevel3Data(partNo, poNo, poLineNo);
+        }
+
     }
 }
