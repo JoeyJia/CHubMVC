@@ -372,19 +372,23 @@
                                                 <tr>
                                                     <th>Index</th>
                                                     <th>Icons</th>
-                                                    <th>From System</th>
+                                                    <th>Ship Fromth>
                                                     <th>Act. Port Arrival</th>
                                                     <th>Act.300 Arrival Date</th>
                                                     <th>Act. 305 Arrival Date</th>
+                                                    <th>Est.Port Arrival</th>
+                                                    <th>Est. AVL Date</th>
+
+                                                    <th>Part No.</th>
+                                                    <th>Qty Shipped</th>
+
                                                     <th>Shipment No.</th>
                                                     <th>Ship Date</th>
                                                     <th>Ship To Abbr</th>
                                                     <th>Tran Type</th>
                                                     <th>Shipment Line No.</th>
-                                                    <th>Part No.</th>
-                                                    <th>Qty Shipped</th>
-                                                    <th>Est.Port Arrival</th>
-                                                    <th>Est. AVL Date</th>
+                                                    
+                                                    
                                                     <th>Invoice No.</th>
                                                     <th>Lod No.</th>
                                                     <th>Act. Depart Date</th>
@@ -415,16 +419,19 @@
                                                 <td ng-style="{backgroundColor:sl.COLOR_10}">{{sl.S10_DISPLAY | date:'yyyy-MM-dd'}}</td>
                                                 <td ng-style="{backgroundColor:sl.COLOR_30}">{{sl.S30_DISPLAY | date:'yyyy-MM-dd'}}</td>
                                                 <td ng-style="{backgroundColor:sl.COLOR_50}">{{sl.S50_DISPLAY }}</td>
+                                                <td>{{sl.EST_S10_PORT_ARRIVAL_DATE | date:'yyyy-MM-dd'}}</td>
+                                                <td>{{sl.EST_S60_AVL_DATE | date:'yyyy-MM-dd'}}</td>
+
+                                                <td>{{sl.PART_NO}}</td>
+                                                <td>{{sl.QTY_SHIPPED}}</td>
 
                                                 <td>{{sl.SHIPMENT_NO}}</td>
                                                 <td>{{sl.SHIP_DATE | date:'yyyy-MM-dd'}}</td>
                                                 <td>{{sl.SHIP_TO_ABBR}}</td>
                                                 <td>{{sl.TRAN_TYPE}}</td>
                                                 <td>{{sl.SHIPMENT_LINE_NO}}</td>
-                                                <td>{{sl.PART_NO}}</td>
-                                                <td>{{sl.QTY_SHIPPED}}</td>
-                                                <td>{{sl.EST_S10_PORT_ARRIVAL_DATE | date:'yyyy-MM-dd'}}</td>
-                                                <td>{{sl.EST_S60_AVL_DATE | date:'yyyy-MM-dd'}}</td>
+
+                                                
                                                 <td>{{sl.INVOICE_NO}}</td>
                                                 <td>{{sl.LODNUM}}</td>
                                                 <td>{{sl.S00_DISPLAY | date:'yyyy-MM-dd'}}</td>
@@ -543,10 +550,10 @@
 
                             <!--result part-->
                             <div class="row">
-                                <div class="" style="width:2000px;margin-left:12px;">
+                                <div class="" style="width:3000px;margin-left:12px;">
                                     <div class="panel panel-default">
                                         <div class="panel-heading" style="background-color:silver"><b>Po Header</b></div>
-                                        <table id="tablePO" class="table table-bordered table-condensed"
+                                        <table id="tablePO" class="table  table-condensed"
                                                data-detail-view="true"
                                                undefinedText="''" >
                                             
@@ -1090,6 +1097,12 @@
             var columns = [];
             var data = [];
             columns.push({
+                field: '',
+                title: 'ICO',
+                formatter: icoFormatter
+            });
+
+            columns.push({
                 field: 'FROM_SYSTEM',
                 title: 'From'
             });
@@ -1265,6 +1278,11 @@
                 formatter: dateFormatter
                 
             });
+            columns.push({
+                field: '',
+                title: '',
+                width: '1000'
+            });
             var level3Data =[];
             //debugger;
             level3Data = getPOLevel3Data(poNo, pRow.PUR_ORDER_LINE_NO);
@@ -1317,7 +1335,7 @@
             columns.push({
                 field: '',
                 title: '',
-                width: '1550'
+                width: '2550'
             });
             var level2Data =[];
             //debugger;
@@ -1371,6 +1389,11 @@
                 field: 'SUPPLIER_TYPE',
                 title: 'Supplier Type'
             });
+            columns.push({
+                field: '',
+                title: '',
+                width: '1000'
+            });
 
             $t.bootstrapTable({
                 columns: columns,
@@ -1391,6 +1414,24 @@
             if (value.length < 10)
                 return value;
             return value.substr(0, 10);
+        }
+
+        function icoFormatter(value, row, index) {
+            var result = [];
+            result.push('<ul class="list-inline" style="margin-bottom:-8px;">');
+            if (row.T_ICON1 != null)
+                result.push('<li ><img src="/Images/ico/' + row.T_ICON1 + '" class="img-responsive" alt="Responsive image"></li>');
+            if (row.T_ICON2 != null)
+                result.push('<li ><img src="/Images/ico/' + row.T_ICON2 + '" class="img-responsive" alt="Responsive image"></li>');
+            if (row.C_ICON1 != null)
+                result.push('<li ><img src="/Images/ico/' + row.C_ICON1 + '" class="img-responsive" alt="Responsive image"></li>');
+            if (row.C_ICON2 != null)
+                result.push('<li ><img src="/Images/ico/' + row.C_ICON2 + '" class="img-responsive" alt="Responsive image"></li>');
+            if (row.C_ICON3 != null)
+                result.push('<li ><img src="/Images/ico/' + row.C_ICON3 + '" class="img-responsive" alt="Responsive image"></li>');
+
+            result.push('</ul>');
+            return result.join('');
         }
 
 
