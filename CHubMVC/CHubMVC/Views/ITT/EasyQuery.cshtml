@@ -372,12 +372,14 @@
                                                 <tr>
                                                     <th>Index</th>
                                                     <th>Icons</th>
-                                                    <th>Ship Fromth>
+                                                    <th>Ship From</th>
+                                                    <th>Status</th>
                                                     <th>Act. Port Arrival</th>
                                                     <th>Act.300 Arrival Date</th>
                                                     <th>Act. 305 Arrival Date</th>
                                                     <th>Est.Port Arrival</th>
                                                     <th>Est. AVL Date</th>
+                                                    <th>AVL Date</th>
 
                                                     <th>Part No.</th>
                                                     <th>Qty Shipped</th>
@@ -416,11 +418,13 @@
                                                     </ul>
                                                 </td>
                                                 <td>{{sl.FROM_SYSTEM}}</td>
+                                                <td>{{sl.SHIP_STATUS}}</td>
                                                 <td ng-style="{backgroundColor:sl.COLOR_10}">{{sl.S10_DISPLAY | date:'yyyy-MM-dd'}}</td>
                                                 <td ng-style="{backgroundColor:sl.COLOR_30}">{{sl.S30_DISPLAY | date:'yyyy-MM-dd'}}</td>
                                                 <td ng-style="{backgroundColor:sl.COLOR_50}">{{sl.S50_DISPLAY }}</td>
                                                 <td>{{sl.EST_S10_PORT_ARRIVAL_DATE | date:'yyyy-MM-dd'}}</td>
                                                 <td>{{sl.EST_S60_AVL_DATE | date:'yyyy-MM-dd'}}</td>
+                                                <td ng-style="{backgroundColor:sl.COLOR_60}">{{sl.AVL_DATE | date:'yyyy-MM-dd'}}</td>
 
                                                 <td>{{sl.PART_NO}}</td>
                                                 <td>{{sl.QTY_SHIPPED}}</td>
@@ -1104,8 +1108,55 @@
 
             columns.push({
                 field: 'FROM_SYSTEM',
-                title: 'From'
+                title: 'Ship From'
             });
+            columns.push({
+                field: 'SHIP_STATUS',
+                title: 'Status'
+            });
+            columns.push({
+                field: 'S10_DISPLAY',
+                title: 'Act. Port Arrival',
+                formatter: dateFormatter,
+                cellStyle: getCellStyle
+            });
+            columns.push({
+                field: 'S30_DISPLAY',
+                title: 'Act. 300 arrival date',
+                formatter: dateFormatter,
+                cellStyle: getCellStyle
+            });
+            columns.push({
+                field: 'S50_DISPLAY',
+                title: 'Act. 305 arrival date',
+                formatter: dateFormatter,
+                cellStyle: getCellStyle
+            });
+            columns.push({
+                field: 'EST_S10_PORT_ARRVIAL_DATE',
+                title: 'Est. Port Arrival',
+                formatter: dateFormatter
+            });
+            columns.push({
+                field: 'EST_S60_AVL_DATE',
+                title: 'Est. AVL Date',
+                formatter: dateFormatter
+            });
+            columns.push({
+                field: 'AVL_DATE',
+                title: 'AVL Date',
+                formatter: dateFormatter,
+                cellStyle: getCellStyle
+            });
+            columns.push({
+                field: 'PART_NO',
+                title: 'Part No'
+            });
+            columns.push({
+                field: 'QTY_SHIPPED',
+                title: 'Qty Shipped'
+            });
+
             columns.push({
                 field: 'SHIPMENT_NO',
                 title: 'Shipment No'
@@ -1130,24 +1181,6 @@
                 title: 'Shipment Line No'
             });
             columns.push({
-                field: 'PART_NO',
-                title: 'Part No'
-            });
-            columns.push({
-                field: 'QTY_SHIPPED',
-                title: 'Qty Shipped'
-            });
-            columns.push({
-                field: 'EST_S10_PORT_ARRVIAL_DATE',
-                title: 'Est. Port Arrival',
-                formatter: dateFormatter
-            });
-            columns.push({
-                field: 'EST_S60_AVL_DATE',
-                title: 'Est. AVL Date',
-                formatter: dateFormatter
-            });
-            columns.push({
                 field: 'INVOICE_NO',
                 title: 'Invoice no'
             });
@@ -1160,31 +1193,19 @@
                 title: 'Act. Depart Date',
                 formatter: dateFormatter
             });
-            columns.push({
-                field: 'S10_DISPLAY',
-                title: 'Act. Port Arrival',
-                formatter: dateFormatter
-            });
+            
             columns.push({
                 field: 'S20_DISPLAY',
                 title: 'Act. Do relase date',
                 formatter: dateFormatter
             });
-            columns.push({
-                field: 'S30_DISPLAY',
-                title: 'Act. 300 arrival date',
-                formatter: dateFormatter
-            });
+           
             columns.push({
                 field: 'S40_DISPLAY',
                 title: 'Act. 300 out date',
                 formatter: dateFormatter
             });
-            columns.push({
-                field: 'S50_DISPLAY',
-                title: 'Act. 305 arrival date',
-                formatter: dateFormatter
-            });
+
             columns.push({
                 field: 'TRACKING_NO',
                 title: 'Tracking No',
@@ -1432,6 +1453,18 @@
 
             result.push('</ul>');
             return result.join('');
+        }
+
+        function getCellStyle(value, row, index, field)
+        {
+            if (field == 'S10_DISPLAY')
+                return { classes: '', css: { "background-color": row.COLOR_10 } };
+            if (field == 'S30_DISPLAY')
+                return { classes: '', css: { "background-color": row.COLOR_30 } };
+            if (field == 'S50_DISPLAY')
+                return { classes: '', css: { "background-color": row.COLOR_50 } };
+            if (field == 'AVL_DATE')
+                return { classes: '', css: { "background-color": row.COLOR_60 } };
         }
 
 

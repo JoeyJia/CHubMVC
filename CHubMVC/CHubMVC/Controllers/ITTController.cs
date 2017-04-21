@@ -712,15 +712,9 @@ namespace CHubMVC.Controllers
                 List<V_ITT_SHIPPING_ALLIN1> result = shipBLL.GetShipmentData(partNo);
                 if (result != null)
                 {
-                    string icoPath = Server.MapPath(CHubConstValues.ChubIcoFolder);
                     foreach (var item in result)
                     {
-                        if (item.S10_DISPLAY != null)
-                            item.COLOR_10 = ValueConvert.GetColorFullName(item.COLOR_10);
-                        if (item.S30_DISPLAY != null)
-                            item.COLOR_30 = ValueConvert.GetColorFullName(item.COLOR_30);
-                        if (item.S50_DISPLAY != null)
-                            item.COLOR_50 = ValueConvert.GetColorFullName(item.COLOR_50);
+                        FillColorProperty(item);
                     }
                 }
                 return Json(new RequestResult(result));
@@ -796,6 +790,13 @@ namespace CHubMVC.Controllers
             {
                 V_ITT_SHIPPING_ALLIN1_BLL v1BLL = new V_ITT_SHIPPING_ALLIN1_BLL();
                 List<V_ITT_SHIPPING_ALLIN1> result = v1BLL.GetLevel4Data(partNo, orderNo, lineNo);
+                if (result != null)
+                {
+                    foreach (var item in result)
+                    {
+                        FillColorProperty(item);
+                    }
+                }
 
                 return Json(new RequestResult(result));
             }
@@ -892,6 +893,18 @@ namespace CHubMVC.Controllers
             }
         }
 
+
+        private void FillColorProperty(V_ITT_SHIPPING_ALLIN1 item)
+        {
+            if (item.S10_DISPLAY != null)
+                item.COLOR_10 = ValueConvert.GetColorFullName(item.COLOR_10);
+            if (item.S30_DISPLAY != null)
+                item.COLOR_30 = ValueConvert.GetColorFullName(item.COLOR_30);
+            if (item.S50_DISPLAY != null)
+                item.COLOR_50 = ValueConvert.GetColorFullName(item.COLOR_50);
+            if (item.AVL_DATE != null)
+                item.COLOR_60 = ValueConvert.GetColorFullName(item.COLOR_60);
+        }
         #endregion
 
 
