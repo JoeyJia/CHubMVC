@@ -766,6 +766,24 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
+        public ActionResult GetPOReleaseData(string partNo, string poNo,long poLineNo)
+        {
+            try
+            {
+                ITT_PO_BLL poBLL = new ITT_PO_BLL();
+                List<ITT_PO_Release> result = poBLL.GetPOReleaseData(partNo, poNo,poLineNo);
+
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("GetPOReleaseData", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
         public ActionResult GetPOLevel3Data(string partNo, string poNo,decimal poLineNo)
         {
             try

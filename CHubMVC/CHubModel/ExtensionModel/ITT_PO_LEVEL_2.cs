@@ -8,6 +8,8 @@ namespace CHubModel.ExtensionModel
 {
     public class ITT_PO_LEVEL_2
     {
+        public string PUR_ORDER_ID { get; set; }
+
         public decimal PUR_ORDER_LINE_NO { get; set; }
 
         public string PART_NO { get; set; }

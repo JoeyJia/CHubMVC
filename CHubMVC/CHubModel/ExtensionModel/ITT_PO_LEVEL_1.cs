@@ -23,5 +23,7 @@ namespace CHubModel.ExtensionModel
         public string BUYER_CODE { get; set; }
 
         public string SUPPLIER_TYPE { get; set; }
+
+        public string PO_STATUS { get; set; }
     }
 }

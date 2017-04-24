@@ -334,6 +334,23 @@
 
                             <div class="row">
                                 <div class="form-group">
+                                    <label class="col-sm-2 control-label text-right">Ship Status:</label>
+                                    <div class="col-sm-9">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="ssOptions" id="ssRadio1" ng-model="ssArg" value="All">All
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="ssOptions" id="ssRadio2" ng-model="ssArg" value="Opening">Opening
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="ssOptions" id="ssRadio3" ng-model="ssArg" value="Received">Received
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
                                     <label for="txtInvoiceNo" class="col-sm-2 control-label text-right">Invoice No.</label>
                                     <div class="col-sm-3">
                                         <input type="text" class="form-control input-sm" id="txtInvoiceNo" ng-model="inNoArg" placeholder="Invoice No.">
@@ -404,6 +421,7 @@
                                                     <th>Carrier Code</th>
                                                     <th>Tran Process</th>
                                                     <th>CT process</th>
+                                                    <th>Ship Status</th>
                                                 </tr>
                                             </thead>
                                             <tr ng-repeat="sl in shipmentList ">
@@ -449,6 +467,7 @@
                                                 <td>{{sl.CARRIER_CODE}}</td>
                                                 <td>{{sl.TRAN_PROCESS_ID}}</td>
                                                 <td>{{sl.CUSTOM_PROCESS_ID}}</td>
+                                                <td>{{sl.SHIP_STATUS}}</td>
                                             </tr>
                                         </table>
                                     </div>
@@ -635,6 +654,57 @@
     </div>
 </div>
 
+<!--PO Release Modal-->
+<div class="modal fade" id="poReleaseModal" role="dialog" aria-labelledby="result" aria-hidden="true" ng-app="poReleaseApp" ng-controller="poReleaseCtrl">
+    <div class="modal-dialog" style="width:80%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>PO Release Data</h4>
+            </div>
+
+            <div class="modal-body">
+
+                <table id="tbPOReleaseList" class="table table-striped table-hover table-bordered .table-condensed">
+                    <thead>
+                        <tr>
+                            <th>index</th>
+                            <th style="">Release No.</th>
+                            <th style="">Release Date</th>
+                            <th style="">Release Qty</th>
+                            <th>Remaining Qty</th>
+                            <th>Due Date</th>
+                            <th>ETA</th>
+                            <th>AVL Date</th>
+                            <th>PO Status</th>
+                        </tr>
+                    </thead>
+                    <tbody style="">
+                        <tr ng-repeat="pr in poReleaseList ">
+                            <td>{{$index+1}}</td>
+                            <td>{{pr.PUR_RELEASE_NO}}</td>
+                            <td>{{pr.RELEASE_DATE | date:'yyyy-MM-dd'}}</td>
+                            <td>{{pr.RELEASE_QTY}}</td>
+                            <td>{{pr.REMAINING_QTY}}</td>
+                            <td>{{pr.REVISED_DUE_DATE | date:'yyyy-MM-dd'}}</td>
+                            <td>{{pr.ETA_DATE | date:'yyyy-MM-dd'}}</td>
+                            <td>{{pr.RECEIVING_DATE | date:'yyyy-MM-dd'}}</td>
+                            <td>{{pr.PO_STATUS}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-md-12  text-center">
+                        <button type="button" class="btn btn-primary" onclick="closePOReleaseModal()">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <script>
     
 
@@ -660,6 +730,7 @@
         $scope.fromArg = "All";
         $scope.toArg = "All";
         $scope.tranArg = "All";
+        $scope.ssArg = "Opening";
         $scope.inNoArg = "";
         $scope.shipArg = "";
         $scope.WayNoArg = "";
@@ -667,6 +738,16 @@
         //PO part
         $scope.poLevel1List = [];
         $scope.poLevel1Backup = [];
+        //Filter Args
+        $scope.buyForArg = "PDC";
+        $scope.buyFromArg = "InterPDC";
+        $scope.statusArg = "Open";
+        $scope.poNoArg = "";
+        $scope.suppCodeArg = "";
+        $scope.suppNameArg = "";
+        $scope.wareHouseArg = "";
+
+
 
         $scope.poLevel2List = [];
 
@@ -690,8 +771,15 @@
                 type: "post",
                 async: false,
                 success: function (obj) {
-                    //debugger;
                     $scope.result = obj;
+                    if ($scope.result == null || $scope.result.length == 0)
+                    {
+                        hidePB();
+                        alert("No Data!");
+                        return;
+                    }
+                       
+
                     $('#h-default-basic .progress-bar').attr('data-transitiongoal', 10).progressbar();
                     if ($scope.result != null && $scope.result.length == 1) {
                         $scope.selectedPart = $scope.result[0];
@@ -737,10 +825,6 @@
 
         $scope.submitFilter = function ()
         {
-            //debugger;
-            //if($scope.fromArg=="All"&& $scope.toArg=="All"
-            //    && $scope.tranArg=="All"&& $scope.inNoArg==""
-            //    && $scope.shipArg==""&& $scope.WayNoArg=="")
             $scope.shipmentList = $scope.shipmentBackup.slice(0);
 
             if ($scope.fromArg != "All")
@@ -761,6 +845,13 @@
             if ($scope.tranArg != "All") {
                 for (var i = $scope.shipmentList.length - 1; i >= 0; i--) {
                     if ($scope.shipmentList[i].TRAN_TYPE != $scope.tranArg)
+                        $scope.shipmentList.splice(i, 1);
+                }
+            }
+
+            if ($scope.ssArg != "All") {
+                for (var i = $scope.shipmentList.length - 1; i >= 0; i--) {
+                    if ($scope.shipmentList[i].SHIP_STATUS != $scope.ssArg)
                         $scope.shipmentList.splice(i, 1);
                 }
             }
@@ -788,7 +879,67 @@
 
         }
 
+        $scope.submitPOFilter = function ()
+        {
+            filterPOData();
+            var $table = $('#tablePO');
+            $table.bootstrapTable('load', $scope.poLevel1List);
+        }
+
         //function part
+        function filterPOData()
+        {
+            $scope.poLevel1List = $scope.poLevel1Backup.slice(0);
+
+            if ($scope.buyForArg != "All") {
+                for (var i = $scope.poLevel1List.length - 1; i >= 0; i--) {
+                    if ($scope.poLevel1List[i].BUY_FOR != $scope.buyForArg)
+                        $scope.poLevel1List.splice(i, 1);
+                }
+            }
+
+            if ($scope.buyFromArg != "All") {
+                for (var i = $scope.poLevel1List.length - 1; i >= 0; i--) {
+                    if ($scope.poLevel1List[i].SUPPLIER_TYPE != $scope.buyFromArg)
+                        $scope.poLevel1List.splice(i, 1);
+                }
+            }
+
+            if ($scope.statusArg != "All") {
+                for (var i = $scope.poLevel1List.length - 1; i >= 0; i--) {
+                    if ($scope.poLevel1List[i].PO_STATUS != $scope.statusArg)
+                        $scope.poLevel1List.splice(i, 1);
+                }
+            }
+
+            if ($scope.poNoArg != "") {
+                for (var i = $scope.poLevel1List.length - 1; i >= 0; i--) {
+                    if ($scope.poLevel1List[i].PUR_ORDER_ID != $scope.poNoArg)
+                        $scope.poLevel1List.splice(i, 1);
+                }
+            }
+
+            if ($scope.suppCodeArg != "") {
+                for (var i = $scope.poLevel1List.length - 1; i >= 0; i--) {
+                    if ($scope.poLevel1List[i].BUY_FROM_COMPANY != $scope.suppCodeArg)
+                        $scope.poLevel1List.splice(i, 1);
+                }
+            }
+
+            if ($scope.suppNameArg != "") {
+                for (var i = $scope.poLevel1List.length - 1; i >= 0; i--) {
+                    if ($scope.poLevel1List[i].COMPANY_NAME.indexOf($scope.suppNameArg) < 0)
+                        $scope.poLevel1List.splice(i, 1);
+                }
+            }
+            if ($scope.wareHouseArg != "") {
+                for (var i = $scope.poLevel1List.length - 1; i >= 0; i--) {
+                    if ($scope.poLevel1List[i].WAREHOUSE != $scope.wareHouseArg)
+                        $scope.poLevel1List.splice(i, 1);
+                }
+            }
+        }
+
         function hidePB() {
             $('#h-default-basic .progress-bar').attr('data-transitiongoal', 0).progressbar();
             $("#h-default-basic").attr('hidden', true);   
@@ -945,8 +1096,9 @@
                 success: function (obj) {
                     //debugger;
                     if (obj.Success) {
-                        $scope.shipmentList = obj.Data;
+                        //$scope.shipmentList = obj.Data;
                         $scope.shipmentBackup = obj.Data;
+                        $scope.submitFilter();
                     }
                     else
                         alert(obj.Msg);
@@ -974,8 +1126,9 @@
                 success: function (obj) {
                     //debugger;
                     if (obj.Success) {
-                        $scope.poLevel1List = obj.Data;
+                        //$scope.poLevel1List = obj.Data;
                         $scope.poLevel1Backup = obj.Data;
+                        filterPOData();
                     }
                     else
                         alert(obj.Msg);
@@ -1088,13 +1241,12 @@
 
         function initPoTab() {
             var $table = $('#tablePO');
-            //debugger;
-                buildTable($table);
+            buildTable($table);
         };
 
         function expandlevel4($detail, pRow, index) {
             //debugger;
-            $t = $detail.html('<div class="panel panel-default" style="margin-left:25px"><div class="panel-heading" style="background-color:silver"><b> shipment ( interPDC only)</b></div><table></table></div>').find('table');
+            $t = $detail.html('<div class="panel panel-default" style="margin-left:25px"><div class="panel-heading" style="background-color:silver;padding:2px;"><b> shipment ( interPDC only)</b></div><table></table></div>').find('table');
             //$t.attr("class", "table table-bordered table-condensed");
             $t.attr("bgcolor", "#FAFAD2");
             //$t.attr("width", "450px");
@@ -1244,7 +1396,7 @@
         {
             //debugger;
             //var poNo = row.PUR_ORDER_ID;
-            $t = $detail.html('<div class="panel panel-default" style="margin-left:25px"><div class="panel-heading" style="background-color:silver"><b>InterPDC SO</b></div><table></table></div>').find('table');
+            $t = $detail.html('<div class="panel panel-default" style="margin-left:25px"><div class="panel-heading" style="background-color:silver;padding:2px;"><b>InterPDC SO</b></div><table></table></div>').find('table');
             //$t.attr("class", "table table-bordered table-condensed");
             $t.attr("bgcolor", "#FDF5E6");
             //$t.attr("width", "450px");
@@ -1311,7 +1463,7 @@
             $t.bootstrapTable({
                 columns: columns,
                 data: $scope.soLevel3List.slice(0),
-                detailView: $scope.soLevel3List.length > 0,
+                detailView: true,
                 onExpandRow: function (index, row, $detail) {
                     expandlevel4($detail, row, index);
                 }
@@ -1322,11 +1474,10 @@
         function expandlevel2($detail,pRow, index) {
             //debugger;
             var poNo = pRow.PUR_ORDER_ID;
-            $t = $detail.html('<div class="panel panel-default" style="margin-left:25px"><div class="panel-heading" style="background-color:silver"><b>PO Lines</b></div><table></table></div>').find('table');
+            $t = $detail.html('<div class="panel panel-default" style="margin-left:25px"><div class="panel-heading" style="background-color:silver;padding:2px;"><b>PO Lines</b></div><table></table></div>').find('table');
             //$t.attr("class", "table table-bordered table-condensed");
             $t.attr("margin-left", "200px");
             $detail.attr("bgcolor", "#FAFAD2");
-            $detail.attr("margin-left", "200px");
             //debugger;
             var columns = [];
             var data = [];
@@ -1345,7 +1496,7 @@
             columns.push({
                 field: 'PUR_ORDER_DESC',
                 title: 'Description',
-                width: '100'
+                width: '300'
 
             });
             columns.push({
@@ -1355,8 +1506,16 @@
             });
             columns.push({
                 field: '',
+                title: 'Operation',
+                width: '100',
+                events: operateEvents,
+                formatter: level2OperationFormatter
+            }
+            );
+            columns.push({
+                field: '',
                 title: '',
-                width: '2550'
+                width: '2250'
             });
             var level2Data =[];
             //debugger;
@@ -1365,7 +1524,7 @@
             $t.bootstrapTable({
                 columns: columns,
                 data: $scope.poLevel2List.slice(0),
-                detailView: $scope.poLevel2List.length > 0,
+                detailView: true,
                 onExpandRow: function (index, row, $detail) {
                     expandlevel3($detail, row, index, poNo);
                 }
@@ -1411,6 +1570,10 @@
                 title: 'Supplier Type'
             });
             columns.push({
+                field: 'PO_STATUS',
+                title: 'Status'
+            });
+            columns.push({
                 field: '',
                 title: '',
                 width: '1000'
@@ -1419,7 +1582,7 @@
             $t.bootstrapTable({
                 columns: columns,
                 data: $scope.poLevel1List,
-                detailView: $scope.poLevel1List.length > 0,
+                detailView: true,
                 onExpandRow: function (index, row, $detail) {
                     expandlevel2($detail, row, index);
                 }
@@ -1455,6 +1618,55 @@
             return result.join('');
         }
 
+        function level2OperationFormatter(value, row, index) {
+            return [
+           '<a class="detail" href="javascript:void(0)" title="PO Release">',
+           '<i class="glyphicon glyphicon-list-alt"></i>',
+           '</a> '
+            ].join('');
+
+        }
+
+        window.operateEvents = {
+            'click .detail': function (e, value, row, index) {
+                if ($scope.selectedPart == "")
+                    return;
+
+                $.ajax({
+                    url: "/itt/GetPOReleaseData",
+                    data: {
+                        partNo: $scope.selectedPart.PART_NO,
+                        poNo: row.PUR_ORDER_ID,
+                        poLineNo: row.PUR_ORDER_LINE_NO
+                    },
+                    type: "post",
+                    async: false,
+                    success: function (obj) {
+                        //debugger;
+                        if (obj.Success) {
+                            //debugger;
+                            var appElement = document.querySelector('[ng-controller=poReleaseCtrl]');
+                            var scope = angular.element(appElement).scope();
+                            scope.poReleaseList = obj.Data;
+                            scope.$apply();
+                            $("#poReleaseModal").modal("show");
+
+                        }
+                        else {
+                            alert(obj.Msg);
+                        }
+
+                    },
+                    error: function (obj) {
+                        alert(obj.responseText);
+                    }
+                });
+
+            }
+         
+        };
+
+
         function getCellStyle(value, row, index, field)
         {
             if (field == 'S10_DISPLAY')
@@ -1481,6 +1693,14 @@
 
     //Add second app to document
     angular.bootstrap(document.getElementById("partListModal"), ['partListApp']);
+
+    //For PO Release modal part
+    angular.module('poReleaseApp', []).controller('poReleaseCtrl', function ($scope, $http) {
+        $scope.poReleaseList = [];
+
+    });
+    angular.bootstrap(document.getElementById("poReleaseModal"), ['poReleaseApp']);
+
 </script>
 <script>
 
@@ -1513,6 +1733,11 @@
 
     function cancelAddr() {
         $("#partListModal").modal("hide");
+    }
+
+    function closePOReleaseModal()
+    {
+        $("#poReleaseModal").modal("hide");
     }
 
 </script>

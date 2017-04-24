@@ -32,5 +32,9 @@ namespace CHubBLL
             return dal.GetLevel2Data(partNo, poNo);
         }
 
+        public List<ITT_PO_Release> GetPOReleaseData(string partNo, string poNo, long poLineNo)
+        {
+            return dal.GetPOReleaseData(partNo, poNo, poLineNo);
+        }
     }
 }
