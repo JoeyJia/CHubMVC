@@ -1595,6 +1595,10 @@
             //debugger;
             if (value == undefined)
                 return "";
+            //if date has "()" not do format action
+            if (value.indexOf(')') > 0)
+                return value;
+
             if (value.length < 10)
                 return value;
             return value.substr(0, 10);
