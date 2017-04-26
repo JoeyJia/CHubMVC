@@ -98,5 +98,8 @@ namespace CHubDBEntity
         public virtual DbSet<V_ITT_SHIPPING_ALLIN1> V_ITT_SHIPPING_ALLIN1 { get; set; }
         public virtual DbSet<ITT_PO> ITT_PO { get; set; }
         public virtual DbSet<ITT_SO> ITT_SO { get; set; }
+        public virtual DbSet<DB_KPI> DB_KPI { get; set; }
+        public virtual DbSet<DB_KPI_GROUP> DB_KPI_GROUP { get; set; }
+        public virtual DbSet<DB_KPI_HISTORY> DB_KPI_HISTORY { get; set; }
     }
 }

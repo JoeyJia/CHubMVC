@@ -209,6 +209,46 @@
           <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="CREATION_DATE" Type="date" />
         </EntityType>
+        <EntityType Name="DB_KPI">
+          <Key>
+            <PropertyRef Name="KPI_CODE" />
+            <PropertyRef Name="KPI_SUB_CODE" />
+          </Key>
+          <Property Name="KPI_GROUP" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="KPI_CODE" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="KPI_SUB_CODE" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="KPI_DESC" Type="varchar2" MaxLength="1024" />
+          <Property Name="KPI_TARGET" Type="number" Precision="20" Scale="4" />
+          <Property Name="IND_Y" Type="number" Precision="20" Scale="4" />
+          <Property Name="KPI_OWNER" Type="varchar2" MaxLength="20" />
+          <Property Name="NOTE" Type="varchar2" MaxLength="50" />
+          <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="DB_KPI_GROUP">
+          <Key>
+            <PropertyRef Name="KPI_GROUP" />
+          </Key>
+          <Property Name="KPI_GROUP" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="KPI_GROUP_DESC" Type="varchar2" MaxLength="2048" />
+          <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DB_KPI_HISTORY">
+          <Key>
+            <PropertyRef Name="KPI_DATE" />
+            <PropertyRef Name="KPI_CODE" />
+            <PropertyRef Name="KPI_SUB_CODE" />
+          </Key>
+          <Property Name="KPI_DATE" Type="date" Nullable="false" />
+          <Property Name="KPI_CODE" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="KPI_SUB_CODE" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="KPI_VALUE" Type="number" Precision="20" Scale="4" Nullable="false" />
+          <Property Name="KPI_TARGET" Type="number" Precision="20" Scale="4" />
+          <Property Name="IND_Y" Type="number" Precision="20" Scale="4" />
+          <Property Name="KPI_OWNER" Type="varchar2" MaxLength="20" />
+          <Property Name="NOTE" Type="varchar2" MaxLength="50" />
+          <Property Name="OWNER_HIGHLIGHT" Type="varchar2" MaxLength="300" />
+          <Property Name="HIGHLIGHT_DATE" Type="date" />
+        </EntityType>
         <EntityType Name="ITT_CUST_LOAD">
           <Key>
             <PropertyRef Name="LOAD_BATCH_TOKEN" />
@@ -1638,6 +1678,18 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="DB_KPI_R01">
+          <End Role="DB_KPI_GROUP" Type="Self.DB_KPI_GROUP" Multiplicity="1" />
+          <End Role="DB_KPI" Type="Self.DB_KPI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DB_KPI_GROUP">
+              <PropertyRef Name="KPI_GROUP" />
+            </Principal>
+            <Dependent Role="DB_KPI">
+              <PropertyRef Name="KPI_GROUP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="ITT_SHIPPING_D_R01">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_D" Type="Self.ITT_SHIPPING_D" Multiplicity="*" />
@@ -1710,7 +1762,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0018343">
+        <Association Name="SYS_C0018775">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1838,6 +1890,9 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="APP_WELCOME" EntityType="Self.APP_WELCOME" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="APP_WH" EntityType="Self.APP_WH" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="APP_WORKSPACE" EntityType="Self.APP_WORKSPACE" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="DB_KPI" EntityType="Self.DB_KPI" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="DB_KPI_GROUP" EntityType="Self.DB_KPI_GROUP" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="DB_KPI_HISTORY" EntityType="Self.DB_KPI_HISTORY" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_CUST_LOAD" EntityType="Self.ITT_CUST_LOAD" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_EASY_QUERY_LOG" EntityType="Self.ITT_EASY_QUERY_LOG" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_PO" EntityType="Self.ITT_PO" Schema="GWAPP" store:Type="Tables" />
@@ -2648,6 +2703,10 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="APP_USERS" EntitySet="APP_USERS" />
             <End Role="APP_USERS1" EntitySet="APP_USERS" />
           </AssociationSet>
+          <AssociationSet Name="DB_KPI_R01" Association="Self.DB_KPI_R01">
+            <End Role="DB_KPI_GROUP" EntitySet="DB_KPI_GROUP" />
+            <End Role="DB_KPI" EntitySet="DB_KPI" />
+          </AssociationSet>
           <AssociationSet Name="ITT_SHIPPING_D_R01" Association="Self.ITT_SHIPPING_D_R01">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_D" EntitySet="ITT_SHIPPING_D" />
@@ -2672,7 +2731,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
             <End Role="M_PART" EntitySet="M_PART" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0018343" Association="Self.SYS_C0018343">
+          <AssociationSet Name="SYS_C0018775" Association="Self.SYS_C0018775">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -3718,6 +3777,13 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySet Name="V_ITT_SHIPPING_ALLIN1" EntityType="CHubDBModel.V_ITT_SHIPPING_ALLIN1" />
           <EntitySet Name="ITT_PO" EntityType="CHubDBModel.ITT_PO" />
           <EntitySet Name="ITT_SO" EntityType="CHubDBModel.ITT_SO" />
+          <EntitySet Name="DB_KPI" EntityType="CHubDBModel.DB_KPI" />
+          <EntitySet Name="DB_KPI_GROUP" EntityType="CHubDBModel.DB_KPI_GROUP" />
+          <EntitySet Name="DB_KPI_HISTORY" EntityType="CHubDBModel.DB_KPI_HISTORY" />
+          <AssociationSet Name="DB_KPI_R01" Association="CHubDBModel.DB_KPI_R01">
+            <End Role="DB_KPI_GROUP" EntitySet="DB_KPI_GROUP" />
+            <End Role="DB_KPI" EntitySet="DB_KPI" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -4733,6 +4799,60 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="QTY_SHIPPED" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="LOAD_DATE" Type="DateTime" />
         </EntityType>
+        <EntityType Name="DB_KPI">
+          <Key>
+            <PropertyRef Name="KPI_CODE" />
+            <PropertyRef Name="KPI_SUB_CODE" />
+          </Key>
+          <Property Name="KPI_GROUP" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="KPI_CODE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="KPI_SUB_CODE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="KPI_DESC" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Name="KPI_TARGET" Type="Decimal" Precision="20" Scale="4" />
+          <Property Name="IND_Y" Type="Decimal" Precision="20" Scale="4" />
+          <Property Name="KPI_OWNER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVEIND" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DB_KPI_GROUP" Relationship="CHubDBModel.DB_KPI_R01" FromRole="DB_KPI" ToRole="DB_KPI_GROUP" />
+        </EntityType>
+        <EntityType Name="DB_KPI_GROUP">
+          <Key>
+            <PropertyRef Name="KPI_GROUP" />
+          </Key>
+          <Property Name="KPI_GROUP" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="KPI_GROUP_DESC" Type="String" MaxLength="2048" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVEIND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DB_KPI" Relationship="CHubDBModel.DB_KPI_R01" FromRole="DB_KPI_GROUP" ToRole="DB_KPI" />
+        </EntityType>
+        <EntityType Name="DB_KPI_HISTORY">
+          <Key>
+            <PropertyRef Name="KPI_DATE" />
+            <PropertyRef Name="KPI_CODE" />
+            <PropertyRef Name="KPI_SUB_CODE" />
+          </Key>
+          <Property Name="KPI_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="KPI_CODE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="KPI_SUB_CODE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="KPI_VALUE" Type="Decimal" Nullable="false" Precision="20" Scale="4" />
+          <Property Name="KPI_TARGET" Type="Decimal" Precision="20" Scale="4" />
+          <Property Name="IND_Y" Type="Decimal" Precision="20" Scale="4" />
+          <Property Name="KPI_OWNER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OWNER_HIGHLIGHT" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="HIGHLIGHT_DATE" Type="DateTime" />
+        </EntityType>
+        <Association Name="DB_KPI_R01">
+          <End Type="CHubDBModel.DB_KPI_GROUP" Role="DB_KPI_GROUP" Multiplicity="1" />
+          <End Type="CHubDBModel.DB_KPI" Role="DB_KPI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DB_KPI_GROUP">
+              <PropertyRef Name="KPI_GROUP" />
+            </Principal>
+            <Dependent Role="DB_KPI">
+              <PropertyRef Name="KPI_GROUP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6100,6 +6220,46 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="SHIP_TO_ABBR" ColumnName="SHIP_TO_ABBR" />
                 <ScalarProperty Name="ORDER_NO" ColumnName="ORDER_NO" />
                 <ScalarProperty Name="FROM_SYSTEM" ColumnName="FROM_SYSTEM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DB_KPI">
+            <EntityTypeMapping TypeName="CHubDBModel.DB_KPI">
+              <MappingFragment StoreEntitySet="DB_KPI">
+                <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
+                <ScalarProperty Name="NOTE" ColumnName="NOTE" />
+                <ScalarProperty Name="KPI_OWNER" ColumnName="KPI_OWNER" />
+                <ScalarProperty Name="IND_Y" ColumnName="IND_Y" />
+                <ScalarProperty Name="KPI_TARGET" ColumnName="KPI_TARGET" />
+                <ScalarProperty Name="KPI_DESC" ColumnName="KPI_DESC" />
+                <ScalarProperty Name="KPI_SUB_CODE" ColumnName="KPI_SUB_CODE" />
+                <ScalarProperty Name="KPI_CODE" ColumnName="KPI_CODE" />
+                <ScalarProperty Name="KPI_GROUP" ColumnName="KPI_GROUP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DB_KPI_GROUP">
+            <EntityTypeMapping TypeName="CHubDBModel.DB_KPI_GROUP">
+              <MappingFragment StoreEntitySet="DB_KPI_GROUP">
+                <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
+                <ScalarProperty Name="KPI_GROUP_DESC" ColumnName="KPI_GROUP_DESC" />
+                <ScalarProperty Name="KPI_GROUP" ColumnName="KPI_GROUP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DB_KPI_HISTORY">
+            <EntityTypeMapping TypeName="CHubDBModel.DB_KPI_HISTORY">
+              <MappingFragment StoreEntitySet="DB_KPI_HISTORY">
+                <ScalarProperty Name="HIGHLIGHT_DATE" ColumnName="HIGHLIGHT_DATE" />
+                <ScalarProperty Name="OWNER_HIGHLIGHT" ColumnName="OWNER_HIGHLIGHT" />
+                <ScalarProperty Name="NOTE" ColumnName="NOTE" />
+                <ScalarProperty Name="KPI_OWNER" ColumnName="KPI_OWNER" />
+                <ScalarProperty Name="IND_Y" ColumnName="IND_Y" />
+                <ScalarProperty Name="KPI_TARGET" ColumnName="KPI_TARGET" />
+                <ScalarProperty Name="KPI_VALUE" ColumnName="KPI_VALUE" />
+                <ScalarProperty Name="KPI_SUB_CODE" ColumnName="KPI_SUB_CODE" />
+                <ScalarProperty Name="KPI_CODE" ColumnName="KPI_CODE" />
+                <ScalarProperty Name="KPI_DATE" ColumnName="KPI_DATE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -109,6 +109,10 @@
         <EntityTypeShape EntityType="CHubDBModel.V_ITT_SHIPPING_ALLIN1" Width="1.5" PointX="28.375" PointY="8.75" />
         <EntityTypeShape EntityType="CHubDBModel.ITT_PO" Width="1.5" PointX="28.375" PointY="24.75" />
         <EntityTypeShape EntityType="CHubDBModel.ITT_SO" Width="1.5" PointX="19.375" PointY="29.75" />
+        <EntityTypeShape EntityType="CHubDBModel.DB_KPI" Width="1.5" PointX="32.625" PointY="1" />
+        <EntityTypeShape EntityType="CHubDBModel.DB_KPI_GROUP" Width="1.5" PointX="30.375" PointY="1.5" />
+        <EntityTypeShape EntityType="CHubDBModel.DB_KPI_HISTORY" Width="1.5" PointX="30.375" PointY="4.75" />
+        <AssociationConnector Association="CHubDBModel.DB_KPI_R01" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

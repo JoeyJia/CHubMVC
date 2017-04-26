@@ -135,6 +135,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CHubDBModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DB_KPI.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB_KPI_GROUP.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB_KPI_HISTORY.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="G_PART_DESCRIPTION.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
