@@ -57,6 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DB_KPI_HISTORY_DAL.cs" />
+    <Compile Include="DB_KPI_GROUP_DAL.cs" />
     <Compile Include="G_OESALES_CATALOG_DAL.cs" />
     <Compile Include="ITT_CUST_LOAD_DAL.cs" />
     <Compile Include="ITT_PO_DAL.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="ITT_EASY_QUERY_LOG_DAL.cs" />
     <Compile Include="ITT_EASY_WATCHING_DAL.cs" />
     <Compile Include="ITT_SO_DAL.cs" />
+    <Compile Include="DB_KPI_DAL.cs" />
     <Compile Include="V_ITT_SHIPPING_ALLIN1_DAL.cs" />
     <Compile Include="M_INV_DAL.cs" />
     <Compile Include="V_INV_RDC_DAL.cs" />
