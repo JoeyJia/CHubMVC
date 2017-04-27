@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
+using CHubModel.ExtensionModel;
 
 namespace CHubBLL
 {
@@ -21,5 +22,9 @@ namespace CHubBLL
             dal = new DB_KPI_HISTORY_DAL(db);
         }
 
+        public List<ExDBKPIHistory> GetLatestHistory(string kpiGroup)
+        {
+            return dal.GetLatestHistory(kpiGroup);
+        }
     }
 }

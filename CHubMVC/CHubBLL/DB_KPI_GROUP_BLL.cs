@@ -21,5 +21,10 @@ namespace CHubBLL
             dal = new DB_KPI_GROUP_DAL(db);
         }
 
+
+        public List<DB_KPI_GROUP> GetKPIGroups()
+        {
+            return dal.GetKPIGroups();
+        }
     }
 }

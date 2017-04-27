@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "KPI DashBoard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid" id="kpiBody" ng-app="kpiApp" ng-controller="kpiCtrl">
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>KPI Group</b></div>
+  
+        <ul class="nav nav-pills" role="tablist">
+            <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">Home</a></li>
+            <li role="presentation"><a href="#profile" role="tab" data-toggle="tab">Profiles</a></li>
+        </ul>
+
+        <!--content parts-->
+        <div class="tab-content" style="overflow-x:auto;">
+            <div role="tabpanel" class="tab-pane active" id="home">
+                home test
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="profile">
+                profile test
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    
+    angular.module('kpiApp', []).controller('kpiCtrl', function ($scope, $http) {
+        $scope.kpiGroupArray = [];
+
+        $http.post("/KPI/GetKPIGroupList", null, null).then(
+            function (obj) {
+                debugger;
+                if (obj.data.Success) {
+                    
+                    $scope.kpiGroupArray = obj.data.Data;
+                }
+                else
+                    alert(obj.data.Msg)
+            },
+             function (resp) {
+                 debugger;
+                 alert("Fail!");
+             }
+            );
+
+    });
+
+    //manual load app
+    angular.bootstrap(document.getElementById("kpiBody"), ['kpiApp']);
+
+</script>
+
+<script>
+    
+
+</script>

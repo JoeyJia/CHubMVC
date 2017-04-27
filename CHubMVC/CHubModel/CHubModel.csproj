@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExtensionModel\ExAppCustAlias.cs" />
+    <Compile Include="ExtensionModel\ExDBKPIHistory.cs" />
     <Compile Include="ExtensionModel\ExOrderDetail.cs" />
     <Compile Include="ExtensionModel\ExVAliasAddr.cs" />
     <Compile Include="ExtensionModel\ITT_PO_LEVEL_1.cs" />
