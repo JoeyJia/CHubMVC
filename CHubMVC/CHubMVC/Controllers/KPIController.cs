@@ -14,7 +14,7 @@ namespace CHubMVC.Controllers
 {
     public class KPIController : BaseController
     {
-        //[Authorize]
+        [Authorize]
         public ActionResult Index()
         {
 
@@ -22,13 +22,14 @@ namespace CHubMVC.Controllers
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public ActionResult GetKPIGroupList()
         {
             try
             {
                 DB_KPI_GROUP_BLL gBLL = new DB_KPI_GROUP_BLL();
                 List<DB_KPI_GROUP> result = gBLL.GetKPIGroups();
+
                 return Json(new RequestResult(result));
             }
             catch (Exception ex)
@@ -38,6 +39,30 @@ namespace CHubMVC.Controllers
             }
         }
 
-        
+        [HttpPost]
+        [Authorize]
+        public ActionResult GetLatestHistory(string kpiGroup)
+        {
+            try
+            {
+                DB_KPI_HISTORY_BLL hBLL = new DB_KPI_HISTORY_BLL();
+                List<ExDBKPIHistory> result = hBLL.GetLatestHistory(kpiGroup);
+                List<string> codeList = hBLL.GetDistinctKPICode(kpiGroup);
+
+                var obj = new
+                {
+                    History = result,
+                    Group = codeList
+                };
+                return Json(new RequestResult(obj));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("GetLatestHistory", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+
     }
 }

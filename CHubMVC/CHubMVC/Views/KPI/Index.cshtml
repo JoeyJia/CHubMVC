@@ -4,25 +4,73 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+@Scripts.Render("~/bundles/echart")
 <div class="container-fluid" id="kpiBody" ng-app="kpiApp" ng-controller="kpiCtrl">
     <div class="panel panel-default">
         <div class="panel-heading"><b>KPI Group</b></div>
-  
+
         <ul class="nav nav-pills" role="tablist">
-            <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">Home</a></li>
-            <li role="presentation"><a href="#profile" role="tab" data-toggle="tab">Profiles</a></li>
+            <li role="presentation" ng-class="{active:$index==0}" ng-repeat="kg in kpiGroupArray track by kg.KPI_GROUP">
+                <a href="#group{{$index}}" role="tab" data-toggle="tab" ng-click="tabClick(kg,$index)">{{kg.KPI_GROUP}}</a>
+            </li>
         </ul>
 
         <!--content parts-->
         <div class="tab-content" style="overflow-x:auto;">
-            <div role="tabpanel" class="tab-pane active" id="home">
-                home test
+            <div role="tabpanel" class="tab-pane" ng-class="{active:$index==0}" ng-repeat="kg1 in kpiGroupArray track by kg1.KPI_GROUP" id="group{{$index}}">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" style="background-color:silver"><b>Description</b></div>
+                            <div class="panel panel-default " style="height:100px;">
+                               {{kg1.KPI_GROUP_DESC}}
+                            </div>
+
+                            <div class="panel-heading" style="background-color:silver"><b>The latest Snapshot </b></div>
+                            <table class="table table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th style="">index</th>
+                                        <th style="">Week</th>
+                                        <th style="">Date</th>
+                                        <th style="">item</th>
+                                        <th style="">Act.</th>
+                                        <th style="">Target</th>
+                                        <th style="">Note</th>
+                                        <th style="">Owner</th>
+                                        <th style="">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="">
+                                    <tr ng-repeat="h in latestHistoryArray[$index] ">
+                                        <td>{{$index+1}}</td>
+                                        <td>{{$parent.$index}}</td>
+                                        <td>{{h.KPI_DATE | date:'yyyy-MM-dd'}}</td>
+                                        <td>{{h.KPI_SUB_CODE}}</td>
+                                        <td>{{h.KPI_VALUE}}</td>
+                                        <td>{{h.KPI_TARGET}}</td>
+                                        <td>{{h.NOTE}}</td>
+                                        <td>{{h.OWNER_HIGHLIGHT}}</td>
+                                        <td>{{h.DESC}}</td>
+                                    </tr>
+                                </tbody>
+                                
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
 
-            <div role="tabpanel" class="tab-pane" id="profile">
-                profile test
-            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="chart1" style="width: 600px;height:400px;">
+
         </div>
 
     </div>
@@ -33,13 +81,17 @@
     
     angular.module('kpiApp', []).controller('kpiCtrl', function ($scope, $http) {
         $scope.kpiGroupArray = [];
+        $scope.latestHistoryArray = [];
+        $scope.historyGot = [];
+
 
         $http.post("/KPI/GetKPIGroupList", null, null).then(
             function (obj) {
-                debugger;
+                //debugger;
                 if (obj.data.Success) {
                     
                     $scope.kpiGroupArray = obj.data.Data;
+                    GetLatestHistory($scope.kpiGroupArray[0].KPI_GROUP, 0);
                 }
                 else
                     alert(obj.data.Msg)
@@ -50,14 +102,87 @@
              }
             );
 
+        
+
+        $scope.tabClick = function (curr, index) {
+            debugger;
+            var p = index;
+            GetLatestHistory(curr.KPI_GROUP, index);
+        };
+
+        //Function part
+        function GetLatestHistory(group, index) {
+            if (group == "")
+                return;
+            //debugger;
+            if ($scope.historyGot[index]!=undefined && $scope.historyGot[index]== true)
+                return;
+            //debugger;
+            $.ajax({
+                url: "/kpi/GetLatestHistory",
+                data: {
+                    kpiGroup: group
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    
+                    if (obj.Success) {
+                        debugger;
+                        var data = obj.Data.History;
+                        var group = obj.Data.Group;
+                        $scope.latestHistoryArray[index] = obj.Data.History;
+                        $scope.historyGot[index] = true;
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+
+
     });
 
     //manual load app
     angular.bootstrap(document.getElementById("kpiBody"), ['kpiApp']);
 
+    
+
+
 </script>
 
 <script>
+
+    var myChart = echarts.init(document.getElementById('chart1'));
+
+    var option = {
+        title: {
+            text: 'ECharts 入门示例'
+        },
+        tooltip: {},
+        legend: {
+            data: ['销量']
+        },
+        xAxis: {
+            data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+        },
+        yAxis: {},
+        series: [{
+            name: '销量',
+            type: 'bar',
+            data: [5, 20, 36, 10, 10, 20]
+        }]
+    };
+
+   
+    myChart.setOption(option);
+
     
 
 </script>

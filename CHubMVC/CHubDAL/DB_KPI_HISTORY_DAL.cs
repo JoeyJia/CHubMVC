@@ -16,13 +16,28 @@ namespace CHubDAL
         public DB_KPI_HISTORY_DAL(CHubEntities db)
             : base(db) { }
 
+        public List<string> GetDistinctKPICode(string kpiGroup)
+        {
+            var codeList = (from a in db.DB_KPI_HISTORY
+                            join b in db.DB_KPI on new { a.KPI_CODE, a.KPI_SUB_CODE } equals new { b.KPI_CODE, b.KPI_SUB_CODE }
+                            where b.KPI_GROUP == kpiGroup
+                            select a.KPI_CODE
+                        );
+            if (codeList.Count() == 0)
+                return null;
+            return codeList.Distinct().ToList();
+        }
+
         public List<ExDBKPIHistory> GetLatestHistory(string kpiGroup)
         {
-            var maxDate=(from a in db.DB_KPI_HISTORY
+            var dateList=(from a in db.DB_KPI_HISTORY
                         join b in db.DB_KPI on new { a.KPI_CODE, a.KPI_SUB_CODE } equals new { b.KPI_CODE, b.KPI_SUB_CODE }
                         where b.KPI_GROUP == kpiGroup
                         select a.KPI_DATE
-                        ).Max();
+                        );
+            if (dateList.Count() == 0)
+                return null;
+            DateTime maxDate = dateList.Max();
 
                var result = (from a in db.DB_KPI_HISTORY
                           join b in db.DB_KPI on new { a.KPI_CODE,a.KPI_SUB_CODE} equals new { b.KPI_CODE,b.KPI_SUB_CODE}

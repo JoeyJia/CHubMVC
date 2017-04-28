@@ -43,6 +43,9 @@ namespace CHubMVC
                       "~/Scripts/bootstrap-treeview.js",
                       "~/Scripts/bootstrap-table.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/echart").Include(
+                       "~/Scripts/echarts.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-treeview.css",

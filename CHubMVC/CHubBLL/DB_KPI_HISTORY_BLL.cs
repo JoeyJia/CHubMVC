@@ -26,5 +26,10 @@ namespace CHubBLL
         {
             return dal.GetLatestHistory(kpiGroup);
         }
+
+        public List<string> GetDistinctKPICode(string kpiGroup)
+        {
+            return dal.GetDistinctKPICode(kpiGroup);
+        }
     }
 }
