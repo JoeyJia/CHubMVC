@@ -27,37 +27,41 @@
                                {{kg1.KPI_GROUP_DESC}}
                             </div>
 
-                            <div class="panel-heading" style="background-color:silver"><b>The latest Snapshot </b></div>
-                            <table class="table table-bordered table-condensed">
-                                <thead>
-                                    <tr>
-                                        <th style="">index</th>
-                                        <th style="">Week</th>
-                                        <th style="">Date</th>
-                                        <th style="">item</th>
-                                        <th style="">Act.</th>
-                                        <th style="">Target</th>
-                                        <th style="">Note</th>
-                                        <th style="">Owner</th>
-                                        <th style="">Description</th>
-                                    </tr>
-                                </thead>
-                                <tbody style="">
-                                    <tr ng-repeat="h in latestHistoryArray[$index] ">
-                                        <td>{{$index+1}}</td>
-                                        <td>{{$parent.$index}}</td>
-                                        <td>{{h.KPI_DATE | date:'yyyy-MM-dd'}}</td>
-                                        <td>{{h.KPI_SUB_CODE}}</td>
-                                        <td>{{h.KPI_VALUE}}</td>
-                                        <td>{{h.KPI_TARGET}}</td>
-                                        <td>{{h.NOTE}}</td>
-                                        <td>{{h.OWNER_HIGHLIGHT}}</td>
-                                        <td>{{h.DESC}}</td>
-                                    </tr>
-                                </tbody>
-                                
+                            <div class="panel panel-default" ng-repeat="t in latestHistoryArray[$index]">
+                                <div class="panel-heading" style="background-color:silver" ><b>{{t.KPI_CODE}}</b></div>
+                                <table class="table table-bordered table-condensed">
+                                    <thead>
+                                        <tr>
+                                            @*<th style="">index</th>*@
+                                            <th style="">Week</th>
+                                            <th style="">Date</th>
+                                            <th style="">item</th>
+                                            <th style="">Act.</th>
+                                            <th style="">Target</th>
+                                            <th style="">Note</th>
+                                            <th style="">Owner</th>
+                                            <th style="">Description</th>
+                                            <th style="">Trend</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="">
+                                        <tr ng-repeat="h in t.array ">
+                                            @*<td>{{$index+1}}</td>*@
+                                            <td>{{$parent.$index}}</td>
+                                            <td>{{h.KPI_DATE | date:'yyyy-MM-dd'}}</td>
+                                            <td>{{h.KPI_SUB_CODE}}</td>
+                                            <td>{{h.KPI_VALUE}}</td>
+                                            <td>{{h.KPI_TARGET}}</td>
+                                            <td>{{h.NOTE}}</td>
+                                            <td>{{h.OWNER_HIGHLIGHT}}</td>
+                                            <td>{{h.DESC}}</td>
+                                            <td><a href="javascript:void(0)" title="Trend" class="trendBtn" ng-click="showTrend(h,$parent.$index)" ><span class="glyphicon glyphicon-stats"></span></a></td>
+                                        </tr>
+                                    </tbody>
 
-                            </table>
+
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -68,11 +72,28 @@
         </div>
     </div>
 
-    <div class="row">
-        <div id="chart1" style="width: 600px;height:400px;">
 
+</div>
+
+<!--Trend Modal-->
+<div class="modal fade" id="trendModal" role="dialog" aria-labelledby="result" aria-hidden="true" ng-app="trendApp" ng-controller="trendCtrl">
+    <div class="modal-dialog" style="width:60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Trend</h4>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row text-center">
+                    <div id="chart1" style="width: 800px;height:400px;">
+
+                    </div>
+
+                </div>
+
+            </div>
         </div>
-
     </div>
 </div>
 
@@ -102,13 +123,22 @@
              }
             );
 
-        
-
         $scope.tabClick = function (curr, index) {
-            debugger;
-            var p = index;
+
             GetLatestHistory(curr.KPI_GROUP, index);
         };
+
+        $scope.showTrend = function (history, index)
+        {
+            $("#trendModal").modal("show");
+            debugger;
+            var appElement = document.querySelector('[ng-controller=trendCtrl]');
+            var scope = angular.element(appElement).scope();
+            scope.selectedItem = history;
+            scope.loadTrendData();
+            scope.$apply();
+            
+        }
 
         //Function part
         function GetLatestHistory(group, index) {
@@ -128,11 +158,29 @@
                 success: function (obj) {
                     
                     if (obj.Success) {
-                        debugger;
-                        var data = obj.Data.History;
+                        //debugger;
+                        var history = obj.Data.History;
                         var group = obj.Data.Group;
-                        $scope.latestHistoryArray[index] = obj.Data.History;
+                        //$scope.latestHistoryArray[index] = obj.Data.History;
                         $scope.historyGot[index] = true;
+                        if (group == null || history == null) {
+                            $scope.latestHistoryArray[index] = null;
+                            return;
+                        }
+
+                        var tabData = [];
+                        for (var i = 0; i < group.length; i++) {
+                            var codeData = { KPI_CODE: '', array: [] };
+                            codeData.KPI_CODE = group[i];
+                            codeData.array = [];
+                            for (var j = 0; j < history.length; j++) {
+                                if (history[j].KPI_CODE == codeData.KPI_CODE)
+                                    codeData.array.push(history[j]);
+                            }
+                            tabData.push(codeData);
+                        }
+                        //debugger;
+                        $scope.latestHistoryArray[index] = tabData;
                     }
                     else {
                         alert(obj.Msg);
@@ -152,37 +200,87 @@
     //manual load app
     angular.bootstrap(document.getElementById("kpiBody"), ['kpiApp']);
 
+    //Audit log part
+    angular.module('trendApp', []).controller('trendCtrl', function ($scope, $http) {
+
+        $scope.selectedItem = "";
+        //$scope.auditLog = [];
+
+        $scope.loadTrendData = function () {
+            if ($scope.selectedItem == "")
+                return;
+            var myChart = echarts.init(document.getElementById('chart1'));
+
+            var option = {
+                title: {
+                    text: 'Trend Chart'
+                },
+                tooltip: {},
+                legend: {
+                    data: ['trend', 'target']
+                },
+                xAxis: {
+                    
+                    data: []
+                },
+                yAxis: {},
+                series: [{
+                    name: 'trend',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: 'target',
+                    type: 'line',
+                    data: []
+                }]
+            };
+
+            myChart.setOption(option);
+
+            myChart.showLoading();
+            //Get data
+            $.ajax({
+                url: "/kpi/GetTrendData",
+                data: {
+                    code: $scope.selectedItem.KPI_CODE,
+                    subCode: $scope.selectedItem.KPI_SUB_CODE
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    if (obj.Success)
+                    {
+                        debugger;
+                        myChart.hideLoading();
+                        myChart.setOption({
+                            xAxis: {
+                                data: obj.Data.kpiDates
+                            },
+                            series: [
+                                { name: 'trend', data: obj.Data.kpiValues },
+                                { name: 'target', data: obj.Data.kpiTarget }]
+                        });
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+    });
+
+    angular.bootstrap(document.getElementById("trendModal"), ['trendApp']);
+
     
 
 
 </script>
 
 <script>
-
-    var myChart = echarts.init(document.getElementById('chart1'));
-
-    var option = {
-        title: {
-            text: 'ECharts 入门示例'
-        },
-        tooltip: {},
-        legend: {
-            data: ['销量']
-        },
-        xAxis: {
-            data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
-        },
-        yAxis: {},
-        series: [{
-            name: '销量',
-            type: 'bar',
-            data: [5, 20, 36, 10, 10, 20]
-        }]
-    };
-
-   
-    myChart.setOption(option);
-
     
 
 </script>

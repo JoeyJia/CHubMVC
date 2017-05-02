@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDBEntity;
 using CHubModel.ExtensionModel;
+using System.Data.Entity;
 
 namespace CHubDAL
 {
@@ -60,6 +61,13 @@ namespace CHubDAL
                           );
 
             return result.ToList();
+        }
+
+        public List<DB_KPI_HISTORY> GetTrendData(string code, string subCode)
+        {
+            return db.DB_KPI_HISTORY.Where(a => a.KPI_CODE == code 
+            && a.KPI_SUB_CODE == subCode 
+            && a.KPI_DATE.Year == DateTime.Now.Year).ToList();
         }
 
     }

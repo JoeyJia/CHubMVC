@@ -63,6 +63,42 @@ namespace CHubMVC.Controllers
             }
         }
 
+        [HttpPost]
+        [Authorize]
+        public ActionResult GetTrendData(string code,string subCode)
+        {
+            try
+            {
+                DB_KPI_HISTORY_BLL hBLL = new DB_KPI_HISTORY_BLL();
+                List<DB_KPI_HISTORY> hList = hBLL.GetTrendData(code,subCode);
+                if(hList == null || hList.Count==0)
+                    return Json(new RequestResult(null));
+
+                List<DateTime> kpiDates = new List<DateTime>();
+                List<decimal> kpiValues = new List<decimal>();
+                List<decimal> kpiTarget = new List<decimal>();
+                foreach (var h in hList)
+                {
+                    kpiDates.Add(h.KPI_DATE);
+                    kpiValues.Add(h.KPI_VALUE);
+                    kpiTarget.Add(h.KPI_TARGET.Value);
+                }
+
+                var obj = new
+                {
+                    kpiDates = kpiDates,
+                    kpiValues = kpiValues,
+                    kpiTarget = kpiTarget
+                };
+                return Json(new RequestResult(obj));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("GetTrendData", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
 
     }
 }

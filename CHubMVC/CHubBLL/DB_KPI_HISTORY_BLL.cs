@@ -31,5 +31,10 @@ namespace CHubBLL
         {
             return dal.GetDistinctKPICode(kpiGroup);
         }
+
+        public List<DB_KPI_HISTORY> GetTrendData(string code, string subCode)
+        {
+            return dal.GetTrendData(code, subCode);
+        }
     }
 }
