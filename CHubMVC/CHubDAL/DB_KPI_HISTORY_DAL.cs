@@ -29,45 +29,56 @@ namespace CHubDAL
             return codeList.Distinct().ToList();
         }
 
-        public List<ExDBKPIHistory> GetLatestHistory(string kpiGroup)
+
+        public List<ExDBKPIHistory> GetLatestHistory(List<string> codeList, string kpiGroup)
         {
-            var dateList=(from a in db.DB_KPI_HISTORY
-                        join b in db.DB_KPI on new { a.KPI_CODE, a.KPI_SUB_CODE } equals new { b.KPI_CODE, b.KPI_SUB_CODE }
-                        where b.KPI_GROUP == kpiGroup
-                        select a.KPI_DATE
-                        );
-            if (dateList.Count() == 0)
+            if (codeList == null || codeList.Count == 0)
                 return null;
-            DateTime maxDate = dateList.Max();
+            List<ExDBKPIHistory> result = new List<ExDBKPIHistory>();
 
-               var result = (from a in db.DB_KPI_HISTORY
-                          join b in db.DB_KPI on new { a.KPI_CODE,a.KPI_SUB_CODE} equals new { b.KPI_CODE,b.KPI_SUB_CODE}
-                          where b.KPI_GROUP==kpiGroup
-                          && a.KPI_DATE ==maxDate
-                          select new ExDBKPIHistory
-                          {
-                              KPI_DATE = a.KPI_DATE,
-                              KPI_CODE = a.KPI_CODE,
-                              KPI_SUB_CODE = a.KPI_SUB_CODE,
-                              KPI_VALUE = a.KPI_VALUE,
-                              KPI_TARGET = a.KPI_TARGET,
-                              IND_Y = a.IND_Y,
-                              KPI_OWNER = a.KPI_OWNER,
-                              NOTE = a.NOTE,
-                              OWNER_HIGHLIGHT = a.OWNER_HIGHLIGHT,
-                              HIGHLIGHT_DATE = a.HIGHLIGHT_DATE,
-                              DESC = b.KPI_DESC
-                          }
+            foreach (var item in codeList)
+            {
+                var dateList = (from a in db.DB_KPI_HISTORY
+                                join b in db.DB_KPI on new { a.KPI_CODE, a.KPI_SUB_CODE } equals new { b.KPI_CODE, b.KPI_SUB_CODE }
+                                where b.KPI_GROUP == kpiGroup
+                                && a.KPI_CODE==item
+                                select a.KPI_DATE
+                        );
+                if (dateList.Count() == 0)
+                    continue;
+                DateTime maxDate = dateList.Max();
+
+                var resultUnit = (from a in db.DB_KPI_HISTORY
+                              join b in db.DB_KPI on new { a.KPI_CODE, a.KPI_SUB_CODE } equals new { b.KPI_CODE, b.KPI_SUB_CODE }
+                              where b.KPI_GROUP == kpiGroup
+                              && a.KPI_DATE == maxDate
+                              && a.KPI_CODE==item
+                              select new ExDBKPIHistory
+                              {
+                                  KPI_DATE = a.KPI_DATE,
+                                  KPI_CODE = a.KPI_CODE,
+                                  KPI_SUB_CODE = a.KPI_SUB_CODE,
+                                  KPI_VALUE = a.KPI_VALUE,
+                                  KPI_TARGET = a.KPI_TARGET,
+                                  IND_Y = a.IND_Y,
+                                  KPI_OWNER = a.KPI_OWNER,
+                                  NOTE = a.NOTE,
+                                  OWNER_HIGHLIGHT = a.OWNER_HIGHLIGHT,
+                                  HIGHLIGHT_DATE = a.HIGHLIGHT_DATE,
+                                  DESC = b.KPI_DESC
+                              }
                           );
+                result.AddRange(resultUnit.ToList());
 
-            return result.ToList();
+            }
+            return result;
         }
 
         public List<DB_KPI_HISTORY> GetTrendData(string code, string subCode)
         {
             return db.DB_KPI_HISTORY.Where(a => a.KPI_CODE == code 
             && a.KPI_SUB_CODE == subCode 
-            && a.KPI_DATE.Year == DateTime.Now.Year).ToList();
+            && a.KPI_DATE.Year == DateTime.Now.Year).OrderBy(a=>a.KPI_DATE).ToList();
         }
 
     }

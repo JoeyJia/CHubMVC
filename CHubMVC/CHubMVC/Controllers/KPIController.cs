@@ -46,8 +46,19 @@ namespace CHubMVC.Controllers
             try
             {
                 DB_KPI_HISTORY_BLL hBLL = new DB_KPI_HISTORY_BLL();
-                List<ExDBKPIHistory> result = hBLL.GetLatestHistory(kpiGroup);
                 List<string> codeList = hBLL.GetDistinctKPICode(kpiGroup);
+
+                List<ExDBKPIHistory> result = hBLL.GetLatestHistory(codeList,kpiGroup);
+                
+
+                if (result != null)
+                {
+                    foreach (var r in result)
+                    {
+                        r.WEEK = DateHelper.GetWeekOfYear(r.KPI_DATE);
+                        r.VALUE_COLOR = GetKPIValueColor(r);
+                    }
+                }
 
                 var obj = new
                 {
@@ -74,12 +85,12 @@ namespace CHubMVC.Controllers
                 if(hList == null || hList.Count==0)
                     return Json(new RequestResult(null));
 
-                List<DateTime> kpiDates = new List<DateTime>();
+                List<string> kpiDates = new List<string>();
                 List<decimal> kpiValues = new List<decimal>();
                 List<decimal> kpiTarget = new List<decimal>();
                 foreach (var h in hList)
                 {
-                    kpiDates.Add(h.KPI_DATE);
+                    kpiDates.Add(h.KPI_DATE.ToString("yyyy/MM/dd"));
                     kpiValues.Add(h.KPI_VALUE);
                     kpiTarget.Add(h.KPI_TARGET.Value);
                 }
@@ -99,6 +110,37 @@ namespace CHubMVC.Controllers
             }
         }
 
+
+        #region private function part
+        private string GetKPIValueColor(ExDBKPIHistory data)
+        {
+            //less is good 
+            if (data.IND_Y > data.KPI_TARGET)
+            {
+                if (data.KPI_VALUE <= data.KPI_TARGET)
+                    return CHubConstValues.GoodColor;
+                else if (data.KPI_VALUE <= data.IND_Y)
+                    return CHubConstValues.WarningColor;
+                else
+                    return CHubConstValues.ErrorColor;
+            }
+            //more is good
+            else if (data.IND_Y < data.KPI_TARGET)
+            {
+                if (data.KPI_VALUE >= data.KPI_TARGET)
+                    return CHubConstValues.GoodColor;
+                else if (data.KPI_VALUE >= data.IND_Y)
+                    return CHubConstValues.WarningColor;
+                else
+                    return CHubConstValues.ErrorColor;
+            }
+            //data.IND_Y == data.KPI_TARGET not exist , for in case
+            else
+                return CHubConstValues.GoodColor;
+        }
+
+
+        #endregion
 
     }
 }

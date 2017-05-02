@@ -76,6 +76,7 @@
     <Compile Include="ClassConvert\ClassConvertTable.cs" />
     <Compile Include="ClassConvert\ManualClassConvert.cs" />
     <Compile Include="Compare\PropertyCompare.cs" />
+    <Compile Include="Date\DateHelper.cs" />
     <Compile Include="DomainAuth\DomainUserAuth.cs" />
     <Compile Include="ExcelUtility\ExcelHelper.cs" />
     <Compile Include="ExcelUtility\NPOIExcelHelper.cs" />

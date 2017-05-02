@@ -24,43 +24,50 @@
                         <div class="panel panel-default">
                             <div class="panel-heading" style="background-color:silver"><b>Description</b></div>
                             <div class="panel panel-default " style="height:100px;">
-                               {{kg1.KPI_GROUP_DESC}}
+                                {{kg1.KPI_GROUP_DESC}}
                             </div>
 
-                            <div class="panel panel-default" ng-repeat="t in latestHistoryArray[$index]">
-                                <div class="panel-heading" style="background-color:silver" ><b>{{t.KPI_CODE}}</b></div>
-                                <table class="table table-bordered table-condensed">
-                                    <thead>
-                                        <tr>
-                                            @*<th style="">index</th>*@
-                                            <th style="">Week</th>
-                                            <th style="">Date</th>
-                                            <th style="">item</th>
-                                            <th style="">Act.</th>
-                                            <th style="">Target</th>
-                                            <th style="">Note</th>
-                                            <th style="">Owner</th>
-                                            <th style="">Description</th>
-                                            <th style="">Trend</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody style="">
-                                        <tr ng-repeat="h in t.array ">
-                                            @*<td>{{$index+1}}</td>*@
-                                            <td>{{$parent.$index}}</td>
-                                            <td>{{h.KPI_DATE | date:'yyyy-MM-dd'}}</td>
-                                            <td>{{h.KPI_SUB_CODE}}</td>
-                                            <td>{{h.KPI_VALUE}}</td>
-                                            <td>{{h.KPI_TARGET}}</td>
-                                            <td>{{h.NOTE}}</td>
-                                            <td>{{h.OWNER_HIGHLIGHT}}</td>
-                                            <td>{{h.DESC}}</td>
-                                            <td><a href="javascript:void(0)" title="Trend" class="trendBtn" ng-click="showTrend(h,$parent.$index)" ><span class="glyphicon glyphicon-stats"></span></a></td>
-                                        </tr>
-                                    </tbody>
+                            <hr />
+                            <br />
+
+                            <div class="col-md-6" ng-repeat="t in latestHistoryArray[$index]">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" style="background-color:silver"><b>{{t.KPI_CODE}}</b></div>
+                                    <table class="table table-bordered table-condensed">
+                                        <thead>
+                                            <tr>
+                                                @*
+                                                <th style="">index</th>*@
+                                                <th style="">Week</th>
+                                                <th style="">Date</th>
+                                                <th style="">item</th>
+                                                <th style="">Act.</th>
+                                                <th style="">Target</th>
+                                                <th style="">Note</th>
+                                                <th style="">Owner</th>
+                                                <th style="">Description</th>
+                                                <th style="">Trend</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="">
+                                            <tr ng-repeat="h in t.array ">
+                                                @*
+                                                <td>{{$index+1}}</td>*@
+                                                <td>{{h.WEEK}}</td>
+                                                <td>{{h.KPI_DATE | date:'yyyy-MM-dd'}}</td>
+                                                <td>{{h.KPI_SUB_CODE}}</td>
+                                                <td ng-style="{backgroundColor:h.VALUE_COLOR}">{{h.KPI_VALUE}}</td>
+                                                <td>{{h.KPI_TARGET}}</td>
+                                                <td>{{h.NOTE}}</td>
+                                                <td>{{h.OWNER_HIGHLIGHT}}</td>
+                                                <td>{{h.DESC}}</td>
+                                                <td><a href="javascript:void(0)" title="Trend" class="trendBtn" ng-click="showTrend(h,$parent.$index)"><span class="glyphicon glyphicon-stats"></span></a></td>
+                                            </tr>
+                                        </tbody>
 
 
-                                </table>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -77,16 +84,16 @@
 
 <!--Trend Modal-->
 <div class="modal fade" id="trendModal" role="dialog" aria-labelledby="result" aria-hidden="true" ng-app="trendApp" ng-controller="trendCtrl">
-    <div class="modal-dialog" style="width:60%">
+    <div class="modal-dialog" style="width:80%">
         <div class="modal-content">
             <div class="modal-header">
-                <h4>Trend</h4>
+                <h3> Code:{{selectedItem.KPI_CODE}}, SubCode:{{selectedItem.KPI_SUB_CODE}}</h3>
             </div>
 
             <div class="modal-body">
 
                 <div class="row text-center">
-                    <div id="chart1" style="width: 800px;height:400px;">
+                    <div id="chart1" style="width: 1200px;height:400px;">
 
                     </div>
 
@@ -131,7 +138,7 @@
         $scope.showTrend = function (history, index)
         {
             $("#trendModal").modal("show");
-            debugger;
+            //debugger;
             var appElement = document.querySelector('[ng-controller=trendCtrl]');
             var scope = angular.element(appElement).scope();
             scope.selectedItem = history;
@@ -213,17 +220,38 @@
 
             var option = {
                 title: {
-                    text: 'Trend Chart'
+                    text: 'Trend Chart',
+                    x: 'center',
+                    align: 'right'
                 },
-                tooltip: {},
+                tooltip: { trigger: 'axis' },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        dataZoom: { yAsisIndex: 'none' },
+                        dataView: { readOnly: false },
+                        magicType: { type: ['line', 'bar'] },
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
                 legend: {
-                    data: ['trend', 'target']
+                    data: ['trend', 'target'],
+                    x: 'left'
                 },
                 xAxis: {
-                    
-                    data: []
+                    type:'category',
+                    data: [],
+                    axisLabel: {
+                        formatter: function (value, idx) {
+                            return idx == 0 ? value : value.substr(5);
+                        }
+                    }
                 },
-                yAxis: {},
+                yAxis: {
+                    name: 'Qty',
+                    type: 'value'
+                },
                 series: [{
                     name: 'trend',
                     type: 'line',
@@ -251,7 +279,7 @@
                 success: function (obj) {
                     if (obj.Success)
                     {
-                        debugger;
+                        //debugger;
                         myChart.hideLoading();
                         myChart.setOption({
                             xAxis: {

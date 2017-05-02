@@ -20,5 +20,9 @@ namespace CHubModel.ExtensionModel
         public Nullable<System.DateTime> HIGHLIGHT_DATE { get; set; }
 
         public string DESC { get; set; }
+
+        public int WEEK { get; set; }
+
+        public string VALUE_COLOR { get; set; }
     }
 }
