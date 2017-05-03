@@ -17,12 +17,16 @@ namespace CHubDAL
         public DB_KPI_HISTORY_DAL(CHubEntities db)
             : base(db) { }
 
-        public List<string> GetDistinctKPICode(string kpiGroup)
+        public List<ExDBKPICode> GetDistinctKPICode(string kpiGroup)
         {
             var codeList = (from a in db.DB_KPI_HISTORY
                             join b in db.DB_KPI on new { a.KPI_CODE, a.KPI_SUB_CODE } equals new { b.KPI_CODE, b.KPI_SUB_CODE }
+                            join c in db.DB_KPI_CODE on b.KPI_CODE equals c.KPI_CODE
                             where b.KPI_GROUP == kpiGroup
-                            select a.KPI_CODE
+                            select new ExDBKPICode {
+                                KPI_CODE = a.KPI_CODE,
+                                KPI_CODE_DESC = c.KPI_CODE_DESC
+                            }
                         );
             if (codeList.Count() == 0)
                 return null;
@@ -30,7 +34,7 @@ namespace CHubDAL
         }
 
 
-        public List<ExDBKPIHistory> GetLatestHistory(List<string> codeList, string kpiGroup)
+        public List<ExDBKPIHistory> GetLatestHistory(List<ExDBKPICode> codeList, string kpiGroup)
         {
             if (codeList == null || codeList.Count == 0)
                 return null;
@@ -41,7 +45,7 @@ namespace CHubDAL
                 var dateList = (from a in db.DB_KPI_HISTORY
                                 join b in db.DB_KPI on new { a.KPI_CODE, a.KPI_SUB_CODE } equals new { b.KPI_CODE, b.KPI_SUB_CODE }
                                 where b.KPI_GROUP == kpiGroup
-                                && a.KPI_CODE==item
+                                && a.KPI_CODE==item.KPI_CODE
                                 select a.KPI_DATE
                         );
                 if (dateList.Count() == 0)
@@ -52,7 +56,7 @@ namespace CHubDAL
                               join b in db.DB_KPI on new { a.KPI_CODE, a.KPI_SUB_CODE } equals new { b.KPI_CODE, b.KPI_SUB_CODE }
                               where b.KPI_GROUP == kpiGroup
                               && a.KPI_DATE == maxDate
-                              && a.KPI_CODE==item
+                              && a.KPI_CODE==item.KPI_CODE
                               select new ExDBKPIHistory
                               {
                                   KPI_DATE = a.KPI_DATE,

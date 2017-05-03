@@ -11,7 +11,7 @@
 
         <ul class="nav nav-pills" role="tablist">
             <li role="presentation" ng-class="{active:$index==0}" ng-repeat="kg in kpiGroupArray track by kg.KPI_GROUP">
-                <a href="#group{{$index}}" role="tab" data-toggle="tab" ng-click="tabClick(kg,$index)">{{kg.KPI_GROUP}}</a>
+                <a href="#group{{$index}}" role="tab" data-toggle="tab" ng-click="tabClick(kg,$index)">{{kg.GROUP_DESC_SHORT}}</a>
             </li>
         </ul>
 
@@ -32,7 +32,7 @@
 
                             <div class="col-md-6" ng-repeat="t in latestHistoryArray[$index]">
                                 <div class="panel panel-default">
-                                    <div class="panel-heading" style="background-color:silver"><b>{{t.KPI_CODE}}</b></div>
+                                    <div class="panel-heading" style="background-color:silver"><b>{{t.kpiCode.KPI_CODE_DESC}}</b></div>
                                     <table class="table table-bordered table-condensed">
                                         <thead>
                                             <tr>
@@ -169,21 +169,21 @@
                     if (obj.Success) {
                         //debugger;
                         var history = obj.Data.History;
-                        var group = obj.Data.Group;
+                        var groupGot = obj.Data.Group;
                         //$scope.latestHistoryArray[index] = obj.Data.History;
                         $scope.historyGot[index] = true;
-                        if (group == null || history == null) {
+                        if (groupGot == null || history == null) {
                             $scope.latestHistoryArray[index] = null;
                             return;
                         }
 
                         var tabData = [];
-                        for (var i = 0; i < group.length; i++) {
-                            var codeData = { KPI_CODE: '', array: [] };
-                            codeData.KPI_CODE = group[i];
+                        for (var i = 0; i < groupGot.length; i++) {
+                            var codeData = { kpiCode: {}, array: [] };
+                            codeData.kpiCode = groupGot[i];
                             codeData.array = [];
                             for (var j = 0; j < history.length; j++) {
-                                if (history[j].KPI_CODE == codeData.KPI_CODE)
+                                if (history[j].KPI_CODE == codeData.kpiCode.KPI_CODE)
                                     codeData.array.push(history[j]);
                             }
                             tabData.push(codeData);

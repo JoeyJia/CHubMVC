@@ -22,12 +22,12 @@ namespace CHubBLL
             dal = new DB_KPI_HISTORY_DAL(db);
         }
 
-        public List<ExDBKPIHistory> GetLatestHistory(List<string> codeList, string kpiGroup)
+        public List<ExDBKPIHistory> GetLatestHistory(List<ExDBKPICode> codeList, string kpiGroup)
         {
             return dal.GetLatestHistory(codeList, kpiGroup);
         }
 
-        public List<string> GetDistinctKPICode(string kpiGroup)
+        public List<ExDBKPICode> GetDistinctKPICode(string kpiGroup)
         {
             return dal.GetDistinctKPICode(kpiGroup);
         }

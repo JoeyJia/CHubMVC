@@ -46,7 +46,7 @@ namespace CHubMVC.Controllers
             try
             {
                 DB_KPI_HISTORY_BLL hBLL = new DB_KPI_HISTORY_BLL();
-                List<string> codeList = hBLL.GetDistinctKPICode(kpiGroup);
+                List<ExDBKPICode> codeList = hBLL.GetDistinctKPICode(kpiGroup);
 
                 List<ExDBKPIHistory> result = hBLL.GetLatestHistory(codeList,kpiGroup);
                 
@@ -114,6 +114,10 @@ namespace CHubMVC.Controllers
         #region private function part
         private string GetKPIValueColor(ExDBKPIHistory data)
         {
+            if (data.KPI_TARGET == null)
+                return null;
+            if (data.IND_Y == null)
+                return null;
             //less is good 
             if (data.IND_Y > data.KPI_TARGET)
             {

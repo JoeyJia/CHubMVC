@@ -18,7 +18,7 @@ namespace CHubDAL
 
         public List<DB_KPI_GROUP> GetKPIGroups()
         {
-            return db.DB_KPI_GROUP.Where(a => a.ACTIVEIND == CHubConstValues.IndY).ToList();
+            return db.DB_KPI_GROUP.Where(a => a.ACTIVEIND == CHubConstValues.IndY).OrderBy(a=>a.GROUP_DESC_SHORT).ToList();
         }
 
     }
