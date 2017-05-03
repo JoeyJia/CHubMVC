@@ -113,7 +113,10 @@
                         expandIcon: "glyphicon glyphicon-chevron-right",
                         highlightSelected: true,
                         enableLinks: true,
-                        levels: 1
+                        levels: 1,
+                        onNodeSelected: function (event, data) {
+                            $('#tree').treeview('expandNode', [data.nodeId, { silent: true}]);
+                        }
                     });
                 }
             });

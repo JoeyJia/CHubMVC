@@ -40,12 +40,13 @@
                                                 <th style="">index</th>*@
                                                 <th style="">Week</th>
                                                 <th style="">Date</th>
-                                                <th style="">item</th>
+                                                <th style="">Description</th>
+                                                
                                                 <th style="">Act.</th>
                                                 <th style="">Target</th>
                                                 <th style="">Note</th>
                                                 <th style="">Owner</th>
-                                                <th style="">Description</th>
+                                                <th style="">item</th>
                                                 <th style="">Trend</th>
                                             </tr>
                                         </thead>
@@ -55,12 +56,13 @@
                                                 <td>{{$index+1}}</td>*@
                                                 <td>{{h.WEEK}}</td>
                                                 <td>{{h.KPI_DATE | date:'yyyy-MM-dd'}}</td>
-                                                <td>{{h.KPI_SUB_CODE}}</td>
+                                                <td>{{h.DESC}}</td>
+                                                
                                                 <td ng-style="{backgroundColor:h.VALUE_COLOR}">{{h.KPI_VALUE}}</td>
                                                 <td>{{h.KPI_TARGET}}</td>
                                                 <td>{{h.NOTE}}</td>
-                                                <td>{{h.OWNER_HIGHLIGHT}}</td>
-                                                <td>{{h.DESC}}</td>
+                                                <td>{{h.KPI_OWNER}}</td>
+                                                <td>{{h.KPI_SUB_CODE}}</td>
                                                 <td><a href="javascript:void(0)" title="Trend" class="trendBtn" ng-click="showTrend(h,$parent.$index)"><span class="glyphicon glyphicon-stats"></span></a></td>
                                             </tr>
                                         </tbody>
@@ -236,7 +238,7 @@
                     }
                 },
                 legend: {
-                    data: ['trend', 'target'],
+                    data: ['value', 'target'],
                     x: 'left'
                 },
                 xAxis: {
@@ -253,7 +255,7 @@
                     type: 'value'
                 },
                 series: [{
-                    name: 'trend',
+                    name: 'value',
                     type: 'line',
                     data: []
                 },
@@ -286,7 +288,7 @@
                                 data: obj.Data.kpiDates
                             },
                             series: [
-                                { name: 'trend', data: obj.Data.kpiValues },
+                                { name: 'value', data: obj.Data.kpiValues },
                                 { name: 'target', data: obj.Data.kpiTarget }]
                         });
                     }
