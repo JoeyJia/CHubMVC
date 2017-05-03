@@ -306,6 +306,8 @@
     <Content Include="Views\ITT\Index.cshtml" />
     <Content Include="Views\ITT\EasyQuery.cshtml" />
     <Content Include="Views\KPI\Index.cshtml" />
+    <Content Include="Template\ITT_cust_load_template_v1.xlsx" />
+    <Content Include="Template\ITT_Tran_Load_template_v1.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
