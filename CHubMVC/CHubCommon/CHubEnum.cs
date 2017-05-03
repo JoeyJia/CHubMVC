@@ -44,7 +44,8 @@ namespace CHubCommon
             tcmnt,
             tcinq,
             wbentry,
-            ittezinq
+            ittezinq,
+            cgldb
         }
 
         public enum OrderStatusEnum
