@@ -113,6 +113,9 @@
         <EntityTypeShape EntityType="CHubDBModel.DB_KPI_GROUP" Width="1.5" PointX="30.375" PointY="1.5" />
         <EntityTypeShape EntityType="CHubDBModel.DB_KPI_HISTORY" Width="1.5" PointX="30.375" PointY="4.75" />
         <AssociationConnector Association="CHubDBModel.DB_KPI_R01" />
+        <EntityTypeShape EntityType="CHubDBModel.DB_KPI_CODE" Width="1.5" PointX="30.375" PointY="8.875" />
+        <AssociationConnector Association="CHubDBModel.DB_KPI_HISTORY_R01" />
+        <AssociationConnector Association="CHubDBModel.DB_KPI_R02" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -12,27 +12,19 @@ namespace CHubDBEntity
     using System;
     using System.Collections.Generic;
     
-    public partial class DB_KPI
+    public partial class DB_KPI_CODE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public DB_KPI()
+        public DB_KPI_CODE()
         {
-            this.DB_KPI_HISTORY = new HashSet<DB_KPI_HISTORY>();
+            this.DB_KPI = new HashSet<DB_KPI>();
         }
     
-        public string KPI_GROUP { get; set; }
         public string KPI_CODE { get; set; }
-        public string KPI_SUB_CODE { get; set; }
-        public string KPI_DESC { get; set; }
-        public Nullable<decimal> KPI_TARGET { get; set; }
-        public Nullable<decimal> IND_Y { get; set; }
-        public string KPI_OWNER { get; set; }
-        public string NOTE { get; set; }
+        public string KPI_CODE_DESC { get; set; }
         public string ACTIVEIND { get; set; }
     
-        public virtual DB_KPI_GROUP DB_KPI_GROUP { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DB_KPI_HISTORY> DB_KPI_HISTORY { get; set; }
-        public virtual DB_KPI_CODE DB_KPI_CODE { get; set; }
+        public virtual ICollection<DB_KPI> DB_KPI { get; set; }
     }
 }

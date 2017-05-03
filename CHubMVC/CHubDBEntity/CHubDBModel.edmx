@@ -224,6 +224,14 @@
           <Property Name="NOTE" Type="varchar2" MaxLength="50" />
           <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" />
         </EntityType>
+        <EntityType Name="DB_KPI_CODE">
+          <Key>
+            <PropertyRef Name="KPI_CODE" />
+          </Key>
+          <Property Name="KPI_CODE" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="KPI_CODE_DESC" Type="varchar2" MaxLength="60" Nullable="false" />
+          <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
+        </EntityType>
         <EntityType Name="DB_KPI_GROUP">
           <Key>
             <PropertyRef Name="KPI_GROUP" />
@@ -231,6 +239,7 @@
           <Property Name="KPI_GROUP" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="KPI_GROUP_DESC" Type="varchar2" MaxLength="2048" />
           <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="GROUP_DESC_SHORT" Type="varchar2" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="DB_KPI_HISTORY">
           <Key>
@@ -1424,6 +1433,7 @@ warning 6002: The table/view 'GWAPP.V_TC_MDM_ALL' does not have a primary key de
           <Property Name="FLEX2" Type="varchar2" MaxLength="100" />
           <Property Name="FLEX3" Type="varchar2" MaxLength="100" />
           <Property Name="REMOTE_CREATE_DATE" Type="date" Nullable="false" />
+          <Property Name="RECORD_DATE" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.V_TC_PART_HS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1456,6 +1466,7 @@ warning 6002: The table/view 'GWAPP.V_TC_PART_HS' does not have a primary key de
           <Property Name="FLEX1" Type="varchar2" MaxLength="100" />
           <Property Name="FLEX2" Type="varchar2" MaxLength="100" />
           <Property Name="FLEX3" Type="varchar2" MaxLength="100" />
+          <Property Name="RECORD_DATE" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.V_USER_NAV_ALL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1678,6 +1689,20 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="DB_KPI_HISTORY_R01">
+          <End Role="DB_KPI" Type="Self.DB_KPI" Multiplicity="1" />
+          <End Role="DB_KPI_HISTORY" Type="Self.DB_KPI_HISTORY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DB_KPI">
+              <PropertyRef Name="KPI_CODE" />
+              <PropertyRef Name="KPI_SUB_CODE" />
+            </Principal>
+            <Dependent Role="DB_KPI_HISTORY">
+              <PropertyRef Name="KPI_CODE" />
+              <PropertyRef Name="KPI_SUB_CODE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="DB_KPI_R01">
           <End Role="DB_KPI_GROUP" Type="Self.DB_KPI_GROUP" Multiplicity="1" />
           <End Role="DB_KPI" Type="Self.DB_KPI" Multiplicity="*" />
@@ -1687,6 +1712,18 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Principal>
             <Dependent Role="DB_KPI">
               <PropertyRef Name="KPI_GROUP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DB_KPI_R02">
+          <End Role="DB_KPI_CODE" Type="Self.DB_KPI_CODE" Multiplicity="1" />
+          <End Role="DB_KPI" Type="Self.DB_KPI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DB_KPI_CODE">
+              <PropertyRef Name="KPI_CODE" />
+            </Principal>
+            <Dependent Role="DB_KPI">
+              <PropertyRef Name="KPI_CODE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1762,7 +1799,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0018775">
+        <Association Name="SYS_C0019452">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1891,6 +1928,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="APP_WH" EntityType="Self.APP_WH" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="APP_WORKSPACE" EntityType="Self.APP_WORKSPACE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="DB_KPI" EntityType="Self.DB_KPI" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="DB_KPI_CODE" EntityType="Self.DB_KPI_CODE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="DB_KPI_GROUP" EntityType="Self.DB_KPI_GROUP" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="DB_KPI_HISTORY" EntityType="Self.DB_KPI_HISTORY" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_CUST_LOAD" EntityType="Self.ITT_CUST_LOAD" Schema="GWAPP" store:Type="Tables" />
@@ -2585,7 +2623,8 @@ FROM "GWAPP"."V_TC_IMPORT_WITH_HS" "V_TC_IMPORT_WITH_HS"</DefiningQuery>
 "V_TC_MDM_ALL"."FLEX1" AS "FLEX1", 
 "V_TC_MDM_ALL"."FLEX2" AS "FLEX2", 
 "V_TC_MDM_ALL"."FLEX3" AS "FLEX3", 
-"V_TC_MDM_ALL"."REMOTE_CREATE_DATE" AS "REMOTE_CREATE_DATE"
+"V_TC_MDM_ALL"."REMOTE_CREATE_DATE" AS "REMOTE_CREATE_DATE", 
+"V_TC_MDM_ALL"."RECORD_DATE" AS "RECORD_DATE"
 FROM "GWAPP"."V_TC_MDM_ALL" "V_TC_MDM_ALL"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="V_TC_PART_HS" EntityType="Self.V_TC_PART_HS" store:Type="Views" store:Schema="GWAPP">
@@ -2611,7 +2650,8 @@ FROM "GWAPP"."V_TC_MDM_ALL" "V_TC_MDM_ALL"</DefiningQuery>
 "V_TC_PART_HS"."NOTE3" AS "NOTE3", 
 "V_TC_PART_HS"."FLEX1" AS "FLEX1", 
 "V_TC_PART_HS"."FLEX2" AS "FLEX2", 
-"V_TC_PART_HS"."FLEX3" AS "FLEX3"
+"V_TC_PART_HS"."FLEX3" AS "FLEX3", 
+"V_TC_PART_HS"."RECORD_DATE" AS "RECORD_DATE"
 FROM "GWAPP"."V_TC_PART_HS" "V_TC_PART_HS"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="V_USER_NAV_ALL" EntityType="Self.V_USER_NAV_ALL" store:Type="Views" store:Schema="GWAPP">
@@ -2703,8 +2743,16 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="APP_USERS" EntitySet="APP_USERS" />
             <End Role="APP_USERS1" EntitySet="APP_USERS" />
           </AssociationSet>
+          <AssociationSet Name="DB_KPI_HISTORY_R01" Association="Self.DB_KPI_HISTORY_R01">
+            <End Role="DB_KPI" EntitySet="DB_KPI" />
+            <End Role="DB_KPI_HISTORY" EntitySet="DB_KPI_HISTORY" />
+          </AssociationSet>
           <AssociationSet Name="DB_KPI_R01" Association="Self.DB_KPI_R01">
             <End Role="DB_KPI_GROUP" EntitySet="DB_KPI_GROUP" />
+            <End Role="DB_KPI" EntitySet="DB_KPI" />
+          </AssociationSet>
+          <AssociationSet Name="DB_KPI_R02" Association="Self.DB_KPI_R02">
+            <End Role="DB_KPI_CODE" EntitySet="DB_KPI_CODE" />
             <End Role="DB_KPI" EntitySet="DB_KPI" />
           </AssociationSet>
           <AssociationSet Name="ITT_SHIPPING_D_R01" Association="Self.ITT_SHIPPING_D_R01">
@@ -2731,7 +2779,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
             <End Role="M_PART" EntitySet="M_PART" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0018775" Association="Self.SYS_C0018775">
+          <AssociationSet Name="SYS_C0019452" Association="Self.SYS_C0019452">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -3784,6 +3832,15 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="DB_KPI_GROUP" EntitySet="DB_KPI_GROUP" />
             <End Role="DB_KPI" EntitySet="DB_KPI" />
           </AssociationSet>
+          <EntitySet Name="DB_KPI_CODE" EntityType="CHubDBModel.DB_KPI_CODE" />
+          <AssociationSet Name="DB_KPI_HISTORY_R01" Association="CHubDBModel.DB_KPI_HISTORY_R01">
+            <End Role="DB_KPI" EntitySet="DB_KPI" />
+            <End Role="DB_KPI_HISTORY" EntitySet="DB_KPI_HISTORY" />
+          </AssociationSet>
+          <AssociationSet Name="DB_KPI_R02" Association="CHubDBModel.DB_KPI_R02">
+            <End Role="DB_KPI_CODE" EntitySet="DB_KPI_CODE" />
+            <End Role="DB_KPI" EntitySet="DB_KPI" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -4206,6 +4263,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="FLEX2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="FLEX3" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="REMOTE_CREATE_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="RECORD_DATE" Type="DateTime" />
         </EntityType>
         <EntityType Name="V_TC_PART_HS">
           <Key>
@@ -4236,6 +4294,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="FLEX1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="FLEX2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="FLEX3" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="RECORD_DATE" Type="DateTime" />
         </EntityType>
         <Association Name="TC_PART_CATEGORY_STG_R02">
           <End Type="CHubDBModel.TC_PART_CATEGORY" Role="TC_PART_CATEGORY" Multiplicity="0..1" />
@@ -4814,6 +4873,8 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="NOTE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ACTIVEIND" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="DB_KPI_GROUP" Relationship="CHubDBModel.DB_KPI_R01" FromRole="DB_KPI" ToRole="DB_KPI_GROUP" />
+          <NavigationProperty Name="DB_KPI_HISTORY" Relationship="CHubDBModel.DB_KPI_HISTORY_R01" FromRole="DB_KPI" ToRole="DB_KPI_HISTORY" />
+          <NavigationProperty Name="DB_KPI_CODE" Relationship="CHubDBModel.DB_KPI_R02" FromRole="DB_KPI" ToRole="DB_KPI_CODE" />
         </EntityType>
         <EntityType Name="DB_KPI_GROUP">
           <Key>
@@ -4823,6 +4884,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="KPI_GROUP_DESC" Type="String" MaxLength="2048" FixedLength="false" Unicode="false" />
           <Property Name="ACTIVEIND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="DB_KPI" Relationship="CHubDBModel.DB_KPI_R01" FromRole="DB_KPI_GROUP" ToRole="DB_KPI" />
+          <Property Name="GROUP_DESC_SHORT" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="DB_KPI_HISTORY">
           <Key>
@@ -4840,6 +4902,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="NOTE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="OWNER_HIGHLIGHT" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
           <Property Name="HIGHLIGHT_DATE" Type="DateTime" />
+          <NavigationProperty Name="DB_KPI" Relationship="CHubDBModel.DB_KPI_HISTORY_R01" FromRole="DB_KPI_HISTORY" ToRole="DB_KPI" />
         </EntityType>
         <Association Name="DB_KPI_R01">
           <End Type="CHubDBModel.DB_KPI_GROUP" Role="DB_KPI_GROUP" Multiplicity="1" />
@@ -4850,6 +4913,41 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             </Principal>
             <Dependent Role="DB_KPI">
               <PropertyRef Name="KPI_GROUP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DB_KPI_CODE">
+          <Key>
+            <PropertyRef Name="KPI_CODE" />
+          </Key>
+          <Property Name="KPI_CODE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="KPI_CODE_DESC" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVEIND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DB_KPI" Relationship="CHubDBModel.DB_KPI_R02" FromRole="DB_KPI_CODE" ToRole="DB_KPI" />
+        </EntityType>
+        <Association Name="DB_KPI_HISTORY_R01">
+          <End Type="CHubDBModel.DB_KPI" Role="DB_KPI" Multiplicity="1" />
+          <End Type="CHubDBModel.DB_KPI_HISTORY" Role="DB_KPI_HISTORY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DB_KPI">
+              <PropertyRef Name="KPI_CODE" />
+              <PropertyRef Name="KPI_SUB_CODE" />
+            </Principal>
+            <Dependent Role="DB_KPI_HISTORY">
+              <PropertyRef Name="KPI_CODE" />
+              <PropertyRef Name="KPI_SUB_CODE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DB_KPI_R02">
+          <End Type="CHubDBModel.DB_KPI_CODE" Role="DB_KPI_CODE" Multiplicity="1" />
+          <End Type="CHubDBModel.DB_KPI" Role="DB_KPI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DB_KPI_CODE">
+              <PropertyRef Name="KPI_CODE" />
+            </Principal>
+            <Dependent Role="DB_KPI">
+              <PropertyRef Name="KPI_CODE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5643,6 +5741,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="V_TC_MDM_ALL">
             <EntityTypeMapping TypeName="CHubDBModel.V_TC_MDM_ALL">
               <MappingFragment StoreEntitySet="V_TC_MDM_ALL">
+                <ScalarProperty Name="RECORD_DATE" ColumnName="RECORD_DATE" />
                 <ScalarProperty Name="REMOTE_CREATE_DATE" ColumnName="REMOTE_CREATE_DATE" />
                 <ScalarProperty Name="FLEX3" ColumnName="FLEX3" />
                 <ScalarProperty Name="FLEX2" ColumnName="FLEX2" />
@@ -5674,6 +5773,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="V_TC_PART_HS">
             <EntityTypeMapping TypeName="CHubDBModel.V_TC_PART_HS">
               <MappingFragment StoreEntitySet="V_TC_PART_HS">
+                <ScalarProperty Name="RECORD_DATE" ColumnName="RECORD_DATE" />
                 <ScalarProperty Name="FLEX3" ColumnName="FLEX3" />
                 <ScalarProperty Name="FLEX2" ColumnName="FLEX2" />
                 <ScalarProperty Name="FLEX1" ColumnName="FLEX1" />
@@ -6241,6 +6341,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="DB_KPI_GROUP">
             <EntityTypeMapping TypeName="CHubDBModel.DB_KPI_GROUP">
               <MappingFragment StoreEntitySet="DB_KPI_GROUP">
+                <ScalarProperty Name="GROUP_DESC_SHORT" ColumnName="GROUP_DESC_SHORT" />
                 <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
                 <ScalarProperty Name="KPI_GROUP_DESC" ColumnName="KPI_GROUP_DESC" />
                 <ScalarProperty Name="KPI_GROUP" ColumnName="KPI_GROUP" />
@@ -6260,6 +6361,15 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="KPI_SUB_CODE" ColumnName="KPI_SUB_CODE" />
                 <ScalarProperty Name="KPI_CODE" ColumnName="KPI_CODE" />
                 <ScalarProperty Name="KPI_DATE" ColumnName="KPI_DATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DB_KPI_CODE">
+            <EntityTypeMapping TypeName="CHubDBModel.DB_KPI_CODE">
+              <MappingFragment StoreEntitySet="DB_KPI_CODE">
+                <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
+                <ScalarProperty Name="KPI_CODE_DESC" ColumnName="KPI_CODE_DESC" />
+                <ScalarProperty Name="KPI_CODE" ColumnName="KPI_CODE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

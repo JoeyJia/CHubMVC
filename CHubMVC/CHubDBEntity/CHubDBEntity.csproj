@@ -138,6 +138,9 @@
     <Compile Include="DB_KPI.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DB_KPI_CODE.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DB_KPI_GROUP.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>

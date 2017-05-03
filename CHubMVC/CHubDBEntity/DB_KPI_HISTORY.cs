@@ -24,5 +24,7 @@ namespace CHubDBEntity
         public string NOTE { get; set; }
         public string OWNER_HIGHLIGHT { get; set; }
         public Nullable<System.DateTime> HIGHLIGHT_DATE { get; set; }
+    
+        public virtual DB_KPI DB_KPI { get; set; }
     }
 }

@@ -24,7 +24,8 @@ namespace CHubDBEntity
         public string KPI_GROUP { get; set; }
         public string KPI_GROUP_DESC { get; set; }
         public string ACTIVEIND { get; set; }
-    
+        public string GROUP_DESC_SHORT { get; set; }
+
         [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DB_KPI> DB_KPI { get; set; }

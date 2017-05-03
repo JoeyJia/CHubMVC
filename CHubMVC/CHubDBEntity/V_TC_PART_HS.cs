@@ -36,5 +36,6 @@ namespace CHubDBEntity
         public string FLEX1 { get; set; }
         public string FLEX2 { get; set; }
         public string FLEX3 { get; set; }
+        public Nullable<System.DateTime> RECORD_DATE { get; set; }
     }
 }
