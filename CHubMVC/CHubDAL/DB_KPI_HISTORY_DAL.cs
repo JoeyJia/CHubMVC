@@ -38,44 +38,27 @@ namespace CHubDAL
         {
             if (codeList == null || codeList.Count == 0)
                 return null;
-            List<ExDBKPIHistory> result = new List<ExDBKPIHistory>();
+            var result = (
+                    from a in db.DB_KPI_HISTORY
+                    join b in db.DB_KPI on new { a.KPI_CODE, a.KPI_SUB_CODE } equals new { b.KPI_CODE, b.KPI_SUB_CODE }
+                    where b.KPI_GROUP == kpiGroup
+                    select new ExDBKPIHistory
+                    {
+                        KPI_DATE = a.KPI_DATE,
+                        KPI_CODE = a.KPI_CODE,
+                        KPI_SUB_CODE = a.KPI_SUB_CODE,
+                        KPI_VALUE = a.KPI_VALUE,
+                        KPI_TARGET = a.KPI_TARGET,
+                        IND_Y = a.IND_Y,
+                        KPI_OWNER = a.KPI_OWNER,
+                        NOTE = a.NOTE,
+                        OWNER_HIGHLIGHT = a.OWNER_HIGHLIGHT,
+                        HIGHLIGHT_DATE = a.HIGHLIGHT_DATE,
+                        DESC = b.KPI_DESC
+                    }
+                    ).GroupBy(r => new { r.KPI_CODE, r.KPI_SUB_CODE }).Select(g => g.OrderByDescending(x => x.KPI_DATE).FirstOrDefault());
 
-            foreach (var item in codeList)
-            {
-                var dateList = (from a in db.DB_KPI_HISTORY
-                                join b in db.DB_KPI on new { a.KPI_CODE, a.KPI_SUB_CODE } equals new { b.KPI_CODE, b.KPI_SUB_CODE }
-                                where b.KPI_GROUP == kpiGroup
-                                && a.KPI_CODE==item.KPI_CODE
-                                select a.KPI_DATE
-                        );
-                if (dateList.Count() == 0)
-                    continue;
-                DateTime maxDate = dateList.Max();
-
-                var resultUnit = (from a in db.DB_KPI_HISTORY
-                              join b in db.DB_KPI on new { a.KPI_CODE, a.KPI_SUB_CODE } equals new { b.KPI_CODE, b.KPI_SUB_CODE }
-                              where b.KPI_GROUP == kpiGroup
-                              && a.KPI_DATE == maxDate
-                              && a.KPI_CODE==item.KPI_CODE
-                              select new ExDBKPIHistory
-                              {
-                                  KPI_DATE = a.KPI_DATE,
-                                  KPI_CODE = a.KPI_CODE,
-                                  KPI_SUB_CODE = a.KPI_SUB_CODE,
-                                  KPI_VALUE = a.KPI_VALUE,
-                                  KPI_TARGET = a.KPI_TARGET,
-                                  IND_Y = a.IND_Y,
-                                  KPI_OWNER = a.KPI_OWNER,
-                                  NOTE = a.NOTE,
-                                  OWNER_HIGHLIGHT = a.OWNER_HIGHLIGHT,
-                                  HIGHLIGHT_DATE = a.HIGHLIGHT_DATE,
-                                  DESC = b.KPI_DESC
-                              }
-                          );
-                result.AddRange(resultUnit.ToList());
-
-            }
-            return result;
+            return result.ToList();
         }
 
         public List<DB_KPI_HISTORY> GetTrendData(string code, string subCode)

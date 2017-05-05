@@ -94,7 +94,7 @@ namespace CHubMVC.Controllers
                 {
                     kpiDates.Add(h.KPI_DATE.ToString("yyyy/MM/dd"));
                     kpiValues.Add(h.KPI_VALUE);
-                    kpiTarget.Add(h.KPI_TARGET.Value);
+                    kpiTarget.Add(h.KPI_TARGET??0);
                 }
 
                 var obj = new
