@@ -293,7 +293,7 @@
                 }]
             };
 
-            myChart.setOption(option);
+            myChart.setOption(option);      
 
             myChart.showLoading();
             //Get data
@@ -326,6 +326,11 @@
                     alert(obj.responseText);
                 }
             });
+    //to handle resize page
+            window.onresize = function () {
+                $("#chart1").css('width', window.innerWidth * 0.8 * 0.95);
+                myChart.resize('auto', 'auto');
+            };
         };
 
     });
@@ -340,7 +345,7 @@
 <script>
     $(document).ready(function () {
        //base on percent to calulate char1 width
-        $("#chart1").css('width', window.innerWidth * 0.8 * 0.95);
+        $("#chart1").css('width', window.innerWidth * 0.8 * 0.95);   
     });
 
 </script>
