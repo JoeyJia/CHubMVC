@@ -29,6 +29,7 @@ namespace CHubDBEntity
         public string KPI_OWNER { get; set; }
         public string NOTE { get; set; }
         public string ACTIVEIND { get; set; }
+        public string PERCENT_KPI { get; set; }
     
         public virtual DB_KPI_GROUP DB_KPI_GROUP { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

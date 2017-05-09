@@ -223,6 +223,7 @@
           <Property Name="KPI_OWNER" Type="varchar2" MaxLength="20" />
           <Property Name="NOTE" Type="varchar2" MaxLength="50" />
           <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" />
+          <Property Name="PERCENT_KPI" Type="varchar2" MaxLength="1" />
         </EntityType>
         <EntityType Name="DB_KPI_CODE">
           <Key>
@@ -1170,6 +1171,8 @@ warning 6002: The table/view 'GWAPP.V_ITT_SHIPPING_ALLIN1' does not have a prima
           <Property Name="C_TARGET_S30" Type="number" Precision="38" Scale="0" />
           <Property Name="C_TARGET_S50" Type="number" Precision="38" Scale="0" />
           <Property Name="C_TARGET_S60" Type="number" Precision="38" Scale="0" />
+          <Property Name="C_TARGET_S20" Type="number" Precision="38" Scale="0" />
+          <Property Name="C_TARGET_S40" Type="number" Precision="38" Scale="0" />
           <Property Name="C_IND_G" Type="number" Precision="10" Scale="2" />
           <Property Name="C_IND_Y" Type="number" Precision="10" Scale="2" />
           <Property Name="C_ICON1" Type="varchar2" MaxLength="20" />
@@ -1185,6 +1188,8 @@ warning 6002: The table/view 'GWAPP.V_ITT_SHIPPING_ALLIN1' does not have a prima
           <Property Name="CP_CATEGORY2" Type="varchar2" MaxLength="20" />
           <Property Name="CP_CATEGORY3" Type="varchar2" MaxLength="20" />
           <Property Name="RATIO_SHIP2PORT" Type="number" Precision="38" Scale="0" />
+          <Property Name="RATIO_DO_RELEASE" Type="number" Precision="38" Scale="0" />
+          <Property Name="RATIO_DECLARE_ONTIME" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.V_ITT_SHIPPING_SMRY' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1799,7 +1804,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0019452">
+        <Association Name="SYS_C0020867">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2413,6 +2418,8 @@ FROM "GWAPP"."V_CHK_DURATION_MISSING" "V_CHK_DURATION_MISSING"</DefiningQuery>
 "V_ITT_SHIPPING_ALLIN1"."C_TARGET_S30" AS "C_TARGET_S30", 
 "V_ITT_SHIPPING_ALLIN1"."C_TARGET_S50" AS "C_TARGET_S50", 
 "V_ITT_SHIPPING_ALLIN1"."C_TARGET_S60" AS "C_TARGET_S60", 
+"V_ITT_SHIPPING_ALLIN1"."C_TARGET_S20" AS "C_TARGET_S20", 
+"V_ITT_SHIPPING_ALLIN1"."C_TARGET_S40" AS "C_TARGET_S40", 
 "V_ITT_SHIPPING_ALLIN1"."C_IND_G" AS "C_IND_G", 
 "V_ITT_SHIPPING_ALLIN1"."C_IND_Y" AS "C_IND_Y", 
 "V_ITT_SHIPPING_ALLIN1"."C_ICON1" AS "C_ICON1", 
@@ -2427,7 +2434,9 @@ FROM "GWAPP"."V_CHK_DURATION_MISSING" "V_CHK_DURATION_MISSING"</DefiningQuery>
 "V_ITT_SHIPPING_ALLIN1"."CP_CATEGORY1" AS "CP_CATEGORY1", 
 "V_ITT_SHIPPING_ALLIN1"."CP_CATEGORY2" AS "CP_CATEGORY2", 
 "V_ITT_SHIPPING_ALLIN1"."CP_CATEGORY3" AS "CP_CATEGORY3", 
-"V_ITT_SHIPPING_ALLIN1"."RATIO_SHIP2PORT" AS "RATIO_SHIP2PORT"
+"V_ITT_SHIPPING_ALLIN1"."RATIO_SHIP2PORT" AS "RATIO_SHIP2PORT", 
+"V_ITT_SHIPPING_ALLIN1"."RATIO_DO_RELEASE" AS "RATIO_DO_RELEASE", 
+"V_ITT_SHIPPING_ALLIN1"."RATIO_DECLARE_ONTIME" AS "RATIO_DECLARE_ONTIME"
 FROM "GWAPP"."V_ITT_SHIPPING_ALLIN1" "V_ITT_SHIPPING_ALLIN1"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="V_ITT_SHIPPING_SMRY" EntityType="Self.V_ITT_SHIPPING_SMRY" store:Type="Views" store:Schema="GWAPP">
@@ -2779,7 +2788,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
             <End Role="M_PART" EntitySet="M_PART" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0019452" Association="Self.SYS_C0019452">
+          <AssociationSet Name="SYS_C0020867" Association="Self.SYS_C0020867">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -4802,6 +4811,10 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="AVL_DATE" Type="DateTime" />
           <Property Name="SHIP_STATUS" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="COLOR_60" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="C_TARGET_S20" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="C_TARGET_S40" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="RATIO_DO_RELEASE" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="RATIO_DECLARE_ONTIME" Type="Decimal" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="ITT_PO">
           <Key>
@@ -4875,6 +4888,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <NavigationProperty Name="DB_KPI_GROUP" Relationship="CHubDBModel.DB_KPI_R01" FromRole="DB_KPI" ToRole="DB_KPI_GROUP" />
           <NavigationProperty Name="DB_KPI_HISTORY" Relationship="CHubDBModel.DB_KPI_HISTORY_R01" FromRole="DB_KPI" ToRole="DB_KPI_HISTORY" />
           <NavigationProperty Name="DB_KPI_CODE" Relationship="CHubDBModel.DB_KPI_R02" FromRole="DB_KPI" ToRole="DB_KPI_CODE" />
+          <Property Name="PERCENT_KPI" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="DB_KPI_GROUP">
           <Key>
@@ -6196,6 +6210,10 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="V_ITT_SHIPPING_ALLIN1">
             <EntityTypeMapping TypeName="CHubDBModel.V_ITT_SHIPPING_ALLIN1">
               <MappingFragment StoreEntitySet="V_ITT_SHIPPING_ALLIN1">
+                <ScalarProperty Name="RATIO_DECLARE_ONTIME" ColumnName="RATIO_DECLARE_ONTIME" />
+                <ScalarProperty Name="RATIO_DO_RELEASE" ColumnName="RATIO_DO_RELEASE" />
+                <ScalarProperty Name="C_TARGET_S40" ColumnName="C_TARGET_S40" />
+                <ScalarProperty Name="C_TARGET_S20" ColumnName="C_TARGET_S20" />
                 <ScalarProperty Name="COLOR_60" ColumnName="COLOR_60" />
                 <ScalarProperty Name="SHIP_STATUS" ColumnName="SHIP_STATUS" />
                 <ScalarProperty Name="AVL_DATE" ColumnName="AVL_DATE" />
@@ -6326,6 +6344,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="DB_KPI">
             <EntityTypeMapping TypeName="CHubDBModel.DB_KPI">
               <MappingFragment StoreEntitySet="DB_KPI">
+                <ScalarProperty Name="PERCENT_KPI" ColumnName="PERCENT_KPI" />
                 <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
                 <ScalarProperty Name="NOTE" ColumnName="NOTE" />
                 <ScalarProperty Name="KPI_OWNER" ColumnName="KPI_OWNER" />

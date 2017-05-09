@@ -86,5 +86,9 @@ namespace CHubDBEntity
         public Nullable<System.DateTime> AVL_DATE { get; set; }
         public string SHIP_STATUS { get; set; }
         public string COLOR_60 { get; set; }
+        public Nullable<decimal> C_TARGET_S20 { get; set; }
+        public Nullable<decimal> C_TARGET_S40 { get; set; }
+        public Nullable<decimal> RATIO_DO_RELEASE { get; set; }
+        public Nullable<decimal> RATIO_DECLARE_ONTIME { get; set; }
     }
 }
