@@ -20,6 +20,7 @@ namespace CHubModel.ExtensionModel
         public Nullable<System.DateTime> HIGHLIGHT_DATE { get; set; }
 
         public string DESC { get; set; }
+        public string PERCENT_KPI { get; set; }
 
         public int WEEK { get; set; }
 

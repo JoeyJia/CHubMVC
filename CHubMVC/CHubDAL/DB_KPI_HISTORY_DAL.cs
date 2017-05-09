@@ -54,7 +54,8 @@ namespace CHubDAL
                         NOTE = a.NOTE,
                         OWNER_HIGHLIGHT = a.OWNER_HIGHLIGHT,
                         HIGHLIGHT_DATE = a.HIGHLIGHT_DATE,
-                        DESC = b.KPI_DESC
+                        DESC = b.KPI_DESC,
+                        PERCENT_KPI = b.PERCENT_KPI
                     }
                     ).GroupBy(r => new { r.KPI_CODE, r.KPI_SUB_CODE }).Select(g => g.OrderByDescending(x => x.KPI_DATE).FirstOrDefault());
 

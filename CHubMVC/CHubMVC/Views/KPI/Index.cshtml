@@ -57,9 +57,9 @@
                                                 <td>{{h.WEEK}}</td>
                                                 <td>{{h.KPI_DATE | date:'yyyy-MM-dd'}}</td>
                                                 <td>{{h.DESC}}</td>
-                                                
-                                                <td ng-style="{backgroundColor:h.VALUE_COLOR}">{{h.KPI_VALUE}}</td>
-                                                <td>{{h.KPI_TARGET}}</td>
+
+                                                <td ng-style="{backgroundColor:h.VALUE_COLOR}">{{h.KPI_VALUE|actPercentFilter:h}}</td>
+                                                <td>{{h.KPI_TARGET |actPercentFilter:h}}</td>
                                                 <td>{{h.NOTE}}</td>
                                                 <td>{{h.KPI_OWNER}}</td>
                                                 <td>{{h.KPI_SUB_CODE}}</td>
@@ -110,12 +110,13 @@
 
 <script>
     
-    angular.module('kpiApp', []).controller('kpiCtrl', function ($scope, $http) {
+    var app = angular.module('kpiApp', [])
+    app.controller('kpiCtrl', function ($scope, $http) {
         $scope.kpiGroupArray = [];
         $scope.latestHistoryArray = [];
         $scope.historyGot = [];
 
-
+    
         $http.post("/KPI/GetKPIGroupList", null, null).then(
             function (obj) {
                 //debugger;
@@ -232,6 +233,17 @@
 
     });
 
+    app.filter('actPercentFilter', function () {
+        return function (obj1,obj2) {
+            //debugger;
+            if (obj2.PERCENT_KPI == 'Y') {
+                var valueStr = (obj1 * 100).toFixed(2).toString();
+                return valueStr + '%';
+            }
+            else
+                return obj1;
+        };
+    });
     //manual load app
     angular.bootstrap(document.getElementById("kpiBody"), ['kpiApp']);
 
