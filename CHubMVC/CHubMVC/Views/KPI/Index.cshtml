@@ -94,8 +94,9 @@
 
             <div class="modal-body">
 
-                <div class="row text-center">
-                    <div id="chart1" style="width: 1200px;height:400px;">
+                <div class="row">
+                    <!--width is calulated in ready function-->
+                    <div id="chart1" style="height:400px">
 
                     </div>
 
@@ -169,7 +170,7 @@
                     if (obj.Success) {
                         //debugger;
                         var history = obj.Data.History;
-                        var groupGot = obj.Data.Group;
+                        var groupGot = obj.Data.Group.sort(groupCompare);
                         //$scope.latestHistoryArray[index] = obj.Data.History;
                         $scope.historyGot[index] = true;
                         if (groupGot == null || history == null) {
@@ -214,7 +215,18 @@
             } else {
                 return 0;
             }
+        }
 
+        function groupCompare(obj1, obj2) {
+            var value1 = obj1.KPI_CODE_DESC;
+            var value2 = obj2.KPI_CODE_DESC;
+            if (value1 > value2) {
+                return 1;
+            } else if (value1 < value2) {
+                return -1;
+            } else {
+                return 0;
+            }
         }
 
 
@@ -256,7 +268,8 @@
                     x: 'left'
                 },
                 xAxis: {
-                    type:'category',
+                    type: 'category',
+                    boundaryGap: false,
                     data: [],
                     axisLabel: {
                         formatter: function (value, idx) {
@@ -325,6 +338,9 @@
 </script>
 
 <script>
-    
+    $(document).ready(function () {
+       //base on percent to calulate char1 width
+        $("#chart1").css('width', window.innerWidth * 0.8 * 0.95);
+    });
 
 </script>
