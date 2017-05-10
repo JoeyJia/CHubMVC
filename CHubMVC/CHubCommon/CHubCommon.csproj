@@ -78,6 +78,7 @@
     <Compile Include="Compare\PropertyCompare.cs" />
     <Compile Include="Date\DateHelper.cs" />
     <Compile Include="DomainAuth\DomainUserAuth.cs" />
+    <Compile Include="EmailHelper.cs" />
     <Compile Include="ExcelUtility\ExcelHelper.cs" />
     <Compile Include="ExcelUtility\NPOIExcelHelper.cs" />
     <Compile Include="Log\LogHelper.cs" />
