@@ -102,5 +102,9 @@ namespace CHubDBEntity
         public virtual DbSet<DB_KPI_GROUP> DB_KPI_GROUP { get; set; }
         public virtual DbSet<DB_KPI_HISTORY> DB_KPI_HISTORY { get; set; }
         public virtual DbSet<DB_KPI_CODE> DB_KPI_CODE { get; set; }
+        public virtual DbSet<EW_MESSAGE> EW_MESSAGE { get; set; }
+        public virtual DbSet<EW_MESSAGE_ATTACH> EW_MESSAGE_ATTACH { get; set; }
+        public virtual DbSet<EW_SCRIPT> EW_SCRIPT { get; set; }
+        public virtual DbSet<EW_LOG> EW_LOG { get; set; }
     }
 }

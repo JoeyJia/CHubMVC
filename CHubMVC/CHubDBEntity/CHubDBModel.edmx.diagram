@@ -116,6 +116,12 @@
         <EntityTypeShape EntityType="CHubDBModel.DB_KPI_CODE" Width="1.5" PointX="30.375" PointY="8.875" />
         <AssociationConnector Association="CHubDBModel.DB_KPI_HISTORY_R01" />
         <AssociationConnector Association="CHubDBModel.DB_KPI_R02" />
+        <EntityTypeShape EntityType="CHubDBModel.EW_MESSAGE" Width="1.5" PointX="30.375" PointY="31.25" />
+        <EntityTypeShape EntityType="CHubDBModel.EW_MESSAGE_ATTACH" Width="1.5" PointX="32.625" PointY="12.125" />
+        <EntityTypeShape EntityType="CHubDBModel.EW_SCRIPT" Width="1.5" PointX="30.375" PointY="12" />
+        <EntityTypeShape EntityType="CHubDBModel.EW_LOG" Width="1.5" PointX="30.375" PointY="15.75" />
+        <AssociationConnector Association="CHubDBModel.EW_MESSAGE_ATTACH_R01" />
+        <AssociationConnector Association="CHubDBModel.EW_MESSAGE_ATTACH_R02" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

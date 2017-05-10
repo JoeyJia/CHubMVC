@@ -147,6 +147,18 @@
     <Compile Include="DB_KPI_HISTORY.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EW_LOG.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EW_MESSAGE.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EW_MESSAGE_ATTACH.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EW_SCRIPT.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="G_PART_DESCRIPTION.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>

@@ -259,6 +259,60 @@
           <Property Name="OWNER_HIGHLIGHT" Type="varchar2" MaxLength="300" />
           <Property Name="HIGHLIGHT_DATE" Type="date" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.EW_LOG' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="EW_LOG">
+          <Key>
+            <PropertyRef Name="MESSAGE_ID" />
+            <PropertyRef Name="STATUS" />
+            <PropertyRef Name="LOG_DATE" />
+          </Key>
+          <Property Name="MESSAGE_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="STATUS" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="ERR_MSG" Type="varchar2" MaxLength="2000" />
+          <Property Name="LOG_DATE" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EW_MESSAGE">
+          <Key>
+            <PropertyRef Name="MESSAGE_ID" />
+          </Key>
+          <Property Name="MESSAGE_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="MESSAGE_SUBJECT" Type="varchar2" MaxLength="200" Nullable="false" />
+          <Property Name="TO_LIST" Type="varchar2" MaxLength="2000" Nullable="false" />
+          <Property Name="CC_LIST" Type="varchar2" MaxLength="2000" />
+          <Property Name="MESSAGE_TEXT1" Type="varchar2" MaxLength="500" />
+          <Property Name="MESSAGE_TEXT2" Type="varchar2" MaxLength="500" />
+          <Property Name="MESSAGE_TEXT3" Type="varchar2" MaxLength="500" />
+          <Property Name="MESSAGE_TEXT4" Type="varchar2" MaxLength="500" />
+          <Property Name="MESSAGE_TEXT5" Type="varchar2" MaxLength="500" />
+          <Property Name="MESSAGE_TEXT6" Type="varchar2" MaxLength="500" />
+          <Property Name="MESSAGE_TEXT7" Type="varchar2" MaxLength="500" />
+          <Property Name="MESSAGE_TEXT8" Type="varchar2" MaxLength="500" />
+          <Property Name="OWNER" Type="varchar2" MaxLength="20" />
+          <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EW_MESSAGE_ATTACH">
+          <Key>
+            <PropertyRef Name="MESSAGE_ID" />
+            <PropertyRef Name="SCRIPT_ID" />
+          </Key>
+          <Property Name="MESSAGE_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="SCRIPT_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="IN_CONTENT" Type="varchar2" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="EW_SCRIPT">
+          <Key>
+            <PropertyRef Name="SCRIPT_ID" />
+          </Key>
+          <Property Name="SCRIPT_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="SCRIPT_DESC" Type="varchar2" MaxLength="60" Nullable="false" />
+          <Property Name="SCRIPT_TEXT" Type="varchar2" MaxLength="4000" Nullable="false" />
+          <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="OWNER" Type="varchar2" MaxLength="20" />
+          <Property Name="CREATED_DATE" Type="date" />
+          <Property Name="EXPORT_FNAME" Type="varchar2" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="ITT_CUST_LOAD">
           <Key>
             <PropertyRef Name="LOAD_BATCH_TOKEN" />
@@ -1732,6 +1786,30 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="EW_MESSAGE_ATTACH_R01">
+          <End Role="EW_MESSAGE" Type="Self.EW_MESSAGE" Multiplicity="1" />
+          <End Role="EW_MESSAGE_ATTACH" Type="Self.EW_MESSAGE_ATTACH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EW_MESSAGE">
+              <PropertyRef Name="MESSAGE_ID" />
+            </Principal>
+            <Dependent Role="EW_MESSAGE_ATTACH">
+              <PropertyRef Name="MESSAGE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EW_MESSAGE_ATTACH_R02">
+          <End Role="EW_SCRIPT" Type="Self.EW_SCRIPT" Multiplicity="1" />
+          <End Role="EW_MESSAGE_ATTACH" Type="Self.EW_MESSAGE_ATTACH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EW_SCRIPT">
+              <PropertyRef Name="SCRIPT_ID" />
+            </Principal>
+            <Dependent Role="EW_MESSAGE_ATTACH">
+              <PropertyRef Name="SCRIPT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="ITT_SHIPPING_D_R01">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_D" Type="Self.ITT_SHIPPING_D" Multiplicity="*" />
@@ -1936,6 +2014,9 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="DB_KPI_CODE" EntityType="Self.DB_KPI_CODE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="DB_KPI_GROUP" EntityType="Self.DB_KPI_GROUP" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="DB_KPI_HISTORY" EntityType="Self.DB_KPI_HISTORY" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="EW_MESSAGE" EntityType="Self.EW_MESSAGE" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="EW_MESSAGE_ATTACH" EntityType="Self.EW_MESSAGE_ATTACH" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="EW_SCRIPT" EntityType="Self.EW_SCRIPT" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_CUST_LOAD" EntityType="Self.ITT_CUST_LOAD" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_EASY_QUERY_LOG" EntityType="Self.ITT_EASY_QUERY_LOG" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_PO" EntityType="Self.ITT_PO" Schema="GWAPP" store:Type="Tables" />
@@ -1958,6 +2039,14 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="TS_OR_DETAIL_STAGE" EntityType="Self.TS_OR_DETAIL_STAGE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TS_OR_HEADER" EntityType="Self.TS_OR_HEADER" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TS_OR_HEADER_STAGE" EntityType="Self.TS_OR_HEADER_STAGE" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="EW_LOG" EntityType="Self.EW_LOG" store:Type="Tables" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"EW_LOG"."MESSAGE_ID" AS "MESSAGE_ID", 
+"EW_LOG"."STATUS" AS "STATUS", 
+"EW_LOG"."ERR_MSG" AS "ERR_MSG", 
+"EW_LOG"."LOG_DATE" AS "LOG_DATE"
+FROM "GWAPP"."EW_LOG" "EW_LOG"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="ITT_EASY_WATCHING" EntityType="Self.ITT_EASY_WATCHING" store:Type="Tables" store:Schema="GWAPP">
             <DefiningQuery>SELECT 
 "ITT_EASY_WATCHING"."EASY_QUREY_TOKEN" AS "EASY_QUREY_TOKEN", 
@@ -2763,6 +2852,14 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <AssociationSet Name="DB_KPI_R02" Association="Self.DB_KPI_R02">
             <End Role="DB_KPI_CODE" EntitySet="DB_KPI_CODE" />
             <End Role="DB_KPI" EntitySet="DB_KPI" />
+          </AssociationSet>
+          <AssociationSet Name="EW_MESSAGE_ATTACH_R01" Association="Self.EW_MESSAGE_ATTACH_R01">
+            <End Role="EW_MESSAGE" EntitySet="EW_MESSAGE" />
+            <End Role="EW_MESSAGE_ATTACH" EntitySet="EW_MESSAGE_ATTACH" />
+          </AssociationSet>
+          <AssociationSet Name="EW_MESSAGE_ATTACH_R02" Association="Self.EW_MESSAGE_ATTACH_R02">
+            <End Role="EW_SCRIPT" EntitySet="EW_SCRIPT" />
+            <End Role="EW_MESSAGE_ATTACH" EntitySet="EW_MESSAGE_ATTACH" />
           </AssociationSet>
           <AssociationSet Name="ITT_SHIPPING_D_R01" Association="Self.ITT_SHIPPING_D_R01">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
@@ -3849,6 +3946,18 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <AssociationSet Name="DB_KPI_R02" Association="CHubDBModel.DB_KPI_R02">
             <End Role="DB_KPI_CODE" EntitySet="DB_KPI_CODE" />
             <End Role="DB_KPI" EntitySet="DB_KPI" />
+          </AssociationSet>
+          <EntitySet Name="EW_MESSAGE" EntityType="CHubDBModel.EW_MESSAGE" />
+          <EntitySet Name="EW_MESSAGE_ATTACH" EntityType="CHubDBModel.EW_MESSAGE_ATTACH" />
+          <EntitySet Name="EW_SCRIPT" EntityType="CHubDBModel.EW_SCRIPT" />
+          <EntitySet Name="EW_LOG" EntityType="CHubDBModel.EW_LOG" />
+          <AssociationSet Name="EW_MESSAGE_ATTACH_R01" Association="CHubDBModel.EW_MESSAGE_ATTACH_R01">
+            <End Role="EW_MESSAGE" EntitySet="EW_MESSAGE" />
+            <End Role="EW_MESSAGE_ATTACH" EntitySet="EW_MESSAGE_ATTACH" />
+          </AssociationSet>
+          <AssociationSet Name="EW_MESSAGE_ATTACH_R02" Association="CHubDBModel.EW_MESSAGE_ATTACH_R02">
+            <End Role="EW_SCRIPT" EntitySet="EW_SCRIPT" />
+            <End Role="EW_MESSAGE_ATTACH" EntitySet="EW_MESSAGE_ATTACH" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
@@ -4962,6 +5071,86 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             </Principal>
             <Dependent Role="DB_KPI">
               <PropertyRef Name="KPI_CODE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EW_MESSAGE">
+          <Key>
+            <PropertyRef Name="MESSAGE_ID" />
+          </Key>
+          <Property Name="MESSAGE_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MESSAGE_SUBJECT" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="TO_LIST" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="CC_LIST" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="MESSAGE_TEXT1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MESSAGE_TEXT2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MESSAGE_TEXT3" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MESSAGE_TEXT4" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MESSAGE_TEXT5" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MESSAGE_TEXT6" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MESSAGE_TEXT7" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MESSAGE_TEXT8" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="OWNER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVEIND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EW_MESSAGE_ATTACH" Relationship="CHubDBModel.EW_MESSAGE_ATTACH_R01" FromRole="EW_MESSAGE" ToRole="EW_MESSAGE_ATTACH" />
+        </EntityType>
+        <EntityType Name="EW_MESSAGE_ATTACH">
+          <Key>
+            <PropertyRef Name="MESSAGE_ID" />
+            <PropertyRef Name="SCRIPT_ID" />
+          </Key>
+          <Property Name="MESSAGE_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SCRIPT_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVEIND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="IN_CONTENT" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EW_MESSAGE" Relationship="CHubDBModel.EW_MESSAGE_ATTACH_R01" FromRole="EW_MESSAGE_ATTACH" ToRole="EW_MESSAGE" />
+          <NavigationProperty Name="EW_SCRIPT" Relationship="CHubDBModel.EW_MESSAGE_ATTACH_R02" FromRole="EW_MESSAGE_ATTACH" ToRole="EW_SCRIPT" />
+        </EntityType>
+        <EntityType Name="EW_SCRIPT">
+          <Key>
+            <PropertyRef Name="SCRIPT_ID" />
+          </Key>
+          <Property Name="SCRIPT_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SCRIPT_DESC" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="SCRIPT_TEXT" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVEIND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="OWNER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CREATED_DATE" Type="DateTime" />
+          <Property Name="EXPORT_FNAME" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EW_MESSAGE_ATTACH" Relationship="CHubDBModel.EW_MESSAGE_ATTACH_R02" FromRole="EW_SCRIPT" ToRole="EW_MESSAGE_ATTACH" />
+        </EntityType>
+        <EntityType Name="EW_LOG">
+          <Key>
+            <PropertyRef Name="MESSAGE_ID" />
+            <PropertyRef Name="STATUS" />
+            <PropertyRef Name="LOG_DATE" />
+          </Key>
+          <Property Name="MESSAGE_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="STATUS" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ERR_MSG" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="LOG_DATE" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <Association Name="EW_MESSAGE_ATTACH_R01">
+          <End Type="CHubDBModel.EW_MESSAGE" Role="EW_MESSAGE" Multiplicity="1" />
+          <End Type="CHubDBModel.EW_MESSAGE_ATTACH" Role="EW_MESSAGE_ATTACH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EW_MESSAGE">
+              <PropertyRef Name="MESSAGE_ID" />
+            </Principal>
+            <Dependent Role="EW_MESSAGE_ATTACH">
+              <PropertyRef Name="MESSAGE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EW_MESSAGE_ATTACH_R02">
+          <End Type="CHubDBModel.EW_SCRIPT" Role="EW_SCRIPT" Multiplicity="1" />
+          <End Type="CHubDBModel.EW_MESSAGE_ATTACH" Role="EW_MESSAGE_ATTACH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EW_SCRIPT">
+              <PropertyRef Name="SCRIPT_ID" />
+            </Principal>
+            <Dependent Role="EW_MESSAGE_ATTACH">
+              <PropertyRef Name="SCRIPT_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6389,6 +6578,59 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
                 <ScalarProperty Name="KPI_CODE_DESC" ColumnName="KPI_CODE_DESC" />
                 <ScalarProperty Name="KPI_CODE" ColumnName="KPI_CODE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EW_MESSAGE">
+            <EntityTypeMapping TypeName="CHubDBModel.EW_MESSAGE">
+              <MappingFragment StoreEntitySet="EW_MESSAGE">
+                <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
+                <ScalarProperty Name="OWNER" ColumnName="OWNER" />
+                <ScalarProperty Name="MESSAGE_TEXT8" ColumnName="MESSAGE_TEXT8" />
+                <ScalarProperty Name="MESSAGE_TEXT7" ColumnName="MESSAGE_TEXT7" />
+                <ScalarProperty Name="MESSAGE_TEXT6" ColumnName="MESSAGE_TEXT6" />
+                <ScalarProperty Name="MESSAGE_TEXT5" ColumnName="MESSAGE_TEXT5" />
+                <ScalarProperty Name="MESSAGE_TEXT4" ColumnName="MESSAGE_TEXT4" />
+                <ScalarProperty Name="MESSAGE_TEXT3" ColumnName="MESSAGE_TEXT3" />
+                <ScalarProperty Name="MESSAGE_TEXT2" ColumnName="MESSAGE_TEXT2" />
+                <ScalarProperty Name="MESSAGE_TEXT1" ColumnName="MESSAGE_TEXT1" />
+                <ScalarProperty Name="CC_LIST" ColumnName="CC_LIST" />
+                <ScalarProperty Name="TO_LIST" ColumnName="TO_LIST" />
+                <ScalarProperty Name="MESSAGE_SUBJECT" ColumnName="MESSAGE_SUBJECT" />
+                <ScalarProperty Name="MESSAGE_ID" ColumnName="MESSAGE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EW_MESSAGE_ATTACH">
+            <EntityTypeMapping TypeName="CHubDBModel.EW_MESSAGE_ATTACH">
+              <MappingFragment StoreEntitySet="EW_MESSAGE_ATTACH">
+                <ScalarProperty Name="IN_CONTENT" ColumnName="IN_CONTENT" />
+                <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
+                <ScalarProperty Name="SCRIPT_ID" ColumnName="SCRIPT_ID" />
+                <ScalarProperty Name="MESSAGE_ID" ColumnName="MESSAGE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EW_SCRIPT">
+            <EntityTypeMapping TypeName="CHubDBModel.EW_SCRIPT">
+              <MappingFragment StoreEntitySet="EW_SCRIPT">
+                <ScalarProperty Name="EXPORT_FNAME" ColumnName="EXPORT_FNAME" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="OWNER" ColumnName="OWNER" />
+                <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
+                <ScalarProperty Name="SCRIPT_TEXT" ColumnName="SCRIPT_TEXT" />
+                <ScalarProperty Name="SCRIPT_DESC" ColumnName="SCRIPT_DESC" />
+                <ScalarProperty Name="SCRIPT_ID" ColumnName="SCRIPT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EW_LOG">
+            <EntityTypeMapping TypeName="CHubDBModel.EW_LOG">
+              <MappingFragment StoreEntitySet="EW_LOG">
+                <ScalarProperty Name="LOG_DATE" ColumnName="LOG_DATE" />
+                <ScalarProperty Name="ERR_MSG" ColumnName="ERR_MSG" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="MESSAGE_ID" ColumnName="MESSAGE_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
