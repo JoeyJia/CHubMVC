@@ -32,7 +32,7 @@ namespace CHubCommon
         /// <param name="isColumnWritten">DataTable的列名是否要导入</param>
         /// <param name="sheetName">要导入的excel的sheet的名称</param>
         /// <returns>导入数据行数(包含列名那一行)</returns>
-        public int DataTableToExcel(DataTable data, string sheetName, bool isColumnWritten)
+        public int DataTableToExcel(DataTable data, string sheetName, bool isColumnWritten=true)
         {
             int i = 0;
             int j = 0;

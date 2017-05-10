@@ -9,7 +9,7 @@ namespace CHubCommon
 {
     public class EmailHelper
     {
-        public bool SendEmail(string[] toAddr, string fromAddr, string subject, string body)
+        public bool SendEmail(string[] toAddr, string fromAddr, string subject, string body,List<string> attaches)
         {
             try
             {
@@ -24,7 +24,11 @@ namespace CHubCommon
                     if (!string.IsNullOrWhiteSpace(item))
                         mms.To.Add(new MailAddress(item));
                 }
-                //mms.Attachments.Add(new Attachment)
+                foreach (var att in attaches)
+                {
+                    mms.Attachments.Add(new Attachment(att));
+                }
+                
 
                 SmtpClient client = new SmtpClient();
                 client.Host = "mailrelay.cummins.com";

@@ -159,6 +159,7 @@
     <Compile Include="EW_SCRIPT.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ExtensionMethod\ExtensionMethod.cs" />
     <Compile Include="G_PART_DESCRIPTION.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
