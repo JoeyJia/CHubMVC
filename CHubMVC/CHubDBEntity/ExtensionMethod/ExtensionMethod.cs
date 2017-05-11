@@ -41,8 +41,8 @@ namespace CHubDBEntity
             DataTable table = new DataTable();
             adapter.Fill(table);
 
-            conn.Close();
-            conn.Dispose();
+            //conn.Close();
+            //conn.Dispose();
             return table;
         }
     }

@@ -311,6 +311,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="EmailAttach\" />
     <Folder Include="temp\" />
   </ItemGroup>
   <ItemGroup>
