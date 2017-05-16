@@ -122,6 +122,15 @@
         <EntityTypeShape EntityType="CHubDBModel.EW_LOG" Width="1.5" PointX="30.375" PointY="15.75" />
         <AssociationConnector Association="CHubDBModel.EW_MESSAGE_ATTACH_R01" />
         <AssociationConnector Association="CHubDBModel.EW_MESSAGE_ATTACH_R02" />
+        <EntityTypeShape EntityType="CHubDBModel.EW_MESSAGE_GROUP" Width="1.5" PointX="28.125" PointY="32.75" />
+        <EntityTypeShape EntityType="CHubDBModel.EW_SCHEDULE" Width="1.5" PointX="30.375" PointY="37.625" />
+        <EntityTypeShape EntityType="CHubDBModel.EW_SCHEDULE_TASK" Width="1.5" PointX="32.625" PointY="32.75" />
+        <EntityTypeShape EntityType="CHubDBModel.EW_USER_APPLY" Width="1.5" PointX="32.625" PointY="18.875" />
+        <AssociationConnector Association="CHubDBModel.EW_USER_APPLY_R01" />
+        <AssociationConnector Association="CHubDBModel.EW_MESSAGE_R01" />
+        <AssociationConnector Association="CHubDBModel.EW_SCHEDULE_TASK_R02" />
+        <AssociationConnector Association="CHubDBModel.EW_USER_APPLY_R02" />
+        <AssociationConnector Association="CHubDBModel.EW_SCHEDULE_TASK_R01" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

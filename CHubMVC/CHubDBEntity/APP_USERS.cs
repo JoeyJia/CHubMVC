@@ -20,6 +20,7 @@ namespace CHubDBEntity
             this.APP_RECENT_PAGES = new HashSet<APP_RECENT_PAGES>();
             this.APP_USER_ALIAS_LINK = new HashSet<APP_USER_ALIAS_LINK>();
             this.APP_USER_ROLE_LINK = new HashSet<APP_USER_ROLE_LINK>();
+            this.EW_USER_APPLY = new HashSet<EW_USER_APPLY>();
         }
     
         public string APP_USER { get; set; }
@@ -45,5 +46,7 @@ namespace CHubDBEntity
         public virtual ICollection<APP_USER_ROLE_LINK> APP_USER_ROLE_LINK { get; set; }
         public virtual APP_USERS APP_USERS1 { get; set; }
         public virtual APP_USERS APP_USERS2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EW_USER_APPLY> EW_USER_APPLY { get; set; }
     }
 }

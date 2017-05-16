@@ -18,6 +18,8 @@ namespace CHubDBEntity
         public EW_MESSAGE()
         {
             this.EW_MESSAGE_ATTACH = new HashSet<EW_MESSAGE_ATTACH>();
+            this.EW_SCHEDULE_TASK = new HashSet<EW_SCHEDULE_TASK>();
+            this.EW_USER_APPLY = new HashSet<EW_USER_APPLY>();
         }
     
         public string MESSAGE_ID { get; set; }
@@ -34,8 +36,16 @@ namespace CHubDBEntity
         public string MESSAGE_TEXT8 { get; set; }
         public string OWNER { get; set; }
         public string ACTIVEIND { get; set; }
+        public string EW_GROUP { get; set; }
+        public string MESSAGE_DESC_SHORT { get; set; }
+        public string MESSAGE_DESC { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EW_MESSAGE_ATTACH> EW_MESSAGE_ATTACH { get; set; }
+        public virtual EW_MESSAGE_GROUP EW_MESSAGE_GROUP { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EW_SCHEDULE_TASK> EW_SCHEDULE_TASK { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EW_USER_APPLY> EW_USER_APPLY { get; set; }
     }
 }

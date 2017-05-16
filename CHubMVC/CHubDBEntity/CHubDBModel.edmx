@@ -290,6 +290,9 @@ warning 6002: The table/view 'GWAPP.EW_LOG' does not have a primary key defined.
           <Property Name="MESSAGE_TEXT8" Type="varchar2" MaxLength="500" />
           <Property Name="OWNER" Type="varchar2" MaxLength="20" />
           <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="EW_GROUP" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MESSAGE_DESC_SHORT" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="MESSAGE_DESC" Type="varchar2" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="EW_MESSAGE_ATTACH">
           <Key>
@@ -300,6 +303,35 @@ warning 6002: The table/view 'GWAPP.EW_LOG' does not have a primary key defined.
           <Property Name="SCRIPT_ID" Type="varchar2" MaxLength="20" Nullable="false" />
           <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="IN_CONTENT" Type="varchar2" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="EW_MESSAGE_GROUP">
+          <Key>
+            <PropertyRef Name="EW_GROUP" />
+          </Key>
+          <Property Name="EW_GROUP" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="EW_GROUP_DESC" Type="varchar2" MaxLength="2048" />
+          <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="GROUP_DESC_SHORT" Type="varchar2" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EW_SCHEDULE">
+          <Key>
+            <PropertyRef Name="EW_SCHEDULE_ID" />
+          </Key>
+          <Property Name="EW_SCHEDULE_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="EW_SCHEDULE_DESC" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="WEEK" Type="number" Precision="38" Scale="0" />
+          <Property Name="HOUR" Type="number" Precision="38" Scale="0" />
+          <Property Name="MIN" Type="number" Precision="38" Scale="0" />
+          <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EW_SCHEDULE_TASK">
+          <Key>
+            <PropertyRef Name="EW_SCHEDULE_ID" />
+            <PropertyRef Name="MESSAGE_ID" />
+          </Key>
+          <Property Name="EW_SCHEDULE_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="MESSAGE_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
         </EntityType>
         <EntityType Name="EW_SCRIPT">
           <Key>
@@ -312,6 +344,17 @@ warning 6002: The table/view 'GWAPP.EW_LOG' does not have a primary key defined.
           <Property Name="OWNER" Type="varchar2" MaxLength="20" />
           <Property Name="CREATED_DATE" Type="date" />
           <Property Name="EXPORT_FNAME" Type="varchar2" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EW_USER_APPLY">
+          <Key>
+            <PropertyRef Name="APP_USER" />
+            <PropertyRef Name="MESSAGE_ID" />
+          </Key>
+          <Property Name="APP_USER" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="MESSAGE_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="APPLY" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="APPLY_DATE" Type="date" />
+          <Property Name="SAMPLE_DATE" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="ITT_CUST_LOAD">
           <Key>
@@ -1810,6 +1853,66 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="EW_MESSAGE_R01">
+          <End Role="EW_MESSAGE_GROUP" Type="Self.EW_MESSAGE_GROUP" Multiplicity="1" />
+          <End Role="EW_MESSAGE" Type="Self.EW_MESSAGE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EW_MESSAGE_GROUP">
+              <PropertyRef Name="EW_GROUP" />
+            </Principal>
+            <Dependent Role="EW_MESSAGE">
+              <PropertyRef Name="EW_GROUP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EW_SCHEDULE_TASK_R01">
+          <End Role="EW_SCHEDULE" Type="Self.EW_SCHEDULE" Multiplicity="1" />
+          <End Role="EW_SCHEDULE_TASK" Type="Self.EW_SCHEDULE_TASK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EW_SCHEDULE">
+              <PropertyRef Name="EW_SCHEDULE_ID" />
+            </Principal>
+            <Dependent Role="EW_SCHEDULE_TASK">
+              <PropertyRef Name="EW_SCHEDULE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EW_SCHEDULE_TASK_R02">
+          <End Role="EW_MESSAGE" Type="Self.EW_MESSAGE" Multiplicity="1" />
+          <End Role="EW_SCHEDULE_TASK" Type="Self.EW_SCHEDULE_TASK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EW_MESSAGE">
+              <PropertyRef Name="MESSAGE_ID" />
+            </Principal>
+            <Dependent Role="EW_SCHEDULE_TASK">
+              <PropertyRef Name="MESSAGE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EW_USER_APPLY_R01">
+          <End Role="APP_USERS" Type="Self.APP_USERS" Multiplicity="1" />
+          <End Role="EW_USER_APPLY" Type="Self.EW_USER_APPLY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APP_USERS">
+              <PropertyRef Name="APP_USER" />
+            </Principal>
+            <Dependent Role="EW_USER_APPLY">
+              <PropertyRef Name="APP_USER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EW_USER_APPLY_R02">
+          <End Role="EW_MESSAGE" Type="Self.EW_MESSAGE" Multiplicity="1" />
+          <End Role="EW_USER_APPLY" Type="Self.EW_USER_APPLY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EW_MESSAGE">
+              <PropertyRef Name="MESSAGE_ID" />
+            </Principal>
+            <Dependent Role="EW_USER_APPLY">
+              <PropertyRef Name="MESSAGE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="ITT_SHIPPING_D_R01">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_D" Type="Self.ITT_SHIPPING_D" Multiplicity="*" />
@@ -1882,7 +1985,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0020867">
+        <Association Name="SYS_C0021292">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2016,7 +2119,11 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="DB_KPI_HISTORY" EntityType="Self.DB_KPI_HISTORY" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="EW_MESSAGE" EntityType="Self.EW_MESSAGE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="EW_MESSAGE_ATTACH" EntityType="Self.EW_MESSAGE_ATTACH" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="EW_MESSAGE_GROUP" EntityType="Self.EW_MESSAGE_GROUP" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="EW_SCHEDULE" EntityType="Self.EW_SCHEDULE" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="EW_SCHEDULE_TASK" EntityType="Self.EW_SCHEDULE_TASK" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="EW_SCRIPT" EntityType="Self.EW_SCRIPT" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="EW_USER_APPLY" EntityType="Self.EW_USER_APPLY" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_CUST_LOAD" EntityType="Self.ITT_CUST_LOAD" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_EASY_QUERY_LOG" EntityType="Self.ITT_EASY_QUERY_LOG" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_PO" EntityType="Self.ITT_PO" Schema="GWAPP" store:Type="Tables" />
@@ -2861,6 +2968,26 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="EW_SCRIPT" EntitySet="EW_SCRIPT" />
             <End Role="EW_MESSAGE_ATTACH" EntitySet="EW_MESSAGE_ATTACH" />
           </AssociationSet>
+          <AssociationSet Name="EW_MESSAGE_R01" Association="Self.EW_MESSAGE_R01">
+            <End Role="EW_MESSAGE_GROUP" EntitySet="EW_MESSAGE_GROUP" />
+            <End Role="EW_MESSAGE" EntitySet="EW_MESSAGE" />
+          </AssociationSet>
+          <AssociationSet Name="EW_SCHEDULE_TASK_R01" Association="Self.EW_SCHEDULE_TASK_R01">
+            <End Role="EW_SCHEDULE" EntitySet="EW_SCHEDULE" />
+            <End Role="EW_SCHEDULE_TASK" EntitySet="EW_SCHEDULE_TASK" />
+          </AssociationSet>
+          <AssociationSet Name="EW_SCHEDULE_TASK_R02" Association="Self.EW_SCHEDULE_TASK_R02">
+            <End Role="EW_MESSAGE" EntitySet="EW_MESSAGE" />
+            <End Role="EW_SCHEDULE_TASK" EntitySet="EW_SCHEDULE_TASK" />
+          </AssociationSet>
+          <AssociationSet Name="EW_USER_APPLY_R01" Association="Self.EW_USER_APPLY_R01">
+            <End Role="APP_USERS" EntitySet="APP_USERS" />
+            <End Role="EW_USER_APPLY" EntitySet="EW_USER_APPLY" />
+          </AssociationSet>
+          <AssociationSet Name="EW_USER_APPLY_R02" Association="Self.EW_USER_APPLY_R02">
+            <End Role="EW_MESSAGE" EntitySet="EW_MESSAGE" />
+            <End Role="EW_USER_APPLY" EntitySet="EW_USER_APPLY" />
+          </AssociationSet>
           <AssociationSet Name="ITT_SHIPPING_D_R01" Association="Self.ITT_SHIPPING_D_R01">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_D" EntitySet="ITT_SHIPPING_D" />
@@ -2885,7 +3012,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
             <End Role="M_PART" EntitySet="M_PART" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0020867" Association="Self.SYS_C0020867">
+          <AssociationSet Name="SYS_C0021292" Association="Self.SYS_C0021292">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -3117,6 +3244,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <NavigationProperty Name="APP_USERS1" Relationship="Self.C0001" FromRole="APP_USERS" ToRole="APP_USERS1" />
           <NavigationProperty Name="APP_USERS2" Relationship="Self.C0001" FromRole="APP_USERS1" ToRole="APP_USERS" />
           <Property Name="LAST_LOGIN" Type="DateTime" />
+          <NavigationProperty Name="EW_USER_APPLY" Relationship="CHubDBModel.EW_USER_APPLY_R01" FromRole="APP_USERS" ToRole="EW_USER_APPLY" />
         </EntityType>
         <EntityType Name="APP_WELCOME">
           <Key>
@@ -3958,6 +4086,30 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <AssociationSet Name="EW_MESSAGE_ATTACH_R02" Association="CHubDBModel.EW_MESSAGE_ATTACH_R02">
             <End Role="EW_SCRIPT" EntitySet="EW_SCRIPT" />
             <End Role="EW_MESSAGE_ATTACH" EntitySet="EW_MESSAGE_ATTACH" />
+          </AssociationSet>
+          <EntitySet Name="EW_MESSAGE_GROUP" EntityType="CHubDBModel.EW_MESSAGE_GROUP" />
+          <EntitySet Name="EW_SCHEDULE" EntityType="CHubDBModel.EW_SCHEDULE" />
+          <EntitySet Name="EW_SCHEDULE_TASK" EntityType="CHubDBModel.EW_SCHEDULE_TASK" />
+          <EntitySet Name="EW_USER_APPLY" EntityType="CHubDBModel.EW_USER_APPLY" />
+          <AssociationSet Name="EW_USER_APPLY_R01" Association="CHubDBModel.EW_USER_APPLY_R01">
+            <End Role="APP_USERS" EntitySet="APP_USERS" />
+            <End Role="EW_USER_APPLY" EntitySet="EW_USER_APPLY" />
+          </AssociationSet>
+          <AssociationSet Name="EW_MESSAGE_R01" Association="CHubDBModel.EW_MESSAGE_R01">
+            <End Role="EW_MESSAGE_GROUP" EntitySet="EW_MESSAGE_GROUP" />
+            <End Role="EW_MESSAGE" EntitySet="EW_MESSAGE" />
+          </AssociationSet>
+          <AssociationSet Name="EW_SCHEDULE_TASK_R02" Association="CHubDBModel.EW_SCHEDULE_TASK_R02">
+            <End Role="EW_MESSAGE" EntitySet="EW_MESSAGE" />
+            <End Role="EW_SCHEDULE_TASK" EntitySet="EW_SCHEDULE_TASK" />
+          </AssociationSet>
+          <AssociationSet Name="EW_USER_APPLY_R02" Association="CHubDBModel.EW_USER_APPLY_R02">
+            <End Role="EW_MESSAGE" EntitySet="EW_MESSAGE" />
+            <End Role="EW_USER_APPLY" EntitySet="EW_USER_APPLY" />
+          </AssociationSet>
+          <AssociationSet Name="EW_SCHEDULE_TASK_R01" Association="CHubDBModel.EW_SCHEDULE_TASK_R01">
+            <End Role="EW_SCHEDULE" EntitySet="EW_SCHEDULE" />
+            <End Role="EW_SCHEDULE_TASK" EntitySet="EW_SCHEDULE_TASK" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
@@ -5093,6 +5245,12 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="OWNER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="ACTIVEIND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="EW_MESSAGE_ATTACH" Relationship="CHubDBModel.EW_MESSAGE_ATTACH_R01" FromRole="EW_MESSAGE" ToRole="EW_MESSAGE_ATTACH" />
+          <Property Name="EW_GROUP" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="MESSAGE_DESC_SHORT" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MESSAGE_DESC" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EW_MESSAGE_GROUP" Relationship="CHubDBModel.EW_MESSAGE_R01" FromRole="EW_MESSAGE" ToRole="EW_MESSAGE_GROUP" />
+          <NavigationProperty Name="EW_SCHEDULE_TASK" Relationship="CHubDBModel.EW_SCHEDULE_TASK_R02" FromRole="EW_MESSAGE" ToRole="EW_SCHEDULE_TASK" />
+          <NavigationProperty Name="EW_USER_APPLY" Relationship="CHubDBModel.EW_USER_APPLY_R02" FromRole="EW_MESSAGE" ToRole="EW_USER_APPLY" />
         </EntityType>
         <EntityType Name="EW_MESSAGE_ATTACH">
           <Key>
@@ -5151,6 +5309,112 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             </Principal>
             <Dependent Role="EW_MESSAGE_ATTACH">
               <PropertyRef Name="SCRIPT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EW_MESSAGE_GROUP">
+          <Key>
+            <PropertyRef Name="EW_GROUP" />
+          </Key>
+          <Property Name="EW_GROUP" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EW_GROUP_DESC" Type="String" MaxLength="2048" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVEIND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="GROUP_DESC_SHORT" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EW_MESSAGE" Relationship="CHubDBModel.EW_MESSAGE_R01" FromRole="EW_MESSAGE_GROUP" ToRole="EW_MESSAGE" />
+        </EntityType>
+        <EntityType Name="EW_SCHEDULE">
+          <Key>
+            <PropertyRef Name="EW_SCHEDULE_ID" />
+          </Key>
+          <Property Name="EW_SCHEDULE_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EW_SCHEDULE_DESC" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="WEEK" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="HOUR" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="MIN" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="ACTIVEIND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EW_SCHEDULE_TASK" Relationship="CHubDBModel.EW_SCHEDULE_TASK_R01" FromRole="EW_SCHEDULE" ToRole="EW_SCHEDULE_TASK" />
+        </EntityType>
+        <EntityType Name="EW_SCHEDULE_TASK">
+          <Key>
+            <PropertyRef Name="EW_SCHEDULE_ID" />
+            <PropertyRef Name="MESSAGE_ID" />
+          </Key>
+          <Property Name="EW_SCHEDULE_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MESSAGE_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVEIND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EW_MESSAGE" Relationship="CHubDBModel.EW_SCHEDULE_TASK_R02" FromRole="EW_SCHEDULE_TASK" ToRole="EW_MESSAGE" />
+          <NavigationProperty Name="EW_SCHEDULE" Relationship="CHubDBModel.EW_SCHEDULE_TASK_R01" FromRole="EW_SCHEDULE_TASK" ToRole="EW_SCHEDULE" />
+        </EntityType>
+        <EntityType Name="EW_USER_APPLY">
+          <Key>
+            <PropertyRef Name="APP_USER" />
+            <PropertyRef Name="MESSAGE_ID" />
+          </Key>
+          <Property Name="APP_USER" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MESSAGE_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="APPLY" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="APPLY_DATE" Type="DateTime" />
+          <Property Name="SAMPLE_DATE" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="APP_USERS" Relationship="CHubDBModel.EW_USER_APPLY_R01" FromRole="EW_USER_APPLY" ToRole="APP_USERS" />
+          <NavigationProperty Name="EW_MESSAGE" Relationship="CHubDBModel.EW_USER_APPLY_R02" FromRole="EW_USER_APPLY" ToRole="EW_MESSAGE" />
+        </EntityType>
+        <Association Name="EW_USER_APPLY_R01">
+          <End Type="CHubDBModel.APP_USERS" Role="APP_USERS" Multiplicity="1" />
+          <End Type="CHubDBModel.EW_USER_APPLY" Role="EW_USER_APPLY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APP_USERS">
+              <PropertyRef Name="APP_USER" />
+            </Principal>
+            <Dependent Role="EW_USER_APPLY">
+              <PropertyRef Name="APP_USER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EW_MESSAGE_R01">
+          <End Type="CHubDBModel.EW_MESSAGE_GROUP" Role="EW_MESSAGE_GROUP" Multiplicity="1" />
+          <End Type="CHubDBModel.EW_MESSAGE" Role="EW_MESSAGE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EW_MESSAGE_GROUP">
+              <PropertyRef Name="EW_GROUP" />
+            </Principal>
+            <Dependent Role="EW_MESSAGE">
+              <PropertyRef Name="EW_GROUP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EW_SCHEDULE_TASK_R02">
+          <End Type="CHubDBModel.EW_MESSAGE" Role="EW_MESSAGE" Multiplicity="1" />
+          <End Type="CHubDBModel.EW_SCHEDULE_TASK" Role="EW_SCHEDULE_TASK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EW_MESSAGE">
+              <PropertyRef Name="MESSAGE_ID" />
+            </Principal>
+            <Dependent Role="EW_SCHEDULE_TASK">
+              <PropertyRef Name="MESSAGE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EW_USER_APPLY_R02">
+          <End Type="CHubDBModel.EW_MESSAGE" Role="EW_MESSAGE" Multiplicity="1" />
+          <End Type="CHubDBModel.EW_USER_APPLY" Role="EW_USER_APPLY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EW_MESSAGE">
+              <PropertyRef Name="MESSAGE_ID" />
+            </Principal>
+            <Dependent Role="EW_USER_APPLY">
+              <PropertyRef Name="MESSAGE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EW_SCHEDULE_TASK_R01">
+          <End Type="CHubDBModel.EW_SCHEDULE" Role="EW_SCHEDULE" Multiplicity="1" />
+          <End Type="CHubDBModel.EW_SCHEDULE_TASK" Role="EW_SCHEDULE_TASK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EW_SCHEDULE">
+              <PropertyRef Name="EW_SCHEDULE_ID" />
+            </Principal>
+            <Dependent Role="EW_SCHEDULE_TASK">
+              <PropertyRef Name="EW_SCHEDULE_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6584,6 +6848,9 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="EW_MESSAGE">
             <EntityTypeMapping TypeName="CHubDBModel.EW_MESSAGE">
               <MappingFragment StoreEntitySet="EW_MESSAGE">
+                <ScalarProperty Name="MESSAGE_DESC" ColumnName="MESSAGE_DESC" />
+                <ScalarProperty Name="MESSAGE_DESC_SHORT" ColumnName="MESSAGE_DESC_SHORT" />
+                <ScalarProperty Name="EW_GROUP" ColumnName="EW_GROUP" />
                 <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
                 <ScalarProperty Name="OWNER" ColumnName="OWNER" />
                 <ScalarProperty Name="MESSAGE_TEXT8" ColumnName="MESSAGE_TEXT8" />
@@ -6631,6 +6898,48 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="ERR_MSG" ColumnName="ERR_MSG" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="MESSAGE_ID" ColumnName="MESSAGE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EW_MESSAGE_GROUP">
+            <EntityTypeMapping TypeName="CHubDBModel.EW_MESSAGE_GROUP">
+              <MappingFragment StoreEntitySet="EW_MESSAGE_GROUP">
+                <ScalarProperty Name="GROUP_DESC_SHORT" ColumnName="GROUP_DESC_SHORT" />
+                <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
+                <ScalarProperty Name="EW_GROUP_DESC" ColumnName="EW_GROUP_DESC" />
+                <ScalarProperty Name="EW_GROUP" ColumnName="EW_GROUP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EW_SCHEDULE">
+            <EntityTypeMapping TypeName="CHubDBModel.EW_SCHEDULE">
+              <MappingFragment StoreEntitySet="EW_SCHEDULE">
+                <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
+                <ScalarProperty Name="MIN" ColumnName="MIN" />
+                <ScalarProperty Name="HOUR" ColumnName="HOUR" />
+                <ScalarProperty Name="WEEK" ColumnName="WEEK" />
+                <ScalarProperty Name="EW_SCHEDULE_DESC" ColumnName="EW_SCHEDULE_DESC" />
+                <ScalarProperty Name="EW_SCHEDULE_ID" ColumnName="EW_SCHEDULE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EW_SCHEDULE_TASK">
+            <EntityTypeMapping TypeName="CHubDBModel.EW_SCHEDULE_TASK">
+              <MappingFragment StoreEntitySet="EW_SCHEDULE_TASK">
+                <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
+                <ScalarProperty Name="MESSAGE_ID" ColumnName="MESSAGE_ID" />
+                <ScalarProperty Name="EW_SCHEDULE_ID" ColumnName="EW_SCHEDULE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EW_USER_APPLY">
+            <EntityTypeMapping TypeName="CHubDBModel.EW_USER_APPLY">
+              <MappingFragment StoreEntitySet="EW_USER_APPLY">
+                <ScalarProperty Name="SAMPLE_DATE" ColumnName="SAMPLE_DATE" />
+                <ScalarProperty Name="APPLY_DATE" ColumnName="APPLY_DATE" />
+                <ScalarProperty Name="APPLY" ColumnName="APPLY" />
+                <ScalarProperty Name="MESSAGE_ID" ColumnName="MESSAGE_ID" />
+                <ScalarProperty Name="APP_USER" ColumnName="APP_USER" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

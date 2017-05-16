@@ -106,5 +106,9 @@ namespace CHubDBEntity
         public virtual DbSet<EW_MESSAGE_ATTACH> EW_MESSAGE_ATTACH { get; set; }
         public virtual DbSet<EW_SCRIPT> EW_SCRIPT { get; set; }
         public virtual DbSet<EW_LOG> EW_LOG { get; set; }
+        public virtual DbSet<EW_MESSAGE_GROUP> EW_MESSAGE_GROUP { get; set; }
+        public virtual DbSet<EW_SCHEDULE> EW_SCHEDULE { get; set; }
+        public virtual DbSet<EW_SCHEDULE_TASK> EW_SCHEDULE_TASK { get; set; }
+        public virtual DbSet<EW_USER_APPLY> EW_USER_APPLY { get; set; }
     }
 }
