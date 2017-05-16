@@ -60,6 +60,10 @@
     <Compile Include="BatchJob\BatchJobs.cs" />
     <Compile Include="DB_KPI_HISTORY_BLL.cs" />
     <Compile Include="DB_KPI_GROUP_BLL.cs" />
+    <Compile Include="EW_USER_APPLY_BLL.cs" />
+    <Compile Include="EW_SCHEDULE_TASK_BLL.cs" />
+    <Compile Include="EW_SCHEDULE_BLL.cs" />
+    <Compile Include="EW_MESSAGE_GROUP_BLL.cs" />
     <Compile Include="EW_SCRIPT_BLL.cs" />
     <Compile Include="EW_MESSAGE_ATTACH_BLL.cs" />
     <Compile Include="EW_LOG_BLL.cs" />

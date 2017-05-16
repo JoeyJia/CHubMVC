@@ -59,6 +59,10 @@
   <ItemGroup>
     <Compile Include="DB_KPI_HISTORY_DAL.cs" />
     <Compile Include="DB_KPI_GROUP_DAL.cs" />
+    <Compile Include="EW_USER_APPLY_DAL.cs" />
+    <Compile Include="EW_SCHEDULE_TASK_DAL.cs" />
+    <Compile Include="EW_SCHEDULE_DAL.cs" />
+    <Compile Include="EW_MESSAGE_GROUP_DAL.cs" />
     <Compile Include="EW_SCRIPT_DAL.cs" />
     <Compile Include="EW_MESSAGE_ATTACH_DAL.cs" />
     <Compile Include="EW_LOG_DAL.cs" />
