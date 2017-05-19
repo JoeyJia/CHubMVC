@@ -9,9 +9,10 @@
 
 namespace CHubDBEntity
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
-    
+
     public partial class EW_MESSAGE_GROUP
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -25,6 +26,7 @@ namespace CHubDBEntity
         public string ACTIVEIND { get; set; }
         public string GROUP_DESC_SHORT { get; set; }
     
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EW_MESSAGE> EW_MESSAGE { get; set; }
     }

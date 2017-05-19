@@ -1,0 +1,264 @@
+﻿
+@{
+    ViewBag.Title = "Easy Watching";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" id="ewBody" ng-app="ewApp" ng-controller="ewCtrl">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:silver"><b>Auto Early Wathing Panel </b></div>
+
+        <ul class="nav nav-pills" role="tablist">
+            <li role="presentation" ng-class="{active:$index==0}" ng-repeat="ew in ewGroupArray track by ew.EW_GROUP">
+                <a href="#group{{$index}}" role="tab" data-toggle="tab" ng-click="tabClick(ew,$index)">{{ew.GROUP_DESC_SHORT}}</a>
+            </li>
+        </ul>
+
+        <!--content parts-->
+        <div class="tab-content" style="overflow-x:auto;">
+            <div role="tabpanel" class="tab-pane" ng-class="{active:$index==0}" ng-repeat="ew in ewGroupArray track by ew.EW_GROUP" id="group{{$index}}">
+                <div class="panel-heading" style="background-color:silver"><b>Description</b></div>
+                <div class="panel panel-default " style="height:100px;">
+                    {{ew.EW_GROUP_DESC}}
+                </div>
+
+                <hr />
+                <br />
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" style="background-color:silver"><b>List</b></div>
+
+                            <table class="table table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+
+                                        <th style="">index</th>
+                                        <th style="">Msg ID</th>
+                                        <th style="">Msg Short DESC</th>
+                                        <th style="">Msg DESC</th>
+                                        <th style="">Owner</th>
+                                        <th style="">Apply</th>
+                                        <th style="">Sample</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody style="">
+                                    <tr ng-repeat="t in ewDetailArray[$index] ">
+
+                                        <td>{{$index+1}}</td>
+                                        <td>{{t.MESSAGE_ID}}</td>
+                                        <td>{{t.MESSAGE_DESC_SHORT}}</td>
+                                        <td>{{t.MESSAGE_DESC}}</td>
+                                        <td>{{t.OWNER}}</td>
+                                        <td style="width:80px">
+                                            <div class="checkbox" style="margin-bottom:1px;margin-top:1px">
+                                                <label style="padding:0px">
+                                                    <input type="checkbox" style="padding:0px" id="msgCheck$index" value="" ng-checked="t.Apply=='Y'" aria-label="msg$index" ng-click="clickMsgCheckBox($event,t,$parent.$index)">
+                                                </label>
+                                            </div>
+
+                                        </td>
+                                        <td style="width:80px"><a href="javascript:void(0)" title="Sample" class="trendBtn" ng-click="sendSample(t)">SendToMe</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <button class="btn btn-primary" ng-click="submitMsg($index)">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+<script>
+    
+    var app = angular.module('ewApp', [])
+    app.controller('ewCtrl', function ($scope, $http) {
+        $scope.ewGroupArray = [];
+
+        $scope.ewDetailArray = [];
+        $scope.ewGot = [];
+        //curr tab selected jobs
+        $scope.selectedJobs = [];
+
+    
+        $http.post("/EW/GetEWGroupList", null, null).then(
+            function (obj) {
+                //debugger;
+                if (obj.data.Success) {
+                    
+                    $scope.ewGroupArray = obj.data.Data;
+                    GetEWGroupDetail($scope.ewGroupArray[0].EW_GROUP, 0);
+
+                    if ($scope.ewDetailArray[0] != undefined)
+                        for (var i = 0; i < $scope.ewDetailArray[0].length; i++) {
+                            if ($scope.ewDetailArray[0][i].Apply == "Y") {
+                                $scope.selectedJobs.push($scope.ewDetailArray[0][i].MESSAGE_ID)
+                            }
+                        }
+
+                }
+                else
+                    alert(obj.data.Msg)
+            },
+             function (resp) {
+                 debugger;
+                 alert("Fail!");
+             }
+            );
+
+        $scope.tabClick = function (curr, index) {
+            //clear current selected jobs
+            $scope.selectedJobs = [];
+
+            GetEWGroupDetail(curr.EW_GROUP, index);
+
+            //init current selectdjobs
+            if ($scope.ewDetailArray[index]!=undefined)
+                for (var i = 0; i < $scope.ewDetailArray[index].length; i++) {
+                    if ($scope.ewDetailArray[index][i].Apply == "Y") {
+                        $scope.selectedJobs.push($scope.ewDetailArray[index][i].MESSAGE_ID)
+                    }
+            }
+        };
+
+        $scope.clickMsgCheckBox = function (event, t) {
+            //debugger;
+            if (event.target.checked) {
+                $scope.selectedJobs.push(t.MESSAGE_ID);
+                t.Apply = "Y";
+            }
+            else {
+                t.Apply = "N";
+                var point = null;
+                for (var i = 0; i < $scope.selectedJobs.length; i++) {
+                    if ($scope.selectedJobs[i] == t.MESSAGE_ID) {
+                        point = i;
+                        break;
+                    }
+                }
+                if (point != null) {
+                    $scope.selectedJobs.splice(point, 1);
+                }
+            }
+        };
+
+        $scope.submitMsg = function (tab)
+        {
+            //if ($scope.selectedJobs.length == 0)
+            //{
+            //    alert("No selected items");
+            //    return;
+            //}
+            //debugger;
+            $.ajax({
+                url: "/ew/SaveApplies",
+                data: JSON.stringify({
+                    idList: $scope.selectedJobs,
+                    group: $scope.ewGroupArray[tab].EW_GROUP
+                }),
+                type: "post",
+                async: false,
+                contentType: 'application/json',
+                success: function (obj) {
+                    if (obj.Success)
+                        alert(obj.Msg);
+                    else
+                        alert(obj.Msg);
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+        $scope.sendSample = function (curr)
+        {
+            debugger;
+            $.ajax({
+                url: "/ew/SendSample",
+                data: {
+                    id: curr.MESSAGE_ID
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+
+                    if (obj.Success) {
+                        alert(obj.Msg);
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        }
+        
+
+       
+
+        //Function part
+        function GetEWGroupDetail(group, index) {
+            if (group == "")
+                return;
+            //debugger;
+            if ($scope.ewGot[index]!=undefined && $scope.ewGot[index]== true)
+                return;
+            //debugger;
+            $.ajax({
+                url: "/ew/GetEWGroupDetail",
+                data: {
+                    ewGroup: group
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    
+                    if (obj.Success) {
+                        $scope.ewGot[index] = true;
+                        $scope.ewDetailArray[index] = obj.Data;
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+
+    });
+
+    //manual load app
+    angular.bootstrap(document.getElementById("ewBody"), ['ewApp']);
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+  
+    });
+
+</script>

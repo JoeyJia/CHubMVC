@@ -21,5 +21,10 @@ namespace CHubBLL
             dal = new EW_MESSAGE_GROUP_DAL(db);
         }
 
+        public List<EW_MESSAGE_GROUP> GetMsgGroups()
+        {
+            return dal.GetMsgGroups();
+        }
+
     }
 }

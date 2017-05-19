@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
+using CHubModel.ExtensionModel;
 
 namespace CHubBLL
 {
@@ -29,6 +30,11 @@ namespace CHubBLL
         public EW_MESSAGE GetMsgByID(string id)
         {
             return dal.GetMsgByID(id);
+        }
+
+        public List<ExEWMessage> GetMsgByGroup(string ewGroup, string appUser)
+        {
+            return dal.GetMsgByGroup(ewGroup,appUser);
         }
 
     }

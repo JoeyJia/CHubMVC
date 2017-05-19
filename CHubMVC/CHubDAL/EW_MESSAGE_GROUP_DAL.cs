@@ -16,5 +16,10 @@ namespace CHubDAL
             : base(db) { }
 
 
+        public List<EW_MESSAGE_GROUP> GetMsgGroups()
+        {
+            return db.EW_MESSAGE_GROUP.ToList();
+        }
+
     }
 }

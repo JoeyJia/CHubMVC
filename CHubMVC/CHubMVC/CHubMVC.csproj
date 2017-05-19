@@ -172,6 +172,7 @@
     <Compile Include="Common\BaseController.cs" />
     <Compile Include="Common\JsonNetResult.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EWController.cs" />
     <Compile Include="Controllers\KPIController.cs" />
     <Compile Include="Controllers\ITTController.cs" />
     <Compile Include="Controllers\TCController.cs" />
@@ -308,6 +309,7 @@
     <Content Include="Views\KPI\Index.cshtml" />
     <Content Include="Template\ITT_cust_load_template_v1.xlsx" />
     <Content Include="Template\ITT_Tran_Load_template_v1.xlsx" />
+    <Content Include="Views\EW\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

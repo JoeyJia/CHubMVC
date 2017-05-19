@@ -34,6 +34,9 @@ namespace CHubCommon
 
 
         public static string EmailAttachFolder = "./EmailAttach/";
+        public static string WebEmailAttachFolder = "/EmailAttach/";
+
+        public static string MailFromAddr = "ihub_automsg@cummins.com";
 
         public static string HSPartExcelTemplateName = "TC_HS_DB_template_V1.xlsx";
         public static string MPartExcelTemplateName = "TC_MPart_template_V1.xlsx";
