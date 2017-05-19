@@ -41,5 +41,10 @@ namespace CHubDAL
             return result.ToList();
         }
 
+        public EW_USER_APPLY GetSpecifyUserApply(string messageID, string appUser)
+        {
+            return db.EW_USER_APPLY.Where(a => a.MESSAGE_ID == messageID && a.APP_USER == appUser).FirstOrDefault();
+        }
+
     }
 }

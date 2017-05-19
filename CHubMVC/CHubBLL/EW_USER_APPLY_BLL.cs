@@ -23,12 +23,6 @@ namespace CHubBLL
             dal = new EW_USER_APPLY_DAL(db);
         }
 
-
-        public void add(EW_USER_APPLY model)
-        {
-            dal.Add(model);
-        }
-
         public void SaveApply(List<string> idList,string group, string appUser)
         {
             List<EW_USER_APPLY> applies = dal.GetUserApplyByGroup(group, appUser);
@@ -69,6 +63,21 @@ namespace CHubBLL
         public List<string> GetApplyUsersMail(string messageID)
         {
             return dal.GetApplyUsersMail(messageID);
+        }
+
+        public EW_USER_APPLY GetSpecifyUserApply(string messageID, string appUser)
+        {
+            return dal.GetSpecifyUserApply(messageID, appUser);
+        }
+
+        public void update(EW_USER_APPLY model)
+        {
+            dal.Update(model);
+        }
+
+        public void Add(EW_USER_APPLY model)
+        {
+            dal.Add(model);
         }
 
     }

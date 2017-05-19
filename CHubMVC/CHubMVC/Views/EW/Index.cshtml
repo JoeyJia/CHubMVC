@@ -81,6 +81,19 @@
     </div>
 </div>
 
+<div class="modal " id="loadingModal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog text-center" id="imgDiag">
+            <img src="~/Images/loading.gif">
+            <div class="row text-center" style="color:ivory">
+                <b>Proccessing...</b>
+            </div>
+        </div>
+    </div>
+
+</div>
+  
+
 
 
 <script>
@@ -188,16 +201,17 @@
 
         $scope.sendSample = function (curr)
         {
-            debugger;
+            $("#loadingModal").modal("show");
+            //debugger;
             $.ajax({
                 url: "/ew/SendSample",
                 data: {
                     id: curr.MESSAGE_ID
                 },
                 type: "post",
-                async: false,
+                async: true,
                 success: function (obj) {
-
+                    $("#loadingModal").modal("hide");
                     if (obj.Success) {
                         alert(obj.Msg);
                     }
@@ -207,12 +221,11 @@
 
                 },
                 error: function (obj) {
+                    $("#loadingModal").modal("hide");
                     alert(obj.responseText);
                 }
             });
         }
-        
-
        
 
         //Function part
@@ -258,7 +271,10 @@
 
 <script>
     $(document).ready(function () {
-  
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+
     });
 
 </script>

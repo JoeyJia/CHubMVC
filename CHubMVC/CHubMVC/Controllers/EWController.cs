@@ -111,6 +111,10 @@ namespace CHubMVC.Controllers
             {
                 string toAddr = string.Empty;
                 string appUser = Session[CHubConstValues.SessionUser].ToString();
+
+                if(IsTooOften(id,appUser))
+                    return Json(new RequestResult(false,"Too Frequent,Need 10 minites interval"));
+
                 APP_USERS_BLL userBLL = new APP_USERS_BLL();
                 APP_USERS user = userBLL.GetAppUserByDomainName(appUser);
                 if (user == null)
@@ -135,8 +139,34 @@ namespace CHubMVC.Controllers
         }
 
 
+        //private function
+        private bool IsTooOften(string messageID, string appUser)
+        {
+            EW_USER_APPLY_BLL aBLL = new EW_USER_APPLY_BLL();
+            EW_USER_APPLY apply = aBLL.GetSpecifyUserApply(messageID, appUser);
 
+            if (apply != null)
+            {
+                DateTime? lastDate = apply.SAMPLE_DATE;
+                if (lastDate != null && lastDate.Value.AddMinutes(10) > DateTime.Now)
+                    return true;
+            }
+            else
+            {
+                EW_USER_APPLY model = new EW_USER_APPLY();
+                model.MESSAGE_ID = messageID;
+                model.APP_USER = appUser;
+                model.APPLY = CHubConstValues.IndN;
+                apply.SAMPLE_DATE = DateTime.Now;
+                aBLL.Add(model);
+                return false;
+            }
 
+            apply.SAMPLE_DATE = DateTime.Now;
+            aBLL.update(apply);
+
+            return false;
+        }
 
     }
 }
