@@ -35,6 +35,7 @@ namespace CHubCommon
 
         public static string EmailAttachFolder = "./EmailAttach/";
         public static string WebEmailAttachFolder = "/EmailAttach/";
+        public static string SqliteConnTemplate = "Data Source={0};Version=3;";
 
         public static string MailFromAddr = "ihub_automsg@cummins.com";
 
