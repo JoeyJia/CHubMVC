@@ -218,6 +218,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Tasks\BaseScheduleJob.cs" />
     <Compile Include="Validations\G_OESALES_CATALOG_VALIDATION.cs" />
     <Compile Include="Validations\ITT_CUST_LOAD_VALICATION.cs" />
     <Compile Include="Validations\ITT_TRAN_LOAD_VALIDATION.cs" />
