@@ -259,12 +259,9 @@
           <Property Name="OWNER_HIGHLIGHT" Type="varchar2" MaxLength="300" />
           <Property Name="HIGHLIGHT_DATE" Type="date" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'GWAPP.EW_LOG' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="EW_LOG">
           <Key>
             <PropertyRef Name="MESSAGE_ID" />
-            <PropertyRef Name="STATUS" />
             <PropertyRef Name="LOG_DATE" />
           </Key>
           <Property Name="MESSAGE_ID" Type="varchar2" MaxLength="20" Nullable="false" />
@@ -1985,7 +1982,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0021292">
+        <Association Name="SYS_C0021764">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2117,6 +2114,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="DB_KPI_CODE" EntityType="Self.DB_KPI_CODE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="DB_KPI_GROUP" EntityType="Self.DB_KPI_GROUP" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="DB_KPI_HISTORY" EntityType="Self.DB_KPI_HISTORY" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="EW_LOG" EntityType="Self.EW_LOG" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="EW_MESSAGE" EntityType="Self.EW_MESSAGE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="EW_MESSAGE_ATTACH" EntityType="Self.EW_MESSAGE_ATTACH" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="EW_MESSAGE_GROUP" EntityType="Self.EW_MESSAGE_GROUP" Schema="GWAPP" store:Type="Tables" />
@@ -2146,14 +2144,6 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="TS_OR_DETAIL_STAGE" EntityType="Self.TS_OR_DETAIL_STAGE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TS_OR_HEADER" EntityType="Self.TS_OR_HEADER" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TS_OR_HEADER_STAGE" EntityType="Self.TS_OR_HEADER_STAGE" Schema="GWAPP" store:Type="Tables" />
-          <EntitySet Name="EW_LOG" EntityType="Self.EW_LOG" store:Type="Tables" store:Schema="GWAPP">
-            <DefiningQuery>SELECT 
-"EW_LOG"."MESSAGE_ID" AS "MESSAGE_ID", 
-"EW_LOG"."STATUS" AS "STATUS", 
-"EW_LOG"."ERR_MSG" AS "ERR_MSG", 
-"EW_LOG"."LOG_DATE" AS "LOG_DATE"
-FROM "GWAPP"."EW_LOG" "EW_LOG"</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="ITT_EASY_WATCHING" EntityType="Self.ITT_EASY_WATCHING" store:Type="Tables" store:Schema="GWAPP">
             <DefiningQuery>SELECT 
 "ITT_EASY_WATCHING"."EASY_QUREY_TOKEN" AS "EASY_QUREY_TOKEN", 
@@ -3012,7 +3002,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
             <End Role="M_PART" EntitySet="M_PART" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0021292" Association="Self.SYS_C0021292">
+          <AssociationSet Name="SYS_C0021764" Association="Self.SYS_C0021764">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -5280,7 +5270,6 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
         <EntityType Name="EW_LOG">
           <Key>
             <PropertyRef Name="MESSAGE_ID" />
-            <PropertyRef Name="STATUS" />
             <PropertyRef Name="LOG_DATE" />
           </Key>
           <Property Name="MESSAGE_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
