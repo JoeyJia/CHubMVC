@@ -181,6 +181,7 @@
           <Property Name="PWD" Type="varchar2" MaxLength="100" />
           <Property Name="STATUS" Type="varchar2" MaxLength="1" />
           <Property Name="LAST_LOGIN" Type="date" />
+          <Property Name="DEF_WH_ID" Type="varchar2" MaxLength="20" />
         </EntityType>
         <EntityType Name="APP_WELCOME">
           <Key>
@@ -300,6 +301,7 @@
           <Property Name="SCRIPT_ID" Type="varchar2" MaxLength="20" Nullable="false" />
           <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="IN_CONTENT" Type="varchar2" MaxLength="1" />
+          <Property Name="NO_DATA_IGNORE" Type="varchar2" MaxLength="1" />
         </EntityType>
         <EntityType Name="EW_MESSAGE_GROUP">
           <Key>
@@ -3235,6 +3237,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <NavigationProperty Name="APP_USERS2" Relationship="Self.C0001" FromRole="APP_USERS1" ToRole="APP_USERS" />
           <Property Name="LAST_LOGIN" Type="DateTime" />
           <NavigationProperty Name="EW_USER_APPLY" Relationship="CHubDBModel.EW_USER_APPLY_R01" FromRole="APP_USERS" ToRole="EW_USER_APPLY" />
+          <Property Name="DEF_WH_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="APP_WELCOME">
           <Key>
@@ -5253,6 +5256,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="IN_CONTENT" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="EW_MESSAGE" Relationship="CHubDBModel.EW_MESSAGE_ATTACH_R01" FromRole="EW_MESSAGE_ATTACH" ToRole="EW_MESSAGE" />
           <NavigationProperty Name="EW_SCRIPT" Relationship="CHubDBModel.EW_MESSAGE_ATTACH_R02" FromRole="EW_MESSAGE_ATTACH" ToRole="EW_SCRIPT" />
+          <Property Name="NO_DATA_IGNORE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="EW_SCRIPT">
           <Key>
@@ -5564,6 +5568,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="APP_USERS">
             <EntityTypeMapping TypeName="CHubDBModel.APP_USERS">
               <MappingFragment StoreEntitySet="APP_USERS">
+                <ScalarProperty Name="DEF_WH_ID" ColumnName="DEF_WH_ID" />
                 <ScalarProperty Name="LAST_LOGIN" ColumnName="LAST_LOGIN" />
                 <ScalarProperty Name="APP_USER" ColumnName="APP_USER" />
                 <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
@@ -6860,6 +6865,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="EW_MESSAGE_ATTACH">
             <EntityTypeMapping TypeName="CHubDBModel.EW_MESSAGE_ATTACH">
               <MappingFragment StoreEntitySet="EW_MESSAGE_ATTACH">
+                <ScalarProperty Name="NO_DATA_IGNORE" ColumnName="NO_DATA_IGNORE" />
                 <ScalarProperty Name="IN_CONTENT" ColumnName="IN_CONTENT" />
                 <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
                 <ScalarProperty Name="SCRIPT_ID" ColumnName="SCRIPT_ID" />

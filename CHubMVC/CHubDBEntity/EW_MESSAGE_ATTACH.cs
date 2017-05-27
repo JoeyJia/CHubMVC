@@ -18,6 +18,7 @@ namespace CHubDBEntity
         public string SCRIPT_ID { get; set; }
         public string ACTIVEIND { get; set; }
         public string IN_CONTENT { get; set; }
+        public string NO_DATA_IGNORE { get; set; }
     
         public virtual EW_MESSAGE EW_MESSAGE { get; set; }
         public virtual EW_SCRIPT EW_SCRIPT { get; set; }
