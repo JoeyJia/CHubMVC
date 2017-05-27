@@ -125,8 +125,8 @@ namespace CHubMVC.Controllers
                     toAddr = string.Format(CHubConstValues.EmailFormat, appUser);
 
                 string folder = Server.MapPath(CHubConstValues.WebEmailAttachFolder);
-                BatchJobs jobs = new BatchJobs();
-                jobs.SendM1Mail(id, folder,toAddr);
+                EmailBLL jobs = new EmailBLL();
+                jobs.BuildAndSendEmail(id, folder,toAddr);
 
 
                 return Json(new RequestResult(true));

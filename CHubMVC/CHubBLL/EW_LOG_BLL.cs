@@ -21,5 +21,23 @@ namespace CHubBLL
             dal = new EW_LOG_DAL(db);
         }
 
+        public bool HasExecuted(string msgID)
+        {
+            return dal.HasExecuted(msgID);
+        }
+
+        public void AddOrUpdate(EW_LOG model)
+        {
+            EW_LOG log = dal.GetLog(model.MESSAGE_ID, model.LOG_DATE);
+            if (log == null)
+                dal.Add(model);
+            else
+            {
+                log.STATUS = model.STATUS;
+                log.ERR_MSG = model.ERR_MSG;
+                dal.Update(log);
+            }
+
+        }
     }
 }

@@ -10,23 +10,60 @@ using System.Threading.Tasks;
 
 namespace CHubBLL
 {
-    public class BatchJobs
+    public class EmailBLL
     {
-
-        public void SendM1Mail()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">message id ,identify</param>
+        /// <param name="attachFolder">attacheFolder path, for web using, console app can ignore</param>
+        /// <param name="toSample"> will override toList to toSample, for web using now</param>
+        public void BuildAndSendEmail(string id="M1",string attachFolder = null,string toSample = null)
         {
             try
             {
-                Console.WriteLine("start send M1 Mail...");
-                string id = "M1";
+                //Console.WriteLine("start send M1 Mail...");
+                //string id = "M1";
                 EW_MESSAGE_BLL msgBLL = new EW_MESSAGE_BLL();
                 EW_MESSAGE msg = msgBLL.GetMsgByID(id);
 
                 //Emailhelper
                 EmailHelper ehelper = new EmailHelper();
-                List<string> toList = new List<string>() { "lg166@cummins.com" };//lg166@cummins.com
+                List<string> toList = new List<string>();// { "infosys.sh@cummins.com" };//lg166@cummins.com
                 List<string> ccList = new List<string>() { "infosys.sh@cummins.com" };
-                string from = "infosys.sh@cummins.com";
+
+                if (string.IsNullOrEmpty(toSample))
+                {
+                    string[] toArray = msg.TO_LIST.Split(';');
+                    string[] ccArray = msg.CC_LIST.Split(';');
+                    toList.AddRange(toArray);
+                    ccList.AddRange(ccArray);
+                    //Get apply to list
+                    EW_USER_APPLY_BLL aBLL = new EW_USER_APPLY_BLL();
+                    List<string> applyUserMails = aBLL.GetApplyUsersMail(id);
+                    if (applyUserMails != null)
+                    {
+                        foreach (var item in applyUserMails)
+                        {
+                            //Just have appuser name , email is null situation
+                            if (item.IndexOf("@") < 0)
+                                toList.Add(string.Format(CHubConstValues.EmailFormat, item));
+                            else
+                                toList.Add(item);
+                        }
+                    }
+                    
+                    toList.Distinct();
+
+                }
+                else
+                {
+                    toList.Clear();
+                    toList.Add(toSample);
+                    ccList.Clear();
+                }
+
+                string from = CHubConstValues.MailFromAddr;
                 StringBuilder body = BuildEmailBody(msg);
 
                 EW_MESSAGE_ATTACH_BLL attachBLL = new EW_MESSAGE_ATTACH_BLL();
@@ -46,7 +83,9 @@ namespace CHubBLL
                     }
                     else
                     {
-                        FileInfo folder = new FileInfo(CHubConstValues.EmailAttachFolder);
+                        if (attachFolder == null)
+                            attachFolder = CHubConstValues.EmailAttachFolder;
+                        FileInfo folder = new FileInfo(attachFolder);
                         if (!Directory.Exists(folder.FullName))
                             Directory.CreateDirectory(folder.FullName);
 

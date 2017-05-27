@@ -16,5 +16,16 @@ namespace CHubDAL
             : base(db) { }
 
 
+        public List<string> GetTaskIDsBySchedule(string scheduleID)
+        {
+            var result = (
+                from t in db.EW_SCHEDULE_TASK
+                where t.EW_SCHEDULE_ID == scheduleID
+                && t.ACTIVEIND == "Y"
+                select t.MESSAGE_ID
+                );
+            return result.ToList();
+        }
+
     }
 }

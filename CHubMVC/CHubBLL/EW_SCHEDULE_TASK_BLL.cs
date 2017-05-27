@@ -21,5 +21,10 @@ namespace CHubBLL
             dal = new EW_SCHEDULE_TASK_DAL(db);
         }
 
+        public List<string> GetTaskIDsBySchedule(string scheduleID)
+        {
+            return dal.GetTaskIDsBySchedule(scheduleID);
+        }
+
     }
 }

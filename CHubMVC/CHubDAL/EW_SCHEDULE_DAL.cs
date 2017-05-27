@@ -15,6 +15,21 @@ namespace CHubDAL
         public EW_SCHEDULE_DAL(CHubEntities db)
             : base(db) { }
 
+        static List<EW_SCHEDULE> AllSchedule;
+
+        public EW_SCHEDULE GetSchedule(string id)
+        {
+            //return db.EW_SCHEDULE.FirstOrDefault(a => a.EW_SCHEDULE_ID == id);
+            if (AllSchedule == null || AllSchedule.Count == 0)
+                InitSchedules();
+            return AllSchedule.FirstOrDefault(a => a.EW_SCHEDULE_ID == id);
+
+        }
+
+        private void InitSchedules()
+        {
+            AllSchedule = db.EW_SCHEDULE.ToList();
+        }
 
     }
 }

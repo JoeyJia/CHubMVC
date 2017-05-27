@@ -90,5 +90,38 @@ namespace CHubCommon
             Alternative
         }
 
+        public enum ScheduleEnum
+        {
+            Daily1am,
+            Daily2am,
+            Daily3am,
+            Daily4am,
+            Daily5am,
+            Daily6am,
+            Daily7am,
+            Daily8am,
+            Daily6pm,
+            Daily7pm,
+            Daily8pm,
+            Daily9pm,
+            Daily10pm,
+            Daily11pm,
+            Daily12am,
+            Monday2am,
+            Tuesday2am,
+            Wednesday2am,
+            Thursday2am,
+            Friday2am,
+            Saturday2am,
+            Sunday2am,
+            Monday10pm,
+            Tuesday10pm,
+            Wednesday10pm,
+            Thursday10pm,
+            Friday10pm,
+            Saturday10pm,
+            Sunday10pm
+        }
+
     }
 }

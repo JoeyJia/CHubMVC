@@ -1,9 +1,11 @@
 ﻿using CHubBLL;
 using CHubCommon;
+using CHubMVC.Tasks;
 using Hangfire;
 using Hangfire.SQLite;
 using Microsoft.Owin;
 using Owin;
+using System.Threading;
 
 [assembly: OwinStartupAttribute(typeof(CHubMVC.Startup))]
 namespace CHubMVC
@@ -28,10 +30,11 @@ namespace CHubMVC
             });
 
             // Add scheduled jobs
-            BatchJobs jobs = new BatchJobs();
-            string attachFolder = System.Web.HttpContext.Current.Server.MapPath(CHubConstValues.WebEmailAttachFolder);
-
-            RecurringJob.AddOrUpdate(() => jobs.SendM1Mail("M1", attachFolder, null), Cron.Daily(20));
+            
+            ScheduleManager sdlManger = new ScheduleManager();
+            sdlManger.AddAllSchedules();
+            //Thread th = new Thread(sdlManger.AddAllSchedules);
+            //th.Start();
 
 
         }

@@ -57,7 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BatchJob\BatchJobs.cs" />
+    <Compile Include="OtherProcess\EmailBLL.cs" />
     <Compile Include="DB_KPI_HISTORY_BLL.cs" />
     <Compile Include="DB_KPI_GROUP_BLL.cs" />
     <Compile Include="EW_USER_APPLY_BLL.cs" />

@@ -21,5 +21,10 @@ namespace CHubBLL
             dal = new EW_SCHEDULE_DAL(db);
         }
 
+        public EW_SCHEDULE GetSchedule(string id)
+        {
+            return dal.GetSchedule(id);
+        }
+
     }
 }
