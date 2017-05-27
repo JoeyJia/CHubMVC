@@ -77,6 +77,10 @@ namespace CHubBLL
                     EW_SCRIPT script = scriptBLL.GetScriptByID(item.SCRIPT_ID);
                     DataTable dt = db.Database.SqlQueryToDataTatable(script.SCRIPT_TEXT);
 
+                    //if NO_DATA_IGNORE is Y , will ignore empty dt
+                    if (item.NO_DATA_IGNORE == CHubConstValues.IndY && (dt == null || dt.Rows.Count == 0))
+                        continue;
+
                     if (item.IN_CONTENT == CHubConstValues.IndY)
                     {
                         body.AppendLine(ehelper.BuildBodyFromDT(dt, script.EXPORT_FNAME.Substring(0, script.EXPORT_FNAME.Length - 3)));
