@@ -110,5 +110,14 @@ namespace CHubDBEntity
         public virtual DbSet<EW_SCHEDULE> EW_SCHEDULE { get; set; }
         public virtual DbSet<EW_SCHEDULE_TASK> EW_SCHEDULE_TASK { get; set; }
         public virtual DbSet<EW_USER_APPLY> EW_USER_APPLY { get; set; }
+        public virtual DbSet<RP_ADR_MST> RP_ADR_MST { get; set; }
+        public virtual DbSet<RP_CAR_MST> RP_CAR_MST { get; set; }
+        public virtual DbSet<RP_CUST_PACK_TYPE> RP_CUST_PACK_TYPE { get; set; }
+        public virtual DbSet<RP_PRINTER> RP_PRINTER { get; set; }
+        public virtual DbSet<RP_STATION> RP_STATION { get; set; }
+        public virtual DbSet<RP_WAYBILL_BASICINFO> RP_WAYBILL_BASICINFO { get; set; }
+        public virtual DbSet<RP_WAYBILL_TYPE> RP_WAYBILL_TYPE { get; set; }
+        public virtual DbSet<V_RP_WAYBILL_D_BASE> V_RP_WAYBILL_D_BASE { get; set; }
+        public virtual DbSet<V_SHIPMENT_H_RP_ALL> V_SHIPMENT_H_RP_ALL { get; set; }
     }
 }

@@ -131,6 +131,20 @@
         <AssociationConnector Association="CHubDBModel.EW_SCHEDULE_TASK_R02" />
         <AssociationConnector Association="CHubDBModel.EW_USER_APPLY_R02" />
         <AssociationConnector Association="CHubDBModel.EW_SCHEDULE_TASK_R01" />
+        <EntityTypeShape EntityType="CHubDBModel.RP_ADR_MST" Width="1.5" PointX="33" PointY="25.625" />
+        <EntityTypeShape EntityType="CHubDBModel.RP_CAR_MST" Width="1.5" PointX="16" PointY="32.875" />
+        <EntityTypeShape EntityType="CHubDBModel.RP_CUST_PACK_TYPE" Width="1.5" PointX="30.75" PointY="23.125" />
+        <EntityTypeShape EntityType="CHubDBModel.RP_PRINTER" Width="1.5" PointX="32.75" PointY="5.875" />
+        <EntityTypeShape EntityType="CHubDBModel.RP_STATION" Width="1.5" PointX="35" PointY="6" />
+        <EntityTypeShape EntityType="CHubDBModel.RP_WAYBILL_BASICINFO" Width="1.5" PointX="0.75" PointY="32.75" />
+        <EntityTypeShape EntityType="CHubDBModel.RP_WAYBILL_TYPE" Width="1.5" PointX="13.75" PointY="33" />
+        <EntityTypeShape EntityType="CHubDBModel.V_RP_WAYBILL_D_BASE" Width="1.5" PointX="7.75" PointY="31.75" />
+        <EntityTypeShape EntityType="CHubDBModel.V_SHIPMENT_H_RP_ALL" Width="1.5" PointX="2.75" PointY="32.75" />
+        <AssociationConnector Association="CHubDBModel.APP_WH_R03" />
+        <AssociationConnector Association="CHubDBModel.RP_ADR_MST_R01" />
+        <AssociationConnector Association="CHubDBModel.RP_CAR_MST_R01" />
+        <AssociationConnector Association="CHubDBModel.RP_CUST_PACK_TYPE_R01" />
+        <AssociationConnector Association="CHubDBModel.RP_STATION_R02" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -181,7 +181,7 @@
           <Property Name="PWD" Type="varchar2" MaxLength="100" />
           <Property Name="STATUS" Type="varchar2" MaxLength="1" />
           <Property Name="LAST_LOGIN" Type="date" />
-          <Property Name="DEF_WH_ID" Type="varchar2" MaxLength="20" />
+          <Property Name="DEF_WH_ID" Type="varchar2" MaxLength="10" />
         </EntityType>
         <EntityType Name="APP_WELCOME">
           <Key>
@@ -199,6 +199,8 @@
           <Property Name="SYSID" Type="varchar2" MaxLength="10" Nullable="false" />
           <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="SITE_NAME" Type="varchar2" MaxLength="10" />
+          <Property Name="WH_ID" Type="varchar2" MaxLength="10" />
+          <Property Name="DEF_PACK_PRINTER" Type="varchar2" MaxLength="20" />
         </EntityType>
         <EntityType Name="APP_WORKSPACE">
           <Key>
@@ -630,6 +632,115 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           <Property Name="SYS_TYPE" Type="varchar2" MaxLength="10" />
           <Property Name="DB_LINK" Type="varchar2" MaxLength="50" />
           <Property Name="INTERPDC_FLAG" Type="varchar2" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="RP_ADR_MST">
+          <Key>
+            <PropertyRef Name="WH_ID" />
+            <PropertyRef Name="ADRNAM" />
+          </Key>
+          <Property Name="WH_ID" Type="varchar2" MaxLength="32" Nullable="false" />
+          <Property Name="ADRNAM" Type="varchar2" MaxLength="40" Nullable="false" />
+          <Property Name="LOAD_DATE" Type="date" />
+          <Property Name="CUST_PACK_ID" Type="varchar2" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="RP_CAR_MST">
+          <Key>
+            <PropertyRef Name="WH_ID" />
+            <PropertyRef Name="CARCOD" />
+          </Key>
+          <Property Name="WH_ID" Type="varchar2" MaxLength="32" Nullable="false" />
+          <Property Name="CARCOD" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="CARNAM" Type="varchar2" MaxLength="40" Nullable="false" />
+          <Property Name="LOAD_DATE" Type="date" />
+          <Property Name="WAYBILL_ID" Type="varchar2" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="RP_CUST_PACK_TYPE">
+          <Key>
+            <PropertyRef Name="CUST_PACK_ID" />
+          </Key>
+          <Property Name="CUST_PACK_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="PACK_DESC" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="AUTO_PRINT" Type="varchar2" MaxLength="1" />
+          <Property Name="CUST_SHORT_NAME" Type="varchar2" MaxLength="20" />
+          <Property Name="HEADER1" Type="varchar2" MaxLength="20" />
+          <Property Name="HEADER2" Type="varchar2" MaxLength="20" />
+          <Property Name="HEADER3" Type="varchar2" MaxLength="20" />
+          <Property Name="FOOTER1" Type="varchar2" MaxLength="20" />
+          <Property Name="FOOTER2" Type="varchar2" MaxLength="20" />
+          <Property Name="FOOTER3" Type="varchar2" MaxLength="20" />
+          <Property Name="NOTE1" Type="varchar2" MaxLength="50" />
+          <Property Name="NOTE2" Type="varchar2" MaxLength="50" />
+          <Property Name="NOTE3" Type="varchar2" MaxLength="50" />
+          <Property Name="NOTE4" Type="varchar2" MaxLength="50" />
+          <Property Name="NOTE5" Type="varchar2" MaxLength="50" />
+          <Property Name="LOGO" Type="varchar2" MaxLength="20" />
+          <Property Name="COL01" Type="varchar2" MaxLength="20" />
+          <Property Name="COL02" Type="varchar2" MaxLength="20" />
+          <Property Name="COL03" Type="varchar2" MaxLength="20" />
+          <Property Name="COL04" Type="varchar2" MaxLength="20" />
+          <Property Name="COL05" Type="varchar2" MaxLength="20" />
+          <Property Name="COL06" Type="varchar2" MaxLength="20" />
+          <Property Name="COL07" Type="varchar2" MaxLength="20" />
+          <Property Name="COL08" Type="varchar2" MaxLength="20" />
+          <Property Name="COL09" Type="varchar2" MaxLength="20" />
+          <Property Name="COL10" Type="varchar2" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="RP_PRINTER">
+          <Key>
+            <PropertyRef Name="PRINTER_ID" />
+          </Key>
+          <Property Name="PRINTER_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="PRINTER_NAME" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="PRINTER_DESC" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RP_STATION">
+          <Key>
+            <PropertyRef Name="WH_ID" />
+            <PropertyRef Name="STATION_ID" />
+          </Key>
+          <Property Name="WH_ID" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="STATION_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="STATION_DESC" Type="varchar2" MaxLength="50" />
+          <Property Name="DEF_PACK_PRINTER" Type="varchar2" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="RP_WAYBILL_BASICINFO">
+          <Key>
+            <PropertyRef Name="WH_ID" />
+          </Key>
+          <Property Name="WH_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="COMPANY" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="SENDER" Type="varchar2" MaxLength="20" />
+          <Property Name="ADDRESS" Type="varchar2" MaxLength="200" Nullable="false" />
+          <Property Name="CONTACT" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="TELEPHONE" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="SIGNATURE" Type="varchar2" MaxLength="20" />
+          <Property Name="NOTE1" Type="varchar2" MaxLength="100" />
+          <Property Name="NOTE2" Type="varchar2" MaxLength="100" />
+          <Property Name="NOTE3" Type="varchar2" MaxLength="100" />
+          <Property Name="NOTE4" Type="varchar2" MaxLength="100" />
+          <Property Name="NOTE5" Type="varchar2" MaxLength="100" />
+          <Property Name="HEADER1" Type="varchar2" MaxLength="50" />
+          <Property Name="HEADER2" Type="varchar2" MaxLength="50" />
+          <Property Name="HEADER3" Type="varchar2" MaxLength="50" />
+          <Property Name="FOOTER1" Type="varchar2" MaxLength="50" />
+          <Property Name="FOOTER2" Type="varchar2" MaxLength="50" />
+          <Property Name="FOOTER3" Type="varchar2" MaxLength="50" />
+          <Property Name="DETAIL_TITLE1" Type="varchar2" MaxLength="50" />
+          <Property Name="DETAIL_TITLE2" Type="varchar2" MaxLength="50" />
+          <Property Name="DETAIL_TITLE3" Type="varchar2" MaxLength="50" />
+          <Property Name="DETAIL_TITLE4" Type="varchar2" MaxLength="50" />
+          <Property Name="DETAIL_TITLE5" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="RP_WAYBILL_TYPE">
+          <Key>
+            <PropertyRef Name="WAYBILL_ID" />
+          </Key>
+          <Property Name="WAYBILL_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="WAYBILL_DESC" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="PRINT_DETAIL" Type="varchar2" MaxLength="1" />
         </EntityType>
         <EntityType Name="TC_PART_CATEGORY">
           <Key>
@@ -1415,6 +1526,196 @@ warning 6002: The table/view 'GWAPP.V_OPEN_QTY_PO_RDC' does not have a primary k
           <Property Name="LATEST_ETA" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.V_RP_WAYBILL_D_BASE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_RP_WAYBILL_D_BASE">
+          <Key>
+            <PropertyRef Name="SHIP_ID" />
+            <PropertyRef Name="LODNUM" />
+          </Key>
+          <Property Name="WH_ID" Type="varchar2" MaxLength="32" />
+          <Property Name="SHIP_ID" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="LODNUM" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="VC_PALWGT" Type="number" Precision="19" Scale="4" />
+          <Property Name="PALVOL" Type="varchar2" MaxLength="122" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'GWAPP.V_RP_WAYBILL_D_PRINT' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="V_RP_WAYBILL_D_PRINT">
+          <Property Name="WH_ID" Type="varchar2" MaxLength="32" />
+          <Property Name="SHIP_ID" Type="varchar2" MaxLength="30" />
+          <Property Name="LODNUM" Type="varchar2" MaxLength="30" />
+          <Property Name="VC_PALWGT" Type="number" Precision="19" Scale="4" />
+          <Property Name="PALVOL" Type="varchar2" MaxLength="122" />
+          <Property Name="REMARK1" Type="char" MaxLength="14" />
+          <Property Name="REMKAR2" Type="char" MaxLength="14" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'GWAPP.V_RP_WAYBILL_H_BASE' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="V_RP_WAYBILL_H_BASE">
+          <Property Name="SHIP_ID" Type="varchar2" MaxLength="30" />
+          <Property Name="WH_ID" Type="varchar2" MaxLength="32" />
+          <Property Name="HOST_EXT_ID" Type="varchar2" MaxLength="40" />
+          <Property Name="SHPSTS" Type="varchar2" MaxLength="1" />
+          <Property Name="CARCOD" Type="varchar2" MaxLength="10" />
+          <Property Name="CARNAM" Type="varchar2" MaxLength="30" />
+          <Property Name="TRACK_NUM" Type="varchar2" MaxLength="20" />
+          <Property Name="ADDDTE" Type="date" />
+          <Property Name="ALCDTE" Type="date" />
+          <Property Name="STGDTE" Type="date" />
+          <Property Name="LODDTE" Type="date" />
+          <Property Name="ENTDTE" Type="date" />
+          <Property Name="MODDTE" Type="date" />
+          <Property Name="MOD_USR_ID" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRNAM" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRLN1" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRLN2" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRLN3" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRCTY" Type="varchar2" MaxLength="70" />
+          <Property Name="ADRSTC" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRPSZ" Type="varchar2" MaxLength="20" />
+          <Property Name="CTRY_NAME" Type="varchar2" MaxLength="60" />
+          <Property Name="PHNNUM" Type="varchar2" MaxLength="20" />
+          <Property Name="EMAIL_ADR" Type="varchar2" MaxLength="100" />
+          <Property Name="FIRST_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="LAST_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="CONT_NAME" Type="varchar2" MaxLength="40" />
+          <Property Name="COMPANY" Type="varchar2" MaxLength="100" />
+          <Property Name="SENDER" Type="varchar2" MaxLength="20" />
+          <Property Name="ADDRESS" Type="varchar2" MaxLength="200" />
+          <Property Name="CONTACT" Type="varchar2" MaxLength="20" />
+          <Property Name="TELEPHONE" Type="varchar2" MaxLength="30" />
+          <Property Name="SIGNATURE" Type="varchar2" MaxLength="20" />
+          <Property Name="NOTE1" Type="varchar2" MaxLength="100" />
+          <Property Name="NOTE2" Type="varchar2" MaxLength="100" />
+          <Property Name="NOTE3" Type="varchar2" MaxLength="100" />
+          <Property Name="NOTE4" Type="varchar2" MaxLength="100" />
+          <Property Name="NOTE5" Type="varchar2" MaxLength="100" />
+          <Property Name="HEADER1" Type="varchar2" MaxLength="50" />
+          <Property Name="HEADER2" Type="varchar2" MaxLength="50" />
+          <Property Name="HEADER3" Type="varchar2" MaxLength="50" />
+          <Property Name="FOOTER1" Type="varchar2" MaxLength="50" />
+          <Property Name="FOOTER2" Type="varchar2" MaxLength="50" />
+          <Property Name="FOOTER3" Type="varchar2" MaxLength="50" />
+          <Property Name="DETAIL_TITLE1" Type="varchar2" MaxLength="50" />
+          <Property Name="DETAIL_TITLE2" Type="varchar2" MaxLength="50" />
+          <Property Name="DETAIL_TITLE3" Type="varchar2" MaxLength="50" />
+          <Property Name="DETAIL_TITLE4" Type="varchar2" MaxLength="50" />
+          <Property Name="DETAIL_TITLE5" Type="varchar2" MaxLength="50" />
+          <Property Name="WAYBILL_ID" Type="varchar2" MaxLength="20" />
+          <Property Name="PRINT_DETAIL" Type="varchar2" MaxLength="1" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'GWAPP.V_RP_WAYBILL_H_PRINT' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="V_RP_WAYBILL_H_PRINT">
+          <Property Name="SHIP_ID" Type="varchar2" MaxLength="30" />
+          <Property Name="WH_ID" Type="varchar2" MaxLength="32" />
+          <Property Name="HOST_EXT_ID" Type="varchar2" MaxLength="40" />
+          <Property Name="SHPSTS" Type="varchar2" MaxLength="1" />
+          <Property Name="CARCOD" Type="varchar2" MaxLength="10" />
+          <Property Name="CARNAM" Type="varchar2" MaxLength="30" />
+          <Property Name="TRACK_NUM" Type="varchar2" MaxLength="20" />
+          <Property Name="ADDDTE" Type="date" />
+          <Property Name="ALCDTE" Type="date" />
+          <Property Name="STGDTE" Type="date" />
+          <Property Name="LODDTE" Type="date" />
+          <Property Name="ENTDTE" Type="date" />
+          <Property Name="MODDTE" Type="date" />
+          <Property Name="MOD_USR_ID" Type="varchar2" MaxLength="40" />
+          <Property Name="L_ADRNAM" Type="varchar2" MaxLength="160" />
+          <Property Name="L_ADRLN1" Type="varchar2" MaxLength="160" />
+          <Property Name="L_ADRLN2" Type="varchar2" MaxLength="160" />
+          <Property Name="L_ADRLN3" Type="varchar2" MaxLength="160" />
+          <Property Name="L_ADRCTY" Type="varchar2" MaxLength="280" />
+          <Property Name="L_ADRSTC" Type="varchar2" MaxLength="160" />
+          <Property Name="L_ADRPSZ" Type="varchar2" MaxLength="80" />
+          <Property Name="L_CTRY_NAME" Type="varchar2" MaxLength="240" />
+          <Property Name="L_PHNNUM" Type="varchar2" MaxLength="80" />
+          <Property Name="L_EMAIL_ADR" Type="varchar2" MaxLength="400" />
+          <Property Name="L_FIRST_NAME" Type="varchar2" MaxLength="120" />
+          <Property Name="L_LAST_NAME" Type="varchar2" MaxLength="120" />
+          <Property Name="L_CONT_NAME" Type="varchar2" MaxLength="160" />
+          <Property Name="R_ADRNAM" Type="varchar2" MaxLength="40" />
+          <Property Name="R_ADRLN1" Type="varchar2" MaxLength="40" />
+          <Property Name="R_ADRLN2" Type="varchar2" MaxLength="40" />
+          <Property Name="R_ADRLN3" Type="varchar2" MaxLength="40" />
+          <Property Name="R_ADRCTY" Type="varchar2" MaxLength="70" />
+          <Property Name="R_ADRSTC" Type="varchar2" MaxLength="40" />
+          <Property Name="R_ADRPSZ" Type="varchar2" MaxLength="20" />
+          <Property Name="R_CTRY_NAME" Type="varchar2" MaxLength="60" />
+          <Property Name="R_PHNNUM" Type="varchar2" MaxLength="20" />
+          <Property Name="R_EMAIL_ADR" Type="varchar2" MaxLength="100" />
+          <Property Name="R_FIRST_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="R_LAST_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="R_CONT_NAME" Type="varchar2" MaxLength="40" />
+          <Property Name="COMPANY" Type="varchar2" MaxLength="100" />
+          <Property Name="SENDER" Type="varchar2" MaxLength="20" />
+          <Property Name="ADDRESS" Type="varchar2" MaxLength="200" />
+          <Property Name="CONTACT" Type="varchar2" MaxLength="20" />
+          <Property Name="TELEPHONE" Type="varchar2" MaxLength="30" />
+          <Property Name="SIGNATURE1" Type="varchar2" MaxLength="20" />
+          <Property Name="SIGNATURE2" Type="varchar2" MaxLength="20" />
+          <Property Name="SIGNATURE3" Type="varchar2" MaxLength="20" />
+          <Property Name="NOTE1" Type="varchar2" MaxLength="100" />
+          <Property Name="NOTE2" Type="varchar2" MaxLength="100" />
+          <Property Name="NOTE3" Type="varchar2" MaxLength="100" />
+          <Property Name="NOTE4" Type="varchar2" MaxLength="100" />
+          <Property Name="NOTE5" Type="varchar2" MaxLength="100" />
+          <Property Name="HEADER1" Type="varchar2" MaxLength="50" />
+          <Property Name="HEADER2" Type="varchar2" MaxLength="50" />
+          <Property Name="HEADER3" Type="varchar2" MaxLength="50" />
+          <Property Name="FOOTER1" Type="varchar2" MaxLength="50" />
+          <Property Name="FOOTER2" Type="varchar2" MaxLength="50" />
+          <Property Name="FOOTER3" Type="varchar2" MaxLength="50" />
+          <Property Name="DETAIL_TITLE1" Type="varchar2" MaxLength="50" />
+          <Property Name="DETAIL_TITLE2" Type="varchar2" MaxLength="50" />
+          <Property Name="DETAIL_TITLE3" Type="varchar2" MaxLength="50" />
+          <Property Name="DETAIL_TITLE4" Type="varchar2" MaxLength="50" />
+          <Property Name="DETAIL_TITLE5" Type="varchar2" MaxLength="50" />
+          <Property Name="FLEX1" Type="char" MaxLength="22" />
+          <Property Name="FLEX2" Type="char" MaxLength="22" />
+          <Property Name="FLEX3" Type="char" MaxLength="22" />
+          <Property Name="FLEX4" Type="char" MaxLength="22" />
+          <Property Name="FLEX5" Type="char" MaxLength="22" />
+          <Property Name="WAYBILL_ID" Type="varchar2" MaxLength="20" />
+          <Property Name="PRINT_DETAIL" Type="varchar2" MaxLength="1" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GWAPP.V_SHIPMENT_H_RP_ALL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_SHIPMENT_H_RP_ALL">
+          <Key>
+            <PropertyRef Name="SHIP_ID" />
+            <PropertyRef Name="ADDDTE" />
+            <PropertyRef Name="ENTDTE" />
+          </Key>
+          <Property Name="SHIP_ID" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="WH_ID" Type="varchar2" MaxLength="32" />
+          <Property Name="HOST_EXT_ID" Type="varchar2" MaxLength="40" />
+          <Property Name="SHPSTS" Type="varchar2" MaxLength="1" />
+          <Property Name="CARCOD" Type="varchar2" MaxLength="10" />
+          <Property Name="CARNAM" Type="varchar2" MaxLength="30" />
+          <Property Name="TRACK_NUM" Type="varchar2" MaxLength="20" />
+          <Property Name="ADDDTE" Type="date" Nullable="false" />
+          <Property Name="ALCDTE" Type="date" />
+          <Property Name="STGDTE" Type="date" />
+          <Property Name="LODDTE" Type="date" />
+          <Property Name="ENTDTE" Type="date" Nullable="false" />
+          <Property Name="MODDTE" Type="date" />
+          <Property Name="MOD_USR_ID" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRNAM" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRLN1" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRLN2" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRLN3" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRCTY" Type="varchar2" MaxLength="70" />
+          <Property Name="ADRSTC" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRPSZ" Type="varchar2" MaxLength="20" />
+          <Property Name="CTRY_NAME" Type="varchar2" MaxLength="60" />
+          <Property Name="PHNNUM" Type="varchar2" MaxLength="20" />
+          <Property Name="EMAIL_ADR" Type="varchar2" MaxLength="100" />
+          <Property Name="FIRST_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="LAST_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="CONT_NAME" Type="varchar2" MaxLength="40" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.V_SHIPPING_ALL_BASE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_SHIPPING_ALL_BASE">
           <Key>
@@ -1766,6 +2067,18 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="APP_WH_R03">
+          <End Role="RP_PRINTER" Type="Self.RP_PRINTER" Multiplicity="0..1" />
+          <End Role="APP_WH" Type="Self.APP_WH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RP_PRINTER">
+              <PropertyRef Name="PRINTER_ID" />
+            </Principal>
+            <Dependent Role="APP_WH">
+              <PropertyRef Name="DEF_PACK_PRINTER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="C00002">
           <End Role="APP_ROLES" Type="Self.APP_ROLES" Multiplicity="1" />
           <End Role="APP_USER_ROLE_LINK" Type="Self.APP_USER_ROLE_LINK" Multiplicity="*" />
@@ -1984,7 +2297,55 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0021764">
+        <Association Name="RP_ADR_MST_R01">
+          <End Role="RP_CUST_PACK_TYPE" Type="Self.RP_CUST_PACK_TYPE" Multiplicity="0..1" />
+          <End Role="RP_ADR_MST" Type="Self.RP_ADR_MST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RP_CUST_PACK_TYPE">
+              <PropertyRef Name="CUST_PACK_ID" />
+            </Principal>
+            <Dependent Role="RP_ADR_MST">
+              <PropertyRef Name="CUST_PACK_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RP_CAR_MST_R01">
+          <End Role="RP_WAYBILL_TYPE" Type="Self.RP_WAYBILL_TYPE" Multiplicity="0..1" />
+          <End Role="RP_CAR_MST" Type="Self.RP_CAR_MST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RP_WAYBILL_TYPE">
+              <PropertyRef Name="WAYBILL_ID" />
+            </Principal>
+            <Dependent Role="RP_CAR_MST">
+              <PropertyRef Name="WAYBILL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RP_CUST_PACK_TYPE_R01">
+          <End Role="RP_CUST_PACK_TYPE" Type="Self.RP_CUST_PACK_TYPE" Multiplicity="1" />
+          <End Role="RP_CUST_PACK_TYPE1" Type="Self.RP_CUST_PACK_TYPE" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="RP_CUST_PACK_TYPE">
+              <PropertyRef Name="CUST_PACK_ID" />
+            </Principal>
+            <Dependent Role="RP_CUST_PACK_TYPE1">
+              <PropertyRef Name="CUST_PACK_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RP_STATION_R02">
+          <End Role="RP_PRINTER" Type="Self.RP_PRINTER" Multiplicity="0..1" />
+          <End Role="RP_STATION" Type="Self.RP_STATION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RP_PRINTER">
+              <PropertyRef Name="PRINTER_ID" />
+            </Principal>
+            <Dependent Role="RP_STATION">
+              <PropertyRef Name="DEF_PACK_PRINTER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0022680">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2139,6 +2500,13 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="M_PARAMETER" EntityType="Self.M_PARAMETER" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_PART" EntityType="Self.M_PART" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_SYSTEM" EntityType="Self.M_SYSTEM" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="RP_ADR_MST" EntityType="Self.RP_ADR_MST" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="RP_CAR_MST" EntityType="Self.RP_CAR_MST" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="RP_CUST_PACK_TYPE" EntityType="Self.RP_CUST_PACK_TYPE" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="RP_PRINTER" EntityType="Self.RP_PRINTER" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="RP_STATION" EntityType="Self.RP_STATION" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="RP_WAYBILL_BASICINFO" EntityType="Self.RP_WAYBILL_BASICINFO" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="RP_WAYBILL_TYPE" EntityType="Self.RP_WAYBILL_TYPE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TC_PART_CATEGORY" EntityType="Self.TC_PART_CATEGORY" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TC_PART_CATEGORY_STG" EntityType="Self.TC_PART_CATEGORY_STG" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="TC_PART_HS" EntityType="Self.TC_PART_HS" Schema="GWAPP" store:Type="Tables" />
@@ -2722,6 +3090,46 @@ FROM "GWAPP"."V_OPEN_QTY_PO_PDC" "V_OPEN_QTY_PO_PDC"</DefiningQuery>
 "V_OPEN_QTY_PO_RDC"."LATEST_ETA" AS "LATEST_ETA"
 FROM "GWAPP"."V_OPEN_QTY_PO_RDC" "V_OPEN_QTY_PO_RDC"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="V_RP_WAYBILL_D_BASE" EntityType="Self.V_RP_WAYBILL_D_BASE" store:Type="Views" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"V_RP_WAYBILL_D_BASE"."WH_ID" AS "WH_ID", 
+"V_RP_WAYBILL_D_BASE"."SHIP_ID" AS "SHIP_ID", 
+"V_RP_WAYBILL_D_BASE"."LODNUM" AS "LODNUM", 
+"V_RP_WAYBILL_D_BASE"."VC_PALWGT" AS "VC_PALWGT", 
+"V_RP_WAYBILL_D_BASE"."PALVOL" AS "PALVOL"
+FROM "GWAPP"."V_RP_WAYBILL_D_BASE" "V_RP_WAYBILL_D_BASE"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_SHIPMENT_H_RP_ALL" EntityType="Self.V_SHIPMENT_H_RP_ALL" store:Type="Views" store:Schema="GWAPP">
+            <DefiningQuery>SELECT 
+"V_SHIPMENT_H_RP_ALL"."SHIP_ID" AS "SHIP_ID", 
+"V_SHIPMENT_H_RP_ALL"."WH_ID" AS "WH_ID", 
+"V_SHIPMENT_H_RP_ALL"."HOST_EXT_ID" AS "HOST_EXT_ID", 
+"V_SHIPMENT_H_RP_ALL"."SHPSTS" AS "SHPSTS", 
+"V_SHIPMENT_H_RP_ALL"."CARCOD" AS "CARCOD", 
+"V_SHIPMENT_H_RP_ALL"."CARNAM" AS "CARNAM", 
+"V_SHIPMENT_H_RP_ALL"."TRACK_NUM" AS "TRACK_NUM", 
+"V_SHIPMENT_H_RP_ALL"."ADDDTE" AS "ADDDTE", 
+"V_SHIPMENT_H_RP_ALL"."ALCDTE" AS "ALCDTE", 
+"V_SHIPMENT_H_RP_ALL"."STGDTE" AS "STGDTE", 
+"V_SHIPMENT_H_RP_ALL"."LODDTE" AS "LODDTE", 
+"V_SHIPMENT_H_RP_ALL"."ENTDTE" AS "ENTDTE", 
+"V_SHIPMENT_H_RP_ALL"."MODDTE" AS "MODDTE", 
+"V_SHIPMENT_H_RP_ALL"."MOD_USR_ID" AS "MOD_USR_ID", 
+"V_SHIPMENT_H_RP_ALL"."ADRNAM" AS "ADRNAM", 
+"V_SHIPMENT_H_RP_ALL"."ADRLN1" AS "ADRLN1", 
+"V_SHIPMENT_H_RP_ALL"."ADRLN2" AS "ADRLN2", 
+"V_SHIPMENT_H_RP_ALL"."ADRLN3" AS "ADRLN3", 
+"V_SHIPMENT_H_RP_ALL"."ADRCTY" AS "ADRCTY", 
+"V_SHIPMENT_H_RP_ALL"."ADRSTC" AS "ADRSTC", 
+"V_SHIPMENT_H_RP_ALL"."ADRPSZ" AS "ADRPSZ", 
+"V_SHIPMENT_H_RP_ALL"."CTRY_NAME" AS "CTRY_NAME", 
+"V_SHIPMENT_H_RP_ALL"."PHNNUM" AS "PHNNUM", 
+"V_SHIPMENT_H_RP_ALL"."EMAIL_ADR" AS "EMAIL_ADR", 
+"V_SHIPMENT_H_RP_ALL"."FIRST_NAME" AS "FIRST_NAME", 
+"V_SHIPMENT_H_RP_ALL"."LAST_NAME" AS "LAST_NAME", 
+"V_SHIPMENT_H_RP_ALL"."CONT_NAME" AS "CONT_NAME"
+FROM "GWAPP"."V_SHIPMENT_H_RP_ALL" "V_SHIPMENT_H_RP_ALL"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="V_SHIPPING_ALL_BASE" EntityType="Self.V_SHIPPING_ALL_BASE" store:Type="Views" store:Schema="GWAPP">
             <DefiningQuery>SELECT 
 "V_SHIPPING_ALL_BASE"."FROM_SYSTEM" AS "FROM_SYSTEM", 
@@ -2932,6 +3340,10 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="APP_WH" EntitySet="APP_WH" />
           </AssociationSet>
+          <AssociationSet Name="APP_WH_R03" Association="Self.APP_WH_R03">
+            <End Role="RP_PRINTER" EntitySet="RP_PRINTER" />
+            <End Role="APP_WH" EntitySet="APP_WH" />
+          </AssociationSet>
           <AssociationSet Name="C00002" Association="Self.C00002">
             <End Role="APP_ROLES" EntitySet="APP_ROLES" />
             <End Role="APP_USER_ROLE_LINK" EntitySet="APP_USER_ROLE_LINK" />
@@ -3004,7 +3416,23 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="TC_PART_CATEGORY" EntitySet="TC_PART_CATEGORY" />
             <End Role="M_PART" EntitySet="M_PART" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0021764" Association="Self.SYS_C0021764">
+          <AssociationSet Name="RP_ADR_MST_R01" Association="Self.RP_ADR_MST_R01">
+            <End Role="RP_CUST_PACK_TYPE" EntitySet="RP_CUST_PACK_TYPE" />
+            <End Role="RP_ADR_MST" EntitySet="RP_ADR_MST" />
+          </AssociationSet>
+          <AssociationSet Name="RP_CAR_MST_R01" Association="Self.RP_CAR_MST_R01">
+            <End Role="RP_WAYBILL_TYPE" EntitySet="RP_WAYBILL_TYPE" />
+            <End Role="RP_CAR_MST" EntitySet="RP_CAR_MST" />
+          </AssociationSet>
+          <AssociationSet Name="RP_CUST_PACK_TYPE_R01" Association="Self.RP_CUST_PACK_TYPE_R01">
+            <End Role="RP_CUST_PACK_TYPE" EntitySet="RP_CUST_PACK_TYPE" />
+            <End Role="RP_CUST_PACK_TYPE1" EntitySet="RP_CUST_PACK_TYPE" />
+          </AssociationSet>
+          <AssociationSet Name="RP_STATION_R02" Association="Self.RP_STATION_R02">
+            <End Role="RP_PRINTER" EntitySet="RP_PRINTER" />
+            <End Role="RP_STATION" EntitySet="RP_STATION" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0022680" Association="Self.SYS_C0022680">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -3257,6 +3685,9 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="SITE_NAME" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="APP_SITES" Relationship="Self.APP_WH_R01" FromRole="APP_WH" ToRole="APP_SITES" />
           <NavigationProperty Name="M_SYSTEM" Relationship="Self.APP_WH_R02" FromRole="APP_WH" ToRole="M_SYSTEM" />
+          <Property Name="WH_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DEF_PACK_PRINTER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RP_PRINTER" Relationship="CHubDBModel.APP_WH_R03" FromRole="APP_WH" ToRole="RP_PRINTER" />
         </EntityType>
         <EntityType Name="APP_WORKSPACE">
           <Key>
@@ -4103,6 +4534,35 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <AssociationSet Name="EW_SCHEDULE_TASK_R01" Association="CHubDBModel.EW_SCHEDULE_TASK_R01">
             <End Role="EW_SCHEDULE" EntitySet="EW_SCHEDULE" />
             <End Role="EW_SCHEDULE_TASK" EntitySet="EW_SCHEDULE_TASK" />
+          </AssociationSet>
+          <EntitySet Name="RP_ADR_MST" EntityType="CHubDBModel.RP_ADR_MST" />
+          <EntitySet Name="RP_CAR_MST" EntityType="CHubDBModel.RP_CAR_MST" />
+          <EntitySet Name="RP_CUST_PACK_TYPE" EntityType="CHubDBModel.RP_CUST_PACK_TYPE" />
+          <EntitySet Name="RP_PRINTER" EntityType="CHubDBModel.RP_PRINTER" />
+          <EntitySet Name="RP_STATION" EntityType="CHubDBModel.RP_STATION" />
+          <EntitySet Name="RP_WAYBILL_BASICINFO" EntityType="CHubDBModel.RP_WAYBILL_BASICINFO" />
+          <EntitySet Name="RP_WAYBILL_TYPE" EntityType="CHubDBModel.RP_WAYBILL_TYPE" />
+          <EntitySet Name="V_RP_WAYBILL_D_BASE" EntityType="CHubDBModel.V_RP_WAYBILL_D_BASE" />
+          <EntitySet Name="V_SHIPMENT_H_RP_ALL" EntityType="CHubDBModel.V_SHIPMENT_H_RP_ALL" />
+          <AssociationSet Name="APP_WH_R03" Association="CHubDBModel.APP_WH_R03">
+            <End Role="RP_PRINTER" EntitySet="RP_PRINTER" />
+            <End Role="APP_WH" EntitySet="APP_WH" />
+          </AssociationSet>
+          <AssociationSet Name="RP_ADR_MST_R01" Association="CHubDBModel.RP_ADR_MST_R01">
+            <End Role="RP_CUST_PACK_TYPE" EntitySet="RP_CUST_PACK_TYPE" />
+            <End Role="RP_ADR_MST" EntitySet="RP_ADR_MST" />
+          </AssociationSet>
+          <AssociationSet Name="RP_CAR_MST_R01" Association="CHubDBModel.RP_CAR_MST_R01">
+            <End Role="RP_WAYBILL_TYPE" EntitySet="RP_WAYBILL_TYPE" />
+            <End Role="RP_CAR_MST" EntitySet="RP_CAR_MST" />
+          </AssociationSet>
+          <AssociationSet Name="RP_CUST_PACK_TYPE_R01" Association="CHubDBModel.RP_CUST_PACK_TYPE_R01">
+            <End Role="RP_CUST_PACK_TYPE" EntitySet="RP_CUST_PACK_TYPE" />
+            <End Role="RP_CUST_PACK_TYPE1" EntitySet="RP_CUST_PACK_TYPE" />
+          </AssociationSet>
+          <AssociationSet Name="RP_STATION_R02" Association="CHubDBModel.RP_STATION_R02">
+            <End Role="RP_PRINTER" EntitySet="RP_PRINTER" />
+            <End Role="RP_STATION" EntitySet="RP_STATION" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
@@ -5411,6 +5871,229 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="RP_ADR_MST">
+          <Key>
+            <PropertyRef Name="WH_ID" />
+            <PropertyRef Name="ADRNAM" />
+          </Key>
+          <Property Name="WH_ID" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="ADRNAM" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="LOAD_DATE" Type="DateTime" />
+          <Property Name="CUST_PACK_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RP_CUST_PACK_TYPE" Relationship="CHubDBModel.RP_ADR_MST_R01" FromRole="RP_ADR_MST" ToRole="RP_CUST_PACK_TYPE" />
+        </EntityType>
+        <EntityType Name="RP_CAR_MST">
+          <Key>
+            <PropertyRef Name="WH_ID" />
+            <PropertyRef Name="CARCOD" />
+          </Key>
+          <Property Name="WH_ID" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="CARCOD" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CARNAM" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="LOAD_DATE" Type="DateTime" />
+          <Property Name="WAYBILL_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RP_WAYBILL_TYPE" Relationship="CHubDBModel.RP_CAR_MST_R01" FromRole="RP_CAR_MST" ToRole="RP_WAYBILL_TYPE" />
+        </EntityType>
+        <EntityType Name="RP_CUST_PACK_TYPE">
+          <Key>
+            <PropertyRef Name="CUST_PACK_ID" />
+          </Key>
+          <Property Name="CUST_PACK_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PACK_DESC" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVEIND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="AUTO_PRINT" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="CUST_SHORT_NAME" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="HEADER1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="HEADER2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="HEADER3" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FOOTER1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FOOTER2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FOOTER3" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE4" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE5" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LOGO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="COL01" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="COL02" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="COL03" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="COL04" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="COL05" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="COL06" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="COL07" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="COL08" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="COL09" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="COL10" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RP_ADR_MST" Relationship="CHubDBModel.RP_ADR_MST_R01" FromRole="RP_CUST_PACK_TYPE" ToRole="RP_ADR_MST" />
+          <NavigationProperty Name="RP_CUST_PACK_TYPE1" Relationship="CHubDBModel.RP_CUST_PACK_TYPE_R01" FromRole="RP_CUST_PACK_TYPE" ToRole="RP_CUST_PACK_TYPE1" />
+          <NavigationProperty Name="RP_CUST_PACK_TYPE2" Relationship="CHubDBModel.RP_CUST_PACK_TYPE_R01" FromRole="RP_CUST_PACK_TYPE1" ToRole="RP_CUST_PACK_TYPE" />
+        </EntityType>
+        <EntityType Name="RP_PRINTER">
+          <Key>
+            <PropertyRef Name="PRINTER_ID" />
+          </Key>
+          <Property Name="PRINTER_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PRINTER_NAME" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PRINTER_DESC" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVEIND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="APP_WH" Relationship="CHubDBModel.APP_WH_R03" FromRole="RP_PRINTER" ToRole="APP_WH" />
+          <NavigationProperty Name="RP_STATION" Relationship="CHubDBModel.RP_STATION_R02" FromRole="RP_PRINTER" ToRole="RP_STATION" />
+        </EntityType>
+        <EntityType Name="RP_STATION">
+          <Key>
+            <PropertyRef Name="WH_ID" />
+            <PropertyRef Name="STATION_ID" />
+          </Key>
+          <Property Name="WH_ID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="STATION_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="STATION_DESC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DEF_PACK_PRINTER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RP_PRINTER" Relationship="CHubDBModel.RP_STATION_R02" FromRole="RP_STATION" ToRole="RP_PRINTER" />
+        </EntityType>
+        <EntityType Name="RP_WAYBILL_BASICINFO">
+          <Key>
+            <PropertyRef Name="WH_ID" />
+          </Key>
+          <Property Name="WH_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="COMPANY" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SENDER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ADDRESS" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CONTACT" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TELEPHONE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="SIGNATURE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE3" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE4" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE5" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="HEADER1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HEADER2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HEADER3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FOOTER1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FOOTER2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FOOTER3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DETAIL_TITLE1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DETAIL_TITLE2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DETAIL_TITLE3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DETAIL_TITLE4" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DETAIL_TITLE5" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="RP_WAYBILL_TYPE">
+          <Key>
+            <PropertyRef Name="WAYBILL_ID" />
+          </Key>
+          <Property Name="WAYBILL_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="WAYBILL_DESC" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVEIND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="PRINT_DETAIL" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RP_CAR_MST" Relationship="CHubDBModel.RP_CAR_MST_R01" FromRole="RP_WAYBILL_TYPE" ToRole="RP_CAR_MST" />
+        </EntityType>
+        <EntityType Name="V_RP_WAYBILL_D_BASE">
+          <Key>
+            <PropertyRef Name="SHIP_ID" />
+            <PropertyRef Name="LODNUM" />
+          </Key>
+          <Property Name="WH_ID" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="SHIP_ID" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="LODNUM" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="VC_PALWGT" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PALVOL" Type="String" MaxLength="122" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="V_SHIPMENT_H_RP_ALL">
+          <Key>
+            <PropertyRef Name="SHIP_ID" />
+            <PropertyRef Name="ADDDTE" />
+            <PropertyRef Name="ENTDTE" />
+          </Key>
+          <Property Name="SHIP_ID" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="WH_ID" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="HOST_EXT_ID" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="SHPSTS" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="CARCOD" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CARNAM" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="TRACK_NUM" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ADDDTE" Type="DateTime" Nullable="false" />
+          <Property Name="ALCDTE" Type="DateTime" />
+          <Property Name="STGDTE" Type="DateTime" />
+          <Property Name="LODDTE" Type="DateTime" />
+          <Property Name="ENTDTE" Type="DateTime" Nullable="false" />
+          <Property Name="MODDTE" Type="DateTime" />
+          <Property Name="MOD_USR_ID" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="ADRNAM" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="ADRLN1" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="ADRLN2" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="ADRLN3" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="ADRCTY" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="ADRSTC" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="ADRPSZ" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CTRY_NAME" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="PHNNUM" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EMAIL_ADR" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FIRST_NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="LAST_NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CONT_NAME" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="APP_WH_R03">
+          <End Type="CHubDBModel.RP_PRINTER" Role="RP_PRINTER" Multiplicity="0..1" />
+          <End Type="CHubDBModel.APP_WH" Role="APP_WH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RP_PRINTER">
+              <PropertyRef Name="PRINTER_ID" />
+            </Principal>
+            <Dependent Role="APP_WH">
+              <PropertyRef Name="DEF_PACK_PRINTER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RP_ADR_MST_R01">
+          <End Type="CHubDBModel.RP_CUST_PACK_TYPE" Role="RP_CUST_PACK_TYPE" Multiplicity="0..1" />
+          <End Type="CHubDBModel.RP_ADR_MST" Role="RP_ADR_MST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RP_CUST_PACK_TYPE">
+              <PropertyRef Name="CUST_PACK_ID" />
+            </Principal>
+            <Dependent Role="RP_ADR_MST">
+              <PropertyRef Name="CUST_PACK_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RP_CAR_MST_R01">
+          <End Type="CHubDBModel.RP_WAYBILL_TYPE" Role="RP_WAYBILL_TYPE" Multiplicity="0..1" />
+          <End Type="CHubDBModel.RP_CAR_MST" Role="RP_CAR_MST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RP_WAYBILL_TYPE">
+              <PropertyRef Name="WAYBILL_ID" />
+            </Principal>
+            <Dependent Role="RP_CAR_MST">
+              <PropertyRef Name="WAYBILL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RP_CUST_PACK_TYPE_R01">
+          <End Type="CHubDBModel.RP_CUST_PACK_TYPE" Role="RP_CUST_PACK_TYPE" Multiplicity="1" />
+          <End Type="CHubDBModel.RP_CUST_PACK_TYPE" Role="RP_CUST_PACK_TYPE1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="RP_CUST_PACK_TYPE">
+              <PropertyRef Name="CUST_PACK_ID" />
+            </Principal>
+            <Dependent Role="RP_CUST_PACK_TYPE1">
+              <PropertyRef Name="CUST_PACK_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RP_STATION_R02">
+          <End Type="CHubDBModel.RP_PRINTER" Role="RP_PRINTER" Multiplicity="0..1" />
+          <End Type="CHubDBModel.RP_STATION" Role="RP_STATION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RP_PRINTER">
+              <PropertyRef Name="PRINTER_ID" />
+            </Principal>
+            <Dependent Role="RP_STATION">
+              <PropertyRef Name="DEF_PACK_PRINTER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5597,6 +6280,8 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="APP_WH">
             <EntityTypeMapping TypeName="CHubDBModel.APP_WH">
               <MappingFragment StoreEntitySet="APP_WH">
+                <ScalarProperty Name="DEF_PACK_PRINTER" ColumnName="DEF_PACK_PRINTER" />
+                <ScalarProperty Name="WH_ID" ColumnName="WH_ID" />
                 <ScalarProperty Name="WAREHOUSE" ColumnName="WAREHOUSE" />
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
                 <ScalarProperty Name="SYSID" ColumnName="SYSID" />
@@ -6935,6 +7620,163 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="APPLY" ColumnName="APPLY" />
                 <ScalarProperty Name="MESSAGE_ID" ColumnName="MESSAGE_ID" />
                 <ScalarProperty Name="APP_USER" ColumnName="APP_USER" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RP_ADR_MST">
+            <EntityTypeMapping TypeName="CHubDBModel.RP_ADR_MST">
+              <MappingFragment StoreEntitySet="RP_ADR_MST">
+                <ScalarProperty Name="CUST_PACK_ID" ColumnName="CUST_PACK_ID" />
+                <ScalarProperty Name="LOAD_DATE" ColumnName="LOAD_DATE" />
+                <ScalarProperty Name="ADRNAM" ColumnName="ADRNAM" />
+                <ScalarProperty Name="WH_ID" ColumnName="WH_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RP_CAR_MST">
+            <EntityTypeMapping TypeName="CHubDBModel.RP_CAR_MST">
+              <MappingFragment StoreEntitySet="RP_CAR_MST">
+                <ScalarProperty Name="WAYBILL_ID" ColumnName="WAYBILL_ID" />
+                <ScalarProperty Name="LOAD_DATE" ColumnName="LOAD_DATE" />
+                <ScalarProperty Name="CARNAM" ColumnName="CARNAM" />
+                <ScalarProperty Name="CARCOD" ColumnName="CARCOD" />
+                <ScalarProperty Name="WH_ID" ColumnName="WH_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RP_CUST_PACK_TYPE">
+            <EntityTypeMapping TypeName="CHubDBModel.RP_CUST_PACK_TYPE">
+              <MappingFragment StoreEntitySet="RP_CUST_PACK_TYPE">
+                <ScalarProperty Name="COL10" ColumnName="COL10" />
+                <ScalarProperty Name="COL09" ColumnName="COL09" />
+                <ScalarProperty Name="COL08" ColumnName="COL08" />
+                <ScalarProperty Name="COL07" ColumnName="COL07" />
+                <ScalarProperty Name="COL06" ColumnName="COL06" />
+                <ScalarProperty Name="COL05" ColumnName="COL05" />
+                <ScalarProperty Name="COL04" ColumnName="COL04" />
+                <ScalarProperty Name="COL03" ColumnName="COL03" />
+                <ScalarProperty Name="COL02" ColumnName="COL02" />
+                <ScalarProperty Name="COL01" ColumnName="COL01" />
+                <ScalarProperty Name="LOGO" ColumnName="LOGO" />
+                <ScalarProperty Name="NOTE5" ColumnName="NOTE5" />
+                <ScalarProperty Name="NOTE4" ColumnName="NOTE4" />
+                <ScalarProperty Name="NOTE3" ColumnName="NOTE3" />
+                <ScalarProperty Name="NOTE2" ColumnName="NOTE2" />
+                <ScalarProperty Name="NOTE1" ColumnName="NOTE1" />
+                <ScalarProperty Name="FOOTER3" ColumnName="FOOTER3" />
+                <ScalarProperty Name="FOOTER2" ColumnName="FOOTER2" />
+                <ScalarProperty Name="FOOTER1" ColumnName="FOOTER1" />
+                <ScalarProperty Name="HEADER3" ColumnName="HEADER3" />
+                <ScalarProperty Name="HEADER2" ColumnName="HEADER2" />
+                <ScalarProperty Name="HEADER1" ColumnName="HEADER1" />
+                <ScalarProperty Name="CUST_SHORT_NAME" ColumnName="CUST_SHORT_NAME" />
+                <ScalarProperty Name="AUTO_PRINT" ColumnName="AUTO_PRINT" />
+                <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
+                <ScalarProperty Name="PACK_DESC" ColumnName="PACK_DESC" />
+                <ScalarProperty Name="CUST_PACK_ID" ColumnName="CUST_PACK_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RP_PRINTER">
+            <EntityTypeMapping TypeName="CHubDBModel.RP_PRINTER">
+              <MappingFragment StoreEntitySet="RP_PRINTER">
+                <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
+                <ScalarProperty Name="PRINTER_DESC" ColumnName="PRINTER_DESC" />
+                <ScalarProperty Name="PRINTER_NAME" ColumnName="PRINTER_NAME" />
+                <ScalarProperty Name="PRINTER_ID" ColumnName="PRINTER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RP_STATION">
+            <EntityTypeMapping TypeName="CHubDBModel.RP_STATION">
+              <MappingFragment StoreEntitySet="RP_STATION">
+                <ScalarProperty Name="DEF_PACK_PRINTER" ColumnName="DEF_PACK_PRINTER" />
+                <ScalarProperty Name="STATION_DESC" ColumnName="STATION_DESC" />
+                <ScalarProperty Name="STATION_ID" ColumnName="STATION_ID" />
+                <ScalarProperty Name="WH_ID" ColumnName="WH_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RP_WAYBILL_BASICINFO">
+            <EntityTypeMapping TypeName="CHubDBModel.RP_WAYBILL_BASICINFO">
+              <MappingFragment StoreEntitySet="RP_WAYBILL_BASICINFO">
+                <ScalarProperty Name="DETAIL_TITLE5" ColumnName="DETAIL_TITLE5" />
+                <ScalarProperty Name="DETAIL_TITLE4" ColumnName="DETAIL_TITLE4" />
+                <ScalarProperty Name="DETAIL_TITLE3" ColumnName="DETAIL_TITLE3" />
+                <ScalarProperty Name="DETAIL_TITLE2" ColumnName="DETAIL_TITLE2" />
+                <ScalarProperty Name="DETAIL_TITLE1" ColumnName="DETAIL_TITLE1" />
+                <ScalarProperty Name="FOOTER3" ColumnName="FOOTER3" />
+                <ScalarProperty Name="FOOTER2" ColumnName="FOOTER2" />
+                <ScalarProperty Name="FOOTER1" ColumnName="FOOTER1" />
+                <ScalarProperty Name="HEADER3" ColumnName="HEADER3" />
+                <ScalarProperty Name="HEADER2" ColumnName="HEADER2" />
+                <ScalarProperty Name="HEADER1" ColumnName="HEADER1" />
+                <ScalarProperty Name="NOTE5" ColumnName="NOTE5" />
+                <ScalarProperty Name="NOTE4" ColumnName="NOTE4" />
+                <ScalarProperty Name="NOTE3" ColumnName="NOTE3" />
+                <ScalarProperty Name="NOTE2" ColumnName="NOTE2" />
+                <ScalarProperty Name="NOTE1" ColumnName="NOTE1" />
+                <ScalarProperty Name="SIGNATURE" ColumnName="SIGNATURE" />
+                <ScalarProperty Name="TELEPHONE" ColumnName="TELEPHONE" />
+                <ScalarProperty Name="CONTACT" ColumnName="CONTACT" />
+                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+                <ScalarProperty Name="SENDER" ColumnName="SENDER" />
+                <ScalarProperty Name="COMPANY" ColumnName="COMPANY" />
+                <ScalarProperty Name="WH_ID" ColumnName="WH_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RP_WAYBILL_TYPE">
+            <EntityTypeMapping TypeName="CHubDBModel.RP_WAYBILL_TYPE">
+              <MappingFragment StoreEntitySet="RP_WAYBILL_TYPE">
+                <ScalarProperty Name="PRINT_DETAIL" ColumnName="PRINT_DETAIL" />
+                <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
+                <ScalarProperty Name="WAYBILL_DESC" ColumnName="WAYBILL_DESC" />
+                <ScalarProperty Name="WAYBILL_ID" ColumnName="WAYBILL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_RP_WAYBILL_D_BASE">
+            <EntityTypeMapping TypeName="CHubDBModel.V_RP_WAYBILL_D_BASE">
+              <MappingFragment StoreEntitySet="V_RP_WAYBILL_D_BASE">
+                <ScalarProperty Name="PALVOL" ColumnName="PALVOL" />
+                <ScalarProperty Name="VC_PALWGT" ColumnName="VC_PALWGT" />
+                <ScalarProperty Name="LODNUM" ColumnName="LODNUM" />
+                <ScalarProperty Name="SHIP_ID" ColumnName="SHIP_ID" />
+                <ScalarProperty Name="WH_ID" ColumnName="WH_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_SHIPMENT_H_RP_ALL">
+            <EntityTypeMapping TypeName="CHubDBModel.V_SHIPMENT_H_RP_ALL">
+              <MappingFragment StoreEntitySet="V_SHIPMENT_H_RP_ALL">
+                <ScalarProperty Name="CONT_NAME" ColumnName="CONT_NAME" />
+                <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+                <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+                <ScalarProperty Name="EMAIL_ADR" ColumnName="EMAIL_ADR" />
+                <ScalarProperty Name="PHNNUM" ColumnName="PHNNUM" />
+                <ScalarProperty Name="CTRY_NAME" ColumnName="CTRY_NAME" />
+                <ScalarProperty Name="ADRPSZ" ColumnName="ADRPSZ" />
+                <ScalarProperty Name="ADRSTC" ColumnName="ADRSTC" />
+                <ScalarProperty Name="ADRCTY" ColumnName="ADRCTY" />
+                <ScalarProperty Name="ADRLN3" ColumnName="ADRLN3" />
+                <ScalarProperty Name="ADRLN2" ColumnName="ADRLN2" />
+                <ScalarProperty Name="ADRLN1" ColumnName="ADRLN1" />
+                <ScalarProperty Name="ADRNAM" ColumnName="ADRNAM" />
+                <ScalarProperty Name="MOD_USR_ID" ColumnName="MOD_USR_ID" />
+                <ScalarProperty Name="MODDTE" ColumnName="MODDTE" />
+                <ScalarProperty Name="ENTDTE" ColumnName="ENTDTE" />
+                <ScalarProperty Name="LODDTE" ColumnName="LODDTE" />
+                <ScalarProperty Name="STGDTE" ColumnName="STGDTE" />
+                <ScalarProperty Name="ALCDTE" ColumnName="ALCDTE" />
+                <ScalarProperty Name="ADDDTE" ColumnName="ADDDTE" />
+                <ScalarProperty Name="TRACK_NUM" ColumnName="TRACK_NUM" />
+                <ScalarProperty Name="CARNAM" ColumnName="CARNAM" />
+                <ScalarProperty Name="CARCOD" ColumnName="CARCOD" />
+                <ScalarProperty Name="SHPSTS" ColumnName="SHPSTS" />
+                <ScalarProperty Name="HOST_EXT_ID" ColumnName="HOST_EXT_ID" />
+                <ScalarProperty Name="WH_ID" ColumnName="WH_ID" />
+                <ScalarProperty Name="SHIP_ID" ColumnName="SHIP_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

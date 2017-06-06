@@ -12,18 +12,14 @@ namespace CHubDBEntity
     using System;
     using System.Collections.Generic;
     
-    public partial class APP_WH
+    public partial class RP_CAR_MST
     {
-        public string WAREHOUSE { get; set; }
-        public string DESCRIPTION { get; set; }
-        public string SYSID { get; set; }
-        public string ACTIVEIND { get; set; }
-        public string SITE_NAME { get; set; }
         public string WH_ID { get; set; }
-        public string DEF_PACK_PRINTER { get; set; }
+        public string CARCOD { get; set; }
+        public string CARNAM { get; set; }
+        public Nullable<System.DateTime> LOAD_DATE { get; set; }
+        public string WAYBILL_ID { get; set; }
     
-        public virtual APP_SITES APP_SITES { get; set; }
-        public virtual M_SYSTEM M_SYSTEM { get; set; }
-        public virtual RP_PRINTER RP_PRINTER { get; set; }
+        public virtual RP_WAYBILL_TYPE RP_WAYBILL_TYPE { get; set; }
     }
 }
