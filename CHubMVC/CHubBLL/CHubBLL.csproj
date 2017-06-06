@@ -57,6 +57,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="V_RP_WAYBILL_H_PRINT_BLL.cs" />
+    <Compile Include="V_RP_WAYBILL_H_BASE_BLL.cs" />
+    <Compile Include="V_RP_WAYBILL_D_PRINT_BLL.cs" />
+    <Compile Include="V_SHIPMENT_H_RP_ALL_BLL.cs" />
+    <Compile Include="V_RP_WAYBILL_D_BASE_BLL.cs" />
+    <Compile Include="RP_WAYBILL_TYPE_BLL.cs" />
+    <Compile Include="RP_WAYBILL_BASICINFO_BLL.cs" />
+    <Compile Include="RP_STATION_BLL.cs" />
+    <Compile Include="RP_PRINTER_BLL.cs" />
+    <Compile Include="RP_CUST_PACK_TYPE_BLL.cs" />
+    <Compile Include="RP_CAR_MST_BLL.cs" />
+    <Compile Include="RP_ADR_MST_BLL.cs" />
     <Compile Include="OtherProcess\EmailBLL.cs" />
     <Compile Include="DB_KPI_HISTORY_BLL.cs" />
     <Compile Include="DB_KPI_GROUP_BLL.cs" />

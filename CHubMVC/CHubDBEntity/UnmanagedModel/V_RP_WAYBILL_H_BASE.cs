@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CHubDBEntity.UnmanagedModel
 {
-    class V_RP_WAYBILL_H_BASE
+    public class V_RP_WAYBILL_H_BASE
     {
         public string SHIP_ID { get; set; }
         public string WH_ID { get; set; }
