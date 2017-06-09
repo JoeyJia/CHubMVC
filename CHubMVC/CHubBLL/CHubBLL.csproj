@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APP_WH_BLL.cs" />
     <Compile Include="V_RP_WAYBILL_H_PRINT_BLL.cs" />
     <Compile Include="V_RP_WAYBILL_H_BASE_BLL.cs" />
     <Compile Include="V_RP_WAYBILL_D_PRINT_BLL.cs" />

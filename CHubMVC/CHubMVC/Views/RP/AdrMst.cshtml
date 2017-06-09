@@ -1,0 +1,164 @@
+﻿
+@{
+    ViewBag.Title = "Customized Packing setup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" id="adrMstBody" ng-app="adrMstApp" ng-controller="adrMstCtrl">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:silver"><b>Customized Packing setup</b></div>
+
+        <form class="form-horizontal" id="searchForm">
+
+            <div class="row" style="margin-top:30px;">
+                <div class="form-group">
+                    <label for="txtCustName" class="col-sm-2 control-label">Customer Name</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtCustName" ng-model="custName" placeholder="Customer Name">
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary btn-sm" ng-click="searchAction()">Search</button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default" style="">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+
+                    <table id="tbCarMst" class="table table-striped table-hover table-bordered .table-condensed">
+                        <thead>
+                            <tr>
+                                <th style="">Index</th>
+                                <th style="">WareHouse</th>
+                                <th style="">Customer Name</th>
+                                <th style="">Packing List ID</th>
+                                <th style="">Description</th>
+                                <th style="">Short Name</th>
+                                <th style="">Auto Print</th>
+                                <th style="">Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="aa in adrArray ">
+                                <td style="">{{$index+1}}</td>
+                                <td style="">{{aa.WH_ID}}</td>
+                                <td>{{aa.ADRNAM}}</td>
+                                <td style="width:180px">
+                                    <select class="form-control input-sm" id="cpID" ng-model="aa.CUST_PACK_ID" ng-options="t.CUST_PACK_ID as t.CUST_PACK_ID for t in custPackType" ng-change="custPackChange(aa)"></select>
+                                </td>
+                                <td>{{aa.PACK_DESC}}</td>
+                                <td>{{aa.CUST_SHORT_NAME}}</td>
+                                <td>{{aa.AUTO_PRINT}}</td>
+                                <td style="width:80px;text-align:center">
+                                    <a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="save(aa)"><span class="glyphicon glyphicon-floppy-disk"></span></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+<script>
+    
+    var app = angular.module('adrMstApp', []);
+    app.controller('adrMstCtrl', function ($scope, $http) {
+        $scope.custName = "";
+        $scope.adrArray = [];
+        $scope.custPackType = [];
+
+
+    
+        $http.post("/rp/ADRMstInit", null, null).then(
+            function (obj) {
+                //debugger;
+                if (obj.data.Success) {
+                    $scope.custPackType = obj.data.Data;
+
+                }
+                else
+                    alert(obj.data.Msg)
+            },
+             function (resp) {
+                 debugger;
+                 alert("Fail!");
+             }
+            );
+
+        $scope.searchAction = function () {
+            if ($scope.custName == "")
+                return;
+
+            $.ajax({
+                url: "/rp/GetADRList",
+                data: { custName: $scope.custName },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    $scope.adrArray = obj.Data;
+                },
+                error: function (obj) {
+                    alert("fail to get Sys ID List Data");
+                }
+
+            });
+        };
+
+        $scope.save = function (obj)
+        {
+            $.ajax({
+                url: "/rp/SaveCustPackID",
+                data: JSON.stringify({ model: obj }),
+                type: "post",
+                async: false,
+                contentType: 'application/json',
+                success: function (obj) {
+                    alert(obj.Msg);
+                },
+                error: function (obj) {
+                    alert("fail to Save Data");
+                }
+
+            });
+        }
+
+        $scope.custPackChange = function (curr)
+        {
+
+            for (var i = 0; i < $scope.custPackType.length; i++) {
+                if ($scope.custPackType[i].CUST_PACK_ID == curr.CUST_PACK_ID)
+                {
+                    curr.PACK_DESC = $scope.custPackType[i].PACK_DESC;
+                    curr.CUST_SHORT_NAME = $scope.custPackType[i].CUST_SHORT_NAME;
+                    curr.AUTO_PRINT = $scope.custPackType[i].AUTO_PRINT;
+                    break;
+                }
+            }
+            
+        }
+
+
+    });
+
+    //manual load app
+    angular.bootstrap(document.getElementById("adrMstBody"), ['adrMstApp']);
+
+
+</script>
+
+<script>
+
+
+</script>

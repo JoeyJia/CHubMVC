@@ -9,9 +9,10 @@
 
 namespace CHubDBEntity
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
-    
+
     public partial class APP_WH
     {
         public string WAREHOUSE { get; set; }
@@ -22,8 +23,11 @@ namespace CHubDBEntity
         public string WH_ID { get; set; }
         public string DEF_PACK_PRINTER { get; set; }
     
+        [JsonIgnore]
         public virtual APP_SITES APP_SITES { get; set; }
+        [JsonIgnore]
         public virtual M_SYSTEM M_SYSTEM { get; set; }
+        [JsonIgnore]
         public virtual RP_PRINTER RP_PRINTER { get; set; }
     }
 }

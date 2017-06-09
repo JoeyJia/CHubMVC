@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
+using CHubModel.ExtensionModel;
 
 namespace CHubBLL
 {
@@ -19,6 +20,11 @@ namespace CHubBLL
         public RP_CUST_PACK_TYPE_BLL(CHubEntities db)
         {
             dal = new RP_CUST_PACK_TYPE_DAL(db);
+        }
+
+        public List<ExRPCustPackType> GetCustPackType()
+        {
+            return dal.GetCustPackType();
         }
 
     }

@@ -15,12 +15,12 @@ namespace CHubDBEntity.UnmanagedModel
         public string CARCOD { get; set; }
         public string CARNAM { get; set; }
         public string TRACK_NUM { get; set; }
-        public DateTime ADDDTE { get; set; }
-        public DateTime ALCDTE { get; set; }
-        public DateTime STGDTE { get; set; }
-        public DateTime LODDTE { get; set; }
-        public DateTime ENTDTE { get; set; }
-        public DateTime MODDTE { get; set; }
+        public DateTime? ADDDTE { get; set; }
+        public DateTime? ALCDTE { get; set; }
+        public DateTime? STGDTE { get; set; }
+        public DateTime? LODDTE { get; set; }
+        public DateTime? ENTDTE { get; set; }
+        public DateTime? MODDTE { get; set; }
         public string MOD_USR_ID { get; set; }
         public string ADRNAM { get; set; }
         public string ADRLN1 { get; set; }

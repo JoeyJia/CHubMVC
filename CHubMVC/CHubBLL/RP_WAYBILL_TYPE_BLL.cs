@@ -21,5 +21,10 @@ namespace CHubBLL
             dal = new RP_WAYBILL_TYPE_DAL(db);
         }
 
+        public List<RP_WAYBILL_TYPE> GetWayBillType()
+        {
+            return dal.GetWayBillType();
+        }
+
     }
 }

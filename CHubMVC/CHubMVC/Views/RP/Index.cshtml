@@ -1,0 +1,254 @@
+﻿
+@{
+    ViewBag.Title = "Way Bill Print";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/Content/datatimecss")
+@Scripts.Render("~/bundles/datetime")
+
+
+<div class="container-fluid" id="wbPrintBody" ng-app="wbPrintApp" ng-controller="wbPrintCtrl">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:silver"><b>Way Bill Print Panel </b></div>
+
+        <form class="form-horizontal" id="searchForm">
+
+            <div class="row" style="margin-top:30px;">
+                <div class="form-group">
+                    <label for="txtWhID" class="col-sm-2 control-label">Ware House</label>
+                    <div class="col-sm-2">
+                        <select class="form-control input-sm" id="distinctCarCode" ng-model="whID" ng-disabled="defWHID!=''&&defWHID!=null  " ng-options="w.WH_ID as w.WH_ID for w in appWHList"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtwbType" class="col-sm-2 control-label">Way Bill Type</label>
+                    <div class="col-sm-2">
+                        <select class="form-control input-sm" id="txtwbType" ng-model="wbType" ng-options="t.WAYBILL_ID as t.WAYBILL_ID for t in wbTypeList"></select>
+                        @*<input type="text" class="form-control input-sm" id="txtwbType" ng-model="wbType" placeholder="Way Bill Type">*@
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="stageDateControl" class="col-sm-2 control-label">Stage Date<i class="RequireRedStar">*</i></label>
+                    <div class="col-sm-2">
+                        <input type="text" ng-model="stageDate" class="form-control input-sm " id="stageDateControl" readonly required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtCarCode" class="col-sm-2 control-label">Carrier Code</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtCarCode" ng-model="carCode" placeholder="Carrier Code">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtCustName" class="col-sm-2 control-label">Customer Name</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtCustName" ng-model="custName" placeholder="Customer Name">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtAddress" class="col-sm-2 control-label">Address</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtAddress" ng-model="address" placeholder="Address">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtShipmentNo" class="col-sm-2 control-label">Shipment No.</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtShipmentNo" ng-model="shipmentNo" placeholder="Shipment No.">
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary btn-sm" ng-click="searchAction()">Search</button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default" style="">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+
+                    <table id="tbCarMst" class="table table-striped table-hover table-bordered .table-condensed">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="allCheckbox" value="allChecked" aria-label="checkAll">
+                                        </label>
+                                    </div>
+                                </th>
+                                <th style="">Index</th>
+                                <th style="">Ware House</th>
+                                <th style="">Way Bill Type</th>
+                                <th style="">Customer Name</th>
+                                <th style="">Address1</th>
+                                <th style="">Address2</th>
+                                <th style="">Address3</th>
+                                <th style="">Contract</th>
+                                <th style="">Tel</th>
+                                <th style="">Carrier Code</th>
+                                <th style="">Carrier Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="h in wbHArray ">
+                                <td>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="checkbox$index" ng-model="" aria-label="check$index">
+                                        </label>
+                                    </div>
+                                </td>
+                                <td style="">{{$index+1}}</td>
+                                <td style="">{{h.WH_ID}}</td>
+                                <td>{{}}</td>
+                                <td>{{h.ADRNAM}}</td>
+                                <td>{{h.ADRLN1}}</td>
+                                <td>{{h.ADRLN2}}</td>
+                                <td>{{h.ADRLN3}}</td>
+                                <td>{{h.LAST_NAME}}</td>
+                                <td>{{h.PHNNUM}}</td>
+                                <td>{{h.CARCOD}}</td>
+                                <td>{{h.CARNAM}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<script>
+    
+    var app = angular.module('wbPrintApp', []);
+    app.controller('wbPrintCtrl', function ($scope, $http) {
+        $scope.whID = "";
+        $scope.wbType = 'default';
+        $scope.stageDate = getDateString(new Date());
+        $scope.carCode = "";
+        $scope.custName = "";
+        $scope.address = "";
+        $scope.shipmentNo = "";
+
+        $scope.wbHArray = [];
+        //init part 
+        $scope.defWHID = "";
+        $scope.appWHList = [];
+        $scope.wbTypeList = [];
+        $scope.carCodeList = [];
+
+
+        $http.post("/rp/init", null, null).then(
+            function (obj) {
+                debugger;
+                if (obj.data.Success) {
+                    $scope.defWHID = obj.data.Data.defWHID;
+                    $scope.appWHList = obj.data.Data.appWHList;
+                    $scope.wbTypeList = obj.data.Data.wbTypeList;
+                    $scope.carCodeList = obj.data.Data.carCodeList;
+
+                    $scope.whID = $scope.defWHID;
+                }
+                else
+                    alert(obj.data.Msg)
+            },
+             function (resp) {
+                 debugger;
+                 alert("Fail!");
+             }
+            );
+
+
+        $scope.searchAction = function () {
+            if ($scope.whID == "")
+                return;
+
+            $.ajax({
+                url: "/rp/GetWayBillBaseList",
+                data: {
+                    whID: $scope.whID,
+                    wbType: $scope.wbType,
+                    stageDate: $scope.stageDate,
+                    carCode: $scope.carCode,
+                    custName: $scope.custName,
+                    Address: $scope.address,
+                    shipmentNo: $scope.shipmentNo,
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    $scope.wbHArray = obj.Data;
+                },
+                error: function (obj) {
+                    alert("fail to get Data");
+                }
+
+            });
+        };
+
+        function getDateString(date) {
+            return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+        }
+
+    });
+
+    //manual load app
+    angular.bootstrap(document.getElementById("wbPrintBody"), ['wbPrintApp']);
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#stageDateControl').datetimepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            minView: 'month',
+            todayBtn: true,
+            todayHighlight: true,
+            initialDate:getDateString(new Date()),
+            pickerPosition: "bottom-left"
+        });
+        //debugger;
+
+        //$('#datetimepicker').datetimepicker('update', new Date());
+        //var ss = getDateString(new Date());
+        //$('#datetimepicker').attr("value", ss);
+        //$('#datetimepicker').val(getDateString(new Date()));
+
+
+    });
+
+    function getDateString(date)
+    {
+        return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+    }
+
+</script>

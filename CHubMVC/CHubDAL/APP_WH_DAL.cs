@@ -7,17 +7,17 @@ using CHubDBEntity;
 
 namespace CHubDAL
 {
-    public class RP_WAYBILL_TYPE_DAL : BaseDAL
+    public class APP_WH_DAL : BaseDAL
     {
-        public RP_WAYBILL_TYPE_DAL()
+        public APP_WH_DAL()
             : base() { }
 
-        public RP_WAYBILL_TYPE_DAL(CHubEntities db)
+        public APP_WH_DAL(CHubEntities db)
             : base(db) { }
 
-        public List<RP_WAYBILL_TYPE> GetWayBillType()
+        public List<APP_WH> GetAppWHList()
         {
-            return db.RP_WAYBILL_TYPE.ToList();
+            return db.APP_WH.ToList();
         }
 
     }

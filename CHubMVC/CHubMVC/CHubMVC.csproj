@@ -206,6 +206,7 @@
     <Compile Include="Common\JsonNetResult.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EWController.cs" />
+    <Compile Include="Controllers\RPController.cs" />
     <Compile Include="Controllers\KPIController.cs" />
     <Compile Include="Controllers\ITTController.cs" />
     <Compile Include="Controllers\TCController.cs" />
@@ -375,6 +376,9 @@
     <Content Include="Template\ITT_cust_load_template_v1.xlsx" />
     <Content Include="Template\ITT_Tran_Load_template_v1.xlsx" />
     <Content Include="Views\EW\Index.cshtml" />
+    <Content Include="Views\RP\Index.cshtml" />
+    <Content Include="Views\RP\CarMst.cshtml" />
+    <Content Include="Views\RP\AdrMst.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
+using CHubModel.ExtensionModel;
 
 namespace CHubBLL
 {
@@ -20,6 +21,23 @@ namespace CHubBLL
         {
             dal = new RP_CAR_MST_DAL(db);
         }
+
+        public List<RP_CAR_MST> GetCARListByCode(string carCode)
+        {
+            return dal.GetCARListByCode(carCode);
+        }
+
+        public List<DistinctCarCode> GetDistinctCarCode()
+        {
+            return dal.GetDistinctCarCode();
+        }
+
+        public void SaveCARWayBillID(RP_CAR_MST model)
+        {
+            dal.SaveCARWayBillID(model);
+        }
+
+
 
     }
 }

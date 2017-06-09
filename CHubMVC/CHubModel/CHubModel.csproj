@@ -40,11 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtensionModel\DistinctCarCode.cs" />
     <Compile Include="ExtensionModel\ExAppCustAlias.cs" />
     <Compile Include="ExtensionModel\ExDBKPICode.cs" />
     <Compile Include="ExtensionModel\ExDBKPIHistory.cs" />
     <Compile Include="ExtensionModel\ExEWMessage.cs" />
     <Compile Include="ExtensionModel\ExOrderDetail.cs" />
+    <Compile Include="ExtensionModel\ExRPADRMst.cs" />
+    <Compile Include="ExtensionModel\ExRPCustPackType.cs" />
     <Compile Include="ExtensionModel\ExVAliasAddr.cs" />
     <Compile Include="ExtensionModel\ITT_PO_LEVEL_1.cs" />
     <Compile Include="ExtensionModel\ITT_PO_Release.cs" />
