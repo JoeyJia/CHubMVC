@@ -36,9 +36,24 @@ namespace CHubDAL
                     CarCode = c.CARCOD,
                     CarName = c.CARNAM
                 }
-                ).Distinct();
+                ).Distinct().ToList();
 
-            return result.ToList();
+            //some data have same carCode but diff carName, so need to handle
+            List<DistinctCarCode> realList = new List<DistinctCarCode>();
+            foreach (var item in result)
+            {
+                DistinctCarCode exist = realList.FirstOrDefault(a => a.CarCode == item.CarCode);
+                if (exist == null)
+                    realList.Add(item);
+                else
+                {
+                    //carName get the longer one
+                    if ((item.CarName ?? string.Empty).Length > (exist.CarName ?? string.Empty).Length)
+                        exist.CarName = item.CarName;
+                }
+            }
+            return realList;
+        
         }
 
     }

@@ -4,33 +4,39 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+
 <div class="container-fluid" id="carMstBody" ng-app="carMstApp" ng-controller="carMstCtrl">
     <div class="panel panel-default">
         <div class="panel-heading" style="background-color:silver"><b>Carrier Mapping Panel</b></div>
 
         <form class="form-horizontal" id="searchForm">
 
-            <div class="row">
-                <div class="form-group">
-                    <label for="distinctCarCode" class="col-sm-2 control-label">Code</label>
-                    <div class="col-sm-2">
-                        <select class="form-control input-sm" id="distinctCarCode" ng-model="selectCarCode" ng-options="dc.CarCode as (dc.CarCode +'-'+dc.CarName) for dc in distinctCarCode"></select>
-                    </div>
-                </div>
-            </div>
-
             <div class="row" style="margin-top:30px;">
                 <div class="form-group">
-                    <label for="txtCarCode" class="col-sm-2 control-label">Carrier Code</label>
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control input-sm" id="txtCarCode" ng-model="carCode" placeholder="Carrier Code">
+                    <label for="ex1_value" class="col-sm-2 control-label">Code</label>
+                    <div class="col-sm-3">
+
+                        <autocomplete id="ex1"
+                                      placeholder="Code"
+                                      pause="100"
+                                      selectedobject="carCode"
+                                      localdata="distinctCarCode"
+                                      datafield="CarCode"
+                                      searchfields="CarCode"
+                                      titlefield="CarCode"
+                                      descriptionfield="CarName"
+                                      minlength="1"
+                                      inputclass="form-control input-sm" />
+
                     </div>
                     <div class="col-sm-2">
                         <button class="btn btn-primary btn-sm" ng-click="searchAction()">Search</button>
                     </div>
                 </div>
-
             </div>
+
+            
         </form>
 
         <div class="row">
@@ -79,8 +85,7 @@
 
 <script>
     
-    var app = angular.module('carMstApp', []);
-    app.controller('carMstCtrl', function ($scope, $http) {
+    angular.module('carMstApp', ['angucomplete']).controller('carMstCtrl', function ($scope, $http) {
         $scope.selectCarCode = "";
         $scope.carCode = "";
         $scope.carArray = [];
@@ -92,7 +97,7 @@
             function (obj) {
                 //debugger;
                 if (obj.data.Success) {
-                    debugger;
+                    
                     $scope.distinctCarCode = obj.data.Data.carCodes;
                     $scope.wayBillType = obj.data.Data.wbType;
 
@@ -109,10 +114,10 @@
         $scope.searchAction = function () {
             if ($scope.carCode == "")
                 return;
-
+            //debugger;
             $.ajax({
                 url: "/rp/GetCarList",
-                data: { carCode: $scope.carCode },
+                data: { carCode: $scope.carCode.originalObject.CarCode },
                 type: "post",
                 async: false,
                 success: function (obj) {

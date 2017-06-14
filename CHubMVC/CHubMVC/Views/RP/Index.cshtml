@@ -46,7 +46,18 @@
                 <div class="form-group">
                     <label for="txtCarCode" class="col-sm-2 control-label">Carrier Code</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control input-sm" id="txtCarCode" ng-model="carCode" placeholder="Carrier Code">
+                        <autocomplete id="ex1"
+                                      placeholder="Carrier Code"
+                                      pause="100"
+                                      selectedobject="carCode"
+                                      localdata="carCodeList"
+                                      datafield="CarCode"
+                                      searchfields="CarCode"
+                                      titlefield="CarCode"
+                                      descriptionfield="CarName"
+                                      minlength="1"
+                                      inputclass="form-control input-sm" />
+                        
                     </div>
                 </div>
             </div>
@@ -124,7 +135,7 @@
                                 </td>
                                 <td style="">{{$index+1}}</td>
                                 <td style="">{{h.WH_ID}}</td>
-                                <td>{{}}</td>
+                                <td>{{h.WAYBILL_ID}}</td>
                                 <td>{{h.ADRNAM}}</td>
                                 <td>{{h.ADRLN1}}</td>
                                 <td>{{h.ADRLN2}}</td>
@@ -147,8 +158,7 @@
 
 <script>
     
-    var app = angular.module('wbPrintApp', []);
-    app.controller('wbPrintCtrl', function ($scope, $http) {
+    angular.module('wbPrintApp', ['angucomplete']).controller('wbPrintCtrl', function ($scope, $http) {
         $scope.whID = "";
         $scope.wbType = 'default';
         $scope.stageDate = getDateString(new Date());
@@ -167,7 +177,7 @@
 
         $http.post("/rp/init", null, null).then(
             function (obj) {
-                debugger;
+                //debugger;
                 if (obj.data.Success) {
                     $scope.defWHID = obj.data.Data.defWHID;
                     $scope.appWHList = obj.data.Data.appWHList;
@@ -190,13 +200,21 @@
             if ($scope.whID == "")
                 return;
 
+            var realCarCode = "";
+            if ($scope.carCode == "" || $scope.carCode==null)
+                realCarCode = ""
+            else
+                realCarCode = $scope.carCode.originalObject.CarCode;
+
+
+
             $.ajax({
                 url: "/rp/GetWayBillBaseList",
                 data: {
                     whID: $scope.whID,
                     wbType: $scope.wbType,
                     stageDate: $scope.stageDate,
-                    carCode: $scope.carCode,
+                    carCode: realCarCode,
                     custName: $scope.custName,
                     Address: $scope.address,
                     shipmentNo: $scope.shipmentNo,

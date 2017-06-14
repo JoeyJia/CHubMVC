@@ -34,7 +34,10 @@ namespace CHubMVC.Tasks
 
         public BaseScheduleJob()
         {
-            AttachFolder = System.Web.HttpContext.Current.Server.MapPath(CHubConstValues.WebEmailAttachFolder); 
+            if (System.Web.HttpContext.Current != null)
+                AttachFolder = System.Web.HttpContext.Current.Server.MapPath(CHubConstValues.WebEmailAttachFolder);
+            else
+                AttachFolder = System.Configuration.ConfigurationManager.AppSettings["AttachFolderPath"];
         }
 
         //public void AddHangfireJob()

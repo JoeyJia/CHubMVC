@@ -255,6 +255,7 @@
     <Compile Include="Validations\ITT_TRAN_LOAD_VALIDATION.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\angucomplete.css" />
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap-progressbar-3.3.4.css" />
@@ -298,6 +299,7 @@
     <Content Include="Images\LongBg\bg_5.jpg" />
     <Content Include="Images\LongBg\bg_6.jpg" />
     <Content Include="Images\LongBg\bg_7.jpg" />
+    <Content Include="Scripts\angucomplete.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />

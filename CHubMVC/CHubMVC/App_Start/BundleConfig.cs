@@ -28,6 +28,9 @@ namespace CHubMVC
             bundles.Add(new ScriptBundle("~/bundles/progressbar").Include(
                         "~/Scripts/bootstrap-progressbar.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/autocomplete").Include(
+                        "~/Scripts/angucomplete.js"));
+
             //bundles.Add(new ScriptBundle("~/bundles/boostrapvalidate").Include(
             //            "~/Scripts/bootstrap3-validation.js"));
             bundles.Add(new ScriptBundle("~/bundles/boostrapvalidate").Include(
@@ -59,6 +62,9 @@ namespace CHubMVC
 
             bundles.Add(new StyleBundle("~/Content/progressbarcss").Include(
                       "~/Content/bootstrap-progressbar-3.3.4.css"));
+
+            bundles.Add(new StyleBundle("~/Content/autocompletecss").Include(
+                      "~/Content/angucomplete.css"));
 
         }
     }

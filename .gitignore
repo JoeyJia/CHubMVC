@@ -243,3 +243,7 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/CHubMVC/CHubMVC/Log/LogInfo
+/CHubMVC/CHubMVC/Log/LogError
+/CHubMVC/CHubMVC/EmailAttach
+/CHubMVC/CHubMVC/temp
