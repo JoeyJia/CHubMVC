@@ -117,7 +117,5 @@ namespace CHubDBEntity
         public virtual DbSet<RP_STATION> RP_STATION { get; set; }
         public virtual DbSet<RP_WAYBILL_BASICINFO> RP_WAYBILL_BASICINFO { get; set; }
         public virtual DbSet<RP_WAYBILL_TYPE> RP_WAYBILL_TYPE { get; set; }
-        public virtual DbSet<V_RP_WAYBILL_D_BASE> V_RP_WAYBILL_D_BASE { get; set; }
-        public virtual DbSet<V_SHIPMENT_H_RP_ALL> V_SHIPMENT_H_RP_ALL { get; set; }
     }
 }

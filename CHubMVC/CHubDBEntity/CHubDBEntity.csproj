@@ -308,9 +308,11 @@
     <Compile Include="UnmanagedModel\V_INV_RDC.cs" />
     <Compile Include="UnmanagedModel\V_OPEN_QTY_SO_PDC.cs" />
     <Compile Include="UnmanagedModel\V_OPEN_QTY_SO_RDC.cs" />
+    <Compile Include="UnmanagedModel\V_RP_WAYBILL_D_BASE.cs" />
     <Compile Include="UnmanagedModel\V_RP_WAYBILL_D_PRINT.cs" />
     <Compile Include="UnmanagedModel\V_RP_WAYBILL_H_BASE.cs" />
     <Compile Include="UnmanagedModel\V_RP_WAYBILL_H_PRINT.cs" />
+    <Compile Include="UnmanagedModel\V_SHIPMENT_H_RP_ALL.cs" />
     <Compile Include="V_ALIAS_ADDR_DFLT.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
@@ -345,12 +347,6 @@
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_O_DOWNLOAD_HDR.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="V_RP_WAYBILL_D_BASE.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="V_SHIPMENT_H_RP_ALL.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_SHIPPING_ALL_BASE.cs">
