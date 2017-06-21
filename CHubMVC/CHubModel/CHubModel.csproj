@@ -47,6 +47,7 @@
     <Compile Include="ExtensionModel\ExEWMessage.cs" />
     <Compile Include="ExtensionModel\ExOrderDetail.cs" />
     <Compile Include="ExtensionModel\ExRPADRMst.cs" />
+    <Compile Include="ExtensionModel\ExRPCarMst.cs" />
     <Compile Include="ExtensionModel\ExRPCustPackType.cs" />
     <Compile Include="ExtensionModel\ExVAliasAddr.cs" />
     <Compile Include="ExtensionModel\ITT_PO_LEVEL_1.cs" />
@@ -54,6 +55,8 @@
     <Compile Include="ExtensionModel\ITT_SO_LEVEL_3.cs" />
     <Compile Include="ExtensionModel\ITT_PO_LEVEL_2.cs" />
     <Compile Include="ExtensionModel\OpeningQtySnapshot.cs" />
+    <Compile Include="ExtensionModel\RPWayBillHLevel1.cs" />
+    <Compile Include="ExtensionModel\RPWayBillHLevel2.cs" />
     <Compile Include="ExtensionModel\TranLoadPreFill.cs" />
     <Compile Include="PostResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

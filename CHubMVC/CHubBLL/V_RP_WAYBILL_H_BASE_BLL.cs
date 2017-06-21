@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
 using CHubDBEntity.UnmanagedModel;
+using CHubModel.ExtensionModel;
 
 namespace CHubBLL
 {
@@ -22,10 +23,14 @@ namespace CHubBLL
             dal = new V_RP_WAYBILL_H_BASE_DAL(db);
         }
 
-        public List<V_RP_WAYBILL_H_BASE> GetWayBillBaseList(string whID, string wbType, string stageDate, string carCode, string custName, string Address, string shipmentNo)
+        public List<RPWayBillHLevel1> GetWayBillBaseList(string whID, string carCode, string custName, string Address, string shipmentNo)
         {
-            return dal.GetWayBillBaseList(whID, wbType, stageDate, carCode, custName, Address, shipmentNo);
+            return dal.GetWayBillBaseList(whID, carCode, custName, Address, shipmentNo);
         }
 
+        public List<RPWayBillHLevel2> GetWayBillDetailList(string carCode, string orderType, string addr)
+        {
+            return dal.GetWayBillDetailList(carCode, orderType,addr);
+        }
     }
 }

@@ -17,22 +17,22 @@ namespace CHubMVC
             ConfigureAuth(app);
 
             // Hangfire configuration
-            var options = new SQLiteStorageOptions();
-            string path = System.Configuration.ConfigurationManager.AppSettings["SqlLitePath"];
-            string fullPath = System.Web.HttpContext.Current.Server.MapPath(path);
-            string conStr = string.Format(CHubConstValues.SqliteConnTemplate, fullPath);
+            //var options = new SQLiteStorageOptions();
+            //string path = System.Configuration.ConfigurationManager.AppSettings["SqlLitePath"];
+            //string fullPath = System.Web.HttpContext.Current.Server.MapPath(path);
+            //string conStr = string.Format(CHubConstValues.SqliteConnTemplate, fullPath);
 
-            GlobalConfiguration.Configuration.UseSQLiteStorage(conStr, options);//SQLiteHangfire
-            var option = new BackgroundJobServerOptions { WorkerCount = 1 };
-            app.UseHangfireServer(option);
-            app.UseHangfireDashboard("/hangfire",new DashboardOptions {
-                Authorization=new[] { new HangFireAuthorizationFilter() }
-            });
+            //GlobalConfiguration.Configuration.UseSQLiteStorage(conStr, options);//SQLiteHangfire
+            //var option = new BackgroundJobServerOptions { WorkerCount = 1 };
+            //app.UseHangfireServer(option);
+            //app.UseHangfireDashboard("/hangfire",new DashboardOptions {
+            //    Authorization=new[] { new HangFireAuthorizationFilter() }
+            //});
 
-            // Add scheduled jobs
+            //// Add scheduled jobs
             
-            ScheduleManager sdlManger = new ScheduleManager();
-            sdlManger.AddAllSchedules();
+            //ScheduleManager sdlManger = new ScheduleManager();
+            //sdlManger.AddAllSchedules();
             //Thread th = new Thread(sdlManger.AddAllSchedules);
             //th.Start();
 

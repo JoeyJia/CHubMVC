@@ -22,7 +22,7 @@ namespace CHubBLL
             dal = new RP_CAR_MST_DAL(db);
         }
 
-        public List<RP_CAR_MST> GetCARListByCode(string carCode)
+        public List<ExRPCarMst> GetCARListByCode(string carCode)
         {
             return dal.GetCARListByCode(carCode);
         }
@@ -32,7 +32,7 @@ namespace CHubBLL
             return dal.GetDistinctCarCode();
         }
 
-        public void SaveCARWayBillID(RP_CAR_MST model)
+        public void SaveCARWayBillID(ExRPCarMst model)
         {
             dal.SaveCARWayBillID(model);
         }

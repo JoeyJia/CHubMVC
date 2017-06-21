@@ -32,7 +32,7 @@ namespace CHubMVC.Controllers
             {
                 string defWHID = string.Empty;
                 List<APP_WH> appWHList = null;
-                List<RP_WAYBILL_TYPE> whTypeList = null;
+                //List<RP_WAYBILL_TYPE> whTypeList = null;
                 List<DistinctCarCode> carCodeList = null;
 
                 APP_USERS_BLL userBLL = new APP_USERS_BLL();
@@ -45,8 +45,8 @@ namespace CHubMVC.Controllers
                     appWHList = whBLL.GetAppWHList();
                 }
 
-                RP_WAYBILL_TYPE_BLL typeBLL = new RP_WAYBILL_TYPE_BLL();
-                whTypeList = typeBLL.GetWayBillType();
+                //RP_WAYBILL_TYPE_BLL typeBLL = new RP_WAYBILL_TYPE_BLL();
+                //whTypeList = typeBLL.GetWayBillType();
 
                 RP_CAR_MST_BLL carBLL = new RP_CAR_MST_BLL();
                 carCodeList = carBLL.GetDistinctCarCode();
@@ -55,7 +55,6 @@ namespace CHubMVC.Controllers
                 {
                     defWHID = defWHID,
                     appWHList = appWHList,
-                    wbTypeList = whTypeList,
                     carCodeList = carCodeList
                 };
                 return Json(new RequestResult(obj));
@@ -69,17 +68,50 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult GetWayBillBaseList(string whID,string wbType,string stageDate,string carCode,string custName,string Address,string shipmentNo)
+        public ActionResult GetWayBillBaseList(string whID,string carCode,string custName,string Address,string shipmentNo)
         {
             try
             {
                 V_RP_WAYBILL_H_BASE_BLL wbHBLL = new V_RP_WAYBILL_H_BASE_BLL();
-                List<V_RP_WAYBILL_H_BASE> result = wbHBLL.GetWayBillBaseList(whID, wbType, stageDate, carCode, custName, Address, shipmentNo);
+                List<RPWayBillHLevel1> result = wbHBLL.GetWayBillBaseList(whID, carCode, custName, Address, shipmentNo);
                 return Json(new RequestResult(result));
             }
             catch (Exception ex)
             {
                 LogHelper.WriteLog("GetWayBillBaseList", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult GetWayBillDetailList(string carCode,string orderType,string addr)
+        {
+            try
+            {
+                V_RP_WAYBILL_H_BASE_BLL wbHBLL = new V_RP_WAYBILL_H_BASE_BLL();
+                List<RPWayBillHLevel2> result = wbHBLL.GetWayBillDetailList(carCode, orderType,addr);
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("GetWayBillDetailList", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult GetPrintFile(List<RPWayBillHLevel2> selectedList)
+        {
+            try
+            {
+                string ss = string.Empty;
+                return Json(new RequestResult(ss));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("GetPrintFile", ex);
                 return Json(new RequestResult(false, ex.Message));
             }
         }
@@ -195,7 +227,7 @@ namespace CHubMVC.Controllers
             try
             {
                 RP_CAR_MST_BLL carBLL = new RP_CAR_MST_BLL();
-                List<RP_CAR_MST> result = carBLL.GetCARListByCode(carCode);
+                List<ExRPCarMst> result = carBLL.GetCARListByCode(carCode);
                 return Json(new RequestResult(result));
             }
             catch (Exception ex)
@@ -207,7 +239,7 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult SaveCarWayBillID(RP_CAR_MST car)
+        public ActionResult SaveCarWayBillID(ExRPCarMst car)
         {
             try
             {

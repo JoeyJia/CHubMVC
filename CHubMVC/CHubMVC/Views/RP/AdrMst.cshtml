@@ -54,7 +54,13 @@
                                 </td>
                                 <td>{{aa.PACK_DESC}}</td>
                                 <td>{{aa.CUST_SHORT_NAME}}</td>
-                                <td>{{aa.AUTO_PRINT}}</td>
+                                <td>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" style="padding:0px" id="ckAP$index" aria-label="ckAP$index" ng-checked="aa.AUTO_PRINT=='Y'" ng-click="clickAPCheckBox($event,aa)" >
+                                        </label>
+                                    </div>
+                                </td>
                                 <td style="width:80px;text-align:center">
                                     <a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="save(aa)"><span class="glyphicon glyphicon-floppy-disk"></span></a>
                                 </td>
@@ -83,7 +89,7 @@
     
         $http.post("/rp/ADRMstInit", null, null).then(
             function (obj) {
-                //debugger;
+                debugger;
                 if (obj.data.Success) {
                     $scope.custPackType = obj.data.Data;
 
@@ -118,6 +124,7 @@
 
         $scope.save = function (obj)
         {
+            //debugger;
             $.ajax({
                 url: "/rp/SaveCustPackID",
                 data: JSON.stringify({ model: obj }),
@@ -134,20 +141,28 @@
             });
         }
 
-        $scope.custPackChange = function (curr)
-        {
-
+        $scope.custPackChange = function (curr) {
+            //debugger;
             for (var i = 0; i < $scope.custPackType.length; i++) {
-                if ($scope.custPackType[i].CUST_PACK_ID == curr.CUST_PACK_ID)
-                {
+                if ($scope.custPackType[i].CUST_PACK_ID == curr.CUST_PACK_ID) {
                     curr.PACK_DESC = $scope.custPackType[i].PACK_DESC;
                     curr.CUST_SHORT_NAME = $scope.custPackType[i].CUST_SHORT_NAME;
                     curr.AUTO_PRINT = $scope.custPackType[i].AUTO_PRINT;
                     break;
                 }
             }
-            
-        }
+
+        };
+
+        $scope.clickAPCheckBox = function (event, curr) {
+            if (event.target.checked) {
+
+                curr.AUTO_PRINT = "Y";
+            }
+            else {
+                curr.AUTO_PRINT = "N";
+            }
+        };
 
 
     });

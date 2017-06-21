@@ -56,6 +56,8 @@
                                 <th style="">Carrier Name</th>
                                 <th style="">Way Bill ID</th>
                                 <th style="">Way Bill Desc</th>
+                                <th style="">Send To TMS</th>
+                                <th style="">Short Name</th>
                                 <th style="">Operation</th>
                             </tr>
                         </thead>
@@ -66,9 +68,17 @@
                                 <td>{{ca.CARCOD}}</td>
                                 <td>{{ca.CARNAM}}</td>
                                 <td style="width:180px">
-                                    <select class="form-control input-sm" id="wbID" ng-model="ca.WAYBILL_ID" ng-options="t.WAYBILL_ID as t.WAYBILL_ID for t in wayBillType"></select>
+                                    <select class="form-control input-sm" id="wbID" ng-model="ca.WAYBILL_ID" ng-change="wbIDChange(ca)" ng-options="t.WAYBILL_ID as t.WAYBILL_ID for t in wayBillType"></select>
                                 </td>
-                                <td>{{}}</td>
+                                <td>{{ca.WAYBILL_DESC}}</td>
+                                <td>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" style="padding:0px" id="ckTMS$index" aria-label="ckTMS$index" ng-checked="ca.SEND_TO_TMS=='Y'" ng-click="clickTMSCheckBox($event,ca)">
+                                        </label>
+                                    </div>
+                                </td>
+                                <td> <input class="form-control" ng-model="ca.CARNAM_SHORT" /></td>
                                 <td style="width:80px;text-align:center">
                                     <a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="save(ca)"><span class="glyphicon glyphicon-floppy-disk"></span></a>
                                 </td>
@@ -146,6 +156,27 @@
                 }
 
             });
+        };
+
+        $scope.wbIDChange = function (curr) {
+            //debugger;
+            for (var i = 0; i < $scope.wayBillType.length; i++) {
+                if ($scope.wayBillType[i].WAYBILL_ID == curr.WAYBILL_ID) {
+                    curr.WAYBILL_DESC = $scope.wayBillType[i].WAYBILL_DESC;
+                    break;
+                }
+            }
+
+        };
+
+        $scope.clickTMSCheckBox = function (event, curr) {
+            if (event.target.checked) {
+
+                curr.SEND_TO_TMS = "Y";
+            }
+            else {
+                curr.SEND_TO_TMS = "N";
+            }
         };
 
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CHubDBEntity;
 using CHubDBEntity.UnmanagedModel;
 using System.Data.Entity;
+using CHubModel.ExtensionModel;
 
 namespace CHubDAL
 {
@@ -17,29 +18,48 @@ namespace CHubDAL
         public V_RP_WAYBILL_H_BASE_DAL(CHubEntities db)
             : base(db) { }
 
-        public List<V_RP_WAYBILL_H_BASE> GetWayBillBaseList(string whID, string wbType, string stageDate, string carCode, string custName, string Address, string shipmentNo)
+        public List<RPWayBillHLevel1> GetWayBillBaseList(string whID, string carCode, string custName, string Address, string shipmentNo)
         {
-            DateTime sdDate = Convert.ToDateTime(stageDate);
-            string sql = string.Format("select * from V_RP_WAYBILL_H_BASE where WH_ID='{0}' and to_char(STGDTE,'yyyy-MM-dd') ='{1}'",whID,stageDate);
-            var baseresult = db.Database.SqlQuery<V_RP_WAYBILL_H_BASE>(sql).ToList();
-
-            var result = baseresult.Where(a=>1==1);
-
-            if (!string.IsNullOrEmpty(wbType))
-                result = result.Where(a => a.WAYBILL_ID == wbType);
-            //if (!string.IsNullOrEmpty(wbType))
-            //    result = result.Where(a => a.STGDTE == wbType);
+            
+            string sql = string.Format("select distinct ORDTYP_WB ,CARCOD,CARNAM,ADDR_COMBINED from V_RP_WAYBILL_H_BASE where WH_ID='{0}' and SHPSTS='S' ", whID);
+            
             if (!string.IsNullOrEmpty(carCode))
-                result = result.Where(a => a.CARCOD == carCode);
+                sql += string.Format(" and CARCOD='{0}'", carCode);
             if (!string.IsNullOrEmpty(custName))
-                result = result.Where(a => a.ADRNAM.Contains(custName));
+                sql += string.Format(" and ADRNAM like '%{0}%'", custName);
             if (!string.IsNullOrEmpty(Address))
-                result = result.Where(a => a.ADRLN1.Contains(Address));
+                sql += string.Format(" and ADRLN1 like '%{0}%'", Address);
             if (!string.IsNullOrEmpty(shipmentNo))
-                result = result.Where(a => a.SHIP_ID == shipmentNo);
-
-
+                sql += string.Format(" and SHIP_ID = '{0}'", shipmentNo);
+            var result = db.Database.SqlQuery<RPWayBillHLevel1>(sql);
             return result.ToList();
+        }
+
+        public List<RPWayBillHLevel2> GetWayBillDetailList(string carCode, string orderType,string addr)
+        {
+            string sql = string.Format(@"select 
+TRACK_NUM_IHUB,
+          SHIP_ID,
+          SHPSTS,
+          STGDTE,
+          ORDTYP,
+         BOXES,
+          VC_PALWGT,
+          VOL_M3,
+          CUST_NO,
+          WAYBILL_ID,
+          HOST_EXT_ID,
+          ordtyp_wb
+  from V_RP_WAYBILL_H_BASE
+  where 1 = 1
+  and carcod = '{0}'
+  and ordtyp_wb = '{1}'
+  and ADDR_COMBINED = '{2}'
+  and SHPSTS = 'S'", carCode,orderType,addr);
+
+            var result = db.Database.SqlQuery<RPWayBillHLevel2>(sql);
+            return result.ToList();
+
         }
 
     }

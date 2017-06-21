@@ -15,6 +15,7 @@ namespace CHubDBEntity.UnmanagedModel
         public string CARCOD { get; set; }
         public string CARNAM { get; set; }
         public string TRACK_NUM { get; set; }
+        public string TRACK_NUM_IHUB { get; set; }
         public DateTime? ADDDTE { get; set; }
         public DateTime? ALCDTE { get; set; }
         public DateTime? STGDTE { get; set; }
@@ -59,5 +60,14 @@ namespace CHubDBEntity.UnmanagedModel
         public string DETAIL_TITLE5 { get; set; }
         public string WAYBILL_ID { get; set; }
         public string PRINT_DETAIL { get; set; }
+
+        public string CUST_NO { get; set; }
+        public decimal? BOXES { get; set; }
+        public decimal? VC_PALWGT { get; set; }
+        public decimal? VOL_M3 { get; set; }
+        public string ORDTYP { get; set; }
+        public string ORDTYP_WB { get; set; }
+        public string ADDR_COMBINED { get; set; }
+
     }
 }

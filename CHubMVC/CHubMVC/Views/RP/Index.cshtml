@@ -4,9 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Styles.Render("~/Content/datatimecss")
-@Scripts.Render("~/bundles/datetime")
-
 
 <div class="container-fluid" id="wbPrintBody" ng-app="wbPrintApp" ng-controller="wbPrintCtrl">
     <div class="panel panel-default">
@@ -19,25 +16,6 @@
                     <label for="txtWhID" class="col-sm-2 control-label">Ware House</label>
                     <div class="col-sm-2">
                         <select class="form-control input-sm" id="distinctCarCode" ng-model="whID" ng-disabled="defWHID!=''&&defWHID!=null  " ng-options="w.WH_ID as w.WH_ID for w in appWHList"></select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group">
-                    <label for="txtwbType" class="col-sm-2 control-label">Way Bill Type</label>
-                    <div class="col-sm-2">
-                        <select class="form-control input-sm" id="txtwbType" ng-model="wbType" ng-options="t.WAYBILL_ID as t.WAYBILL_ID for t in wbTypeList"></select>
-                        @*<input type="text" class="form-control input-sm" id="txtwbType" ng-model="wbType" placeholder="Way Bill Type">*@
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group">
-                    <label for="stageDateControl" class="col-sm-2 control-label">Stage Date<i class="RequireRedStar">*</i></label>
-                    <div class="col-sm-2">
-                        <input type="text" ng-model="stageDate" class="form-control input-sm " id="stageDateControl" readonly required>
                     </div>
                 </div>
             </div>
@@ -94,7 +72,19 @@
             </div>
         </form>
 
+        <!--result part-->
         <div class="row">
+            <div class="" style="margin-left:12px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="background-color:silver"><b>Result</b></div>
+                    <table id="tableResult" class="table  table-condensed"
+                           data-detail-view="true"
+                           undefinedText="''"></table>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="row">
             <div class="col-md-12 col-lg-12">
                 <div class="panel panel-default" style="">
                     <div class="panel-heading">
@@ -149,7 +139,7 @@
                     </table>
                 </div>
             </div>
-        </div>
+        </div>*@
 
 
     </div>
@@ -160,8 +150,8 @@
     
     angular.module('wbPrintApp', ['angucomplete']).controller('wbPrintCtrl', function ($scope, $http) {
         $scope.whID = "";
-        $scope.wbType = 'default';
-        $scope.stageDate = getDateString(new Date());
+        //$scope.wbType = 'default';
+        //$scope.stageDate = getDateString(new Date());
         $scope.carCode = "";
         $scope.custName = "";
         $scope.address = "";
@@ -171,8 +161,10 @@
         //init part 
         $scope.defWHID = "";
         $scope.appWHList = [];
-        $scope.wbTypeList = [];
         $scope.carCodeList = [];
+
+        $scope.level1 = [];
+        $scope.level2 = [];
 
 
         $http.post("/rp/init", null, null).then(
@@ -181,7 +173,7 @@
                 if (obj.data.Success) {
                     $scope.defWHID = obj.data.Data.defWHID;
                     $scope.appWHList = obj.data.Data.appWHList;
-                    $scope.wbTypeList = obj.data.Data.wbTypeList;
+                   
                     $scope.carCodeList = obj.data.Data.carCodeList;
 
                     $scope.whID = $scope.defWHID;
@@ -212,8 +204,6 @@
                 url: "/rp/GetWayBillBaseList",
                 data: {
                     whID: $scope.whID,
-                    wbType: $scope.wbType,
-                    stageDate: $scope.stageDate,
                     carCode: realCarCode,
                     custName: $scope.custName,
                     Address: $scope.address,
@@ -222,7 +212,9 @@
                 type: "post",
                 async: false,
                 success: function (obj) {
-                    $scope.wbHArray = obj.Data;
+                    debugger;
+                    $scope.level1 = obj.Data;
+                    initPoTab()
                 },
                 error: function (obj) {
                     alert("fail to get Data");
@@ -231,9 +223,213 @@
             });
         };
 
-        function getDateString(date) {
-            return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+        //function getDateString(date) {
+        //    return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+        //}
+
+        function initPoTab() {
+            var $table = $('#tableResult');
+            buildTable($table);
+        };
+
+        function expandlevel2($detail, pRow, index) {
+            //debugger;
+            var poNo = pRow.PUR_ORDER_ID;
+            $t = $detail.html('<table data-click-to-select="true" class="tbLevel2"></table>').find('table');
+            //$t.attr("class", "table table-bordered table-condensed");
+            $t.attr("margin-left", "200px");
+            //debugger;
+            var columns = [];
+            var data = [];
+            columns.push({
+                field: 'state',
+                checkbox: true,
+                align: 'center',
+                valign: 'middle'
+            });
+            columns.push({
+                field: 'TRACK_NUM_IHUB',
+                title: 'Track Num'
+
+            });
+            columns.push({
+                field: 'SHIP_ID',
+                title: 'Shipment No'
+            });
+            columns.push({
+                field: 'SHPSTS',
+                title: 'Status'
+            });
+            columns.push({
+                field: 'STGDTE',
+                title: 'Stage Date'
+            });
+            columns.push({
+                field: 'ORDTYP',
+                title: 'Order Type'
+            });
+            columns.push({
+                field: 'BOXES',
+                title: 'Boxes'
+            });
+            columns.push({
+                field: 'VC_PALWGT',
+                title: 'Weight'
+            });
+            columns.push({
+                field: 'VOL_M3',
+                title: 'Volumn(m3)'
+            });
+            columns.push({
+                field: 'CUST_NO',
+                title: 'Customer No'
+            });
+            columns.push({
+                field: 'WAYBILL_ID',
+                title: 'Way Bill ID'
+            });
+            columns.push({
+                field: 'HOST_EXT_ID',
+                title: 'Host Ext ID'
+            });
+            //var level2Data = [];
+            //debugger;
+            getLevel2Data(pRow.CARCOD, pRow.ORDTYP_WB, pRow.ADDR_COMBINED);
+
+            $t.bootstrapTable({
+                columns: columns,
+                data: $scope.level2,
+                detailView: false
+            });
+            $t.bootstrapTable('hideLoading');
+
+        };
+
+        function buildTable($t) {
+            var columns = [];
+            var data = [];
+
+            //columns.push({
+            //    field: 'state',
+            //    checkbox: true,
+            //    align: 'center',
+            //    valign: 'middle'
+            //});
+            columns.push({
+                field: 'ORDTYP_WB',
+                title: 'Priority'
+            });
+            columns.push({
+                field: 'CARCOD',
+                title: 'Carrier Code'
+            });
+            columns.push({
+                field: 'CARNAM',
+                title: 'Carrier Name'
+            });
+            columns.push({
+                field: 'ADDR_COMBINED',
+                title: 'Address'
+            });
+
+            columns.push({
+                field: '',
+                title: 'Operation',
+                width: '100',
+                events: operateEvents,
+                formatter: printOperationFormatter
+            }
+            );
+            
+            //columns.push({
+            //    field: '',
+            //    title: '',
+            //    width: '1000'
+            //});
+
+            $t.bootstrapTable({
+                columns: columns,
+                data: $scope.level1,
+                detailView: true,
+                onExpandRow: function (index, row, $detail) {
+                    expandlevel2($detail, row, index);
+                }
+            });
+            $t.bootstrapTable('hideLoading');
+        };
+
+
+        function printOperationFormatter(value, row, index) {
+            return [
+           '<a class="print" href="javascript:void(0)" title="Print">',
+           '<i class="glyphicon glyphicon-print"></i>',
+           '</a> '
+            ].join('');
+
         }
+
+        window.operateEvents = {
+            'click .print': function (e, value, row, index) {
+                //alert("print action");
+
+                var $table = $('.tbLevel2');
+                var selectedRows = $table.bootstrapTable('getSelections')
+
+                $.ajax({
+                    url: "/rp/GetPrintFile",
+                    data: JSON.stringify({
+                        selectedList: selectedRows
+                    }),
+                    type: "post",
+                    async: false,
+                    contentType: 'application/json',
+                    success: function (obj) {
+                        //debugger;
+                        if (obj.Success) {
+                            //debugger;
+                            alert(obj.Msg)
+
+                        }
+                        else {
+                            alert(obj.Msg);
+                        }
+
+                    },
+                    error: function (obj) {
+                        alert(obj.responseText);
+                    }
+                });
+            }
+        };
+
+        function getLevel2Data(carCode, orderType,addr)
+        {
+            $.ajax({
+                url: "/rp/GetWayBillDetailList",
+                data: {
+                    carCode:carCode,
+                    orderType: orderType,
+                    addr:addr
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    if (obj.Success) {
+                        //debugger;
+                        $scope.level2 = obj.Data;;
+
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        }
+
 
     });
 
@@ -244,29 +440,6 @@
 </script>
 
 <script>
-    $(document).ready(function () {
-        $('#stageDateControl').datetimepicker({
-            format: 'yyyy-mm-dd',
-            autoclose: true,
-            minView: 'month',
-            todayBtn: true,
-            todayHighlight: true,
-            initialDate:getDateString(new Date()),
-            pickerPosition: "bottom-left"
-        });
-        //debugger;
-
-        //$('#datetimepicker').datetimepicker('update', new Date());
-        //var ss = getDateString(new Date());
-        //$('#datetimepicker').attr("value", ss);
-        //$('#datetimepicker').val(getDateString(new Date()));
-
-
-    });
-
-    function getDateString(date)
-    {
-        return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-    }
+    
 
 </script>
