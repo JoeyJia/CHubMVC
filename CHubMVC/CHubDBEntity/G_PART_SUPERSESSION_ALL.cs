@@ -26,5 +26,7 @@ namespace CHubDBEntity
         public string SSC_SUPERSEDING { get; set; }
         public Nullable<int> QTY_PER { get; set; }
         public Nullable<byte> PRIMARY_FLAG { get; set; }
+        public string SUPERSEDING_PRINT_PART_NO { get; set; }
+        public Nullable<System.DateTime> CREATE_DATE { get; set; }
     }
 }

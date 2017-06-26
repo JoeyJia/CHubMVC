@@ -742,8 +742,9 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           <Property Name="WAYBILL_ID" Type="varchar2" MaxLength="20" Nullable="false" />
           <Property Name="WAYBILL_DESC" Type="varchar2" MaxLength="100" Nullable="false" />
           <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
-          <Property Name="PRINT_DETAIL" Type="varchar2" MaxLength="1" />
-          <Property Name="PAPER_SIZE" Type="varchar2" MaxLength="10" />
+          <Property Name="PRINT_DETAIL" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="PAPER_SIZE" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="TRACK_NUM_BY_IHUB" Type="varchar2" MaxLength="1" Nullable="false" />
         </EntityType>
         <EntityType Name="TC_PART_CATEGORY">
           <Key>
@@ -1010,10 +1011,12 @@ warning 6002: The table/view 'GWAPP.G_PART_SUPERSESSION_ALL' does not have a pri
           <Property Name="SUPERSESSION_STATUS" Type="varchar2" MaxLength="63" />
           <Property Name="SUPERSESSION_TYPE" Type="varchar2" MaxLength="54" />
           <Property Name="SUPERSEDING_PART_NO" Type="varchar2" MaxLength="75" Nullable="false" />
+          <Property Name="SUPERSEDING_PRINT_PART_NO" Type="varchar2" MaxLength="75" />
           <Property Name="SUPERSEDING_PART_DESCRIPTION" Type="varchar2" MaxLength="105" />
           <Property Name="SSC_SUPERSEDING" Type="varchar2" MaxLength="30" />
           <Property Name="QTY_PER" Type="number" Precision="6" Scale="0" />
           <Property Name="PRIMARY_FLAG" Type="number" Precision="3" Scale="0" />
+          <Property Name="CREATE_DATE" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.P_ADDR_DFLT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2158,7 +2161,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0023992">
+        <Association Name="SYS_C0025351">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2478,10 +2481,12 @@ FROM "GWAPP"."G_PART_DESCRIPTION" "G_PART_DESCRIPTION"</DefiningQuery>
 "G_PART_SUPERSESSION_ALL"."SUPERSESSION_STATUS" AS "SUPERSESSION_STATUS", 
 "G_PART_SUPERSESSION_ALL"."SUPERSESSION_TYPE" AS "SUPERSESSION_TYPE", 
 "G_PART_SUPERSESSION_ALL"."SUPERSEDING_PART_NO" AS "SUPERSEDING_PART_NO", 
+"G_PART_SUPERSESSION_ALL"."SUPERSEDING_PRINT_PART_NO" AS "SUPERSEDING_PRINT_PART_NO", 
 "G_PART_SUPERSESSION_ALL"."SUPERSEDING_PART_DESCRIPTION" AS "SUPERSEDING_PART_DESCRIPTION", 
 "G_PART_SUPERSESSION_ALL"."SSC_SUPERSEDING" AS "SSC_SUPERSEDING", 
 "G_PART_SUPERSESSION_ALL"."QTY_PER" AS "QTY_PER", 
-"G_PART_SUPERSESSION_ALL"."PRIMARY_FLAG" AS "PRIMARY_FLAG"
+"G_PART_SUPERSESSION_ALL"."PRIMARY_FLAG" AS "PRIMARY_FLAG", 
+"G_PART_SUPERSESSION_ALL"."CREATE_DATE" AS "CREATE_DATE"
 FROM "GWAPP"."G_PART_SUPERSESSION_ALL" "G_PART_SUPERSESSION_ALL"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="P_ADDR_DFLT" EntityType="Self.P_ADDR_DFLT" store:Type="Views" store:Schema="GWAPP">
@@ -3205,7 +3210,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="RP_PRINTER" EntitySet="RP_PRINTER" />
             <End Role="RP_STATION" EntitySet="RP_STATION" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0023992" Association="Self.SYS_C0023992">
+          <AssociationSet Name="SYS_C0025351" Association="Self.SYS_C0025351">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -3551,6 +3556,8 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="SSC_SUPERSEDING" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="QTY_PER" Type="Int32" />
           <Property Name="PRIMARY_FLAG" Type="Byte" />
+          <Property Name="SUPERSEDING_PRINT_PART_NO" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+          <Property Name="CREATE_DATE" Type="DateTime" />
         </EntityType>
         <EntityType Name="P_ADDR_DFLT">
           <Key>
@@ -5759,9 +5766,10 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="WAYBILL_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="WAYBILL_DESC" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ACTIVEIND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="PRINT_DETAIL" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="PRINT_DETAIL" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="RP_CAR_MST" Relationship="CHubDBModel.RP_CAR_MST_R01" FromRole="RP_WAYBILL_TYPE" ToRole="RP_CAR_MST" />
-          <Property Name="PAPER_SIZE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PAPER_SIZE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TRACK_NUM_BY_IHUB" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="APP_WH_R03">
           <End Type="CHubDBModel.RP_PRINTER" Role="RP_PRINTER" Multiplicity="0..1" />
@@ -6090,6 +6098,8 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="G_PART_SUPERSESSION_ALL">
             <EntityTypeMapping TypeName="CHubDBModel.G_PART_SUPERSESSION_ALL">
               <MappingFragment StoreEntitySet="G_PART_SUPERSESSION_ALL">
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="SUPERSEDING_PRINT_PART_NO" ColumnName="SUPERSEDING_PRINT_PART_NO" />
                 <ScalarProperty Name="PART_NO" ColumnName="PART_NO" />
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
                 <ScalarProperty Name="SSC" ColumnName="SSC" />
@@ -7460,6 +7470,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="RP_WAYBILL_TYPE">
             <EntityTypeMapping TypeName="CHubDBModel.RP_WAYBILL_TYPE">
               <MappingFragment StoreEntitySet="RP_WAYBILL_TYPE">
+                <ScalarProperty Name="TRACK_NUM_BY_IHUB" ColumnName="TRACK_NUM_BY_IHUB" />
                 <ScalarProperty Name="PAPER_SIZE" ColumnName="PAPER_SIZE" />
                 <ScalarProperty Name="PRINT_DETAIL" ColumnName="PRINT_DETAIL" />
                 <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />

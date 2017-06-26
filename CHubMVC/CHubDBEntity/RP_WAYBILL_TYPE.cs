@@ -25,6 +25,7 @@ namespace CHubDBEntity
         public string ACTIVEIND { get; set; }
         public string PRINT_DETAIL { get; set; }
         public string PAPER_SIZE { get; set; }
+        public string TRACK_NUM_BY_IHUB { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RP_CAR_MST> RP_CAR_MST { get; set; }
