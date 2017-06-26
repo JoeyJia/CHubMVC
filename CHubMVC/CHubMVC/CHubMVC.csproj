@@ -299,6 +299,7 @@
     <Content Include="Images\LongBg\bg_5.jpg" />
     <Content Include="Images\LongBg\bg_6.jpg" />
     <Content Include="Images\LongBg\bg_7.jpg" />
+    <Content Include="Images\wechat.jpg" />
     <Content Include="Scripts\angucomplete.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />

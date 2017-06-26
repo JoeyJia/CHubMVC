@@ -16,10 +16,12 @@ namespace CHubBLL.OtherProcess
     public class RPWayBillPrintBLL
     {
         public string BasePath = string.Empty;
-        BaseFont BF_Light = BaseFont.CreateFont(@"C:\Windows\Fonts\simsun.ttc,0", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        // ariblk.ttf    simsun.ttc
+        BaseFont BF_Light = BaseFont.CreateFont(@"C:\Windows\Fonts\simhei.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 
         public string Code128PicPath = string.Empty;
         private int ContentFontSize = 8;
+        private int HeaderFontSize = 12;
         public RPWayBillPrintBLL(string basePath)
         {
             this.BasePath = basePath;
@@ -40,51 +42,25 @@ namespace CHubBLL.OtherProcess
             doc.Open();
             //doc.Add(GetCode128(hData.SHIP_ID));
 
-            Paragraph p1 = new Paragraph(string.Format("编号：{0}", hData.SHIP_ID + "C         "), new iTextSharp.text.Font(BF_Light, 10));
-            p1.Alignment = Element.ALIGN_RIGHT;
-            doc.Add(p1);
-            //picture
-            Code128Helper cHelper = new Code128Helper();
-            cHelper.ValueFont = new System.Drawing.Font("宋体", 20);
-            string sourceString = hData.SHIP_ID + "C";
-            Bitmap img = cHelper.GetCodeImage(sourceString, Code128Helper.Encode.Code128B);
-            string imgName = Guid.NewGuid().ToString() + ".gif";
-            string fullImgPath = this.BasePath + imgName;
-            img.Save(fullImgPath, System.Drawing.Imaging.ImageFormat.Gif);
+            //whether print code128 part
+            if (wbType.TRACK_NUM_BY_IHUB == CHubConstValues.IndY)
+            {
+                Paragraph p1 = new Paragraph(string.Format("编号：{0}", hData.SHIP_ID + "C         "), new iTextSharp.text.Font(BF_Light, 10));
+                p1.Alignment = Element.ALIGN_RIGHT;
+                doc.Add(p1);
+                //picture
+                Code128Helper cHelper = new Code128Helper();
+                cHelper.ValueFont = new System.Drawing.Font("宋体", 20);
+                string sourceString = hData.SHIP_ID + "C";
+                Bitmap img = cHelper.GetCodeImage(sourceString, Code128Helper.Encode.Code128B);
+                string imgName = Guid.NewGuid().ToString() + ".gif";
+                string fullImgPath = this.BasePath + imgName;
+                img.Save(fullImgPath, System.Drawing.Imaging.ImageFormat.Gif);
 
-            iTextSharp.text.Image tImg = iTextSharp.text.Image.GetInstance(fullImgPath);
-            tImg.Alignment = Element.ALIGN_RIGHT;
-            doc.Add(tImg);
-
-            #region   contents parts
-            //t=tab, s=space, 1t=4s
-            //3t+1s+1s+1s
-            //doc.Add(new Paragraph(string.Format("{0}            {1} {2} {3} {4}",hData.HEADER1,hData.HEADER2,hData.CARCOD,hData.CARNAM,hData.HEADER3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            ////1t+1t+1t
-            //doc.Add(new Paragraph(string.Format("{0}    {1}    {2}    {3}", hData.NOTE1,hData.FLEX1,hData.NOTE2,hData.FLEX2), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            ////1t+1t+1t
-            //doc.Add(new Paragraph(string.Format("{0}    {1}    {2}    {3}", hData.COMPANY, hData.SENDER, hData.L_ADRNAM, hData.L_ADRCTY), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            ////1t
-            //doc.Add(new Paragraph(string.Format("{0}    {1}", hData.ADDRESS,hData.L_ADRLN1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            ////1t+1t+1t+1t+1t
-            //doc.Add(new Paragraph(string.Format("   {0}    {1}    {2}    {3}    {4}", hData.CONTACT,hData.TELEPHONE,hData.L_ADRLN2,hData.L_ADRLN3,hData.SIGNATURE3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            ////5t+1t
-            //doc.Add(new Paragraph(string.Format("                   {0}    {1}", hData.L_LAST_NAME, hData.L_PHNNUM), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            ////2t
-            //doc.Add(new Paragraph(string.Format("{0}        {1}", hData.NOTE3, hData.FLEX3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            ////2t
-            //doc.Add(new Paragraph(string.Format("{0}        {1}", hData.L_ADRNAM, hData.L_ADRCTY), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            ////
-            //doc.Add(new Paragraph(string.Format("{0}", hData.L_ADRLN1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            ////2t
-            //doc.Add(new Paragraph(string.Format("{0}        {1}", hData.L_ADRLN2, hData.L_ADRLN3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            ////2t+2t
-            //doc.Add(new Paragraph(string.Format("{0}        {1}                {2}", hData.L_LAST_NAME, hData.L_PHNNUM,hData.SIGNATURE3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            ////2t
-            //doc.Add(new Paragraph(string.Format("{0}        {1}", hData.NOTE4, hData.FLEX4), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            ////1t
-            //doc.Add(new Paragraph(string.Format("   {0}", hData.SIGNATURE1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            #endregion
+                iTextSharp.text.Image tImg = iTextSharp.text.Image.GetInstance(fullImgPath);
+                tImg.Alignment = Element.ALIGN_RIGHT;
+                doc.Add(tImg);
+            }
 
             List<string> sData = new List<string>();
             doc.Add(new Paragraph(Environment.NewLine));
@@ -95,89 +71,109 @@ namespace CHubBLL.OtherProcess
             sData.Add(hData.CARCOD);
             sData.Add(hData.CARNAM);
             sData.Add(hData.HEADER3);
-            doc.Add(new Paragraph(GetLineString(sData), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            //line 2
-            sData.Clear();
-            sData.Add(hData.NOTE1);
-            sData.Add(hData.FLEX1);
-            sData.Add(hData.NOTE2);
-            sData.Add(hData.FLEX2);
-            doc.Add(new Paragraph(GetLineString(sData), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            doc.Add(new Paragraph(GetLineString(sData,86), new iTextSharp.text.Font(BF_Light, HeaderFontSize)));
 
             doc.Add(new Paragraph(Environment.NewLine));
 
             //content table
-            PdfPTable contentTable = new PdfPTable(2);
+            PdfPTable contentTable = new PdfPTable(3);
+            contentTable.WidthPercentage = 100f;
+            contentTable.SetWidths(new float[] { 260f, 75f,260f });
             PdfPCell cellUnit;
             Paragraph prTemp;
             Phrase phTemp;
 
-            Paragraph p41 = new Paragraph();
-            p41.Add(new Phrase(string.Format("{0}    {1}", hData.COMPANY, hData.SENDER), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p41.Add(System.Environment.NewLine);
-            p41.Add(new Phrase(string.Format("{0}", hData.ADDRESS), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p41.Add(System.Environment.NewLine);
-            p41.Add(new Phrase(string.Format("{0}    {1}", hData.CONTACT, hData.TELEPHONE), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p41.Add(System.Environment.NewLine);
-            p41.Add(System.Environment.NewLine);
-            p41.Add(new Phrase(string.Format("{0}    {1}", hData.NOTE3, hData.FLEX3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            Paragraph p11 = new Paragraph();
+            p11.Add(new Phrase(string.Format("{0}    {1}", hData.NOTE1, hData.FLEX1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p11.Add(System.Environment.NewLine);
+            p11.Add(new Phrase(string.Format("{0}    {1}", hData.COMPANY, hData.SENDER), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p11.Add(System.Environment.NewLine);
+            p11.Add(new Phrase(string.Format("{0}", hData.ADDRESS), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p11.Add(System.Environment.NewLine);
+            p11.Add(new Phrase(string.Format("{0}    {1}", hData.CONTACT, hData.TELEPHONE), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p11.Add(System.Environment.NewLine);
+            p11.Add(System.Environment.NewLine);
+            p11.Add(new Phrase(string.Format("{0}    {1}", hData.NOTE3, hData.FLEX3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
 
-            cellUnit = new PdfPCell(p41);
+            cellUnit = new PdfPCell(p11);
             cellUnit.BorderWidth = 0;
             contentTable.AddCell(cellUnit);
 
-            Paragraph p42 = new Paragraph();
-            p42.Add(new Phrase(string.Format("{0}    {1}", hData.R_ADRNAM, hData.R_ADRCTY), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p42.Add(System.Environment.NewLine);
-            p42.Add(new Phrase(string.Format("{0}", hData.R_ADRLN1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p42.Add(System.Environment.NewLine);
+            //wechat imag
+            if (hData.PRINT_LOGO == CHubConstValues.IndY)
+            {
+                string imagePath = BasePath.Replace("temp", "images") + hData.LOGO;
+                iTextSharp.text.Image logoImage = iTextSharp.text.Image.GetInstance(imagePath);
+                cellUnit = new PdfPCell(logoImage, true);
+            }
+            else
+            {
+                cellUnit = new PdfPCell();
+            }
+            cellUnit.BorderWidth = 0;
+            contentTable.AddCell(cellUnit);
+
+
+            Paragraph p13 = new Paragraph();
+            p13.Add(new Phrase(string.Format("{0}    {1}", hData.NOTE2, hData.FLEX2), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p13.Add(System.Environment.NewLine);
+            p13.Add(new Phrase(string.Format("{0}    {1}", hData.R_ADRNAM, hData.R_ADRCTY), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p13.Add(System.Environment.NewLine);
+            p13.Add(new Phrase(string.Format("{0}", hData.R_ADRLN1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p13.Add(System.Environment.NewLine);
             phTemp = new Phrase(string.Format("{0}    {1}    {2}", hData.R_ADRLN2, hData.R_ADRLN3, hData.SIGNATURE3), new iTextSharp.text.Font(BF_Light, ContentFontSize));
-            
-            p42.Add(phTemp);
-            p42.Add(System.Environment.NewLine);
-            p42.Add(new Phrase(string.Format("{0}    {1}", hData.R_LAST_NAME, hData.R_PHNNUM), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p42.Add(System.Environment.NewLine);
 
-            p42.Alignment = Element.ALIGN_RIGHT;
-            cellUnit = new PdfPCell(p42);
+            p13.Add(phTemp);
+            p13.Add(System.Environment.NewLine);
+            p13.Add(new Phrase(string.Format("{0}    {1}", hData.R_LAST_NAME, hData.R_PHNNUM), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p13.Add(System.Environment.NewLine);
+
+            p13.Alignment = Element.ALIGN_RIGHT;
+            cellUnit = new PdfPCell(p13);
             cellUnit.BorderWidth = 0;
             contentTable.AddCell(cellUnit);
 
-            Paragraph p43 = new Paragraph();
-            p43.Add(new Phrase(string.Format("{0}    {1}", hData.L_ADRNAM, hData.L_ADRCTY), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p43.Add(System.Environment.NewLine);
-            p43.Add(new Phrase(string.Format("{0}", hData.L_ADRLN1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p43.Add(System.Environment.NewLine);
-            p43.Add(new Phrase(string.Format("{0}    {1}", hData.L_ADRLN2, hData.L_ADRLN3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p43.Add(System.Environment.NewLine);
-            p43.Add(new Phrase(string.Format("{0}    {1}", hData.L_LAST_NAME, hData.L_PHNNUM), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p43.Add(System.Environment.NewLine);
+            //Line 2 cells
+            Paragraph p21 = new Paragraph();
+            p21.Add(new Phrase(string.Format("{0}    {1}", hData.L_ADRNAM, hData.L_ADRCTY), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p21.Add(System.Environment.NewLine);
+            p21.Add(new Phrase(string.Format("{0}", hData.L_ADRLN1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p21.Add(System.Environment.NewLine);
+            p21.Add(new Phrase(string.Format("{0}    {1}", hData.L_ADRLN2, hData.L_ADRLN3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p21.Add(System.Environment.NewLine);
+            p21.Add(new Phrase(string.Format("{0}    {1}", hData.L_LAST_NAME, hData.L_PHNNUM), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p21.Add(System.Environment.NewLine);
+            p21.Add(System.Environment.NewLine);
 
-            p43.Add(new Phrase(string.Format("{0}    {1}", hData.NOTE4, hData.FLEX4), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p43.Add(System.Environment.NewLine);
-            p43.Add(new Phrase(string.Format("{0}", hData.SIGNATURE1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p43.Add(System.Environment.NewLine);
+            p21.Add(new Phrase(string.Format("{0}    {1}", hData.NOTE4, hData.FLEX4), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p21.Add(System.Environment.NewLine);
+            p21.Add(new Phrase(string.Format("{0}", hData.SIGNATURE1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p21.Add(System.Environment.NewLine);
 
 
-            cellUnit = new PdfPCell(p43);
+            cellUnit = new PdfPCell(p21);
             cellUnit.BorderWidth = 0;
             contentTable.AddCell(cellUnit);
 
-            //4th cell
-            Paragraph p44 = new Paragraph();
-            p44.Add(System.Environment.NewLine);
-            p44.Add(System.Environment.NewLine);
-            p44.Add(System.Environment.NewLine);
-            p44.Add(new Phrase(string.Format("{0}", hData.SIGNATURE3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p44.Alignment = Element.ALIGN_RIGHT;
-
-            cellUnit = new PdfPCell(p44);
+            //line 2 mid empty cell
+            cellUnit = new PdfPCell();
             cellUnit.BorderWidth = 0;
             contentTable.AddCell(cellUnit);
 
+            //2-3 cell
+            Paragraph p23 = new Paragraph();
+            p23.Add(System.Environment.NewLine);
+            p23.Add(System.Environment.NewLine);
+            p23.Add(new Phrase(string.Format("{0}", hData.SIGNATURE3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p23.Alignment = Element.ALIGN_RIGHT;
+
+            cellUnit = new PdfPCell(p23);
+            cellUnit.BorderWidth = 0;
+            contentTable.AddCell(cellUnit);
 
             doc.Add(contentTable);
 
+            doc.Add(new Paragraph(Environment.NewLine));
 
             //Table part
             if (wbType.PRINT_DETAIL == CHubConstValues.IndY)
@@ -261,6 +257,12 @@ namespace CHubBLL.OtherProcess
         }
 
 
+        /// <summary>
+        /// base on one line spaces, to allocation position for data source
+        /// </summary>
+        /// <param name="data">a string list</param>
+        /// <param name="totalSpace"> represent how many spaces in one line </param>
+        /// <returns></returns>
         public string GetLineString(List<string> data,int totalSpace = 130)
         {
             //int RowNum = 90;
