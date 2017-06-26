@@ -26,5 +26,10 @@ namespace CHubBLL
             return dal.GetWayBillType();
         }
 
+        public RP_WAYBILL_TYPE GetSpecifyItem(string wayBillID)
+        {
+            return dal.GetSpecifyItem(wayBillID);
+        }
+
     }
 }

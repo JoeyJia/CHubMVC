@@ -28,11 +28,11 @@ namespace CHubDAL
             if (!string.IsNullOrEmpty(custName))
                 sql += string.Format(" and ADRNAM like '%{0}%'", custName);
             if (!string.IsNullOrEmpty(Address))
-                sql += string.Format(" and ADRLN1 like '%{0}%'", Address);
+                sql += string.Format(" and ADDR_COMBINED like '%{0}%'", Address);
             if (!string.IsNullOrEmpty(shipmentNo))
                 sql += string.Format(" and SHIP_ID = '{0}'", shipmentNo);
             var result = db.Database.SqlQuery<RPWayBillHLevel1>(sql);
-            return result.ToList();
+            return result.OrderBy(a=>a.ORDTYP_WB).ThenBy(a=>a.CARCOD).ThenBy(a=>a.ADDR_COMBINED).ToList();
         }
 
         public List<RPWayBillHLevel2> GetWayBillDetailList(string carCode, string orderType,string addr)

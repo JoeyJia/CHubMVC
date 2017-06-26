@@ -34,6 +34,10 @@
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.11.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.11\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -62,6 +66,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -75,6 +80,7 @@
     <Compile Include="ClassConvert\ClassConvert.cs" />
     <Compile Include="ClassConvert\ClassConvertTable.cs" />
     <Compile Include="ClassConvert\ManualClassConvert.cs" />
+    <Compile Include="Code128Helper.cs" />
     <Compile Include="Compare\PropertyCompare.cs" />
     <Compile Include="Date\DateHelper.cs" />
     <Compile Include="DomainAuth\DomainUserAuth.cs" />

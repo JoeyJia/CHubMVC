@@ -73,8 +73,8 @@
         </form>
 
         <!--result part-->
-        <div class="row">
-            <div class="" style="margin-left:12px;">
+        <div class="row" style="overflow-x:auto;">
+            <div class="" style="margin-left:15px;">
                 <div class="panel panel-default">
                     <div class="panel-heading" style="background-color:silver"><b>Result</b></div>
                     <table id="tableResult" class="table  table-condensed"
@@ -192,6 +192,8 @@
             if ($scope.whID == "")
                 return;
 
+            $('#tableResult').bootstrapTable('destroy');
+
             var realCarCode = "";
             if ($scope.carCode == "" || $scope.carCode==null)
                 realCarCode = ""
@@ -212,7 +214,7 @@
                 type: "post",
                 async: false,
                 success: function (obj) {
-                    debugger;
+                    //debugger;
                     $scope.level1 = obj.Data;
                     initPoTab()
                 },
@@ -262,7 +264,8 @@
             });
             columns.push({
                 field: 'STGDTE',
-                title: 'Stage Date'
+                title: 'Stage Date',
+                formatter: dateFormatter
             });
             columns.push({
                 field: 'ORDTYP',
@@ -359,6 +362,19 @@
         };
 
 
+        //Formatter
+        function dateFormatter(value, row, index) {
+            if (value == undefined)
+                return "";
+            //if date has "()" not do format action
+            if (value.indexOf(')') > 0)
+                return value;
+
+            if (value.length < 10)
+                return value;
+            return value.substr(0, 10);
+        }
+
         function printOperationFormatter(value, row, index) {
             return [
            '<a class="print" href="javascript:void(0)" title="Print">',
@@ -387,7 +403,9 @@
                         //debugger;
                         if (obj.Success) {
                             //debugger;
-                            alert(obj.Msg)
+                            //window.location.href = obj.Data;
+                            window.open(obj.Data);
+                            //alert(obj.Msg)
 
                         }
                         else {

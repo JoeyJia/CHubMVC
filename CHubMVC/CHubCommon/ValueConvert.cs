@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CHubCommon
 {
-    public class ValueConvert
+    static public class ValueConvert
     {
         static public string BoolToNY(bool bValue)
         {
@@ -37,5 +37,26 @@ namespace CHubCommon
                     return "green";
             }
         }
+
+
+        #region extension  method
+        static public string ToSqlInStr(this List<string> destList)
+        {
+            string result = string.Empty;
+            if (destList == null || destList.Count == 0)
+                return result;
+
+            for (int i = 0; i < destList.Count; i++)
+            {
+                if (i == 0)
+                    result += string.Format("'{0}'", destList[i]);
+                else
+                    result += string.Format(",'{0}'", destList[i]);
+            }
+            return result;
+        }
+
+
+        #endregion
     }
 }

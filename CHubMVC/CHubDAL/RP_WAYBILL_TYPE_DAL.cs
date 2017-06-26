@@ -20,5 +20,10 @@ namespace CHubDAL
             return db.RP_WAYBILL_TYPE.ToList();
         }
 
+        public RP_WAYBILL_TYPE GetSpecifyItem(string wayBillID)
+        {
+            return db.RP_WAYBILL_TYPE.FirstOrDefault(a => a.WAYBILL_ID == wayBillID);
+        }
+
     }
 }

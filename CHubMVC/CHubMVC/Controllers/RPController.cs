@@ -10,6 +10,7 @@ using CHubCommon;
 using static CHubCommon.CHubEnum;
 using CHubModel.ExtensionModel;
 using CHubDBEntity.UnmanagedModel;
+using CHubBLL.OtherProcess;
 
 namespace CHubMVC.Controllers
 {
@@ -104,10 +105,33 @@ namespace CHubMVC.Controllers
         [HttpPost]
         public ActionResult GetPrintFile(List<RPWayBillHLevel2> selectedList)
         {
+            if (selectedList == null || selectedList.Count == 0)
+                return Json(new RequestResult(false, "No selected Data"));
+
             try
             {
-                string ss = string.Empty;
-                return Json(new RequestResult(ss));
+                // order by shipNo to Get min shipNo
+                selectedList.OrderBy(a => a.SHIP_ID);
+                string minShipNo = selectedList[0].SHIP_ID;
+                List<string> shipNoList = new List<string>();
+                foreach (var item in selectedList)
+                {
+                    shipNoList.Add(item.SHIP_ID);
+                }
+
+                V_RP_WAYBILL_H_PRINT_BLL hPrintBLL = new V_RP_WAYBILL_H_PRINT_BLL();
+                V_RP_WAYBILL_H_PRINT hPrint = hPrintBLL.GetHByShipNo(minShipNo);
+
+                V_RP_WAYBILL_D_PRINT_BLL dPrintBLL = new V_RP_WAYBILL_D_PRINT_BLL();
+                List<V_RP_WAYBILL_D_PRINT> dPrintList = dPrintBLL.GetDByShipNos(shipNoList);
+
+
+                string basePath = Server.MapPath(CHubConstValues.ChubTempFolder);
+                RPWayBillPrintBLL printBLL = new RPWayBillPrintBLL(basePath);
+                string fileName = printBLL.BuildPrintFile(hPrint, dPrintList);
+                string webPath= "/temp/" + fileName;
+                //string ss = string.Empty;
+                return Json(new RequestResult(webPath));
             }
             catch (Exception ex)
             {

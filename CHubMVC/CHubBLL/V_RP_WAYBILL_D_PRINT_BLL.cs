@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
+using CHubDBEntity.UnmanagedModel;
 
 namespace CHubBLL
 {
@@ -21,5 +22,9 @@ namespace CHubBLL
             dal = new V_RP_WAYBILL_D_PRINT_DAL(db);
         }
 
+        public List<V_RP_WAYBILL_D_PRINT> GetDByShipNos(List<string> shipNoList)
+        {
+            return dal.GetDByShipNos(shipNoList);
+        }
     }
 }
