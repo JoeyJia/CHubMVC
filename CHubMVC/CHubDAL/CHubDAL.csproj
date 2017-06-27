@@ -77,6 +77,7 @@
     <Compile Include="DB_KPI_DAL.cs" />
     <Compile Include="EW_MESSAGE_DAL.cs" />
     <Compile Include="APP_WH_DAL.cs" />
+    <Compile Include="RP_SHIP_TRACK_DAL.cs" />
     <Compile Include="V_RP_WAYBILL_H_PRINT_DAL.cs" />
     <Compile Include="V_RP_WAYBILL_H_BASE_DAL.cs" />
     <Compile Include="V_RP_WAYBILL_D_PRINT_DAL.cs" />

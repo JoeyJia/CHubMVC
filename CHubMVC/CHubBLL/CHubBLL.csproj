@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APP_WH_BLL.cs" />
+    <Compile Include="RP_SHIP_TRACK_BLL.cs" />
     <Compile Include="OtherProcess\RPWayBillPrintBLL.cs" />
     <Compile Include="V_RP_WAYBILL_H_PRINT_BLL.cs" />
     <Compile Include="V_RP_WAYBILL_H_BASE_BLL.cs" />
