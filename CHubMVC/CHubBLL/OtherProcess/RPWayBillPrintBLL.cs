@@ -186,11 +186,11 @@ namespace CHubBLL.OtherProcess
             if (wbType.PRINT_DETAIL == CHubConstValues.IndY)
             {
                 PdfPTable dTable = new PdfPTable(5);
-                dTable.AddCell(BuildCell(hData.DETAIL_TITLE1, new iTextSharp.text.Font(BF_Light, ContentFontSize), BaseColor.GRAY));
-                dTable.AddCell(BuildCell(hData.DETAIL_TITLE2, new iTextSharp.text.Font(BF_Light, ContentFontSize), BaseColor.GRAY));
-                dTable.AddCell(BuildCell(hData.DETAIL_TITLE3, new iTextSharp.text.Font(BF_Light, ContentFontSize), BaseColor.GRAY));
-                dTable.AddCell(BuildCell(hData.DETAIL_TITLE4, new iTextSharp.text.Font(BF_Light, ContentFontSize), BaseColor.GRAY));
-                dTable.AddCell(BuildCell(hData.DETAIL_TITLE5, new iTextSharp.text.Font(BF_Light, ContentFontSize), BaseColor.GRAY));
+                dTable.AddCell(BuildCell(hData.DETAIL_TITLE1, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+                dTable.AddCell(BuildCell(hData.DETAIL_TITLE2, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+                dTable.AddCell(BuildCell(hData.DETAIL_TITLE3, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+                dTable.AddCell(BuildCell(hData.DETAIL_TITLE4, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+                dTable.AddCell(BuildCell(hData.DETAIL_TITLE5, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
 
                 foreach (var item in dPrintList)
                 {
@@ -221,7 +221,7 @@ namespace CHubBLL.OtherProcess
             cb.BeginText();
             cb.SetFontAndSize(BF_Light, FooterFontSize);
             cb.SetTextMatrix(doc.LeftMargin, doc.BottomMargin);
-            cb.ShowText(GetLineString(sData,60));
+            cb.ShowText(GetLineString(sData,50));
             cb.EndText();
 
             doc.Close();

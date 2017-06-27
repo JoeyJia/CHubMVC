@@ -103,10 +103,15 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult GetPrintFile(List<RPWayBillHLevel2> selectedList)
+        public ActionResult GetPrintFile(RPWayBillHLevel1 group, List<RPWayBillHLevel2> selectedList)
         {
             if (selectedList == null || selectedList.Count == 0)
-                return Json(new RequestResult(false, "No selected Data"));
+            {
+                V_RP_WAYBILL_H_BASE_BLL wbHBLL = new V_RP_WAYBILL_H_BASE_BLL();
+                selectedList = wbHBLL.GetWayBillDetailList(group.CARCOD, group.ORDTYP_WB, group.ADDR_COMBINED);
+            }
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            //return Json(new RequestResult(false, "No selected Data"));
 
             try
             {
@@ -130,7 +135,18 @@ namespace CHubMVC.Controllers
                 RPWayBillPrintBLL printBLL = new RPWayBillPrintBLL(basePath);
                 string fileName = printBLL.BuildPrintFile(hPrint, dPrintList);
                 string webPath= "/temp/" + fileName;
-                //string ss = string.Empty;
+                //add track data
+                RP_SHIP_TRACK_BLL trackBLL = new RP_SHIP_TRACK_BLL();
+                foreach (var item in selectedList)
+                {
+                    RP_SHIP_TRACK track = new RP_SHIP_TRACK();
+                    track.WH_ID = item.WH_ID;
+                    track.SHIP_ID = item.SHIP_ID;
+                    track.TRACK_NUM_IHUB = item.TRACK_NUM_IHUB;
+                    track.RECORD_DATE = DateTime.Now;
+                    track.UPDATED_BY = appUser;
+                    trackBLL.AddOrUpdate(track); 
+                }
                 return Json(new RequestResult(webPath));
             }
             catch (Exception ex)

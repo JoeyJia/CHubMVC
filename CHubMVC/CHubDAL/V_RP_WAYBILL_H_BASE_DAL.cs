@@ -38,24 +38,30 @@ namespace CHubDAL
         public List<RPWayBillHLevel2> GetWayBillDetailList(string carCode, string orderType,string addr)
         {
             string sql = string.Format(@"select 
-TRACK_NUM_IHUB,
-          SHIP_ID,
-          SHPSTS,
-          STGDTE,
-          ORDTYP,
-         BOXES,
-          VC_PALWGT,
-          VOL_M3,
-          CUST_NO,
-          WAYBILL_ID,
-          HOST_EXT_ID,
-          ordtyp_wb
-  from V_RP_WAYBILL_H_BASE
+h.TRACK_NUM_IHUB,
+          h.SHIP_ID,
+          h.WH_ID,
+          h.SHPSTS,
+          h.STGDTE,
+          h.ORDTYP,
+         h.BOXES,
+          h.VC_PALWGT,
+          h.VOL_M3,
+          h.CUST_NO,
+          h.WAYBILL_ID,
+          h.HOST_EXT_ID,
+          h.ordtyp_wb,
+          case when (select 'X' from RP_SHIP_TRACK t
+          where t.ship_id =h.ship_id and T.WH_ID =h.wh_id
+           ) is not null then 'green'
+           else '' end SHIP_ID_COLOR
+          
+  from V_RP_WAYBILL_H_BASE  h
   where 1 = 1
-  and carcod = '{0}'
-  and ordtyp_wb = '{1}'
-  and ADDR_COMBINED = '{2}'
-  and SHPSTS = 'S'", carCode,orderType,addr);
+  and h.carcod = '{0}'
+  and h.ordtyp_wb = '{1}'
+  and h.ADDR_COMBINED = '{2}'
+  and h.SHPSTS = 'S'", carCode,orderType,addr);
 
             var result = db.Database.SqlQuery<RPWayBillHLevel2>(sql);
             return result.ToList();

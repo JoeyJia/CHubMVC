@@ -12,6 +12,8 @@ namespace CHubModel.ExtensionModel
 
         public string SHIP_ID { get; set; }
 
+        public string WH_ID { get; set; }
+
         public string SHPSTS { get; set; }
 
         public DateTime? STGDTE { get; set; }
@@ -29,6 +31,8 @@ namespace CHubModel.ExtensionModel
         public string WAYBILL_ID { get; set; }
 
         public string HOST_EXT_ID { get; set; }
+
+        public string SHIP_ID_COLOR { get; set; }
 
     }
 }

@@ -21,5 +21,20 @@ namespace CHubBLL
             dal = new RP_SHIP_TRACK_DAL(db);
         }
 
+        public void AddOrUpdate(RP_SHIP_TRACK model)
+        {
+            RP_SHIP_TRACK exist = dal.GetSpecifyTrack(model.WH_ID, model.SHIP_ID);
+            if (exist != null)
+            {
+                exist.TRACK_NUM_IHUB = model.TRACK_NUM_IHUB;
+                exist.RECORD_DATE = model.RECORD_DATE;
+                exist.UPDATED_BY = model.UPDATED_BY;
+                dal.Update(exist);
+            }
+            else
+                dal.Add(model);
+        }
+
+
     }
 }

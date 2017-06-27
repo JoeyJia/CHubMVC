@@ -16,5 +16,10 @@ namespace CHubDAL
             : base(db) { }
 
 
+        public RP_SHIP_TRACK GetSpecifyTrack(string whID, string shipID)
+        {
+            return db.RP_SHIP_TRACK.FirstOrDefault(a => a.WH_ID == whID && a.SHIP_ID == shipID);
+        }
+
     }
 }
