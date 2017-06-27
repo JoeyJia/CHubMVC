@@ -253,6 +253,9 @@
     <Compile Include="RP_PRINTER.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="RP_SHIP_TRACK.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="RP_STATION.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>

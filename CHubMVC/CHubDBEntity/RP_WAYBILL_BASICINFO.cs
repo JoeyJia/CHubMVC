@@ -37,5 +37,6 @@ namespace CHubDBEntity
         public string DETAIL_TITLE3 { get; set; }
         public string DETAIL_TITLE4 { get; set; }
         public string DETAIL_TITLE5 { get; set; }
+        public string LOGO { get; set; }
     }
 }

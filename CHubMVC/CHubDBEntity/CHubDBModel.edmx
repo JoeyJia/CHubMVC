@@ -697,6 +697,17 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           <Property Name="PRINTER_DESC" Type="varchar2" MaxLength="100" Nullable="false" />
           <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
         </EntityType>
+        <EntityType Name="RP_SHIP_TRACK">
+          <Key>
+            <PropertyRef Name="WH_ID" />
+            <PropertyRef Name="SHIP_ID" />
+          </Key>
+          <Property Name="WH_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="SHIP_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="TRACK_NUM_IHUB" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="RECORD_DATE" Type="date" Nullable="false" />
+          <Property Name="UPDATED_BY" Type="varchar2" MaxLength="20" Nullable="false" />
+        </EntityType>
         <EntityType Name="RP_STATION">
           <Key>
             <PropertyRef Name="WH_ID" />
@@ -734,6 +745,7 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           <Property Name="DETAIL_TITLE3" Type="varchar2" MaxLength="50" />
           <Property Name="DETAIL_TITLE4" Type="varchar2" MaxLength="50" />
           <Property Name="DETAIL_TITLE5" Type="varchar2" MaxLength="50" />
+          <Property Name="LOGO" Type="varchar2" MaxLength="20" />
         </EntityType>
         <EntityType Name="RP_WAYBILL_TYPE">
           <Key>
@@ -745,6 +757,7 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           <Property Name="PRINT_DETAIL" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="PAPER_SIZE" Type="varchar2" MaxLength="10" Nullable="false" />
           <Property Name="TRACK_NUM_BY_IHUB" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="PRINT_LOGO" Type="varchar2" MaxLength="1" />
         </EntityType>
         <EntityType Name="TC_PART_CATEGORY">
           <Key>
@@ -2161,7 +2174,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0025351">
+        <Association Name="SYS_C0025821">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2320,6 +2333,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="RP_CAR_MST" EntityType="Self.RP_CAR_MST" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="RP_CUST_PACK_TYPE" EntityType="Self.RP_CUST_PACK_TYPE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="RP_PRINTER" EntityType="Self.RP_PRINTER" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="RP_SHIP_TRACK" EntityType="Self.RP_SHIP_TRACK" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="RP_STATION" EntityType="Self.RP_STATION" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="RP_WAYBILL_BASICINFO" EntityType="Self.RP_WAYBILL_BASICINFO" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="RP_WAYBILL_TYPE" EntityType="Self.RP_WAYBILL_TYPE" Schema="GWAPP" store:Type="Tables" />
@@ -3210,7 +3224,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="RP_PRINTER" EntitySet="RP_PRINTER" />
             <End Role="RP_STATION" EntitySet="RP_STATION" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0025351" Association="Self.SYS_C0025351">
+          <AssociationSet Name="SYS_C0025821" Association="Self.SYS_C0025821">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -4342,6 +4356,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="RP_PRINTER" EntitySet="RP_PRINTER" />
             <End Role="RP_STATION" EntitySet="RP_STATION" />
           </AssociationSet>
+          <EntitySet Name="RP_SHIP_TRACK" EntityType="CHubDBModel.RP_SHIP_TRACK" />
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -5758,6 +5773,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="DETAIL_TITLE3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="DETAIL_TITLE4" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="DETAIL_TITLE5" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LOGO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="RP_WAYBILL_TYPE">
           <Key>
@@ -5770,6 +5786,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <NavigationProperty Name="RP_CAR_MST" Relationship="CHubDBModel.RP_CAR_MST_R01" FromRole="RP_WAYBILL_TYPE" ToRole="RP_CAR_MST" />
           <Property Name="PAPER_SIZE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TRACK_NUM_BY_IHUB" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="PRINT_LOGO" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="APP_WH_R03">
           <End Type="CHubDBModel.RP_PRINTER" Role="RP_PRINTER" Multiplicity="0..1" />
@@ -5831,6 +5848,17 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="RP_SHIP_TRACK">
+          <Key>
+            <PropertyRef Name="WH_ID" />
+            <PropertyRef Name="SHIP_ID" />
+          </Key>
+          <Property Name="WH_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SHIP_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TRACK_NUM_IHUB" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="RECORD_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="UPDATED_BY" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7441,6 +7469,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="RP_WAYBILL_BASICINFO">
             <EntityTypeMapping TypeName="CHubDBModel.RP_WAYBILL_BASICINFO">
               <MappingFragment StoreEntitySet="RP_WAYBILL_BASICINFO">
+                <ScalarProperty Name="LOGO" ColumnName="LOGO" />
                 <ScalarProperty Name="DETAIL_TITLE5" ColumnName="DETAIL_TITLE5" />
                 <ScalarProperty Name="DETAIL_TITLE4" ColumnName="DETAIL_TITLE4" />
                 <ScalarProperty Name="DETAIL_TITLE3" ColumnName="DETAIL_TITLE3" />
@@ -7470,12 +7499,24 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="RP_WAYBILL_TYPE">
             <EntityTypeMapping TypeName="CHubDBModel.RP_WAYBILL_TYPE">
               <MappingFragment StoreEntitySet="RP_WAYBILL_TYPE">
+                <ScalarProperty Name="PRINT_LOGO" ColumnName="PRINT_LOGO" />
                 <ScalarProperty Name="TRACK_NUM_BY_IHUB" ColumnName="TRACK_NUM_BY_IHUB" />
                 <ScalarProperty Name="PAPER_SIZE" ColumnName="PAPER_SIZE" />
                 <ScalarProperty Name="PRINT_DETAIL" ColumnName="PRINT_DETAIL" />
                 <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
                 <ScalarProperty Name="WAYBILL_DESC" ColumnName="WAYBILL_DESC" />
                 <ScalarProperty Name="WAYBILL_ID" ColumnName="WAYBILL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RP_SHIP_TRACK">
+            <EntityTypeMapping TypeName="CHubDBModel.RP_SHIP_TRACK">
+              <MappingFragment StoreEntitySet="RP_SHIP_TRACK">
+                <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
+                <ScalarProperty Name="RECORD_DATE" ColumnName="RECORD_DATE" />
+                <ScalarProperty Name="TRACK_NUM_IHUB" ColumnName="TRACK_NUM_IHUB" />
+                <ScalarProperty Name="SHIP_ID" ColumnName="SHIP_ID" />
+                <ScalarProperty Name="WH_ID" ColumnName="WH_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
