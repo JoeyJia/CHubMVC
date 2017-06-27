@@ -237,7 +237,7 @@
         function expandlevel2($detail, pRow, index) {
             //debugger;
             var poNo = pRow.PUR_ORDER_ID;
-            $t = $detail.html('<table data-click-to-select="true" class="tbLevel2"></table>').find('table');
+            $t = $detail.html('<table data-click-to-select="true" class="tbLevel2" tag="level2" ></table>').find('table');
             //$t.attr("class", "table table-bordered table-condensed");
             $t.attr("margin-left", "200px");
             //debugger;
@@ -387,6 +387,10 @@
         window.operateEvents = {
             'click .print': function (e, value, row, index) {
                 //alert("print action");
+
+                
+                $currTable = $("#tableResult tr[data-index= '"+index+"' ] + tr table[tag=level2] ");
+                alert($currTable[0].innerHTML);
 
                 var $table = $('.tbLevel2');
                 var selectedRows = $table.bootstrapTable('getSelections')

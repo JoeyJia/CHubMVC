@@ -10,6 +10,7 @@ using System.IO;
 using CHubCommon;
 using System.Drawing;
 using CHubDBEntity;
+using ThoughtWorks.QRCode.Codec;
 
 namespace CHubBLL.OtherProcess
 {
@@ -22,6 +23,7 @@ namespace CHubBLL.OtherProcess
         public string Code128PicPath = string.Empty;
         private int ContentFontSize = 8;
         private int HeaderFontSize = 12;
+        private int FooterFontSize = 18;
         public RPWayBillPrintBLL(string basePath)
         {
             this.BasePath = basePath;
@@ -45,14 +47,19 @@ namespace CHubBLL.OtherProcess
             //whether print code128 part
             if (wbType.TRACK_NUM_BY_IHUB == CHubConstValues.IndY)
             {
-                Paragraph p1 = new Paragraph(string.Format("编号：{0}", hData.SHIP_ID + "C         "), new iTextSharp.text.Font(BF_Light, 10));
+                Paragraph p1 = new Paragraph(string.Format("编号：{0}", hData.SHIP_ID + "C"), new iTextSharp.text.Font(BF_Light, 10));
                 p1.Alignment = Element.ALIGN_RIGHT;
                 doc.Add(p1);
                 //picture
                 Code128Helper cHelper = new Code128Helper();
                 cHelper.ValueFont = new System.Drawing.Font("宋体", 20);
                 string sourceString = hData.SHIP_ID + "C";
-                Bitmap img = cHelper.GetCodeImage(sourceString, Code128Helper.Encode.Code128B);
+
+                //Bitmap img = cHelper.GetCodeImage(sourceString, Code128Helper.Encode.Code128B);
+                QRCodeEncoder qr = new QRCodeEncoder();
+                qr.QRCodeScale = 2;
+
+                Bitmap img = qr.Encode(sourceString, Encoding.ASCII);
                 string imgName = Guid.NewGuid().ToString() + ".gif";
                 string fullImgPath = this.BasePath + imgName;
                 img.Save(fullImgPath, System.Drawing.Imaging.ImageFormat.Gif);
@@ -71,7 +78,7 @@ namespace CHubBLL.OtherProcess
             sData.Add(hData.CARCOD);
             sData.Add(hData.CARNAM);
             sData.Add(hData.HEADER3);
-            doc.Add(new Paragraph(GetLineString(sData,86), new iTextSharp.text.Font(BF_Light, HeaderFontSize)));
+            doc.Add(new Paragraph(GetLineString(sData,80), new iTextSharp.text.Font(BF_Light, HeaderFontSize)));
 
             doc.Add(new Paragraph(Environment.NewLine));
 
@@ -212,9 +219,9 @@ namespace CHubBLL.OtherProcess
             PdfContentByte cb = writer.DirectContent;
             ColumnText ct = new ColumnText(cb);
             cb.BeginText();
-            cb.SetFontAndSize(BF_Light, ContentFontSize);
+            cb.SetFontAndSize(BF_Light, FooterFontSize);
             cb.SetTextMatrix(doc.LeftMargin, doc.BottomMargin);
-            cb.ShowText(GetLineString(sData));
+            cb.ShowText(GetLineString(sData,60));
             cb.EndText();
 
             doc.Close();
