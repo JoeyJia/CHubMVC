@@ -133,20 +133,9 @@ namespace CHubMVC.Controllers
 
                 string basePath = Server.MapPath(CHubConstValues.ChubTempFolder);
                 RPWayBillPrintBLL printBLL = new RPWayBillPrintBLL(basePath);
-                string fileName = printBLL.BuildPrintFile(hPrint, dPrintList);
+                string fileName = printBLL.BuildPrintFile(hPrint, dPrintList,appUser);
                 string webPath= "/temp/" + fileName;
-                //add track data
-                RP_SHIP_TRACK_BLL trackBLL = new RP_SHIP_TRACK_BLL();
-                foreach (var item in selectedList)
-                {
-                    RP_SHIP_TRACK track = new RP_SHIP_TRACK();
-                    track.WH_ID = item.WH_ID;
-                    track.SHIP_ID = item.SHIP_ID;
-                    track.TRACK_NUM_IHUB = item.TRACK_NUM_IHUB;
-                    track.RECORD_DATE = DateTime.Now;
-                    track.UPDATED_BY = appUser;
-                    trackBLL.AddOrUpdate(track); 
-                }
+               
                 return Json(new RequestResult(webPath));
             }
             catch (Exception ex)
