@@ -88,6 +88,8 @@ namespace CHubDBEntity.UnmanagedModel
         public string ORDTYP_WB { get; set; }
         public string ADDR_COMBINED { get; set; }
 
+        public string TRACK_NUM_BY_IHUB { get; set; }
+
         //logo part
         public string LOGO { get; set; }
         public string PRINT_LOGO { get; set; }

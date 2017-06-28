@@ -89,7 +89,7 @@
     
         $http.post("/rp/ADRMstInit", null, null).then(
             function (obj) {
-                debugger;
+                //debugger;
                 if (obj.data.Success) {
                     $scope.custPackType = obj.data.Data;
 
@@ -98,7 +98,7 @@
                     alert(obj.data.Msg)
             },
              function (resp) {
-                 debugger;
+                 //debugger;
                  alert("Fail!");
              }
             );

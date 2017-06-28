@@ -85,9 +85,9 @@ namespace CHubBLL.OtherProcess
             doc.Add(new Paragraph(Environment.NewLine));
 
             //content table
-            PdfPTable contentTable = new PdfPTable(3);
+            PdfPTable contentTable = new PdfPTable(4);
             contentTable.WidthPercentage = 100f;
-            contentTable.SetWidths(new float[] { 260f, 75f,260f });
+            contentTable.SetWidths(new float[] { 215f, 75f,200f,85f });
             PdfPCell cellUnit;
             Paragraph prTemp;
             Phrase phTemp;
@@ -108,7 +108,7 @@ namespace CHubBLL.OtherProcess
             cellUnit.BorderWidth = 0;
             contentTable.AddCell(cellUnit);
 
-            //wechat imag
+            //wechat imag p12
             if (hData.PRINT_LOGO == CHubConstValues.IndY)
             {
                 string imagePath = BasePath.Replace("temp", "images") + hData.LOGO;
@@ -130,17 +130,27 @@ namespace CHubBLL.OtherProcess
             p13.Add(System.Environment.NewLine);
             p13.Add(new Phrase(string.Format("{0}", hData.R_ADRLN1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
             p13.Add(System.Environment.NewLine);
-            phTemp = new Phrase(string.Format("{0}    {1}    {2}", hData.R_ADRLN2, hData.R_ADRLN3, hData.SIGNATURE3), new iTextSharp.text.Font(BF_Light, ContentFontSize));
-
-            p13.Add(phTemp);
+            p13.Add(new Phrase(string.Format("{0}    {1}", hData.R_ADRLN2, hData.R_ADRLN3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
             p13.Add(System.Environment.NewLine);
             p13.Add(new Phrase(string.Format("{0}    {1}", hData.R_LAST_NAME, hData.R_PHNNUM), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
             p13.Add(System.Environment.NewLine);
 
-            p13.Alignment = Element.ALIGN_RIGHT;
             cellUnit = new PdfPCell(p13);
             cellUnit.BorderWidth = 0;
             contentTable.AddCell(cellUnit);
+
+            //p14 signature part
+            Paragraph p14 = new Paragraph();
+            p14.Add(System.Environment.NewLine);
+            p14.Add(System.Environment.NewLine);
+            p14.Add(System.Environment.NewLine);
+            p14.Add(new Phrase(string.Format("{0}", hData.SIGNATURE3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p14.Add(System.Environment.NewLine);
+
+            cellUnit = new PdfPCell(p14);
+            cellUnit.BorderWidth = 0;
+            contentTable.AddCell(cellUnit);
+
 
             //Line 2 cells
             Paragraph p21 = new Paragraph();
@@ -171,16 +181,23 @@ namespace CHubBLL.OtherProcess
             cellUnit.BorderWidth = 0;
             contentTable.AddCell(cellUnit);
 
-            //2-3 cell
-            Paragraph p23 = new Paragraph();
-            p23.Add(System.Environment.NewLine);
-            p23.Add(System.Environment.NewLine);
-            p23.Add(new Phrase(string.Format("{0}", hData.SIGNATURE3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p23.Alignment = Element.ALIGN_RIGHT;
-
-            cellUnit = new PdfPCell(p23);
+            //2-3  empty cell
+            cellUnit = new PdfPCell();
             cellUnit.BorderWidth = 0;
             contentTable.AddCell(cellUnit);
+
+            //p24 signature part
+            Paragraph p24 = new Paragraph();
+            p24.Add(System.Environment.NewLine);
+            p24.Add(System.Environment.NewLine);
+            p24.Add(System.Environment.NewLine);
+            p24.Add(System.Environment.NewLine);
+            p24.Add(new Phrase(string.Format("{0}", hData.SIGNATURE3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+
+            cellUnit = new PdfPCell(p24);
+            cellUnit.BorderWidth = 0;
+            contentTable.AddCell(cellUnit);
+
 
             doc.Add(contentTable);
 
@@ -190,6 +207,7 @@ namespace CHubBLL.OtherProcess
             if (wbType.PRINT_DETAIL == CHubConstValues.IndY)
             {
                 PdfPTable dTable = new PdfPTable(5);
+                dTable.WidthPercentage = 90f;
                 dTable.AddCell(BuildCell(hData.DETAIL_TITLE1, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 dTable.AddCell(BuildCell(hData.DETAIL_TITLE2, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 dTable.AddCell(BuildCell(hData.DETAIL_TITLE3, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
@@ -224,7 +242,7 @@ namespace CHubBLL.OtherProcess
             ColumnText ct = new ColumnText(cb);
             cb.BeginText();
             cb.SetFontAndSize(BF_Light, FooterFontSize);
-            cb.SetTextMatrix(doc.LeftMargin, doc.BottomMargin+100f);
+            cb.SetTextMatrix(doc.LeftMargin, doc.BottomMargin+50f);
             cb.ShowText(GetLineString(sData));
             cb.EndText();
 
