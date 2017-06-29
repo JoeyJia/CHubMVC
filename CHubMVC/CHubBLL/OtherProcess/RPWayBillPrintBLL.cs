@@ -40,7 +40,10 @@ namespace CHubBLL.OtherProcess
             RP_WAYBILL_TYPE wbType = wbTypeBLL.GetSpecifyItem(hData.WAYBILL_ID);
 
             Document doc = new Document(PageSize.A4);
+            doc.SetMargins(36f, 36f, 36f, 120f);
             PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(fullPath, FileMode.Create));
+            LocalPageEventHelper leHelper = new LocalPageEventHelper();
+            writer.PageEvent = leHelper;
             doc.Open();
             //doc.Add(GetCode128(hData.SHIP_ID));
 
@@ -55,7 +58,10 @@ namespace CHubBLL.OtherProcess
 
                 //Bitmap img = cHelper.GetCodeImage(sourceString, Code128Helper.Encode.Code128B);
                 QRCodeEncoder qr = new QRCodeEncoder();
-                qr.QRCodeScale = 1;
+                qr.QRCodeScale = 3;
+                qr.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.L;
+                qr.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;
+                qr.QRCodeVersion = 1;
 
                 Bitmap img = qr.Encode(sourceString, Encoding.ASCII);
                 string imgName = Guid.NewGuid().ToString() + ".gif";
@@ -225,6 +231,13 @@ namespace CHubBLL.OtherProcess
                 doc.Add(dTable);
             }
 
+            Paragraph pLast = new Paragraph(string.Format("Total Items:{0}          ",dPrintList.Count), new iTextSharp.text.Font(BF_Light, 10));
+            pLast.Alignment = Element.ALIGN_RIGHT;
+            doc.Add(pLast);
+
+            //PdfPTableFooter foot = new PdfPTableFooter();
+            //foot.a
+
 
             //footer  part
             //
@@ -242,7 +255,7 @@ namespace CHubBLL.OtherProcess
             ColumnText ct = new ColumnText(cb);
             cb.BeginText();
             cb.SetFontAndSize(BF_Light, FooterFontSize);
-            cb.SetTextMatrix(doc.LeftMargin, doc.BottomMargin+50f);
+            cb.SetTextMatrix(doc.LeftMargin, doc.BottomMargin);
             cb.ShowText(GetLineString(sData));
             cb.EndText();
 
