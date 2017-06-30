@@ -216,13 +216,13 @@
             });
             columns.push({
                 field: 'TRACK_NUM_IHUB',
-                title: 'Track Num'
+                title: 'Track Num',
+                cellStyle: numCellStyle
 
             });
             columns.push({
                 field: 'SHIP_ID',
-                title: 'Shipment No',
-                cellStyle: shipIDCellStyle
+                title: 'Shipment No'
             });
             columns.push({
                 field: 'SHPSTS',
@@ -341,8 +341,8 @@
             return value.substr(0, 10);
         }
 
-        function shipIDCellStyle(value, row, index, field) {
-            return { classes: '', css: { "color": row.SHIP_ID_COLOR } };
+        function numCellStyle(value, row, index, field) {
+            return { classes: '', css: { "background-color": row.COLOR } };
         }
 
         function printOperationFormatter(value, row, index) {

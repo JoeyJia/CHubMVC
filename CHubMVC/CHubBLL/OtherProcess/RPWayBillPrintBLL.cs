@@ -39,8 +39,22 @@ namespace CHubBLL.OtherProcess
             RP_WAYBILL_TYPE_BLL wbTypeBLL = new RP_WAYBILL_TYPE_BLL();
             RP_WAYBILL_TYPE wbType = wbTypeBLL.GetSpecifyItem(hData.WAYBILL_ID);
 
-            Document doc = new Document(PageSize.A4);
-            doc.SetMargins(36f, 36f, 36f, 120f);
+            iTextSharp.text.Rectangle pageRec = null;
+            float bottomMargin = 0f;
+            if (wbType.PAPER_SIZE == "A4")
+            {
+                pageRec = PageSize.A4;
+                bottomMargin = 120f;
+            }
+            if (wbType.PAPER_SIZE == "A5")
+            {
+                pageRec = PageSize.A5.Rotate();
+                bottomMargin = 60f;
+            }
+
+
+            Document doc = new Document(pageRec);
+            doc.SetMargins(36f, 36f, 36f, bottomMargin);
             PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(fullPath, FileMode.Create));
             LocalPageEventHelper leHelper = new LocalPageEventHelper();
             writer.PageEvent = leHelper;
@@ -229,11 +243,13 @@ namespace CHubBLL.OtherProcess
                     dTable.AddCell(BuildCell(item.REMARK1, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 }
                 doc.Add(dTable);
+
+                Paragraph pLast = new Paragraph(string.Format("Total Items:{0}          ", dPrintList.Count), new iTextSharp.text.Font(BF_Light, 10));
+                pLast.Alignment = Element.ALIGN_RIGHT;
+                doc.Add(pLast);
             }
 
-            Paragraph pLast = new Paragraph(string.Format("Total Items:{0}          ",dPrintList.Count), new iTextSharp.text.Font(BF_Light, 10));
-            pLast.Alignment = Element.ALIGN_RIGHT;
-            doc.Add(pLast);
+            
 
             //PdfPTableFooter foot = new PdfPTableFooter();
             //foot.a

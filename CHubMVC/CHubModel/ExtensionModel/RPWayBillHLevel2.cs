@@ -32,7 +32,7 @@ namespace CHubModel.ExtensionModel
 
         public string HOST_EXT_ID { get; set; }
 
-        public string SHIP_ID_COLOR { get; set; }
+        public string COLOR { get; set; }
 
     }
 }

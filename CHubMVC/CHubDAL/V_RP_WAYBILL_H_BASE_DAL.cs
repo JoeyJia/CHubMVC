@@ -54,7 +54,7 @@ h.TRACK_NUM_IHUB,
           case when (select 'X' from RP_SHIP_TRACK t
           where t.ship_id =h.ship_id and T.WH_ID =h.wh_id
            ) is not null then 'green'
-           else '' end SHIP_ID_COLOR
+           else '' end COLOR
           
   from V_RP_WAYBILL_H_BASE  h
   where 1 = 1
