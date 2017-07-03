@@ -244,10 +244,16 @@
     <Compile Include="RP_ADR_MST.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="RP_AUTOPACK_LOG.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="RP_CAR_MST.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RP_CUST_PACK_TYPE.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RP_ORDTYP_MST.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RP_PRINTER.cs">

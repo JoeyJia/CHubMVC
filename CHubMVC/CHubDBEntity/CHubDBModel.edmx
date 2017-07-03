@@ -643,6 +643,16 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           <Property Name="LOAD_DATE" Type="date" />
           <Property Name="CUST_PACK_ID" Type="varchar2" MaxLength="20" />
         </EntityType>
+        <EntityType Name="RP_AUTOPACK_LOG">
+          <Key>
+            <PropertyRef Name="LODNUM" />
+          </Key>
+          <Property Name="WH_ID" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="SHIP_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="LODNUM" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="AUTO_PRINT_DATE" Type="date" Nullable="false" />
+          <Property Name="SUCCEE_FLAG" Type="varchar2" MaxLength="1" />
+        </EntityType>
         <EntityType Name="RP_CAR_MST">
           <Key>
             <PropertyRef Name="WH_ID" />
@@ -687,6 +697,15 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           <Property Name="COL08" Type="varchar2" MaxLength="20" />
           <Property Name="COL09" Type="varchar2" MaxLength="20" />
           <Property Name="COL10" Type="varchar2" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="RP_ORDTYP_MST">
+          <Key>
+            <PropertyRef Name="WH_ID" />
+            <PropertyRef Name="ORDTYP" />
+          </Key>
+          <Property Name="WH_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="ORDTYP" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="ORDTYP_WB" Type="varchar2" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="RP_PRINTER">
           <Key>
@@ -1545,6 +1564,205 @@ warning 6002: The table/view 'GWAPP.V_OPEN_QTY_PO_RDC' does not have a primary k
           <Property Name="LATEST_ETA" Type="date" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6013: The table/view 'GWAPP.V_RP_PACK_D_BASE' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="V_RP_PACK_D_BASE">
+          <Property Name="SHIP_ID" Type="varchar2" MaxLength="30" />
+          <Property Name="WH_ID" Type="varchar2" MaxLength="32" />
+          <Property Name="LODNUM" Type="varchar2" MaxLength="30" />
+          <Property Name="CUST_PACK_ID" Type="varchar2" MaxLength="20" />
+          <Property Name="PRTNUM" Type="varchar2" MaxLength="30" />
+          <Property Name="UNTQTY" Type="number" Precision="10" Scale="0" />
+          <Property Name="CSTPRT" Type="varchar2" MaxLength="30" />
+          <Property Name="ORDTYP" Type="varchar2" MaxLength="4" />
+          <Property Name="VC_CPONUM" Type="varchar2" MaxLength="30" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="105" />
+          <Property Name="DESC_CN" Type="varchar2" MaxLength="120" />
+          <Property Name="GOMS_PART_NO" Type="varchar2" MaxLength="75" />
+          <Property Name="PART_WEIGHT" Type="number" Precision="24" Scale="8" />
+          <Property Name="PART_LENGTH" Type="number" Precision="24" Scale="8" />
+          <Property Name="PART_WIDTH" Type="number" Precision="24" Scale="8" />
+          <Property Name="PART_HEIGHT" Type="number" Precision="24" Scale="8" />
+          <Property Name="LWH" Type="varchar2" MaxLength="366" />
+          <Property Name="SUPERSEDING_PART_NO" Type="varchar2" MaxLength="75" />
+          <Property Name="SUPERSEDING_PRINT_PART_NO" Type="varchar2" MaxLength="75" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'GWAPP.V_RP_PACK_D_PRINT' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="V_RP_PACK_D_PRINT">
+          <Property Name="SHIP_ID" Type="varchar2" MaxLength="30" />
+          <Property Name="WH_ID" Type="varchar2" MaxLength="32" />
+          <Property Name="LODNUM" Type="varchar2" MaxLength="30" />
+          <Property Name="CUST_PACK_ID" Type="varchar2" MaxLength="20" />
+          <Property Name="PRTNUM" Type="varchar2" MaxLength="30" />
+          <Property Name="UNTQTY" Type="number" Precision="10" Scale="0" />
+          <Property Name="CSTPRT" Type="varchar2" MaxLength="30" />
+          <Property Name="ORDTYP" Type="varchar2" MaxLength="4" />
+          <Property Name="VC_CPONUM" Type="varchar2" MaxLength="30" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="105" />
+          <Property Name="DESC_CN" Type="varchar2" MaxLength="120" />
+          <Property Name="GOMS_PART_NO" Type="varchar2" MaxLength="75" />
+          <Property Name="PART_WEIGHT" Type="number" Precision="24" Scale="8" />
+          <Property Name="PART_LENGTH" Type="number" Precision="24" Scale="8" />
+          <Property Name="PART_WIDTH" Type="number" Precision="24" Scale="8" />
+          <Property Name="PART_HEIGHT" Type="number" Precision="24" Scale="8" />
+          <Property Name="LWH" Type="varchar2" MaxLength="366" />
+          <Property Name="SUPERSEDING_PART_NO" Type="varchar2" MaxLength="75" />
+          <Property Name="SUPERSEDING_PRINT_PART_NO" Type="varchar2" MaxLength="75" />
+          <Property Name="COL01" Type="varchar2" MaxLength="30" />
+          <Property Name="COL02" Type="varchar2" MaxLength="120" />
+          <Property Name="COL03" Type="varchar2" MaxLength="120" />
+          <Property Name="COL04" Type="varchar2" MaxLength="40" />
+          <Property Name="COL05" Type="varchar2" MaxLength="40" />
+          <Property Name="COL06" Type="varchar2" MaxLength="32" />
+          <Property Name="COL07" Type="char" MaxLength="1" />
+          <Property Name="COL08" Type="char" MaxLength="1" />
+          <Property Name="COL09" Type="char" MaxLength="1" />
+          <Property Name="COL10" Type="char" MaxLength="1" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'GWAPP.V_RP_PACK_H_BASE' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="V_RP_PACK_H_BASE">
+          <Property Name="SHIP_ID" Type="varchar2" MaxLength="30" />
+          <Property Name="WH_ID" Type="varchar2" MaxLength="32" />
+          <Property Name="HOST_EXT_ID" Type="varchar2" MaxLength="40" />
+          <Property Name="SHPSTS" Type="varchar2" MaxLength="1" />
+          <Property Name="CARCOD" Type="varchar2" MaxLength="10" />
+          <Property Name="CARNAM" Type="varchar2" MaxLength="30" />
+          <Property Name="TRACK_NUM" Type="varchar2" MaxLength="20" />
+          <Property Name="ADDDTE" Type="date" />
+          <Property Name="ALCDTE" Type="date" />
+          <Property Name="STGDTE" Type="date" />
+          <Property Name="LODDTE" Type="date" />
+          <Property Name="ENTDTE" Type="date" />
+          <Property Name="MODDTE" Type="date" />
+          <Property Name="MOD_USR_ID" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRNAM" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRLN1" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRLN2" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRLN3" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRCTY" Type="varchar2" MaxLength="70" />
+          <Property Name="ADRSTC" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRPSZ" Type="varchar2" MaxLength="20" />
+          <Property Name="CTRY_NAME" Type="varchar2" MaxLength="60" />
+          <Property Name="PHNNUM" Type="varchar2" MaxLength="20" />
+          <Property Name="EMAIL_ADR" Type="varchar2" MaxLength="100" />
+          <Property Name="FIRST_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="LAST_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="CONT_NAME" Type="varchar2" MaxLength="40" />
+          <Property Name="LODNUM" Type="varchar2" MaxLength="30" />
+          <Property Name="VC_PALWGT" Type="number" Precision="19" Scale="4" />
+          <Property Name="PALVOL" Type="varchar2" MaxLength="122" />
+          <Property Name="COMPANY" Type="varchar2" MaxLength="100" />
+          <Property Name="SENDER" Type="varchar2" MaxLength="20" />
+          <Property Name="ADDRESS" Type="varchar2" MaxLength="200" />
+          <Property Name="CONTACT" Type="varchar2" MaxLength="20" />
+          <Property Name="TELEPHONE" Type="varchar2" MaxLength="30" />
+          <Property Name="SIGNATURE" Type="varchar2" MaxLength="20" />
+          <Property Name="CUST_PACK_ID" Type="varchar2" MaxLength="20" />
+          <Property Name="PACK_DESC" Type="varchar2" MaxLength="100" />
+          <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" />
+          <Property Name="AUTO_PRINT" Type="varchar2" MaxLength="1" />
+          <Property Name="CUST_SHORT_NAME" Type="varchar2" MaxLength="20" />
+          <Property Name="HEADER1" Type="varchar2" MaxLength="20" />
+          <Property Name="HEADER2" Type="varchar2" MaxLength="20" />
+          <Property Name="HEADER3" Type="varchar2" MaxLength="20" />
+          <Property Name="FOOTER1" Type="varchar2" MaxLength="20" />
+          <Property Name="FOOTER2" Type="varchar2" MaxLength="20" />
+          <Property Name="FOOTER3" Type="varchar2" MaxLength="20" />
+          <Property Name="NOTE1" Type="varchar2" MaxLength="50" />
+          <Property Name="NOTE2" Type="varchar2" MaxLength="50" />
+          <Property Name="NOTE3" Type="varchar2" MaxLength="50" />
+          <Property Name="NOTE4" Type="varchar2" MaxLength="50" />
+          <Property Name="NOTE5" Type="varchar2" MaxLength="50" />
+          <Property Name="LOGO" Type="varchar2" MaxLength="20" />
+          <Property Name="COL01" Type="varchar2" MaxLength="20" />
+          <Property Name="COL02" Type="varchar2" MaxLength="20" />
+          <Property Name="COL03" Type="varchar2" MaxLength="20" />
+          <Property Name="COL04" Type="varchar2" MaxLength="20" />
+          <Property Name="COL05" Type="varchar2" MaxLength="20" />
+          <Property Name="COL06" Type="varchar2" MaxLength="20" />
+          <Property Name="COL07" Type="varchar2" MaxLength="20" />
+          <Property Name="COL08" Type="varchar2" MaxLength="20" />
+          <Property Name="COL09" Type="varchar2" MaxLength="20" />
+          <Property Name="COL10" Type="varchar2" MaxLength="20" />
+          <Property Name="AUTO_PRINT_DATE" Type="date" />
+          <Property Name="SUCCEE_FLAG" Type="varchar2" MaxLength="1" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'GWAPP.V_RP_PACK_H_PRINT' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="V_RP_PACK_H_PRINT">
+          <Property Name="SHIP_ID" Type="varchar2" MaxLength="30" />
+          <Property Name="WH_ID" Type="varchar2" MaxLength="32" />
+          <Property Name="HOST_EXT_ID" Type="varchar2" MaxLength="40" />
+          <Property Name="SHPSTS" Type="varchar2" MaxLength="1" />
+          <Property Name="CARCOD" Type="varchar2" MaxLength="10" />
+          <Property Name="CARNAM" Type="varchar2" MaxLength="30" />
+          <Property Name="TRACK_NUM" Type="varchar2" MaxLength="20" />
+          <Property Name="ADDDTE" Type="date" />
+          <Property Name="ALCDTE" Type="date" />
+          <Property Name="STGDTE" Type="date" />
+          <Property Name="LODDTE" Type="date" />
+          <Property Name="ENTDTE" Type="date" />
+          <Property Name="MODDTE" Type="date" />
+          <Property Name="MOD_USR_ID" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRNAM" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRLN1" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRLN2" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRLN3" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRCTY" Type="varchar2" MaxLength="70" />
+          <Property Name="ADRSTC" Type="varchar2" MaxLength="40" />
+          <Property Name="ADRPSZ" Type="varchar2" MaxLength="20" />
+          <Property Name="CTRY_NAME" Type="varchar2" MaxLength="60" />
+          <Property Name="PHNNUM" Type="varchar2" MaxLength="20" />
+          <Property Name="EMAIL_ADR" Type="varchar2" MaxLength="100" />
+          <Property Name="FIRST_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="LAST_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="CONT_NAME" Type="varchar2" MaxLength="40" />
+          <Property Name="LODNUM" Type="varchar2" MaxLength="30" />
+          <Property Name="VC_PALWGT" Type="number" Precision="19" Scale="4" />
+          <Property Name="PALVOL" Type="varchar2" MaxLength="122" />
+          <Property Name="COMPANY" Type="varchar2" MaxLength="100" />
+          <Property Name="SENDER" Type="varchar2" MaxLength="20" />
+          <Property Name="ADDRESS" Type="varchar2" MaxLength="200" />
+          <Property Name="CONTACT" Type="varchar2" MaxLength="20" />
+          <Property Name="TELEPHONE" Type="varchar2" MaxLength="30" />
+          <Property Name="SIGNATURE" Type="varchar2" MaxLength="20" />
+          <Property Name="CUST_PACK_ID" Type="varchar2" MaxLength="20" />
+          <Property Name="PACK_DESC" Type="varchar2" MaxLength="100" />
+          <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" />
+          <Property Name="AUTO_PRINT" Type="varchar2" MaxLength="1" />
+          <Property Name="CUST_SHORT_NAME" Type="varchar2" MaxLength="20" />
+          <Property Name="HEADER1" Type="varchar2" MaxLength="20" />
+          <Property Name="HEADER2" Type="varchar2" MaxLength="20" />
+          <Property Name="HEADER3" Type="varchar2" MaxLength="20" />
+          <Property Name="FOOTER1" Type="varchar2" MaxLength="20" />
+          <Property Name="FOOTER2" Type="varchar2" MaxLength="20" />
+          <Property Name="FOOTER3" Type="varchar2" MaxLength="20" />
+          <Property Name="NOTE1" Type="varchar2" MaxLength="50" />
+          <Property Name="NOTE2" Type="varchar2" MaxLength="50" />
+          <Property Name="NOTE3" Type="varchar2" MaxLength="50" />
+          <Property Name="NOTE4" Type="varchar2" MaxLength="50" />
+          <Property Name="NOTE5" Type="varchar2" MaxLength="50" />
+          <Property Name="LOGO" Type="varchar2" MaxLength="20" />
+          <Property Name="COL01" Type="varchar2" MaxLength="20" />
+          <Property Name="COL02" Type="varchar2" MaxLength="20" />
+          <Property Name="COL03" Type="varchar2" MaxLength="20" />
+          <Property Name="COL04" Type="varchar2" MaxLength="20" />
+          <Property Name="COL05" Type="varchar2" MaxLength="20" />
+          <Property Name="COL06" Type="varchar2" MaxLength="20" />
+          <Property Name="COL07" Type="varchar2" MaxLength="20" />
+          <Property Name="COL08" Type="varchar2" MaxLength="20" />
+          <Property Name="COL09" Type="varchar2" MaxLength="20" />
+          <Property Name="COL10" Type="varchar2" MaxLength="20" />
+          <Property Name="AUTO_PRINT_DATE" Type="date" />
+          <Property Name="SUCCEE_FLAG" Type="varchar2" MaxLength="1" />
+          <Property Name="FLEX1" Type="char" MaxLength="10" />
+          <Property Name="FLEX2" Type="char" MaxLength="10" />
+          <Property Name="FLEX3" Type="char" MaxLength="10" />
+          <Property Name="FLEX4" Type="char" MaxLength="10" />
+          <Property Name="FLEX5" Type="char" MaxLength="10" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.V_SHIPPING_ALL_BASE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="V_SHIPPING_ALL_BASE">
           <Key>
@@ -2174,7 +2392,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0025821">
+        <Association Name="SYS_C0027208">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2330,8 +2548,10 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="M_PART" EntityType="Self.M_PART" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="M_SYSTEM" EntityType="Self.M_SYSTEM" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="RP_ADR_MST" EntityType="Self.RP_ADR_MST" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="RP_AUTOPACK_LOG" EntityType="Self.RP_AUTOPACK_LOG" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="RP_CAR_MST" EntityType="Self.RP_CAR_MST" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="RP_CUST_PACK_TYPE" EntityType="Self.RP_CUST_PACK_TYPE" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="RP_ORDTYP_MST" EntityType="Self.RP_ORDTYP_MST" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="RP_PRINTER" EntityType="Self.RP_PRINTER" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="RP_SHIP_TRACK" EntityType="Self.RP_SHIP_TRACK" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="RP_STATION" EntityType="Self.RP_STATION" Schema="GWAPP" store:Type="Tables" />
@@ -3224,7 +3444,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="RP_PRINTER" EntitySet="RP_PRINTER" />
             <End Role="RP_STATION" EntitySet="RP_STATION" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0025821" Association="Self.SYS_C0025821">
+          <AssociationSet Name="SYS_C0027208" Association="Self.SYS_C0027208">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -4357,6 +4577,8 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="RP_STATION" EntitySet="RP_STATION" />
           </AssociationSet>
           <EntitySet Name="RP_SHIP_TRACK" EntityType="CHubDBModel.RP_SHIP_TRACK" />
+          <EntitySet Name="RP_AUTOPACK_LOG" EntityType="CHubDBModel.RP_AUTOPACK_LOG" />
+          <EntitySet Name="RP_ORDTYP_MST" EntityType="CHubDBModel.RP_ORDTYP_MST" />
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -5858,6 +6080,25 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="TRACK_NUM_IHUB" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="RECORD_DATE" Type="DateTime" Nullable="false" />
           <Property Name="UPDATED_BY" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="RP_AUTOPACK_LOG">
+          <Key>
+            <PropertyRef Name="LODNUM" />
+          </Key>
+          <Property Name="WH_ID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="SHIP_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LODNUM" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="AUTO_PRINT_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="SUCCEE_FLAG" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="RP_ORDTYP_MST">
+          <Key>
+            <PropertyRef Name="WH_ID" />
+            <PropertyRef Name="ORDTYP" />
+          </Key>
+          <Property Name="WH_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ORDTYP" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ORDTYP_WB" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -7516,6 +7757,26 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="RECORD_DATE" ColumnName="RECORD_DATE" />
                 <ScalarProperty Name="TRACK_NUM_IHUB" ColumnName="TRACK_NUM_IHUB" />
                 <ScalarProperty Name="SHIP_ID" ColumnName="SHIP_ID" />
+                <ScalarProperty Name="WH_ID" ColumnName="WH_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RP_AUTOPACK_LOG">
+            <EntityTypeMapping TypeName="CHubDBModel.RP_AUTOPACK_LOG">
+              <MappingFragment StoreEntitySet="RP_AUTOPACK_LOG">
+                <ScalarProperty Name="SUCCEE_FLAG" ColumnName="SUCCEE_FLAG" />
+                <ScalarProperty Name="AUTO_PRINT_DATE" ColumnName="AUTO_PRINT_DATE" />
+                <ScalarProperty Name="LODNUM" ColumnName="LODNUM" />
+                <ScalarProperty Name="SHIP_ID" ColumnName="SHIP_ID" />
+                <ScalarProperty Name="WH_ID" ColumnName="WH_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RP_ORDTYP_MST">
+            <EntityTypeMapping TypeName="CHubDBModel.RP_ORDTYP_MST">
+              <MappingFragment StoreEntitySet="RP_ORDTYP_MST">
+                <ScalarProperty Name="ORDTYP_WB" ColumnName="ORDTYP_WB" />
+                <ScalarProperty Name="ORDTYP" ColumnName="ORDTYP" />
                 <ScalarProperty Name="WH_ID" ColumnName="WH_ID" />
               </MappingFragment>
             </EntityTypeMapping>

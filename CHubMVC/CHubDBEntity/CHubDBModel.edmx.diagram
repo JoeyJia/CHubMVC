@@ -146,6 +146,8 @@
         <AssociationConnector Association="CHubDBModel.RP_CUST_PACK_TYPE_R01" />
         <AssociationConnector Association="CHubDBModel.RP_STATION_R02" />
         <EntityTypeShape EntityType="CHubDBModel.RP_SHIP_TRACK" Width="1.5" PointX="7.375" PointY="31.75" />
+        <EntityTypeShape EntityType="CHubDBModel.RP_AUTOPACK_LOG" Width="1.5" PointX="32.375" PointY="15.75" />
+        <EntityTypeShape EntityType="CHubDBModel.RP_ORDTYP_MST" Width="1.5" PointX="32.375" PointY="9.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
