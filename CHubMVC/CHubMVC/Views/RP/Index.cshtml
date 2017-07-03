@@ -64,9 +64,7 @@
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtShipmentNo" ng-model="shipmentNo" placeholder="Shipment No.">
                     </div>
-                    <div class="col-sm-2">
-                        <button class="btn btn-primary btn-sm" ng-click="searchAction()">Search</button>
-                    </div>
+                    
                 </div>
 
             </div>
@@ -76,16 +74,16 @@
                     <label class="col-sm-2 control-label">Status</label>
                     <div class="col-sm-2">
                         <label class="checkbox-inline">
-                            <input type="checkbox" id="inlineCheckbox1" ng-model="status1" ng-true-value="S" ng-false-value="''">Staged
+                            <input type="checkbox" id="inlineCheckbox1" ng-model="staged" >Staged
                         </label>
                         <label class="checkbox-inline">
-                            <input type="checkbox" id="inlineCheckbox2" value="option2">In Progress
+                            <input type="checkbox" id="inlineCheckbox2" ng-model="inProgress">In Progress
                         </label>
-
                     </div>
-
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary btn-sm" ng-click="searchAction()">Search</button>
+                    </div>
                 </div>
-
             </div>
 
         </form>
@@ -119,7 +117,11 @@
         $scope.address = "";
         $scope.shipmentNo = "";
     //
-        $scope.status1 = "S";
+        $scope.staged = true;
+        $scope.inProgress = false;
+
+        $scope.stagedSubmited = true;
+        $scope.inProgressSubmited = false;
 
         $scope.wbHArray = [];
         //init part 
@@ -165,7 +167,8 @@
             else
                 realCarCode = $scope.carCode.originalObject.CarCode;
 
-
+            $scope.stagedSubmited = $scope.staged;
+            $scope.inProgressSubmited = $scope.inProgress;
 
             $.ajax({
                 url: "/rp/GetWayBillBaseList",
@@ -175,6 +178,8 @@
                     custName: $scope.custName,
                     Address: $scope.address,
                     shipmentNo: $scope.shipmentNo,
+                    staged: $scope.stagedSubmited,
+                    inProgress: $scope.inProgressSubmited
                 },
                 type: "post",
                 async: false,
@@ -371,7 +376,9 @@
                     url: "/rp/GetPrintFile",
                     data: JSON.stringify({
                         group: row,
-                        selectedList: selectedRows
+                        selectedList: selectedRows,
+                        staged: $scope.stagedSubmited,
+                        inProgress: $scope.inProgressSubmited
                     }),
                     type: "post",
                     async: false,
@@ -404,7 +411,9 @@
                 data: {
                     carCode:carCode,
                     orderType: orderType,
-                    addr:addr
+                    addr: addr,
+                    staged: $scope.stagedSubmited,
+                    inProgress: $scope.inProgressSubmited
                 },
                 type: "post",
                 async: false,

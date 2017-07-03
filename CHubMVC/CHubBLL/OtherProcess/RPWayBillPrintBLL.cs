@@ -52,11 +52,22 @@ namespace CHubBLL.OtherProcess
                 bottomMargin = 60f;
             }
 
+            //QRCodeEncoder qr = new QRCodeEncoder();
+            //qr.QRCodeScale = 3;
+            //qr.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.L;
+            //qr.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;
+            //qr.QRCodeVersion = 1;
+            //string sourceString1 = hData.SHIP_ID + "C";
+            //Bitmap img = qr.Encode(sourceString1, Encoding.ASCII);
+            //string imgName = Guid.NewGuid().ToString() + ".gif";
+            //string fullImgPath = this.BasePath + imgName;
+            //img.Save(fullImgPath, System.Drawing.Imaging.ImageFormat.Gif);
 
             Document doc = new Document(pageRec);
             doc.SetMargins(36f, 36f, 36f, bottomMargin);
             PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(fullPath, FileMode.Create));
             LocalPageEventHelper leHelper = new LocalPageEventHelper();
+            //leHelper.QRPath = fullImgPath;
             writer.PageEvent = leHelper;
             doc.Open();
             //doc.Add(GetCode128(hData.SHIP_ID));
@@ -64,7 +75,7 @@ namespace CHubBLL.OtherProcess
             //whether print code128 part
             if (wbType.TRACK_NUM_BY_IHUB == CHubConstValues.IndY)
             {
-               
+
                 //picture
                 //Code128Helper cHelper = new Code128Helper();
                 //cHelper.ValueFont = new System.Drawing.Font("宋体", 20);

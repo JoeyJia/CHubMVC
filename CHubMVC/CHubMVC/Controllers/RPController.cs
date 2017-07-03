@@ -69,12 +69,12 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult GetWayBillBaseList(string whID,string carCode,string custName,string Address,string shipmentNo)
+        public ActionResult GetWayBillBaseList(string whID,string carCode,string custName,string Address,string shipmentNo, bool staged, bool inProgress)
         {
             try
             {
                 V_RP_WAYBILL_H_BASE_BLL wbHBLL = new V_RP_WAYBILL_H_BASE_BLL();
-                List<RPWayBillHLevel1> result = wbHBLL.GetWayBillBaseList(whID, carCode, custName, Address, shipmentNo);
+                List<RPWayBillHLevel1> result = wbHBLL.GetWayBillBaseList(whID, carCode, custName, Address, shipmentNo,staged,inProgress);
                 return Json(new RequestResult(result));
             }
             catch (Exception ex)
@@ -86,12 +86,12 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult GetWayBillDetailList(string carCode,string orderType,string addr)
+        public ActionResult GetWayBillDetailList(string carCode,string orderType,string addr,bool staged,bool inProgress)
         {
             try
             {
                 V_RP_WAYBILL_H_BASE_BLL wbHBLL = new V_RP_WAYBILL_H_BASE_BLL();
-                List<RPWayBillHLevel2> result = wbHBLL.GetWayBillDetailList(carCode, orderType,addr);
+                List<RPWayBillHLevel2> result = wbHBLL.GetWayBillDetailList(carCode, orderType,addr,staged,inProgress);
                 return Json(new RequestResult(result));
             }
             catch (Exception ex)
@@ -103,12 +103,12 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult GetPrintFile(RPWayBillHLevel1 group, List<RPWayBillHLevel2> selectedList)
+        public ActionResult GetPrintFile(RPWayBillHLevel1 group, List<RPWayBillHLevel2> selectedList, bool staged, bool inProgress)
         {
             if (selectedList == null || selectedList.Count == 0)
             {
                 V_RP_WAYBILL_H_BASE_BLL wbHBLL = new V_RP_WAYBILL_H_BASE_BLL();
-                selectedList = wbHBLL.GetWayBillDetailList(group.CARCOD, group.ORDTYP_WB, group.ADDR_COMBINED);
+                selectedList = wbHBLL.GetWayBillDetailList(group.CARCOD, group.ORDTYP_WB, group.ADDR_COMBINED,staged,inProgress);
             }
             string appUser = Session[CHubConstValues.SessionUser].ToString();
             //return Json(new RequestResult(false, "No selected Data"));
@@ -121,6 +121,9 @@ namespace CHubMVC.Controllers
                 List<string> shipNoList = new List<string>();
                 foreach (var item in selectedList)
                 {
+                    if (string.Compare(minShipNo, item.SHIP_ID) > 0)
+                        minShipNo = item.SHIP_ID;
+
                     shipNoList.Add(item.SHIP_ID);
                 }
 
