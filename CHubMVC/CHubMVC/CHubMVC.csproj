@@ -382,6 +382,7 @@
     <Content Include="Views\RP\Index.cshtml" />
     <Content Include="Views\RP\CarMst.cshtml" />
     <Content Include="Views\RP\AdrMst.cshtml" />
+    <Content Include="Views\RP\Pack.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

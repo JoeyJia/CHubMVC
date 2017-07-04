@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
+using CHubDBEntity.UnmanagedModel;
 
 namespace CHubBLL
 {
@@ -19,6 +20,11 @@ namespace CHubBLL
         public V_RP_PACK_H_BASE_BLL(CHubEntities db)
         {
             dal = new V_RP_PACK_H_BASE_DAL(db);
+        }
+
+        public List<V_RP_PACK_H_BASE> GetPackList(string whID, string shipID, string custName, string address, bool staged, int range)
+        {
+            return dal.GetPackList(whID, shipID, custName, address, staged, range);
         }
 
     }

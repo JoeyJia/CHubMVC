@@ -288,6 +288,68 @@ namespace CHubMVC.Controllers
         }
         #endregion
 
+        #region custom pack part
+        [Authorize]
+        public ActionResult Pack()
+        {
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            //APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            //rpBLL.Add(appUser, CHubEnum.PageNameEnum.cgldb.ToString(), this.Request.Url.AbsoluteUri);
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult PackInit()
+        {
+            try
+            {
+                string defWHID = string.Empty;
+                List<APP_WH> appWHList = null;
+
+                APP_USERS_BLL userBLL = new APP_USERS_BLL();
+                string appUser = Session[CHubConstValues.SessionUser].ToString();
+                APP_USERS user = userBLL.GetAppUserByDomainName(appUser);
+                defWHID = user.DEF_WH_ID;
+                if (string.IsNullOrEmpty(defWHID))
+                {
+                    APP_WH_BLL whBLL = new APP_WH_BLL();
+                    appWHList = whBLL.GetAppWHList();
+                }
+
+                var obj = new
+                {
+                    defWHID = defWHID,
+                    appWHList = appWHList
+                };
+                return Json(new RequestResult(obj));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("RP PackInit", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        public ActionResult GetPackList(string whID, string shipID, string custName, string address, bool staged, int range)
+        {
+            try
+            {
+                V_RP_PACK_H_BASE_BLL packBLL = new V_RP_PACK_H_BASE_BLL();
+                var result = packBLL.GetPackList(whID, shipID, custName, address, staged, range);
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("GetPackList", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+
+        }
+
+        #endregion
+
+
 
     }
 }
