@@ -25,7 +25,7 @@ namespace CHubDAL
 where ship_id in ({0})", sqlin);
 
             var result = db.Database.SqlQuery<V_RP_WAYBILL_D_PRINT>(sql);
-            return result.OrderBy(a=>a.SHIP_ID).ToList();
+            return result.OrderBy(a=>a.SHIP_ID).ThenBy(a=>a.LODNUM).ToList();
         }
 
     }

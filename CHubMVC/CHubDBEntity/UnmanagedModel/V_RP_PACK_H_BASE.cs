@@ -36,7 +36,7 @@ namespace CHubDBEntity.UnmanagedModel
         public string LAST_NAME { get; set; }
         public string CONT_NAME { get; set; }
         public string LODNUM { get; set; }
-        public decimal VC_PALWGT { get; set; }
+        public decimal? VC_PALWGT { get; set; }
         public string PALVOL { get; set; }
         public string COMPANY { get; set; }
         public string SENDER { get; set; }

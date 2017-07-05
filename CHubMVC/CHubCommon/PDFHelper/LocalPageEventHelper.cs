@@ -14,9 +14,15 @@ namespace CHubCommon
         PdfTemplate template;
         PdfTemplate imgTem;
         BaseFont BF_Light = BaseFont.CreateFont(@"C:\Windows\Fonts\simsun.ttc,0", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-        private int ContentFontSize = 10;
+        public int ContentFontSize = 10;
+        public int HeaderFontSize = 12;
 
+        public bool printCode = false;
         public string QRPath;
+        public string codeString;
+        public string line1String;
+
+        public Rectangle pageRec = null;
 
         public override void OnOpenDocument(PdfWriter writer, Document document)
         {
@@ -65,8 +71,8 @@ namespace CHubCommon
         public override void OnStartPage(PdfWriter writer, Document document)
         {
             base.OnStartPage(writer, document);
-
-            if(writer.PageNumber!=1)
+            
+            if (!printCode)
             {
                 document.Add(new Paragraph(Environment.NewLine));
                 document.Add(new Paragraph(Environment.NewLine));
@@ -74,18 +80,45 @@ namespace CHubCommon
                 document.Add(new Paragraph(Environment.NewLine));
                 document.Add(new Paragraph(Environment.NewLine));
             }
+            else
+            {
 
-            #region for adding header part for each page
-            //Image img = Image.GetInstance(QRPath);
+                PdfPTable contentTable = new PdfPTable(1);
+                contentTable.WidthPercentage = 100f;
+                
+                PdfPCell cellUnit = new PdfPCell();
+                
+                /////
 
-            //iTextSharp.text.Image tImg = iTextSharp.text.Image.GetInstance(QRPath);
-            //tImg.Alignment = Element.ALIGN_RIGHT;
-            //document.Add(tImg);
+                #region for adding header part for each page
+                iTextSharp.text.Image tImg = iTextSharp.text.Image.GetInstance(QRPath);
+                tImg.Alignment = Element.ALIGN_RIGHT;
 
-            //Paragraph p1 = new Paragraph(string.Format("编号：{0}", hData.SHIP_ID + "C"), new iTextSharp.text.Font(BF_Light, 10));
-            //p1.Alignment = Element.ALIGN_RIGHT;
-            //doc.Add(p1);
-            #endregion
+                PdfPTable imgTable = new PdfPTable(1);
+                imgTable.SetWidths(new float[] { 20f });
+                imgTable.HorizontalAlignment = Element.ALIGN_RIGHT;
+                PdfPCell imgCell = new PdfPCell(tImg, false);
+                imgCell.BorderWidth = 0;
+                imgCell.HorizontalAlignment = Element.ALIGN_RIGHT;
+                imgTable.AddCell(imgCell);
+
+                cellUnit.AddElement(imgTable);
+
+
+                Paragraph p1 = new Paragraph(codeString, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                p1.Alignment = Element.ALIGN_RIGHT;
+                cellUnit.AddElement(p1);
+
+                Paragraph p2 = new Paragraph(line1String, new iTextSharp.text.Font(BF_Light, HeaderFontSize));
+                cellUnit.AddElement(p2);
+                cellUnit.AddElement(new Paragraph(Environment.NewLine));
+
+                cellUnit.BorderWidth = 0;
+                contentTable.AddCell(cellUnit);
+                document.Add(contentTable);
+
+                #endregion
+            }
 
 
         }

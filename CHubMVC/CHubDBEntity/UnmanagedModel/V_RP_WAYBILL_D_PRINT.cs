@@ -13,7 +13,7 @@ namespace CHubDBEntity.UnmanagedModel
 
         public string LODNUM { get; set; }
 
-        public decimal VC_PALWGT { get; set; }
+        public decimal? VC_PALWGT { get; set; }
 
         public string PALVOL { get; set; }
 

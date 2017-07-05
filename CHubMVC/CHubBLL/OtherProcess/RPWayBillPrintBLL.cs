@@ -52,36 +52,16 @@ namespace CHubBLL.OtherProcess
                 bottomMargin = 60f;
             }
 
-            //QRCodeEncoder qr = new QRCodeEncoder();
-            //qr.QRCodeScale = 3;
-            //qr.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.L;
-            //qr.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;
-            //qr.QRCodeVersion = 1;
-            //string sourceString1 = hData.SHIP_ID + "C";
-            //Bitmap img = qr.Encode(sourceString1, Encoding.ASCII);
-            //string imgName = Guid.NewGuid().ToString() + ".gif";
-            //string fullImgPath = this.BasePath + imgName;
-            //img.Save(fullImgPath, System.Drawing.Imaging.ImageFormat.Gif);
-
-            Document doc = new Document(pageRec);
-            doc.SetMargins(36f, 36f, 36f, bottomMargin);
-            PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(fullPath, FileMode.Create));
+            List<string> sData = new List<string>();
             LocalPageEventHelper leHelper = new LocalPageEventHelper();
-            //leHelper.QRPath = fullImgPath;
-            writer.PageEvent = leHelper;
-            doc.Open();
-            //doc.Add(GetCode128(hData.SHIP_ID));
-
             //whether print code128 part
             if (wbType.TRACK_NUM_BY_IHUB == CHubConstValues.IndY)
             {
-
+                leHelper.printCode = true;
+                leHelper.pageRec = pageRec;
                 //picture
-                //Code128Helper cHelper = new Code128Helper();
-                //cHelper.ValueFont = new System.Drawing.Font("宋体", 20);
                 string sourceString = hData.SHIP_ID + "C";
 
-                //Bitmap img = cHelper.GetCodeImage(sourceString, Code128Helper.Encode.Code128B);
                 QRCodeEncoder qr = new QRCodeEncoder();
                 qr.QRCodeScale = 3;
                 qr.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.L;
@@ -93,27 +73,44 @@ namespace CHubBLL.OtherProcess
                 string fullImgPath = this.BasePath + imgName;
                 img.Save(fullImgPath, System.Drawing.Imaging.ImageFormat.Gif);
 
-                iTextSharp.text.Image tImg = iTextSharp.text.Image.GetInstance(fullImgPath);
-                tImg.Alignment = Element.ALIGN_RIGHT;
-                doc.Add(tImg);
+                leHelper.QRPath = fullImgPath;
 
-                Paragraph p1 = new Paragraph(string.Format("编号：{0}", hData.SHIP_ID + "C"), new iTextSharp.text.Font(BF_Light, 10));
-                p1.Alignment = Element.ALIGN_RIGHT;
-                doc.Add(p1);
+                //leHelper.pCode = new Paragraph(string.Format("编号：{0}", hData.SHIP_ID + "C"), new iTextSharp.text.Font(BF_Light, 10));
+                leHelper.codeString = string.Format("编号：{0}", hData.SHIP_ID + "C");
+                //line 1
+                sData.Clear();
+                sData.Add(hData.HEADER1);
+                sData.Add(hData.HEADER2);
+                sData.Add(hData.CARCOD);
+                sData.Add(hData.CARNAM);
+                sData.Add(hData.HEADER3);
+                //leHelper.pLine1 =  new Paragraph(GetLineString(sData, 80), new iTextSharp.text.Font(BF_Light, HeaderFontSize));
+                leHelper.line1String = GetLineString(sData, 80);
             }
 
-            List<string> sData = new List<string>();
-            doc.Add(new Paragraph(Environment.NewLine));
-            //line 1
-            sData.Clear();
-            sData.Add(hData.HEADER1);
-            sData.Add(hData.HEADER2);
-            sData.Add(hData.CARCOD);
-            sData.Add(hData.CARNAM);
-            sData.Add(hData.HEADER3);
-            doc.Add(new Paragraph(GetLineString(sData,80), new iTextSharp.text.Font(BF_Light, HeaderFontSize)));
+            Document doc = new Document(pageRec);
+            doc.SetMargins(36f, 36f, 10f, bottomMargin);
+            PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(fullPath, FileMode.Create));
+            
+            //leHelper.QRPath = fullImgPath;
+            writer.PageEvent = leHelper;
+            doc.Open();
+            //doc.Add(GetCode128(hData.SHIP_ID));
 
-            doc.Add(new Paragraph(Environment.NewLine));
+            
+
+            
+            //doc.Add(new Paragraph(Environment.NewLine));
+            ////line 1
+            //sData.Clear();
+            //sData.Add(hData.HEADER1);
+            //sData.Add(hData.HEADER2);
+            //sData.Add(hData.CARCOD);
+            //sData.Add(hData.CARNAM);
+            //sData.Add(hData.HEADER3);
+            //doc.Add(new Paragraph(GetLineString(sData,80), new iTextSharp.text.Font(BF_Light, HeaderFontSize)));
+
+            //doc.Add(new Paragraph(Environment.NewLine));
 
             //content table
             PdfPTable contentTable = new PdfPTable(4);
@@ -249,7 +246,7 @@ namespace CHubBLL.OtherProcess
                 {
                     dTable.AddCell(BuildCell(item.SHIP_ID, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                     dTable.AddCell(BuildCell(item.LODNUM, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                    dTable.AddCell(BuildCell(item.VC_PALWGT.ToString("f2"), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+                    dTable.AddCell(BuildCell((item.VC_PALWGT??0).ToString("f2"), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                     dTable.AddCell(BuildCell(item.PALVOL, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                     dTable.AddCell(BuildCell(item.REMARK1, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 }
