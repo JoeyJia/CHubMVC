@@ -1,4 +1,5 @@
-﻿using iTextSharp.text;
+﻿using CHubDBEntity.UnmanagedModel;
+using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
@@ -21,8 +22,9 @@ namespace CHubCommon
         public string QRPath;
         public string codeString;
         public string line1String;
-
-        public Rectangle pageRec = null;
+        public V_RP_WAYBILL_H_PRINT hData;
+        public string BasePath;
+       
 
         public override void OnOpenDocument(PdfWriter writer, Document document)
         {
@@ -83,10 +85,10 @@ namespace CHubCommon
             else
             {
 
-                PdfPTable contentTable = new PdfPTable(1);
-                contentTable.WidthPercentage = 100f;
+                PdfPTable hTable = new PdfPTable(1);
+                hTable.WidthPercentage = 100f;
                 
-                PdfPCell cellUnit = new PdfPCell();
+                PdfPCell hUnit = new PdfPCell();
                 
                 /////
 
@@ -102,23 +104,143 @@ namespace CHubCommon
                 imgCell.HorizontalAlignment = Element.ALIGN_RIGHT;
                 imgTable.AddCell(imgCell);
 
-                cellUnit.AddElement(imgTable);
+                hUnit.AddElement(imgTable);
 
 
                 Paragraph p1 = new Paragraph(codeString, new iTextSharp.text.Font(BF_Light, ContentFontSize));
                 p1.Alignment = Element.ALIGN_RIGHT;
-                cellUnit.AddElement(p1);
+                hUnit.AddElement(p1);
 
-                Paragraph p2 = new Paragraph(line1String, new iTextSharp.text.Font(BF_Light, HeaderFontSize));
-                cellUnit.AddElement(p2);
-                cellUnit.AddElement(new Paragraph(Environment.NewLine));
+                //Paragraph p2 = new Paragraph(line1String, new iTextSharp.text.Font(BF_Light, HeaderFontSize));
+                //hUnit.AddElement(p2);
+                //hUnit.AddElement(new Paragraph(Environment.NewLine));
 
-                cellUnit.BorderWidth = 0;
-                contentTable.AddCell(cellUnit);
-                document.Add(contentTable);
+                hUnit.BorderWidth = 0;
+                hTable.AddCell(hUnit);
+                document.Add(hTable);
 
                 #endregion
             }
+
+            Paragraph p2 = new Paragraph(line1String, new iTextSharp.text.Font(BF_Light, HeaderFontSize));
+            document.Add(p2);
+
+            //content table
+            PdfPTable contentTable = new PdfPTable(4);
+            contentTable.WidthPercentage = 100f;
+            contentTable.SetWidths(new float[] { 215f, 75f, 200f, 85f });
+            PdfPCell cellUnit;
+
+            Paragraph p11 = new Paragraph();
+            p11.Add(new Phrase(string.Format("{0}    {1}", hData.NOTE1, hData.FLEX1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p11.Add(System.Environment.NewLine);
+            p11.Add(new Phrase(string.Format("{0}    {1}", hData.COMPANY, hData.SENDER), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p11.Add(System.Environment.NewLine);
+            p11.Add(new Phrase(string.Format("{0}", hData.ADDRESS), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p11.Add(System.Environment.NewLine);
+            p11.Add(new Phrase(string.Format("{0}    {1}", hData.CONTACT, hData.TELEPHONE), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p11.Add(System.Environment.NewLine);
+            p11.Add(System.Environment.NewLine);
+
+
+            cellUnit = new PdfPCell(p11);
+            cellUnit.BorderWidth = 0;
+            contentTable.AddCell(cellUnit);
+
+            //wechat imag p12
+            if (hData.PRINT_LOGO == CHubConstValues.IndY)
+            {
+                string imagePath = BasePath.Replace("temp", "images") + hData.LOGO;
+                iTextSharp.text.Image logoImage = iTextSharp.text.Image.GetInstance(imagePath);
+                cellUnit = new PdfPCell(logoImage, true);
+            }
+            else
+            {
+                cellUnit = new PdfPCell();
+            }
+            cellUnit.BorderWidth = 0;
+            contentTable.AddCell(cellUnit);
+
+
+            Paragraph p13 = new Paragraph();
+            p13.Add(new Phrase(string.Format("{0}    {1}", hData.NOTE2, hData.FLEX2), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p13.Add(System.Environment.NewLine);
+            p13.Add(new Phrase(string.Format("{0}    {1}", hData.R_ADRNAM, hData.R_ADRCTY), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p13.Add(System.Environment.NewLine);
+            p13.Add(new Phrase(string.Format("{0}", hData.R_ADRLN1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p13.Add(System.Environment.NewLine);
+            p13.Add(new Phrase(string.Format("{0}    {1}", hData.R_ADRLN2, hData.R_ADRLN3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p13.Add(System.Environment.NewLine);
+            p13.Add(new Phrase(string.Format("{0}    {1}", hData.R_LAST_NAME, hData.R_PHNNUM), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p13.Add(System.Environment.NewLine);
+
+            cellUnit = new PdfPCell(p13);
+            cellUnit.BorderWidth = 0;
+            contentTable.AddCell(cellUnit);
+
+            //p14 signature part
+            Paragraph p14 = new Paragraph();
+            p14.Add(System.Environment.NewLine);
+            p14.Add(System.Environment.NewLine);
+            p14.Add(System.Environment.NewLine);
+            p14.Add(new Phrase(string.Format("{0}", hData.SIGNATURE3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p14.Add(System.Environment.NewLine);
+
+            cellUnit = new PdfPCell(p14);
+            cellUnit.BorderWidth = 0;
+            contentTable.AddCell(cellUnit);
+
+
+            //Line 2 cells
+            Paragraph p21 = new Paragraph();
+            p21.Add(new Phrase(string.Format("{0}    {1}", hData.NOTE3, hData.FLEX3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p21.Add(System.Environment.NewLine);
+            p21.Add(new Phrase(string.Format("{0}    {1}", hData.L_ADRNAM, hData.L_ADRCTY), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p21.Add(System.Environment.NewLine);
+            p21.Add(new Phrase(string.Format("{0}", hData.L_ADRLN1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p21.Add(System.Environment.NewLine);
+            p21.Add(new Phrase(string.Format("{0}    {1}", hData.L_ADRLN2, hData.L_ADRLN3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p21.Add(System.Environment.NewLine);
+            p21.Add(new Phrase(string.Format("{0}    {1}", hData.L_LAST_NAME, hData.L_PHNNUM), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p21.Add(System.Environment.NewLine);
+            p21.Add(System.Environment.NewLine);
+
+            p21.Add(new Phrase(string.Format("{0}    {1}", hData.NOTE4, hData.FLEX4), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p21.Add(System.Environment.NewLine);
+            p21.Add(new Phrase(string.Format("{0}", hData.SIGNATURE1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            p21.Add(System.Environment.NewLine);
+
+
+            cellUnit = new PdfPCell(p21);
+            cellUnit.BorderWidth = 0;
+            contentTable.AddCell(cellUnit);
+
+            //line 2 mid empty cell
+            cellUnit = new PdfPCell();
+            cellUnit.BorderWidth = 0;
+            contentTable.AddCell(cellUnit);
+
+            //2-3  empty cell
+            cellUnit = new PdfPCell();
+            cellUnit.BorderWidth = 0;
+            contentTable.AddCell(cellUnit);
+
+            //p24 signature part
+            Paragraph p24 = new Paragraph();
+            p24.Add(System.Environment.NewLine);
+            p24.Add(System.Environment.NewLine);
+            p24.Add(System.Environment.NewLine);
+            p24.Add(System.Environment.NewLine);
+            p24.Add(new Phrase(string.Format("{0}", hData.SIGNATURE3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+
+            cellUnit = new PdfPCell(p24);
+            cellUnit.BorderWidth = 0;
+            contentTable.AddCell(cellUnit);
+
+
+            document.Add(contentTable);
+
+            document.Add(new Paragraph(Environment.NewLine));
 
 
         }

@@ -29,9 +29,9 @@ namespace CHubBLL.OtherProcess
             this.BasePath = basePath;
         }
 
-        public string BuildPrintFile(V_RP_WAYBILL_H_PRINT hData, List<V_RP_WAYBILL_D_PRINT> dPrintList,string appUser)
+        public string BuildPrintFile(V_RP_WAYBILL_H_PRINT hData, List<V_RP_WAYBILL_D_PRINT> dPrintList, string appUser)
         {
-            string fileName = string.Format("{0}-{1}-{2}-{3}.pdf", 
+            string fileName = string.Format("{0}-{1}-{2}-{3}.pdf",
                 hData.L_ADRNAM, hData.ORDTYP_WB, hData.CARCOD, DateTime.Now.ToString("yyyyMMddHHmm"));
             string fullPath = BasePath + fileName;
 
@@ -54,11 +54,13 @@ namespace CHubBLL.OtherProcess
 
             List<string> sData = new List<string>();
             LocalPageEventHelper leHelper = new LocalPageEventHelper();
+            leHelper.hData = hData;
+            leHelper.BasePath = BasePath;
             //whether print code128 part
             if (wbType.TRACK_NUM_BY_IHUB == CHubConstValues.IndY)
             {
                 leHelper.printCode = true;
-                leHelper.pageRec = pageRec;
+
                 //picture
                 string sourceString = hData.SHIP_ID + "C";
 
@@ -91,15 +93,15 @@ namespace CHubBLL.OtherProcess
             Document doc = new Document(pageRec);
             doc.SetMargins(36f, 36f, 10f, bottomMargin);
             PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(fullPath, FileMode.Create));
-            
+
             //leHelper.QRPath = fullImgPath;
             writer.PageEvent = leHelper;
             doc.Open();
             //doc.Add(GetCode128(hData.SHIP_ID));
 
-            
 
-            
+
+
             //doc.Add(new Paragraph(Environment.NewLine));
             ////line 1
             //sData.Clear();
@@ -112,124 +114,126 @@ namespace CHubBLL.OtherProcess
 
             //doc.Add(new Paragraph(Environment.NewLine));
 
-            //content table
-            PdfPTable contentTable = new PdfPTable(4);
-            contentTable.WidthPercentage = 100f;
-            contentTable.SetWidths(new float[] { 215f, 75f,200f,85f });
-            PdfPCell cellUnit;
-            Paragraph prTemp;
-            Phrase phTemp;
+            #region content part
+            ////content table
+            //PdfPTable contentTable = new PdfPTable(4);
+            //contentTable.WidthPercentage = 100f;
+            //contentTable.SetWidths(new float[] { 215f, 75f, 200f, 85f });
+            //PdfPCell cellUnit;
+            //Paragraph prTemp;
+            //Phrase phTemp;
 
-            Paragraph p11 = new Paragraph();
-            p11.Add(new Phrase(string.Format("{0}    {1}", hData.NOTE1, hData.FLEX1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p11.Add(System.Environment.NewLine);
-            p11.Add(new Phrase(string.Format("{0}    {1}", hData.COMPANY, hData.SENDER), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p11.Add(System.Environment.NewLine);
-            p11.Add(new Phrase(string.Format("{0}", hData.ADDRESS), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p11.Add(System.Environment.NewLine);
-            p11.Add(new Phrase(string.Format("{0}    {1}", hData.CONTACT, hData.TELEPHONE), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p11.Add(System.Environment.NewLine);
-            p11.Add(System.Environment.NewLine);
-            
-
-            cellUnit = new PdfPCell(p11);
-            cellUnit.BorderWidth = 0;
-            contentTable.AddCell(cellUnit);
-
-            //wechat imag p12
-            if (hData.PRINT_LOGO == CHubConstValues.IndY)
-            {
-                string imagePath = BasePath.Replace("temp", "images") + hData.LOGO;
-                iTextSharp.text.Image logoImage = iTextSharp.text.Image.GetInstance(imagePath);
-                cellUnit = new PdfPCell(logoImage, true);
-            }
-            else
-            {
-                cellUnit = new PdfPCell();
-            }
-            cellUnit.BorderWidth = 0;
-            contentTable.AddCell(cellUnit);
+            //Paragraph p11 = new Paragraph();
+            //p11.Add(new Phrase(string.Format("{0}    {1}", hData.NOTE1, hData.FLEX1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            //p11.Add(System.Environment.NewLine);
+            //p11.Add(new Phrase(string.Format("{0}    {1}", hData.COMPANY, hData.SENDER), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            //p11.Add(System.Environment.NewLine);
+            //p11.Add(new Phrase(string.Format("{0}", hData.ADDRESS), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            //p11.Add(System.Environment.NewLine);
+            //p11.Add(new Phrase(string.Format("{0}    {1}", hData.CONTACT, hData.TELEPHONE), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            //p11.Add(System.Environment.NewLine);
+            //p11.Add(System.Environment.NewLine);
 
 
-            Paragraph p13 = new Paragraph();
-            p13.Add(new Phrase(string.Format("{0}    {1}", hData.NOTE2, hData.FLEX2), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p13.Add(System.Environment.NewLine);
-            p13.Add(new Phrase(string.Format("{0}    {1}", hData.R_ADRNAM, hData.R_ADRCTY), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p13.Add(System.Environment.NewLine);
-            p13.Add(new Phrase(string.Format("{0}", hData.R_ADRLN1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p13.Add(System.Environment.NewLine);
-            p13.Add(new Phrase(string.Format("{0}    {1}", hData.R_ADRLN2, hData.R_ADRLN3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p13.Add(System.Environment.NewLine);
-            p13.Add(new Phrase(string.Format("{0}    {1}", hData.R_LAST_NAME, hData.R_PHNNUM), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p13.Add(System.Environment.NewLine);
+            //cellUnit = new PdfPCell(p11);
+            //cellUnit.BorderWidth = 0;
+            //contentTable.AddCell(cellUnit);
 
-            cellUnit = new PdfPCell(p13);
-            cellUnit.BorderWidth = 0;
-            contentTable.AddCell(cellUnit);
-
-            //p14 signature part
-            Paragraph p14 = new Paragraph();
-            p14.Add(System.Environment.NewLine);
-            p14.Add(System.Environment.NewLine);
-            p14.Add(System.Environment.NewLine);
-            p14.Add(new Phrase(string.Format("{0}", hData.SIGNATURE3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p14.Add(System.Environment.NewLine);
-
-            cellUnit = new PdfPCell(p14);
-            cellUnit.BorderWidth = 0;
-            contentTable.AddCell(cellUnit);
+            ////wechat imag p12
+            //if (hData.PRINT_LOGO == CHubConstValues.IndY)
+            //{
+            //    string imagePath = BasePath.Replace("temp", "images") + hData.LOGO;
+            //    iTextSharp.text.Image logoImage = iTextSharp.text.Image.GetInstance(imagePath);
+            //    cellUnit = new PdfPCell(logoImage, true);
+            //}
+            //else
+            //{
+            //    cellUnit = new PdfPCell();
+            //}
+            //cellUnit.BorderWidth = 0;
+            //contentTable.AddCell(cellUnit);
 
 
-            //Line 2 cells
-            Paragraph p21 = new Paragraph();
-            p21.Add(new Phrase(string.Format("{0}    {1}", hData.NOTE3, hData.FLEX3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p21.Add(System.Environment.NewLine);
-            p21.Add(new Phrase(string.Format("{0}    {1}", hData.L_ADRNAM, hData.L_ADRCTY), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p21.Add(System.Environment.NewLine);
-            p21.Add(new Phrase(string.Format("{0}", hData.L_ADRLN1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p21.Add(System.Environment.NewLine);
-            p21.Add(new Phrase(string.Format("{0}    {1}", hData.L_ADRLN2, hData.L_ADRLN3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p21.Add(System.Environment.NewLine);
-            p21.Add(new Phrase(string.Format("{0}    {1}", hData.L_LAST_NAME, hData.L_PHNNUM), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p21.Add(System.Environment.NewLine);
-            p21.Add(System.Environment.NewLine);
+            //Paragraph p13 = new Paragraph();
+            //p13.Add(new Phrase(string.Format("{0}    {1}", hData.NOTE2, hData.FLEX2), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            //p13.Add(System.Environment.NewLine);
+            //p13.Add(new Phrase(string.Format("{0}    {1}", hData.R_ADRNAM, hData.R_ADRCTY), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            //p13.Add(System.Environment.NewLine);
+            //p13.Add(new Phrase(string.Format("{0}", hData.R_ADRLN1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            //p13.Add(System.Environment.NewLine);
+            //p13.Add(new Phrase(string.Format("{0}    {1}", hData.R_ADRLN2, hData.R_ADRLN3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            //p13.Add(System.Environment.NewLine);
+            //p13.Add(new Phrase(string.Format("{0}    {1}", hData.R_LAST_NAME, hData.R_PHNNUM), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            //p13.Add(System.Environment.NewLine);
 
-            p21.Add(new Phrase(string.Format("{0}    {1}", hData.NOTE4, hData.FLEX4), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p21.Add(System.Environment.NewLine);
-            p21.Add(new Phrase(string.Format("{0}", hData.SIGNATURE1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-            p21.Add(System.Environment.NewLine);
+            //cellUnit = new PdfPCell(p13);
+            //cellUnit.BorderWidth = 0;
+            //contentTable.AddCell(cellUnit);
 
+            ////p14 signature part
+            //Paragraph p14 = new Paragraph();
+            //p14.Add(System.Environment.NewLine);
+            //p14.Add(System.Environment.NewLine);
+            //p14.Add(System.Environment.NewLine);
+            //p14.Add(new Phrase(string.Format("{0}", hData.SIGNATURE3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            //p14.Add(System.Environment.NewLine);
 
-            cellUnit = new PdfPCell(p21);
-            cellUnit.BorderWidth = 0;
-            contentTable.AddCell(cellUnit);
-
-            //line 2 mid empty cell
-            cellUnit = new PdfPCell();
-            cellUnit.BorderWidth = 0;
-            contentTable.AddCell(cellUnit);
-
-            //2-3  empty cell
-            cellUnit = new PdfPCell();
-            cellUnit.BorderWidth = 0;
-            contentTable.AddCell(cellUnit);
-
-            //p24 signature part
-            Paragraph p24 = new Paragraph();
-            p24.Add(System.Environment.NewLine);
-            p24.Add(System.Environment.NewLine);
-            p24.Add(System.Environment.NewLine);
-            p24.Add(System.Environment.NewLine);
-            p24.Add(new Phrase(string.Format("{0}", hData.SIGNATURE3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-
-            cellUnit = new PdfPCell(p24);
-            cellUnit.BorderWidth = 0;
-            contentTable.AddCell(cellUnit);
+            //cellUnit = new PdfPCell(p14);
+            //cellUnit.BorderWidth = 0;
+            //contentTable.AddCell(cellUnit);
 
 
-            doc.Add(contentTable);
+            ////Line 2 cells
+            //Paragraph p21 = new Paragraph();
+            //p21.Add(new Phrase(string.Format("{0}    {1}", hData.NOTE3, hData.FLEX3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            //p21.Add(System.Environment.NewLine);
+            //p21.Add(new Phrase(string.Format("{0}    {1}", hData.L_ADRNAM, hData.L_ADRCTY), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            //p21.Add(System.Environment.NewLine);
+            //p21.Add(new Phrase(string.Format("{0}", hData.L_ADRLN1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            //p21.Add(System.Environment.NewLine);
+            //p21.Add(new Phrase(string.Format("{0}    {1}", hData.L_ADRLN2, hData.L_ADRLN3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            //p21.Add(System.Environment.NewLine);
+            //p21.Add(new Phrase(string.Format("{0}    {1}", hData.L_LAST_NAME, hData.L_PHNNUM), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            //p21.Add(System.Environment.NewLine);
+            //p21.Add(System.Environment.NewLine);
 
-            doc.Add(new Paragraph(Environment.NewLine));
+            //p21.Add(new Phrase(string.Format("{0}    {1}", hData.NOTE4, hData.FLEX4), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            //p21.Add(System.Environment.NewLine);
+            //p21.Add(new Phrase(string.Format("{0}", hData.SIGNATURE1), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+            //p21.Add(System.Environment.NewLine);
+
+
+            //cellUnit = new PdfPCell(p21);
+            //cellUnit.BorderWidth = 0;
+            //contentTable.AddCell(cellUnit);
+
+            ////line 2 mid empty cell
+            //cellUnit = new PdfPCell();
+            //cellUnit.BorderWidth = 0;
+            //contentTable.AddCell(cellUnit);
+
+            ////2-3  empty cell
+            //cellUnit = new PdfPCell();
+            //cellUnit.BorderWidth = 0;
+            //contentTable.AddCell(cellUnit);
+
+            ////p24 signature part
+            //Paragraph p24 = new Paragraph();
+            //p24.Add(System.Environment.NewLine);
+            //p24.Add(System.Environment.NewLine);
+            //p24.Add(System.Environment.NewLine);
+            //p24.Add(System.Environment.NewLine);
+            //p24.Add(new Phrase(string.Format("{0}", hData.SIGNATURE3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+
+            //cellUnit = new PdfPCell(p24);
+            //cellUnit.BorderWidth = 0;
+            //contentTable.AddCell(cellUnit);
+
+
+            //doc.Add(contentTable);
+
+            //doc.Add(new Paragraph(Environment.NewLine));
+            #endregion
 
             //Table part
             if (wbType.PRINT_DETAIL == CHubConstValues.IndY)
@@ -246,7 +250,7 @@ namespace CHubBLL.OtherProcess
                 {
                     dTable.AddCell(BuildCell(item.SHIP_ID, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                     dTable.AddCell(BuildCell(item.LODNUM, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                    dTable.AddCell(BuildCell((item.VC_PALWGT??0).ToString("f2"), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+                    dTable.AddCell(BuildCell((item.VC_PALWGT ?? 0).ToString("f2"), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                     dTable.AddCell(BuildCell(item.PALVOL, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                     dTable.AddCell(BuildCell(item.REMARK1, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 }
@@ -257,7 +261,7 @@ namespace CHubBLL.OtherProcess
                 doc.Add(pLast);
             }
 
-            
+
 
             //PdfPTableFooter foot = new PdfPTableFooter();
             //foot.a
@@ -286,21 +290,25 @@ namespace CHubBLL.OtherProcess
             doc.Close();
 
             //add track data
-            if (wbType.TRACK_NUM_BY_IHUB == CHubConstValues.IndY)
+
+            string sourceString1 = hData.SHIP_ID + "C";
+            RP_SHIP_TRACK_BLL trackBLL = new RP_SHIP_TRACK_BLL();
+            foreach (var item in dPrintList)
             {
-                string sourceString = hData.SHIP_ID + "C";
-                RP_SHIP_TRACK_BLL trackBLL = new RP_SHIP_TRACK_BLL();
-                foreach (var item in dPrintList)
-                {
-                    RP_SHIP_TRACK track = new RP_SHIP_TRACK();
-                    track.WH_ID = item.WH_ID;
-                    track.SHIP_ID = item.SHIP_ID;
-                    track.TRACK_NUM_IHUB = sourceString;
-                    track.RECORD_DATE = DateTime.Now;
-                    track.UPDATED_BY = appUser;
-                    trackBLL.AddOrUpdate(track);
-                }
+                RP_SHIP_TRACK track = new RP_SHIP_TRACK();
+                track.WH_ID = item.WH_ID;
+                track.SHIP_ID = item.SHIP_ID;
+
+                if (wbType.TRACK_NUM_BY_IHUB == CHubConstValues.IndY)
+                    track.TRACK_NUM_IHUB = sourceString1;
+                else
+                    track.TRACK_NUM_IHUB = "IHUB_Printed";
+
+                track.RECORD_DATE = DateTime.Now;
+                track.UPDATED_BY = appUser;
+                trackBLL.AddOrUpdate(track);
             }
+
 
             return fileName;
         }
