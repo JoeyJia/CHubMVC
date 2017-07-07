@@ -54,26 +54,43 @@
                     <label class="col-sm-2 control-label">Status</label>
                     <div class="col-sm-2">
                         <label class="checkbox-inline">
-                            <input type="radio" id="inlineradio1" ng-model="staged"  value="true">Staged
+                            <input type="radio" name="inlineradio" ng-model="status" value="S">Staged
                         </label>
                         <label class="checkbox-inline">
-                            <input type="radio" id="inlineradio2" ng-model="inProgress" value="true">All
+                            <input type="radio" name="inlineradio" ng-model="status" value="All">All
                         </label>
                     </div>
-                    <div class="col-sm-2">
-                        <button class="btn btn-primary btn-sm" ng-click="searchAction()">Search</button>
+                    <div class="col-sm-6 " ng-show="status=='All'">
+                        <div class="row">
+                            <label for="txtRange" class="col-sm-1 control-label">Last</label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control input-sm" id="txtRange" ng-model="range" />
+                            </div>
+                            <label for="txtRange" class="col-sm-1 control-label">Days</label>
+                        </div>
+
                     </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2 col-md-offset-2">
+                    <button class="btn btn-primary btn-sm" ng-click="searchAction()">Search</button>
                 </div>
             </div>
 
         </form>
 
         <!--result part-->
-        <div class="row">
+        <div class="row" style="margin-top:20px;">
             <div class="col-md-12 col-lg-12">
                 <div class="panel panel-default" style="">
                     <div class="panel-heading">
                         <b>Result</b>
+                       
+                            <button class="btn btn-primary btn-sm" style="margin-left:90%" ng-click="printAction()">Print Pack</button>
+ 
                     </div>
 
                     <table id="tbCarMst" class="table table-striped table-hover table-bordered .table-condensed">
@@ -82,7 +99,7 @@
                                 <th>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" id="allCheckbox" value="allChecked" aria-label="checkAll">
+                                            <input type="checkbox" id="allCheckbox" value="allChecked" ng-click="checkAllAction($event)" aria-label="checkAll">
                                         </label>
                                     </div>
                                 </th>
@@ -104,7 +121,7 @@
                                 <td>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" id="checkbox$index" class="ckItems" aria-label="check$index">
+                                            <input type="checkbox" id="checkbox$index" class="ckItems" shipmentNo="{{p.SHIP_ID}}" aria-label="check$index">
                                         </label>
                                     </div>
                                 </td>
@@ -115,8 +132,8 @@
                                 <td>{{p.PALVOL}}</td>
                                 <td>{{p.SHPSTS}}</td>
                                 <td>{{p.TRACK_NUM}}</td>
-                                <td>{{p.STGDTE}}</td>
-                                <td>{{p.LODDTE}}</td>
+                                <td>{{p.STGDTE | date:'yyyy-MM-dd'}}</td>
+                                <td>{{p.LODDTE | date:'yyyy-MM-dd'}}</td>
                                 <td>{{p.ADRNAM}}</td>
                                 <td>{{p.ADRLN1}}</td>
                             </tr>
@@ -140,9 +157,10 @@
         $scope.custName = "";
         $scope.address = "";
 
-    //
-        $scope.staged = true;
-        $scope.inProgress = false;
+        //
+        $scope.status = "S";
+        $scope.staged = false;
+        //$scope.inProgress = "All";
         $scope.range = 3;
 
         $scope.packArray = [];
@@ -150,6 +168,7 @@
         $scope.defWHID = "";
         $scope.appWHList = [];
 
+        $scope.idList = [];
 
 
         $http.post("/rp/PackInit", null, null).then(
@@ -172,11 +191,13 @@
 
 
         $scope.searchAction = function () {
-            if ($scope.whID == "")
+            if ($scope.whID == "" || $scope.whID == undefined || $scope.whID==null) {
+                alert("Please select a WareHouse")
                 return;
+            }
 
-            //alert("searched action!");
-            //return;
+            if ($scope.status == "S")
+                $scope.staged = true;
 
             $.ajax({
                 url: "/rp/GetPackList",
@@ -201,6 +222,60 @@
             });
         };
 
+        $scope.checkAllAction = function (event) {
+            var all = $(".ckItems");
+            if (event.target.checked) {
+                for (var i = 0; i < all.length; i++) {
+                    all[i].checked = true;
+                }
+            }
+            else {
+                for (var i = 0; i < all.length; i++) {
+                    all[i].checked = false;
+                }
+            }
+        };
+
+        $scope.printAction = function ()
+        {
+            //alert("print action");
+            $scope.idList = [];
+            var all = $(".ckItems");
+
+            for (var i = 0; i < all.length; i++) {
+                if (all[i].checked)
+                    $scope.idList.push(all[i].attributes['shipmentNo'].value);
+            }
+
+            $.ajax({
+                url: "/rp/PrintPackData",
+                data: JSON.stringify({
+                    idList: $scope.idList
+                }),
+                type: "post",
+                async: false,
+                contentType: 'application/json',
+                success: function (obj) {
+                    //debugger;
+                    if (obj.Success) {
+                        //debugger;
+                        //window.location.href = obj.Data;
+                        window.open(obj.Data);
+                        //alert(obj.Msg)
+
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+
+
+        }
 
     });
 

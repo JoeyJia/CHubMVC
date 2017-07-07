@@ -55,6 +55,7 @@
     <Compile Include="ExtensionModel\ITT_SO_LEVEL_3.cs" />
     <Compile Include="ExtensionModel\ITT_PO_LEVEL_2.cs" />
     <Compile Include="ExtensionModel\OpeningQtySnapshot.cs" />
+    <Compile Include="ExtensionModel\PackPageData.cs" />
     <Compile Include="ExtensionModel\RPWayBillHLevel1.cs" />
     <Compile Include="ExtensionModel\RPWayBillHLevel2.cs" />
     <Compile Include="ExtensionModel\TranLoadPreFill.cs" />

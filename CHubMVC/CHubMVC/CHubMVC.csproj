@@ -272,6 +272,7 @@
     <Content Include="Images\cummins-logo-print.gif" />
     <Content Include="Images\cummins-logo.png" />
     <Content Include="Images\Cummins.png" />
+    <Content Include="Images\custpack.png" />
     <Content Include="Images\hubLogo.png" />
     <Content Include="Images\ico\300.ico" />
     <Content Include="Images\ico\305.ico" />

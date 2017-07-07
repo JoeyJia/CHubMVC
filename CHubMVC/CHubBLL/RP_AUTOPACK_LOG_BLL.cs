@@ -21,5 +21,26 @@ namespace CHubBLL
             dal = new RP_AUTOPACK_LOG_DAL(db);
         }
 
+        public bool HasSuccessPrint(string lodNum)
+        {
+            return dal.HasSuccessPrint(lodNum);
+        }
+
+        public void AddOrUpdatePrintLog(RP_AUTOPACK_LOG model)
+        {
+            RP_AUTOPACK_LOG exist = dal.GetSpecifyLog(model.LODNUM);
+            if (exist == null)
+                dal.Add(model);
+            else {
+                if ((exist.SUCCEE_FLAG ?? "N") != CHubCommon.CHubConstValues.IndY)
+                {
+                    exist.SUCCEE_FLAG = model.SUCCEE_FLAG;
+                    exist.AUTO_PRINT_DATE = model.AUTO_PRINT_DATE;
+                    dal.Update(exist);
+                }
+            }
+
+        }
+
     }
 }

@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APP_WH_BLL.cs" />
+    <Compile Include="OtherProcess\CustPackPrintBLL.cs" />
     <Compile Include="V_RP_PACK_D_PRINT_BLL.cs" />
     <Compile Include="V_RP_PACK_D_BASE_BLL.cs" />
     <Compile Include="V_RP_PACK_H_PRINT_BLL.cs" />

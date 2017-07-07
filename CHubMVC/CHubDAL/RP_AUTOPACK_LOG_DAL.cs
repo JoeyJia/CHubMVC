@@ -15,5 +15,18 @@ namespace CHubDAL
         public RP_AUTOPACK_LOG_DAL(CHubEntities db)
             : base(db) { }
 
+        public bool HasSuccessPrint(string lodNum)
+        {
+            RP_AUTOPACK_LOG exist = db.RP_AUTOPACK_LOG.FirstOrDefault(a => a.LODNUM == lodNum);
+            if (exist == null)
+                return false;
+            return (exist.SUCCEE_FLAG ?? "N") == CHubCommon.CHubConstValues.IndY;
+        }
+
+        public RP_AUTOPACK_LOG GetSpecifyLog(string lodNum)
+        {
+            return db.RP_AUTOPACK_LOG.FirstOrDefault(a => a.LODNUM == lodNum);
+        }
+
     }
 }

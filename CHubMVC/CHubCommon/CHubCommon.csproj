@@ -93,6 +93,7 @@
     <Compile Include="ExcelUtility\NPOIExcelHelper.cs" />
     <Compile Include="Log\LogHelper.cs" />
     <Compile Include="Log\TxtLog.cs" />
+    <Compile Include="PDFHelper\PackPageEventHelper.cs" />
     <Compile Include="PDFHelper\LocalPageEventHelper.cs" />
     <Compile Include="ProcessStatusHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

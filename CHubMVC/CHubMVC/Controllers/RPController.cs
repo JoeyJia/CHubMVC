@@ -347,7 +347,80 @@ namespace CHubMVC.Controllers
 
         }
 
+        [Authorize]
+        public ActionResult PrintPackData(List<string> idList)
+        {
+            idList= idList.Distinct().ToList();
+            if(idList==null || idList.Count==0)
+                    return Json(new RequestResult(false, "No ids Data"));
+            try
+            {
+                string appUser = Session[CHubConstValues.SessionUser].ToString();
+
+                List<PackPageData> pageDatas = new List<PackPageData>();
+                foreach (var id in idList)
+                {
+                    PackPageData page = new PackPageData();
+                    V_RP_PACK_H_PRINT_BLL hBLL = new V_RP_PACK_H_PRINT_BLL();
+                    var header = hBLL.GetPackHeader(id);
+
+                    V_RP_PACK_D_PRINT_BLL dBLL = new V_RP_PACK_D_PRINT_BLL();
+                    var detail = dBLL.GetPackDetails(id);
+                    page.Header = header;
+                    page.Details = detail;
+                    pageDatas.Add(page);
+
+                }
+                if(pageDatas.Count==0)
+                    return Json(new RequestResult(false,"No Page Data"));
+
+                string basePath = Server.MapPath(CHubConstValues.ChubTempFolder);
+                CustPackPrintBLL printBLL = new CustPackPrintBLL(basePath);
+                string fileName = printBLL.BuildPrintFile(pageDatas, appUser);
+                string webPath = "/temp/" + fileName;
+
+                AddPackLogs(pageDatas, CHubConstValues.IndY);
+
+                return Json(new RequestResult(webPath));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("GetPackList", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+
+        }
+
         #endregion
+
+
+        //private functions
+        private void AddPackLogs(List<PackPageData> pageDatas, string flag)
+        {
+            //add log
+            RP_AUTOPACK_LOG_BLL logBLL = new RP_AUTOPACK_LOG_BLL();
+            foreach (var item in pageDatas)
+            {
+                if (item.Details != null && item.Details.Count > 0)
+                {
+                    foreach (var d in item.Details)
+                    {
+                        if (logBLL.HasSuccessPrint(d.LODNUM))
+                            continue;
+                        else
+                        {
+                            RP_AUTOPACK_LOG model = new RP_AUTOPACK_LOG();
+                            model.WH_ID = d.WH_ID;
+                            model.SHIP_ID = d.SHIP_ID;
+                            model.LODNUM = d.LODNUM;
+                            model.AUTO_PRINT_DATE = DateTime.Now;
+                            model.SUCCEE_FLAG = flag;
+                            logBLL.AddOrUpdatePrintLog(model);
+                        }
+                    }
+                }
+            }
+        }
 
 
 

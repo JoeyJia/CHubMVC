@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
+using CHubDBEntity.UnmanagedModel;
 
 namespace CHubBLL
 {
@@ -19,6 +20,11 @@ namespace CHubBLL
         public V_RP_PACK_D_PRINT_BLL(CHubEntities db)
         {
             dal = new V_RP_PACK_D_PRINT_DAL(db);
+        }
+
+        public List<V_RP_PACK_D_PRINT> GetPackDetails(string shipNo)
+        {
+            return dal.GetPackDetails(shipNo);
         }
 
     }
