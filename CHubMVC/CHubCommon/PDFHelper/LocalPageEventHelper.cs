@@ -150,7 +150,7 @@ namespace CHubCommon
             //wechat imag p12
             if (hData.PRINT_LOGO == CHubConstValues.IndY)
             {
-                string imagePath = BasePath.Replace("temp", "images") + hData.LOGO;
+                string imagePath = BasePath.Replace("temp", "images") + (hData.LOGO?? "wechat.jpg");
                 iTextSharp.text.Image logoImage = iTextSharp.text.Image.GetInstance(imagePath);
                 cellUnit = new PdfPCell(logoImage, true);
             }

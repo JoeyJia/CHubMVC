@@ -193,9 +193,9 @@ namespace CHubBLL.OtherProcess
                 //footer  part
                 //
                 sData.Clear();
-                sData.Add(pageDatas[i].Header.FOOTER1);
-                sData.Add(pageDatas[i].Header.FOOTER2);
-                sData.Add(pageDatas[i].Header.FOOTER3);
+                sData.Add(pageDatas[i].Header.FOOTER1??string.Empty);
+                sData.Add(pageDatas[i].Header.FOOTER2 ?? string.Empty);
+                sData.Add(pageDatas[i].Header.FOOTER3 ?? string.Empty);
 
                 PdfContentByte cb = writer.DirectContent;
                 ColumnText ct = new ColumnText(cb);
@@ -253,6 +253,8 @@ namespace CHubBLL.OtherProcess
             {
                 dataLength += item.Length;
             }
+            if (dataLength == 0)
+                return string.Empty;
             if (dataLength > totalSpace)
             {
                 space = 4;

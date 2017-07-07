@@ -270,9 +270,9 @@ namespace CHubBLL.OtherProcess
             //footer  part
             //
             sData.Clear();
-            sData.Add(hData.FOOTER1);
-            sData.Add(hData.FOOTER2);
-            sData.Add(hData.FOOTER3);
+            sData.Add(hData.FOOTER1 ?? string.Empty);
+            sData.Add(hData.FOOTER2 ?? string.Empty);
+            sData.Add(hData.FOOTER3 ?? string.Empty);
             ////doc.Add(new Paragraph(string.Format("{0}    {1}    {2}", hData.FOOTER1,hData.FOOTER2,hData.FOOTER3), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
             //Paragraph footer = new Paragraph(GetLineString(sData), new iTextSharp.text.Font(BF_Light, ContentFontSize));
             //footer.Alignment = Element.ALIGN_BOTTOM;
@@ -363,6 +363,8 @@ namespace CHubBLL.OtherProcess
             {
                 dataLength += item.Length;
             }
+            if (dataLength == 0)
+                return string.Empty;
             if (dataLength > totalSpace)
             {
                 space = 4;

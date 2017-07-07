@@ -21,7 +21,7 @@ namespace CHubMVC.Controllers
         {
             string appUser = Session[CHubConstValues.SessionUser].ToString();
             APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
-            rpBLL.Add(appUser, CHubEnum.PageNameEnum.cgldb.ToString(), this.Request.Url.AbsoluteUri);
+            rpBLL.Add(appUser, CHubEnum.PageNameEnum.wbprt.ToString(), this.Request.Url.AbsoluteUri);
             return View();
         }
 
@@ -154,9 +154,9 @@ namespace CHubMVC.Controllers
         [Authorize]
         public ActionResult AdrMst()
         {
-            //string appUser = Session[CHubConstValues.SessionUser].ToString();
-            //APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
-            //rpBLL.Add(appUser, CHubEnum.PageNameEnum.cgldb.ToString(), this.Request.Url.AbsoluteUri);
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, CHubEnum.PageNameEnum.cpackset.ToString(), this.Request.Url.AbsoluteUri);
             return View();
         }
 
@@ -218,9 +218,9 @@ namespace CHubMVC.Controllers
         [Authorize]
         public ActionResult CarMst()
         {
-            //string appUser = Session[CHubConstValues.SessionUser].ToString();
-            //APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
-            //rpBLL.Add(appUser, CHubEnum.PageNameEnum.cgldb.ToString(), this.Request.Url.AbsoluteUri);
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, CHubEnum.PageNameEnum.rpcar.ToString(), this.Request.Url.AbsoluteUri);
             return View();
         }
 
@@ -293,8 +293,8 @@ namespace CHubMVC.Controllers
         public ActionResult Pack()
         {
             string appUser = Session[CHubConstValues.SessionUser].ToString();
-            //APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
-            //rpBLL.Add(appUser, CHubEnum.PageNameEnum.cgldb.ToString(), this.Request.Url.AbsoluteUri);
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, CHubEnum.PageNameEnum.custpack.ToString(), this.Request.Url.AbsoluteUri);
             return View();
         }
 

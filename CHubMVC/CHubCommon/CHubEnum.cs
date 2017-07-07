@@ -45,7 +45,26 @@ namespace CHubCommon
             tcinq,
             wbentry,
             ittezinq,
-            cgldb
+            /// <summary>
+            /// --- KPI&DashBoard about CGL China Operation
+            /// </summary>
+            cgldb,
+            /// <summary>
+            /// /rp/carmst OPT setup for Carrier mapping with waybill type
+            /// </summary>
+            rpcar,
+            /// <summary>
+            /// /rp/adrmst Customized pack setup
+            /// </summary>
+            cpackset,
+            /// <summary>
+            /// /rp/index
+            /// </summary>
+            wbprt,
+            /// <summary>
+            /// /rp/pack
+            /// </summary>
+            custpack
         }
 
         public enum OrderStatusEnum
