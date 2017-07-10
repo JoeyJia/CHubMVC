@@ -359,10 +359,13 @@ namespace CHubBLL.OtherProcess
             //int RowNum = 90;
             int dataLength = 0;
             int space=0;
-            foreach (var item in data)
+            for (int i = 0; i < data.Count; i++)
             {
-                dataLength += item.Length;
+                if (data[i] == null)
+                    data[i] = string.Empty;
+                dataLength += data[i].Length;
             }
+
             if (dataLength == 0)
                 return string.Empty;
             if (dataLength > totalSpace)
