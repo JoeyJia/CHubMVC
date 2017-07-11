@@ -38,6 +38,7 @@ namespace CHubDBEntity
         public string STATUS { get; set; }
         public Nullable<System.DateTime> LAST_LOGIN { get; set; }
         public string DEF_WH_ID { get; set; }
+        public string PRINTER_ID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<APP_RECENT_PAGES> APP_RECENT_PAGES { get; set; }
@@ -49,5 +50,6 @@ namespace CHubDBEntity
         public virtual APP_USERS APP_USERS2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EW_USER_APPLY> EW_USER_APPLY { get; set; }
+        public virtual RP_PRINTER RP_PRINTER { get; set; }
     }
 }

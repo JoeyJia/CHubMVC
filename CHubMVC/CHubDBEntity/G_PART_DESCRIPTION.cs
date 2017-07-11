@@ -41,5 +41,6 @@ namespace CHubDBEntity
         public string REMARK3 { get; set; }
         public string REMARK4 { get; set; }
         public string REMARK5 { get; set; }
+        public string COUNTRY_OF_ORIGIN { get; set; }
     }
 }

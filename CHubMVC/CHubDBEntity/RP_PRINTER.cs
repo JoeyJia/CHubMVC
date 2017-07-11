@@ -19,6 +19,7 @@ namespace CHubDBEntity
         {
             this.APP_WH = new HashSet<APP_WH>();
             this.RP_STATION = new HashSet<RP_STATION>();
+            this.APP_USERS = new HashSet<APP_USERS>();
         }
     
         public string PRINTER_ID { get; set; }
@@ -30,5 +31,7 @@ namespace CHubDBEntity
         public virtual ICollection<APP_WH> APP_WH { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RP_STATION> RP_STATION { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<APP_USERS> APP_USERS { get; set; }
     }
 }

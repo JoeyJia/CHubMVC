@@ -19,5 +19,6 @@ namespace CHubDBEntity
         public string TRACK_NUM_IHUB { get; set; }
         public System.DateTime RECORD_DATE { get; set; }
         public string UPDATED_BY { get; set; }
+        public string TRACK_NUM_BY_IHUB { get; set; }
     }
 }
