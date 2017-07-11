@@ -23,24 +23,24 @@ namespace CHubBLL
             dal = new V_RP_WAYBILL_H_BASE_DAL(db);
         }
 
-        public List<RPWayBillHLevel1> GetWayBillBaseList(string whID, string carCode, string custName, string Address, string shipmentNo, bool staged, bool inProgress)
+        public List<RPWayBillHLevel1> GetWayBillBaseList(string whID, string carCode, string custName, string Address, string shipmentNo, bool staged, bool inProgress, string printed)
         {
             List<string> statusList = new List<string>();
             if (staged)
                 statusList.Add("S");
             if (inProgress)
                 statusList.Add("I");
-            return dal.GetWayBillBaseList(whID, carCode, custName, Address, shipmentNo, statusList);
+            return dal.GetWayBillBaseList(whID, carCode, custName, Address, shipmentNo, statusList,printed);
         }
 
-        public List<RPWayBillHLevel2> GetWayBillDetailList(string carCode, string orderType, string addr,bool staged, bool inProgress)
+        public List<RPWayBillHLevel2> GetWayBillDetailList(string carCode, string orderType, string addr,bool staged, bool inProgress, string printed)
         {
             List<string> statusList = new List<string>();
             if (staged)
                 statusList.Add("S");
             if (inProgress)
                 statusList.Add("I");
-            return dal.GetWayBillDetailList(carCode, orderType,addr, statusList);
+            return dal.GetWayBillDetailList(carCode, orderType,addr, statusList,printed);
         }
     }
 }

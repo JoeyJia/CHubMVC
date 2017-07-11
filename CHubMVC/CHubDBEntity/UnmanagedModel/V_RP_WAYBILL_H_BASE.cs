@@ -75,5 +75,7 @@ namespace CHubDBEntity.UnmanagedModel
         public string LOGO { get; set; }
         public string PRINT_LOGO { get; set; }
 
+
+        public string IHUB_PRINTED { get; set; }
     }
 }

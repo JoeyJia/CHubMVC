@@ -18,7 +18,7 @@ namespace CHubDAL
         public V_RP_WAYBILL_H_BASE_DAL(CHubEntities db)
             : base(db) { }
 
-        public List<RPWayBillHLevel1> GetWayBillBaseList(string whID, string carCode, string custName, string Address, string shipmentNo, List<string> statusList)
+        public List<RPWayBillHLevel1> GetWayBillBaseList(string whID, string carCode, string custName, string Address, string shipmentNo, List<string> statusList,string printed)
         {
             
             string sql = string.Format("select distinct ORDTYP_WB ,CARCOD,CARNAM,ADDR_COMBINED from V_RP_WAYBILL_H_BASE where WH_ID='{0}' ", whID);
@@ -35,11 +35,14 @@ namespace CHubDAL
             if (statusList != null && statusList.Count != 0)
                 sql += string.Format(" and SHPSTS in ({0})", statusList.ToSqlInStr());
 
+            if(printed=="N")
+                sql += string.Format(" and IHUB_PRINTED = '{0}'", printed);
+
             var result = db.Database.SqlQuery<RPWayBillHLevel1>(sql);
             return result.OrderBy(a=>a.ORDTYP_WB).ThenBy(a=>a.CARCOD).ThenBy(a=>a.ADDR_COMBINED).ToList();
         }
 
-        public List<RPWayBillHLevel2> GetWayBillDetailList(string carCode, string orderType,string addr, List<string> statusList)
+        public List<RPWayBillHLevel2> GetWayBillDetailList(string carCode, string orderType,string addr, List<string> statusList, string printed)
         {
             string sql = string.Format(@"select 
 h.TRACK_NUM_IHUB,
@@ -68,6 +71,9 @@ h.TRACK_NUM_IHUB,
 
             if (statusList != null && statusList.Count != 0)
                 sql += string.Format(" and h.SHPSTS in ({0})", statusList.ToSqlInStr());
+
+            if (printed == "N")
+                sql += string.Format(" and IHUB_PRINTED = '{0}'", printed);
 
             var result = db.Database.SqlQuery<RPWayBillHLevel2>(sql);
             return result.ToList();

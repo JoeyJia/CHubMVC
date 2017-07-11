@@ -80,9 +80,28 @@
                             <input type="checkbox" id="inlineCheckbox2" ng-model="inProgress">In Progress
                         </label>
                     </div>
-                    <div class="col-sm-2">
-                        <button class="btn btn-primary btn-sm" ng-click="searchAction()">Search</button>
-                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom:15px;">
+                <label class="col-sm-2 control-label">IHUB_Printed(Y/N)</label>
+                <div class="col-sm-2">
+                    <label class="checkbox-inline">
+                        <input type="radio" name="inlineradio" style="padding:0px" ng-model="printed" value="N">Not Yet
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="radio" name="inlineradio" style="padding:0px" ng-model="printed" value="''">All
+                    </label>
+                </div>
+
+                <div class="col-sm-2">
+                    <button class="btn btn-primary btn-sm" ng-click="searchAction()">Search</button>
+                </div>
+
+
+                <div class="col-sm-2 col-sm-offset-4 text-right">
+                    <button class="btn btn-primary btn-sm" ng-click="printSelected()">Print Selected</button>
                 </div>
             </div>
 
@@ -119,6 +138,8 @@
     //
         $scope.staged = true;
         $scope.inProgress = false;
+
+        $scope.printed = "N";
 
         $scope.stagedSubmited = true;
         $scope.inProgressSubmited = false;
@@ -179,7 +200,8 @@
                     Address: $scope.address,
                     shipmentNo: $scope.shipmentNo,
                     staged: $scope.stagedSubmited,
-                    inProgress: $scope.inProgressSubmited
+                    inProgress: $scope.inProgressSubmited,
+                    printed: $scope.printed
                 },
                 type: "post",
                 async: false,
@@ -194,6 +216,18 @@
 
             });
         };
+
+        $scope.printSelected = function ()
+        {
+            $currTable = $("#tableResult");
+            //alert($currTable[0].innerHTML);
+            var selectedRows = [];
+            if ($currTable != null && $currTable.length != 0)
+                selectedRows = $currTable.bootstrapTable('getSelections');
+
+            alert(selectedRows.length);
+
+        }
 
         //function getDateString(date) {
         //    return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
@@ -312,8 +346,13 @@
                 width: '100',
                 events: operateEvents,
                 formatter: printOperationFormatter
-            }
-            );
+            });
+            columns.push({
+                field: 'state',
+                checkbox: true,
+                align: 'center',
+                valign: 'middle'
+            });
             
             //columns.push({
             //    field: '',
@@ -378,7 +417,8 @@
                         group: row,
                         selectedList: selectedRows,
                         staged: $scope.stagedSubmited,
-                        inProgress: $scope.inProgressSubmited
+                        inProgress: $scope.inProgressSubmited,
+                        printed: $scope.printed
                     }),
                     type: "post",
                     async: false,
@@ -413,7 +453,8 @@
                     orderType: orderType,
                     addr: addr,
                     staged: $scope.stagedSubmited,
-                    inProgress: $scope.inProgressSubmited
+                    inProgress: $scope.inProgressSubmited,
+                    printed: $scope.printed
                 },
                 type: "post",
                 async: false,

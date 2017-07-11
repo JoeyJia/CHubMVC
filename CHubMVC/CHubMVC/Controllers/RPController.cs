@@ -69,12 +69,12 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult GetWayBillBaseList(string whID,string carCode,string custName,string Address,string shipmentNo, bool staged, bool inProgress)
+        public ActionResult GetWayBillBaseList(string whID,string carCode,string custName,string Address,string shipmentNo, bool staged, bool inProgress,string printed)
         {
             try
             {
                 V_RP_WAYBILL_H_BASE_BLL wbHBLL = new V_RP_WAYBILL_H_BASE_BLL();
-                List<RPWayBillHLevel1> result = wbHBLL.GetWayBillBaseList(whID, carCode, custName, Address, shipmentNo,staged,inProgress);
+                List<RPWayBillHLevel1> result = wbHBLL.GetWayBillBaseList(whID, carCode, custName, Address, shipmentNo,staged,inProgress,printed);
                 return Json(new RequestResult(result));
             }
             catch (Exception ex)
@@ -86,12 +86,12 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult GetWayBillDetailList(string carCode,string orderType,string addr,bool staged,bool inProgress)
+        public ActionResult GetWayBillDetailList(string carCode,string orderType,string addr,bool staged,bool inProgress, string printed)
         {
             try
             {
                 V_RP_WAYBILL_H_BASE_BLL wbHBLL = new V_RP_WAYBILL_H_BASE_BLL();
-                List<RPWayBillHLevel2> result = wbHBLL.GetWayBillDetailList(carCode, orderType,addr,staged,inProgress);
+                List<RPWayBillHLevel2> result = wbHBLL.GetWayBillDetailList(carCode, orderType,addr,staged,inProgress,printed);
                 return Json(new RequestResult(result));
             }
             catch (Exception ex)
@@ -103,12 +103,12 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult GetPrintFile(RPWayBillHLevel1 group, List<RPWayBillHLevel2> selectedList, bool staged, bool inProgress)
+        public ActionResult GetPrintFile(RPWayBillHLevel1 group, List<RPWayBillHLevel2> selectedList, bool staged, bool inProgress, string printed)
         {
             if (selectedList == null || selectedList.Count == 0)
             {
                 V_RP_WAYBILL_H_BASE_BLL wbHBLL = new V_RP_WAYBILL_H_BASE_BLL();
-                selectedList = wbHBLL.GetWayBillDetailList(group.CARCOD, group.ORDTYP_WB, group.ADDR_COMBINED,staged,inProgress);
+                selectedList = wbHBLL.GetWayBillDetailList(group.CARCOD, group.ORDTYP_WB, group.ADDR_COMBINED,staged,inProgress,printed);
             }
             string appUser = Session[CHubConstValues.SessionUser].ToString();
             //return Json(new RequestResult(false, "No selected Data"));

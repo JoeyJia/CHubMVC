@@ -298,13 +298,9 @@ namespace CHubBLL.OtherProcess
                 RP_SHIP_TRACK track = new RP_SHIP_TRACK();
                 track.WH_ID = item.WH_ID;
                 track.SHIP_ID = item.SHIP_ID;
-
-                if (wbType.TRACK_NUM_BY_IHUB == CHubConstValues.IndY)
-                    track.TRACK_NUM_IHUB = sourceString1;
-                else
-                    track.TRACK_NUM_IHUB = "IHUB_Printed";
-
+                track.TRACK_NUM_IHUB = sourceString1;
                 track.RECORD_DATE = DateTime.Now;
+                track.TRACK_NUM_BY_IHUB = hData.TRACK_NUM_BY_IHUB;
                 track.UPDATED_BY = appUser;
                 trackBLL.AddOrUpdate(track);
             }
