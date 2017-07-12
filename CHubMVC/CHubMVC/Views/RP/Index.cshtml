@@ -225,7 +225,49 @@
             if ($currTable != null && $currTable.length != 0)
                 selectedRows = $currTable.bootstrapTable('getSelections');
 
-            alert(selectedRows.length);
+            if (selectedRows.length == 0) {
+                alert("No selected rows");
+                return;
+            }
+            var carTmp = selectedRows[0].CARCOD;
+            for (var i = 0; i < selectedRows.length; i++) {
+                if (selectedRows[i].CARCOD != carTmp)
+                {
+                    alert("Rows must Have same CARCOD");
+                    return;
+                }
+            }
+
+
+            $.ajax({
+                url: "/rp/BatchPrint",
+                data: JSON.stringify({
+                    groups: selectedRows,
+                    staged: $scope.stagedSubmited,
+                    inProgress: $scope.inProgressSubmited,
+                    printed: $scope.printed
+                }),
+                type: "post",
+                async: false,
+                contentType: 'application/json',
+                success: function (obj) {
+                    //debugger;
+                    if (obj.Success) {
+                        //debugger;
+                        //window.location.href = obj.Data;
+                        window.open(obj.Data);
+                        //alert(obj.Msg)
+
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
 
         }
 

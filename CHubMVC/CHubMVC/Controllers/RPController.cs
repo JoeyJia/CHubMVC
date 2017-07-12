@@ -69,12 +69,12 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult GetWayBillBaseList(string whID,string carCode,string custName,string Address,string shipmentNo, bool staged, bool inProgress,string printed)
+        public ActionResult GetWayBillBaseList(string whID, string carCode, string custName, string Address, string shipmentNo, bool staged, bool inProgress, string printed)
         {
             try
             {
                 V_RP_WAYBILL_H_BASE_BLL wbHBLL = new V_RP_WAYBILL_H_BASE_BLL();
-                List<RPWayBillHLevel1> result = wbHBLL.GetWayBillBaseList(whID, carCode, custName, Address, shipmentNo,staged,inProgress,printed);
+                List<RPWayBillHLevel1> result = wbHBLL.GetWayBillBaseList(whID, carCode, custName, Address, shipmentNo, staged, inProgress, printed);
                 return Json(new RequestResult(result));
             }
             catch (Exception ex)
@@ -86,12 +86,12 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult GetWayBillDetailList(string carCode,string orderType,string addr,bool staged,bool inProgress, string printed)
+        public ActionResult GetWayBillDetailList(string carCode, string orderType, string addr, bool staged, bool inProgress, string printed)
         {
             try
             {
                 V_RP_WAYBILL_H_BASE_BLL wbHBLL = new V_RP_WAYBILL_H_BASE_BLL();
-                List<RPWayBillHLevel2> result = wbHBLL.GetWayBillDetailList(carCode, orderType,addr,staged,inProgress,printed);
+                List<RPWayBillHLevel2> result = wbHBLL.GetWayBillDetailList(carCode, orderType, addr, staged, inProgress, printed);
                 return Json(new RequestResult(result));
             }
             catch (Exception ex)
@@ -108,7 +108,7 @@ namespace CHubMVC.Controllers
             if (selectedList == null || selectedList.Count == 0)
             {
                 V_RP_WAYBILL_H_BASE_BLL wbHBLL = new V_RP_WAYBILL_H_BASE_BLL();
-                selectedList = wbHBLL.GetWayBillDetailList(group.CARCOD, group.ORDTYP_WB, group.ADDR_COMBINED,staged,inProgress,printed);
+                selectedList = wbHBLL.GetWayBillDetailList(group.CARCOD, group.ORDTYP_WB, group.ADDR_COMBINED, staged, inProgress, printed);
             }
             string appUser = Session[CHubConstValues.SessionUser].ToString();
             //return Json(new RequestResult(false, "No selected Data"));
@@ -136,14 +136,69 @@ namespace CHubMVC.Controllers
 
                 string basePath = Server.MapPath(CHubConstValues.ChubTempFolder);
                 RPWayBillPrintBLL printBLL = new RPWayBillPrintBLL(basePath);
-                string fileName = printBLL.BuildPrintFile(hPrint, dPrintList,appUser);
-                string webPath= "/temp/" + fileName;
-               
+                string fileName = printBLL.BuildPrintFile(hPrint, dPrintList, appUser);
+                string webPath = "/temp/" + fileName;
+
                 return Json(new RequestResult(webPath));
             }
             catch (Exception ex)
             {
                 LogHelper.WriteLog("GetPrintFile", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult BatchPrint(List<RPWayBillHLevel1> groups,bool staged, bool inProgress, string printed)
+        {
+            if(groups==null || groups.Count==0)
+                return Json(new RequestResult(false,"No seleted Data!"));
+            try
+            {
+                List<WayBillPageData> pageDatas = new List<WayBillPageData>();
+
+                string appUser = Session[CHubConstValues.SessionUser].ToString();
+                V_RP_WAYBILL_H_BASE_BLL wbHBLL = new V_RP_WAYBILL_H_BASE_BLL();
+                foreach (var group in groups)
+                {
+                    List<RPWayBillHLevel2> selectedList = wbHBLL.GetWayBillDetailList(group.CARCOD, group.ORDTYP_WB, group.ADDR_COMBINED, staged, inProgress, printed);
+
+                    // order by shipNo to Get min shipNo
+                    //selectedList.OrderBy(a => a.SHIP_ID);
+                    string minShipNo = selectedList[0].SHIP_ID;
+                    List<string> shipNoList = new List<string>();
+                    foreach (var item in selectedList)
+                    {
+                        if (string.Compare(minShipNo, item.SHIP_ID) > 0)
+                            minShipNo = item.SHIP_ID;
+
+                        shipNoList.Add(item.SHIP_ID);
+                    }
+
+                    V_RP_WAYBILL_H_PRINT_BLL hPrintBLL = new V_RP_WAYBILL_H_PRINT_BLL();
+                    V_RP_WAYBILL_H_PRINT hPrint = hPrintBLL.GetHByShipNo(minShipNo);
+
+                    V_RP_WAYBILL_D_PRINT_BLL dPrintBLL = new V_RP_WAYBILL_D_PRINT_BLL();
+                    List<V_RP_WAYBILL_D_PRINT> dPrintList = dPrintBLL.GetDByShipNos(shipNoList);
+
+                    WayBillPageData pageData = new WayBillPageData() { Header = hPrint, Details = dPrintList };
+                    pageDatas.Add(pageData);
+
+                }
+
+
+
+                string basePath = Server.MapPath(CHubConstValues.ChubTempFolder);
+                RPWayBillPrintBLL printBLL = new RPWayBillPrintBLL(basePath);
+                string fileName = printBLL.BuildBatchPrintFile(pageDatas, appUser);
+                string webPath = "/temp/" + fileName;
+
+                return Json(new RequestResult(webPath));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("BatchPrint", ex);
                 return Json(new RequestResult(false, ex.Message));
             }
         }
