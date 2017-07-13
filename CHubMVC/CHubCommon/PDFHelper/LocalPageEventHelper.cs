@@ -147,6 +147,7 @@ namespace CHubCommon
                 #endregion
             }
 
+            document.Add(new Paragraph(Environment.NewLine));
             Paragraph p2 = new Paragraph(line1String, new iTextSharp.text.Font(BF_Light, HeaderFontSize));
             document.Add(p2);
 

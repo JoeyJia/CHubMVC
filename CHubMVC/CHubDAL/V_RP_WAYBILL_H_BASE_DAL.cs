@@ -32,7 +32,7 @@ namespace CHubDAL
             if (!string.IsNullOrEmpty(shipmentNo))
                 sql += string.Format(" and SHIP_ID = '{0}'", shipmentNo);
 
-            if (statusList != null && statusList.Count != 0)
+            //if (statusList != null && statusList.Count != 0)
                 sql += string.Format(" and SHPSTS in ({0})", statusList.ToSqlInStr());
 
             if(printed=="N")
@@ -42,7 +42,7 @@ namespace CHubDAL
             return result.OrderBy(a=>a.ORDTYP_WB).ThenBy(a=>a.CARCOD).ThenBy(a=>a.ADDR_COMBINED).ToList();
         }
 
-        public List<RPWayBillHLevel2> GetWayBillDetailList(string carCode, string orderType,string addr, List<string> statusList, string printed)
+        public List<RPWayBillHLevel2> GetWayBillDetailList(string carCode, string orderType,string addr, string shipmentNo, List<string> statusList, string printed)
         {
             string sql = string.Format(@"select 
 h.TRACK_NUM_IHUB,
@@ -71,6 +71,9 @@ h.TRACK_NUM_IHUB,
 
             if (statusList != null && statusList.Count != 0)
                 sql += string.Format(" and h.SHPSTS in ({0})", statusList.ToSqlInStr());
+
+            if (!string.IsNullOrEmpty(shipmentNo))
+                sql += string.Format(" and SHIP_ID = '{0}'", shipmentNo);
 
             if (printed == "N")
                 sql += string.Format(" and IHUB_PRINTED = '{0}'", printed);

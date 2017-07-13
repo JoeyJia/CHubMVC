@@ -139,7 +139,7 @@
 
 
 <script>
-    
+
     angular.module('wbPrintApp', ['angucomplete']).controller('wbPrintCtrl', function ($scope, $http) {
         $scope.whID = "";
         //$scope.wbType = 'default';
@@ -158,7 +158,7 @@
         $scope.inProgressSubmited = false;
 
         $scope.wbHArray = [];
-        //init part 
+        //init part
         $scope.defWHID = "";
         $scope.appWHList = [];
         $scope.carCodeList = [];
@@ -174,7 +174,7 @@
                 if (obj.data.Success) {
                     $scope.defWHID = obj.data.Data.defWHID;
                     $scope.appWHList = obj.data.Data.appWHList;
-                   
+
                     $scope.carCodeList = obj.data.Data.carCodeList;
 
                     $scope.whID = $scope.defWHID;
@@ -257,6 +257,7 @@
                 url: "/rp/BatchPrint",
                 data: JSON.stringify({
                     groups: selectedRows,
+                    shipmentNo: $scope.shipmentNo,
                     staged: $scope.stagedSubmited,
                     inProgress: $scope.inProgressSubmited,
                     printed: $scope.printed
@@ -410,7 +411,7 @@
                 align: 'center',
                 valign: 'middle'
             });
-            
+
             //columns.push({
             //    field: '',
             //    title: '',
@@ -459,7 +460,7 @@
             'click .print': function (e, value, row, index) {
                 //alert("print action");
 
-                
+
                 $currTable = $("#tableResult tr[data-index= '"+index+"' ] + tr table[tag=level2] ");
                 //alert($currTable[0].innerHTML);
                 var selectedRows = [];
@@ -473,6 +474,7 @@
                     data: JSON.stringify({
                         group: row,
                         selectedList: selectedRows,
+                        shipmentNo: $scope.shipmentNo,
                         staged: $scope.stagedSubmited,
                         inProgress: $scope.inProgressSubmited,
                         printed: $scope.printed
@@ -509,6 +511,7 @@
                     carCode:carCode,
                     orderType: orderType,
                     addr: addr,
+                    shipmentNo: $scope.shipmentNo,
                     staged: $scope.stagedSubmited,
                     inProgress: $scope.inProgressSubmited,
                     printed: $scope.printed

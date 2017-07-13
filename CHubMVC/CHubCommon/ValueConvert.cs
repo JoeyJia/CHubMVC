@@ -44,7 +44,7 @@ namespace CHubCommon
         {
             string result = string.Empty;
             if (destList == null || destList.Count == 0)
-                return result;
+                return "''";
 
             for (int i = 0; i < destList.Count; i++)
             {
