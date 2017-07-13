@@ -19,6 +19,9 @@ namespace CHubCommon
 
         public string LogoPath;
 
+        public string GroupIdentity = string.Empty;
+        public int CurrentPage = 0;
+        public string CurrentGroup = string.Empty;
        
 
         public override void OnOpenDocument(PdfWriter writer, Document document)
@@ -30,10 +33,11 @@ namespace CHubCommon
         public override void OnEndPage(PdfWriter writer, Document document)
         {
             base.OnEndPage(writer, document);
+
             //x/total x pages 第X页/共X页
             int pageN = writer.PageNumber;
             //String text = "Page " + pageN.ToString() + " of ";
-            String text = string.Format("Page {0}/total   pages 第{0}页/共   页", pageN.ToString());
+            String text = string.Format("Page {0}/total   pages 第{0}页/共   页", CurrentPage.ToString());
             //float len = BF_Light.GetWidthPoint(text, ContentFontSize);
             float len1 = BF_Light.GetWidthPoint("Page x/total ", ContentFontSize);
             float len2 = BF_Light.GetWidthPoint("Page x/total   pages 第x页/共 ", ContentFontSize);
@@ -49,8 +53,12 @@ namespace CHubCommon
 
             cb.EndText();
 
+
+            
             cb.AddTemplate(template, document.PageSize.Width - 180f + len1, pageSize.GetBottom(20f));
             cb.AddTemplate(template, document.PageSize.Width - 180f + len2, pageSize.GetBottom(20f));
+
+            //AddPageNo();
         }
 
         public override void OnCloseDocument(PdfWriter writer, Document document)
@@ -60,13 +68,32 @@ namespace CHubCommon
             template.BeginText();
             template.SetFontAndSize(BF_Light, ContentFontSize);
             template.SetTextMatrix(0, 0);
-            template.ShowText("" + (writer.PageNumber));
+            template.ShowText("" + (CurrentPage.ToString()));
             template.EndText();
         }
 
         public override void OnStartPage(PdfWriter writer, Document document)
         {
             base.OnStartPage(writer, document);
+
+            if (SameGroup())
+            {
+                AddPageNo();
+            }
+            else
+            {
+                template.BeginText();
+                template.SetFontAndSize(BF_Light, ContentFontSize);
+                template.SetTextMatrix(0, 0);
+                template.ShowText("" + (CurrentPage.ToString()));
+                template.EndText();
+
+                //new start
+                ResetPage();
+                AddPageNo();
+                GroupIdentity = CurrentGroup;
+                template = cb.CreateTemplate(50, 50);
+            }
 
             iTextSharp.text.Image logoImage = iTextSharp.text.Image.GetInstance(LogoPath);
             PdfPTable imgTable = new PdfPTable(2);
@@ -87,6 +114,25 @@ namespace CHubCommon
 
         }
 
+        //private part
+        private void ResetPage()
+        {
+            CurrentPage = 0;
+        }
+
+        private void AddPageNo()
+        {
+            CurrentPage ++;
+        }
+
+        private bool SameGroup()
+        {
+            if (CurrentGroup == string.Empty)
+                return true;
+            if (GroupIdentity == string.Empty)
+                GroupIdentity = CurrentGroup;
+            return CurrentGroup == GroupIdentity;
+        }
 
     }
 }

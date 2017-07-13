@@ -383,6 +383,7 @@ namespace CHubBLL.OtherProcess
                 }
 
                 leHelper.hData = pageDatas[i].Header;
+                leHelper.CurrentGroup = pageDatas[i].Header.SHIP_ID;
 
                 if (i != 0)
                     doc.NewPage();

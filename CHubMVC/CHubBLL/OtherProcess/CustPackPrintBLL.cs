@@ -54,13 +54,16 @@ namespace CHubBLL.OtherProcess
             doc.SetMargins(10f, 10f, 10f,36f);
             //leHelper.QRPath = fullImgPath;
             //writer.PageEvent = leHelper;
-            doc.Open();
-
+            //doc.Open();
+            pHelper.CurrentGroup = pageDatas[0].Header.SHIP_ID;
             for (int i = 0; i < pageDatas.Count; i++)
             {
+                //pHelper.CurrentGroup = pageDatas[i].Header.SHIP_ID;
                 if (i != 0)
                     doc.NewPage();
-                    
+                else
+                    doc.Open();
+
 
                 PdfPCell cellUnit;
                 //Content part
@@ -204,6 +207,11 @@ namespace CHubBLL.OtherProcess
                 cb.SetTextMatrix(doc.LeftMargin, doc.BottomMargin);
                 cb.ShowText(GetLineString(sData));
                 cb.EndText();
+
+                if ((i+1)< pageDatas.Count)
+                {
+                    pHelper.CurrentGroup = pageDatas[i+1].Header.SHIP_ID;
+                }
 
             }
 

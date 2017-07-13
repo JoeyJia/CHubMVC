@@ -14,9 +14,11 @@ namespace CHubCommon
         PdfContentByte cb;
         PdfTemplate template;
         PdfTemplate imgTem;
-        BaseFont BF_Light = BaseFont.CreateFont(@"C:\Windows\Fonts\simsun.ttc,0", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        //BaseFont BF_Light = BaseFont.CreateFont(@"C:\Windows\Fonts\simsun.ttc,0", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        BaseFont BF_Light = BaseFont.CreateFont(@"C:\Windows\Fonts\simhei.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
         public int ContentFontSize = 10;
         public int HeaderFontSize = 12;
+        public int CodeFontSize = 18;
 
         public bool printCode = false;
         public string QRPath;
@@ -24,7 +26,11 @@ namespace CHubCommon
         public string line1String;
         public V_RP_WAYBILL_H_PRINT hData;
         public string BasePath;
-       
+
+        public string GroupIdentity = string.Empty;
+        public int CurrentPage = 0;
+        public string CurrentGroup = string.Empty;
+
 
         public override void OnOpenDocument(PdfWriter writer, Document document)
         {
@@ -39,7 +45,7 @@ namespace CHubCommon
             //x/total x pages 第X页/共X页
             int pageN = writer.PageNumber;
             //String text = "Page " + pageN.ToString() + " of ";
-            String text = string.Format("Page {0}/total   pages 第{0}页/共   页", pageN.ToString());
+            String text = string.Format("Page {0}/total   pages 第{0}页/共   页", CurrentPage.ToString());
             //float len = BF_Light.GetWidthPoint(text, ContentFontSize);
             float len1 = BF_Light.GetWidthPoint("Page x/total ", ContentFontSize);
             float len2 = BF_Light.GetWidthPoint("Page x/total   pages 第x页/共 ", ContentFontSize);
@@ -66,14 +72,33 @@ namespace CHubCommon
             template.BeginText();
             template.SetFontAndSize(BF_Light, ContentFontSize);
             template.SetTextMatrix(0, 0);
-            template.ShowText("" + (writer.PageNumber));
+            template.ShowText("" + (CurrentPage.ToString()));
             template.EndText();
         }
 
         public override void OnStartPage(PdfWriter writer, Document document)
         {
             base.OnStartPage(writer, document);
-            
+
+            if (SameGroup())
+            {
+                AddPageNo();
+            }
+            else
+            {
+                template.BeginText();
+                template.SetFontAndSize(BF_Light, ContentFontSize);
+                template.SetTextMatrix(0, 0);
+                template.ShowText("" + (CurrentPage.ToString()));
+                template.EndText();
+
+                //new start
+                ResetPage();
+                AddPageNo();
+                GroupIdentity = CurrentGroup;
+                template = cb.CreateTemplate(50, 50);
+            }
+
             if (!printCode)
             {
                 document.Add(new Paragraph(Environment.NewLine));
@@ -107,7 +132,7 @@ namespace CHubCommon
                 hUnit.AddElement(imgTable);
 
 
-                Paragraph p1 = new Paragraph(codeString, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                Paragraph p1 = new Paragraph(codeString, new iTextSharp.text.Font(BF_Light, CodeFontSize));
                 p1.Alignment = Element.ALIGN_RIGHT;
                 hUnit.AddElement(p1);
 
@@ -243,6 +268,26 @@ namespace CHubCommon
             document.Add(new Paragraph(Environment.NewLine));
 
 
+        }
+
+        //private part
+        private void ResetPage()
+        {
+            CurrentPage = 0;
+        }
+
+        private void AddPageNo()
+        {
+            CurrentPage++;
+        }
+
+        private bool SameGroup()
+        {
+            if (CurrentGroup == string.Empty)
+                return true;
+            if (GroupIdentity == string.Empty)
+                GroupIdentity = CurrentGroup;
+            return CurrentGroup == GroupIdentity;
         }
 
 

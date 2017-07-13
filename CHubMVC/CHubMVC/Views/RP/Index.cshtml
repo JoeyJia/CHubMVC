@@ -88,11 +88,12 @@
                 <label class="col-sm-2 control-label">IHUB_Printed(Y/N)</label>
                 <div class="col-sm-2">
                     <label class="checkbox-inline">
-                        <input type="radio" name="inlineradio" style="padding:0px" ng-model="printed" value="N">Not Yet
-                    </label>
-                    <label class="checkbox-inline">
                         <input type="radio" name="inlineradio" style="padding:0px" ng-model="printed" value="''">All
                     </label>
+                    <label class="checkbox-inline">
+                        <input type="radio" name="inlineradio" style="padding:0px" ng-model="printed" value="N">Not Yet
+                    </label>
+                   
                 </div>
 
                 <div class="col-sm-2">
@@ -124,6 +125,18 @@
     </div>
 </div>
 
+<div class="modal " id="loadingModal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog text-center" id="imgDiag">
+            <img src="~/Images/loading.gif">
+            <div class="row text-center" style="color:ivory">
+                <b>Proccessing...</b>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 
 <script>
     
@@ -139,7 +152,7 @@
         $scope.staged = true;
         $scope.inProgress = false;
 
-        $scope.printed = "N";
+        $scope.printed = "''";
 
         $scope.stagedSubmited = true;
         $scope.inProgressSubmited = false;
@@ -238,6 +251,7 @@
                 }
             }
 
+            $("#loadingModal").modal("show");
 
             $.ajax({
                 url: "/rp/BatchPrint",
@@ -248,11 +262,12 @@
                     printed: $scope.printed
                 }),
                 type: "post",
-                async: false,
+                async: true,
                 contentType: 'application/json',
                 success: function (obj) {
                     //debugger;
                     if (obj.Success) {
+                        $("#loadingModal").modal("hide");
                         //debugger;
                         //window.location.href = obj.Data;
                         window.open(obj.Data);
@@ -527,6 +542,11 @@
 </script>
 
 <script>
-    
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+
+    });
 
 </script>
