@@ -94,5 +94,10 @@ namespace CHubDBEntity.UnmanagedModel
         public string LOGO { get; set; }
         public string PRINT_LOGO { get; set; }
 
+        public string CARNAM_SHORT { get; set; }
+        public string PAPER_SIZE { get; set; }
+        public decimal PAPER_HORIZONTAL { get; set; }
+        public decimal PAPER_VERTICAL { get; set; }
+
     }
 }

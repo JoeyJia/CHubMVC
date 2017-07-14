@@ -79,5 +79,8 @@ namespace CHubDBEntity.UnmanagedModel
         public string FLEX4 { get; set; }
         public string FLEX5 { get; set; }
 
+        public decimal PAPER_HORIZONTAL { get; set; }
+        public decimal PAPER_VERTICAL { get; set; }
+
     }
 }

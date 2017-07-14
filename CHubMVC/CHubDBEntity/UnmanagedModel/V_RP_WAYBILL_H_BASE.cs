@@ -77,5 +77,12 @@ namespace CHubDBEntity.UnmanagedModel
 
 
         public string IHUB_PRINTED { get; set; }
+
+        public string CARNAM_SHORT { get; set; }
+        public string PAPER_SIZE { get; set; }
+        public decimal PAPER_HORIZONTAL { get; set; }
+        public decimal PAPER_VERTICAL { get; set; }
+
+
     }
 }

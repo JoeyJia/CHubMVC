@@ -20,5 +20,10 @@ namespace CHubDBEntity.UnmanagedModel
         public string REMARK1 { get; set; }
 
         public string REMKAR2 { get; set; }
+
+        public decimal? VC_PALLEN { get; set; }
+        public decimal? VC_PALWID { get; set; }
+        public decimal? VC_PALHGT { get; set; }
+        public decimal? QTYS { get; set; }
     }
 }

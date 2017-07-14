@@ -74,5 +74,8 @@ namespace CHubDBEntity.UnmanagedModel
         public DateTime? AUTO_PRINT_DATE { get; set; }
         public string SUCCEE_FLAG { get; set; }
 
+        public decimal PAPER_HORIZONTAL { get; set; }
+        public decimal PAPER_VERTICAL { get; set; }
+
     }
 }
