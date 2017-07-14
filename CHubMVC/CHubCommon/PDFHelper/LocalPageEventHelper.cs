@@ -146,6 +146,11 @@ namespace CHubCommon
 
                 #endregion
             }
+            //add a line
+            cb.MoveTo(0,document.PageSize.Height-110);
+            cb.LineTo(document.PageSize.Width, document.PageSize.Height - 110);
+            cb.SetLineWidth(0.5f);
+            cb.Stroke();
 
             document.Add(new Paragraph(Environment.NewLine));
             Paragraph p2 = new Paragraph(line1String, new iTextSharp.text.Font(BF_Light, HeaderFontSize));
