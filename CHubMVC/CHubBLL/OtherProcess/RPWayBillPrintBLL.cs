@@ -42,16 +42,15 @@ namespace CHubBLL.OtherProcess
 
             iTextSharp.text.Rectangle pageRec = null;
             float bottomMargin = 0f;
-            if (wbType.PAPER_SIZE == "A4")
-            {
-                pageRec = PageSize.A4;
+            decimal xPixel = ValueConvert.MM2Pixel(wbType.PAPER_HORIZONTAL);
+            decimal yPixel = ValueConvert.MM2Pixel(wbType.PAPER_VERTICAL);
+            pageRec = new iTextSharp.text.Rectangle((float)xPixel, (float)yPixel);
+
+            //500m, a flag for A5 or larger than A5
+            if (yPixel > 500m)
                 bottomMargin = 120f;
-            }
-            if (wbType.PAPER_SIZE == "A5")
-            {
-                pageRec = PageSize.A5.Rotate();
+            else
                 bottomMargin = 60f;
-            }
 
             List<string> sData = new List<string>();
             LocalPageEventHelper leHelper = new LocalPageEventHelper();
