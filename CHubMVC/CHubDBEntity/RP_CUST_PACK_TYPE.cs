@@ -47,6 +47,8 @@ namespace CHubDBEntity
         public string COL08 { get; set; }
         public string COL09 { get; set; }
         public string COL10 { get; set; }
+        public decimal PAPER_HORIZONTAL { get; set; }
+        public decimal PAPER_VERTICAL { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RP_ADR_MST> RP_ADR_MST { get; set; }

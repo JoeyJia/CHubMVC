@@ -698,6 +698,8 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           <Property Name="COL08" Type="varchar2" MaxLength="20" />
           <Property Name="COL09" Type="varchar2" MaxLength="20" />
           <Property Name="COL10" Type="varchar2" MaxLength="20" />
+          <Property Name="PAPER_HORIZONTAL" Type="number" Precision="22" Scale="2" Nullable="false" />
+          <Property Name="PAPER_VERTICAL" Type="number" Precision="22" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="RP_ORDTYP_MST">
           <Key>
@@ -779,6 +781,8 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           <Property Name="PAPER_SIZE" Type="varchar2" MaxLength="10" Nullable="false" />
           <Property Name="TRACK_NUM_BY_IHUB" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="PRINT_LOGO" Type="varchar2" MaxLength="1" />
+          <Property Name="PAPER_HORIZONTAL" Type="number" Precision="22" Scale="2" Nullable="false" />
+          <Property Name="PAPER_VERTICAL" Type="number" Precision="22" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="TC_PART_CATEGORY">
           <Key>
@@ -2208,7 +2212,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0028606">
+        <Association Name="SYS_C0029519">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3265,7 +3269,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="RP_PRINTER" EntitySet="RP_PRINTER" />
             <End Role="RP_STATION" EntitySet="RP_STATION" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0028606" Association="Self.SYS_C0028606">
+          <AssociationSet Name="SYS_C0029519" Association="Self.SYS_C0029519">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -5773,6 +5777,8 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <NavigationProperty Name="RP_ADR_MST" Relationship="CHubDBModel.RP_ADR_MST_R01" FromRole="RP_CUST_PACK_TYPE" ToRole="RP_ADR_MST" />
           <NavigationProperty Name="RP_CUST_PACK_TYPE1" Relationship="CHubDBModel.RP_CUST_PACK_TYPE_R01" FromRole="RP_CUST_PACK_TYPE" ToRole="RP_CUST_PACK_TYPE1" />
           <NavigationProperty Name="RP_CUST_PACK_TYPE2" Relationship="CHubDBModel.RP_CUST_PACK_TYPE_R01" FromRole="RP_CUST_PACK_TYPE1" ToRole="RP_CUST_PACK_TYPE" />
+          <Property Name="PAPER_HORIZONTAL" Type="Decimal" Nullable="false" Precision="22" Scale="2" />
+          <Property Name="PAPER_VERTICAL" Type="Decimal" Nullable="false" Precision="22" Scale="2" />
         </EntityType>
         <EntityType Name="RP_PRINTER">
           <Key>
@@ -5838,6 +5844,8 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="PAPER_SIZE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TRACK_NUM_BY_IHUB" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="PRINT_LOGO" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="PAPER_HORIZONTAL" Type="Decimal" Nullable="false" Precision="22" Scale="2" />
+          <Property Name="PAPER_VERTICAL" Type="Decimal" Nullable="false" Precision="22" Scale="2" />
         </EntityType>
         <Association Name="APP_WH_R03">
           <End Type="CHubDBModel.RP_PRINTER" Role="RP_PRINTER" Multiplicity="0..1" />
@@ -7501,6 +7509,8 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="RP_CUST_PACK_TYPE">
             <EntityTypeMapping TypeName="CHubDBModel.RP_CUST_PACK_TYPE">
               <MappingFragment StoreEntitySet="RP_CUST_PACK_TYPE">
+                <ScalarProperty Name="PAPER_VERTICAL" ColumnName="PAPER_VERTICAL" />
+                <ScalarProperty Name="PAPER_HORIZONTAL" ColumnName="PAPER_HORIZONTAL" />
                 <ScalarProperty Name="COL10" ColumnName="COL10" />
                 <ScalarProperty Name="COL09" ColumnName="COL09" />
                 <ScalarProperty Name="COL08" ColumnName="COL08" />
@@ -7584,6 +7594,8 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="RP_WAYBILL_TYPE">
             <EntityTypeMapping TypeName="CHubDBModel.RP_WAYBILL_TYPE">
               <MappingFragment StoreEntitySet="RP_WAYBILL_TYPE">
+                <ScalarProperty Name="PAPER_VERTICAL" ColumnName="PAPER_VERTICAL" />
+                <ScalarProperty Name="PAPER_HORIZONTAL" ColumnName="PAPER_HORIZONTAL" />
                 <ScalarProperty Name="PRINT_LOGO" ColumnName="PRINT_LOGO" />
                 <ScalarProperty Name="TRACK_NUM_BY_IHUB" ColumnName="TRACK_NUM_BY_IHUB" />
                 <ScalarProperty Name="PAPER_SIZE" ColumnName="PAPER_SIZE" />
