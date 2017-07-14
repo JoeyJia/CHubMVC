@@ -153,6 +153,18 @@
     </div>
 </div>
 
+<div class="modal " id="loadingModal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog text-center" id="imgDiag">
+            <img src="~/Images/loading.gif">
+            <div class="row text-center" style="color:ivory">
+                <b>Proccessing...</b>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 
 <script>
     
@@ -263,17 +275,20 @@
                 return;
             }
 
+            $("#loadingModal").modal("show");
+
             $.ajax({
                 url: "/rp/PrintPackData",
                 data: JSON.stringify({
                     idList: $scope.idList
                 }),
                 type: "post",
-                async: false,
+                async: true,
                 contentType: 'application/json',
                 success: function (obj) {
                     //debugger;
                     if (obj.Success) {
+                        $("#loadingModal").modal("hide");
                         //debugger;
                         //window.location.href = obj.Data;
                         window.open(obj.Data);
@@ -302,6 +317,11 @@
 </script>
 
 <script>
-    
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+
+    });
 
 </script>

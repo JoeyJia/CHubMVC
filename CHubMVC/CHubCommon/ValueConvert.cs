@@ -8,6 +8,8 @@ namespace CHubCommon
 {
     static public class ValueConvert
     {
+        //base on itextsharp config, dpi=72
+        private  static  decimal CurrentDPI = 72m;
         static public string BoolToNY(bool bValue)
         {
             return bValue ? "Y" : "N";
@@ -36,6 +38,16 @@ namespace CHubCommon
                 default:
                     return "green";
             }
+        }
+
+        static public decimal MM2Pixel(decimal mm)
+        {
+            return Math.Round((mm * CurrentDPI) / 25.4m, MidpointRounding.AwayFromZero);
+        }
+
+        static public decimal Pixel2MM(decimal p)
+        {
+            return Math.Round((p * 25.4m) / CurrentDPI, MidpointRounding.AwayFromZero);
         }
 
 

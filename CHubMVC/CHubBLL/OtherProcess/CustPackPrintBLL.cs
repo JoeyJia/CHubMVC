@@ -36,14 +36,10 @@ namespace CHubBLL.OtherProcess
 
 
             List<string> sData = new List<string>();
-            //LocalPageEventHelper leHelper = new LocalPageEventHelper();
-            //leHelper.hData = hData;
-            //leHelper.BasePath = BasePath;
 
-            
+            //each page size get from header ,
+            Document doc = new Document(GetDocRectangle(pageDatas[0].Header.PAPER_HORIZONTAL, pageDatas[0].Header.PAPER_VERTICAL));
 
-            Document doc = new Document(PageSize.A4);
-            //doc.SetMargins(36f, 36f, 10f, bottomMargin);
             PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(fullPath, FileMode.Create));
 
             string imagePath = BasePath.Replace("temp", "images") + "custpack.png";
@@ -52,15 +48,16 @@ namespace CHubBLL.OtherProcess
             writer.PageEvent = pHelper;
 
             doc.SetMargins(10f, 10f, 10f,36f);
-            //leHelper.QRPath = fullImgPath;
-            //writer.PageEvent = leHelper;
-            //doc.Open();
+
             pHelper.CurrentGroup = pageDatas[0].Header.SHIP_ID;
             for (int i = 0; i < pageDatas.Count; i++)
             {
                 //pHelper.CurrentGroup = pageDatas[i].Header.SHIP_ID;
                 if (i != 0)
+                {
+                    doc.SetPageSize(GetDocRectangle(pageDatas[i].Header.PAPER_HORIZONTAL, pageDatas[i].Header.PAPER_VERTICAL));
                     doc.NewPage();
+                }
                 else
                     doc.Open();
 
@@ -291,6 +288,13 @@ namespace CHubBLL.OtherProcess
                 cell.BackgroundColor = backColor;
             //cell.BorderWidth = 0;
             return cell;
+        }
+
+        public iTextSharp.text.Rectangle GetDocRectangle(decimal x, decimal y)
+        {
+            decimal xPixel = ValueConvert.MM2Pixel(x);
+            decimal yPixel = ValueConvert.MM2Pixel(y);
+            return new iTextSharp.text.Rectangle((float)xPixel, (float)yPixel);
         }
 
     }
