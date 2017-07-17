@@ -99,13 +99,20 @@ namespace CHubCommon
                 template = cb.CreateTemplate(50, 50);
             }
 
+            float linePosition = 110f;
             if (!printCode)
             {
                 document.Add(new Paragraph(Environment.NewLine));
                 document.Add(new Paragraph(Environment.NewLine));
                 document.Add(new Paragraph(Environment.NewLine));
-                document.Add(new Paragraph(Environment.NewLine));
-                document.Add(new Paragraph(Environment.NewLine));
+                if (document.PageSize.Height > 500f)
+                {
+                    document.Add(new Paragraph(Environment.NewLine));
+                    document.Add(new Paragraph(Environment.NewLine));
+                  
+                }
+                else
+                    linePosition = 70f;
             }
             else
             {
@@ -146,9 +153,10 @@ namespace CHubCommon
 
                 #endregion
             }
+
             //add a line
-            cb.MoveTo(0,document.PageSize.Height-110);
-            cb.LineTo(document.PageSize.Width, document.PageSize.Height - 110);
+            cb.MoveTo(0, document.PageSize.Height - linePosition);
+            cb.LineTo(document.PageSize.Width, document.PageSize.Height - linePosition);
             cb.SetLineWidth(0.5f);
             cb.Stroke();
 
