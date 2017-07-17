@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Drawing.Printing;
 
 namespace CHubCommon.Printer
 {
@@ -24,6 +25,19 @@ namespace CHubCommon.Printer
             }
 
             pro.Start();
+
+        }
+
+        static public bool ExistPrinter(string printName)
+        {
+            List<string> printList = new List<string>();
+            foreach (var item in PrinterSettings.InstalledPrinters)
+            {
+                printList.Add(item.ToString());
+            }
+            if (printList.Exists(a=>a==printName))
+                return true;
+            return false;
 
         }
     }
