@@ -99,8 +99,8 @@ namespace CHubCommon
                 template = cb.CreateTemplate(50, 50);
             }
 
-            float linePosition = 110f;
-            if (!printCode)
+            float linePosition = 115f;
+            if ((!printCode)&&(hData.PRINT_LOGO==CHubConstValues.IndN))
             {
                 document.Add(new Paragraph(Environment.NewLine));
                 document.Add(new Paragraph(Environment.NewLine));
@@ -119,29 +119,61 @@ namespace CHubCommon
 
                 PdfPTable hTable = new PdfPTable(1);
                 hTable.WidthPercentage = 100f;
-                
+                              
                 PdfPCell hUnit = new PdfPCell();
-                
+
                 /////
 
                 #region for adding header part for each page
-                iTextSharp.text.Image tImg = iTextSharp.text.Image.GetInstance(QRPath);
-                tImg.Alignment = Element.ALIGN_RIGHT;
 
-                PdfPTable imgTable = new PdfPTable(1);
-                imgTable.SetWidths(new float[] { 20f });
+                PdfPTable imgTable = new PdfPTable(4);
+                imgTable.SetWidths(new float[] {430f,80f,10f,75f});//215f, 75f, 200f, 85f
                 imgTable.HorizontalAlignment = Element.ALIGN_RIGHT;
-                PdfPCell imgCell = new PdfPCell(tImg, false);
+
+                PdfPCell imgCell = new PdfPCell();
                 imgCell.BorderWidth = 0;
-                imgCell.HorizontalAlignment = Element.ALIGN_RIGHT;
+                imgTable.AddCell(imgCell);
+
+                if (hData.PRINT_LOGO == CHubConstValues.IndY)
+                {
+                    string wechartPath = BasePath.Replace("temp", "images") + (hData.LOGO ?? "wechat.jpg");
+                    iTextSharp.text.Image wechatImage = iTextSharp.text.Image.GetInstance(wechartPath);
+                    wechatImage.Alignment = Element.ALIGN_RIGHT;
+                    imgCell = new PdfPCell(wechatImage, true);
+                    imgCell.HorizontalAlignment = Element.ALIGN_RIGHT;
+                }
+                else
+                    imgCell = new PdfPCell();
+
+                imgCell.BorderWidth = 0;
+                imgTable.AddCell(imgCell);
+
+                //margin between two pictures
+                imgCell = new PdfPCell();
+                imgCell.BorderWidth = 0;
+                imgTable.AddCell(imgCell);
+
+                if (printCode)
+                {
+                    iTextSharp.text.Image tImg = iTextSharp.text.Image.GetInstance(QRPath);
+                    tImg.Alignment = Element.ALIGN_RIGHT;
+                    imgCell = new PdfPCell(tImg, false);
+                    imgCell.HorizontalAlignment = Element.ALIGN_RIGHT;
+                }
+                else
+                    imgCell = new PdfPCell();
+
+                imgCell.BorderWidth = 0;
                 imgTable.AddCell(imgCell);
 
                 hUnit.AddElement(imgTable);
 
-
-                Paragraph p1 = new Paragraph(codeString, new iTextSharp.text.Font(BF_Light, CodeFontSize));
-                p1.Alignment = Element.ALIGN_RIGHT;
-                hUnit.AddElement(p1);
+                if (printCode)
+                {
+                    Paragraph p1 = new Paragraph(codeString, new iTextSharp.text.Font(BF_Light, CodeFontSize));
+                    p1.Alignment = Element.ALIGN_RIGHT;
+                    hUnit.AddElement(p1);
+                }
 
                 //Paragraph p2 = new Paragraph(line1String, new iTextSharp.text.Font(BF_Light, HeaderFontSize));
                 //hUnit.AddElement(p2);
@@ -167,7 +199,7 @@ namespace CHubCommon
             //content table
             PdfPTable contentTable = new PdfPTable(4);
             contentTable.WidthPercentage = 100f;
-            contentTable.SetWidths(new float[] { 215f, 75f, 200f, 85f });
+            contentTable.SetWidths(new float[] { 215f, 70f, 205f, 85f });
             PdfPCell cellUnit;
 
             Paragraph p11 = new Paragraph();
@@ -187,16 +219,17 @@ namespace CHubCommon
             contentTable.AddCell(cellUnit);
 
             //wechat imag p12
-            if (hData.PRINT_LOGO == CHubConstValues.IndY)
-            {
-                string imagePath = BasePath.Replace("temp", "images") + (hData.LOGO?? "wechat.jpg");
-                iTextSharp.text.Image logoImage = iTextSharp.text.Image.GetInstance(imagePath);
-                cellUnit = new PdfPCell(logoImage, true);
-            }
-            else
-            {
-                cellUnit = new PdfPCell();
-            }
+            //if (hData.PRINT_LOGO == CHubConstValues.IndY)
+            //{
+            //    string imagePath = BasePath.Replace("temp", "images") + (hData.LOGO?? "wechat.jpg");
+            //    iTextSharp.text.Image logoImage = iTextSharp.text.Image.GetInstance(imagePath);
+            //    cellUnit = new PdfPCell(logoImage, true);
+            //}
+            //else
+            //{
+            //    cellUnit = new PdfPCell();
+            //}
+            cellUnit = new PdfPCell();
             cellUnit.BorderWidth = 0;
             contentTable.AddCell(cellUnit);
 
