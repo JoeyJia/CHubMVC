@@ -22,7 +22,8 @@ namespace CHubBLL.OtherProcess
         BaseFont BF_Light = BaseFont.CreateFont(@"C:\Windows\Fonts\simhei.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 
         public string Code128PicPath = string.Empty;
-        private int ContentFontSize = 10;
+        //just for table font here
+        private int ContentFontSize = 8;
         private int HeaderFontSize = 12;
         private int FooterFontSize = 8;
         public RPWayBillPrintBLL(string basePath)

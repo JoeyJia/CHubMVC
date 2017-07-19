@@ -24,9 +24,72 @@ namespace CHubBLL.OtherProcess
         private int ContentFontSize = 10;
         private int HeaderFontSize = 12;
         private int FooterFontSize = 8;
-        public CustPackPrintBLL(string basePath)
+        public CustPackPrintBLL(string basePath=null)
         {
+            //if (basePath == null)
+            //    ; ;
             this.BasePath = basePath;
+        }
+
+        public void GetStagedPackList(string appUser)
+        {
+            V_RP_PACK_H_BASE_BLL hBaseBLL = new V_RP_PACK_H_BASE_BLL();
+            List<string> idList = hBaseBLL.GetStagedPackList();
+
+            if (idList == null || idList.Count == 0)
+            {
+                Console.WriteLine("No staged pack data  found");
+                return;
+            }
+
+            string fileName = PrintPackData(idList, appUser);
+            string msg = "";
+            foreach (var item in idList)
+            {
+                msg += (item + "|");
+            }
+            Console.WriteLine("{0} Pack Print job completed successfully!", DateTime.Now.ToString());
+            Console.WriteLine(msg);
+            Console.WriteLine(fileName);
+            Console.WriteLine("******************************************");
+            
+        }
+
+        public string PrintPackData(List<string> idList,string appUser)
+        {
+            List<PackPageData> pageDatas = new List<PackPageData>();
+            try
+            {
+                
+                foreach (var id in idList)
+                {
+                    PackPageData page = new PackPageData();
+                    V_RP_PACK_H_PRINT_BLL hBLL = new V_RP_PACK_H_PRINT_BLL();
+                    var header = hBLL.GetPackHeader(id);
+
+                    V_RP_PACK_D_PRINT_BLL dBLL = new V_RP_PACK_D_PRINT_BLL();
+                    var detail = dBLL.GetPackDetails(id);
+                    page.Header = header;
+                    page.Details = detail;
+                    pageDatas.Add(page);
+
+                }
+
+                if (pageDatas.Count == 0)
+                    throw new Exception("Fail to get PageData");
+
+                    string fileName = BuildPrintFile(pageDatas, appUser);
+                AddPackLogs(pageDatas, CHubConstValues.IndY);
+                return fileName;
+            }
+            catch(Exception ex)
+            {
+                string ss = ex.Message;
+                //log fail status
+                AddPackLogs(pageDatas, CHubConstValues.IndN);
+                throw;
+            }
+
         }
 
         public string BuildPrintFile(List<PackPageData> pageDatas, string appUser)
@@ -295,6 +358,37 @@ namespace CHubBLL.OtherProcess
             decimal xPixel = ValueConvert.MM2Pixel(x);
             decimal yPixel = ValueConvert.MM2Pixel(y);
             return new iTextSharp.text.Rectangle((float)xPixel, (float)yPixel);
+        }
+
+
+        //private functions
+        private void AddPackLogs(List<PackPageData> pageDatas, string flag)
+        {
+            if (pageDatas == null || pageDatas.Count == 0)
+                return;
+            //add log
+            RP_AUTOPACK_LOG_BLL logBLL = new RP_AUTOPACK_LOG_BLL();
+            foreach (var item in pageDatas)
+            {
+                if (item.Details != null && item.Details.Count > 0)
+                {
+                    foreach (var d in item.Details)
+                    {
+                        if (logBLL.HasSuccessPrint(d.LODNUM))
+                            continue;
+                        else
+                        {
+                            RP_AUTOPACK_LOG model = new RP_AUTOPACK_LOG();
+                            model.WH_ID = d.WH_ID;
+                            model.SHIP_ID = d.SHIP_ID;
+                            model.LODNUM = d.LODNUM;
+                            model.AUTO_PRINT_DATE = DateTime.Now;
+                            model.SUCCEE_FLAG = flag;
+                            logBLL.AddOrUpdatePrintLog(model);
+                        }
+                    }
+                }
+            }
         }
 
     }

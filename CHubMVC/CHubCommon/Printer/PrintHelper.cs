@@ -21,7 +21,10 @@ namespace CHubCommon.Printer
             pro.StartInfo.Verb = "Print";
             if (!string.IsNullOrEmpty(printerName))
             {
-                Externs.SetDefaultPrinter(printerName);
+                if (ExistPrinter(printerName))
+                    Externs.SetDefaultPrinter(printerName);
+                else
+                    throw new Exception("No specify printer:" + printerName);
             }
 
             pro.Start();

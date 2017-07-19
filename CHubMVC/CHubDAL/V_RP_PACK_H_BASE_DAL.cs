@@ -40,12 +40,12 @@ where WH_ID='{0}'", whID);
             
         }
 
-        public List<V_RP_PACK_H_BASE> GetStagedPackList()
+        public List<string> GetStagedPackList()
         {
-            string sql = @"select * from V_RP_PACK_H_BASE where SHPSTS='S' ";
+            string sql = @"select SHIP_ID from V_RP_PACK_H_BASE where SHPSTS='S' and nvl(SUCCEE_FLAG,'N')!='Y' ";
 
-            var result = db.Database.SqlQuery<V_RP_PACK_H_BASE>(sql);
-            return result.OrderBy(a => a.SHIP_ID).ThenBy(a => a.LODNUM).ToList();
+            var result = db.Database.SqlQuery<string>(sql);
+            return result.ToList();
 
         }
 

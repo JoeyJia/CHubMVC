@@ -27,7 +27,7 @@ namespace CHubBLL
             return dal.GetPackList(whID, shipID, custName, address, staged, range);
         }
 
-        public List<V_RP_PACK_H_BASE> GetStagedPackList()
+        public List<string> GetStagedPackList()
         {
             return dal.GetStagedPackList();
         }
