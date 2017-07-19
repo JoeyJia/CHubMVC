@@ -22,6 +22,7 @@ namespace CHubBLL.OtherProcess
         BaseFont BF_Light = BaseFont.CreateFont(@"C:\Windows\Fonts\simhei.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 
         private int ContentFontSize = 10;
+        private int TableFontSize = 8;
         private int HeaderFontSize = 12;
         private int FooterFontSize = 8;
         public CustPackPrintBLL(string basePath=null)
@@ -131,13 +132,13 @@ namespace CHubBLL.OtherProcess
                 contentTable.WidthPercentage = 90f;
                 contentTable.SetWidths(new float[] { 200f,190f,185f });//575
                 
-                cellUnit = new PdfPCell(new Paragraph(pageDatas[i].Header.HEADER1));
+                cellUnit = new PdfPCell(new Paragraph(pageDatas[i].Header.HEADER1, new iTextSharp.text.Font(BF_Light, HeaderFontSize)));
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
-                cellUnit = new PdfPCell(new Paragraph(pageDatas[i].Header.HEADER2));
+                cellUnit = new PdfPCell(new Paragraph(pageDatas[i].Header.HEADER2, new iTextSharp.text.Font(BF_Light, HeaderFontSize)));
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
-                cellUnit = new PdfPCell(new Paragraph(pageDatas[i].Header.HEADER3));
+                cellUnit = new PdfPCell(new Paragraph(pageDatas[i].Header.HEADER3, new iTextSharp.text.Font(BF_Light, HeaderFontSize)));
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
                 doc.Add(contentTable);
@@ -215,40 +216,41 @@ namespace CHubBLL.OtherProcess
                 //Table part
                 PdfPTable dTable = new PdfPTable(11);
                 dTable.WidthPercentage = 90f;
-                dTable.AddCell(BuildCell("Index", new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                dTable.AddCell(BuildCell(pageDatas[i].Header.COL01, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                dTable.AddCell(BuildCell(pageDatas[i].Header.COL02, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                dTable.AddCell(BuildCell(pageDatas[i].Header.COL03, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                dTable.AddCell(BuildCell(pageDatas[i].Header.COL04, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                dTable.AddCell(BuildCell(pageDatas[i].Header.COL05, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                dTable.AddCell(BuildCell(pageDatas[i].Header.COL06, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                dTable.AddCell(BuildCell(pageDatas[i].Header.COL07, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                dTable.AddCell(BuildCell(pageDatas[i].Header.COL08, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                dTable.AddCell(BuildCell(pageDatas[i].Header.COL09, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                dTable.AddCell(BuildCell(pageDatas[i].Header.COL10, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+                dTable.SetWidths(new float[] { 30f, 47f, 98f, 30f, 30f, 47f, 47f, 47f, 47f, 47f, 47f });
+                dTable.AddCell(BuildCell("Index", new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                dTable.AddCell(BuildCell(pageDatas[i].Header.COL01, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                dTable.AddCell(BuildCell(pageDatas[i].Header.COL02, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                dTable.AddCell(BuildCell(pageDatas[i].Header.COL03, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                dTable.AddCell(BuildCell(pageDatas[i].Header.COL04, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                dTable.AddCell(BuildCell(pageDatas[i].Header.COL05, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                dTable.AddCell(BuildCell(pageDatas[i].Header.COL06, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                dTable.AddCell(BuildCell(pageDatas[i].Header.COL07, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                dTable.AddCell(BuildCell(pageDatas[i].Header.COL08, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                dTable.AddCell(BuildCell(pageDatas[i].Header.COL09, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                dTable.AddCell(BuildCell(pageDatas[i].Header.COL10, new iTextSharp.text.Font(BF_Light, TableFontSize)));
 
                 if (pageDatas[i].Details != null && pageDatas[i].Details.Count > 0)
                 {
                     int indexPoint = 1;
                     foreach (var item in pageDatas[i].Details)
                     {
-                        dTable.AddCell(BuildCell(indexPoint.ToString(), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+                        dTable.AddCell(BuildCell(indexPoint.ToString(), new iTextSharp.text.Font(BF_Light, TableFontSize)));
                         indexPoint++;
-                        dTable.AddCell(BuildCell(item.COL01, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                        dTable.AddCell(BuildCell(item.COL02, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                        dTable.AddCell(BuildCell(item.COL03, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                        dTable.AddCell(BuildCell(item.COL04, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                        dTable.AddCell(BuildCell(item.COL05, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                        dTable.AddCell(BuildCell(item.COL06, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                        dTable.AddCell(BuildCell(item.COL07, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                        dTable.AddCell(BuildCell(item.COL08, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                        dTable.AddCell(BuildCell(item.COL09, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                        dTable.AddCell(BuildCell(item.COL10, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+                        dTable.AddCell(BuildCell(item.COL01, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                        dTable.AddCell(BuildCell(item.COL02, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                        dTable.AddCell(BuildCell(item.COL03, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                        dTable.AddCell(BuildCell(item.COL04, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                        dTable.AddCell(BuildCell(item.COL05, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                        dTable.AddCell(BuildCell(item.COL06, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                        dTable.AddCell(BuildCell(item.COL07, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                        dTable.AddCell(BuildCell(item.COL08, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                        dTable.AddCell(BuildCell(item.COL09, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                        dTable.AddCell(BuildCell(item.COL10, new iTextSharp.text.Font(BF_Light, TableFontSize)));
 
                     }
                     doc.Add(dTable);
 
-                    Paragraph pLast = new Paragraph(string.Format("Total Items:{0}          ", pageDatas[i].Details.Count.ToString()), new iTextSharp.text.Font(BF_Light, 10));
+                    Paragraph pLast = new Paragraph(string.Format("Total Items:{0}          ", pageDatas[i].Details.Count.ToString()), new iTextSharp.text.Font(BF_Light, ContentFontSize));
                     pLast.Alignment = Element.ALIGN_RIGHT;
                     doc.Add(pLast);
                 }
@@ -308,6 +310,7 @@ namespace CHubBLL.OtherProcess
 
         /// <summary>
         /// base on one line spaces, to allocation position for data source
+        /// font size=8, total line =130, font size=10 ,total line =~ 86
         /// </summary>
         /// <param name="data">a string list</param>
         /// <param name="totalSpace"> represent how many spaces in one line </param>
@@ -344,11 +347,14 @@ namespace CHubBLL.OtherProcess
             return result;
         }
 
-        public PdfPCell BuildCell(string text, iTextSharp.text.Font font,  BaseColor backColor=null)
+        public PdfPCell BuildCell(string text, iTextSharp.text.Font font, BaseColor backColor=null)
         {
             PdfPCell cell = new PdfPCell(new Paragraph(text, font));
             if (backColor != null)
                 cell.BackgroundColor = backColor;
+            //if (width != null)
+            //    cell.Width = width.Value;
+            
             //cell.BorderWidth = 0;
             return cell;
         }

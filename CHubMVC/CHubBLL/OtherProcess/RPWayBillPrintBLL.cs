@@ -23,7 +23,7 @@ namespace CHubBLL.OtherProcess
 
         public string Code128PicPath = string.Empty;
         //just for table font here
-        private int ContentFontSize = 8;
+        private int ContentFontSize = 10;
         private int HeaderFontSize = 12;
         private int FooterFontSize = 8;
         public RPWayBillPrintBLL(string basePath)
