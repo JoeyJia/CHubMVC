@@ -448,8 +448,17 @@ namespace CHubMVC.Controllers
 
         #endregion
 
+        #region custom pack part
+        [Authorize]
+        public ActionResult Label()
+        {
+            //string appUser = Session[CHubConstValues.SessionUser].ToString();
+            //APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            //rpBLL.Add(appUser, CHubEnum.PageNameEnum.custpack.ToString(), this.Request.Url.AbsoluteUri);
+            return View();
+        }
+        #endregion
 
-        
 
 
 

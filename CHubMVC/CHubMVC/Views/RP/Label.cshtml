@@ -1,0 +1,253 @@
+﻿
+@{
+    ViewBag.Title = "Part Label print";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container-fluid" id="labelBody" ng-app="labelApp" ng-controller="labelCtrl">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:silver"><b>Part Label print</b></div>
+
+        <ul class="nav nav-pills" role="tablist">
+            <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">Query by Parts</a></li>
+            <li role="presentation"><a href="#profile" role="tab" data-toggle="tab">Query by Shipment</a></li>
+        </ul>
+
+        <!--content parts-->
+        <div class="tab-content" style="overflow-x:auto;">
+            <div role="tabpanel" class="tab-pane active" id="home">
+
+                <div class="row" style="margin-top:15px;">
+                    <div class="form-group">
+                        <label for="txtPrintPartNo" class="col-sm-2 control-label text-right">Print PartNo</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control input-sm" id="txtPrintPartNo" ng-model="" placeholder="Print Part No.">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label for="txtPartNo" class="col-sm-2 control-label text-right">Part No.</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control input-sm" id="txtPartNo" ng-model="" placeholder="Part No.">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom:10px;">
+                    <div class="form-group">
+                        
+                        <label class="col-sm-2 control-label">Status</label>
+                        <div class="col-sm-3">
+                            <label class="checkbox-inline">
+                                <input type="radio" name="inlineradio" ng-model="status" value="Y">Cummins Catalog
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="radio" name="inlineradio" ng-model="status" value="N">UnCatalog
+                            </label>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <button class="btn btn-primary btn-sm" ng-click="queryByPart()">Submit</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--PO  tab-->
+            <div role="tabpanel" class="tab-pane" id="profile">
+
+                <div class="row" style="margin-top:15px;">
+                    <div class="form-group">
+                        <label for="txtShipNo" class="col-sm-2 control-label text-right">Shipment No.</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control input-sm" id="txtShipNo" ng-model="" placeholder="Shipment No.">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label for="txtBoxNo" class="col-sm-2 control-label text-right">Box Number</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control input-sm" id="txtBoxNo" ng-model="" placeholder="Box Number">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom:10px;">
+                    <div class="form-group">
+                        <label for="txtPrintPartNo2" class="col-sm-2 control-label text-right">Print PartNo</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control input-sm" id="txtPrintPartNo2" ng-model="" placeholder="Print PartNo">
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-primary btn-sm" ng-click="queryByShipment()">Submit</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default" style="">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+
+                    <table id="tbCarMst" class="table table-striped table-hover table-bordered .table-condensed">
+                        <thead>
+                            <tr>
+                                <th style="">Index</th>
+                                <th style="">WareHouse</th>
+                                <th style="">Carrier Code</th>
+
+                                <th style="">Carrier Name</th>
+                                <th style="">Way Bill ID</th>
+                                <th style="">Way Bill Desc</th>
+                                <th style="">Send To TMS</th>
+                                <th style="">Short Name</th>
+                                <th style="">Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="ca in carArray ">
+                                <td style="">{{$index+1}}</td>
+                                <td style="">{{ca.WH_ID}}</td>
+                                <td>{{ca.CARCOD}}</td>
+                                <td>{{ca.CARNAM}}</td>
+                                <td style="width:180px">
+                                    <select class="form-control input-sm" id="wbID" ng-model="ca.WAYBILL_ID" ng-change="wbIDChange(ca)" ng-options="t.WAYBILL_ID as t.WAYBILL_ID for t in wayBillType"></select>
+                                </td>
+                                <td>{{ca.WAYBILL_DESC}}</td>
+                                <td>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" style="padding:0px" id="ckTMS$index" aria-label="ckTMS$index" ng-checked="ca.SEND_TO_TMS=='Y'" ng-click="clickTMSCheckBox($event,ca)">
+                                        </label>
+                                    </div>
+                                </td>
+                                <td> <input class="form-control" ng-model="ca.CARNAM_SHORT" /></td>
+                                <td style="width:80px;text-align:center">
+                                    <a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="save(ca)"><span class="glyphicon glyphicon-floppy-disk"></span></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    
+    angular.module('labelApp', []).controller('labelCtrl', function ($scope, $http) {
+        $scope.selectCarCode = "";
+        $scope.carCode = "";
+        $scope.carArray = [];
+
+        $scope.distinctCarCode = [];
+        $scope.wayBillType = [];
+    
+        $http.post("/rp/CarMstInit", null, null).then(
+            function (obj) {
+                //debugger;
+                if (obj.data.Success) {
+                    
+                    $scope.distinctCarCode = obj.data.Data.carCodes;
+                    $scope.wayBillType = obj.data.Data.wbType;
+
+                }
+                else
+                    alert(obj.data.Msg)
+            },
+             function (resp) {
+                 debugger;
+                 alert("Fail!");
+             }
+            );
+
+        $scope.searchAction = function () {
+            if ($scope.carCode == "")
+                return;
+            //debugger;
+            $.ajax({
+                url: "/rp/GetCarList",
+                data: { carCode: $scope.carCode.originalObject.CarCode },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    $scope.carArray = obj.Data;
+                },
+                error: function (obj) {
+                    alert("fail to get Sys ID List Data");
+                }
+
+            });
+        };
+
+        $scope.save = function (obj) {
+
+            $.ajax({
+                url: "/rp/SaveCarWayBillID",
+                data: JSON.stringify({ car: obj }),
+                type: "post",
+                async: false,
+                contentType: 'application/json',
+                success: function (obj) {
+                    alert(obj.Msg);
+                },
+                error: function (obj) {
+                    alert("fail to Save Data");
+                }
+
+            });
+        };
+
+        $scope.wbIDChange = function (curr) {
+            //debugger;
+            for (var i = 0; i < $scope.wayBillType.length; i++) {
+                if ($scope.wayBillType[i].WAYBILL_ID == curr.WAYBILL_ID) {
+                    curr.WAYBILL_DESC = $scope.wayBillType[i].WAYBILL_DESC;
+                    break;
+                }
+            }
+
+        };
+
+        $scope.clickTMSCheckBox = function (event, curr) {
+            if (event.target.checked) {
+
+                curr.SEND_TO_TMS = "Y";
+            }
+            else {
+                curr.SEND_TO_TMS = "N";
+            }
+        };
+
+
+    });
+
+    //manual load app
+    angular.bootstrap(document.getElementById("labelBody"), ['labelApp']);
+
+
+</script>
+
+<script>
+
+
+</script>
