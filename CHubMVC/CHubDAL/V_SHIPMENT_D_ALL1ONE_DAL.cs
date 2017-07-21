@@ -16,5 +16,11 @@ namespace CHubDAL
             : base(db) { }
 
 
+        public List<string> GetPrintPartNoList(string shipmentNo, string boxNo, string printPartNo)
+        {
+
+            return null;
+        }
+
     }
 }

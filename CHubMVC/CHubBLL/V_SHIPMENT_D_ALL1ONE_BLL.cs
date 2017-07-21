@@ -21,6 +21,11 @@ namespace CHubBLL
             dal = new V_SHIPMENT_D_ALL1ONE_DAL(db);
         }
 
+        public List<string> GetPrintPartNoList(string shipmentNo, string boxNo, string printPartNo)
+        {
+            return dal.GetPrintPartNoList(shipmentNo,boxNo,printPartNo);
+        }
+
 
     }
 }

@@ -16,14 +16,14 @@
         </ul>
 
         <!--content parts-->
-        <div class="tab-content" style="overflow-x:auto;">
+        <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="home">
 
                 <div class="row" style="margin-top:15px;">
                     <div class="form-group">
                         <label for="txtPrintPartNo" class="col-sm-2 control-label text-right">Print PartNo</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control input-sm" id="txtPrintPartNo" ng-model="" placeholder="Print Part No.">
+                            <input type="text" class="form-control input-sm" id="txtPrintPartNo" ng-model="pPartNo_1" placeholder="Print Part No.">
                         </div>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                     <div class="form-group">
                         <label for="txtPartNo" class="col-sm-2 control-label text-right">Part No.</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control input-sm" id="txtPartNo" ng-model="" placeholder="Part No.">
+                            <input type="text" class="form-control input-sm" id="txtPartNo" ng-model="partNo" placeholder="Part No.">
                         </div>
                     </div>
                 </div>
@@ -109,38 +109,30 @@
                         <thead>
                             <tr>
                                 <th style="">Index</th>
-                                <th style="">WareHouse</th>
-                                <th style="">Carrier Code</th>
+                                <th style="">Print Copies</th>
+                                <th style="">Qty in Carton</th>
 
-                                <th style="">Carrier Name</th>
-                                <th style="">Way Bill ID</th>
-                                <th style="">Way Bill Desc</th>
-                                <th style="">Send To TMS</th>
-                                <th style="">Short Name</th>
-                                <th style="">Operation</th>
+                                <th style="">Print PartNo</th>
+                                <th style="">Part No</th>
+                                <th style="">Description</th>
+                                <th style="">Desc_CN</th>
+                                <th style="">Desc Short</th>
+                                <th style="">COO</th>
+                                <th style="">WT(KG)</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="ca in carArray ">
+                            <tr ng-repeat="r in result ">
                                 <td style="">{{$index+1}}</td>
-                                <td style="">{{ca.WH_ID}}</td>
-                                <td>{{ca.CARCOD}}</td>
-                                <td>{{ca.CARNAM}}</td>
-                                <td style="width:180px">
-                                    <select class="form-control input-sm" id="wbID" ng-model="ca.WAYBILL_ID" ng-change="wbIDChange(ca)" ng-options="t.WAYBILL_ID as t.WAYBILL_ID for t in wayBillType"></select>
-                                </td>
-                                <td>{{ca.WAYBILL_DESC}}</td>
-                                <td>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" style="padding:0px" id="ckTMS$index" aria-label="ckTMS$index" ng-checked="ca.SEND_TO_TMS=='Y'" ng-click="clickTMSCheckBox($event,ca)">
-                                        </label>
-                                    </div>
-                                </td>
-                                <td> <input class="form-control" ng-model="ca.CARNAM_SHORT" /></td>
-                                <td style="width:80px;text-align:center">
-                                    <a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="save(ca)"><span class="glyphicon glyphicon-floppy-disk"></span></a>
-                                </td>
+                                <td style="width:80px"><input class="form-control" ng-model="" /></td>
+                                <td>{{r.QTY_IN_CARTON}}</td>
+                                <td>{{r.PRINT_PART_NO}}</td>
+                                <td>{{r.PART_NO}}</td>
+                                <td>{{r.DESCRIPTION}}</td>
+                                <td>{{r.DESC_CN}}</td>
+                                <td>{{r.SHORT_DESCRIPTION}}</td>
+                                <td >{{r.COUNTRY_OF_ORIGIN}}</td>
+                                <td>{{r.PART_WEIGHT}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -155,32 +147,22 @@
 <script>
     
     angular.module('labelApp', []).controller('labelCtrl', function ($scope, $http) {
-        $scope.selectCarCode = "";
-        $scope.carCode = "";
-        $scope.carArray = [];
+        //By parts part
+        $scope.pPartNo_1 = "";
+        $scope.partNo = "";
+        $scope.status = "Y";
 
-        $scope.distinctCarCode = [];
-        $scope.wayBillType = [];
+        //By shipment part
+        $scope.shipmentNo = "";
+        $scope.boxNo = "";
+        $scope.pPartNo_2 = "";
+
+        $scope.result = [];
+
     
-        $http.post("/rp/CarMstInit", null, null).then(
-            function (obj) {
-                //debugger;
-                if (obj.data.Success) {
-                    
-                    $scope.distinctCarCode = obj.data.Data.carCodes;
-                    $scope.wayBillType = obj.data.Data.wbType;
+        
 
-                }
-                else
-                    alert(obj.data.Msg)
-            },
-             function (resp) {
-                 debugger;
-                 alert("Fail!");
-             }
-            );
-
-        $scope.searchAction = function () {
+        $scope.queryByShipment = function () {
             if ($scope.carCode == "")
                 return;
             //debugger;
@@ -199,16 +181,22 @@
             });
         };
 
-        $scope.save = function (obj) {
+        $scope.queryByPart = function () {
 
             $.ajax({
-                url: "/rp/SaveCarWayBillID",
-                data: JSON.stringify({ car: obj }),
+                url: "/rp/QueryByParts",
+                data: {
+                    printPartNo:$scope.pPartNo_1, 
+                    partNo:$scope.partNo, 
+                    status:$scope.status
+                    },
                 type: "post",
                 async: false,
-                contentType: 'application/json',
                 success: function (obj) {
-                    alert(obj.Msg);
+                    if (obj.Success)
+                        $scope.result = obj.Data;
+                    else
+                        alert(obj.Msg);
                 },
                 error: function (obj) {
                     alert("fail to Save Data");

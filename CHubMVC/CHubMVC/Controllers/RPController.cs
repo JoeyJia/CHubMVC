@@ -457,6 +457,49 @@ namespace CHubMVC.Controllers
             //rpBLL.Add(appUser, CHubEnum.PageNameEnum.custpack.ToString(), this.Request.Url.AbsoluteUri);
             return View();
         }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult QueryByParts(string printPartNo, string partNo, string status)
+        {
+            if(string.IsNullOrEmpty(printPartNo)&&string.IsNullOrEmpty(partNo)&&string.IsNullOrEmpty(status))
+                return Json(new RequestResult(false,"no condition input"));
+
+            try
+            {
+                V_PLABEL_BASE_BLL baseBLL = new V_PLABEL_BASE_BLL();
+                var result = baseBLL.QueryByPart(printPartNo, partNo, status);
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("QueryByParts", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult QueryByShipment(string shipmentNo, string boxNo, string printPartNo)
+        {
+            try
+            {
+                //V_PLABEL_BASE_BLL baseBLL = new V_PLABEL_BASE_BLL();
+                //var result = baseBLL.QueryByPart()
+                return Json(new RequestResult(true));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("QueryByShipment", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+
+
+
+
+
         #endregion
 
 

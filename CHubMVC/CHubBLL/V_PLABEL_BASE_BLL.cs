@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
+using CHubDBEntity.UnmanagedModel;
 
 namespace CHubBLL
 {
@@ -19,6 +20,11 @@ namespace CHubBLL
         public V_PLABEL_BASE_BLL(CHubEntities db)
         {
             dal = new V_PLABEL_BASE_DAL(db);
+        }
+
+        public List<V_PLABEL_BASE> QueryByPart(string printPartNo, string partNo, string status)
+        {
+            return dal.QueryByPart(printPartNo, partNo, status);
         }
 
     }
