@@ -701,6 +701,28 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           <Property Name="PAPER_HORIZONTAL" Type="number" Precision="22" Scale="2" Nullable="false" />
           <Property Name="PAPER_VERTICAL" Type="number" Precision="22" Scale="2" Nullable="false" />
         </EntityType>
+        <EntityType Name="RP_LABEL_TYPE">
+          <Key>
+            <PropertyRef Name="LABEL_CODE" />
+          </Key>
+          <Property Name="LABEL_CODE" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="LABEL_DESC" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="T01" Type="varchar2" MaxLength="20" />
+          <Property Name="T02" Type="varchar2" MaxLength="20" />
+          <Property Name="T03" Type="varchar2" MaxLength="20" />
+          <Property Name="T04" Type="varchar2" MaxLength="20" />
+          <Property Name="T05" Type="varchar2" MaxLength="20" />
+          <Property Name="T06" Type="varchar2" MaxLength="20" />
+          <Property Name="T07" Type="varchar2" MaxLength="20" />
+          <Property Name="T08" Type="varchar2" MaxLength="20" />
+          <Property Name="T09" Type="varchar2" MaxLength="20" />
+          <Property Name="T10" Type="varchar2" MaxLength="20" />
+          <Property Name="T11" Type="varchar2" MaxLength="20" />
+          <Property Name="T12" Type="varchar2" MaxLength="20" />
+          <Property Name="PAPER_HORIZONTAL" Type="number" Precision="22" Scale="2" Nullable="false" />
+          <Property Name="PAPER_VERTICAL" Type="number" Precision="22" Scale="2" Nullable="false" />
+        </EntityType>
         <EntityType Name="RP_ORDTYP_MST">
           <Key>
             <PropertyRef Name="WH_ID" />
@@ -2371,6 +2393,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="RP_AUTOPACK_LOG" EntityType="Self.RP_AUTOPACK_LOG" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="RP_CAR_MST" EntityType="Self.RP_CAR_MST" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="RP_CUST_PACK_TYPE" EntityType="Self.RP_CUST_PACK_TYPE" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="RP_LABEL_TYPE" EntityType="Self.RP_LABEL_TYPE" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="RP_ORDTYP_MST" EntityType="Self.RP_ORDTYP_MST" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="RP_PRINTER" EntityType="Self.RP_PRINTER" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="RP_SHIP_TRACK" EntityType="Self.RP_SHIP_TRACK" Schema="GWAPP" store:Type="Tables" />
@@ -4411,6 +4434,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="RP_PRINTER" EntitySet="RP_PRINTER" />
             <End Role="APP_USERS" EntitySet="APP_USERS" />
           </AssociationSet>
+          <EntitySet Name="RP_LABEL_TYPE" EntityType="CHubDBModel.RP_LABEL_TYPE" />
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -5950,6 +5974,28 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="RP_LABEL_TYPE">
+          <Key>
+            <PropertyRef Name="LABEL_CODE" />
+          </Key>
+          <Property Name="LABEL_CODE" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LABEL_DESC" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVEIND" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="T01" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="T02" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="T03" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="T04" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="T05" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="T06" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="T07" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="T08" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="T09" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="T10" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="T11" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="T12" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PAPER_HORIZONTAL" Type="Decimal" Nullable="false" Precision="22" Scale="2" />
+          <Property Name="PAPER_VERTICAL" Type="Decimal" Nullable="false" Precision="22" Scale="2" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7635,6 +7681,29 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="ORDTYP_WB" ColumnName="ORDTYP_WB" />
                 <ScalarProperty Name="ORDTYP" ColumnName="ORDTYP" />
                 <ScalarProperty Name="WH_ID" ColumnName="WH_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RP_LABEL_TYPE">
+            <EntityTypeMapping TypeName="CHubDBModel.RP_LABEL_TYPE">
+              <MappingFragment StoreEntitySet="RP_LABEL_TYPE">
+                <ScalarProperty Name="PAPER_VERTICAL" ColumnName="PAPER_VERTICAL" />
+                <ScalarProperty Name="PAPER_HORIZONTAL" ColumnName="PAPER_HORIZONTAL" />
+                <ScalarProperty Name="T12" ColumnName="T12" />
+                <ScalarProperty Name="T11" ColumnName="T11" />
+                <ScalarProperty Name="T10" ColumnName="T10" />
+                <ScalarProperty Name="T09" ColumnName="T09" />
+                <ScalarProperty Name="T08" ColumnName="T08" />
+                <ScalarProperty Name="T07" ColumnName="T07" />
+                <ScalarProperty Name="T06" ColumnName="T06" />
+                <ScalarProperty Name="T05" ColumnName="T05" />
+                <ScalarProperty Name="T04" ColumnName="T04" />
+                <ScalarProperty Name="T03" ColumnName="T03" />
+                <ScalarProperty Name="T02" ColumnName="T02" />
+                <ScalarProperty Name="T01" ColumnName="T01" />
+                <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
+                <ScalarProperty Name="LABEL_DESC" ColumnName="LABEL_DESC" />
+                <ScalarProperty Name="LABEL_CODE" ColumnName="LABEL_CODE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

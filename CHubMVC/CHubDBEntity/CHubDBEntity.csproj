@@ -253,6 +253,9 @@
     <Compile Include="RP_CUST_PACK_TYPE.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="RP_LABEL_TYPE.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="RP_ORDTYP_MST.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
