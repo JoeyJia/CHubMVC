@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APP_WH_BLL.cs" />
+    <Compile Include="RP_LABEL_TYPE_BLL.cs" />
     <Compile Include="V_PLABEL_BASE_BLL.cs" />
     <Compile Include="V_SHIPMENT_D_ALL1ONE_BLL.cs" />
     <Compile Include="OtherProcess\CustPackPrintBLL.cs" />
