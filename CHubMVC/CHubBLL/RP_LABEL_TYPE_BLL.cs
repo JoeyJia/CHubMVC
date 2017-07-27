@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
+using CHubModel.ExtensionModel;
 
 namespace CHubBLL
 {
@@ -21,6 +22,10 @@ namespace CHubBLL
             dal = new RP_LABEL_TYPE_DAL(db);
         }
 
+        public List<ExRPLabelType> GetLabelTypeExList()
+        {
+            return dal.GetLabelTypeExList();
+        }
 
     }
 }

@@ -321,10 +321,12 @@
     <Compile Include="UnmanagedModel\V_OPEN_QTY_SO_PDC.cs" />
     <Compile Include="UnmanagedModel\V_OPEN_QTY_SO_RDC.cs" />
     <Compile Include="UnmanagedModel\V_PLABEL_BASE.cs" />
+    <Compile Include="UnmanagedModel\V_PLABEL_PRINT.cs" />
     <Compile Include="UnmanagedModel\V_RP_PACK_D_BASE.cs" />
     <Compile Include="UnmanagedModel\V_RP_PACK_D_PRINT.cs" />
     <Compile Include="UnmanagedModel\V_RP_PACK_H_BASE.cs" />
     <Compile Include="UnmanagedModel\V_RP_PACK_H_PRINT.cs" />
+    <Compile Include="UnmanagedModel\V_RP_PACK_H_QUEUE.cs" />
     <Compile Include="UnmanagedModel\V_RP_WAYBILL_D_BASE.cs" />
     <Compile Include="UnmanagedModel\V_RP_WAYBILL_D_PRINT.cs" />
     <Compile Include="UnmanagedModel\V_RP_WAYBILL_H_BASE.cs" />

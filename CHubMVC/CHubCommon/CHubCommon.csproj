@@ -103,6 +103,7 @@
     <Compile Include="Log\TxtLog.cs" />
     <Compile Include="PDFHelper\PackPageEventHelper.cs" />
     <Compile Include="PDFHelper\LocalPageEventHelper.cs" />
+    <Compile Include="PDFHelper\PDFUtility.cs" />
     <Compile Include="Printer\Externs.cs" />
     <Compile Include="Printer\PrintHelper.cs" />
     <Compile Include="ProcessStatusHelper.cs" />

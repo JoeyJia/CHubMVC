@@ -95,12 +95,27 @@ namespace CHubCommon
                 template = cb.CreateTemplate(50, 50);
             }
 
-            iTextSharp.text.Image logoImage = iTextSharp.text.Image.GetInstance(LogoPath);
             PdfPTable imgTable = new PdfPTable(2);
             imgTable.TotalWidth = 100f;
             imgTable.SetWidths(new float[] { 75f, 500f });
             imgTable.HorizontalAlignment = Element.ALIGN_LEFT;
-            PdfPCell imgCell = new PdfPCell(logoImage, true);
+            PdfPCell imgCell;
+            if (!string.IsNullOrEmpty(LogoPath))
+            {
+                iTextSharp.text.Image logoImage = iTextSharp.text.Image.GetInstance(LogoPath);
+                
+                imgCell = new PdfPCell(logoImage, true);
+            }
+            else
+            {
+                Paragraph p4Lines = new Paragraph();
+                p4Lines.Add(new Phrase(Environment.NewLine));
+                p4Lines.Add(new Phrase(Environment.NewLine));
+                p4Lines.Add(new Phrase(Environment.NewLine));
+                p4Lines.Add(new Phrase(Environment.NewLine));
+
+                imgCell = new PdfPCell(p4Lines);
+            }
             imgCell.BorderWidth = 0;
             imgCell.HorizontalAlignment = Element.ALIGN_RIGHT;
             imgTable.AddCell(imgCell);

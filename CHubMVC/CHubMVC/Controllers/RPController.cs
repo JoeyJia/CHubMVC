@@ -459,6 +459,42 @@ namespace CHubMVC.Controllers
         }
 
         [Authorize]
+        public ActionResult LabelInit()
+        {
+            try
+            {
+                string defPrinter = string.Empty;
+                List<ExRPLabelType> typeList = null;
+                List<RP_PRINTER> printerList = null;
+
+                APP_USERS_BLL userBLL = new APP_USERS_BLL();
+                string appUser = Session[CHubConstValues.SessionUser].ToString();
+                APP_USERS user = userBLL.GetAppUserByDomainName(appUser);
+                defPrinter = user.PRINTER_ID;
+
+                RP_LABEL_TYPE_BLL typeBLL = new RP_LABEL_TYPE_BLL();
+                typeList = typeBLL.GetLabelTypeExList();
+
+                RP_PRINTER_BLL printBLL = new RP_PRINTER_BLL();
+                printerList = printBLL.GetPrinterList();
+
+                var obj = new
+                {
+                    defPrinter = defPrinter??"",
+                    printers = printerList,
+                    types = typeList
+                };
+                return Json(new RequestResult(obj));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("RP LabelInit", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+
+        [Authorize]
         [HttpPost]
         public ActionResult QueryByParts(string printPartNo, string partNo, string status)
         {
@@ -491,6 +527,23 @@ namespace CHubMVC.Controllers
             catch (Exception ex)
             {
                 LogHelper.WriteLog("QueryByShipment", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult PrintLabel(string partNo,string labelCode,string parinter,int copies)
+        {
+            try
+            {
+                //V_PLABEL_BASE_BLL baseBLL = new V_PLABEL_BASE_BLL();
+                //var result = baseBLL.QueryByPart()
+                return Json(new RequestResult(true));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("PrintLabel", ex);
                 return Json(new RequestResult(false, ex.Message));
             }
         }

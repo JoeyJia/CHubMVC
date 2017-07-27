@@ -21,5 +21,10 @@ namespace CHubBLL
             dal = new RP_PRINTER_DAL(db);
         }
 
+        public List<RP_PRINTER> GetPrinterList()
+        {
+            return dal.GetPrinterList();
+        }
+
     }
 }

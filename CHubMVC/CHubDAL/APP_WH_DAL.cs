@@ -20,5 +20,15 @@ namespace CHubDAL
             return db.APP_WH.ToList();
         }
 
+        public string GetDefPrinter(string whID)
+        {
+            APP_WH wh = db.APP_WH.FirstOrDefault(a => a.WH_ID == whID);
+            if (wh == null)
+                return null;
+            else
+                return wh.DEF_PACK_PRINTER;
+
+        }
+
     }
 }

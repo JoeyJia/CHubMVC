@@ -106,9 +106,11 @@ namespace CHubBLL.OtherProcess
 
             PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(fullPath, FileMode.Create));
 
-            string imagePath = BasePath.Replace("temp", "images") + "custpack.png";
+            //string imagePath = BasePath.Replace("temp", "images") + pageDatas[0].Header.LOGO; //；"custpack.png";
             PackPageEventHelper pHelper = new PackPageEventHelper();
-            pHelper.LogoPath = imagePath;
+
+            if (!string.IsNullOrEmpty(pageDatas[0].Header.LOGO))
+                pHelper.LogoPath = BasePath.Replace("temp", "images") + pageDatas[0].Header.LOGO;
             writer.PageEvent = pHelper;
 
             doc.SetMargins(10f, 10f, 10f,36f);
@@ -273,6 +275,10 @@ namespace CHubBLL.OtherProcess
                 if ((i+1)< pageDatas.Count)
                 {
                     pHelper.CurrentGroup = pageDatas[i+1].Header.SHIP_ID;
+                    if (!string.IsNullOrEmpty(pageDatas[i + 1].Header.LOGO))
+                        pHelper.LogoPath = BasePath.Replace("temp", "images") + pageDatas[i+1].Header.LOGO;
+                    else
+                        pHelper.LogoPath = null;
                 }
 
             }

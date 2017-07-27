@@ -65,7 +65,7 @@
                     <div class="form-group">
                         <label for="txtShipNo" class="col-sm-2 control-label text-right">Shipment No.</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control input-sm" id="txtShipNo" ng-model="" placeholder="Shipment No.">
+                            <input type="text" class="form-control input-sm" id="txtShipNo" ng-model="shipmentNo" placeholder="Shipment No.">
                         </div>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                     <div class="form-group">
                         <label for="txtBoxNo" class="col-sm-2 control-label text-right">Box Number</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control input-sm" id="txtBoxNo" ng-model="" placeholder="Box Number">
+                            <input type="text" class="form-control input-sm" id="txtBoxNo" ng-model="boxNo" placeholder="Box Number">
                         </div>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                     <div class="form-group">
                         <label for="txtPrintPartNo2" class="col-sm-2 control-label text-right">Print PartNo</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control input-sm" id="txtPrintPartNo2" ng-model="" placeholder="Print PartNo">
+                            <input type="text" class="form-control input-sm" id="txtPrintPartNo2" ng-model="pPartNo_2" placeholder="Print PartNo">
                         </div>
                         <div class="col-sm-2">
                             <button class="btn btn-primary btn-sm" ng-click="queryByShipment()">Submit</button>
@@ -136,6 +136,18 @@
                             </tr>
                         </tbody>
                     </table>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <select class="form-control input-sm" ng-model="selectedType" ng-options="tt.LABEL_CODE as tt.LABEL_CODE for tt in types"></select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <select class="form-control input-sm" ng-model="selectedPrinter" ng-options="p.PRINTER_ID as p.PRINTER_NAME for p in printers"></select>
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -158,6 +170,35 @@
         $scope.pPartNo_2 = "";
 
         $scope.result = [];
+
+        $scope.selectedPrinter = "";
+        $scope.selectedType = "";
+
+        //Init part
+        $scope.defPrinter = "";
+        $scope.printers = [];
+        $scope.types = [];
+
+
+        $http.post("/rp/LabelInit", null, null).then(
+                function (obj) {
+                    //debugger;
+                    if (obj.data.Success) {
+                        $scope.defPrinter = obj.data.Data.defPrinter;
+                        $scope.printers = obj.data.Data.printers;
+                        $scope.types = obj.data.Data.types;
+
+
+
+                    }
+                    else
+                        alert(obj.data.Data.Msg)
+                },
+                 function (resp) {
+                     debugger;
+                     alert("Fail!");
+                 }
+                );
 
     
         

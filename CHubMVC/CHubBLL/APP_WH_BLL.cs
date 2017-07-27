@@ -27,5 +27,10 @@ namespace CHubBLL
             return dal.GetAppWHList();
         }
 
+        public string GetDefPrinter(string whID)
+        {
+            return dal.GetDefPrinter(whID);
+        }
+
     }
 }

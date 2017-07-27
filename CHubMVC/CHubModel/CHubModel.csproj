@@ -49,6 +49,7 @@
     <Compile Include="ExtensionModel\ExRPADRMst.cs" />
     <Compile Include="ExtensionModel\ExRPCarMst.cs" />
     <Compile Include="ExtensionModel\ExRPCustPackType.cs" />
+    <Compile Include="ExtensionModel\ExRPLabelType.cs" />
     <Compile Include="ExtensionModel\ExVAliasAddr.cs" />
     <Compile Include="ExtensionModel\ITT_PO_LEVEL_1.cs" />
     <Compile Include="ExtensionModel\ITT_PO_Release.cs" />

@@ -77,7 +77,9 @@
     <Compile Include="DB_KPI_DAL.cs" />
     <Compile Include="EW_MESSAGE_DAL.cs" />
     <Compile Include="APP_WH_DAL.cs" />
+    <Compile Include="V_RP_PACK_H_QUEUE_DAL.cs" />
     <Compile Include="RP_LABEL_TYPE_DAL.cs" />
+    <Compile Include="V_PLABEL_PRINT_DAL.cs" />
     <Compile Include="V_PLABEL_BASE_DAL.cs" />
     <Compile Include="V_SHIPMENT_D_ALL1ONE_DAL.cs" />
     <Compile Include="V_RP_PACK_D_PRINT_DAL.cs" />

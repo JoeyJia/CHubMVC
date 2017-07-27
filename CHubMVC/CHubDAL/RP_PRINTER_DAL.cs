@@ -15,5 +15,10 @@ namespace CHubDAL
         public RP_PRINTER_DAL(CHubEntities db)
             : base(db) { }
 
+        public List<RP_PRINTER> GetPrinterList()
+        {
+            return db.RP_PRINTER.ToList();
+        }
+
     }
 }
