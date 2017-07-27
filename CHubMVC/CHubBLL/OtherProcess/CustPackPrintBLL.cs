@@ -12,6 +12,7 @@ using System.Drawing;
 using CHubDBEntity;
 using ThoughtWorks.QRCode.Codec;
 using CHubModel.ExtensionModel;
+using CHubCommon.Printer;
 
 namespace CHubBLL.OtherProcess
 {
@@ -34,26 +35,46 @@ namespace CHubBLL.OtherProcess
 
         public void GetStagedPackList(string appUser)
         {
-            V_RP_PACK_H_BASE_BLL hBaseBLL = new V_RP_PACK_H_BASE_BLL();
-            List<string> idList = hBaseBLL.GetStagedPackList();
+            V_RP_PACK_H_QUEUE_BLL qBLL = new V_RP_PACK_H_QUEUE_BLL();
+            APP_WH_BLL whBLL = new APP_WH_BLL();
+            PrintHelper pHelper = new PrintHelper();
 
-            if (idList == null || idList.Count == 0)
+            List<string> dWHID = qBLL.GetDistinctWHID();
+
+            if (dWHID == null || dWHID.Count == 0)
             {
-                Console.WriteLine("No staged pack data  found");
+                Console.WriteLine("NO queue Data");
                 return;
             }
 
-            string fileName = PrintPackData(idList, appUser);
-            string msg = "";
-            foreach (var item in idList)
+            foreach (var id in dWHID)
             {
-                msg += (item + "|");
+
+                List<string> idList = qBLL.GetShipIDByWhID(id);
+
+                if (idList == null || idList.Count == 0)
+                {
+                    Console.WriteLine("No staged pack data  found");
+                    return;
+                }
+
+                string fileName = PrintPackData(idList, appUser);
+                string fullPath = BasePath + fileName;
+
+                string defPrinter = whBLL.GetDefPrinter(id);
+
+                pHelper.PrintFile(fullPath, defPrinter);
+
+                string msg = "";
+                foreach (var item in idList)
+                {
+                    msg += (item + "|");
+                }
+                Console.WriteLine("{0} Pack Print job completed successfully!", DateTime.Now.ToString());
+                Console.WriteLine(msg);
+                Console.WriteLine(fileName);
+                Console.WriteLine("******************************************");
             }
-            Console.WriteLine("{0} Pack Print job completed successfully!", DateTime.Now.ToString());
-            Console.WriteLine(msg);
-            Console.WriteLine(fileName);
-            Console.WriteLine("******************************************");
-            
         }
 
         public string PrintPackData(List<string> idList,string appUser)

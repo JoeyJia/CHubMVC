@@ -12,7 +12,7 @@ namespace CHubCommon.Printer
     {
 
 
-        static public void PrintFile(string filePath,string printerName = null)
+        public void PrintFile(string filePath,string printerName = null)
         {
             Process pro = new Process();
             pro.StartInfo.FileName = filePath;
@@ -31,7 +31,7 @@ namespace CHubCommon.Printer
 
         }
 
-        static public bool ExistPrinter(string printName)
+        public bool ExistPrinter(string printName)
         {
             List<string> printList = new List<string>();
             foreach (var item in PrinterSettings.InstalledPrinters)
