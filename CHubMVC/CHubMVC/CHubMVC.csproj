@@ -286,6 +286,7 @@
     <Content Include="Images\ico\SPDC.ico" />
     <Content Include="Images\ico\Zheng.ico" />
     <Content Include="Images\ico\Zhi.ico" />
+    <Content Include="Images\liugong.jpg" />
     <Content Include="Images\loading.gif" />
     <Content Include="Images\LogBack\bg_1.jpg" />
     <Content Include="Images\LogBack\bg_2.jpg" />
