@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
+using CHubModel.ExtensionModel;
 
 namespace CHubBLL
 {
@@ -21,9 +22,9 @@ namespace CHubBLL
             dal = new V_SHIPMENT_D_ALL1ONE_DAL(db);
         }
 
-        public List<string> GetPrintPartNoList(string shipmentNo, string boxNo, string printPartNo)
+        public List<PLabelRow> GetPLabelRows(string shipmentNo, string boxNo, string printPartNo)
         {
-            return dal.GetPrintPartNoList(shipmentNo,boxNo,printPartNo);
+            return dal.GetPLabelRows(shipmentNo,boxNo,printPartNo);
         }
 
 

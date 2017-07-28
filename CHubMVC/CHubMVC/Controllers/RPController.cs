@@ -452,9 +452,9 @@ namespace CHubMVC.Controllers
         [Authorize]
         public ActionResult Label()
         {
-            //string appUser = Session[CHubConstValues.SessionUser].ToString();
-            //APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
-            //rpBLL.Add(appUser, CHubEnum.PageNameEnum.custpack.ToString(), this.Request.Url.AbsoluteUri);
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, CHubEnum.PageNameEnum.lbprt.ToString(), this.Request.Url.AbsoluteUri);
             return View();
         }
 
@@ -518,11 +518,13 @@ namespace CHubMVC.Controllers
         [HttpPost]
         public ActionResult QueryByShipment(string shipmentNo, string boxNo, string printPartNo)
         {
+            if (string.IsNullOrEmpty(shipmentNo) && string.IsNullOrEmpty(boxNo) && string.IsNullOrEmpty(printPartNo))
+                return Json(new RequestResult(false, "no condition input"));
             try
             {
-                //V_PLABEL_BASE_BLL baseBLL = new V_PLABEL_BASE_BLL();
-                //var result = baseBLL.QueryByPart()
-                return Json(new RequestResult(true));
+                V_SHIPMENT_D_ALL1ONE_BLL sdBLL = new V_SHIPMENT_D_ALL1ONE_BLL();
+                var result = sdBLL.GetPLabelRows(shipmentNo, boxNo, printPartNo);
+                return Json(new RequestResult(result));
             }
             catch (Exception ex)
             {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDBEntity;
 using CHubDBEntity.UnmanagedModel;
+using CHubModel.ExtensionModel;
 
 namespace CHubDAL
 {
@@ -16,9 +17,19 @@ namespace CHubDAL
         public V_PLABEL_BASE_DAL(CHubEntities db)
             : base(db) { }
 
-        public List<V_PLABEL_BASE> QueryByPart(string printPartNo, string partNo, string status)
+        public List<PLabelRow> QueryByPart(string printPartNo, string partNo, string status)
         {
-            string sql = "select* from V_PLABEL_BASE where 1=1";
+            string sql = @"select
+1 COPIES,
+QTY_IN_CARTON ,
+ PRINT_PART_NO ,
+ PART_NO, 
+ DESCRIPTION ,
+DESC_CN ,
+ SHORT_DESCRIPTION ,
+COUNTRY_OF_ORIGIN, 
+PART_WEIGHT
+from V_PLABEL_BASE where 1=1";
             if (!string.IsNullOrEmpty(printPartNo))
                 sql += string.Format(" and PRINT_PART_NO ='{0}'",printPartNo);
 
@@ -28,7 +39,7 @@ namespace CHubDAL
             if (!string.IsNullOrEmpty(status))
                 sql += string.Format(" and PART_CATALOG='{0}'", status);
 
-            var result = db.Database.SqlQuery<V_PLABEL_BASE>(sql);
+            var result = db.Database.SqlQuery<PLabelRow>(sql);
             return result.ToList();
         }
 

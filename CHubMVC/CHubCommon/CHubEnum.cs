@@ -64,7 +64,11 @@ namespace CHubCommon
             /// <summary>
             /// /rp/pack
             /// </summary>
-            custpack
+            custpack,
+            /// <summary>
+            /// /rp/lable
+            /// </summary>
+            lbprt
         }
 
         public enum OrderStatusEnum

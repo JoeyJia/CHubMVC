@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
 using CHubDBEntity.UnmanagedModel;
+using CHubModel.ExtensionModel;
 
 namespace CHubBLL
 {
@@ -22,7 +23,7 @@ namespace CHubBLL
             dal = new V_PLABEL_BASE_DAL(db);
         }
 
-        public List<V_PLABEL_BASE> QueryByPart(string printPartNo, string partNo, string status)
+        public List<PLabelRow> QueryByPart(string printPartNo, string partNo, string status)
         {
             return dal.QueryByPart(printPartNo, partNo, status);
         }

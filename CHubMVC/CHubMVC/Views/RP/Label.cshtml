@@ -40,7 +40,7 @@
                 <div class="row" style="margin-bottom:10px;">
                     <div class="form-group">
                         
-                        <label class="col-sm-2 control-label">Status</label>
+                        <label class="col-sm-2 control-label text-right">Status</label>
                         <div class="col-sm-3">
                             <label class="checkbox-inline">
                                 <input type="radio" name="inlineradio" ng-model="status" value="Y">Cummins Catalog
@@ -108,8 +108,8 @@
                     <table id="tbCarMst" class="table table-striped table-hover table-bordered .table-condensed">
                         <thead>
                             <tr>
-                                <th style="">Index</th>
-                                <th style="">Print Copies</th>
+                                <th style=""></th>
+                                <th style="">Copies</th>
                                 <th style="">Qty in Carton</th>
 
                                 <th style="">Print PartNo</th>
@@ -123,8 +123,14 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="r in result ">
-                                <td style="">{{$index+1}}</td>
-                                <td style="width:80px"><input class="form-control" ng-model="" /></td>
+                                <td style="">
+                                    <div class="checkbox" style="margin-bottom:1px;margin-top:1px">
+                                        <label style="padding:0px">
+                                            <input type="checkbox" style="padding:0px" id="checkbox$index" class="ckItems" partNo="{{r.PART_NO}}" aria-label="check$index">
+                                        </label>
+                                    </div>
+                                </td>
+                                <td style="width:80px;padding:0px"><input class="form-control input-sm" ng-model="r.COPIES" /></td>
                                 <td>{{r.QTY_IN_CARTON}}</td>
                                 <td>{{r.PRINT_PART_NO}}</td>
                                 <td>{{r.PART_NO}}</td>
@@ -137,13 +143,21 @@
                         </tbody>
                     </table>
 
-                    <div class="row">
+                    <div class="row" style="margin-top:15px;">
+                        <label for="txtPrintPartNo2" class="col-sm-2 col-md-offset-3 control-label text-right">Choose Label Type:</label>
+
                         <div class="col-md-2">
                             <select class="form-control input-sm" ng-model="selectedType" ng-options="tt.LABEL_CODE as tt.LABEL_CODE for tt in types"></select>
                         </div>
 
                         <div class="col-md-2">
                             <select class="form-control input-sm" ng-model="selectedPrinter" ng-options="p.PRINTER_ID as p.PRINTER_NAME for p in printers"></select>
+                        </div>
+                        <div class="col-sm-1">
+                            <button class="btn btn-primary btn-sm" ng-click="">Print</button>
+                        </div>
+                        <div class="col-sm-1">
+                            <button class="btn btn-primary btn-sm" ng-click="">Print TO PDF</button>
                         </div>
 
                     </div>
@@ -204,19 +218,25 @@
         
 
         $scope.queryByShipment = function () {
-            if ($scope.carCode == "")
-                return;
+            
             //debugger;
             $.ajax({
-                url: "/rp/GetCarList",
-                data: { carCode: $scope.carCode.originalObject.CarCode },
+                url: "/rp/QueryByShipment",
+                data: {
+                    shipmentNo:$scope.shipmentNo,
+                    boxNo:$scope.boxNo,
+                    printPartNo: $scope.pPartNo_2
+                },
                 type: "post",
                 async: false,
                 success: function (obj) {
-                    $scope.carArray = obj.Data;
+                    if (obj.Success)
+                        $scope.result = obj.Data;
+                    else
+                        alert(obj.Msg);
                 },
                 error: function (obj) {
-                    alert("fail to get Sys ID List Data");
+                    alert("fail to Query");
                 }
 
             });
@@ -240,7 +260,7 @@
                         alert(obj.Msg);
                 },
                 error: function (obj) {
-                    alert("fail to Save Data");
+                    alert("fail to Query");
                 }
 
             });
