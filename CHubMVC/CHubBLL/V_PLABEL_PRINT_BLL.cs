@@ -22,9 +22,14 @@ namespace CHubBLL
             dal = new V_PLABEL_PRINT_DAL(db);
         }
 
-        public List<V_PLABEL_PRINT> GetLabelPrintData(string partNo, string labelCode)
+        public V_PLABEL_PRINT GetLabelPrintData(string partNo, string labelCode)
         {
             return dal.GetLabelPrintData(partNo, labelCode);
+        }
+
+        public List<V_PLABEL_PRINT> BatchGetLabelPrintData(List<string> partNoList, string labelCode)
+        {
+            return dal.BatchGetLabelPrintData(partNoList, labelCode);
         }
 
     }

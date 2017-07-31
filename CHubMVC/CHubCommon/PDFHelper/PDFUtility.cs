@@ -68,5 +68,19 @@ namespace CHubCommon.PDFHelper
             decimal yPixel = ValueConvert.MM2Pixel(y);
             return new iTextSharp.text.Rectangle((float)xPixel, (float)yPixel);
         }
+
+
+        public Image GetCode128Img(string source, int? height)
+        {
+            Code128Helper cHelper = new Code128Helper();
+            if (height != null)
+                cHelper.Height = (uint)height.Value;
+            cHelper.ValueFont = new System.Drawing.Font("宋体", 10);
+
+            System.Drawing.Bitmap img = cHelper.GetCodeImage(source, Code128Helper.Encode.Code128B);
+
+            return Image.GetInstance(img, System.Drawing.Imaging.ImageFormat.Gif);
+        }
+
     }
 }

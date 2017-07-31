@@ -52,7 +52,7 @@ namespace CHubDBEntity.UnmanagedModel
         public string C08 { get; set; }
         public string C09 { get; set; }
         public string C10 { get; set; }
-        public string C11 { get; set; }
+        public decimal? C11 { get; set; }
         public string C12 { get; set; }
 
     }

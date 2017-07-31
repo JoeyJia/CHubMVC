@@ -154,10 +154,10 @@
                             <select class="form-control input-sm" ng-model="selectedPrinter" ng-options="p.PRINTER_ID as p.PRINTER_NAME for p in printers"></select>
                         </div>
                         <div class="col-sm-1">
-                            <button class="btn btn-primary btn-sm" ng-click="">Print</button>
+                            <button class="btn btn-primary btn-sm" ng-click="printItems()">Print</button>
                         </div>
                         <div class="col-sm-1">
-                            <button class="btn btn-primary btn-sm" ng-click="">Print TO PDF</button>
+                            <button class="btn btn-primary btn-sm" ng-click="exportPDF()">Print TO PDF</button>
                         </div>
 
                     </div>
@@ -168,6 +168,8 @@
 
     </div>
 </div>
+
+@Html.Partial("_LoadingModal")
 
 
 <script>
@@ -187,6 +189,8 @@
 
         $scope.selectedPrinter = "";
         $scope.selectedType = "";
+
+        $scope.selectedItems = [];
 
         //Init part
         $scope.defPrinter = "";
@@ -266,6 +270,69 @@
             });
         };
 
+        $scope.printItems = function ()
+        {
+            alert("Print");
+        }
+
+        $scope.exportPDF = function ()
+        {
+            $scope.selectedItems = [];
+            var all = $(".ckItems");
+
+            if (all == null || all.length == 0) {
+                alert("No Data!");
+                return;
+            }
+
+            for (var i = 0; i < all.length; i++) {
+                if (all[i].checked)
+                    $scope.selectedItems.push(all[i].attributes['partNo'].value);
+            }
+
+            if ($scope.selectedItems.length == 0) {
+                alert("No selected Data!");
+                return;
+            }
+
+            if ($scope.selectedType == "") {
+                alert("No label type");
+                return;
+            }
+
+
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: "/rp/ExportPDF",
+                data: JSON.stringify({
+                    partNoList: $scope.selectedItems,
+                    labelCode: $scope.selectedType
+                }),
+                type: "post",
+                async: true,
+                contentType: 'application/json',
+                success: function (obj) {
+                    //debugger;
+                    if (obj.Success) {
+                        $("#loadingModal").modal("hide");
+                        //debugger;
+                        //window.location.href = obj.Data;
+                        window.open(obj.Data);
+                        //alert(obj.Msg)
+
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+            //$("#loadingModal").modal("hide");
+        }
+
         $scope.wbIDChange = function (curr) {
             //debugger;
             for (var i = 0; i < $scope.wayBillType.length; i++) {
@@ -297,6 +364,11 @@
 </script>
 
 <script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
 
+    });
 
 </script>

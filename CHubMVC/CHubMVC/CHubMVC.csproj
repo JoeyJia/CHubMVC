@@ -386,6 +386,7 @@
     <Content Include="Views\RP\AdrMst.cshtml" />
     <Content Include="Views\RP\Pack.cshtml" />
     <Content Include="Views\RP\Label.cshtml" />
+    <Content Include="Views\Shared\_LoadingModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

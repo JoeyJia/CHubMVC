@@ -539,13 +539,41 @@ namespace CHubMVC.Controllers
         {
             try
             {
-                //V_PLABEL_BASE_BLL baseBLL = new V_PLABEL_BASE_BLL();
+                //V_PLABEL_PRINT_BLL baseBLL = new V_PLABEL_BASE_BLL();
                 //var result = baseBLL.QueryByPart()
                 return Json(new RequestResult(true));
             }
             catch (Exception ex)
             {
                 LogHelper.WriteLog("PrintLabel", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult ExportPDF(List<string> partNoList, string labelCode)
+        {
+            try
+            {
+                V_PLABEL_PRINT_BLL pBLL = new V_PLABEL_PRINT_BLL();
+                List<V_PLABEL_PRINT> printData = pBLL.BatchGetLabelPrintData(partNoList, labelCode);
+
+                if(printData==null || printData.Count==0)
+                    return Json(new RequestResult(false,"Get no page data"));
+
+
+                string basePath = Server.MapPath(CHubConstValues.ChubTempFolder);
+                LabelPrintBLL lpBLL = new LabelPrintBLL(basePath);
+                string fileName = lpBLL.BuildPDF(printData);
+
+                string webPath = "/temp/" + fileName;
+
+                return Json(new RequestResult(webPath));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("ExportPDF", ex);
                 return Json(new RequestResult(false, ex.Message));
             }
         }
