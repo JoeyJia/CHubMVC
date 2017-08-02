@@ -126,7 +126,7 @@
                                 <td>
                                     <div class="checkbox" style="margin-bottom:1px;margin-top:1px">
                                         <label style="padding:0px">
-                                            <input type="checkbox" style="padding:0px" id="checkbox$index" class="ckItems" shipmentNo="{{p.SHIP_ID}}" aria-label="check$index">
+                                            <input type="checkbox" style="padding:0px" id="checkbox$index" class="ckItems" lodNum="{{p.LODNUM}}" aria-label="check$index">
                                         </label>
                                     </div>
                                 </td>
@@ -175,7 +175,7 @@
         $scope.defWHID = "";
         $scope.appWHList = [];
 
-        $scope.idList = [];
+        $scope.lodList = [];
 
 
         $http.post("/rp/PackInit", null, null).then(
@@ -246,7 +246,7 @@
         $scope.printAction = function ()
         {
             //alert("print action");
-            $scope.idList = [];
+            $scope.lodList = [];
             var all = $(".ckItems");
 
             if (all == null || all.length == 0)
@@ -257,10 +257,10 @@
 
             for (var i = 0; i < all.length; i++) {
                 if (all[i].checked)
-                    $scope.idList.push(all[i].attributes['shipmentNo'].value);
+                    $scope.lodList.push(all[i].attributes['lodNum'].value);
             }
 
-            if ($scope.idList.length == 0) {
+            if ($scope.lodList.length == 0) {
                 alert("No selected Data!");
                 return;
             }
@@ -270,7 +270,7 @@
             $.ajax({
                 url: "/rp/PrintPackData",
                 data: JSON.stringify({
-                    idList: $scope.idList
+                    lodList: $scope.lodList
                 }),
                 type: "post",
                 async: true,

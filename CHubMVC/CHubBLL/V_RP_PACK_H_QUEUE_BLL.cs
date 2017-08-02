@@ -26,9 +26,9 @@ namespace CHubBLL
             return dal.GetDistinctWHID();
         }
 
-        public List<string> GetShipIDByWhID(string whID)
+        public List<string> GetLodNumByWhID(string whID)
         {
-            return dal.GetShipIDByWhID(whID);
+            return dal.GetLodNumByWhID(whID);
         }
 
 

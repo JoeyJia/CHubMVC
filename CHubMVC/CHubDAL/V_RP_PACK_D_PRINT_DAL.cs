@@ -16,10 +16,10 @@ namespace CHubDAL
         public V_RP_PACK_D_PRINT_DAL(CHubEntities db)
             : base(db) { }
 
-        public List<V_RP_PACK_D_PRINT> GetPackDetails(string shipNo)
+        public List<V_RP_PACK_D_PRINT> GetPackDetails(string lodNum)
         {
             string sql = string.Format(@"select * from V_RP_PACK_D_PRINT
- where  SHIP_ID='{0}'", shipNo);
+ where  LODNUM='{0}'", lodNum);
 
             var result = db.Database.SqlQuery<V_RP_PACK_D_PRINT>(sql);
             return result.ToList();

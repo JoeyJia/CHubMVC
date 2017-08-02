@@ -403,11 +403,11 @@ namespace CHubMVC.Controllers
         }
 
         [Authorize]
-        public ActionResult PrintPackData(List<string> idList)
+        public ActionResult PrintPackData(List<string> lodList)
         {
-            idList= idList.Distinct().ToList();
-            if(idList==null || idList.Count==0)
-                    return Json(new RequestResult(false, "No ids Data"));
+            lodList = lodList.Distinct().ToList();
+            if(lodList == null || lodList.Count==0)
+                    return Json(new RequestResult(false, "No selected Data"));
             try
             {
                 string appUser = Session[CHubConstValues.SessionUser].ToString();
@@ -431,7 +431,7 @@ namespace CHubMVC.Controllers
 
                 string basePath = Server.MapPath(CHubConstValues.ChubTempFolder);
                 CustPackPrintBLL printBLL = new CustPackPrintBLL(basePath);
-                string fileName = printBLL.PrintPackData(idList, appUser);
+                string fileName = printBLL.PrintPackData(lodList, appUser);
                 string webPath = "/temp/" + fileName;
 
                 

@@ -25,9 +25,9 @@ namespace CHubDAL
 
         }
 
-        public List<string> GetShipIDByWhID(string whID)
+        public List<string> GetLodNumByWhID(string whID)
         {
-            string sql = string.Format(@"select SHIP_ID from v_rp_pack_H_queue 
+            string sql = string.Format(@"select LODNUM from v_rp_pack_H_queue 
 where WH_ID='{0}'", whID);
 
             var result = db.Database.SqlQuery<string>(sql);

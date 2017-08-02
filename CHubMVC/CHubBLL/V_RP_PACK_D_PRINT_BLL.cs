@@ -22,9 +22,9 @@ namespace CHubBLL
             dal = new V_RP_PACK_D_PRINT_DAL(db);
         }
 
-        public List<V_RP_PACK_D_PRINT> GetPackDetails(string shipNo)
+        public List<V_RP_PACK_D_PRINT> GetPackDetails(string lodNum)
         {
-            return dal.GetPackDetails(shipNo);
+            return dal.GetPackDetails(lodNum);
         }
 
     }

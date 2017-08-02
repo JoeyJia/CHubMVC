@@ -50,23 +50,23 @@ namespace CHubBLL.OtherProcess
             foreach (var id in dWHID)
             {
 
-                List<string> idList = qBLL.GetShipIDByWhID(id);
+                List<string> lodList = qBLL.GetLodNumByWhID(id);
 
-                if (idList == null || idList.Count == 0)
+                if (lodList == null || lodList.Count == 0)
                 {
                     Console.WriteLine("No staged pack data  found");
                     return;
                 }
 
-                string fileName = PrintPackData(idList, appUser);
+                string fileName = PrintPackData(lodList, appUser);
                 string fullPath = BasePath + fileName;
 
-                string defPrinter = whBLL.GetDefPrinter(id);
+                //string defPrinter = whBLL.GetDefPrinter(id);
 
-                pHelper.PrintFile(fullPath, defPrinter);
+                //pHelper.PrintFile(fullPath, defPrinter);
 
                 string msg = "";
-                foreach (var item in idList)
+                foreach (var item in lodList)
                 {
                     msg += (item + "|");
                 }
@@ -77,20 +77,20 @@ namespace CHubBLL.OtherProcess
             }
         }
 
-        public string PrintPackData(List<string> idList,string appUser)
+        public string PrintPackData(List<string> lodList, string appUser)
         {
             List<PackPageData> pageDatas = new List<PackPageData>();
             try
             {
                 
-                foreach (var id in idList)
+                foreach (var lodNum in lodList)
                 {
                     PackPageData page = new PackPageData();
                     V_RP_PACK_H_PRINT_BLL hBLL = new V_RP_PACK_H_PRINT_BLL();
-                    var header = hBLL.GetPackHeader(id);
+                    var header = hBLL.GetPackHeader(lodNum);
 
                     V_RP_PACK_D_PRINT_BLL dBLL = new V_RP_PACK_D_PRINT_BLL();
-                    var detail = dBLL.GetPackDetails(id);
+                    var detail = dBLL.GetPackDetails(lodNum);
                     page.Header = header;
                     page.Details = detail;
                     pageDatas.Add(page);
@@ -136,7 +136,7 @@ namespace CHubBLL.OtherProcess
 
             doc.SetMargins(10f, 10f, 10f,36f);
 
-            pHelper.CurrentGroup = pageDatas[0].Header.SHIP_ID;
+            pHelper.CurrentGroup = pageDatas[0].Header.LODNUM;
             for (int i = 0; i < pageDatas.Count; i++)
             {
                 //pHelper.CurrentGroup = pageDatas[i].Header.SHIP_ID;
@@ -295,7 +295,7 @@ namespace CHubBLL.OtherProcess
 
                 if ((i+1)< pageDatas.Count)
                 {
-                    pHelper.CurrentGroup = pageDatas[i+1].Header.SHIP_ID;
+                    pHelper.CurrentGroup = pageDatas[i+1].Header.LODNUM;
                     if (!string.IsNullOrEmpty(pageDatas[i + 1].Header.LOGO))
                         pHelper.LogoPath = BasePath.Replace("temp", "images") + pageDatas[i+1].Header.LOGO;
                     else
