@@ -50,8 +50,8 @@ namespace CHubBLL.OtherProcess
            // PackPageEventHelper pHelper = new PackPageEventHelper();
             //writer.PageEvent = pHelper;
 
-            doc.SetMargins(0f, 0f, 30f, 0f);
-
+            doc.SetMargins(0f, 0f, 51f, 0f);
+            float currenttop = 0f;
             for (int i = 0; i < printDatas.Count; i++)
             {
                 //pHelper.CurrentGroup = pageDatas[i].Header.SHIP_ID;
@@ -87,6 +87,7 @@ namespace CHubBLL.OtherProcess
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
 
+                //currenttop = doc.GetTop(51f);
                 //Line 2
                 //picture
                 if (string.IsNullOrEmpty(printDatas[i].C01))
@@ -114,6 +115,7 @@ namespace CHubBLL.OtherProcess
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
 
+                //currenttop = doc.GetTop(51f);
                 //Line 4
                 cellUnit = new PdfPCell(new Paragraph(printDatas[i].T03, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
@@ -157,7 +159,7 @@ namespace CHubBLL.OtherProcess
                 cellUnit = new PdfPCell(new Paragraph((printDatas[i].C05??0).ToString(), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
-
+                //currenttop = doc.GetTop(51f);
                 //picture
                 if (string.IsNullOrEmpty(printDatas[i].C10))
                     cellUnit = new PdfPCell();
@@ -200,10 +202,11 @@ namespace CHubBLL.OtherProcess
                 cellUnit = new PdfPCell(new Paragraph(printDatas[i].C12, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
+                //currenttop = doc.GetTop(51f);
 
                 doc.Add(contentTable);
 
-                var ss = writer.GetPageReference(2);
+                //var ss = writer.GetPageReference(2);
                 
                 //int ss= writer.PageNumber;
                 //var tt= writer.PageDictEntries;
