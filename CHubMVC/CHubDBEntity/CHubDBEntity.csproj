@@ -316,6 +316,7 @@
     <Compile Include="UnmanagedModel\G_CATALOG_CUSTOMER_PART.cs" />
     <Compile Include="UnmanagedModel\G_OESALES_CATALOG.cs" />
     <Compile Include="UnmanagedModel\G_NETAVL.cs" />
+    <Compile Include="UnmanagedModel\V_INQ_TRACKNUM.cs" />
     <Compile Include="UnmanagedModel\V_INV_PDC.cs" />
     <Compile Include="UnmanagedModel\V_INV_RDC.cs" />
     <Compile Include="UnmanagedModel\V_OPEN_QTY_SO_PDC.cs" />

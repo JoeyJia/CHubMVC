@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APP_WH_BLL.cs" />
+    <Compile Include="V_INQ_TRACKNUM_BLL.cs" />
     <Compile Include="V_RP_PACK_H_QUEUE_BLL.cs" />
     <Compile Include="OtherProcess\LabelPrintBLL.cs" />
     <Compile Include="RP_LABEL_TYPE_BLL.cs" />
