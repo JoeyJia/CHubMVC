@@ -127,7 +127,8 @@ namespace CHubCommon
                 #region for adding header part for each page
 
                 PdfPTable imgTable = new PdfPTable(4);
-                imgTable.SetWidths(new float[] {430f,80f,10f,75f});//215f, 75f, 200f, 85f
+                //empty  / wechat /empty  /qrcode
+                imgTable.SetWidths(new float[] {345f,120f,12f,120f});//215f, 75f, 200f, 85f
                 imgTable.HorizontalAlignment = Element.ALIGN_RIGHT;
 
                 PdfPCell imgCell = new PdfPCell();
@@ -157,7 +158,7 @@ namespace CHubCommon
                 {
                     iTextSharp.text.Image tImg = iTextSharp.text.Image.GetInstance(QRPath);
                     tImg.Alignment = Element.ALIGN_RIGHT;
-                    imgCell = new PdfPCell(tImg, false);
+                    imgCell = new PdfPCell(tImg, true);
                     imgCell.HorizontalAlignment = Element.ALIGN_RIGHT;
                 }
                 else
@@ -186,11 +187,11 @@ namespace CHubCommon
                 #endregion
             }
 
-            //add a line
-            cb.MoveTo(0, document.PageSize.Height - linePosition);
-            cb.LineTo(document.PageSize.Width, document.PageSize.Height - linePosition);
-            cb.SetLineWidth(0.5f);
-            cb.Stroke();
+            //add a line  -- no need for now
+            //cb.MoveTo(0, document.PageSize.Height - linePosition);
+            //cb.LineTo(document.PageSize.Width, document.PageSize.Height - linePosition);
+            //cb.SetLineWidth(0.5f);
+            //cb.Stroke();
 
             document.Add(new Paragraph(Environment.NewLine));
             Paragraph p2 = new Paragraph(line1String, new iTextSharp.text.Font(BF_Light, HeaderFontSize));

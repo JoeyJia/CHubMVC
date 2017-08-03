@@ -42,7 +42,7 @@ namespace CHubDAL
             return result.OrderBy(a=>a.ORDTYP_WB).ThenBy(a=>a.CARCOD).ThenBy(a=>a.ADDR_COMBINED).ToList();
         }
 
-        public List<RPWayBillHLevel2> GetWayBillDetailList(string carCode, string orderType,string addr, string shipmentNo, List<string> statusList, string printed)
+        public List<RPWayBillHLevel2> GetWayBillDetailList(string whID,string carCode, string orderType,string addr, string shipmentNo, List<string> statusList, string printed)
         {
             string sql = string.Format(@"select 
 h.TRACK_NUM_IHUB,
@@ -67,7 +67,8 @@ h.TRACK_NUM_IHUB,
   where 1 = 1
   and h.carcod = '{0}'
   and h.ordtyp_wb = '{1}'
-  and h.ADDR_COMBINED = '{2}' ", carCode,orderType,addr);//and h.SHPSTS = 'S'
+  and h.ADDR_COMBINED = '{2}'
+and h.WH_ID ='{3}' ", carCode,orderType,addr,whID);//and h.SHPSTS = 'S'
 
             if (statusList != null && statusList.Count != 0)
                 sql += string.Format(" and h.SHPSTS in ({0})", statusList.ToSqlInStr());

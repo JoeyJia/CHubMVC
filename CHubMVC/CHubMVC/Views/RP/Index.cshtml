@@ -257,6 +257,7 @@
                 url: "/rp/BatchPrint",
                 data: JSON.stringify({
                     groups: selectedRows,
+                    whID: $scope.whID,
                     shipmentNo: $scope.shipmentNo,
                     staged: $scope.stagedSubmited,
                     inProgress: $scope.inProgressSubmited,
@@ -474,6 +475,7 @@
                     data: JSON.stringify({
                         group: row,
                         selectedList: selectedRows,
+                        whID: $scope.whID,
                         shipmentNo: $scope.shipmentNo,
                         staged: $scope.stagedSubmited,
                         inProgress: $scope.inProgressSubmited,
@@ -508,6 +510,7 @@
             $.ajax({
                 url: "/rp/GetWayBillDetailList",
                 data: {
+                    whID: $scope.whID,
                     carCode:carCode,
                     orderType: orderType,
                     addr: addr,

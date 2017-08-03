@@ -86,12 +86,12 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult GetWayBillDetailList(string carCode, string orderType, string addr,string shipmentNo, bool staged, bool inProgress, string printed)
+        public ActionResult GetWayBillDetailList(string whID,string carCode, string orderType, string addr,string shipmentNo, bool staged, bool inProgress, string printed)
         {
             try
             {
                 V_RP_WAYBILL_H_BASE_BLL wbHBLL = new V_RP_WAYBILL_H_BASE_BLL();
-                List<RPWayBillHLevel2> result = wbHBLL.GetWayBillDetailList(carCode, orderType, addr, shipmentNo, staged, inProgress, printed);
+                List<RPWayBillHLevel2> result = wbHBLL.GetWayBillDetailList(whID,carCode, orderType, addr, shipmentNo, staged, inProgress, printed);
                 return Json(new RequestResult(result));
             }
             catch (Exception ex)
@@ -103,12 +103,12 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult GetPrintFile(RPWayBillHLevel1 group, List<RPWayBillHLevel2> selectedList, string shipmentNo, bool staged, bool inProgress, string printed)
+        public ActionResult GetPrintFile(RPWayBillHLevel1 group, List<RPWayBillHLevel2> selectedList,string whID, string shipmentNo, bool staged, bool inProgress, string printed)
         {
             if (selectedList == null || selectedList.Count == 0)
             {
                 V_RP_WAYBILL_H_BASE_BLL wbHBLL = new V_RP_WAYBILL_H_BASE_BLL();
-                selectedList = wbHBLL.GetWayBillDetailList(group.CARCOD, group.ORDTYP_WB, group.ADDR_COMBINED,shipmentNo, staged, inProgress, printed);
+                selectedList = wbHBLL.GetWayBillDetailList(whID,group.CARCOD, group.ORDTYP_WB, group.ADDR_COMBINED,shipmentNo, staged, inProgress, printed);
             }
             string appUser = Session[CHubConstValues.SessionUser].ToString();
             //return Json(new RequestResult(false, "No selected Data"));
@@ -150,7 +150,7 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult BatchPrint(List<RPWayBillHLevel1> groups,string shipmentNo,bool staged, bool inProgress, string printed)
+        public ActionResult BatchPrint(List<RPWayBillHLevel1> groups,string whID,string shipmentNo,bool staged, bool inProgress, string printed)
         {
             if(groups==null || groups.Count==0)
                 return Json(new RequestResult(false,"No seleted Data!"));
@@ -162,7 +162,7 @@ namespace CHubMVC.Controllers
                 V_RP_WAYBILL_H_BASE_BLL wbHBLL = new V_RP_WAYBILL_H_BASE_BLL();
                 foreach (var group in groups)
                 {
-                    List<RPWayBillHLevel2> selectedList = wbHBLL.GetWayBillDetailList(group.CARCOD, group.ORDTYP_WB, group.ADDR_COMBINED,shipmentNo, staged, inProgress, printed);
+                    List<RPWayBillHLevel2> selectedList = wbHBLL.GetWayBillDetailList(whID,group.CARCOD, group.ORDTYP_WB, group.ADDR_COMBINED,shipmentNo, staged, inProgress, printed);
 
                     // order by shipNo to Get min shipNo
                     //selectedList.OrderBy(a => a.SHIP_ID);

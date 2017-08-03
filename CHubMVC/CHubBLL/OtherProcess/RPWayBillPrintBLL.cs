@@ -93,7 +93,7 @@ namespace CHubBLL.OtherProcess
             leHelper.line1String = GetLineString(sData, 80);
 
             Document doc = new Document(pageRec);
-            doc.SetMargins(30f, 36f, 15f, bottomMargin);
+            doc.SetMargins(30f, 36f, 30f, bottomMargin);
             PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(fullPath, FileMode.Create));
 
             //leHelper.QRPath = fullImgPath;
@@ -203,7 +203,7 @@ namespace CHubBLL.OtherProcess
             leHelper.BasePath = BasePath;
 
             Document doc = new Document(pageRec);
-            doc.SetMargins(30f, 36f, 15f, bottomMargin);
+            doc.SetMargins(30f, 36f, 30f, bottomMargin);
             PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(fullPath, FileMode.Create));
             writer.PageEvent = leHelper;
             //doc.Open();
