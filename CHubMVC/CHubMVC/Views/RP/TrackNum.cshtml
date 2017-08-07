@@ -1,0 +1,538 @@
+﻿
+@{
+    ViewBag.Title = "Track Num Query";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid" id="trackNumBody" ng-app="trackNumApp" ng-controller="trackNumCtrl">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:silver"><b>Track Num Query Panel </b></div>
+
+        <form class="form-horizontal" id="searchForm">
+
+            <div class="row" style="margin-top:30px;">
+                <div class="form-group">
+                    <label for="txtWhID" class="col-sm-2 control-label">WareHouse</label>
+                    <div class="col-sm-2">
+                        <select class="form-control input-sm" id="txtWhID" ng-model="whID"  ng-options="w.WH_ID as w.WH_ID for w in appWHList"></select>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtGSOM" class="col-sm-2 control-label">GOMS Order Number</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtGSOM" ng-model="SalesOrdNum" placeholder="GOMS Order Number">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtCPO" class="col-sm-2 control-label">Customer PO Number</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtCPO" ng-model="VCCpoNum" placeholder="Customer PO Number">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtTrackNo" class="col-sm-2 control-label">Track Number</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtTrackNo" ng-model="TrackNum" placeholder="Track Number">
+                    </div>
+                </div>
+            </div>
+          
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtShipID" class="col-sm-2 control-label">SHIP ID</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtShipID" ng-model="ShipID" placeholder="SHIP ID">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtPRTNum" class="col-sm-2 control-label">Part number (RP)</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtPRTNum" ng-model="PRTNum" placeholder="Part number (RP)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtCSTPart" class="col-sm-2 control-label">Customer Part number</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtCSTPart" ng-model="CSTPRT" placeholder="Customer Part number">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtLodNum" class="col-sm-2 control-label">Box Number</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtLodNum" ng-model="LodNum" placeholder="Box Number">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtOrdNum" class="col-sm-2 control-label">Picklist Number</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtOrdNum" ng-model="OrdNum" placeholder="Picklist Number">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtAdrName" class="col-sm-2 control-label">Customer name</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtAdrName" ng-model="ADRNam" placeholder="Customer name">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtAdrLn1" class="col-sm-2 control-label">Shipping ADDR1</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtAdrLn1" ng-model="ADRLN1" placeholder="Shipping ADDR1">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtAdrLn2" class="col-sm-2 control-label">Shipping ADDR2</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtAdrLn2" ng-model="ADRLN2" placeholder="Shipping ADDR2">
+                    </div>
+
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary btn-sm" ng-click="searchAction()">Search</button>
+                    </div>
+                </div>
+            </div>
+
+
+        </form>
+
+        <!--result part-->
+        <div class="row" style="overflow-x:auto;">
+            <div class="" style="margin-left:15px;width:2000px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="background-color:silver"><b>Result</b></div>
+                    <table id="tableResult" class="table  table-condensed"
+                           data-detail-view="true"
+                           undefinedText="''"></table>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+<div class="modal " id="progressModal" role="dialog" data-keyboard="false">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog text-center" id="imgDiag">
+            <img src="~/Images/inprogress.jpg">
+            <div class="row text-center" style="color:ivory">
+                <b>Proccessing...</b>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+
+    angular.module('trackNumApp', []).controller('trackNumCtrl', function ($scope, $http) {
+        //Arg part
+        $scope.whID = "";
+        $scope.SalesOrdNum = "";
+        $scope.VCCpoNum = "";
+        $scope.TrackNum = "";
+        $scope.ShipID = "";
+        $scope.PRTNum = "";
+        $scope.CSTPRT = "";
+        $scope.LodNum = "";
+        $scope.OrdNum = "";
+        $scope.ADRNam = "";
+        $scope.ADRLN1 = "";
+        $scope.ADRLN2 = "";
+
+
+
+        $scope.wbHArray = [];
+        //init part
+        $scope.defWHID = "";
+        $scope.appWHList = [];
+
+        $scope.level1 = [];
+        $scope.level2 = [];
+
+
+
+        $http.post("/rp/TrackNumInit", null, null).then(
+            function (obj) {
+                //debugger;
+                if (obj.data.Success) {
+                    $scope.defWHID = obj.data.Data.defWHID;
+                    $scope.appWHList = obj.data.Data.appWHList;
+
+                    $scope.whID = $scope.defWHID;
+                }
+                else
+                    alert(obj.data.Msg)
+            },
+             function (resp) {
+                 debugger;
+                 alert("Fail!");
+             }
+            );
+
+
+        $scope.searchAction = function () {
+            if ($scope.whID == "")
+                return;
+
+            $('#tableResult').bootstrapTable('destroy');
+
+            $.ajax({
+                url: "/rp/GetTrackNumLevel1",
+                data: JSON.stringify({
+                    whID: $scope.whID,
+                    SalesOrdNum: $scope.SalesOrdNum,
+                    VCCpoNum: $scope.VCCpoNum,
+                    TrackNum: $scope.TrackNum,
+                    ShipID: $scope.ShipID,
+                    PRTNum: $scope.PRTNum,
+                    CSTPRT: $scope.CSTPRT,
+                    LodNum: $scope.LodNum,
+                    OrdNum: $scope.OrdNum,
+                    ADRNam: $scope.ADRNam,
+                    ADRLN1: $scope.ADRLN1,
+                    ADRLN2: $scope.ADRLN2,
+                }),
+                type: "post",
+                async: false,
+                contentType: 'application/json',
+                success: function (obj) {
+                    //debugger;
+                    $scope.level1 = obj.Data;
+                    initPoTab()
+                },
+                error: function (obj) {
+                    alert("fail to get Data");
+                }
+
+            });
+        };
+
+
+
+        function initPoTab() {
+            var $table = $('#tableResult');
+            buildTable($table);
+        };
+
+        function expandlevel2($detail, pRow, index) {
+            //debugger;
+            var shipID = pRow.SHIP_ID;
+            $t = $detail.html('<table data-click-to-select="true" class="tbLevel2" tag="level2" ></table>').find('table');
+            //$t.attr("class", "table table-bordered table-condensed");
+            $t.attr("margin-left", "200px");
+            //debugger;
+            var columns = [];
+            var data = [];
+
+            columns.push({
+                field: 'LODNUM',
+                title: 'Box Number'
+            });
+            columns.push({
+                field: 'STGDTE',
+                title: 'Stage Date',
+                formatter: dateFormatter
+            });
+            columns.push({
+                field: 'LODDTE',
+                title: 'Ship Date',
+                formatter: dateFormatter
+            });
+            columns.push({
+                field: 'ORDNUM',
+                title: 'PickList Number'
+            });
+            columns.push({
+                field: 'ORDLIN',
+                title: 'PickList Line No.'
+            });
+            columns.push({
+                field: 'UNTQTY',
+                title: 'Qtys'
+            });
+            columns.push({
+                field: 'ORDTYP',
+                title: 'Order Type'
+            });
+            columns.push({
+                field: 'SALES_ORDNUM',
+                title: 'GOMS OrderNumber'
+            });
+            columns.push({
+                field: 'VC_CPONUM',
+                title: 'Customer PO Number'
+            });
+            columns.push({
+                field: 'PRTNUM',
+                title: 'Part Number'
+            });
+            columns.push({
+                field: 'CSTPRT',
+                title: 'Customer PartNo'
+            });
+            columns.push({
+                field: 'BTCUST',
+                title: 'Bill To Inf.'
+            });
+            columns.push({
+                field: 'VC_DLRPONUM',
+                title: 'Dealer Po Number'
+            });
+            columns.push({
+                field: 'MOD_USR_ID',
+                title: 'Mod User'
+            });
+            columns.push({
+                field: 'NOTE1',
+                title: 'Note1'
+            });
+            columns.push({
+                field: 'NOTE2',
+                title: 'Note2'
+            });
+            //var level2Data = [];
+            //debugger;
+            getLevel2Data(shipID);
+
+            $t.bootstrapTable({
+                columns: columns,
+                data: $scope.level2,
+                detailView: false
+            });
+            $t.bootstrapTable('hideLoading');
+
+        };
+
+        function buildTable($t) {
+            var columns = [];
+            var data = [];
+
+            columns.push({
+                field: 'TRACK_TAB',
+                title: 'Tracking',
+                cellStyle: trackCellStyle
+            });
+            columns.push({
+                field: 'TRACK_NUM',
+                title: 'Track Number'
+            });
+            columns.push({
+                field: 'SHIP_ID',
+                title: 'Shipment No.'
+            });
+            columns.push({
+                field: 'WH_ID',
+                title: 'Warehouse'
+            });
+            columns.push({
+                field: 'SHPSTS_DESC',
+                title: 'Ship Status'
+            });
+            /////
+            columns.push({
+                field: 'CARCOD',
+                title: 'Carrier Code'
+            });
+            columns.push({
+                field: 'CARNAM_SHORT',
+                title: 'Carrier Name'
+            });
+            columns.push({
+                field: 'ADRNAM',
+                title: 'Customer Name'
+            });
+            columns.push({
+                field: 'ADRLN1',
+                title: 'Shipping Addr 1'
+            });
+            columns.push({
+                field: 'ADRLN2',
+                title: 'Shipping Addr 2'
+            });
+            columns.push({
+                field: 'PHNNUM',
+                title: 'Phone'
+            });
+            columns.push({
+                field: 'LAST_NAME',
+                title: 'Contract'
+            });
+
+            columns.push({
+                field: '',
+                title: 'Operation',
+                width: '100'
+            });
+
+
+            //columns.push({
+            //    field: '',
+            //    title: '',
+            //    width: '1000'
+            //});
+
+            $t.bootstrapTable({
+                columns: columns,
+                data: $scope.level1,
+                detailView: true,
+                onExpandRow: function (index, row, $detail) {
+                    expandlevel2($detail, row, index);
+                }
+            });
+            $t.bootstrapTable('hideLoading');
+        };
+
+
+        //Formatter
+        function dateFormatter(value, row, index) {
+            if (value == undefined)
+                return "";
+            //if date has "()" not do format action
+            if (value.indexOf(')') > 0)
+                return value;
+
+            if (value.length < 10)
+                return value;
+            return value.substr(0, 10);
+        }
+
+        function trackCellStyle(value, row, index, field) {
+            return { classes: '', css: { "color": "green" } };
+        }
+
+        function printOperationFormatter(value, row, index) {
+            return [
+           '<a class="print" href="javascript:void(0)" title="Print">',
+           '<i class="glyphicon glyphicon-print"></i>',
+           '</a> '
+            ].join('');
+        }
+
+
+        window.operateEvents = {
+            'click .print': function (e, value, row, index) {
+                //alert("print action");
+
+
+                $currTable = $("#tableResult tr[data-index= '"+index+"' ] + tr table[tag=level2] ");
+                //alert($currTable[0].innerHTML);
+                var selectedRows = [];
+                if ($currTable!=null &&  $currTable.length != 0)
+                    selectedRows = $currTable.bootstrapTable('getSelections');
+                //var $table = $('.tbLevel2');
+                //var selectedRows = $table.bootstrapTable('getSelections')
+
+                $.ajax({
+                    url: "/rp/GetPrintFile",
+                    data: JSON.stringify({
+                        group: row,
+                        selectedList: selectedRows,
+                        whID: $scope.whID,
+                        shipmentNo: $scope.shipmentNo,
+                        staged: $scope.stagedSubmited,
+                        inProgress: $scope.inProgressSubmited,
+                        printed: $scope.printed
+                    }),
+                    type: "post",
+                    async: false,
+                    contentType: 'application/json',
+                    success: function (obj) {
+                        //debugger;
+                        if (obj.Success) {
+                            //debugger;
+                            //window.location.href = obj.Data;
+                            window.open(obj.Data);
+                            //alert(obj.Msg)
+
+                        }
+                        else {
+                            alert(obj.Msg);
+                        }
+
+                    },
+                    error: function (obj) {
+                        alert(obj.responseText);
+                    }
+                });
+            }
+        };
+
+        function getLevel2Data(shipID)
+        {
+            $.ajax({
+                url: "/rp/GetTrackNumLevel2",
+                data: {
+                    shipID: shipID
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    if (obj.Success) {
+                        //debugger;
+                        $scope.level2 = obj.Data;;
+
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        }
+
+
+    });
+
+    //manual load app
+    angular.bootstrap(document.getElementById("trackNumBody"), ['trackNumApp']);
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+
+    });
+
+</script>

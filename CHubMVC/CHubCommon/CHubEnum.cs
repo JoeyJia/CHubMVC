@@ -68,7 +68,11 @@ namespace CHubCommon
             /// <summary>
             /// /rp/lable
             /// </summary>
-            lbprt
+            lbprt,
+            /// <summary>
+            /// /rp/tracknum
+            /// </summary>
+            trackinq
         }
 
         public enum OrderStatusEnum

@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
+using CHubModel.ExtensionModel;
+using CHubModel.WebArg;
 
 namespace CHubBLL
 {
@@ -20,6 +22,18 @@ namespace CHubBLL
         {
             dal = new V_INQ_TRACKNUM_DAL(db);
         }
+
+        public List<TrackNumLevel1> GetTrackNumLevel1(TrackNumQueryArg arg)
+        {
+            return dal.GetTrackNumLevel1(arg);
+        }
+
+        public List<TrackNumLevel2> GetTrackNumLevel2(string shipID)
+        {
+            return dal.GetTrackNumLevel2(shipID);
+        }
+
+
 
     }
 }

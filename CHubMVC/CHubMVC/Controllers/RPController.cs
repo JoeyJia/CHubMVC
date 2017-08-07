@@ -11,6 +11,7 @@ using static CHubCommon.CHubEnum;
 using CHubModel.ExtensionModel;
 using CHubDBEntity.UnmanagedModel;
 using CHubBLL.OtherProcess;
+using CHubModel.WebArg;
 
 namespace CHubMVC.Controllers
 {
@@ -578,9 +579,86 @@ namespace CHubMVC.Controllers
             }
         }
 
+        #endregion
 
+        #region Track Num Query part
+        [Authorize]
+        public ActionResult TrackNum()
+        {
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, CHubEnum.PageNameEnum.trackinq.ToString(), this.Request.Url.AbsoluteUri);
+            return View();
+        }
 
+        [Authorize]
+        [HttpPost]
+        public ActionResult TrackNumInit()
+        {
+            try
+            {
+                string defWHID = string.Empty;
+                List<APP_WH> appWHList = null;
 
+                APP_USERS_BLL userBLL = new APP_USERS_BLL();
+                string appUser = Session[CHubConstValues.SessionUser].ToString();
+                APP_USERS user = userBLL.GetAppUserByDomainName(appUser);
+                defWHID = user.DEF_WH_ID;
+                if (string.IsNullOrEmpty(defWHID))
+                {
+                    APP_WH_BLL whBLL = new APP_WH_BLL();
+                    appWHList = whBLL.GetAppWHList();
+                }
+
+                var obj = new
+                {
+                    defWHID = defWHID,
+                    appWHList = appWHList
+                };
+                return Json(new RequestResult(obj));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("TrackNumInit", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult GetTrackNumLevel1(TrackNumQueryArg arg)
+        {
+            if(arg==null || string.IsNullOrEmpty(arg.WHID))
+                return Json(new RequestResult(false,"Invalid arg data"));
+            try
+            {
+                V_INQ_TRACKNUM_BLL tBLL = new V_INQ_TRACKNUM_BLL();
+                var result = tBLL.GetTrackNumLevel1(arg);
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("GetTrackNumLevel1", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult GetTrackNumLevel2(string shipID)
+        {
+            try
+            {
+                V_INQ_TRACKNUM_BLL tBLL = new V_INQ_TRACKNUM_BLL();
+                var result = tBLL.GetTrackNumLevel2(shipID);
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("GetTrackNumLevel2", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
 
 
         #endregion

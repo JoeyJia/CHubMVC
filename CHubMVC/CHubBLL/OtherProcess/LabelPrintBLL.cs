@@ -50,7 +50,7 @@ namespace CHubBLL.OtherProcess
            // PackPageEventHelper pHelper = new PackPageEventHelper();
             //writer.PageEvent = pHelper;
 
-            doc.SetMargins(0f, 0f, 51f, 0f);
+            doc.SetMargins(10f, 10f, 51f, 0f);
             float currenttop = 0f;
             for (int i = 0; i < printDatas.Count; i++)
             {
@@ -93,7 +93,7 @@ namespace CHubBLL.OtherProcess
                 if (string.IsNullOrEmpty(printDatas[i].C01))
                     cellUnit = new PdfPCell();
                 else
-                    cellUnit = new PdfPCell(pdfUtility.GetCode128Img(printDatas[i].C01, 10));
+                    cellUnit = new PdfPCell(pdfUtility.GetCode128Img(printDatas[i].C01, 10),false);
                 cellUnit.BorderWidth = 0;
                 cellUnit.Colspan = 4;
                 contentTable.AddCell(cellUnit);
@@ -121,7 +121,7 @@ namespace CHubBLL.OtherProcess
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
 
-                cellUnit = new PdfPCell(new Paragraph(printDatas[i].C03.Value.ToString("yyyy-MM-dd"), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+                cellUnit = new PdfPCell(new Paragraph(printDatas[i].C03, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
 
@@ -129,7 +129,7 @@ namespace CHubBLL.OtherProcess
                 if (string.IsNullOrEmpty(printDatas[i].C09))
                     cellUnit = new PdfPCell();
                 else
-                    cellUnit = new PdfPCell(pdfUtility.GetCode128Img(printDatas[i].C09, 10));
+                    cellUnit = new PdfPCell(pdfUtility.GetCode128Img(printDatas[i].C09, 10),false);
                 cellUnit.BorderWidth = 0;
                 cellUnit.Colspan = 2;
                 contentTable.AddCell(cellUnit);
@@ -156,7 +156,7 @@ namespace CHubBLL.OtherProcess
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
 
-                cellUnit = new PdfPCell(new Paragraph((printDatas[i].C05??0).ToString(), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+                cellUnit = new PdfPCell(new Paragraph(printDatas[i].C05, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
                 //currenttop = doc.GetTop(51f);
@@ -182,7 +182,7 @@ namespace CHubBLL.OtherProcess
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
 
-                cellUnit = new PdfPCell(new Paragraph((printDatas[i].C11??0).ToString(), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+                cellUnit = new PdfPCell(new Paragraph(printDatas[i].C11, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
 

@@ -60,6 +60,8 @@
     <Compile Include="ExtensionModel\PLabelRow.cs" />
     <Compile Include="ExtensionModel\RPWayBillHLevel1.cs" />
     <Compile Include="ExtensionModel\RPWayBillHLevel2.cs" />
+    <Compile Include="ExtensionModel\TrackNumLevel1.cs" />
+    <Compile Include="ExtensionModel\TrackNumLevel2.cs" />
     <Compile Include="ExtensionModel\TranLoadPreFill.cs" />
     <Compile Include="PostResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="WebArg\OrderLineItem.cs" />
     <Compile Include="WebArg\OrderLinesSaveArg.cs" />
     <Compile Include="WebArg\OrderSaveArg.cs" />
+    <Compile Include="WebArg\TrackNumQueryArg.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

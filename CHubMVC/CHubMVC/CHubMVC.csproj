@@ -387,6 +387,7 @@
     <Content Include="Views\RP\Pack.cshtml" />
     <Content Include="Views\RP\Label.cshtml" />
     <Content Include="Views\Shared\_LoadingModal.cshtml" />
+    <Content Include="Views\RP\TrackNum.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

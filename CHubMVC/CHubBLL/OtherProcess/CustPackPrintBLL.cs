@@ -61,9 +61,15 @@ namespace CHubBLL.OtherProcess
                 string fileName = PrintPackData(lodList, appUser);
                 string fullPath = BasePath + fileName;
 
-                //string defPrinter = whBLL.GetDefPrinter(id);
+                string defPrinter = whBLL.GetDefPrinter(id);
 
-                //pHelper.PrintFile(fullPath, defPrinter);
+                if (string.IsNullOrEmpty(defPrinter))
+                {
+                    Console.WriteLine("No printer setting for WareHous:"+id);
+                    return;
+                }
+
+                pHelper.PrintFile(fullPath, defPrinter);
 
                 string msg = "";
                 foreach (var item in lodList)

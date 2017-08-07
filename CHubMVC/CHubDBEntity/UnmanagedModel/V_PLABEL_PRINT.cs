@@ -44,15 +44,15 @@ namespace CHubDBEntity.UnmanagedModel
         public string T12 { get; set; }
         public string C01 { get; set; }
         public string C02 { get; set; }
-        public DateTime? C03 { get; set; }
+        public string C03 { get; set; }
         public string C04 { get; set; }
-        public decimal? C05 { get; set; }
+        public string C05 { get; set; }
         public string C06 { get; set; }
         public string C07 { get; set; }
         public string C08 { get; set; }
         public string C09 { get; set; }
         public string C10 { get; set; }
-        public decimal? C11 { get; set; }
+        public string C11 { get; set; }
         public string C12 { get; set; }
 
     }
