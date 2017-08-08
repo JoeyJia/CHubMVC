@@ -41,11 +41,10 @@ namespace CHubMVC.Controllers
                 string appUser = Session[CHubConstValues.SessionUser].ToString();
                 APP_USERS user = userBLL.GetAppUserByDomainName(appUser);
                 defWHID = user.DEF_WH_ID;
-                if (string.IsNullOrEmpty(defWHID))
-                {
-                    APP_WH_BLL whBLL = new APP_WH_BLL();
-                    appWHList = whBLL.GetAppWHList();
-                }
+
+                APP_WH_BLL whBLL = new APP_WH_BLL();
+                appWHList = whBLL.GetAppWHList();
+                
 
                 //RP_WAYBILL_TYPE_BLL typeBLL = new RP_WAYBILL_TYPE_BLL();
                 //whTypeList = typeBLL.GetWayBillType();
@@ -366,11 +365,10 @@ namespace CHubMVC.Controllers
                 string appUser = Session[CHubConstValues.SessionUser].ToString();
                 APP_USERS user = userBLL.GetAppUserByDomainName(appUser);
                 defWHID = user.DEF_WH_ID;
-                if (string.IsNullOrEmpty(defWHID))
-                {
-                    APP_WH_BLL whBLL = new APP_WH_BLL();
-                    appWHList = whBLL.GetAppWHList();
-                }
+
+                APP_WH_BLL whBLL = new APP_WH_BLL();
+                appWHList = whBLL.GetAppWHList();
+             
 
                 var obj = new
                 {
@@ -604,11 +602,9 @@ namespace CHubMVC.Controllers
                 string appUser = Session[CHubConstValues.SessionUser].ToString();
                 APP_USERS user = userBLL.GetAppUserByDomainName(appUser);
                 defWHID = user.DEF_WH_ID;
-                if (string.IsNullOrEmpty(defWHID))
-                {
-                    APP_WH_BLL whBLL = new APP_WH_BLL();
-                    appWHList = whBLL.GetAppWHList();
-                }
+
+                APP_WH_BLL whBLL = new APP_WH_BLL();
+                appWHList = whBLL.GetAppWHList();
 
                 var obj = new
                 {

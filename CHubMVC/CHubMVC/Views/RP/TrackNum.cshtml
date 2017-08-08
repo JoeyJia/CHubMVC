@@ -148,9 +148,7 @@
     <div class="vertical-alignment-helper">
         <div class="modal-dialog text-center" id="imgDiag">
             <img src="~/Images/inprogress.jpg">
-            <div class="row text-center" style="color:ivory">
-                <b>Proccessing...</b>
-            </div>
+            
         </div>
     </div>
 
@@ -343,9 +341,11 @@
             var data = [];
 
             columns.push({
-                field: 'TRACK_TAB',
+                field: '',
                 title: 'Tracking',
-                cellStyle: trackCellStyle
+                cellStyle: trackCellStyle,
+                events: operateEvents,
+                formatter: printOperationFormatter
             });
             columns.push({
                 field: 'TRACK_NUM',
@@ -438,7 +438,7 @@
         function printOperationFormatter(value, row, index) {
             return [
            '<a class="print" href="javascript:void(0)" title="Print">',
-           '<i class="glyphicon glyphicon-print"></i>',
+           row.TRACK_TAB,
            '</a> '
             ].join('');
         }
@@ -447,48 +447,48 @@
         window.operateEvents = {
             'click .print': function (e, value, row, index) {
                 //alert("print action");
+                $("#progressModal").modal("show");
 
+                //$currTable = $("#tableResult tr[data-index= '"+index+"' ] + tr table[tag=level2] ");
+                ////alert($currTable[0].innerHTML);
+                //var selectedRows = [];
+                //if ($currTable!=null &&  $currTable.length != 0)
+                //    selectedRows = $currTable.bootstrapTable('getSelections');
+                ////var $table = $('.tbLevel2');
+                ////var selectedRows = $table.bootstrapTable('getSelections')
 
-                $currTable = $("#tableResult tr[data-index= '"+index+"' ] + tr table[tag=level2] ");
-                //alert($currTable[0].innerHTML);
-                var selectedRows = [];
-                if ($currTable!=null &&  $currTable.length != 0)
-                    selectedRows = $currTable.bootstrapTable('getSelections');
-                //var $table = $('.tbLevel2');
-                //var selectedRows = $table.bootstrapTable('getSelections')
+                //$.ajax({
+                //    url: "/rp/GetPrintFile",
+                //    data: JSON.stringify({
+                //        group: row,
+                //        selectedList: selectedRows,
+                //        whID: $scope.whID,
+                //        shipmentNo: $scope.shipmentNo,
+                //        staged: $scope.stagedSubmited,
+                //        inProgress: $scope.inProgressSubmited,
+                //        printed: $scope.printed
+                //    }),
+                //    type: "post",
+                //    async: false,
+                //    contentType: 'application/json',
+                //    success: function (obj) {
+                //        //debugger;
+                //        if (obj.Success) {
+                //            //debugger;
+                //            //window.location.href = obj.Data;
+                //            window.open(obj.Data);
+                //            //alert(obj.Msg)
 
-                $.ajax({
-                    url: "/rp/GetPrintFile",
-                    data: JSON.stringify({
-                        group: row,
-                        selectedList: selectedRows,
-                        whID: $scope.whID,
-                        shipmentNo: $scope.shipmentNo,
-                        staged: $scope.stagedSubmited,
-                        inProgress: $scope.inProgressSubmited,
-                        printed: $scope.printed
-                    }),
-                    type: "post",
-                    async: false,
-                    contentType: 'application/json',
-                    success: function (obj) {
-                        //debugger;
-                        if (obj.Success) {
-                            //debugger;
-                            //window.location.href = obj.Data;
-                            window.open(obj.Data);
-                            //alert(obj.Msg)
+                //        }
+                //        else {
+                //            alert(obj.Msg);
+                //        }
 
-                        }
-                        else {
-                            alert(obj.Msg);
-                        }
-
-                    },
-                    error: function (obj) {
-                        alert(obj.responseText);
-                    }
-                });
+                //    },
+                //    error: function (obj) {
+                //        alert(obj.responseText);
+                //    }
+                //});
             }
         };
 
