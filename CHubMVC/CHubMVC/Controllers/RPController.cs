@@ -12,6 +12,7 @@ using CHubModel.ExtensionModel;
 using CHubDBEntity.UnmanagedModel;
 using CHubBLL.OtherProcess;
 using CHubModel.WebArg;
+using CHubCommon.Printer;
 
 namespace CHubMVC.Controllers
 {
@@ -534,12 +535,31 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult PrintLabel(string partNo,string labelCode,string parinter,int copies)
+        public ActionResult PrintLabel(LabelPrintArg arg)
         {
+            if (arg == null|| arg.items==null ||arg.items.Count==0)
+                return Json(new RequestResult(false, "No data in Arg"));
+            if(string.IsNullOrEmpty(arg.labelCode) || string.IsNullOrEmpty(arg.printer))
+                return Json(new RequestResult(false, "No labelcode or printer info"));
+
             try
             {
-                //V_PLABEL_PRINT_BLL baseBLL = new V_PLABEL_BASE_BLL();
-                //var result = baseBLL.QueryByPart()
+                V_PLABEL_PRINT_BLL pBLL = new V_PLABEL_PRINT_BLL();
+
+                string basePath = Server.MapPath(CHubConstValues.ChubTempFolder);
+                LabelPrintBLL lpBLL = new LabelPrintBLL(basePath);
+
+                PrintHelper pHelper = new PrintHelper();
+                foreach (var item in arg.items)
+                {
+                    List<V_PLABEL_PRINT> printData = pBLL.BatchGetLabelPrintData(new List<string> { item.partNo}, arg.labelCode);
+                    if (printData == null || printData.Count == 0)
+                        continue;
+                    string fileName = lpBLL.BuildPDF(printData);
+                    string fullPath = basePath + fileName;
+                    pHelper.PrintFileWithCopies(fullPath, arg.printer, item.copies);
+                }
+
                 return Json(new RequestResult(true));
             }
             catch (Exception ex)
