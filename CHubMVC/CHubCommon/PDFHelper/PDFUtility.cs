@@ -72,12 +72,27 @@ namespace CHubCommon.PDFHelper
 
         public Image GetCode128Img(string source, int? height)
         {
-            Code128Helper cHelper = new Code128Helper();
-            if (height != null)
-                cHelper.Height = (uint)height.Value;
-            cHelper.ValueFont = new System.Drawing.Font("宋体", 10);
+            //Code128Helper cHelper = new Code128Helper();
+            //if (height != null)
+            //    cHelper.Height = (uint)height.Value;
+            //cHelper.ValueFont = new System.Drawing.Font("宋体", 10);
 
-            System.Drawing.Bitmap img = cHelper.GetCodeImage(source, Code128Helper.Encode.Code128B);
+            //System.Drawing.Bitmap img = cHelper.GetCodeImage(source, Code128Helper.Encode.Code128B);
+
+            ////img = new System.Drawing.Bitmap(img, new System.Drawing.Size(100,9));
+
+            Barcode128 code128 = new Barcode128();
+            code128.CodeType = Barcode.CODE128;
+            code128.ChecksumText = true;
+            code128.GenerateChecksum = true;
+            code128.Code = source;
+            if (height != null)
+                code128.BarHeight = height.Value;
+           
+
+            System.Drawing.Bitmap img = new System.Drawing.Bitmap(code128.CreateDrawingImage(System.Drawing.Color.Black, System.Drawing.Color.White));
+            //bm.Save(context.Response.OutputStream, System.Drawing.Imaging.ImageFormat.Gif);
+
 
             return Image.GetInstance(img, System.Drawing.Imaging.ImageFormat.Gif);
         }

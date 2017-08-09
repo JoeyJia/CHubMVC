@@ -75,6 +75,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -99,6 +100,7 @@
     <Compile Include="EmailHelper.cs" />
     <Compile Include="ExcelUtility\ExcelHelper.cs" />
     <Compile Include="ExcelUtility\NPOIExcelHelper.cs" />
+    <Compile Include="FontHelper\FontHelper.cs" />
     <Compile Include="Log\LogHelper.cs" />
     <Compile Include="Log\TxtLog.cs" />
     <Compile Include="PDFHelper\CusPDFDocument.cs" />
