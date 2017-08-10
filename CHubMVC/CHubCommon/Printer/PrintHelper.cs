@@ -51,6 +51,7 @@ namespace CHubCommon.Printer
             //pdfdocument.PrinterName = printerName;
             pdfdocument.PrintDocument.PrinterSettings.Copies = (short)copies;
             pdfdocument.PrintDocument.PrinterSettings.PrinterName = printerName;
+            pdfdocument.PrintDocument.PrinterSettings.PrintFileName = "AutoPrintLabel";
             //pdfdocument.PrintDocument.PrinterSettings.ToPage = 1;
             //pdfdocument.PrintDocument.PrinterSettings.FromPage = 1;
             //pdfdocument.PrintDocument.PrinterSettings.DefaultPageSettings.Margins.Top = 50;

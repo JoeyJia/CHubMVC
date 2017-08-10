@@ -242,16 +242,19 @@
                 success: function (obj) {
                     
                     if (obj.Success) {
-                        $scope.result = obj.Data;
                         $("#loadingModal").modal("hide");
+                        $scope.result = obj.Data;
+                        $scope.$apply();
+                        
                     }
                     else {
-                        alert(obj.Msg);
                         $("#loadingModal").modal("hide");
+                        alert(obj.Msg);
+                        
                     }
                 },
                 error: function (obj) {
-                    $("#loadingModal").modal("hide");
+                   $("#loadingModal").modal("hide");
                     alert("fail to Query");
                 }
 
