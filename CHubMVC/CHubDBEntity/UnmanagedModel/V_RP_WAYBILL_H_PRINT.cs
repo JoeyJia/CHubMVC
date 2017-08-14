@@ -99,5 +99,8 @@ namespace CHubDBEntity.UnmanagedModel
         public decimal PAPER_HORIZONTAL { get; set; }
         public decimal PAPER_VERTICAL { get; set; }
 
+        public string LOGO2 { get; set; }
+        public string TITLE { get; set; }
+
     }
 }

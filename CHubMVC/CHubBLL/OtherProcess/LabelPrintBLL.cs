@@ -70,6 +70,8 @@ namespace CHubBLL.OtherProcess
                 else
                     doc.Open();
 
+                linePointer = 1;
+
                 PdfPCell cellUnit;
                 //Content part
                 PdfPTable contentTable = new PdfPTable(4);
@@ -144,6 +146,8 @@ namespace CHubBLL.OtherProcess
                     cellUnit = new PdfPCell(pdfUtility.GetCode128Img(printDatas[i].C09, 9),true);
                 cellUnit.BorderWidth = 0;
                 cellUnit.Colspan = 2;
+
+                contentTable.AddCell(cellUnit);
 
                 linePointer++;
 
