@@ -286,11 +286,13 @@
 
                     }
                     else {
+                        $("#loadingModal").modal("hide");
                         alert(obj.Msg);
                     }
 
                 },
                 error: function (obj) {
+                    $("#loadingModal").modal("hide");
                     alert(obj.responseText);
                 }
             });

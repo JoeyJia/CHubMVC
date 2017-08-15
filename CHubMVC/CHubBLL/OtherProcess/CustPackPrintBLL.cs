@@ -24,6 +24,7 @@ namespace CHubBLL.OtherProcess
         BaseFont BF_Light = BaseFont.CreateFont(@"C:\Windows\Fonts\simhei.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 
         private int ContentFontSize = 10;
+        private int BigTableFontSize = 10;
         private int TableFontSize = 8;
         private int HeaderFontSize = 12;
         private int FooterFontSize = 8;
@@ -249,7 +250,7 @@ namespace CHubBLL.OtherProcess
                 //Table part
                 PdfPTable dTable = new PdfPTable(11);
                 dTable.WidthPercentage = 90f;
-                dTable.SetWidths(new float[] { 30f, 47f, 98f, 30f, 30f, 47f, 47f, 47f, 47f, 47f, 47f });
+                dTable.SetWidths(new float[] { 30f, 52f, 98f, 25f, 30f, 47f, 47f, 47f, 47f, 47f, 47f });
                 dTable.AddCell(pdfUtility.BuildCell("Index", new iTextSharp.text.Font(BF_Light, TableFontSize)));
                 dTable.AddCell(pdfUtility.BuildCell(pageDatas[i].Header.COL01, new iTextSharp.text.Font(BF_Light, TableFontSize)));
                 dTable.AddCell(pdfUtility.BuildCell(pageDatas[i].Header.COL02, new iTextSharp.text.Font(BF_Light, TableFontSize)));
@@ -264,12 +265,15 @@ namespace CHubBLL.OtherProcess
 
                 if (pageDatas[i].Details != null && pageDatas[i].Details.Count > 0)
                 {
+                    //order 
+                    //pageDatas[i].Details.OrderBy(a => a.COL01);
+
                     int indexPoint = 1;
                     foreach (var item in pageDatas[i].Details)
                     {
                         dTable.AddCell(pdfUtility.BuildCell(indexPoint.ToString(), new iTextSharp.text.Font(BF_Light, TableFontSize)));
                         indexPoint++;
-                        dTable.AddCell(pdfUtility.BuildCell(item.COL01, new iTextSharp.text.Font(BF_Light, TableFontSize)));
+                        dTable.AddCell(pdfUtility.BuildCell(item.COL01, new iTextSharp.text.Font(BF_Light, BigTableFontSize)));
                         dTable.AddCell(pdfUtility.BuildCell(item.COL02, new iTextSharp.text.Font(BF_Light, TableFontSize)));
                         dTable.AddCell(pdfUtility.BuildCell(item.COL03, new iTextSharp.text.Font(BF_Light, TableFontSize)));
                         dTable.AddCell(pdfUtility.BuildCell(item.COL04, new iTextSharp.text.Font(BF_Light, TableFontSize)));

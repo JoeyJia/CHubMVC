@@ -19,7 +19,7 @@ namespace CHubBLL.OtherProcess
         // ariblk.ttf    simsun.ttc
         BaseFont BF_Light = BaseFont.CreateFont(@"C:\Windows\Fonts\simhei.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 
-        private int ContentFontSize = 6;
+        private int ContentFontSize = 8;
         private int TableFontSize = 8;
         private int HeaderFontSize = 12;
         private int FooterFontSize = 8;
@@ -53,7 +53,7 @@ namespace CHubBLL.OtherProcess
            // PackPageEventHelper pHelper = new PackPageEventHelper();
             //writer.PageEvent = pHelper;
 
-            doc.SetMargins(10f, 10f, 51f, 0f);
+            doc.SetMargins(10f, 10f, 65f, 0f);
             
             int ColumnHeight = fontHelper.GetFontHeight("柳工", new System.Drawing.Font("黑体", ContentFontSize)) + 1;
             int lineCount = (int)(doc.Top / ColumnHeight);
@@ -77,7 +77,7 @@ namespace CHubBLL.OtherProcess
                 PdfPTable contentTable = new PdfPTable(4);
                 contentTable.WidthPercentage = 100f;
                 //contentTable.SplitRows = false;
-                contentTable.SetWidths(new float[] { 2f,4f,2f,4f });
+                contentTable.SetWidths(new float[] { 3f,4f,2f,3f });
 
                 //line 1  
                 cellUnit = new PdfPCell(new Paragraph(printDatas[i].T01, new iTextSharp.text.Font(BF_Light, ContentFontSize)));

@@ -116,7 +116,8 @@
                                     </div>
                                 </th>
                                 <th style="">Copies</th>
-                                <th style="">Qty in Carton</th>
+                                <th style="">MOQ</th>
+                                <th style="">Ship Qtys</th>
 
                                 <th style="">Print PartNo</th>
                                 <th style="">Part No</th>
@@ -137,7 +138,8 @@
                                     </div>
                                 </td>
                                 <td style="width:80px;padding:0px"><input class="form-control input-sm" ng-model="r.COPIES" /></td>
-                                <td>{{r.QTY_IN_CARTON}}</td>
+                                <td style="width:80px;padding:0px"><input class="form-control input-sm" ng-model="r.MOQ" ng-blur="moqChanged(r)" /></td>
+                                <td>{{r.SHIP_QTYS}}</td>
                                 <td>{{r.PRINT_PART_NO}}</td>
                                 <td>{{r.PART_NO}}</td>
                                 <td>{{r.DESCRIPTION}}</td>
@@ -416,6 +418,11 @@
                 }
             }
         };
+
+        $scope.moqChanged = function (curr)
+        {
+            curr.COPIES =Math.ceil(curr.SHIP_QTYS / curr.MOQ);   
+        }
 
 
     });

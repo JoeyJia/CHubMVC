@@ -21,7 +21,8 @@ namespace CHubDAL
         {
             string sql = @"select 
 sum(sd.untqty)/nvl(PB.QTY_IN_CARTON,1) copies,
-PB.QTY_IN_CARTON ,
+PB.QTY_IN_CARTON MOQ,
+sum(sd.untqty) SHIP_QTYS,
 PB.PRINT_PART_NO ,
 PB.PART_NO ,
 PB.DESCRIPTION ,

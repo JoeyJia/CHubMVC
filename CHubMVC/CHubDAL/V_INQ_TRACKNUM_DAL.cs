@@ -81,7 +81,7 @@ namespace CHubDAL
           NOTE1 ,
           NOTE2 
           From V_INQ_TRACKNUM
-          where SHIP_ID='603165685'", shipID);
+          where SHIP_ID='{0}'", shipID);
 
             var result = db.Database.SqlQuery<TrackNumLevel2>(sql);
 

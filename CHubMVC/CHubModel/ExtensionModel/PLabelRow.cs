@@ -10,7 +10,8 @@ namespace CHubModel.ExtensionModel
     {
         public decimal? COPIES { get; set; }
 
-        public decimal? QTY_IN_CARTON { get; set; }
+        public decimal? MOQ { get; set; }
+        public decimal? SHIP_QTYS { get; set; }
 
         public string PRINT_PART_NO { get; set; }
 

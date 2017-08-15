@@ -21,8 +21,9 @@ namespace CHubDAL
             string sql = string.Format(@"select * from V_RP_PACK_D_PRINT
  where  LODNUM='{0}'", lodNum);
 
+            this.CheckCultureInfoForDate();
             var result = db.Database.SqlQuery<V_RP_PACK_D_PRINT>(sql);
-            return result.ToList();
+            return result.OrderBy(a=>a.COL01).ToList();
 
         }
 

@@ -19,6 +19,7 @@ namespace CHubCommon
         public int ContentFontSize = 10;
         public int HeaderFontSize = 12;
         public int CodeFontSize = 18;
+        public int TitleFontSize = 18;
 
         public bool printCode = false;
         public string QRPath;
@@ -102,9 +103,9 @@ namespace CHubCommon
             float linePosition = 115f;
             if ((!printCode)&&(hData.PRINT_LOGO==CHubConstValues.IndN))
             {
-                document.Add(new Paragraph(Environment.NewLine));
-                document.Add(new Paragraph(Environment.NewLine));
-                document.Add(new Paragraph(Environment.NewLine));
+                //document.Add(new Paragraph(Environment.NewLine));
+                //document.Add(new Paragraph(Environment.NewLine));
+                //document.Add(new Paragraph(Environment.NewLine));
                 if (document.PageSize.Height > 500f)
                 {
                     document.Add(new Paragraph(Environment.NewLine));
@@ -126,14 +127,43 @@ namespace CHubCommon
 
                 #region for adding header part for each page
 
-                PdfPTable imgTable = new PdfPTable(4);
+                PdfPTable imgTable = new PdfPTable(5);
+                imgTable.WidthPercentage = 100f;
                 //empty  / wechat /empty  /qrcode
-                imgTable.SetWidths(new float[] {345f,120f,12f,120f});//215f, 75f, 200f, 85f
+                imgTable.SetWidths(new float[] {100f,245f,120f,12f,120f});//215f, 75f, 200f, 85f
                 imgTable.HorizontalAlignment = Element.ALIGN_RIGHT;
+                PdfPCell imgCell;
 
-                PdfPCell imgCell = new PdfPCell();
+                //logo2 part
+                if (printCode && !string.IsNullOrEmpty(hData.LOGO2))
+                {
+                    string logo2Path = BasePath.Replace("temp", "images") + hData.LOGO2;
+                    iTextSharp.text.Image Logo2Image = iTextSharp.text.Image.GetInstance(logo2Path);
+                    Logo2Image.Alignment = Element.ALIGN_LEFT;
+                    imgCell = new PdfPCell(Logo2Image, true);
+                    imgCell.HorizontalAlignment = Element.ALIGN_RIGHT;
+                }
+                else
+                    imgCell = new PdfPCell();
+                
                 imgCell.BorderWidth = 0;
                 imgTable.AddCell(imgCell);
+
+                //title part
+                if (printCode && !string.IsNullOrEmpty(hData.TITLE))
+                {
+                    Paragraph p1 = new Paragraph(hData.TITLE, new iTextSharp.text.Font(BF_Light, TitleFontSize));
+                    
+                    imgCell = new PdfPCell(p1);
+                }
+                else
+                    imgCell = new PdfPCell();
+
+                imgCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                imgCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                imgCell.BorderWidth = 0;
+                imgTable.AddCell(imgCell);
+
 
                 if (hData.PRINT_LOGO == CHubConstValues.IndY)
                 {
