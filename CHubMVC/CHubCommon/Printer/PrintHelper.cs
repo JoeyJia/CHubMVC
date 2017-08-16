@@ -53,7 +53,7 @@ namespace CHubCommon.Printer
             pdfdocument.PrintDocument.PrinterSettings.Copies = (short)copies;
             pdfdocument.PrintDocument.PrinterSettings.PrinterName = printerName;
             pdfdocument.PrintDocument.PrinterSettings.PrintFileName = "AutoPrintLabel";
-            //pdfdocument.p
+
             int width = (int)sample.PAPER_HORIZONTAL.Value;
             int height = (int)sample.PAPER_VERTICAL.Value;
             pdfdocument.PrintDocument.DefaultPageSettings.PaperSize = new PaperSize("cust",width,height);
