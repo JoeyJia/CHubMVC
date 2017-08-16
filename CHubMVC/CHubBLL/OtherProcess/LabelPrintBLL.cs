@@ -53,7 +53,7 @@ namespace CHubBLL.OtherProcess
            // PackPageEventHelper pHelper = new PackPageEventHelper();
             //writer.PageEvent = pHelper;
 
-            doc.SetMargins(10f, 10f, 65f, 0f);
+            doc.SetMargins(10f, 10f, 0f, 0f);
             
             int ColumnHeight = fontHelper.GetFontHeight("柳工", new System.Drawing.Font("黑体", ContentFontSize)) + 1;
             int lineCount = (int)(doc.Top / ColumnHeight);
@@ -71,6 +71,9 @@ namespace CHubBLL.OtherProcess
                     doc.Open();
 
                 linePointer = 1;
+
+                Paragraph pUnit = new Paragraph(printDatas[i].HEADER);
+                doc.Add(pUnit);
 
                 PdfPCell cellUnit;
                 //Content part
@@ -111,6 +114,11 @@ namespace CHubBLL.OtherProcess
                 linePointer++;
 
                 //Line3
+                if (linePointer > lineCount)
+                {
+                    doc.Add(contentTable);
+                    continue;
+                }
                 cellUnit = new PdfPCell(new Paragraph(printDatas[i].T02, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
@@ -131,6 +139,11 @@ namespace CHubBLL.OtherProcess
 
                 //currenttop = doc.GetTop(51f);
                 //Line 4
+                if (linePointer > lineCount)
+                {
+                    doc.Add(contentTable);
+                    continue;
+                }
                 cellUnit = new PdfPCell(new Paragraph(printDatas[i].T03, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
@@ -153,7 +166,10 @@ namespace CHubBLL.OtherProcess
 
                 //line 5
                 if (linePointer > lineCount)
+                {
+                    doc.Add(contentTable);
                     continue;
+                }
                 cellUnit = new PdfPCell(new Paragraph(printDatas[i].T04, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
@@ -173,7 +189,10 @@ namespace CHubBLL.OtherProcess
                 linePointer++;
                 //line 6
                 if (linePointer > lineCount)
+                {
+                    doc.Add(contentTable);
                     continue;
+                }
                 cellUnit = new PdfPCell(new Paragraph(printDatas[i].T05, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
@@ -195,7 +214,10 @@ namespace CHubBLL.OtherProcess
 
                 //line 7
                 if (linePointer > lineCount)
+                {
+                    doc.Add(contentTable);
                     continue;
+                }
                 cellUnit = new PdfPCell(new Paragraph(printDatas[i].T06, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
@@ -215,7 +237,10 @@ namespace CHubBLL.OtherProcess
                 linePointer++;
                 //Line 8
                 if (linePointer > lineCount)
+                {
+                    doc.Add(contentTable);
                     continue;
+                }
                 cellUnit = new PdfPCell(new Paragraph(printDatas[i].T07, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);

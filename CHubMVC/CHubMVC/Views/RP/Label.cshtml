@@ -421,7 +421,8 @@
 
         $scope.moqChanged = function (curr)
         {
-            curr.COPIES =Math.ceil(curr.SHIP_QTYS / curr.MOQ);   
+            if (curr.SHIP_QTYS != undefined && curr.SHIP_QTYS != null)
+                curr.COPIES = Math.ceil(curr.SHIP_QTYS / curr.MOQ);
         }
 
 

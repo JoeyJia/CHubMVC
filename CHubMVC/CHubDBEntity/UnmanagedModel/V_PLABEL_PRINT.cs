@@ -55,5 +55,7 @@ namespace CHubDBEntity.UnmanagedModel
         public string C11 { get; set; }
         public string C12 { get; set; }
 
+        public string HEADER { get; set; }
+
     }
 }

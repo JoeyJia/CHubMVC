@@ -21,7 +21,8 @@ namespace CHubDAL
         {
             string sql = @"select
 1 COPIES,
-QTY_IN_CARTON ,
+QTY_IN_CARTON MOQ ,
+
  PRINT_PART_NO ,
  PART_NO, 
  DESCRIPTION ,
@@ -29,7 +30,7 @@ DESC_CN ,
  SHORT_DESCRIPTION ,
 COUNTRY_OF_ORIGIN, 
 PART_WEIGHT
-from V_PLABEL_BASE where 1=1";
+from V_PLABEL_BASE where 1=1";//1 SHIP_QTYS,
             if (!string.IsNullOrEmpty(printPartNo))
                 sql += string.Format(" and PRINT_PART_NO ='{0}'",printPartNo);
 
