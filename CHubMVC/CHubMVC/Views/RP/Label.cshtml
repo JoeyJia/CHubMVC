@@ -306,8 +306,23 @@
                     var data = {};
                     data.partNo = $scope.result[seq].PART_NO;
                     data.copies = $scope.result[seq].COPIES;
+                    data.MOQ = $scope.result[seq].MOQ;
                     arg.push(data);
                 }
+            }
+
+            if (arg.length == 0) {
+                alert("No selected data");
+                return;
+            }
+
+            if ($scope.selectedType == "") {
+                alert("No label type");
+                return;
+            }
+            if ($scope.selectedPrinter == "") {
+                alert("No printer selected");
+                return;
             }
 
             $.ajax({
@@ -347,21 +362,29 @@
 
         $scope.exportPDF = function ()
         {
-            $scope.selectedItems = [];
+            var arg = [];
             var all = $(".ckItems");
 
             if (all == null || all.length == 0) {
                 alert("No Data!");
                 return;
             }
+            //alert(all.length);
 
             for (var i = 0; i < all.length; i++) {
-                if (all[i].checked)
-                    $scope.selectedItems.push(all[i].attributes['partNo'].value);
+                if (all[i].checked) {
+                    var seq = all[i].attributes['seq'].value;
+                    //alert(seq);
+                    var data = {};
+                    data.partNo = $scope.result[seq].PART_NO;
+                    data.copies = $scope.result[seq].COPIES;
+                    data.MOQ = $scope.result[seq].MOQ;
+                    arg.push(data);
+                }
             }
 
-            if ($scope.selectedItems.length == 0) {
-                alert("No selected Data!");
+            if (arg.length == 0) {
+                alert("No selected data");
                 return;
             }
 
@@ -375,8 +398,9 @@
             $.ajax({
                 url: "/rp/ExportPDF",
                 data: JSON.stringify({
-                    partNoList: $scope.selectedItems,
-                    labelCode: $scope.selectedType
+                    items: arg,
+                    labelCode: $scope.selectedType,
+                    printer: $scope.selectedPrinter
                 }),
                 type: "post",
                 async: true,

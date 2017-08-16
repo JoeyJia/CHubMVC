@@ -2,6 +2,7 @@
 using CHubCommon.FontHelper;
 using CHubCommon.PDFHelper;
 using CHubDBEntity.UnmanagedModel;
+using CHubModel.WebArg;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System;
@@ -36,9 +37,9 @@ namespace CHubBLL.OtherProcess
         }
 
 
-        public string BuildPDF(List<V_PLABEL_PRINT> printDatas)
+        public string BuildPDF(List<V_PLABEL_PRINT> printDatas,List<LabelPrintItem> labelItems)
         {
-            
+
             string fileName = string.Format("labelPrint-{0}.pdf", DateTime.Now.ToString("yyyyMMddHHmm"));
             string fullPath = BasePath + fileName;
 
@@ -120,6 +121,11 @@ namespace CHubBLL.OtherProcess
                     doc.Add(contentTable);
                     continue;
                 }
+                //C09 prepare
+                string c09 = printDatas[i].C09;
+                if (string.IsNullOrEmpty(c09))
+                    c09 = (labelItems.FirstOrDefault(a => a.partNo == printDatas[i].PART_NO) ?? new LabelPrintItem()).MOQ.ToString();
+
                 cellUnit = new PdfPCell(new Paragraph(printDatas[i].T02, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
@@ -132,7 +138,7 @@ namespace CHubBLL.OtherProcess
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
 
-                cellUnit = new PdfPCell(new Paragraph(printDatas[i].C09, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+                cellUnit = new PdfPCell(new Paragraph(c09, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
 
@@ -154,10 +160,10 @@ namespace CHubBLL.OtherProcess
                 contentTable.AddCell(cellUnit);
 
                 //picture
-                if (string.IsNullOrEmpty(printDatas[i].C09))
+                if (string.IsNullOrEmpty(c09))
                     cellUnit = new PdfPCell();
                 else
-                    cellUnit = new PdfPCell(pdfUtility.GetCode128Img(printDatas[i].C09, 9),true);
+                    cellUnit = new PdfPCell(pdfUtility.GetCode128Img(c09, 9),true);
                 cellUnit.BorderWidth = 0;
                 cellUnit.Colspan = 2;
 

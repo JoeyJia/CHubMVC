@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Drawing.Printing;
 using Spire.Pdf;
+using CHubDBEntity.UnmanagedModel;
 
 namespace CHubCommon.Printer
 {
@@ -43,7 +44,7 @@ namespace CHubCommon.Printer
 
         }
 
-        public void PrintFileWithCopies(string filePath, string printerName ,int copies)
+        public void PrintFileWithCopies(string filePath, string printerName ,int copies, V_PLABEL_PRINT sample)
         {
             PrinterSettings oPrinterSettings = new PrinterSettings();
             PdfDocument pdfdocument = new PdfDocument();
@@ -53,7 +54,9 @@ namespace CHubCommon.Printer
             pdfdocument.PrintDocument.PrinterSettings.PrinterName = printerName;
             pdfdocument.PrintDocument.PrinterSettings.PrintFileName = "AutoPrintLabel";
             //pdfdocument.p
-            //pdfdocument.PrintDocument.DefaultPageSettings.PaperSize = new PaperSize();
+            int width = (int)sample.PAPER_HORIZONTAL.Value;
+            int height = (int)sample.PAPER_VERTICAL.Value;
+            pdfdocument.PrintDocument.DefaultPageSettings.PaperSize = new PaperSize("cust",width,height);
             //pdfdocument.PrintDocument.PrinterSettings.ToPage = 1;
             //pdfdocument.PrintDocument.PrinterSettings.FromPage = 1;
             //pdfdocument.PrintDocument.PrinterSettings.DefaultPageSettings.Margins.Top = 50;

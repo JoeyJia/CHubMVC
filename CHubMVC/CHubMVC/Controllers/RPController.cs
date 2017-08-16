@@ -555,9 +555,9 @@ namespace CHubMVC.Controllers
                     List<V_PLABEL_PRINT> printData = pBLL.BatchGetLabelPrintData(new List<string> { item.partNo}, arg.labelCode);
                     if (printData == null || printData.Count == 0)
                         continue;
-                    string fileName = lpBLL.BuildPDF(printData);
+                    string fileName = lpBLL.BuildPDF(printData,arg.items);
                     string fullPath = basePath + fileName;
-                    pHelper.PrintFileWithCopies(fullPath, arg.printer, item.copies);
+                    pHelper.PrintFileWithCopies(fullPath, arg.printer, item.copies,printData[0]);
                 }
 
                 return Json(new RequestResult(true));
@@ -571,12 +571,14 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult ExportPDF(List<string> partNoList, string labelCode)
+        public ActionResult ExportPDF(LabelPrintArg arg)//List<string> partNoList, string labelCode
         {
             try
             {
+                List<string> partNoList = (from a in arg.items select a.partNo).ToList();
+
                 V_PLABEL_PRINT_BLL pBLL = new V_PLABEL_PRINT_BLL();
-                List<V_PLABEL_PRINT> printData = pBLL.BatchGetLabelPrintData(partNoList, labelCode);
+                List<V_PLABEL_PRINT> printData = pBLL.BatchGetLabelPrintData(partNoList, arg.labelCode);
 
                 if(printData==null || printData.Count==0)
                     return Json(new RequestResult(false,"Get no page data"));
@@ -584,7 +586,7 @@ namespace CHubMVC.Controllers
 
                 string basePath = Server.MapPath(CHubConstValues.ChubTempFolder);
                 LabelPrintBLL lpBLL = new LabelPrintBLL(basePath);
-                string fileName = lpBLL.BuildPDF(printData);
+                string fileName = lpBLL.BuildPDF(printData,arg.items);
 
                 string webPath = "/temp/" + fileName;
 

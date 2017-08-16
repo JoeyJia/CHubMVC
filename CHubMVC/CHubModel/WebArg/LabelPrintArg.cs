@@ -18,5 +18,6 @@ namespace CHubModel.WebArg
     {
         public string partNo { get; set; }
         public int copies { get; set; }
+        public int MOQ { get; set; }
     }
 }
