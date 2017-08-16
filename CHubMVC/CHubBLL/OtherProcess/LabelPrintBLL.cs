@@ -72,15 +72,19 @@ namespace CHubBLL.OtherProcess
 
                 linePointer = 1;
 
-                Paragraph pUnit = new Paragraph(printDatas[i].HEADER);
+                Paragraph pUnit = new Paragraph(printDatas[i].HEADER, new iTextSharp.text.Font(BF_Light, ContentFontSize));
                 doc.Add(pUnit);
+                linePointer++;
+
+                doc.Add(new Paragraph(Environment.NewLine, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+                linePointer++;
 
                 PdfPCell cellUnit;
                 //Content part
                 PdfPTable contentTable = new PdfPTable(4);
                 contentTable.WidthPercentage = 100f;
                 //contentTable.SplitRows = false;
-                contentTable.SetWidths(new float[] { 3f,4f,2f,3f });
+                contentTable.SetWidths(new float[] { 4f,4f,3f,2f });
 
                 //line 1  
                 cellUnit = new PdfPCell(new Paragraph(printDatas[i].T01, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
@@ -89,26 +93,23 @@ namespace CHubBLL.OtherProcess
 
                 cellUnit = new PdfPCell(new Paragraph(printDatas[i].C01, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
-                contentTable.AddCell(cellUnit);
-
-                cellUnit = new PdfPCell(new Paragraph(printDatas[i].T08, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                cellUnit.BorderWidth = 0;
-                contentTable.AddCell(cellUnit);
-
-                cellUnit = new PdfPCell(new Paragraph(printDatas[i].C08, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                cellUnit.BorderWidth = 0;
+                cellUnit.Colspan = 3;
                 contentTable.AddCell(cellUnit);
 
                 linePointer++;
                 //currenttop = doc.GetTop(51f);
                 //Line 2
+                cellUnit = new PdfPCell();
+                cellUnit.BorderWidth = 0;
+                contentTable.AddCell(cellUnit);
+
                 //picture
                 if (string.IsNullOrEmpty(printDatas[i].C01))
                     cellUnit = new PdfPCell();
                 else
                     cellUnit = new PdfPCell(pdfUtility.GetCode128Img(printDatas[i].C01, 9),false);
                 cellUnit.BorderWidth = 0;
-                cellUnit.Colspan = 4;
+                cellUnit.Colspan = 3;
                 contentTable.AddCell(cellUnit);
 
                 linePointer++;
@@ -224,15 +225,9 @@ namespace CHubBLL.OtherProcess
 
                 cellUnit = new PdfPCell(new Paragraph(printDatas[i].C06, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
+                cellUnit.Colspan = 3;
                 contentTable.AddCell(cellUnit);
 
-                cellUnit = new PdfPCell(new Paragraph(printDatas[i].T11, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                cellUnit.BorderWidth = 0;
-                contentTable.AddCell(cellUnit);
-
-                cellUnit = new PdfPCell(new Paragraph(printDatas[i].C11, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                cellUnit.BorderWidth = 0;
-                contentTable.AddCell(cellUnit);
 
                 linePointer++;
                 //Line 8
@@ -247,16 +242,25 @@ namespace CHubBLL.OtherProcess
 
                 cellUnit = new PdfPCell(new Paragraph(printDatas[i].C07, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
+                cellUnit.Colspan = 3;
                 contentTable.AddCell(cellUnit);
 
-                cellUnit = new PdfPCell(new Paragraph(printDatas[i].T12, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+
+                //line9 
+                if (linePointer > lineCount)
+                {
+                    doc.Add(contentTable);
+                    continue;
+                }
+                cellUnit = new PdfPCell(new Paragraph(printDatas[i].T08, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
                 contentTable.AddCell(cellUnit);
 
-                cellUnit = new PdfPCell(new Paragraph(printDatas[i].C12, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+                cellUnit = new PdfPCell(new Paragraph(printDatas[i].C08, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
                 cellUnit.BorderWidth = 0;
+                cellUnit.Colspan = 3;
                 contentTable.AddCell(cellUnit);
-                //currenttop = doc.GetTop(51f);
+
 
                 doc.Add(contentTable);
 
