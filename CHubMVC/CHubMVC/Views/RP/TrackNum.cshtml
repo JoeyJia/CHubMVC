@@ -17,12 +17,7 @@
                     <div class="col-sm-2">
                         <select class="form-control input-sm" id="txtWhID" ng-model="whID"  ng-options="w.WH_ID as w.WH_ID for w in appWHList"></select>
                     </div>
-                </div>
-            </div>
 
-
-            <div class="row">
-                <div class="form-group">
                     <label for="txtGSOM" class="col-sm-2 control-label">GOMS Order Number</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtGSOM" ng-model="SalesOrdNum" placeholder="GOMS Order Number">
@@ -30,23 +25,38 @@
                 </div>
             </div>
 
+
+            @*<div class="row">
+                <div class="form-group">
+                    <label for="txtGSOM" class="col-sm-2 control-label">GOMS Order Number</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtGSOM" ng-model="SalesOrdNum" placeholder="GOMS Order Number">
+                    </div>
+                </div>
+            </div>*@
+
             <div class="row">
                 <div class="form-group">
                     <label for="txtCPO" class="col-sm-2 control-label">Customer PO Number</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtCPO" ng-model="VCCpoNum" placeholder="Customer PO Number">
                     </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="form-group">
                     <label for="txtTrackNo" class="col-sm-2 control-label">Track Number</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtTrackNo" ng-model="TrackNum" placeholder="Track Number">
                     </div>
                 </div>
             </div>
+
+            @*<div class="row">
+                <div class="form-group">
+                    <label for="txtTrackNo" class="col-sm-2 control-label">Track Number</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtTrackNo" ng-model="TrackNum" placeholder="Track Number">
+                    </div>
+                </div>
+            </div>*@
           
             <div class="row">
                 <div class="form-group">
@@ -54,11 +64,7 @@
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtShipID" ng-model="ShipID" placeholder="SHIP ID">
                     </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="form-group">
                     <label for="txtPRTNum" class="col-sm-2 control-label">Part number (RP)</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtPRTNum" ng-model="PRTNum" placeholder="Part number (RP)">
@@ -66,17 +72,22 @@
                 </div>
             </div>
 
+            @*<div class="row">
+                <div class="form-group">
+                    <label for="txtPRTNum" class="col-sm-2 control-label">Part number (RP)</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtPRTNum" ng-model="PRTNum" placeholder="Part number (RP)">
+                    </div>
+                </div>
+            </div>*@
+
             <div class="row">
                 <div class="form-group">
                     <label for="txtCSTPart" class="col-sm-2 control-label">Customer Part number</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtCSTPart" ng-model="CSTPRT" placeholder="Customer Part number">
                     </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="form-group">
                     <label for="txtLodNum" class="col-sm-2 control-label">Box Number</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtLodNum" ng-model="LodNum" placeholder="Box Number">
@@ -84,17 +95,22 @@
                 </div>
             </div>
 
+            @*<div class="row">
+                <div class="form-group">
+                    <label for="txtLodNum" class="col-sm-2 control-label">Box Number</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtLodNum" ng-model="LodNum" placeholder="Box Number">
+                    </div>
+                </div>
+            </div>*@
+
             <div class="row">
                 <div class="form-group">
                     <label for="txtOrdNum" class="col-sm-2 control-label">Picklist Number</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtOrdNum" ng-model="OrdNum" placeholder="Picklist Number">
                     </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="form-group">
                     <label for="txtAdrName" class="col-sm-2 control-label">Customer name</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtAdrName" ng-model="ADRNam" placeholder="Customer name">
@@ -102,17 +118,22 @@
                 </div>
             </div>
 
+            @*<div class="row">
+                <div class="form-group">
+                    <label for="txtAdrName" class="col-sm-2 control-label">Customer name</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtAdrName" ng-model="ADRNam" placeholder="Customer name">
+                    </div>
+                </div>
+            </div>*@
+
             <div class="row">
                 <div class="form-group">
                     <label for="txtAdrLn1" class="col-sm-2 control-label">Shipping ADDR1</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtAdrLn1" ng-model="ADRLN1" placeholder="Shipping ADDR1">
                     </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="form-group">
                     <label for="txtAdrLn2" class="col-sm-2 control-label">Shipping ADDR2</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtAdrLn2" ng-model="ADRLN2" placeholder="Shipping ADDR2">
@@ -123,6 +144,19 @@
                     </div>
                 </div>
             </div>
+
+            @*<div class="row">
+                <div class="form-group">
+                    <label for="txtAdrLn2" class="col-sm-2 control-label">Shipping ADDR2</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtAdrLn2" ng-model="ADRLN2" placeholder="Shipping ADDR2">
+                    </div>
+
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary btn-sm" ng-click="searchAction()">Search</button>
+                    </div>
+                </div>
+            </div>*@
 
 
         </form>

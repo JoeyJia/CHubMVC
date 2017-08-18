@@ -465,23 +465,23 @@ namespace CHubMVC.Controllers
             {
                 string defPrinter = string.Empty;
                 List<ExRPLabelType> typeList = null;
-                List<RP_PRINTER> printerList = null;
+                //List<RP_PRINTER> printerList = null;
 
-                APP_USERS_BLL userBLL = new APP_USERS_BLL();
-                string appUser = Session[CHubConstValues.SessionUser].ToString();
-                APP_USERS user = userBLL.GetAppUserByDomainName(appUser);
-                defPrinter = user.PRINTER_ID;
+                //APP_USERS_BLL userBLL = new APP_USERS_BLL();
+                //string appUser = Session[CHubConstValues.SessionUser].ToString();
+                //APP_USERS user = userBLL.GetAppUserByDomainName(appUser);
+                //defPrinter = user.PRINTER_ID;
 
                 RP_LABEL_TYPE_BLL typeBLL = new RP_LABEL_TYPE_BLL();
                 typeList = typeBLL.GetLabelTypeExList();
 
-                RP_PRINTER_BLL printBLL = new RP_PRINTER_BLL();
-                printerList = printBLL.GetPrinterList();
+                //RP_PRINTER_BLL printBLL = new RP_PRINTER_BLL();
+                //printerList = printBLL.GetPrinterList();
 
+                //defPrinter = defPrinter ?? "",
+                //    printers = printerList,
                 var obj = new
                 {
-                    defPrinter = defPrinter??"",
-                    printers = printerList,
                     types = typeList
                 };
                 return Json(new RequestResult(obj));
@@ -557,7 +557,7 @@ namespace CHubMVC.Controllers
                         continue;
                     string fileName = lpBLL.BuildPDF(printData,arg.items);
                     string fullPath = basePath + fileName;
-                    pHelper.PrintFileWithCopies(fullPath, arg.printer, item.copies,printData[0]);
+                    pHelper.PrintFileWithCopies(fullPath, arg.printer, item.copies);
                 }
 
                 return Json(new RequestResult(true));
@@ -571,7 +571,7 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult ExportPDF(LabelPrintArg arg)//List<string> partNoList, string labelCode
+        public ActionResult ExportPDF(LabelPrintArg arg)
         {
             try
             {

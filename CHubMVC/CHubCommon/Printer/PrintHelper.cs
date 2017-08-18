@@ -44,19 +44,20 @@ namespace CHubCommon.Printer
 
         }
 
-        public void PrintFileWithCopies(string filePath, string printerName ,int copies, V_PLABEL_PRINT sample)
+        public void PrintFileWithCopies(string filePath, string printerName ,int copies)
         {
             PrinterSettings oPrinterSettings = new PrinterSettings();
             PdfDocument pdfdocument = new PdfDocument();
             pdfdocument.LoadFromFile(filePath);
             //pdfdocument.PrinterName = printerName;
             pdfdocument.PrintDocument.PrinterSettings.Copies = (short)copies;
+
             pdfdocument.PrintDocument.PrinterSettings.PrinterName = printerName;
             pdfdocument.PrintDocument.PrinterSettings.PrintFileName = "AutoPrintLabel";
 
-            int width = (int)sample.PAPER_HORIZONTAL.Value;
-            int height = (int)sample.PAPER_VERTICAL.Value;
-            pdfdocument.PrintDocument.DefaultPageSettings.PaperSize = new PaperSize("cust",width,height);
+            //int width = (int)sample.PAPER_HORIZONTAL.Value;
+            //int height = (int)sample.PAPER_VERTICAL.Value;
+            //pdfdocument.PrintDocument.DefaultPageSettings.PaperSize = new PaperSize("cust",width,height);
             //pdfdocument.PrintDocument.PrinterSettings.ToPage = 1;
             //pdfdocument.PrintDocument.PrinterSettings.FromPage = 1;
             //pdfdocument.PrintDocument.PrinterSettings.DefaultPageSettings.Margins.Top = 50;
@@ -65,7 +66,9 @@ namespace CHubCommon.Printer
             //pdfdocument.PageSettings.SetMargins(100, 50, 100, 150);
             //pdfdocument.PrintFromPage = 1;
             //pdfdocument.PrintToPage = 1;
-            pdfdocument.PrintDocument.Print();
+            //pdfdocument.PageScaling = PdfPrintPageScaling.ActualSize;
+            
+            pdfdocument.PrintDocument.Print(); 
             pdfdocument.Dispose();
         }
 

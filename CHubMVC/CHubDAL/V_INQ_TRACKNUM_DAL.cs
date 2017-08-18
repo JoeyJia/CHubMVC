@@ -21,6 +21,7 @@ namespace CHubDAL
         public List<TrackNumLevel1> GetTrackNumLevel1(TrackNumQueryArg arg)
         {
             string sql = string.Format(@"select distinct  TRACK_TAB ,
+         TRACK_NUM,
          SHIP_ID ,
          WH_ID ,
          SHPSTS_DESC ,
@@ -31,7 +32,7 @@ namespace CHubDAL
          ADRLN2 ,
          PHNNUM ,
          LAST_NAME  From V_INQ_TRACKNUM  
-         where WH_ID='{0}' ",arg.WHID);
+         where WH_ID='{0}' ", arg.WHID);
 
             if (!string.IsNullOrEmpty(arg.SalesOrdNum))
                 sql += string.Format(" and SALES_ORDNUM ='{0}' ", arg.SalesOrdNum);
@@ -58,7 +59,7 @@ namespace CHubDAL
 
             var result = db.Database.SqlQuery<TrackNumLevel1>(sql);
 
-            return result.ToList();
+            return result.OrderBy(a=>a.SHIP_ID).ToList();
         }
 
         public List<TrackNumLevel2> GetTrackNumLevel2(string shipID)
@@ -85,7 +86,7 @@ namespace CHubDAL
 
             var result = db.Database.SqlQuery<TrackNumLevel2>(sql);
 
-            return result.ToList();
+            return result.OrderBy(a=>a.LODNUM).ToList();
 
         }
 
