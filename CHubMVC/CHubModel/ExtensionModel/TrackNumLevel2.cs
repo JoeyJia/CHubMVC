@@ -9,8 +9,7 @@ namespace CHubModel.ExtensionModel
     public class TrackNumLevel2
     {
         public string LODNUM { get; set; }
-        public DateTime? STGDTE { get; set; }
-        public DateTime? LODDTE { get; set; }
+
         public string ORDNUM { get; set; }
         public string ORDLIN { get; set; }
         public decimal? UNTQTY { get; set; }

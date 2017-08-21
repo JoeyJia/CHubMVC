@@ -21,6 +21,9 @@ namespace CHubModel.ExtensionModel
         public string PHNNUM { get; set; }
         public string LAST_NAME { get; set; }
 
+        public DateTime? STGDTE { get; set; }
+        public DateTime? LODDTE { get; set; }
+
 
     }
 }

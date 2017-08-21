@@ -163,7 +163,7 @@
 
         <!--result part-->
         <div class="row" style="overflow-x:auto;">
-            <div class="" style="margin-left:15px;width:2000px;">
+            <div class="" style="margin-left:15px;width:2200px;">
                 <div class="panel panel-default">
                     <div class="panel-heading" style="background-color:silver"><b>Result</b></div>
                     <table id="tableResult" class="table  table-condensed"
@@ -314,16 +314,7 @@
                 field: 'LODNUM',
                 title: 'Box Number'
             });
-            columns.push({
-                field: 'STGDTE',
-                title: 'Stage Date',
-                formatter: dateFormatter
-            });
-            columns.push({
-                field: 'LODDTE',
-                title: 'Ship Date',
-                formatter: dateFormatter
-            });
+            
             columns.push({
                 field: 'ORDNUM',
                 title: 'PickList Number'
@@ -408,6 +399,16 @@
             columns.push({
                 field: 'SHIP_ID',
                 title: 'Shipment No.'
+            });
+            columns.push({
+                field: 'STGDTE',
+                title: 'Stage Date',
+                formatter: dateFormatter
+            });
+            columns.push({
+                field: 'LODDTE',
+                title: 'Ship Date',
+                formatter: dateFormatter
             });
             columns.push({
                 field: 'WH_ID',
@@ -535,7 +536,7 @@
 
         function getLevel2Data(shipID)
         {
-            $("#loadingModal").modal("show");
+            
             $.ajax({
                 url: "/rp/GetTrackNumLevel2",
                 data: JSON.stringify({

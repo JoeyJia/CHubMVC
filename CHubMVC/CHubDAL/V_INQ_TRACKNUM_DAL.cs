@@ -31,7 +31,10 @@ namespace CHubDAL
          ADRLN1 ,
          ADRLN2 ,
          PHNNUM ,
-         LAST_NAME  From V_INQ_TRACKNUM  
+         LAST_NAME,
+         STGDTE ,
+         LODDTE 
+         From V_INQ_TRACKNUM  
          where WH_ID='{0}' ", arg.WHID);
 
             if (!string.IsNullOrEmpty(arg.SalesOrdNum))
@@ -59,15 +62,13 @@ namespace CHubDAL
 
             var result = db.Database.SqlQuery<TrackNumLevel1>(sql);
 
-            return result.OrderBy(a=>a.SHIP_ID).ToList();
+            return result.OrderBy(a=>a.LODDTE).ToList();
         }
 
         public List<TrackNumLevel2> GetTrackNumLevel2(string shipID, TrackNumQueryArg arg)
         {
             string sql = string.Format(@"select 
           LODNUM ,
-          STGDTE ,
-          LODDTE ,
           ORDNUM ,
           ORDLIN ,
           UNTQTY ,
