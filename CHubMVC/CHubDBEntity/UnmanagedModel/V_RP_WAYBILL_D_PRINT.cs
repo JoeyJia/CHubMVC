@@ -25,5 +25,8 @@ namespace CHubDBEntity.UnmanagedModel
         public decimal? VC_PALWID { get; set; }
         public decimal? VC_PALHGT { get; set; }
         public decimal? QTYS { get; set; }
+
+        public decimal? PALVOL_M3 { get; set; }
+        public string VC_DLRPONUM { get; set; }
     }
 }
