@@ -62,7 +62,7 @@ namespace CHubDAL
             return result.OrderBy(a=>a.SHIP_ID).ToList();
         }
 
-        public List<TrackNumLevel2> GetTrackNumLevel2(string shipID)
+        public List<TrackNumLevel2> GetTrackNumLevel2(string shipID, TrackNumQueryArg arg)
         {
             string sql = string.Format(@"select 
           LODNUM ,
@@ -83,6 +83,19 @@ namespace CHubDAL
           NOTE2 
           From V_INQ_TRACKNUM
           where SHIP_ID='{0}'", shipID);
+
+            if (!string.IsNullOrEmpty(arg.SalesOrdNum))
+                sql += string.Format(" and SALES_ORDNUM ='{0}' ", arg.SalesOrdNum);
+            if (!string.IsNullOrEmpty(arg.VCCpoNum))
+                sql += string.Format(" and VC_CPONUM ='{0}' ", arg.VCCpoNum);
+            if (!string.IsNullOrEmpty(arg.PRTNum))
+                sql += string.Format(" and PRTNUM ='{0}' ", arg.PRTNum);
+            if (!string.IsNullOrEmpty(arg.CSTPRT))
+                sql += string.Format(" and CSTPRT ='{0}' ", arg.CSTPRT);
+            if (!string.IsNullOrEmpty(arg.LodNum))
+                sql += string.Format(" and LODNUM ='{0}' ", arg.LodNum);
+            if (!string.IsNullOrEmpty(arg.OrdNum))
+                sql += string.Format(" and ORDNUM like '%{0}%' ", arg.OrdNum);
 
             var result = db.Database.SqlQuery<TrackNumLevel2>(sql);
 

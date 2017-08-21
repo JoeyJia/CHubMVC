@@ -663,12 +663,12 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult GetTrackNumLevel2(string shipID)
+        public ActionResult GetTrackNumLevel2(string shipID, TrackNumQueryArg arg)
         {
             try
             {
                 V_INQ_TRACKNUM_BLL tBLL = new V_INQ_TRACKNUM_BLL();
-                var result = tBLL.GetTrackNumLevel2(shipID);
+                var result = tBLL.GetTrackNumLevel2(shipID,arg);
                 return Json(new RequestResult(result));
             }
             catch (Exception ex)

@@ -180,13 +180,15 @@
 
 <div class="modal " id="progressModal" role="dialog" data-keyboard="false">
     <div class="vertical-alignment-helper">
-        <div class="modal-dialog text-center" id="imgDiag">
+        <div class="modal-dialog text-center" id="tabDiag">
             <img src="~/Images/inprogress.jpg">
             
         </div>
     </div>
 
 </div>
+
+@Html.Partial("_LoadingModal")
 
 
 <script>
@@ -216,6 +218,9 @@
         $scope.level1 = [];
         $scope.level2 = [];
 
+        $scope.arg = {};
+        $scope.searchedArg = {};
+
 
 
         $http.post("/rp/TrackNumInit", null, null).then(
@@ -241,33 +246,47 @@
             if ($scope.whID == "")
                 return;
 
+            $scope.arg.whID = $scope.whID;
+            $scope.arg.SalesOrdNum = $scope.SalesOrdNum;
+            $scope.arg.VCCpoNum = $scope.VCCpoNum;
+            $scope.arg.TrackNum = $scope.TrackNum;
+            $scope.arg.ShipID = $scope.ShipID;
+            $scope.arg.PRTNum = $scope.PRTNum;
+            $scope.arg.CSTPRT = $scope.CSTPRT;
+            $scope.arg.LodNum = $scope.LodNum;
+            $scope.arg.OrdNum = $scope.OrdNum;
+            $scope.arg.ADRNam = $scope.ADRNam;
+            $scope.arg.ADRLN1 = $scope.ADRLN1;
+            $scope.arg.ADRLN2 = $scope.ADRLN2;
+
+
+            $("#loadingModal").modal("show");
+
             $('#tableResult').bootstrapTable('destroy');
 
             $.ajax({
                 url: "/rp/GetTrackNumLevel1",
                 data: JSON.stringify({
-                    whID: $scope.whID,
-                    SalesOrdNum: $scope.SalesOrdNum,
-                    VCCpoNum: $scope.VCCpoNum,
-                    TrackNum: $scope.TrackNum,
-                    ShipID: $scope.ShipID,
-                    PRTNum: $scope.PRTNum,
-                    CSTPRT: $scope.CSTPRT,
-                    LodNum: $scope.LodNum,
-                    OrdNum: $scope.OrdNum,
-                    ADRNam: $scope.ADRNam,
-                    ADRLN1: $scope.ADRLN1,
-                    ADRLN2: $scope.ADRLN2,
+                    arg: $scope.arg
                 }),
                 type: "post",
-                async: false,
+                async: true,
                 contentType: 'application/json',
                 success: function (obj) {
-                    //debugger;
-                    $scope.level1 = obj.Data;
-                    initPoTab()
+                    if (obj.Success) {
+                        $("#loadingModal").modal("hide");
+                        $scope.level1 = obj.Data;
+                        initPoTab();
+
+                        $.extend(true, $scope.searchedArg, $scope.arg);
+                    }
+                    else {
+                        $("#loadingModal").modal("hide");
+                        alert(obj.Msg);
+                    }
                 },
                 error: function (obj) {
+                    $("#loadingModal").modal("hide");
                     alert("fail to get Data");
                 }
 
@@ -359,6 +378,7 @@
             });
             //var level2Data = [];
             //debugger;
+
             getLevel2Data(shipID);
 
             $t.bootstrapTable({
@@ -458,7 +478,7 @@
 
         function printOperationFormatter(value, row, index) {
             return [
-           '<a class="print" href="javascript:void(0)" title="Print">',
+           '<a class="trackTab" href="javascript:void(0)" title="Track Tab">',
            row.TRACK_TAB,
            '</a> '
             ].join('');
@@ -466,7 +486,7 @@
 
 
         window.operateEvents = {
-            'click .print': function (e, value, row, index) {
+            'click .trackTab': function (e, value, row, index) {
                 //alert("print action");
                 $("#progressModal").modal("show");
 
@@ -515,13 +535,16 @@
 
         function getLevel2Data(shipID)
         {
+            $("#loadingModal").modal("show");
             $.ajax({
                 url: "/rp/GetTrackNumLevel2",
-                data: {
-                    shipID: shipID
-                },
+                data: JSON.stringify({
+                    shipID: shipID,
+                    arg: $scope.searchedArg
+                }),
                 type: "post",
                 async: false,
+                contentType: 'application/json',
                 success: function (obj) {
                     if (obj.Success) {
                         //debugger;
@@ -550,10 +573,9 @@
 
 <script>
     $(document).ready(function () {
-        //debugger;
-        var ss = window.innerHeight;
+        $("#tabDiag").css("margin-top", "300px");
         $("#imgDiag").css("margin-top", "300px");
-
     });
+
 
 </script>

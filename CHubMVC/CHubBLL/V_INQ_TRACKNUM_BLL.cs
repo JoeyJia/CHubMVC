@@ -28,9 +28,9 @@ namespace CHubBLL
             return dal.GetTrackNumLevel1(arg);
         }
 
-        public List<TrackNumLevel2> GetTrackNumLevel2(string shipID)
+        public List<TrackNumLevel2> GetTrackNumLevel2(string shipID, TrackNumQueryArg arg)
         {
-            return dal.GetTrackNumLevel2(shipID);
+            return dal.GetTrackNumLevel2(shipID,arg);
         }
 
 
