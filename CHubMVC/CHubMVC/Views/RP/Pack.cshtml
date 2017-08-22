@@ -205,6 +205,8 @@
 
             if ($scope.status == "S")
                 $scope.staged = true;
+            else
+                $scope.staged = false;
 
             $.ajax({
                 url: "/rp/GetPackList",
