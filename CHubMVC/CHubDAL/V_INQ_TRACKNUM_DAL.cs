@@ -62,7 +62,7 @@ namespace CHubDAL
 
             var result = db.Database.SqlQuery<TrackNumLevel1>(sql);
 
-            return result.OrderBy(a=>a.LODDTE).ToList();
+            return result.OrderByDescending(a=>a.LODDTE).ToList();
         }
 
         public List<TrackNumLevel2> GetTrackNumLevel2(string shipID, TrackNumQueryArg arg)
@@ -100,7 +100,7 @@ namespace CHubDAL
 
             var result = db.Database.SqlQuery<TrackNumLevel2>(sql);
 
-            return result.OrderBy(a=>a.LODNUM).ToList();
+            return result.OrderByDescending(a=>a.LODNUM).ToList();
 
         }
 
