@@ -31,5 +31,6 @@ namespace CHubDBEntity
         public string T12 { get; set; }
         public decimal PAPER_HORIZONTAL { get; set; }
         public decimal PAPER_VERTICAL { get; set; }
+        public string HEADER { get; set; }
     }
 }

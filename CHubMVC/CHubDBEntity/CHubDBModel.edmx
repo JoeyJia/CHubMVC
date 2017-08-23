@@ -87,7 +87,7 @@
             <PropertyRef Name="PAGE_NAME" />
           </Key>
           <Property Name="PAGE_NAME" Type="varchar2" MaxLength="10" Nullable="false" />
-          <Property Name="DISPLAY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="DISPLAY" Type="varchar2" MaxLength="45" Nullable="false" />
           <Property Name="DESCRIPTION" Type="varchar2" MaxLength="100" Nullable="false" />
           <Property Name="ACTIVEIND" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="VERION" Type="varchar2" MaxLength="10" />
@@ -358,6 +358,28 @@
           <Property Name="APPLY_DATE" Type="date" />
           <Property Name="SAMPLE_DATE" Type="date" Nullable="false" />
         </EntityType>
+        <EntityType Name="GOMS_ASN_H">
+          <Key>
+            <PropertyRef Name="WAREHOUSE" />
+            <PropertyRef Name="BUY_FROM_COMPANY" />
+            <PropertyRef Name="MANIFEST_ID" />
+          </Key>
+          <Property Name="WAREHOUSE" Type="varchar2" MaxLength="15" Nullable="false" />
+          <Property Name="BUY_FROM_COMPANY" Type="varchar2" MaxLength="12" Nullable="false" />
+          <Property Name="COMPANY_NAME" Type="varchar2" MaxLength="35" />
+          <Property Name="MANIFEST_ID" Type="varchar2" MaxLength="24" Nullable="false" />
+          <Property Name="SHIPMENT_DATE" Type="date" />
+          <Property Name="EST_DLVY_DATE" Type="date" />
+          <Property Name="MANIFEST_CODE" Type="varchar2" MaxLength="6" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="CREATE_DATE" Type="date" Nullable="false" />
+          <Property Name="PRIMARY_BUSINESS" Type="varchar2" MaxLength="20" />
+          <Property Name="LOAD_DATE" Type="date" Nullable="false" />
+          <Property Name="DOCK_DATE" Type="date" />
+          <Property Name="DOCK_DATE_BY" Type="varchar2" MaxLength="20" />
+          <Property Name="IND" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="NOTE" Type="varchar2" MaxLength="40" />
+        </EntityType>
         <EntityType Name="ITT_CUST_LOAD">
           <Key>
             <PropertyRef Name="LOAD_BATCH_TOKEN" />
@@ -427,6 +449,7 @@ warning 6002: The table/view 'GWAPP.ITT_EASY_WATCHING' does not have a primary k
           <Property Name="BUY_FOR" Type="varchar2" MaxLength="20" />
           <Property Name="SUPPLIER_TYPE" Type="varchar2" MaxLength="20" />
           <Property Name="PO_STATUS" Type="varchar2" MaxLength="10" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="20" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -665,7 +688,7 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           <Property Name="LOAD_DATE" Type="date" />
           <Property Name="WAYBILL_ID" Type="varchar2" MaxLength="20" />
           <Property Name="SEND_TO_TMS" Type="varchar2" MaxLength="1" />
-          <Property Name="CARNAM_SHORT" Type="varchar2" MaxLength="20" />
+          <Property Name="CARNAM_SHORT" Type="varchar2" MaxLength="40" />
         </EntityType>
         <EntityType Name="RP_CUST_PACK_TYPE">
           <Key>
@@ -722,6 +745,7 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           <Property Name="T12" Type="varchar2" MaxLength="20" />
           <Property Name="PAPER_HORIZONTAL" Type="number" Precision="22" Scale="2" Nullable="false" />
           <Property Name="PAPER_VERTICAL" Type="number" Precision="22" Scale="2" Nullable="false" />
+          <Property Name="HEADER" Type="varchar2" MaxLength="30" />
         </EntityType>
         <EntityType Name="RP_ORDTYP_MST">
           <Key>
@@ -791,6 +815,8 @@ warning 6002: The table/view 'GWAPP.ITT_SHIPPING_D' does not have a primary key 
           <Property Name="DETAIL_TITLE4" Type="varchar2" MaxLength="50" />
           <Property Name="DETAIL_TITLE5" Type="varchar2" MaxLength="50" />
           <Property Name="LOGO" Type="varchar2" MaxLength="20" />
+          <Property Name="LOGO2" Type="varchar2" MaxLength="20" />
+          <Property Name="TITLE" Type="varchar2" MaxLength="20" />
         </EntityType>
         <EntityType Name="RP_WAYBILL_TYPE">
           <Key>
@@ -1045,7 +1071,7 @@ warning 6002: The table/view 'GWAPP.G_PART_DESCRIPTION' does not have a primary 
           <Property Name="CURRENT_SALES_STATUS_CODE" Type="varchar2" MaxLength="30" />
           <Property Name="PRINT_PART_NO" Type="varchar2" MaxLength="75" />
           <Property Name="MIN_ORDER_QTY" Type="number" Precision="24" Scale="8" />
-          <Property Name="QTY_IN_CARTON" Type="number" Precision="24" Scale="8" />
+          <Property Name="QTY_IN_CARTON" Type="number" Precision="38" Scale="0" />
           <Property Name="TRANSP_PART_CODE" Type="varchar2" MaxLength="132" />
           <Property Name="CREATE_DATE" Type="date" />
           <Property Name="RECORD_DATE" Type="date" />
@@ -1504,7 +1530,7 @@ warning 6002: The table/view 'GWAPP.V_NAV_ALL' does not have a primary key defin
           <Property Name="SPACE_DESC" Type="varchar2" MaxLength="50" Nullable="false" />
           <Property Name="PAGE_NAME" Type="varchar2" MaxLength="10" />
           <Property Name="URL" Type="varchar2" MaxLength="500" />
-          <Property Name="DISPLAY" Type="varchar2" MaxLength="30" />
+          <Property Name="DISPLAY" Type="varchar2" MaxLength="45" />
           <Property Name="DESCRIPTION" Type="varchar2" MaxLength="100" />
           <Property Name="PUBLICIND" Type="varchar2" MaxLength="1" />
           <Property Name="VERION" Type="varchar2" MaxLength="10" />
@@ -1763,7 +1789,7 @@ warning 6002: The table/view 'GWAPP.V_USER_NAV_ALL' does not have a primary key 
           <Property Name="SPACE_DESC" Type="varchar2" MaxLength="50" Nullable="false" />
           <Property Name="PAGE_NAME" Type="varchar2" MaxLength="10" Nullable="false" />
           <Property Name="URL" Type="varchar2" MaxLength="500" />
-          <Property Name="DISPLAY" Type="varchar2" MaxLength="30" />
+          <Property Name="DISPLAY" Type="varchar2" MaxLength="45" />
           <Property Name="DESCRIPTION" Type="varchar2" MaxLength="100" />
           <Property Name="PUBLICIND" Type="varchar2" MaxLength="1" />
           <Property Name="VERION" Type="varchar2" MaxLength="10" />
@@ -2234,7 +2260,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0029519">
+        <Association Name="SYS_C0032198">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2374,6 +2400,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
           <EntitySet Name="EW_SCHEDULE_TASK" EntityType="Self.EW_SCHEDULE_TASK" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="EW_SCRIPT" EntityType="Self.EW_SCRIPT" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="EW_USER_APPLY" EntityType="Self.EW_USER_APPLY" Schema="GWAPP" store:Type="Tables" />
+          <EntitySet Name="GOMS_ASN_H" EntityType="Self.GOMS_ASN_H" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_CUST_LOAD" EntityType="Self.ITT_CUST_LOAD" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_EASY_QUERY_LOG" EntityType="Self.ITT_EASY_QUERY_LOG" Schema="GWAPP" store:Type="Tables" />
           <EntitySet Name="ITT_PO" EntityType="Self.ITT_PO" Schema="GWAPP" store:Type="Tables" />
@@ -3292,7 +3319,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="RP_PRINTER" EntitySet="RP_PRINTER" />
             <End Role="RP_STATION" EntitySet="RP_STATION" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0029519" Association="Self.SYS_C0029519">
+          <AssociationSet Name="SYS_C0032198" Association="Self.SYS_C0032198">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -4435,6 +4462,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="APP_USERS" EntitySet="APP_USERS" />
           </AssociationSet>
           <EntitySet Name="RP_LABEL_TYPE" EntityType="CHubDBModel.RP_LABEL_TYPE" />
+          <EntitySet Name="GOMS_ASN_H" EntityType="CHubDBModel.GOMS_ASN_H" />
         </EntityContainer>
         <EntityType Name="V_USER_NAV_ALL">
           <Key>
@@ -5431,6 +5459,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="BUY_FOR" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="SUPPLIER_TYPE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="PO_STATUS" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ITT_SO">
           <Key>
@@ -5855,6 +5884,8 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="DETAIL_TITLE4" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="DETAIL_TITLE5" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="LOGO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LOGO2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TITLE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="RP_WAYBILL_TYPE">
           <Key>
@@ -5995,6 +6026,29 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="T12" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="PAPER_HORIZONTAL" Type="Decimal" Nullable="false" Precision="22" Scale="2" />
           <Property Name="PAPER_VERTICAL" Type="Decimal" Nullable="false" Precision="22" Scale="2" />
+          <Property Name="HEADER" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="GOMS_ASN_H">
+          <Key>
+            <PropertyRef Name="WAREHOUSE" />
+            <PropertyRef Name="BUY_FROM_COMPANY" />
+            <PropertyRef Name="MANIFEST_ID" />
+          </Key>
+          <Property Name="WAREHOUSE" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="BUY_FROM_COMPANY" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="COMPANY_NAME" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="MANIFEST_ID" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="false" />
+          <Property Name="SHIPMENT_DATE" Type="DateTime" />
+          <Property Name="EST_DLVY_DATE" Type="DateTime" />
+          <Property Name="MANIFEST_CODE" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CREATE_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="PRIMARY_BUSINESS" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LOAD_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="DOCK_DATE" Type="DateTime" />
+          <Property Name="DOCK_DATE_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IND" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NOTE" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -7330,6 +7384,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="ITT_PO">
             <EntityTypeMapping TypeName="CHubDBModel.ITT_PO">
               <MappingFragment StoreEntitySet="ITT_PO">
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
                 <ScalarProperty Name="PO_STATUS" ColumnName="PO_STATUS" />
                 <ScalarProperty Name="SUPPLIER_TYPE" ColumnName="SUPPLIER_TYPE" />
                 <ScalarProperty Name="BUY_FOR" ColumnName="BUY_FOR" />
@@ -7610,6 +7665,8 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="RP_WAYBILL_BASICINFO">
             <EntityTypeMapping TypeName="CHubDBModel.RP_WAYBILL_BASICINFO">
               <MappingFragment StoreEntitySet="RP_WAYBILL_BASICINFO">
+                <ScalarProperty Name="TITLE" ColumnName="TITLE" />
+                <ScalarProperty Name="LOGO2" ColumnName="LOGO2" />
                 <ScalarProperty Name="LOGO" ColumnName="LOGO" />
                 <ScalarProperty Name="DETAIL_TITLE5" ColumnName="DETAIL_TITLE5" />
                 <ScalarProperty Name="DETAIL_TITLE4" ColumnName="DETAIL_TITLE4" />
@@ -7687,6 +7744,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="RP_LABEL_TYPE">
             <EntityTypeMapping TypeName="CHubDBModel.RP_LABEL_TYPE">
               <MappingFragment StoreEntitySet="RP_LABEL_TYPE">
+                <ScalarProperty Name="HEADER" ColumnName="HEADER" />
                 <ScalarProperty Name="PAPER_VERTICAL" ColumnName="PAPER_VERTICAL" />
                 <ScalarProperty Name="PAPER_HORIZONTAL" ColumnName="PAPER_HORIZONTAL" />
                 <ScalarProperty Name="T12" ColumnName="T12" />
@@ -7704,6 +7762,27 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
                 <ScalarProperty Name="ACTIVEIND" ColumnName="ACTIVEIND" />
                 <ScalarProperty Name="LABEL_DESC" ColumnName="LABEL_DESC" />
                 <ScalarProperty Name="LABEL_CODE" ColumnName="LABEL_CODE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GOMS_ASN_H">
+            <EntityTypeMapping TypeName="CHubDBModel.GOMS_ASN_H">
+              <MappingFragment StoreEntitySet="GOMS_ASN_H">
+                <ScalarProperty Name="NOTE" ColumnName="NOTE" />
+                <ScalarProperty Name="IND" ColumnName="IND" />
+                <ScalarProperty Name="DOCK_DATE_BY" ColumnName="DOCK_DATE_BY" />
+                <ScalarProperty Name="DOCK_DATE" ColumnName="DOCK_DATE" />
+                <ScalarProperty Name="LOAD_DATE" ColumnName="LOAD_DATE" />
+                <ScalarProperty Name="PRIMARY_BUSINESS" ColumnName="PRIMARY_BUSINESS" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MANIFEST_CODE" ColumnName="MANIFEST_CODE" />
+                <ScalarProperty Name="EST_DLVY_DATE" ColumnName="EST_DLVY_DATE" />
+                <ScalarProperty Name="SHIPMENT_DATE" ColumnName="SHIPMENT_DATE" />
+                <ScalarProperty Name="MANIFEST_ID" ColumnName="MANIFEST_ID" />
+                <ScalarProperty Name="COMPANY_NAME" ColumnName="COMPANY_NAME" />
+                <ScalarProperty Name="BUY_FROM_COMPANY" ColumnName="BUY_FROM_COMPANY" />
+                <ScalarProperty Name="WAREHOUSE" ColumnName="WAREHOUSE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

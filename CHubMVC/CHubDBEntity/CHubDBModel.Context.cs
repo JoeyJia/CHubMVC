@@ -121,5 +121,6 @@ namespace CHubDBEntity
         public virtual DbSet<RP_AUTOPACK_LOG> RP_AUTOPACK_LOG { get; set; }
         public virtual DbSet<RP_ORDTYP_MST> RP_ORDTYP_MST { get; set; }
         public virtual DbSet<RP_LABEL_TYPE> RP_LABEL_TYPE { get; set; }
+        public virtual DbSet<GOMS_ASN_H> GOMS_ASN_H { get; set; }
     }
 }

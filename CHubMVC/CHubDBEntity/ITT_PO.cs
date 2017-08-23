@@ -37,5 +37,6 @@ namespace CHubDBEntity
         public string BUY_FOR { get; set; }
         public string SUPPLIER_TYPE { get; set; }
         public string PO_STATUS { get; set; }
+        public string CREATED_BY { get; set; }
     }
 }

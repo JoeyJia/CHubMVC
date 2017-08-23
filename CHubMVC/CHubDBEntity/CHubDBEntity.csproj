@@ -172,6 +172,9 @@
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ExtensionMethod\ExtensionMethod.cs" />
+    <Compile Include="GOMS_ASN_H.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="G_PART_DESCRIPTION.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
