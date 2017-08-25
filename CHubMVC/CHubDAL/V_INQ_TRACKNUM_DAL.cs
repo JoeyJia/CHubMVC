@@ -33,7 +33,8 @@ namespace CHubDAL
          PHNNUM ,
          LAST_NAME,
          STGDTE ,
-         LODDTE 
+         LODDTE,
+         ENTDTE
          From V_INQ_TRACKNUM  
          where WH_ID='{0}' ", arg.WHID);
 

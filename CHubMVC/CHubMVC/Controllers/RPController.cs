@@ -681,6 +681,93 @@ namespace CHubMVC.Controllers
 
         #endregion
 
+        #region Dock part
+        [Authorize]
+        public ActionResult Dock()
+        {
+            //string appUser = Session[CHubConstValues.SessionUser].ToString();
+            //APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            //rpBLL.Add(appUser, CHubEnum.PageNameEnum.trackinq.ToString(), this.Request.Url.AbsoluteUri);
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult DockInit()
+        {
+            try
+            {
+                List<APP_WH> appWHList = null;
+
+
+                APP_WH_BLL whBLL = new APP_WH_BLL();
+                appWHList = whBLL.GetAppWHList();
+
+                var obj = new
+                {
+                    appWHList = appWHList
+                };
+                return Json(new RequestResult(obj));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("DockInit", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult DearchDockData(string wareHouse, string from, string asn, int range)
+        {
+            try
+            {
+                GOMS_ASN_H_BLL gBLL = new GOMS_ASN_H_BLL();
+                var result = gBLL.GetDockData(wareHouse, from, asn, range);
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("DearchDockData", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult SaveDockData(GOMS_ASN_H data)
+        {
+            //Date check
+            if (data.DOCK_DATE != null && data.CREATE_DATE != null)
+                if (data.DOCK_DATE <= data.CREATE_DATE)
+                    return Json(new RequestResult(false, "Dock Date should larger than create date"));
+
+            if (data.DOCK_DATE != null && data.SHIPMENT_DATE != null)
+                if (data.DOCK_DATE <= data.SHIPMENT_DATE)
+                    return Json(new RequestResult(false, "Dock Date should larger than Shipment date"));
+
+            if (data.SHIPMENT_DATE != null && data.EST_DLVY_DATE != null)
+                if (data.SHIPMENT_DATE >=data.EST_DLVY_DATE)
+                    return Json(new RequestResult(false, "Shipment Date should less than EST DLVY date"));
+
+
+            try
+            {
+                string appUser = Session[CHubConstValues.SessionUser].ToString();
+                GOMS_ASN_H_BLL gBLL = new GOMS_ASN_H_BLL();
+
+                data.DOCK_DATE_BY = appUser;
+                gBLL.SaveDockData(data);
+                return Json(new RequestResult(true));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("DearchDockData", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        #endregion
 
 
 

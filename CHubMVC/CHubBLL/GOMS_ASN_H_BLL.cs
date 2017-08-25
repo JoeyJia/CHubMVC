@@ -21,5 +21,15 @@ namespace CHubBLL
             dal = new GOMS_ASN_H_DAL(db);
         }
 
+        public List<GOMS_ASN_H> GetDockData(string wareHouse, string from, string asn, int range)
+        {
+            return dal.GetDockData(wareHouse, from, asn, range);
+        }
+
+        public void SaveDockData(GOMS_ASN_H model)
+        {
+             dal.Update(model);
+        }
+
     }
 }

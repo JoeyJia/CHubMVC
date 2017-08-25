@@ -23,6 +23,7 @@ namespace CHubModel.ExtensionModel
 
         public DateTime? STGDTE { get; set; }
         public DateTime? LODDTE { get; set; }
+        public DateTime? ENTDTE { get; set; }
 
 
     }

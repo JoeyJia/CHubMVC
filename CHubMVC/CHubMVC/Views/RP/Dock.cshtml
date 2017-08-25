@@ -1,0 +1,294 @@
+﻿
+@{
+    ViewBag.Title = "Dock Date";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Styles.Render("~/Content/ngdatatimecss")
+@Scripts.Render("~/bundles/ngdatetime")
+
+<div class="container-fluid" id="dockBody" ng-app="dockApp" ng-controller="dockCtrl">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:silver"><b>Dock Date Panel </b></div>
+
+        <form class="form-horizontal" id="searchForm">
+
+            <div class="row" style="margin-top:30px;">
+                <div class="form-group">
+                    <label for="txtWh" class="col-sm-2 control-label">WareHouse</label>
+                    <div class="col-sm-2">
+                        <select class="form-control input-sm" id="txtWh" ng-model="wareHouse" ng-options="w.WAREHOUSE as (w.WAREHOUSE + '-'+ w.DESCRIPTION)  for w in appWHList"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtFrom" class="col-sm-2 control-label">Buy From Company</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtFrom" ng-model="from" placeholder="Buy From Company">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtASN" class="col-sm-2 control-label">ASN</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtASN" ng-model="asn" placeholder="ASN">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtRange" class="col-sm-2 control-label">Create Date</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtRange" ng-model="range" placeholder="Last Days">
+                    </div>
+                    <div class="col-md-2 ">
+                        <button class="btn btn-primary btn-sm" ng-click="searchAction()">Search</button>
+                    </div>
+                </div>
+            </div>
+
+
+        </form>
+
+        <!--result part-->
+        <div class="row" style="margin-top:20px;overflow-x:auto;">
+            <div class="" style="margin-left:15px;margin-right:15px;width:1800px;">
+                <div class="panel panel-default" style="">
+                    <div class="panel-heading" style="background-color:silver"><b>Result </b></div>
+
+                    <table id="tbDockMst" class="table table-striped table-hover table-bordered .table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Operation</th>
+                                <th style="">1:N11</th>
+                                <th style="">ASN</th>
+                                <th style="width:180px">Docking Date</th>
+                                <th style="">Note</th>
+                                <th style="">Company Code</th>
+                                <th style="">Company Name</th>
+                                <th style="width:150px">Shipment Date</th>
+                                <th style="width:150px">Est. Dlvy Date</th>
+                                <th style="">ASN Type</th>
+                                <th style="">Created By</th>
+                                <th style="">Create Date</th>
+                                <th style="">Recorded By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="d in dockArray ">
+                                <td class="text-center">
+                                    <a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="saveItem(d)"><span class="glyphicon glyphicon-floppy-disk"></span></a>
+                                </td>
+                                <td style="">{{d.WAREHOUSE}}</td>
+                                <td style="">{{d.MANIFEST_ID}}</td>
+                                <td style="padding:2px">
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" id="dockdown{{$index}}" role="button" data-toggle="dropdown" data-target="#" href="#">
+                                            <div class="input-group">
+                                                <input type="text" id="date{{$index}}" name="date" class="form-control" ng-model="d.DOCK_DATE | date:'yyyy-MM-dd:HH'">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                            </div>
+                                        </a>
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                            <datetimepicker data-ng-model="d.DOCK_DATE"
+                                                            data-datetimepicker-config="{ dropdownSelector: '#dockdown{{$index}}',minView:'hour' }"></datetimepicker>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td style="padding:0"><input class="form-control" style="padding:0" ng-model="d.NOTE" /></td>
+                                <td>{{d.BUY_FROM_COMPANY}}</td>
+                                <td>{{d.COMPANY_NAME}}</td>
+                                <td style="padding:0">
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" id="dropdown$index" role="button" data-toggle="dropdown" data-target="#" href="#">
+                                            <div class="input-group">
+                                                <input type="text" id="date$index" name="date" class="form-control" data-ng-model="d.SHIPMENT_DATE | date:'yyyy-MM-dd'">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                            </div>
+                                        </a>
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                            <datetimepicker data-ng-model="d.SHIPMENT_DATE"
+                                                            data-datetimepicker-config="{ dropdownSelector: '#dropdown',minView:'day' }"></datetimepicker>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td style="padding:0">
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" id="dropdown$index" role="button" data-toggle="dropdown" data-target="#" href="#">
+                                            <div class="input-group">
+                                                <input type="text" id="date$index" name="date" class="form-control" data-ng-model="d.EST_DLVY_DATE | date:'yyyy-MM-dd'">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                            </div>
+                                        </a>
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                            <datetimepicker data-ng-model="d.EST_DLVY_DATE"
+                                                            data-datetimepicker-config="{ dropdownSelector: '#dropdown',minView:'day' }"></datetimepicker>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td>{{d.MANIFEST_CODE}}</td>
+                                <td>{{d.CREATED_BY}}</td>
+                                <td>{{d.CREATE_DATE | date:'yyyy-MM-dd'}}</td>
+                                <td>{{d.DOCK_DATE_BY}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+@Html.Partial("_LoadingModal")
+
+
+<script>
+    
+    angular.module('dockApp', ['ui.bootstrap.datetimepicker']).controller('dockCtrl', function ($scope, $http) {
+        $scope.wareHouse = "";
+        $scope.from = "";
+        $scope.asn = "";
+        $scope.range = 30;
+
+        $scope.dockArray = [];
+        //init part 
+        $scope.appWHList = [];
+
+
+        $http.post("/rp/DockInit", null, null).then(
+            function (obj) {
+                //debugger;
+                if (obj.data.Success) {
+                    $scope.appWHList = obj.data.Data.appWHList;
+                }
+                else
+                    alert(obj.data.Msg)
+            },
+             function (resp) {
+                 debugger;
+                 alert("Fail!");
+             }
+            );
+
+
+        $scope.searchAction = function () {
+            if ($scope.wareHouse == "" || $scope.wareHouse == undefined || $scope.wareHouse == null) {
+                alert("Please select a WareHouse")
+                return;
+            }
+            if ($scope.range > 90) {
+                alert("Create date must be  in 90 days");
+                return;
+            }
+
+            $("#loadingModal").modal("show");
+
+            $.ajax({
+                url: "/rp/DearchDockData",
+                data: {
+                    wareHouse: $scope.wareHouse,
+                    from: $scope.from,
+                    asn: $scope.asn,
+                    range: $scope.range
+                },
+                type: "post",
+                async: true,
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#loadingModal").modal("hide");
+                        $scope.dockArray = obj.Data;
+                        $scope.$apply();
+                        //alert($scope.dockArray.length);
+                    }
+                    else {
+                        $("#loadingModal").modal("hide");
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to get Data");
+                }
+
+            });
+        };
+
+
+
+        $scope.saveItem = function (curr)
+        {
+            //date check
+            if (curr.DOCK_DATE != null && curr.CREATE_DATE != null)
+                if (curr.DOCK_DATE <= curr.CREATE_DATE) {
+                    alert("Dock Date should larger than create date");
+                    return;
+                }
+            if (curr.DOCK_DATE != null && curr.SHIPMENT_DATE != null)
+                if (curr.DOCK_DATE <= curr.SHIPMENT_DATE) {
+                    alert("Dock Date should larger than Shipment date");
+                    return;
+                }
+            //shipment Date part
+            if (curr.SHIPMENT_DATE != null && curr.EST_DLVY_DATE != null)
+                if (curr.SHIPMENT_DATE >= curr.EST_DLVY_DATE) {
+                    alert("Shipment Date should less than EST DLVY date");
+                    return;
+                }
+
+
+
+           
+            $.ajax({
+                url: "/rp/SaveDockData",
+                data: JSON.stringify({
+                    data: curr
+                }),
+                type: "post",
+                async: true,
+                contentType: 'application/json',
+                success: function (obj) {
+                    //debugger;
+                    if (obj.Success) {
+                        //$("#loadingModal").modal("hide");
+                        alert(obj.Msg)
+
+                    }
+                    else {
+                        //$("#loadingModal").modal("hide");
+                        alert(obj.Msg);
+                    }
+
+                },
+                error: function (obj) {
+                    //$("#loadingModal").modal("hide");
+                    alert(obj.responseText);
+                }
+            });
+
+
+        }
+
+    });
+
+    //manual load app
+    angular.bootstrap(document.getElementById("dockBody"), ['dockApp']);
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+
+    });
+
+</script>

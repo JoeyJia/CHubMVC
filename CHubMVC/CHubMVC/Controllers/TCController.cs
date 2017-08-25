@@ -103,6 +103,7 @@ namespace CHubMVC.Controllers
         [Authorize]
         public ActionResult UploadHSFile(IEnumerable<HttpPostedFileBase> fileInput)
         {
+            string failParts = string.Empty;
             try
             {
                 HttpPostedFileBase fb = Request.Files[0];
@@ -131,20 +132,24 @@ namespace CHubMVC.Controllers
 
                 int successCount = 0;
                 int failCount = 0;
+                
                 foreach (var item in partList)
                 {
                     if (SaveTCPartData(item, null))
                         successCount++;
                     else
+                    {
                         failCount++;
+                        failParts += (item.PART_NO + "|");
+                    }
                 }
-
-                return Content(string.Format("Total Count:{0}, Success Count:{1}, Fail Count:{2}", partList.Count, successCount, failCount));
+                //foreach add try catch region
+                string msg = string.Format("Total Count:{0}, Success Count:{1}, Fail Count:{2} :{3}", partList.Count, successCount, failCount, failParts);
+                return Json(new RequestResult(true, msg));
             }
             catch (Exception ex)
             {
-                this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Content(ex.Message);
+                return Json(new RequestResult(false, ex.Message));
             }
         }
 
