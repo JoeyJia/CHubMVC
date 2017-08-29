@@ -685,9 +685,9 @@ namespace CHubMVC.Controllers
         [Authorize]
         public ActionResult Dock()
         {
-            //string appUser = Session[CHubConstValues.SessionUser].ToString();
-            //APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
-            //rpBLL.Add(appUser, CHubEnum.PageNameEnum.trackinq.ToString(), this.Request.Url.AbsoluteUri);
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, CHubEnum.PageNameEnum.dockdte.ToString(), this.Request.Url.AbsoluteUri);
             return View();
         }
 

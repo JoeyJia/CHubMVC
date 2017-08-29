@@ -72,7 +72,11 @@ namespace CHubCommon
             /// <summary>
             /// /rp/tracknum
             /// </summary>
-            trackinq
+            trackinq,
+            /// <summary>
+            /// /rp/dock
+            /// </summary>
+            dockdte
         }
 
         public enum OrderStatusEnum
