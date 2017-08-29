@@ -57,13 +57,13 @@ namespace CHubCommon
 
             cb.BeginText();
             cb.SetFontAndSize(BF_Light, ContentFontSize);
-            cb.SetTextMatrix(document.PageSize.Width - 180f, pageSize.GetBottom(20f));
+            cb.SetTextMatrix(document.PageSize.Width/2- 90f, pageSize.GetBottom(20f));
             cb.ShowText(text);
 
             cb.EndText();
 
-            cb.AddTemplate(template, document.PageSize.Width - 180f + len1, pageSize.GetBottom(20f));
-            cb.AddTemplate(template, document.PageSize.Width - 180f + len2, pageSize.GetBottom(20f));
+            cb.AddTemplate(template, document.PageSize.Width/2 -90f+ len1, pageSize.GetBottom(20f));
+            cb.AddTemplate(template, document.PageSize.Width/2- 90f + len2, pageSize.GetBottom(20f));
         }
 
         public override void OnCloseDocument(PdfWriter writer, Document document)
