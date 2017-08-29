@@ -41,7 +41,7 @@
 
             <div class="row">
                 <div class="form-group">
-                    <label for="txtRange" class="col-sm-2 control-label">Create Date</label>
+                    <label for="txtRange" class="col-sm-2 control-label">Create Date in last days</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtRange" ng-model="range" placeholder="Last Days">
                     </div>
@@ -64,7 +64,7 @@
                         <thead>
                             <tr>
                                 <th>Operation</th>
-                                <th style="">1:N11</th>
+                                <th style="">WareHouse</th>
                                 <th style="">ASN</th>
                                 <th style="width:180px">Docking Date</th>
                                 <th style="">Note</th>
@@ -86,16 +86,17 @@
                                 <td style="">{{d.WAREHOUSE}}</td>
                                 <td style="">{{d.MANIFEST_ID}}</td>
                                 <td style="padding:2px">
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle" id="dockdown{{$index}}" role="button" data-toggle="dropdown" data-target="#" href="#">
+                                    <div class="dropdown  dockdd" id="dockDate{{$index}}">
+                                        <a class="dropdown-toggle" id="dockdown{{$index}}" role="button" data-toggle="dropdown" data-target="#dockDate{{$index}}" href="#">
                                             <div class="input-group">
-                                                <input type="text" id="date{{$index}}" name="date" class="form-control" ng-model="d.DOCK_DATE | date:'yyyy-MM-dd:HH'">
+                                                <input type="text" id="ddate{{$index}}" name="date" class="form-control" value="{{d.DOCK_DATE | date:'yyyy-MM-dd:HH'}}">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                             </div>
                                         </a>
                                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                             <datetimepicker data-ng-model="d.DOCK_DATE"
-                                                            data-datetimepicker-config="{ dropdownSelector: '#dockdown{{$index}}',minView:'hour' }"></datetimepicker>
+                                                            data-on-set-time="onTimeSet($index)" 
+                                                            data-datetimepicker-config="{minView:'hour' }"></datetimepicker>
                                         </ul>
                                     </div>
                                 </td>
@@ -103,30 +104,30 @@
                                 <td>{{d.BUY_FROM_COMPANY}}</td>
                                 <td>{{d.COMPANY_NAME}}</td>
                                 <td style="padding:0">
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle" id="dropdown$index" role="button" data-toggle="dropdown" data-target="#" href="#">
+                                    <div class="dropdown" id="shipDate{{$index}}">
+                                        <a class="dropdown-toggle" id="shipdown{{$index}}" role="button" data-toggle="dropdown" data-target="#shipDate{{$index}}" href="#">
                                             <div class="input-group">
-                                                <input type="text" id="date$index" name="date" class="form-control" data-ng-model="d.SHIPMENT_DATE | date:'yyyy-MM-dd'">
+                                                <input type="text" id="sdate{{$index}}" name="date" class="form-control" value="{{d.SHIPMENT_DATE | date:'yyyy-MM-dd'}}">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                             </div>
                                         </a>
                                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                             <datetimepicker data-ng-model="d.SHIPMENT_DATE"
-                                                            data-datetimepicker-config="{ dropdownSelector: '#dropdown',minView:'day' }"></datetimepicker>
+                                                            data-datetimepicker-config="{ dropdownSelector: '#shipdown$index',minView:'day' }"></datetimepicker>
                                         </ul>
                                     </div>
                                 </td>
                                 <td style="padding:0">
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle" id="dropdown$index" role="button" data-toggle="dropdown" data-target="#" href="#">
+                                    <div class="dropdown" id="estDate{{$index}}">
+                                        <a class="dropdown-toggle" id="estdown{{$index}}" role="button" data-toggle="dropdown" data-target="#estDate{{$index}}" href="#">
                                             <div class="input-group">
-                                                <input type="text" id="date$index" name="date" class="form-control" data-ng-model="d.EST_DLVY_DATE | date:'yyyy-MM-dd'">
+                                                <input type="text" id="edate{{$index}}" name="date" class="form-control" value="{{d.EST_DLVY_DATE | date:'yyyy-MM-dd'}}">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                             </div>
                                         </a>
                                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                             <datetimepicker data-ng-model="d.EST_DLVY_DATE"
-                                                            data-datetimepicker-config="{ dropdownSelector: '#dropdown',minView:'day' }"></datetimepicker>
+                                                            data-datetimepicker-config="{ dropdownSelector: '#estdown{{$index}}',minView:'day' }"></datetimepicker>
                                         </ul>
                                     </div>
                                 </td>
@@ -137,6 +138,20 @@
                             </tr>
                         </tbody>
                     </table>
+
+                    <br />
+                    <br />
+                    <br />
+                    <br/>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
                 </div>
             </div>
         </div>
@@ -144,7 +159,10 @@
 
 
     </div>
+
 </div>
+
+
 
 @Html.Partial("_LoadingModal")
 
@@ -155,12 +173,13 @@
         $scope.wareHouse = "";
         $scope.from = "";
         $scope.asn = "";
-        $scope.range = 30;
+        $scope.range = 7;
 
         $scope.dockArray = [];
         //init part 
         $scope.appWHList = [];
 
+        $scope.test = "";
 
         $http.post("/rp/DockInit", null, null).then(
             function (obj) {
@@ -273,6 +292,15 @@
             });
 
 
+        }
+
+
+        $scope.onTimeSet = function(str)
+        {
+            //alert(str);
+            //var s = "#" + "dockDate" + str;
+            //alert(s);
+            //$(s).dropdown('toggle');
         }
 
     });

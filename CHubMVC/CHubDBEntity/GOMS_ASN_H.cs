@@ -29,5 +29,6 @@ namespace CHubDBEntity
         public string DOCK_DATE_BY { get; set; }
         public string IND { get; set; }
         public string NOTE { get; set; }
+        public string IHUB_DOCK { get; set; }
     }
 }

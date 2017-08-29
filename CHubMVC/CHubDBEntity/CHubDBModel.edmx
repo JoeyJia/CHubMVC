@@ -379,6 +379,7 @@
           <Property Name="DOCK_DATE_BY" Type="varchar2" MaxLength="20" />
           <Property Name="IND" Type="varchar2" MaxLength="50" Nullable="false" />
           <Property Name="NOTE" Type="varchar2" MaxLength="40" />
+          <Property Name="IHUB_DOCK" Type="varchar2" MaxLength="1" />
         </EntityType>
         <EntityType Name="ITT_CUST_LOAD">
           <Key>
@@ -1490,6 +1491,7 @@ warning 6002: The table/view 'GWAPP.V_ITT_SHIPPING_ALLIN1' does not have a prima
           <Property Name="RATIO_SHIP2PORT" Type="number" Precision="38" Scale="0" />
           <Property Name="RATIO_DO_RELEASE" Type="number" Precision="38" Scale="0" />
           <Property Name="RATIO_DECLARE_ONTIME" Type="number" Precision="38" Scale="0" />
+          <Property Name="RATIO_AVL_ONTIME" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'GWAPP.V_ITT_SHIPPING_SMRY' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2260,7 +2262,7 @@ warning 6002: The table/view 'GWAPP.V_USER_PAGE_LINK' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C0032198">
+        <Association Name="SYS_C0032721">
           <End Role="M_SYSTEM" Type="Self.M_SYSTEM" Multiplicity="1" />
           <End Role="ITT_SHIPPING_H" Type="Self.ITT_SHIPPING_H" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2915,7 +2917,8 @@ FROM "GWAPP"."V_CHK_DURATION_MISSING" "V_CHK_DURATION_MISSING"</DefiningQuery>
 "V_ITT_SHIPPING_ALLIN1"."CP_CATEGORY3" AS "CP_CATEGORY3", 
 "V_ITT_SHIPPING_ALLIN1"."RATIO_SHIP2PORT" AS "RATIO_SHIP2PORT", 
 "V_ITT_SHIPPING_ALLIN1"."RATIO_DO_RELEASE" AS "RATIO_DO_RELEASE", 
-"V_ITT_SHIPPING_ALLIN1"."RATIO_DECLARE_ONTIME" AS "RATIO_DECLARE_ONTIME"
+"V_ITT_SHIPPING_ALLIN1"."RATIO_DECLARE_ONTIME" AS "RATIO_DECLARE_ONTIME", 
+"V_ITT_SHIPPING_ALLIN1"."RATIO_AVL_ONTIME" AS "RATIO_AVL_ONTIME"
 FROM "GWAPP"."V_ITT_SHIPPING_ALLIN1" "V_ITT_SHIPPING_ALLIN1"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="V_ITT_SHIPPING_SMRY" EntityType="Self.V_ITT_SHIPPING_SMRY" store:Type="Views" store:Schema="GWAPP">
@@ -3319,7 +3322,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
             <End Role="RP_PRINTER" EntitySet="RP_PRINTER" />
             <End Role="RP_STATION" EntitySet="RP_STATION" />
           </AssociationSet>
-          <AssociationSet Name="SYS_C0032198" Association="Self.SYS_C0032198">
+          <AssociationSet Name="SYS_C0032721" Association="Self.SYS_C0032721">
             <End Role="M_SYSTEM" EntitySet="M_SYSTEM" />
             <End Role="ITT_SHIPPING_H" EntitySet="ITT_SHIPPING_H" />
           </AssociationSet>
@@ -5428,6 +5431,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="C_TARGET_S40" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="RATIO_DO_RELEASE" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="RATIO_DECLARE_ONTIME" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="RATIO_AVL_ONTIME" Type="Decimal" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="ITT_PO">
           <Key>
@@ -6049,6 +6053,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <Property Name="DOCK_DATE_BY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="IND" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="NOTE" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="IHUB_DOCK" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -7302,6 +7307,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="V_ITT_SHIPPING_ALLIN1">
             <EntityTypeMapping TypeName="CHubDBModel.V_ITT_SHIPPING_ALLIN1">
               <MappingFragment StoreEntitySet="V_ITT_SHIPPING_ALLIN1">
+                <ScalarProperty Name="RATIO_AVL_ONTIME" ColumnName="RATIO_AVL_ONTIME" />
                 <ScalarProperty Name="RATIO_DECLARE_ONTIME" ColumnName="RATIO_DECLARE_ONTIME" />
                 <ScalarProperty Name="RATIO_DO_RELEASE" ColumnName="RATIO_DO_RELEASE" />
                 <ScalarProperty Name="C_TARGET_S40" ColumnName="C_TARGET_S40" />
@@ -7768,6 +7774,7 @@ FROM "GWAPP"."V_USER_PAGE_LINK" "V_USER_PAGE_LINK"</DefiningQuery>
           <EntitySetMapping Name="GOMS_ASN_H">
             <EntityTypeMapping TypeName="CHubDBModel.GOMS_ASN_H">
               <MappingFragment StoreEntitySet="GOMS_ASN_H">
+                <ScalarProperty Name="IHUB_DOCK" ColumnName="IHUB_DOCK" />
                 <ScalarProperty Name="NOTE" ColumnName="NOTE" />
                 <ScalarProperty Name="IND" ColumnName="IND" />
                 <ScalarProperty Name="DOCK_DATE_BY" ColumnName="DOCK_DATE_BY" />

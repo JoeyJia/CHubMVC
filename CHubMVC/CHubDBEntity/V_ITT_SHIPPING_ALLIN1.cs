@@ -90,5 +90,6 @@ namespace CHubDBEntity
         public Nullable<decimal> C_TARGET_S40 { get; set; }
         public Nullable<decimal> RATIO_DO_RELEASE { get; set; }
         public Nullable<decimal> RATIO_DECLARE_ONTIME { get; set; }
+        public Nullable<decimal> RATIO_AVL_ONTIME { get; set; }
     }
 }
