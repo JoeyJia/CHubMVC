@@ -66,7 +66,7 @@
                                 <th>Operation</th>
                                 <th style="">WareHouse</th>
                                 <th style="">ASN</th>
-                                <th style="width:180px">Docking Date</th>
+                                <th style="width:220px">Docking Date</th>
                                 <th style="">Note</th>
                                 <th style="">Company Code</th>
                                 <th style="">Company Name</th>
@@ -82,22 +82,33 @@
                             <tr ng-repeat="d in dockArray ">
                                 <td class="text-center">
                                     <a href="javascript:void(0)" title="Save" class="saveBtn" ng-click="saveItem(d)"><span class="glyphicon glyphicon-floppy-disk"></span></a>
+                                    
                                 </td>
                                 <td style="">{{d.WAREHOUSE}}</td>
                                 <td style="">{{d.MANIFEST_ID}}</td>
                                 <td style="padding:2px">
-                                    <div class="dropdown  dockdd" id="dockDate{{$index}}">
-                                        <a class="dropdown-toggle" id="dockdown{{$index}}" role="button" data-toggle="dropdown" data-target="#dockDate{{$index}}" href="#">
-                                            <div class="input-group">
-                                                <input type="text" id="ddate{{$index}}" name="date" class="form-control" value="{{d.DOCK_DATE | date:'yyyy-MM-dd:HH'}}">
-                                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                    <div class="row">
+                                        <div class="col-md-9" style="padding-right:0px;">
+                                            <div class="dropdown  dockdd" id="dockDate{{$index}}">
+                                                <a class="dropdown-toggle" id="dockdown{{$index}}" role="button" data-toggle="dropdown" data-target="#dockDate{{$index}}" href="#">
+                                                    <div class="input-group">
+                                                        <input type="text" id="ddate{{$index}}" name="date" class="form-control" value="{{d.DOCK_DATE | date:'yyyy-MM-dd:HH'}}">
+                                                        <span class="input-group-addon">
+                                                            <i class="glyphicon glyphicon-calendar"></i>
+                                                        </span>
+
+                                                    </div>
+                                                </a>
+                                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                                    <datetimepicker data-ng-model="d.DOCK_DATE"
+                                                                    data-on-set-time="onTimeSet($index)"
+                                                                    data-datetimepicker-config="{minView:'hour' }"></datetimepicker>
+                                                </ul>
                                             </div>
-                                        </a>
-                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                            <datetimepicker data-ng-model="d.DOCK_DATE"
-                                                            data-on-set-time="onTimeSet($index)" 
-                                                            data-datetimepicker-config="{minView:'hour' }"></datetimepicker>
-                                        </ul>
+                                            </div>
+                                        <div class="col-md-2 text-center" style="height:34px;background-color:#eeeeee">
+                                            <a href="javascript:void(0)" style="" title="clear DockDate" class=" clearBtn" ng-click="clearDate(d)"><span style="margin-top:8px" class="glyphicon glyphicon-trash"></span></a>
+                                        </div>
                                     </div>
                                 </td>
                                 <td style="padding:0"><input class="form-control" style="padding:0" ng-model="d.NOTE" /></td>
@@ -294,6 +305,10 @@
 
         }
 
+        $scope.clearDate = function (curr)
+        {
+            curr.DOCK_DATE = null;
+        }
 
         $scope.onTimeSet = function(str)
         {

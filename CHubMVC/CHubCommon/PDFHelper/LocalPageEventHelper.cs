@@ -57,6 +57,7 @@ namespace CHubCommon
 
             cb.BeginText();
             cb.SetFontAndSize(BF_Light, ContentFontSize);
+            //make page template in the middle, 90f  is half of all length of page font
             cb.SetTextMatrix(document.PageSize.Width/2- 90f, pageSize.GetBottom(20f));
             cb.ShowText(text);
 
