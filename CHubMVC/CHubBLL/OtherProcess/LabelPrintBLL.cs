@@ -64,7 +64,7 @@ namespace CHubBLL.OtherProcess
             int ColumnHeight = fontHelper.GetFontHeight("柳工", new System.Drawing.Font("黑体", ContentFontSize)) + 1;
             int lineCount = (int)((doc.Top- headerHeight) / ColumnHeight);
             int linePointer = 1;
-            float currenttop = 0f;
+
             for (int i = 0; i < printDatas.Count; i++)
             {
                 //pHelper.CurrentGroup = pageDatas[i].Header.SHIP_ID;
@@ -113,7 +113,7 @@ namespace CHubBLL.OtherProcess
                     contentTable.AddCell(cellUnit);
 
                     linePointer++;
-                    //currenttop = doc.GetTop(51f);
+                    
                     //Line 2
                     cellUnit = new PdfPCell();
                     cellUnit.BorderWidth = 0;
@@ -163,7 +163,7 @@ namespace CHubBLL.OtherProcess
 
                     linePointer++;
 
-                    //currenttop = doc.GetTop(51f);
+                    
                     //Line 4
                     if (linePointer > lineCount)
                     {
@@ -225,7 +225,7 @@ namespace CHubBLL.OtherProcess
                     cellUnit = new PdfPCell(new Paragraph(printDatas[i].C05, BoldFont));
                     cellUnit.BorderWidth = 0;
                     contentTable.AddCell(cellUnit);
-                    //currenttop = doc.GetTop(51f);
+                    
                     //picture
                     if (string.IsNullOrEmpty(printDatas[i].C10))
                         cellUnit = new PdfPCell();
@@ -295,16 +295,6 @@ namespace CHubBLL.OtherProcess
 
                     doc.Add(contentTable);
                 }
-
-                //var ss = writer.GetPageReference(2);
-                
-                //int ss= writer.PageNumber;
-                //var tt= writer.PageDictEntries;
-
-                //PdfReader reader = new PdfReader(fullPath);
-                //var page1 = writer.GetImportedPage(reader, 1);
-               
-
 
             }
             doc.Close();

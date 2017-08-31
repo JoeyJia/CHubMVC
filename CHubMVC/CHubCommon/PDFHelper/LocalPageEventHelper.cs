@@ -101,7 +101,7 @@ namespace CHubCommon
                 template = cb.CreateTemplate(50, 50);
             }
 
-            float linePosition = 115f;
+            //float linePosition = 115f;
             if ((!printCode)&&(hData.PRINT_LOGO==CHubConstValues.IndN))
             {
                 //document.Add(new Paragraph(Environment.NewLine));
@@ -113,8 +113,8 @@ namespace CHubCommon
                     document.Add(new Paragraph(Environment.NewLine));
                   
                 }
-                else
-                    linePosition = 70f;
+                //else
+                //    linePosition = 70f;
             }
             else
             {
