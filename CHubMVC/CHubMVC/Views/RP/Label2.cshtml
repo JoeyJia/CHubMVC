@@ -1,0 +1,962 @@
+﻿@{
+    ViewBag.Title = "Part Label print";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid" id="labelBody" ng-app="labelApp" ng-controller="labelCtrl">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:silver"><b>Part Label print</b></div>
+
+        <ul class="nav nav-pills" role="tablist">
+            <li role="presentation" class="active"><a href="#profile" role="tab" data-toggle="tab">Query by Shipment</a></li>
+            <li role="presentation"><a href="#part" role="tab" data-toggle="tab">Query by PART</a></li>
+            <li role="presentation"><a href="#asn" role="tab" data-toggle="tab">Query By ASN</a></li>
+            <li role="presentation"><a href="#uparts" role="tab" data-toggle="tab">Query By UnCatalog Parts</a></li>
+        </ul>
+
+        <!--Query by Shipment-->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="profile">
+                <div class="row" style="margin-top:15px;">
+                    <div class="form-group">
+                        <label for="txtLabelTYPE" class="col-sm-2 control-label text-right">Label TYPE:</label>
+                        <div class="col-sm-3">
+                            <select class="form-control input-sm" id="txtLabelTYPE" ng-change="selectChange(LabelTYPE)"  ng-model="LabelTYPE" ng-options="x for x in LabelTYPEList"></select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label id="TypeDesc">{{TypeDesc}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="txtShipmentNo" class="col-sm-2 control-label text-right">Shipment No:</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control input-sm" id="txtShipmentNo" ng-change="Ship_IDChange(ShipmentNo)" ng-model="ShipmentNo" placeholder="Shipment No" />
+                        </div>
+                        <div class="col-sm-6">
+                            <label id="Ship_IDDesc">{{Ship_IDDesc}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="txtBoxNumber" class="col-sm-2 control-label text-right">Box Number:</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control input-sm" id="txtBoxNumber" ng-change="LODNUMChange(BoxNumber)" ng-model="BoxNumber" placeholder="Box Number" />
+                        </div>
+                        <div class="col-sm-6">
+                            <label id="LODNUMDesc">{{LODNUMDesc}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="txtPartNumber(RP)" class="col-sm-2 control-label text-right">Part Number (RP):</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control input-sm" id="txtPartNumber_RP" ng-model="PartNumber_RP" placeholder="Part Number (RP)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="txtPartNumber(GOMS)" class="col-sm-2 control-label text-right">Part Number (GOMS):</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control input-sm" id="txtPartNumber_GOMS" ng-model="PartNumber_GOMS" placeholder="Part Number (GOMS)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-offset-6">
+                            <button class="btn btn-primary btn-sm" ng-click="queryBySearch()">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="panel panel-default" style="">
+                            <div class="panel-heading">
+                                <button class="btn btn-primary btn-sm" ng-click="exportPDF()">Print TO PDF</button>
+                            </div>
+
+                            <table id="tbLabel" class="table table-striped table-hover table-bordered .table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th style="">
+                                            <div class="checkbox" style="margin-bottom:1px;margin-top:1px">
+                                                <label style="padding:0px">
+                                                    <input type="checkbox" style="padding:0px" id="allCheckbox" value="allChecked" ng-click="checkAllAction($event)" aria-label="checkAll">
+                                                </label>
+                                            </div>
+                                        </th>
+                                        <th style="">Box Number</th>
+                                        <th style="">Copies</th>
+                                        <th style="">MOQ</th>
+                                        <th style="">Ship Qtys</th>
+                                        <th style="">Part Number (RP)</th>
+                                        <th style="">Part Number</th>
+                                        <th style="">Description</th>
+                                        <th style="">Description(CN)</th>
+                                        <th style="">COO</th>
+                                        <th style="">COO(CN)</th>
+                                        <th style="">WT(KG)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="r in result ">
+                                        <td style="">
+                                            <div class="checkbox" style="margin-bottom:1px;margin-top:1px">
+                                                <label style="padding:0px">
+                                                    <input type="checkbox" style="padding:0px" id="checkbox$index" class="ckItems" partNo="" seq={{$index}} aria-label="check$index">
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>{{r.LODNUM}}</td>
+                                        <td style="width:80px;padding:0px"><input class="form-control input-sm" ng-model="r.COPIES" /></td>
+                                        <td>{{r.QTY_IN_CARTON}}</td>
+                                        <td>{{r.UNTQTY}}</td>
+                                        <td>{{r.PRTNUM}}</td>
+                                        <td>{{r.PART_NO}}</td>
+                                        <td>{{r.DESCRIPTION}}</td>
+                                        <td>{{r.DESC_CN}}</td>
+                                        <td>{{r.ORGCOD}}</td>
+                                        <td>{{r.COUNTRY_DESC_CN}}</td>
+                                        <td>{{r.PART_WEIGHT}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="part">
+                <div class="row" style="margin-top:15px;">
+                    <div class="form-group">
+                        <label for="txtLabelTYPE" class="col-sm-2 control-label text-right">Label TYPE:</label>
+                        <div class="col-sm-3">
+                            <select class="form-control input-sm" id="txtLabelTYPE" ng-change="selectChange(LabelTYPE)" ng-model="LabelTYPE" ng-options="x for x in LabelTYPEList"></select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label id="TypeDesc">{{TypeDesc}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="Print_Part_no" class="col-sm-2 control-label text-right">Part Number (RP):</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control input-sm" id="txtPRTNUM_Part" ng-model="PRTNUM_Part" placeholder="Part Number (RP)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="Part_no" class="col-sm-2 control-label text-right">Part Number (GOMS):</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control input-sm" id="txtPart_No_Part" ng-model="Part_No_Part" placeholder="Part Number (GOMS)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-offset-6">
+                            <button class="btn btn-primary btn-sm" ng-click="queryBySearch_Part()">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="panel panel-default" style="">
+                            <div class="panel-heading">
+                                <button class="btn btn-primary btn-sm" ng-click="exportPDF_Part()">Print TO PDF</button>
+                            </div>
+
+                            <table id="tbLabel" class="table table-striped table-hover table-bordered .table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th style="">
+                                            <div class="checkbox" style="margin-bottom:1px;margin-top:1px">
+                                                <label style="padding:0px">
+                                                    <input type="checkbox" style="padding:0px" id="allCheckbox" value="allChecked" ng-click="checkAllAction($event)" aria-label="checkAll">
+                                                </label>
+                                            </div>
+                                        </th>
+                                        <th style="">Copies</th>
+                                        <th style="">MOQ</th>
+                                        <th style="">Part Number (RP)</th>
+                                        <th style="">Part Number</th>
+                                        <th style="">Description</th>
+                                        <th style="">Description(CN)</th>
+                                        <th style="">COO</th>
+                                        <th style="">COO(CN)</th>
+                                        <th style="">WT(KG)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="r in partresult ">
+                                        <td style="">
+                                            <div class="checkbox" style="margin-bottom:1px;margin-top:1px">
+                                                <label style="padding:0px">
+                                                    <input type="checkbox" style="padding:0px" id="checkbox$index" class="ckItems" partNo="" seq={{$index}} aria-label="check$index">
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td style="width:80px;padding:0px"><input class="form-control input-sm" ng-model="r.COPIES" /></td>
+                                        <td>{{r.QTY_IN_CARTON}}</td>
+                                        <td>{{r.PRINT_PART_NO}}</td>
+                                        <td>{{r.PART_NO}}</td>
+                                        <td>{{r.DESCRIPTION}}</td>
+                                        <td>{{r.DESC_CN}}</td>
+                                        <td>{{r.ORGCOD}}</td>
+                                        <td>{{r.COUNTRY_DESC_CN}}</td>
+                                        <td>{{r.PART_WEIGHT}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="asn">
+                <div class="row" style="margin-top:15px;">
+                    <div class="form-group">
+                        <label for="txtLabelTYPE" class="col-sm-2 control-label text-right">Label TYPE:</label>
+                        <div class="col-sm-3">
+                            <select class="form-control input-sm" id="txtLabelTYPE" ng-change="selectChange(LabelTYPE)" ng-model="LabelTYPE" ng-options="x for x in LabelTYPEList"></select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label id="TypeDesc">{{TypeDesc}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="ASN_No" class="col-sm-2 control-label text-right">ASN No:</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control input-sm" id="txtASN_NO" ng-change="ASN_NOChange(ASN_NO)" ng-model="ASN_NO" placeholder="ASN No" />
+                        </div>
+                        <div class="col-sm-6">
+                            <label id="Ship_IDDesc">{{COMPANY_NAME}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="Print_Part_no" class="col-sm-2 control-label text-right">Part Number (RP):</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control input-sm" id="txtPRINT_PART_NO_ASN" ng-model="PRINT_PART_NO_ASN" placeholder="Part Number (RP)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="PART_NO" class="col-sm-2 control-label text-right">Part Number (GOMS):</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control input-sm" id="txtPART_NO_ASN" ng-model="PART_NO_ASN" placeholder="Part Number (GOMS)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-offset-6">
+                            <button class="btn btn-primary btn-sm" ng-click="queryBySearch_ASN()">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="panel panel-default" style="">
+                            <div class="panel-heading">
+                                <button class="btn btn-primary btn-sm" ng-click="exportPDF_ASN()">Print TO PDF</button>
+                            </div>
+
+                            <table id="tbLabel" class="table table-striped table-hover table-bordered .table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th style="">
+                                            <div class="checkbox" style="margin-bottom:1px;margin-top:1px">
+                                                <label style="padding:0px">
+                                                    <input type="checkbox" style="padding:0px" id="allCheckbox" value="allChecked" ng-click="checkAllAction($event)" aria-label="checkAll">
+                                                </label>
+                                            </div>
+                                        </th>
+                                        <th style="">Copies</th>
+                                        <th style="">MOQ</th>
+                                        <th style="">Qty Shipped</th>
+                                        <th style="">Part Number (RP)</th>
+                                        <th style="">Part Number</th>
+                                        <th style="">Description</th>
+                                        <th style="">Description(CN)</th>
+                                        <th style="">COO</th>
+                                        <th style="">COO(CN)</th>
+                                        <th style="">WT(KG)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="r in asnresult ">
+                                        <td style="">
+                                            <div class="checkbox" style="margin-bottom:1px;margin-top:1px">
+                                                <label style="padding:0px">
+                                                    <input type="checkbox" style="padding:0px" id="checkbox$index" class="ckItems" partNo="" seq={{$index}} aria-label="check$index">
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td style="width:80px;padding:0px"><input class="form-control input-sm" ng-model="r.COPIES" /></td>
+                                        <td>{{r.QTY_IN_CARTON}}</td>
+                                        <td>{{r.QTY_SHIPPED}}</td>
+                                        <td>{{r.PRINT_PART_NO}}</td>
+                                        <td>{{r.PART_NO}}</td>
+                                        <td>{{r.DESCRIPTION}}</td>
+                                        <td>{{r.DESC_CN}}</td>
+                                        <td>{{r.COUNTRY_OF_ORIGIN}}</td>
+                                        <td>{{r.COUNTRY_DESC_CN}}</td>
+                                        <td>{{r.PART_WEIGHT}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="uparts">
+                <div class="row" style="margin-top:15px;">
+                    <div class="form-group">
+                        <label for="txtLabelTYPE" class="col-sm-2 control-label text-right">Label TYPE:</label>
+                        <div class="col-sm-3">
+                            <select class="form-control input-sm" id="txtLabelTYPE" ng-change="selectChange(LabelTYPE)" ng-model="LabelTYPE" ng-options="x for x in LabelTYPEList"></select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label id="TypeDesc">{{TypeDesc}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="Print_Part_no" class="col-sm-2 control-label text-right">Part Number (RP):</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control input-sm" id="txtPRINT_PART_NO_UParts" ng-model="PRINT_PART_NO_UParts" placeholder="Part Number (RP)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="PART_NO" class="col-sm-2 control-label text-right">Part Number (GOMS):</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control input-sm" id="txtPART_NO_UParts" ng-model="PART_NO_UParts" placeholder="Part Number (GOMS)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-offset-6">
+                            <button class="btn btn-primary btn-sm" ng-click="queryBySearch_UParts()">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="panel panel-default" style="">
+                            <div class="panel-heading">
+                                <button class="btn btn-primary btn-sm" ng-click="exportPDF_UParts()">Print TO PDF</button>
+                            </div>
+                            <table id="tbLabel" class="table table-striped table-hover table-bordered .table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th style="">
+                                            <div class="checkbox" style="margin-bottom:1px;margin-top:1px">
+                                                <label style="padding:0px">
+                                                    <input type="checkbox" style="padding:0px" id="allCheckbox" value="allChecked" ng-click="checkAllAction($event)" aria-label="checkAll">
+                                                </label>
+                                            </div>
+                                        </th>
+                                        <th style="">Copies</th>
+                                        <th style="">MOQ</th>
+                                        <th style="">Part Number (RP)</th>
+                                        <th style="">Part Number</th>
+                                        <th style="">Description</th>
+                                        <th style="">Description(CN)</th>
+                                        <th style="">COO</th>
+                                        <th style="">COO(CN)</th>
+                                        <th style="">WT(KG)</th>
+                                        <th style=""></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="r in upartsresult ">
+                                        <td style="">
+                                            <div class="checkbox" style="margin-bottom:1px;margin-top:1px">
+                                                <label style="padding:0px">
+                                                    <input type="checkbox" style="padding:0px" id="checkbox$index" class="ckItems" partNo="" seq={{$index}} aria-label="check$index">
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td style="width:80px;padding:0px"><input class="form-control input-sm" ng-model="r.COPIES" /></td>
+                                        <td>{{r.QTY_IN_CARTON}}</td>
+                                        <td>{{r.PRINT_PART_NO}}</td>
+                                        <td>{{r.PART_NO}}</td>
+                                        <td>{{r.DESCRIPTION}}</td>
+                                        <td>{{r.DESC_CN}}</td>
+                                        <td>{{r.ORGCOD}}</td>
+                                        <td>{{r.COUNTRY_DESC_CN}}</td>
+                                        <td>{{r.PART_WEIGHT}}</td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm" ng-click="modify(r.PART_NO)">Modify</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <button class="btn btn-primary btn-sm" ng-click="addNew()">ADD NEW</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_LoadingModal")
+
+
+<script>
+    var app = angular.module('labelApp', []);
+    app.controller('labelCtrl', function ($scope,$http) {
+        $scope.LabelTYPE = "";
+        $scope.TypeDesc = "";
+        $scope.ShipmentNo = "";
+        $scope.BoxNumber = "";
+        $scope.PartNumber_RP = "";
+        $scope.PartNumber_GOMS = "";
+        $scope.LabelTYPEList = [];
+        $scope.result = [];
+        $scope.partresult = [];
+        $scope.asnresult = [];
+        $scope.upartsresult = [];
+        $scope.PRTNUM_Part = "";
+        $scope.Part_No_Part = "";
+        $scope.ASN_NO = "";
+        $scope.PRINT_PART_NO_ASN = "";
+        $scope.PART_NO_ASN = "";
+        $scope.PRINT_PART_NO_UParts = "";
+        $scope.PART_NO_UParts = "";
+        $scope.COMPANY_NAME = "";
+        //初始化下拉框
+        $http.post("/rp/LabelType", null, null).then(
+            function (obj) {
+                if (obj.data.Success) {
+                    $scope.LabelTYPEList = obj.data.Data;
+                }
+                else
+                    alert(obj.data.Msg)
+            },
+             function (resp) {
+                 alert("Fail!");
+             }
+        );
+
+        $scope.selectChange = function (data) {
+            $.ajax({
+                url: "/rp/GetLabelTypeDesc",
+                data: {
+                    Label_TYPE: data
+                },
+                type: "post",
+                async: false,
+                success: function (obj) { 
+                    $scope.TypeDesc = obj.Data;
+                } 
+            })
+        }
+
+        $scope.Ship_IDChange = function (data)
+        {
+            $.ajax({
+                url: "/rp/GetADRNAMEByShip_ID",
+                data: {
+                    Ship_ID: data
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    $scope.Ship_IDDesc = obj.Data;
+                }
+            })
+        }
+
+        $scope.LODNUMChange = function (data)
+        {
+            $.ajax({
+                url: "/rp/GetADRNAMEByLODNUM",
+                data: {
+                    LODNUM: data
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    $scope.LODNUMDesc = obj.Data;
+                }
+            })
+        }
+
+
+        //Search
+        $scope.queryBySearch = function () {
+            if ($scope.LabelTYPE == "")
+            {
+                alert("No Label TYPE Selected");
+                return;
+            }
+            if ($scope.ShipmentNo == "" && $scope.BoxNumber == "")
+            {
+                alert("No Data Input");
+                return;
+            }
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: "/rp/PLABEL_PRINTBySearch",
+                data: {
+                    LabelTYPE: $scope.LabelTYPE,
+                    ShipmentNo: $scope.ShipmentNo,
+                    BoxNumber: $scope.BoxNumber,
+                    PartNumber_RP: $scope.PartNumber_RP,
+                    PartNumber_GOMS: $scope.PartNumber_GOMS
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    if (obj.Success)
+                    {
+                        $("#loadingModal").modal("hide");
+                        $scope.result = obj.Data;
+                    }
+                    else
+                    {
+                        $("#loadingModal").modal("hide");
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to Query");
+                }
+            })
+        }
+
+        //PrintToPDF
+        $scope.exportPDF = function () {
+            var arg = [];
+            var all = $(".ckItems");
+
+            if (all == null || all.length == 0) {
+                alert("No Data!");
+                return;
+            }
+            //alert(all.length);
+            var totalCopies = 0;
+
+            for (var i = 0; i < all.length; i++) {
+                if (all[i].checked) {
+                    var seq = all[i].attributes['seq'].value;
+                    var data = {};
+                    data.VID = $scope.result[seq].VID;
+                    data.PART_NO = $scope.result[seq].PART_NO;
+                    data.COPIES = $scope.result[seq].COPIES;
+                    arg.push(data);
+                    totalCopies += $scope.result[seq].COPIES;
+                }
+            }
+
+            if (totalCopies > 100) {
+                if (!confirm("More than 100 pages, Confirm to Continue"))
+                    return;
+            }
+
+            if (arg.length == 0) {
+                alert("No selected data");
+                return;
+            }
+            
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: "/rp/ExportPDFNew",
+                data: JSON.stringify({
+                    items: arg,
+                    LabelTYPE : $scope.LabelTYPE,
+                    ShipmentNo : $scope.ShipmentNo,
+                    BoxNumber : $scope.BoxNumber,
+                    PartNumber_RP : $scope.PartNumber_RP,
+                    PartNumber_GOMS : $scope.PartNumber_GOMS
+                }),
+                type: "post",
+                async: false,
+                contentType: 'application/json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#loadingModal").modal("hide");
+                        window.open(obj.Data);
+                    }
+                    else {
+                        $("#loadingModal").modal("hide");
+                        alert(obj.Msg);
+                    }
+
+                },
+                error: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    alert(obj.responseText);
+                }
+            });
+        }
+
+        $scope.checkAllAction = function (event) {
+            var all = $('.ckItems');
+            if (event.target.checked) {
+                for (var i = 0; i < all.length; i++) {
+                    all[i].checked = true;
+                }
+            }
+            else {
+                for (var i = 0; i < all.length; i++) {
+                    all[i].checked = false;
+                }
+            }
+        }
+
+        //By Parts Search
+        $scope.queryBySearch_Part = function () {
+            if ($scope.LabelTYPE == "") {
+                alert("No Label TYPE Selected");
+                return;
+            }
+            if ($scope.PRTNUM_Part == "" && $scope.Part_No_Part == "")
+            {
+                alert("No Data Input");
+                return;
+            }
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: "/rp/SearchByParts",
+                type: "post",
+                async: false,
+                data: {
+                    Label_TYPE: $scope.LabelTYPE,
+                    PRTNUM: $scope.PRTNUM_Part,
+                    Part_No:$scope.Part_No_Part
+                },
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#loadingModal").modal("hide");
+                        $scope.partresult = obj.Data;
+                    }
+                    else {
+                        $("#loadingModal").modal("hide");
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to Query");
+                }
+            });
+
+
+
+        }
+
+        //By Parts Print
+        $scope.exportPDF_Part = function () {
+            var arg = [];
+            var all = $(".ckItems");
+            if (all == null || all.length == 0)
+            {
+                alert("No Data!");
+                return;
+            }
+            var totalCopies = 0;
+            for (var i = 0; i < all.length; i++) {
+                if (all[i].checked)
+                {
+                    var seq = all[i].attributes['seq'].value;
+                    var data = {};
+                    data.PART_NO = $scope.partresult[seq].PART_NO;
+                    data.COPIES = $scope.partresult[seq].COPIES;
+                    arg.push(data);
+                    totalCopies += $scope.partresult[seq].COPIES;
+                }
+            }
+            if (totalCopies > 100) {
+                if (!confirm("More than 100 pages, Confirm to Continue"))
+                    return;
+            }
+            if (arg.length == 0) {
+                alert("No selected data");
+                return;
+            }
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: "/rp/ExportPDFByParts",
+                data: JSON.stringify({
+                    items: arg,
+                    LabelTYPE: $scope.LabelTYPE
+                }),
+                type: "post",
+                async: false,
+                contentType: 'application/json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#loadingModal").modal("hide");
+                        window.open(obj.Data);
+                    }
+                    else {
+                        $("#loadingModal").modal("hide");
+                        alert(obj.Msg);
+                    }
+
+                },
+                error: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    alert(obj.responseText);
+                }
+            });
+        }
+
+        //By ASN Search
+        $scope.queryBySearch_ASN = function () {
+            if ($scope.LabelTYPE == "")
+            {
+                alert("No Label TYPE Selected");
+                return;
+            }
+            if ($scope.ASN_NO == "")
+            {
+                alert("No ASN No Input");
+                return;
+            }
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/rp/SearchByASN',
+                type: 'post',
+                async: false,
+                data: {
+                    LABEL_CODE: $scope.LabelTYPE,
+                    ASN_NO: $scope.ASN_NO,
+                    PRINT_PART_NO: $scope.PRINT_PART_NO_ASN,
+                    PART_NO:$scope.PART_NO_ASN
+                },
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#loadingModal").modal("hide");
+                        $scope.asnresult = obj.Data;
+                    }
+                    else {
+                        $("#loadingModal").modal("hide");
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to Query");
+                }
+            })
+        }
+
+        //By ASN Print
+        $scope.exportPDF_ASN = function () {
+            var arg = [];
+            var all = $(".ckItems");
+            if (all == null || all.length == 0) {
+                alert("No Data!");
+                return;
+            }
+            var totalCopies = 0;
+            for (var i = 0; i < all.length; i++) {
+                if (all[i].checked) {
+                    var seq = all[i].attributes['seq'].value;
+                    var data = {};
+                    data.VID = $scope.asnresult[seq].VID;
+                    data.PART_NO = $scope.asnresult[seq].PART_NO;
+                    data.COPIES = $scope.asnresult[seq].COPIES;
+                    arg.push(data);
+                    totalCopies += $scope.asnresult[seq].COPIES;
+                }
+            }
+            if (totalCopies > 100) {
+                if (!confirm("More than 100 pages, Confirm to Continue"))
+                    return;
+            }
+            if (arg.length == 0) {
+                alert("No selected data");
+                return;
+            }
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: "/rp/ExportPDFByASN",
+                data: JSON.stringify({
+                    items: arg,
+                    LabelTYPE: $scope.LabelTYPE,
+                    ASN_NO: $scope.ASN_NO,
+                    PRINT_PART_NO_ASN: $scope.PRINT_PART_NO_ASN,
+                    PART_NO_ASN:$scope.PART_NO_ASN
+                }),
+                type: "post",
+                async: false,
+                contentType: 'application/json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#loadingModal").modal("hide");
+                        window.open(obj.Data);
+                    }
+                    else {
+                        $("#loadingModal").modal("hide");
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    alert(obj.responseText);
+                }
+            })
+        }
+
+        $scope.ASN_NOChange = function (data) {
+            $.ajax({
+                url: "/rp/GetCOMPANY_NAMEByASN_NO",
+                data: {
+                    ASN_NO: data
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    $scope.COMPANY_NAME = obj.Data;
+                }
+            })
+        }
+
+        //By Uncatalog Parts Search
+        $scope.queryBySearch_UParts = function () {
+            if ($scope.LabelTYPE == "") {
+                alert("No Label TYPE Selected");
+                return;
+            }
+            if ($scope.PRINT_PART_NO_UParts == "" && $scope.PART_NO_UParts == "")
+            {
+                alert("No Data Input");
+                return;
+            }
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: "/rp/SearchByUncatalogsParts",
+                type: "post",
+                async: false,
+                data: {
+                    Label_TYPE: $scope.LabelTYPE,
+                    PRINT_PART_NO_UParts: $scope.PRINT_PART_NO_UParts,
+                    PART_NO_UParts:$scope.PART_NO_UParts
+                },
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#loadingModal").modal("hide");
+                        $scope.upartsresult = obj.Data;
+                    }
+                    else {
+                        $("#loadingModal").modal("hide");
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to Query");
+                }
+            });
+
+
+        }
+
+        //By Uncatalog Parts Print
+        $scope.exportPDF_UParts = function () {
+            var arg = [];
+            var all = $(".ckItems");
+            if (all == null || all.length == 0) {
+                alert("No Data!");
+                return;
+            }
+            var totalCopies = 0;
+            for (var i = 0; i < all.length; i++) {
+                if (all[i].checked) {
+                    var seq = all[i].attributes['seq'].value;
+                    var data = {};
+                    data.PART_NO = $scope.upartsresult[seq].PART_NO;
+                    data.COPIES = $scope.upartsresult[seq].COPIES;
+                    arg.push(data);
+                    totalCopies += $scope.upartsresult[seq].COPIES;
+                }
+            }
+            if (totalCopies > 100) {
+                if (!confirm("More than 100 pages, Confirm to Continue"))
+                    return;
+            }
+            if (arg.length == 0) {
+                alert("No selected data");
+                return;
+            }
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: "/rp/ExportPDFByUncatalogParts",
+                data: JSON.stringify({
+                    items: arg,
+                    LabelTYPE: $scope.LabelTYPE,
+                    PRINT_PART_NO_UParts: $scope.PRINT_PART_NO_UParts,
+                    PART_NO_UParts: $scope.PART_NO_UParts
+                }),
+                type: "post",
+                async: false,
+                contentType: 'application/json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#loadingModal").modal("hide");
+                        window.open(obj.Data);
+                    }
+                    else {
+                        $("#loadingModal").modal("hide");
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    alert(obj.responseText);
+                }
+            })
+        }
+
+        $scope.modify = function (data) {
+            window.location.href = "/rp/AddOrModifyUncatalogParts2?PART_NO=" + data;
+        }
+        
+
+        $scope.addNew = function () {
+            window.location.href = "/rp/AddOrModifyUncatalogParts";
+        }
+
+    });
+     
+    angular.bootstrap(document.getElementById("labelBody"), ['labelApp']);
+
+</script>
+ 
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+
+    });
+
+</script>

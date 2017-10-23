@@ -86,7 +86,6 @@ namespace CHubDBEntity
         public virtual DbSet<ITT_SHIPPING_D> ITT_SHIPPING_D { get; set; }
         public virtual DbSet<V_ITT_SHIPPING_SMRY> V_ITT_SHIPPING_SMRY { get; set; }
         public virtual DbSet<M_CALENDAR> M_CALENDAR { get; set; }
-        public virtual DbSet<V_SHIPPING_ALL_BASE> V_SHIPPING_ALL_BASE { get; set; }
         public virtual DbSet<ITT_TRAN_LOAD> ITT_TRAN_LOAD { get; set; }
         public virtual DbSet<ITT_EASY_QUERY_LOG> ITT_EASY_QUERY_LOG { get; set; }
         public virtual DbSet<M_INV> M_INV { get; set; }
@@ -122,5 +121,12 @@ namespace CHubDBEntity
         public virtual DbSet<RP_ORDTYP_MST> RP_ORDTYP_MST { get; set; }
         public virtual DbSet<RP_LABEL_TYPE> RP_LABEL_TYPE { get; set; }
         public virtual DbSet<GOMS_ASN_H> GOMS_ASN_H { get; set; }
+        public virtual DbSet<V_PLABEL_BY_LOD_PRINT> V_PLABEL_BY_LOD_PRINT { get; set; }
+        public virtual DbSet<RP_LABEL_TYPE2> RP_LABEL_TYPE2 { get; set; }
+        public virtual DbSet<V_PLABEL_BY_PART_PRINT> V_PLABEL_BY_PART_PRINT { get; set; }
+        public virtual DbSet<V_PLABEL_BY_ASN_PRINT> V_PLABEL_BY_ASN_PRINT { get; set; }
+        public virtual DbSet<V_PLABEL_BY_UNCATALOG_PRINT> V_PLABEL_BY_UNCATALOG_PRINT { get; set; }
+        public virtual DbSet<G_UNCATALOG_PART> G_UNCATALOG_PART { get; set; }
+        public virtual DbSet<V_SHIPPING_ALL_BASE> V_SHIPPING_ALL_BASE { get; set; }
     }
 }

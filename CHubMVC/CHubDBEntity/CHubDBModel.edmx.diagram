@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d7f6e9b31a6d43e79a67a386d41c7d55" Name="Diagram1" ZoomLevel="89">
+      <Diagram DiagramId="d7f6e9b31a6d43e79a67a386d41c7d55" Name="Diagram1" ZoomLevel="101">
         <EntityTypeShape EntityType="CHubDBModel.APP_CUST_ALIAS" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.APP_CUST_ALIAS_LINK" Width="1.5" PointX="8" PointY="4.625" IsExpanded="true" />
         <EntityTypeShape EntityType="CHubDBModel.APP_DURATION" Width="1.5" PointX="8" PointY="0.75" IsExpanded="true" />
@@ -95,7 +95,7 @@
         <AssociationConnector Association="CHubDBModel.SYS_C0013895" />
         <AssociationConnector Association="CHubDBModel.ITT_SHIPPING_D_R01" />
         <EntityTypeShape EntityType="CHubDBModel.M_CALENDAR" Width="1.5" PointX="23.375" PointY="9.75" />
-        <EntityTypeShape EntityType="CHubDBModel.V_SHIPPING_ALL_BASE" Width="1.5" PointX="26.375" PointY="17.75" />
+		<EntityTypeShape EntityType="CHubDBModel.V_SHIPPING_ALL_BASE" Width="1.5" PointX="26.375" PointY="17.75" />
         <EntityTypeShape EntityType="CHubDBModel.ITT_TRAN_LOAD" Width="1.5" PointX="17" PointY="26.25" />
         <AssociationConnector Association="CHubDBModel.ITT_TRAN_LOAD_R01" />
         <AssociationConnector Association="CHubDBModel.ITT_TRAN_LOAD_R02" />
@@ -151,6 +151,12 @@
         <AssociationConnector Association="CHubDBModel.APP_USERS_R02" />
         <EntityTypeShape EntityType="CHubDBModel.RP_LABEL_TYPE" Width="1.5" PointX="10.375" PointY="33.75" />
         <EntityTypeShape EntityType="CHubDBModel.GOMS_ASN_H" Width="1.5" PointX="21.375" PointY="33.75" />
+        <EntityTypeShape EntityType="CHubDBModel.V_PLABEL_BY_LOD_PRINT" Width="1.5" PointX="23.375" PointY="33.75" />
+        <EntityTypeShape EntityType="CHubDBModel.RP_LABEL_TYPE2" Width="1.5" PointX="25.375" PointY="33.75" />
+        <EntityTypeShape EntityType="CHubDBModel.V_PLABEL_BY_PART_PRINT" Width="1.5" PointX="3.375" PointY="34.75" />
+        <EntityTypeShape EntityType="CHubDBModel.V_PLABEL_BY_ASN_PRINT" Width="1.5" PointX="35.375" PointY="8.75" />
+        <EntityTypeShape EntityType="CHubDBModel.V_PLABEL_BY_UNCATALOG_PRINT" Width="1.5" PointX="18.375" PointY="35.75" />
+        <EntityTypeShape EntityType="CHubDBModel.G_UNCATALOG_PART" Width="1.5" PointX="35.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

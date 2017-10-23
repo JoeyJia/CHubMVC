@@ -1,0 +1,205 @@
+﻿@{
+    ViewBag.Title = "Track Num Query";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" id="trackNumBody" ng-app="trackNumApp" ng-controller="trackNumCtrl">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:silver"><b>New Modify UnCatalog Part</b></div>
+        <form class="form-horizontal" id="searchForm">
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtPART_NO" class="col-sm-1 control-label">Part No:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtPART_NO" ng-model="PART_NO" placeholder="Part No" readonly ="readonly" />
+                    </div>
+
+                    <label for="txtPRINT_PART_NO" class="col-sm-1 control-label">Print Part No:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtPRINT_PART_NO" ng-model="PRINT_PART_NO" placeholder="Print Part No" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtDESCRIPTION" class="col-sm-1 control-label">英文描述:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtDESCRIPTION" ng-model="DESCRIPTION" placeholder="英文描述" />
+                    </div>
+                    <label for="txtDESC_CN" class="col-sm-1 control-label">中文描述:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtDESC_CN" ng-model="DESC_CN" placeholder="中文描述" />
+                    </div> 
+                    <label for="txtCOUNTRY_OF_ORIGIN" class="col-sm-2 control-label">产地(二位国家码):</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control inpu-sm" id="txtCOUNTRY_OF_ORIGIN" ng-model="COUNTRY_OF_ORIGIN" placeholder="产地(二位国家码)" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtPART_WEIGHT" class="col-sm-1 control-label">重量(KG):</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtPART_WEIGHT" ng-model="PART_WEIGHT" placeholder="重量(KG)" />
+                    </div>
+                    <label for="txtQTY_IN_CARTON" class="col-sm-1 control-label">MOQ:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtQTY_IN_CARTON" ng-model="QTY_IN_CARTON" placeholder="MOQ" />
+                    </div>
+                    <label for="txtUNIT_MEAS" class="col-sm-2 control-label">UOM:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtUNIT_MEAS" ng-model="UNIT_MEAS" placeholder="UOM" />
+                    </div>
+                </div>                 
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtPART_LENGTH" class="col-sm-1 control-label">长：</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtPART_LENGTH" ng-model="PART_LENGTH" placeholder="长" />
+                    </div>
+                    <label for="txtPART_WIDTH" class="col-sm-1 control-label">宽：</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtPART_WIDTH" ng-model="PART_WIDTH" placeholder="宽" />
+                    </div>
+                    <label for="txtPART_HEIGHT" class="col-sm-2 control-label">高：</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtPART_HEIGHT" ng-model="PART_HEIGHT" placeholder="高" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtNOTE_TEXT" class="col-sm-1 control-label">NOTE:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtNOTE_TEXT" ng-model="NOTE_TEXT" placeholder="NOTE" />
+                    </div>
+                </div>                
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-offset-4">
+                        <button class="btn btn-primary btn-sm" ng-click="querySave()">SAVE</button>
+                        <button class="btn btn-primary btn-sm" style="margin-left:80px;" ng-click="queryCancel()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@Html.Partial("_LoadingModal")
+
+
+<script>
+
+    angular.module('trackNumApp', []).controller('trackNumCtrl', function ($scope, $http) {
+        $scope.PART_NO = "";
+        $scope.PRINT_PART_NO = "";
+        $scope.DESCRIPTION = "";
+        $scope.DESC_CN = "";
+        $scope.COUNTRY_OF_ORIGIN = "";
+        $scope.PART_WEIGHT = "";
+        $scope.QTY_IN_CARTON = "";
+        $scope.UNIT_MEAS = "";
+        $scope.PART_LENGTH = "";
+        $scope.PART_WIDTH = "";
+        $scope.PART_HEIGHT = "";
+        $scope.NOTE_TEXT = "";
+
+        $scope.item = {};
+
+
+        $http.post("/rp/GetuUncatalogByPART_NO", null, null).then(
+            function (obj) {
+                if (obj.data.Success) {
+                    $scope.PART_NO = obj.data.Data.PART_NO;
+                    $scope.PRINT_PART_NO = obj.data.Data.PRINT_PART_NO
+                    $scope.DESCRIPTION = obj.data.Data.DESCRIPTION
+                    $scope.DESC_CN = obj.data.Data.DESC_CN
+                    $scope.COUNTRY_OF_ORIGIN = obj.data.Data.COUNTRY_OF_ORIGIN
+                    $scope.PART_WEIGHT = obj.data.Data.PART_WEIGHT
+                    $scope.QTY_IN_CARTON = obj.data.Data.QTY_IN_CARTON
+                    $scope.UNIT_MEAS = obj.data.Data.UNIT_MEAS
+                    $scope.PART_LENGTH = obj.data.Data.PART_LENGTH
+                    $scope.PART_WIDTH = obj.data.Data.PART_WIDTH
+                    $scope.PART_HEIGHT = obj.data.Data.PART_HEIGHT
+                    $scope.NOTE_TEXT = obj.data.Data.NOTE_TEXT
+                }
+                else
+                    alert(obj.data.Msg)
+            },
+             function (resp) {
+                 alert("Fail!");
+             }
+        );
+
+
+
+        $scope.queryCancel = function () {
+            window.location.href = "/rp/label2";
+        }
+
+        $scope.querySave = function () {
+            if ($scope.PART_NO == "")
+            {
+                alert("No PART_NO Input");
+                return;
+            }
+            if ($scope.PRINT_PART_NO == "")
+            {
+                alert("No PRINT_PART_NO Input");
+                return;
+            }
+            $scope.item.PART_NO = $scope.PART_NO;
+            $scope.item.PRINT_PART_NO = $scope.PRINT_PART_NO;
+            $scope.item.DESCRIPTION = $scope.DESCRIPTION;
+            $scope.item.DESC_CN = $scope.DESC_CN;
+            $scope.item.COUNTRY_OF_ORIGIN = $scope.COUNTRY_OF_ORIGIN;
+            $scope.item.PART_WEIGHT = $scope.PART_WEIGHT;
+            $scope.item.QTY_IN_CARTON = $scope.QTY_IN_CARTON;
+            $scope.item.UNIT_MEAS = $scope.UNIT_MEAS;
+            $scope.item.PART_LENGTH = $scope.PART_LENGTH;
+            $scope.item.PART_WIDTH = $scope.PART_WIDTH;
+            $scope.item.PART_HEIGHT = $scope.PART_HEIGHT;
+            $scope.item.NOTE_TEXT = $scope.NOTE_TEXT;
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: "/rp/ModifyUncatalogParts",
+                data: JSON.stringify({
+                    arg: $scope.item
+                }),
+                type: "post",
+                async: false,
+                contentType: 'application/json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#loadingModal").modal("hide");
+                        alert(obj.Data);
+                        window.history.go(-1);
+                        //$scope.result = obj.Data;
+                    }
+                    else {
+                        $("#loadingModal").modal("hide");
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to Query");
+                }
+            });
+        }
+
+
+    });
+    //manual load app
+    angular.bootstrap(document.getElementById("trackNumBody"), ['trackNumApp']);
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#imgDiag").css("margin-top", "300px");
+    });
+</script>

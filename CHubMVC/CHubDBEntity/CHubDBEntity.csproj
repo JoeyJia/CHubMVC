@@ -181,6 +181,9 @@
     <Compile Include="G_PART_SUPERSESSION_ALL.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="G_UNCATALOG_PART.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ITT_CUST_LOAD.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
@@ -257,6 +260,9 @@
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RP_LABEL_TYPE.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RP_LABEL_TYPE2.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RP_ORDTYP_MST.cs">
@@ -371,6 +377,18 @@
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_O_DOWNLOAD_HDR.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_PLABEL_BY_ASN_PRINT.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_PLABEL_BY_LOD_PRINT.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_PLABEL_BY_PART_PRINT.cs">
+      <DependentUpon>CHubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_PLABEL_BY_UNCATALOG_PRINT.cs">
       <DependentUpon>CHubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_SHIPPING_ALL_BASE.cs">

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ThoughtWorks.QRCode;
+using ThoughtWorks.QRCode.Codec;
 
 namespace CHubCommon.PDFHelper
 {
@@ -94,6 +96,20 @@ namespace CHubCommon.PDFHelper
             //bm.Save(context.Response.OutputStream, System.Drawing.Imaging.ImageFormat.Gif);
 
 
+            return Image.GetInstance(img, System.Drawing.Imaging.ImageFormat.Gif);
+        }
+
+        /// <summary>
+        /// GET2D
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public Image QRCodeEncoderUtil(string source)
+        {
+            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
+            qrCodeEncoder.QRCodeVersion = 0;
+            
+            System.Drawing.Bitmap img = qrCodeEncoder.Encode(source, Encoding.UTF8);//指定utf-8编码， 支持中文  
             return Image.GetInstance(img, System.Drawing.Imaging.ImageFormat.Gif);
         }
 
