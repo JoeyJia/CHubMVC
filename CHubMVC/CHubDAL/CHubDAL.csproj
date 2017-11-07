@@ -66,6 +66,7 @@
     <Compile Include="EW_SCRIPT_DAL.cs" />
     <Compile Include="EW_MESSAGE_ATTACH_DAL.cs" />
     <Compile Include="EW_LOG_DAL.cs" />
+    <Compile Include="G_KITS_DAL.cs" />
     <Compile Include="G_OESALES_CATALOG_DAL.cs" />
     <Compile Include="G_UNCATALOG_PART_DAL.cs" />
     <Compile Include="ITT_CUST_LOAD_DAL.cs" />
@@ -80,8 +81,11 @@
     <Compile Include="APP_WH_DAL.cs" />
     <Compile Include="GOMS_ASN_H_DAL.cs" />
     <Compile Include="RP_LABEL_TYPE2_DAL.cs" />
+    <Compile Include="TC_HSCODE_MST_DAL.cs" />
+    <Compile Include="TMS_ADR_AUTO_CORRECT_DAL.cs" />
     <Compile Include="V_INQ_TRACKNUM_DAL.cs" />
     <Compile Include="V_PLABEL_BY_ASN_PRINT_DAL.cs" />
+    <Compile Include="V_PLABEL_BY_KITS_PRINT_DAL.cs" />
     <Compile Include="V_PLABEL_BY_LOD_PRINT_DAL.cs" />
     <Compile Include="V_PLABEL_BY_PART_PRINT_DAL.cs" />
     <Compile Include="V_PLABEL_BY_UNCATALOG_PRINT_DAL.cs" />

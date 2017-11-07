@@ -393,6 +393,10 @@
     <Content Include="Views\RP\TrackNum.cshtml" />
     <Content Include="Views\RP\Dock.cshtml" />
     <Content Include="Views\RP\AddOrModifyUncatalogParts.cshtml" />
+    <Content Include="Views\ITT\ADRCRT.cshtml" />
+    <Content Include="Views\RP\ADRCRT.cshtml" />
+    <Content Include="Views\RP\HSCODE.cshtml" />
+    <Content Include="Views\TC\HSCODE.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

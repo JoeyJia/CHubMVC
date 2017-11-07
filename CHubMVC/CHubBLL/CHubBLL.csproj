@@ -68,10 +68,14 @@
   <ItemGroup>
     <Compile Include="APP_WH_BLL.cs" />
     <Compile Include="GOMS_ASN_H_BLL.cs" />
+    <Compile Include="G_KITS_BLL.cs" />
     <Compile Include="G_UNCATALOG_PART_BLL.cs" />
     <Compile Include="RP_LABEL_TYPE2_BLL.cs" />
+    <Compile Include="TC_HSCODE_MST_BLL.cs" />
+    <Compile Include="TMS_ADR_AUTO_CORRECT_BLL.cs" />
     <Compile Include="V_INQ_TRACKNUM_BLL.cs" />
     <Compile Include="V_PLABEL_BY_ASN_PRINT_BLL.cs" />
+    <Compile Include="V_PLABEL_BY_KITS_PRINT_BLL.cs" />
     <Compile Include="V_PLABEL_BY_LOD_PRINT_BLL.cs" />
     <Compile Include="V_PLABEL_BY_PART_PRINT_BLL.cs" />
     <Compile Include="V_PLABEL_BY_UNCATALOG_PRINT_BLL.cs" />

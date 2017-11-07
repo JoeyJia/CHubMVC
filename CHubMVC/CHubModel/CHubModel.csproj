@@ -67,6 +67,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TreeNode.cs" />
     <Compile Include="ExtensionModel\WayBillPageData.cs" />
+    <Compile Include="WebArg\GKITSArg.cs" />
     <Compile Include="WebArg\LabelPrintArg.cs" />
     <Compile Include="WebArg\LabelPrintModel.cs" />
     <Compile Include="WebArg\OrderLineBatchCheckArg.cs" />
@@ -74,6 +75,9 @@
     <Compile Include="WebArg\OrderLineItem.cs" />
     <Compile Include="WebArg\OrderLinesSaveArg.cs" />
     <Compile Include="WebArg\OrderSaveArg.cs" />
+    <Compile Include="WebArg\PlabelByKITSPrintArg.cs" />
+    <Compile Include="WebArg\TCHSCODEMSTArg.cs" />
+    <Compile Include="WebArg\TmsAdrAutoCorrectArg.cs" />
     <Compile Include="WebArg\TrackNumQueryArg.cs" />
     <Compile Include="WebArg\UncatalogPartsArg.cs" />
   </ItemGroup>
