@@ -128,5 +128,10 @@ namespace CHubDBEntity
         public virtual DbSet<V_PLABEL_BY_UNCATALOG_PRINT> V_PLABEL_BY_UNCATALOG_PRINT { get; set; }
         public virtual DbSet<G_UNCATALOG_PART> G_UNCATALOG_PART { get; set; }
         public virtual DbSet<V_SHIPPING_ALL_BASE> V_SHIPPING_ALL_BASE { get; set; }
+        public virtual DbSet<TC_HSCODE_MST> TC_HSCODE_MST { get; set; }
+        public virtual DbSet<TC_HSCODE_AUDIT> TC_HSCODE_AUDIT { get; set; }
+        public virtual DbSet<TMS_ADR_AUTO_CORRECT> TMS_ADR_AUTO_CORRECT { get; set; }
+        public virtual DbSet<V_PLABEL_BY_KITS_PRINT> V_PLABEL_BY_KITS_PRINT { get; set; }
+        public virtual DbSet<G_KITS> G_KITS { get; set; }
     }
 }
