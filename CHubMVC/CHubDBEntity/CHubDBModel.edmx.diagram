@@ -157,6 +157,13 @@
         <EntityTypeShape EntityType="CHubDBModel.V_PLABEL_BY_ASN_PRINT" Width="1.5" PointX="35.375" PointY="8.75" />
         <EntityTypeShape EntityType="CHubDBModel.V_PLABEL_BY_UNCATALOG_PRINT" Width="1.5" PointX="18.375" PointY="35.75" />
         <EntityTypeShape EntityType="CHubDBModel.G_UNCATALOG_PART" Width="1.5" PointX="35.375" PointY="0.75" />
+        <EntityTypeShape EntityType="CHubDBModel.TC_HSCODE_MST" Width="1.5" PointX="24" PointY="65.75" />
+        <EntityTypeShape EntityType="CHubDBModel.TC_HSCODE_AUDIT" Width="1.5" PointX="27.375" PointY="35.75" />
+        <AssociationConnector Association="CHubDBModel.TC_HSCODE_MST_R01" />
+        <EntityTypeShape EntityType="CHubDBModel.TMS_ADR_AUTO_CORRECT" Width="1.5" PointX="32.375" PointY="35.75" />
+        <EntityTypeShape EntityType="CHubDBModel.V_PLABEL_BY_KITS_PRINT" Width="1.5" PointX="12.375" PointY="36.75" />
+        <EntityTypeShape EntityType="CHubDBModel.G_KITS" Width="2.25" PointX="37.625" PointY="1.25" />
+        <AssociationConnector Association="CHubDBModel.G_KITS_R01" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
