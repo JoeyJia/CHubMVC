@@ -12,7 +12,7 @@ namespace CHubDBEntity
     using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
-
+    
     public partial class TC_PART_CATEGORY
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,6 +21,7 @@ namespace CHubDBEntity
             this.TC_PART_CATEGORY_STG = new HashSet<TC_PART_CATEGORY_STG>();
             this.M_PART = new HashSet<M_PART>();
             this.M_PART1 = new HashSet<M_PART>();
+            this.TC_HSCODE_MST = new HashSet<TC_HSCODE_MST>();
         }
     
         public string TC_CATEGORY_ID { get; set; }
@@ -28,7 +29,7 @@ namespace CHubDBEntity
         public string CATEGORY_NOTE { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public string TC_GROUP { get; set; }
-    
+
         [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TC_PART_CATEGORY_STG> TC_PART_CATEGORY_STG { get; set; }
@@ -38,5 +39,8 @@ namespace CHubDBEntity
         [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<M_PART> M_PART1 { get; set; }
+        [JsonIgnore]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TC_HSCODE_MST> TC_HSCODE_MST { get; set; }
     }
 }
