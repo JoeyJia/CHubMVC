@@ -12,7 +12,7 @@ namespace CHubDBEntity
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
-
+    
     public partial class RP_PRINTER
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -27,7 +27,11 @@ namespace CHubDBEntity
         public string PRINTER_NAME { get; set; }
         public string PRINTER_DESC { get; set; }
         public string ACTIVEIND { get; set; }
-    
+        public string IP_ADDR { get; set; }
+        public string SITE_NAME { get; set; }
+        public string PAPER_ID { get; set; }
+        public string LABEL_CODE { get; set; }
+
         [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<APP_WH> APP_WH { get; set; }
@@ -37,5 +41,7 @@ namespace CHubDBEntity
         [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<APP_USERS> APP_USERS { get; set; }
+        public virtual APP_SITES APP_SITES { get; set; }
+        public virtual RP_LABEL_TYPE2 RP_LABEL_TYPE2 { get; set; }
     }
 }
