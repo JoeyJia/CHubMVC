@@ -43,5 +43,6 @@ namespace CHubDBEntity
         public virtual ICollection<APP_USERS> APP_USERS { get; set; }
         public virtual APP_SITES APP_SITES { get; set; }
         public virtual RP_LABEL_TYPE2 RP_LABEL_TYPE2 { get; set; }
+        public virtual RP_LABEL_PAPER_TYPE RP_LABEL_PAPER_TYPE { get; set; }
     }
 }
