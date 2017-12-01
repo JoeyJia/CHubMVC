@@ -22,5 +22,6 @@ namespace CHubDBEntity
         public System.DateTime BEGIN_DATE { get; set; }
         public Nullable<System.DateTime> END_DATE { get; set; }
         public Nullable<System.DateTime> RECORD_DATE { get; set; }
+        public string PRINT_PART_NO { get; set; }
     }
 }
