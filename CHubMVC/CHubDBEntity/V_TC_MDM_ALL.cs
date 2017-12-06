@@ -40,5 +40,6 @@ namespace CHubDBEntity
         public string FLEX3 { get; set; }
         public System.DateTime REMOTE_CREATE_DATE { get; set; }
         public Nullable<System.DateTime> RECORD_DATE { get; set; }
+        public string PRINT_PART_NO { get; set; }
     }
 }
