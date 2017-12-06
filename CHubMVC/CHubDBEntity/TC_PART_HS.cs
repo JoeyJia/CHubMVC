@@ -41,5 +41,6 @@ namespace CHubDBEntity
         public string UPDATED_BY { get; set; }
     
         public virtual M_PART M_PART { get; set; }
+        public virtual TC_HSCODE_MST TC_HSCODE_MST { get; set; }
     }
 }
