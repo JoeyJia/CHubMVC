@@ -91,5 +91,7 @@ namespace CHubDBEntity
         public Nullable<decimal> RATIO_DO_RELEASE { get; set; }
         public Nullable<decimal> RATIO_DECLARE_ONTIME { get; set; }
         public Nullable<decimal> RATIO_AVL_ONTIME { get; set; }
+        public string NOTE { get; set; }
+        public Nullable<System.DateTime> DOCK_DATE { get; set; }
     }
 }
