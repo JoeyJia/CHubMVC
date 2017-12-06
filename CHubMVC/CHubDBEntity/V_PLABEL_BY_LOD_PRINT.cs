@@ -170,5 +170,6 @@ namespace CHubDBEntity
         public string LG_PARTNO { get; set; }
         public string YT_PARTNO { get; set; }
         public string VID { get; set; }
+        public string NOTE { get; set; }
     }
 }
