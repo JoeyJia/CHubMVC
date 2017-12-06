@@ -40,5 +40,6 @@ namespace CHubDBEntity
         public string FLEX2 { get; set; }
         public string FLEX3 { get; set; }
         public Nullable<System.DateTime> REMOTE_CREATE_DATE { get; set; }
+        public string REFERRENCE { get; set; }
     }
 }
