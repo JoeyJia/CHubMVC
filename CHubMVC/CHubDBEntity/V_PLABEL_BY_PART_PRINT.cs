@@ -158,5 +158,6 @@ namespace CHubDBEntity
         public Nullable<decimal> S24 { get; set; }
         public string LG_PARTNO { get; set; }
         public string YT_PARTNO { get; set; }
+        public string NOTE { get; set; }
     }
 }
