@@ -30,6 +30,9 @@ namespace CHubDBEntity
         public string URL { get; set; }
         public Nullable<System.DateTime> CREATION_DATE { get; set; }
         public string PUBLICIND { get; set; }
+        public string MOBILE { get; set; }
+        public string ICON { get; set; }
+        public string ICON_DESC { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<APP_PAGE_ROLE_LINK> APP_PAGE_ROLE_LINK { get; set; }
