@@ -14,6 +14,14 @@ namespace CHubDBEntity
     
     public partial class RP_LABEL_TYPE2
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public RP_LABEL_TYPE2()
+        {
+            this.RP_PRINTER = new HashSet<RP_PRINTER>();
+            this.RP_LABEL_PAPER_TYPE = new HashSet<RP_LABEL_PAPER_TYPE>();
+            this.M_ADRNAM_MST = new HashSet<M_ADRNAM_MST>();
+        }
+    
         public string LABEL_CODE { get; set; }
         public string LABEL_DESC { get; set; }
         public string ACTIVEIND { get; set; }
@@ -140,5 +148,12 @@ namespace CHubDBEntity
         public Nullable<decimal> S23 { get; set; }
         public Nullable<decimal> S24 { get; set; }
         public string BOM_FLAG { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RP_PRINTER> RP_PRINTER { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RP_LABEL_PAPER_TYPE> RP_LABEL_PAPER_TYPE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<M_ADRNAM_MST> M_ADRNAM_MST { get; set; }
     }
 }
