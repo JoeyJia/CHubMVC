@@ -16,5 +16,6 @@ namespace CHubDBEntity
     {
         public string WEL_MSG { get; set; }
         public Nullable<decimal> MSG_SEQ { get; set; }
+        public string MOBILE_MSG { get; set; }
     }
 }
