@@ -24,5 +24,8 @@ namespace CHubDBEntity
         public string DESCRIPTION { get; set; }
         public string PUBLICIND { get; set; }
         public string VERION { get; set; }
+        public string MOBILE { get; set; }
+        public string ICON { get; set; }
+        public string ICON_DESC { get; set; }
     }
 }
