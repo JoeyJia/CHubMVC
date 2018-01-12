@@ -39,6 +39,7 @@ namespace CHubDBEntity
         public Nullable<System.DateTime> LAST_LOGIN { get; set; }
         public string DEF_WH_ID { get; set; }
         public string PRINTER_ID { get; set; }
+        public string QA_OB_SIGNER { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<APP_RECENT_PAGES> APP_RECENT_PAGES { get; set; }
