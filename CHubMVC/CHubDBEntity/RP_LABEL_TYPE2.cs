@@ -148,6 +148,7 @@ namespace CHubDBEntity
         public Nullable<decimal> S23 { get; set; }
         public Nullable<decimal> S24 { get; set; }
         public string BOM_FLAG { get; set; }
+        public Nullable<decimal> SIZE_2D { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RP_PRINTER> RP_PRINTER { get; set; }
