@@ -27,6 +27,7 @@ namespace CHubDBEntity
         public string NOTE_TEXT { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> LOAD_DATE { get; set; }
+        public Nullable<System.DateTime> RECORD_DATE { get; set; }
     
         public virtual G_UNCATALOG_PART G_UNCATALOG_PART { get; set; }
     }
