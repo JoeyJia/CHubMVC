@@ -29,8 +29,6 @@ namespace CHubDBEntity
         public string ACTIVEIND { get; set; }
         public string IP_ADDR { get; set; }
         public string SITE_NAME { get; set; }
-        public string PAPER_ID { get; set; }
-        public string LABEL_CODE { get; set; }
 
         [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
