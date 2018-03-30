@@ -14,6 +14,8 @@ namespace CHubDBEntity
     
     public partial class V_PLABEL_BY_LOD_PRINT
     {
+        public string VID { get; set; }
+        public string NOTE { get; set; }
         public string WH_ID { get; set; }
         public string SHIP_ID { get; set; }
         public string LODNUM { get; set; }
@@ -25,6 +27,7 @@ namespace CHubDBEntity
         public string ORGCOD { get; set; }
         public string PRTNUM { get; set; }
         public Nullable<decimal> UNTQTY { get; set; }
+        public string VC_CPONUM { get; set; }
         public string COUNTRY_DESC_CN { get; set; }
         public string PART_NO { get; set; }
         public string DESCRIPTION { get; set; }
@@ -167,9 +170,8 @@ namespace CHubDBEntity
         public Nullable<decimal> S22 { get; set; }
         public Nullable<decimal> S23 { get; set; }
         public Nullable<decimal> S24 { get; set; }
+        public Nullable<decimal> SIZE_2D { get; set; }
         public string LG_PARTNO { get; set; }
         public string YT_PARTNO { get; set; }
-        public string VID { get; set; }
-        public string NOTE { get; set; }
     }
 }
