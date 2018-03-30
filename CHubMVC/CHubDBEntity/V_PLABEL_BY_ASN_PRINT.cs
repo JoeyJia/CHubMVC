@@ -14,6 +14,8 @@ namespace CHubDBEntity
     
     public partial class V_PLABEL_BY_ASN_PRINT
     {
+        public string VID { get; set; }
+        public string NOTE { get; set; }
         public string WAREHOUSE { get; set; }
         public string ASN_NO { get; set; }
         public string BUY_FROM_COMPANY { get; set; }
@@ -165,9 +167,8 @@ namespace CHubDBEntity
         public Nullable<decimal> S22 { get; set; }
         public Nullable<decimal> S23 { get; set; }
         public Nullable<decimal> S24 { get; set; }
+        public Nullable<decimal> SIZE_2D { get; set; }
         public string LG_PARTNO { get; set; }
         public string YT_PARTNO { get; set; }
-        public string VID { get; set; }
-        public string NOTE { get; set; }
     }
 }
