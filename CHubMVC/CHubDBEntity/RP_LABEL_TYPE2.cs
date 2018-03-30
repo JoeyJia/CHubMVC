@@ -19,7 +19,7 @@ namespace CHubDBEntity
         {
             this.RP_PRINTER = new HashSet<RP_PRINTER>();
             this.RP_LABEL_PAPER_TYPE = new HashSet<RP_LABEL_PAPER_TYPE>();
-            this.M_ADRNAM_MST = new HashSet<M_ADRNAM_MST>();
+            this.M_ADRNAM_MST = new HashSet<M_ADRNAM_MST>();  
         }
     
         public string LABEL_CODE { get; set; }
@@ -149,7 +149,8 @@ namespace CHubDBEntity
         public Nullable<decimal> S24 { get; set; }
         public string BOM_FLAG { get; set; }
         public Nullable<decimal> SIZE_2D { get; set; }
-    
+        public string BTW { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RP_PRINTER> RP_PRINTER { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
