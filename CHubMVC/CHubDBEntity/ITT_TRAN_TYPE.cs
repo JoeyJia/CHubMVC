@@ -12,24 +12,30 @@ namespace CHubDBEntity
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
-
+    
     public partial class ITT_TRAN_TYPE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ITT_TRAN_TYPE()
         {
+            this.ITT_CARRIER_CODES = new HashSet<ITT_CARRIER_CODES>();
             this.ITT_SHIPPING_H = new HashSet<ITT_SHIPPING_H>();
             this.ITT_TRAN_LOAD = new HashSet<ITT_TRAN_LOAD>();
+            this.ITT_TRAN_PROCESS = new HashSet<ITT_TRAN_PROCESS>();
         }
     
         public string TRAN_TYPE { get; set; }
         public string TRAN_DESC { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ITT_CARRIER_CODES> ITT_CARRIER_CODES { get; set; }
         [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ITT_SHIPPING_H> ITT_SHIPPING_H { get; set; }
         [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ITT_TRAN_LOAD> ITT_TRAN_LOAD { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ITT_TRAN_PROCESS> ITT_TRAN_PROCESS { get; set; }
     }
 }
