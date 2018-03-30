@@ -173,5 +173,6 @@ namespace CHubDBEntity
         public Nullable<decimal> S22 { get; set; }
         public Nullable<decimal> S23 { get; set; }
         public Nullable<decimal> S24 { get; set; }
+        public Nullable<decimal> SIZE_2D { get; set; }
     }
 }
