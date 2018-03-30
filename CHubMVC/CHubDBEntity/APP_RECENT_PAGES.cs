@@ -18,7 +18,7 @@ namespace CHubDBEntity
         public string PAGE_NAME { get; set; }
         public System.DateTime LAST_ACTIVITY { get; set; }
         public string PAGE_URL { get; set; }
-    
+
         public virtual APP_PAGES APP_PAGES { get; set; }
         public virtual APP_USERS APP_USERS { get; set; }
     }
