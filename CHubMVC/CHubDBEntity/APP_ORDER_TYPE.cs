@@ -20,11 +20,11 @@ namespace CHubDBEntity
         {
             this.TS_OR_HEADER = new HashSet<TS_OR_HEADER>();
         }
-    
+
         public string ORDER_TYPE { get; set; }
         public string DESCRIPTION { get; set; }
         public string ACTIVEIND { get; set; }
-     
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [JsonIgnore]
         public virtual ICollection<TS_OR_HEADER> TS_OR_HEADER { get; set; }
