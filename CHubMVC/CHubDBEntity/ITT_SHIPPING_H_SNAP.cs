@@ -18,5 +18,7 @@ namespace CHubDBEntity
         public long SHIPMENT_NO { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public string TRAN_PROCESS_ID { get; set; }
+    
+        public virtual ITT_TRAN_PROCESS ITT_TRAN_PROCESS { get; set; }
     }
 }
