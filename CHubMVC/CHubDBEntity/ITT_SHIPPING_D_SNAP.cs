@@ -25,5 +25,7 @@ namespace CHubDBEntity
         public Nullable<decimal> S10_PORT_ARRIVAL_DAYS { get; set; }
         public Nullable<decimal> S20_DO_RELEASE_DAYS { get; set; }
         public Nullable<decimal> S30_BND_ARRIVAL_DAYS { get; set; }
+    
+        public virtual ITT_CUSTOM_PROCESS ITT_CUSTOM_PROCESS { get; set; }
     }
 }
