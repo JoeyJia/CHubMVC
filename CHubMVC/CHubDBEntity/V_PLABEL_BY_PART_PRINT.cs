@@ -14,6 +14,7 @@ namespace CHubDBEntity
     
     public partial class V_PLABEL_BY_PART_PRINT
     {
+        public string NOTE { get; set; }
         public string PART_NO { get; set; }
         public string DESCRIPTION { get; set; }
         public string DESC_CN { get; set; }
@@ -156,8 +157,8 @@ namespace CHubDBEntity
         public Nullable<decimal> S22 { get; set; }
         public Nullable<decimal> S23 { get; set; }
         public Nullable<decimal> S24 { get; set; }
+        public Nullable<decimal> SIZE_2D { get; set; }
         public string LG_PARTNO { get; set; }
         public string YT_PARTNO { get; set; }
-        public string NOTE { get; set; }
     }
 }
