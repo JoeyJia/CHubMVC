@@ -19,7 +19,7 @@ namespace CHubDBEntity
         {
             this.RP_PRINTER = new HashSet<RP_PRINTER>();
             this.RP_LABEL_PAPER_TYPE = new HashSet<RP_LABEL_PAPER_TYPE>();
-            this.M_ADRNAM_MST = new HashSet<M_ADRNAM_MST>();  
+            this.M_ADRNAM_MST = new HashSet<M_ADRNAM_MST>();
         }
     
         public string LABEL_CODE { get; set; }
