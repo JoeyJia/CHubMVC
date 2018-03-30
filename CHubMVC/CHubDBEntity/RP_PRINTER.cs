@@ -29,7 +29,7 @@ namespace CHubDBEntity
         public string ACTIVEIND { get; set; }
         public string IP_ADDR { get; set; }
         public string SITE_NAME { get; set; }
-
+    
         [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<APP_WH> APP_WH { get; set; }
