@@ -10,6 +10,7 @@ namespace CHubCommon
     public class CHubConstValues
     {
         public static string SessionUser = "AppUser";
+        public static string FirstName = "FIRST_NAME";
         public static string EmailFormat = "{0}@cummins.com";
         public static string DefaultOrderType = OrderTypeEnum.STOCK.ToString();
 

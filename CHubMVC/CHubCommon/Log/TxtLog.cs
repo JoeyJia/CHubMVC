@@ -15,10 +15,10 @@ namespace CHubCommon
 
         public TxtLog()
         {
-           
+
         }
 
-        public void log(string info,string fullPath)
+        public void log(string info, string fullPath)
         {
             try
             {
@@ -56,6 +56,15 @@ namespace CHubCommon
             {
                 directoryInfo.Create();
             }
+        }
+
+        public static void WriteLog(string log)
+        {
+            FileStream fs = new FileStream(@"C:\temp\bartenderLog.txt", FileMode.Append);
+            StreamWriter sw = new StreamWriter(fs, Encoding.UTF8);
+            sw.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + log);
+            sw.Close();
+            fs.Close();
         }
 
 

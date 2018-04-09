@@ -94,6 +94,7 @@
     <Compile Include="ClassConvert\ClassConvertTable.cs" />
     <Compile Include="ClassConvert\ManualClassConvert.cs" />
     <Compile Include="Code128Helper.cs" />
+    <Compile Include="Code39Helper.cs" />
     <Compile Include="Compare\PropertyCompare.cs" />
     <Compile Include="Date\DateHelper.cs" />
     <Compile Include="DomainAuth\DomainUserAuth.cs" />
@@ -101,12 +102,14 @@
     <Compile Include="ExcelUtility\ExcelHelper.cs" />
     <Compile Include="ExcelUtility\NPOIExcelHelper.cs" />
     <Compile Include="FontHelper\FontHelper.cs" />
+    <Compile Include="HttpPostHelper.cs" />
     <Compile Include="Log\LogHelper.cs" />
     <Compile Include="Log\TxtLog.cs" />
     <Compile Include="PDFHelper\CusPDFDocument.cs" />
     <Compile Include="PDFHelper\LabelEventHelper.cs" />
     <Compile Include="PDFHelper\PackPageEventHelper.cs" />
     <Compile Include="PDFHelper\LocalPageEventHelper.cs" />
+    <Compile Include="PDFHelper\PDFBase.cs" />
     <Compile Include="PDFHelper\PDFUtility.cs" />
     <Compile Include="Printer\Externs.cs" />
     <Compile Include="Printer\PrintHelper.cs" />

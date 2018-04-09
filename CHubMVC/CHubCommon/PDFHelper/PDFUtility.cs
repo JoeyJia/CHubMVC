@@ -90,7 +90,7 @@ namespace CHubCommon.PDFHelper
             code128.Code = source;
             if (height != null)
                 code128.BarHeight = height.Value;
-           
+
 
             System.Drawing.Bitmap img = new System.Drawing.Bitmap(code128.CreateDrawingImage(System.Drawing.Color.Black, System.Drawing.Color.White));
             //bm.Save(context.Response.OutputStream, System.Drawing.Imaging.ImageFormat.Gif);
@@ -98,6 +98,16 @@ namespace CHubCommon.PDFHelper
 
             return Image.GetInstance(img, System.Drawing.Imaging.ImageFormat.Gif);
         }
+
+        public Image GetCode39Img(string source, int? height)
+        {
+            Code39Helper code39 = new Code39Helper(!string.IsNullOrEmpty(source) ? source : "", false, 200, 400, false);
+            string codeValue = string.Empty;
+            System.Drawing.Bitmap img = code39.GenerateCodeImage(ref codeValue);
+
+            return Image.GetInstance(img, System.Drawing.Imaging.ImageFormat.Gif);
+        }
+
 
         /// <summary>
         /// GET2D
@@ -108,7 +118,7 @@ namespace CHubCommon.PDFHelper
         {
             QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
             qrCodeEncoder.QRCodeVersion = 0;
-            
+
             System.Drawing.Bitmap img = qrCodeEncoder.Encode(source, Encoding.UTF8);//指定utf-8编码， 支持中文  
             return Image.GetInstance(img, System.Drawing.Imaging.ImageFormat.Gif);
         }

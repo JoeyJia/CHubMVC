@@ -70,13 +70,57 @@ namespace CHubCommon
             /// </summary>
             lbprt,
             /// <summary>
+            /// /rp/label2
+            /// </summary>
+            lbprt2,
+            /// <summary>
             /// /rp/tracknum
             /// </summary>
             trackinq,
             /// <summary>
             /// /rp/dock
             /// </summary>
-            dockdte
+            dockdte,
+            /// <summary>
+            /// /rp/adrcrt
+            /// </summary>
+            adrcrt,
+            /// <summary>
+            /// /tc/hscode
+            /// </summary>
+            hscode,
+            /// <summary>
+            /// /ia/iacode
+            /// </summary>
+            iacode,
+            /// <summary>
+            /// /ia/iamap
+            /// </summary>
+            iamap,
+            /// <summary>
+            /// /ia/iascan
+            /// </summary>
+            iascan,
+            /// <summary>
+            /// /ia/custaddt
+            /// </summary>
+            custaddt,
+            /// <summary>
+            /// /ia/prtaddt
+            /// </summary>
+            prtaddt,
+            /// <summary>
+            /// /ia/iascantest
+            /// </summary>
+            iascantest,
+            /// <summary>
+            /// /ia/iainq
+            /// </summary>
+            iainq,
+            /// <summary>
+            /// /ia/iatoday
+            /// </summary>
+            iatoday
         }
 
         public enum OrderStatusEnum

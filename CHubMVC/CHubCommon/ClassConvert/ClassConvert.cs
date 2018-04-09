@@ -83,7 +83,7 @@ namespace CHubCommon
                 throw ex;
             }
         }
-
+       
 
         public static List<T> ConvertDT2List<T>(DataTable dt, bool hasSpecial = true) 
         {
