@@ -12,32 +12,21 @@ namespace CHubDAL
     public class V_INQ_TRACKNUM_DAL : BaseDAL
     {
         public V_INQ_TRACKNUM_DAL()
-            : base() { }
+            : base()
+        { }
 
         public V_INQ_TRACKNUM_DAL(CHubEntities db)
-            : base(db) { }
+            : base(db)
+        { }
 
 
         public List<TrackNumLevel1> GetTrackNumLevel1(TrackNumQueryArg arg)
         {
-            string sql = string.Format(@"select distinct  TRACK_TAB ,
-         TRACK_NUM,
-         SHIP_ID ,
-         WH_ID ,
-         SHPSTS_DESC ,
-         CARCOD ,
-         CARNAM_SHORT ,
-         ADRNAM ,
-         ADRLN1 ,
-         ADRLN2 ,
-         PHNNUM ,
-         LAST_NAME,
-         STGDTE ,
-         LODDTE,
-         ENTDTE
-         From V_INQ_TRACKNUM  
-         where WH_ID='{0}' ", arg.WHID);
+            string sql = string.Format(@"select distinct  TRACK_TAB ,TRACK_NUM, SHIP_ID ,WH_ID ,SHPSTS_DESC ,CARCOD ,CARNAM_SHORT ,ADRNAM ,ADRLN1 ,ADRLN2 ,PHNNUM ,
+                                        LAST_NAME,STGDTE ,LODDTE,ENTDTE From V_INQ_TRACKNUM  where  1=1");
 
+            if (!string.IsNullOrEmpty(arg.WHID))
+                sql += string.Format(" and WH_ID='{0}'", arg.WHID);
             if (!string.IsNullOrEmpty(arg.SalesOrdNum))
                 sql += string.Format(" and SALES_ORDNUM ='{0}' ", arg.SalesOrdNum);
             if (!string.IsNullOrEmpty(arg.VCCpoNum))
@@ -63,7 +52,7 @@ namespace CHubDAL
 
             var result = db.Database.SqlQuery<TrackNumLevel1>(sql);
 
-            return result.OrderByDescending(a=>a.LODDTE).ToList();
+            return result.OrderByDescending(a => a.LODDTE).ToList();
         }
 
         public List<TrackNumLevel2> GetTrackNumLevel2(string shipID, TrackNumQueryArg arg)
@@ -101,7 +90,7 @@ namespace CHubDAL
 
             var result = db.Database.SqlQuery<TrackNumLevel2>(sql);
 
-            return result.OrderByDescending(a=>a.LODNUM).ToList();
+            return result.OrderByDescending(a => a.LODNUM).ToList();
 
         }
 

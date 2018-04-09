@@ -11,18 +11,20 @@ namespace CHubDAL
     public class V_RP_PACK_H_BASE_DAL : BaseDAL
     {
         public V_RP_PACK_H_BASE_DAL()
-            : base() { }
+            : base()
+        { }
 
         public V_RP_PACK_H_BASE_DAL(CHubEntities db)
-            : base(db) { }
+            : base(db)
+        { }
 
-        public List<V_RP_PACK_H_BASE> GetPackList(string whID,string shipID,string custName,string address,bool staged,int range)
+        public List<V_RP_PACK_H_BASE> GetPackList(string whID, string shipID, string custName, string address, bool staged, int range)
         {
             string sql = string.Format(@"select * from V_RP_PACK_H_BASE 
 where WH_ID='{0}'", whID);
 
             if (!string.IsNullOrEmpty(shipID))
-                sql += string.Format(" and SHIP_ID='{0}' ",shipID);
+                sql += string.Format(" and SHIP_ID='{0}' ", shipID);
 
             if (!string.IsNullOrEmpty(custName))
                 sql += string.Format(" and ADRNAM like '%{0}%' ", custName);
@@ -32,12 +34,12 @@ where WH_ID='{0}'", whID);
             if (staged)
                 sql += string.Format(" and SHPSTS='S' ");
             else
-                sql += string.Format(" and floor(sysdate - STGDTE) <= {0}",range);
+                sql += string.Format(" and floor(sysdate - STGDTE) <= {0}", range);
 
 
             var result = db.Database.SqlQuery<V_RP_PACK_H_BASE>(sql);
-            return result.OrderBy(a => a.SHIP_ID).ThenBy(a=>a.LODNUM).ToList();
-            
+            return result.OrderBy(a => a.SHIP_ID).ThenBy(a => a.LODNUM).ToList();
+
         }
 
         public List<string> GetStagedPackList()
@@ -48,6 +50,37 @@ where WH_ID='{0}'", whID);
             return result.ToList();
 
         }
+
+        /// <summary>
+        /// first
+        /// </summary>
+        /// <param name="WHID"></param>
+        public void PreWorkRP_H(string WHID)
+        {
+            this.CheckCultureInfoForDate();
+            db.PRE_WORK_RP_H(WHID);
+        }
+
+        /// <summary>
+        /// second
+        /// </summary>
+        /// <param name="WHID"></param>
+        public void PreWorkRP_SMRY(string WHID)
+        {
+            this.CheckCultureInfoForDate();
+            db.PRE_WORK_RP_SMRY(WHID);
+        }
+
+        /// <summary>
+        /// last
+        /// </summary>
+        /// <param name="WHID"></param>
+        public void PreWorkRP_D(string WHID)
+        {
+            this.CheckCultureInfoForDate();
+            db.PRE_WORK_RP_D(WHID);
+        }
+
 
     }
 }

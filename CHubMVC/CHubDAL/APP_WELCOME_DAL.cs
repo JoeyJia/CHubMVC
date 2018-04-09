@@ -10,14 +10,18 @@ namespace CHubDAL
     public class APP_WELCOME_DAL : BaseDAL
     {
         public APP_WELCOME_DAL()
-            : base() { }
+            : base()
+        { }
 
         public APP_WELCOME_DAL(CHubEntities db)
-            : base(db) { }
+            : base(db)
+        { }
 
         public List<APP_WELCOME> GetAppWelcome()
         {
-            return db.APP_WELCOME.OrderBy(a=>a.MSG_SEQ).ToList();
+            string sql = string.Format(@"select * from APP_WELCOME order by MSG_SEQ");
+            var result = db.Database.SqlQuery<APP_WELCOME>(sql).ToList();
+            return result; //db.APP_WELCOME.OrderBy(a=>a.MSG_SEQ).ToList();
         }
 
 

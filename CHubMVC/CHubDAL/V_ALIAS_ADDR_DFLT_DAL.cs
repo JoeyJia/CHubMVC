@@ -11,15 +11,22 @@ namespace CHubDAL
     public class V_ALIAS_ADDR_DFLT_DAL : BaseDAL
     {
         public V_ALIAS_ADDR_DFLT_DAL()
-            : base() { }
+            : base()
+        { }
 
         public V_ALIAS_ADDR_DFLT_DAL(CHubEntities db)
-            : base(db) { }
+            : base(db)
+        { }
 
 
         public List<V_ALIAS_ADDR_DFLT> GetAliasAddrDFLT(string aliasName)
         {
-            return db.V_ALIAS_ADDR_DFLT.Where(a => a.ALIAS_NAME == aliasName 
+            //string sql = string.Format(@"select * from V_ALIAS_ADDR_DFLT where ALIAS_NAME ='{0}'
+            //                        and ACTIVEIND ='{1}'", aliasName, CHubConstValues.IndY);
+            //IEnumerable<V_ALIAS_ADDR_DFLT> result = db.Database.SqlQuery<V_ALIAS_ADDR_DFLT>(sql).AsEnumerable();
+
+            //return result.OrderBy(a => a.DAYS).ToList();
+            return db.V_ALIAS_ADDR_DFLT.Where(a => a.ALIAS_NAME == aliasName
                                                   && a.ACTIVEIND == CHubConstValues.IndY).OrderBy(a => a.DAYS).ToList();
         }
 
@@ -31,7 +38,7 @@ namespace CHubDAL
                                                   && a.ACTIVEIND == CHubConstValues.IndY).OrderBy(a => a.DAYS).ToList();
         }
 
-        public V_ALIAS_ADDR_DFLT GetSpecifyAliasAddrDFLT(string aliasName,string sysID, string cusNo,int? bill2Location,int? ship2Location )
+        public V_ALIAS_ADDR_DFLT GetSpecifyAliasAddrDFLT(string aliasName, string sysID, string cusNo, int? bill2Location, int? ship2Location)
         {
             return db.V_ALIAS_ADDR_DFLT.FirstOrDefault(a => a.ALIAS_NAME == aliasName
             && a.SYSID == sysID

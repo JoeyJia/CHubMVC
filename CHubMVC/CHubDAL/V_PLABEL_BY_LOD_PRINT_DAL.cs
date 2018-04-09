@@ -8,7 +8,7 @@ using CHubCommon;
 
 namespace CHubDAL
 {
-    public class V_PLABEL_BY_LOD_PRINT_DAL:BaseDAL
+    public class V_PLABEL_BY_LOD_PRINT_DAL : BaseDAL
     {
         public V_PLABEL_BY_LOD_PRINT_DAL() : base()
         {
@@ -34,7 +34,7 @@ namespace CHubDAL
             }
             if (!string.IsNullOrEmpty(BoxNumber))
             {
-                sql += string.Format(" and LODNUM = '{0}'", BoxNumber);
+                sql += string.Format(" and LODNUM like '%{0}%'", BoxNumber);
             }
             if (!string.IsNullOrEmpty(PartNumber_RP))
             {
@@ -54,11 +54,11 @@ namespace CHubDAL
         public List<V_PLABEL_BY_LOD_PRINT> BatchGetLabelPrintData(List<string> VID, string LabelTYPE, string ShipmentNo, string BoxNumber, string PartNumber_RP, string PartNumber_GOMS)
         {
             string sql = string.Format(@"select * from V_PLABEL_BY_LOD_PRINT 
-                where VID in ({0}) and LABEL_CODE = '{1}'", VID.ToSqlInStr(),LabelTYPE);
+                where VID in ({0}) and LABEL_CODE = '{1}'", VID.ToSqlInStr(), LabelTYPE);
             if (!string.IsNullOrEmpty(ShipmentNo))
                 sql += string.Format(@" and SHIP_ID='{0}'", ShipmentNo);
             if (!string.IsNullOrEmpty(BoxNumber))
-                sql += string.Format(@" and LODNUM='{0}'", BoxNumber);
+                sql += string.Format(@" and LODNUM like '%{0}%'", BoxNumber);
             if (!string.IsNullOrEmpty(PartNumber_RP))
                 sql += string.Format(@" and PRINT_PART_NO = '{0}'", PartNumber_RP);
             if (!string.IsNullOrEmpty(PartNumber_GOMS))
@@ -72,6 +72,7 @@ namespace CHubDAL
 
         public string GetADRNAMEByShip_ID(string Ship_ID)
         {
+            this.CheckCultureInfoForDate();
             if (!string.IsNullOrEmpty(Ship_ID))
                 return db.V_PLABEL_BY_LOD_PRINT.FirstOrDefault(v => v.SHIP_ID == Ship_ID).ADRNAM;
             else
@@ -80,8 +81,14 @@ namespace CHubDAL
 
         public string GetADRNAMEByLODNUM(string LODNUM)
         {
+            this.CheckCultureInfoForDate();
             if (!string.IsNullOrEmpty(LODNUM))
-                return db.V_PLABEL_BY_LOD_PRINT.FirstOrDefault(v => v.LODNUM == LODNUM).ADRNAM;
+            {
+                //return db.V_PLABEL_BY_LOD_PRINT.FirstOrDefault(v => v.LODNUM == LODNUM).ADRNAM;
+                string sql = string.Format(@"select * from V_PLABEL_BY_LOD_PRINT where LODNUM like '%{0}%' and rownum =1", LODNUM);
+                var result = db.Database.SqlQuery<V_PLABEL_BY_LOD_PRINT>(sql).ToList();
+                return result.FirstOrDefault().ADRNAM;
+            }
             else
                 return "";
         }

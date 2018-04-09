@@ -29,5 +29,12 @@ namespace CHubDAL
             return result.ToList();
         }
 
+        public List<string> GetCIDList()
+        {
+            var result = (from c in db.TC_PART_CATEGORY
+                          select c.TC_CATEGORY_ID);
+            return result.ToList();
+        }
+
     }
 }

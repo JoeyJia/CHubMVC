@@ -107,9 +107,9 @@ namespace CHubDAL
 
         public decimal GetOrderSqeNextVal()
         {
-            List<decimal> nextVal = db.Database.SqlQuery<decimal>( "select ORDER_SEQ_NO.nextval from dual", string.Empty).ToList();
+            List<decimal> nextVal = db.Database.SqlQuery<decimal>("select ORDER_SEQ_NO.nextval from dual", string.Empty).ToList();
             decimal result = nextVal[0];
-            return result; 
+            return result;
         }
 
         public decimal GetCustLoadSqeNextVal()
@@ -132,7 +132,7 @@ namespace CHubDAL
             decimal result = nextVal[0];
             return result;
         }
-
+        
 
 
 

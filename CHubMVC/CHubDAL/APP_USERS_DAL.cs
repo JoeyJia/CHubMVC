@@ -11,14 +11,20 @@ namespace CHubDAL
     public class APP_USERS_DAL : BaseDAL
     {
         public APP_USERS_DAL()
-            : base() { }
+            : base()
+        { }
 
         public APP_USERS_DAL(CHubEntities db)
-            : base(db) { }
+            : base(db)
+        { }
 
         public APP_USERS GetAppUserByDomainName(string appUser)
         {
-            return db.APP_USERS.FirstOrDefault(a => a.APP_USER == appUser); 
+            //string sql = string.Format(@"select * from APP_USERS where APP_USER='{0}'", appUser);
+            //var result = db.Database.SqlQuery<APP_USERS>(sql).ToList();
+
+            var result = db.APP_USERS.FirstOrDefault(a => a.APP_USER == appUser);
+            return result; //db.APP_USERS.FirstOrDefault(a => a.APP_USER == appUser);
         }
 
         public bool AddAppUserWithRole(APP_USERS appUser)

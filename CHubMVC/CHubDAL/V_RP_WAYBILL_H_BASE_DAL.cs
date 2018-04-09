@@ -13,16 +13,18 @@ namespace CHubDAL
     public class V_RP_WAYBILL_H_BASE_DAL : BaseDAL
     {
         public V_RP_WAYBILL_H_BASE_DAL()
-            : base() { }
+            : base()
+        { }
 
         public V_RP_WAYBILL_H_BASE_DAL(CHubEntities db)
-            : base(db) { }
+            : base(db)
+        { }
 
-        public List<RPWayBillHLevel1> GetWayBillBaseList(string whID, string carCode, string custName, string Address, string shipmentNo, List<string> statusList,string printed)
+        public List<RPWayBillHLevel1> GetWayBillBaseList(string whID, string carCode, string custName, string Address, string shipmentNo, List<string> statusList, string printed)
         {
-            
+
             string sql = string.Format("select distinct ORDTYP_WB ,CARCOD,CARNAM,ADDR_COMBINED from V_RP_WAYBILL_H_BASE where WH_ID='{0}' ", whID);
-            
+
             if (!string.IsNullOrEmpty(carCode))
                 sql += string.Format(" and CARCOD='{0}'", carCode);
             if (!string.IsNullOrEmpty(custName))
@@ -33,16 +35,16 @@ namespace CHubDAL
                 sql += string.Format(" and SHIP_ID = '{0}'", shipmentNo);
 
             //if (statusList != null && statusList.Count != 0)
-                sql += string.Format(" and SHPSTS in ({0})", statusList.ToSqlInStr());
+            sql += string.Format(" and SHPSTS in ({0})", statusList.ToSqlInStr());
 
-            if(printed=="N")
+            if (printed == "N")
                 sql += string.Format(" and IHUB_PRINTED = '{0}'", printed);
 
             var result = db.Database.SqlQuery<RPWayBillHLevel1>(sql);
-            return result.OrderBy(a=>a.ORDTYP_WB).ThenBy(a=>a.CARCOD).ThenBy(a=>a.ADDR_COMBINED).ToList();
+            return result.OrderBy(a => a.ORDTYP_WB).ThenBy(a => a.CARCOD).ThenBy(a => a.ADDR_COMBINED).ToList();
         }
 
-        public List<RPWayBillHLevel2> GetWayBillDetailList(string whID,string carCode, string orderType,string addr, string shipmentNo, List<string> statusList, string printed)
+        public List<RPWayBillHLevel2> GetWayBillDetailList(string whID, string carCode, string orderType, string addr, string shipmentNo, List<string> statusList, string printed)
         {
             string sql = string.Format(@"select 
 h.TRACK_NUM_IHUB,
@@ -68,7 +70,7 @@ h.TRACK_NUM_IHUB,
   and h.carcod = '{0}'
   and h.ordtyp_wb = '{1}'
   and h.ADDR_COMBINED = '{2}'
-and h.WH_ID ='{3}' ", carCode,orderType,addr,whID);//and h.SHPSTS = 'S'
+and h.WH_ID ='{3}' ", carCode, orderType, addr, whID);//and h.SHPSTS = 'S'
 
             if (statusList != null && statusList.Count != 0)
                 sql += string.Format(" and h.SHPSTS in ({0})", statusList.ToSqlInStr());
@@ -83,6 +85,37 @@ and h.WH_ID ='{3}' ", carCode,orderType,addr,whID);//and h.SHPSTS = 'S'
             return result.ToList();
 
         }
+
+        /// <summary>
+        /// first
+        /// </summary>
+        /// <param name="WHID"></param>
+        public void PreWorkRP_H(string WHID)
+        {
+            this.CheckCultureInfoForDate();
+            db.PRE_WORK_RP_H(WHID);
+        }
+
+        /// <summary>
+        /// second
+        /// </summary>
+        /// <param name="WHID"></param>
+        public void PreWorkRP_SMRY(string WHID)
+        {
+            this.CheckCultureInfoForDate();
+            db.PRE_WORK_RP_SMRY(WHID);
+        }
+
+        /// <summary>
+        /// last
+        /// </summary>
+        /// <param name="WHID"></param>
+        public void PreWorkRP_D(string WHID)
+        {
+            this.CheckCultureInfoForDate();
+            db.PRE_WORK_RP_D(WHID);
+        }
+
 
     }
 }
