@@ -19,6 +19,7 @@ namespace CHubModel.WebArg
         public string PART_NO_ASN { get; set; }
         public string PRINT_PART_NO_UParts { get; set; }
         public string PART_NO_UParts { get; set; }
+        public string Printer_Name { get; set; }
     }
 
     public class LabelPrintItems
@@ -26,6 +27,7 @@ namespace CHubModel.WebArg
         public string VID { get; set; }
         public string PART_NO { get; set; }
         public int COPIES { get; set; }
+        public int MOQ { get; set; }
 
     }
 
