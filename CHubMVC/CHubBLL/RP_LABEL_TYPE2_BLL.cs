@@ -33,7 +33,26 @@ namespace CHubBLL
         {
             return dal.GetLabel_DESC(Label_TYPE);
         }
-        
+
+        public List<string> GetLabel_Code()
+        {
+            return dal.GetLabel_Code();
+        }
+
+        public List<APP_SITES> GetSite()
+        {
+            return dal.GetSite();
+        }
+
+        public List<RP_PRINTER> ChangeSite(string SITE_NAME)
+        {
+            return dal.ChangeSite(SITE_NAME);
+        }
+
+        public string GetBTW(string LABEL_CODE)
+        {
+            return dal.GetBTW(LABEL_CODE);
+        }
 
     }
 }

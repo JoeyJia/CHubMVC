@@ -31,5 +31,12 @@ namespace CHubBLL
         {
             return dal.GetTCGroupList();
         }
+
+        public List<string> GetCIDList()
+        {
+            return dal.GetCIDList();
+        }
+
+
     }
 }

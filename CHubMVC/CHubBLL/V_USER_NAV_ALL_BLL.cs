@@ -26,5 +26,11 @@ namespace CHubBLL
             return dal.GetNavByAppUser(appUser);
         }
 
+        public List<V_USER_NAV_ALL> GetMobilePageByAppUser(string appuser)
+        {
+            return dal.GetMobilePageByAppUser(appuser);
+        }
+
+
     }
 }

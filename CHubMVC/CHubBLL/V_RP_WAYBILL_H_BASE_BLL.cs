@@ -30,17 +30,33 @@ namespace CHubBLL
                 statusList.Add("S");
             if (inProgress)
                 statusList.Add("I");
-            return dal.GetWayBillBaseList(whID, carCode, custName, Address, shipmentNo, statusList,printed);
+            return dal.GetWayBillBaseList(whID, carCode, custName, Address, shipmentNo, statusList, printed);
         }
 
-        public List<RPWayBillHLevel2> GetWayBillDetailList(string whID,string carCode, string orderType, string addr, string shipmentNo, bool staged, bool inProgress, string printed)
+        public List<RPWayBillHLevel2> GetWayBillDetailList(string whID, string carCode, string orderType, string addr, string shipmentNo, bool staged, bool inProgress, string printed)
         {
             List<string> statusList = new List<string>();
             if (staged)
                 statusList.Add("S");
             if (inProgress)
                 statusList.Add("I");
-            return dal.GetWayBillDetailList(whID,carCode, orderType,addr,shipmentNo, statusList,printed);
+            return dal.GetWayBillDetailList(whID, carCode, orderType, addr, shipmentNo, statusList, printed);
+        }
+
+
+        public void PreWorkRP_H(string WHID)
+        {
+            dal.PreWorkRP_H(WHID);
+        }
+
+        public void PreWorkRP_SMRY(string WHID)
+        {
+            dal.PreWorkRP_SMRY(WHID);
+        }
+
+        public void PreWorkRP_D(string WHID)
+        {
+            dal.PreWorkRP_D(WHID);
         }
     }
 }

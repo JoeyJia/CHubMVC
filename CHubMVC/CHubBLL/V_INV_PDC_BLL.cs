@@ -27,5 +27,11 @@ namespace CHubBLL
             return dal.GetPDCData(partNo);
         }
 
+        public List<V_INV_PDC> GetPDCData(string partNo, string print_partNo)
+        {
+            return dal.GetPDCData(partNo, print_partNo);
+        }
+
+
     }
 }

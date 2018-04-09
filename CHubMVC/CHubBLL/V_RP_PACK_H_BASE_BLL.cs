@@ -32,5 +32,20 @@ namespace CHubBLL
             return dal.GetStagedPackList();
         }
 
+        public void PreWorkRP_H(string WHID)
+        {
+            dal.PreWorkRP_H(WHID);
+        }
+
+        public void PreWorkRP_SMRY(string WHID)
+        {
+            dal.PreWorkRP_SMRY(WHID);
+        }
+
+        public void PreWorkRP_D(string WHID)
+        {
+            dal.PreWorkRP_D(WHID);
+        }
+
     }
 }

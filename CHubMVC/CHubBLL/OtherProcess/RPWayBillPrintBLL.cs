@@ -83,7 +83,7 @@ namespace CHubBLL.OtherProcess
                 leHelper.QRPath = fullImgPath;
 
                 leHelper.codeString = string.Format("编号：{0}", hData.SHIP_ID + "C");
-                
+
             }
 
             //line 1
@@ -108,29 +108,57 @@ namespace CHubBLL.OtherProcess
             //Table part
             if (wbType.PRINT_DETAIL == CHubConstValues.IndY)
             {
-                PdfPTable dTable = new PdfPTable(5);
-                dTable.WidthPercentage = 90f;
-                dTable.AddCell(pdfUtility.BuildCell(hData.DETAIL_TITLE1, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                dTable.AddCell(pdfUtility.BuildCell(hData.DETAIL_TITLE2, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                dTable.AddCell(pdfUtility.BuildCell(hData.DETAIL_TITLE3, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                dTable.AddCell(pdfUtility.BuildCell(hData.DETAIL_TITLE4, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                dTable.AddCell(pdfUtility.BuildCell(hData.DETAIL_TITLE5, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-
+                PdfPTable dTable = new PdfPTable(6);
+                PdfPCell cell;
+                dTable.WidthPercentage = 95f;
+                cell = pdfUtility.BuildCell("SN", new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                cell.BorderWidth = 0f;
+                dTable.AddCell(cell);
+                cell = pdfUtility.BuildCell(hData.DETAIL_TITLE1, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                cell.BorderWidth = 0f;
+                dTable.AddCell(cell);
+                cell = pdfUtility.BuildCell(hData.DETAIL_TITLE2, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                cell.BorderWidth = 0f;
+                dTable.AddCell(cell);
+                cell = pdfUtility.BuildCell(hData.DETAIL_TITLE3, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                cell.BorderWidth = 0f;
+                dTable.AddCell(cell);
+                cell = pdfUtility.BuildCell(hData.DETAIL_TITLE4, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                cell.BorderWidth = 0f;
+                dTable.AddCell(cell);
+                cell = pdfUtility.BuildCell(hData.DETAIL_TITLE5, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                cell.BorderWidth = 0f;
+                dTable.AddCell(cell);
+                dTable.SetTotalWidth(new float[] { 5f, 18f, 18f, 18f, 18f, 18f });
                 decimal totalWGT = 0;
                 decimal totalM3 = 0;
                 if (dPrintList != null && dPrintList.Count != 0)
                 {
+                    int i = 1;
                     foreach (var item in dPrintList)
                     {
-                        dTable.AddCell(pdfUtility.BuildCell(item.SHIP_ID, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                        dTable.AddCell(pdfUtility.BuildCell(item.LODNUM, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                        dTable.AddCell(pdfUtility.BuildCell((item.VC_PALWGT ?? 0).ToString("f2"), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                        dTable.AddCell(pdfUtility.BuildCell(item.PALVOL, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                        dTable.AddCell(pdfUtility.BuildCell(item.REMARK1, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+                        cell = pdfUtility.BuildCell(i.ToString(), new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                        cell.BorderWidth = 0f;
+                        dTable.AddCell(cell);
+                        cell = pdfUtility.BuildCell(item.SHIP_ID, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                        cell.BorderWidth = 0f;
+                        dTable.AddCell(cell);
+                        cell = pdfUtility.BuildCell(item.LODNUM, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                        cell.BorderWidth = 0f;
+                        dTable.AddCell(cell);
+                        cell = pdfUtility.BuildCell((item.VC_PALWGT ?? 0).ToString("f2"), new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                        cell.BorderWidth = 0f;
+                        dTable.AddCell(cell);
+                        cell = pdfUtility.BuildCell(item.PALVOL, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                        cell.BorderWidth = 0f;
+                        dTable.AddCell(cell);
+                        cell = pdfUtility.BuildCell(item.REMARK1, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                        cell.BorderWidth = 0f;
+                        dTable.AddCell(cell);
 
                         totalWGT += item.VC_PALWGT ?? 0;
                         totalM3 += item.PALVOL_M3 ?? 0;
-
+                        i++;
                     }
                 }
                 doc.Add(dTable);
@@ -272,12 +300,23 @@ namespace CHubBLL.OtherProcess
                 if (wbType.PRINT_DETAIL == CHubConstValues.IndY)
                 {
                     PdfPTable dTable = new PdfPTable(5);
+                    PdfPCell cell;
                     dTable.WidthPercentage = 90f;
-                    dTable.AddCell(pdfUtility.BuildCell(pageDatas[i].Header.DETAIL_TITLE1, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                    dTable.AddCell(pdfUtility.BuildCell(pageDatas[i].Header.DETAIL_TITLE2, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                    dTable.AddCell(pdfUtility.BuildCell(pageDatas[i].Header.DETAIL_TITLE3, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                    dTable.AddCell(pdfUtility.BuildCell(pageDatas[i].Header.DETAIL_TITLE4, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                    dTable.AddCell(pdfUtility.BuildCell(pageDatas[i].Header.DETAIL_TITLE5, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+                    cell = pdfUtility.BuildCell(pageDatas[i].Header.DETAIL_TITLE1, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                    cell.BorderWidth = 0f;
+                    dTable.AddCell(cell);
+                    cell = pdfUtility.BuildCell(pageDatas[i].Header.DETAIL_TITLE2, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                    cell.BorderWidth = 0f;
+                    dTable.AddCell(cell);
+                    cell = pdfUtility.BuildCell(pageDatas[i].Header.DETAIL_TITLE3, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                    cell.BorderWidth = 0f;
+                    dTable.AddCell(cell);
+                    cell = pdfUtility.BuildCell(pageDatas[i].Header.DETAIL_TITLE4, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                    cell.BorderWidth = 0f;
+                    dTable.AddCell(cell);
+                    cell = pdfUtility.BuildCell(pageDatas[i].Header.DETAIL_TITLE5, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                    cell.BorderWidth = 0f;
+                    dTable.AddCell(cell);
 
                     decimal totalWGT = 0;
                     decimal totalM3 = 0;
@@ -285,11 +324,21 @@ namespace CHubBLL.OtherProcess
                     {
                         foreach (var item in pageDatas[i].Details)
                         {
-                            dTable.AddCell(pdfUtility.BuildCell(item.SHIP_ID, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                            dTable.AddCell(pdfUtility.BuildCell(item.LODNUM, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                            dTable.AddCell(pdfUtility.BuildCell((item.VC_PALWGT ?? 0).ToString("f2"), new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                            dTable.AddCell(pdfUtility.BuildCell(item.PALVOL, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
-                            dTable.AddCell(pdfUtility.BuildCell(item.REMARK1, new iTextSharp.text.Font(BF_Light, ContentFontSize)));
+                            cell = pdfUtility.BuildCell(item.SHIP_ID, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                            cell.BorderWidth = 0f;
+                            dTable.AddCell(cell);
+                            cell = pdfUtility.BuildCell(item.LODNUM, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                            cell.BorderWidth = 0f;
+                            dTable.AddCell(cell);
+                            cell = pdfUtility.BuildCell((item.VC_PALWGT ?? 0).ToString("f2"), new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                            cell.BorderWidth = 0f;
+                            dTable.AddCell(cell);
+                            cell = pdfUtility.BuildCell(item.PALVOL, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                            cell.BorderWidth = 0f;
+                            dTable.AddCell(cell);
+                            cell = pdfUtility.BuildCell(item.REMARK1, new iTextSharp.text.Font(BF_Light, ContentFontSize));
+                            cell.BorderWidth = 0f;
+                            dTable.AddCell(cell);
 
                             totalWGT += item.VC_PALWGT ?? 0;
                             totalM3 += item.PALVOL_M3 ?? 0;
@@ -319,7 +368,7 @@ namespace CHubBLL.OtherProcess
                 cb.ShowText(pdfUtility.GetLineString(sData));
                 cb.EndText();
 
-                
+
 
                 //add track data
 

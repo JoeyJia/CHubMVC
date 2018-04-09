@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
 using static CHubCommon.CHubEnum;
+using CHubModel.WebArg;
 
 namespace CHubBLL
 {
@@ -37,9 +38,19 @@ namespace CHubBLL
             return dal.fuzzyqueryByPartNo(fuzzyPartNo);
         }
 
+        public List<G_PART_DESCRIPTION> fuzzyqueryByPartNo_New(string PartNo, string Print_PartNo)
+        {
+            return dal.fuzzyqueryByPartNo_New(PartNo, Print_PartNo);
+        }
+
         public bool IsInActive(string partNo)
         {
             return dal.IsInActive(partNo);
+        }
+
+        public GPARTDESCArg GetGPartDesc(string PART_NO, string PRINT_PART_NO)
+        {
+            return dal.GetGPartDesc(PART_NO, PRINT_PART_NO);
         }
 
     }
