@@ -18,6 +18,8 @@ namespace CHubDBEntity
         public string CUSTOMER_NO { get; set; }
         public string NAME { get; set; }
         public string ACTIVEIND { get; set; }
+        public Nullable<byte> AUTO_SUPERSESSION_FLAG { get; set; }
+        public bool ORDER_SUPERSEDED_PART_FLAG { get; set; }
         public int BILL_TO_LOCATION { get; set; }
         public int SHIP_TO_LOCATION { get; set; }
         public string SHIP_TO_NAME { get; set; }
@@ -34,6 +36,7 @@ namespace CHubDBEntity
         public Nullable<System.DateTime> RECORD_DATE_OS { get; set; }
         public string WAREHOUSE { get; set; }
         public string SHIP_TO_ATTEN { get; set; }
+        public string EC_ENTITY_ID { get; set; }
         public string LOCAL_SHIP_TO_NAME { get; set; }
         public string LOCAL_SHIP_TO_ADDR_1 { get; set; }
         public string LOCAL_SHIP_TO_ADDR_2 { get; set; }
@@ -42,8 +45,5 @@ namespace CHubDBEntity
         public string LOCAL_SHIP_TO_COUNTRY { get; set; }
         public string LOCAL_SHIP_TO_STATE { get; set; }
         public Nullable<System.DateTime> RECORD_DATE_OSL { get; set; }
-        public Nullable<byte> AUTO_SUPERSESSION_FLAG { get; set; }
-        public bool ORDER_SUPERSEDED_PART_FLAG { get; set; }
-        public string EC_ENTITY_ID { get; set; }
     }
 }

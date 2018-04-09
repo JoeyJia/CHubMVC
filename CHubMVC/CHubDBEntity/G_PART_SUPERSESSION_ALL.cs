@@ -22,11 +22,11 @@ namespace CHubDBEntity
         public string SUPERSESSION_STATUS { get; set; }
         public string SUPERSESSION_TYPE { get; set; }
         public string SUPERSEDING_PART_NO { get; set; }
+        public string SUPERSEDING_PRINT_PART_NO { get; set; }
         public string SUPERSEDING_PART_DESCRIPTION { get; set; }
         public string SSC_SUPERSEDING { get; set; }
         public Nullable<int> QTY_PER { get; set; }
         public Nullable<byte> PRIMARY_FLAG { get; set; }
-        public string SUPERSEDING_PRINT_PART_NO { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
     }
 }

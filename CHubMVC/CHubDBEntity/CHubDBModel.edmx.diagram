@@ -4,166 +4,298 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d7f6e9b31a6d43e79a67a386d41c7d55" Name="Diagram1" ZoomLevel="101">
-        <EntityTypeShape EntityType="CHubDBModel.APP_CUST_ALIAS" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_CUST_ALIAS_LINK" Width="1.5" PointX="8" PointY="4.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_DURATION" Width="1.5" PointX="8" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_NOTICE" Width="1.5" PointX="12.875" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_ORDER_TYPE" Width="1.5" PointX="8.75" PointY="11.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_PAGE_ROLE_LINK" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_PAGES" Width="1.5" PointX="0.75" PointY="9.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_RECENT_PAGES" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_ROLES" Width="1.5" PointX="0.75" PointY="14.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_SITES" Width="1.5" PointX="5.75" PointY="4" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_SPACE_PAGE_LINK" Width="1.5" PointX="6" PointY="12" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_USER_ALIAS_LINK" Width="1.5" PointX="3" PointY="2.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_USER_ROLE_LINK" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_USERS" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_WELCOME" Width="1.5" PointX="12.75" PointY="1.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_WH" Width="1.5" PointX="8" PointY="8.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_WORKSPACE" Width="1.5" PointX="3.75" PointY="15" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.M_PARAMETER" Width="1.5" PointX="10.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.M_SYSTEM" Width="1.5" PointX="5.75" PointY="8.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.G_PART_DESCRIPTION" Width="1.5" PointX="13.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.G_PART_SUPERSESSION_ALL" Width="1.5" PointX="7.75" PointY="15.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.P_ADDR_DFLT" Width="1.5" PointX="14.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.P_ADDR_SPL" Width="1.5" PointX="15.75" PointY="1.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.P_CATALOG_CUSTOMER_PART" Width="1.5" PointX="9.75" PointY="17.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.R_ADDR_DFLT" Width="1.5" PointX="11.75" PointY="17.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.R_ADDR_SPL" Width="1.5" PointX="16.75" PointY="17.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.R_CATALOG_CUSTOMER_PART" Width="1.5" PointX="2.75" PointY="18.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.V_ALIAS_ADDR_DFLT" Width="1.5" PointX="18.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.V_ALIAS_ADDR_SPL" Width="1.5" PointX="18.75" PointY="17.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.V_CHK_DURATION_MISSING" Width="1.5" PointX="19.75" PointY="1.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.V_NAV_ALL" Width="1.5" PointX="19.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CHubDBModel.V_USER_PAGE_LINK" Width="1.5" PointX="13.75" PointY="20.75" IsExpanded="true" />
-        <AssociationConnector Association="CHubDBModel.APP_CUST_ALIAS_LINK_R01" ManuallyRouted="false" />
-        <AssociationConnector Association="CHubDBModel.APP_USER_ALIAS_LINK_R02" ManuallyRouted="false" />
-        <AssociationConnector Association="CHubDBModel.APP_CUST_ALIAS_LINK_R02" ManuallyRouted="false" />
-        <AssociationConnector Association="CHubDBModel.APP_DURATION_R01" ManuallyRouted="false" />
-        <AssociationConnector Association="CHubDBModel.APP_PAGE_ROLE_LINK_R01" ManuallyRouted="false" />
-        <AssociationConnector Association="CHubDBModel.APP_PAGE_ROLE_LINK_R02" ManuallyRouted="false" />
-        <AssociationConnector Association="CHubDBModel.APP_RECENT_PAGES_R02" ManuallyRouted="false" />
-        <AssociationConnector Association="CHubDBModel.APP_SPACE_PAGE_LINK_R02" ManuallyRouted="false" />
-        <AssociationConnector Association="CHubDBModel.APP_RECENT_PAGES_R01" ManuallyRouted="false" />
-        <AssociationConnector Association="CHubDBModel.C00002" ManuallyRouted="false" />
-        <AssociationConnector Association="CHubDBModel.APP_WH_R01" ManuallyRouted="false" />
-        <AssociationConnector Association="CHubDBModel.APP_SPACE_PAGE_LINK_R01" ManuallyRouted="false" />
-        <AssociationConnector Association="CHubDBModel.APP_USER_ALIAS_LINK_R01" ManuallyRouted="false" />
-        <AssociationConnector Association="CHubDBModel.APP_USER_ROLE_LINK_R01" ManuallyRouted="false" />
-        <AssociationConnector Association="CHubDBModel.C0001" ManuallyRouted="false" />
-        <AssociationConnector Association="CHubDBModel.APP_WH_R02" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="CHubDBModel.V_USER_NAV_ALL" Width="1.5" PointX="21.375" PointY="8.75" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_ORDER_STATUS" Width="1.5" PointX="8.75" PointY="28.625" />
-        <EntityTypeShape EntityType="CHubDBModel.APP_SHIP_SEQ" Width="1.5" PointX="8.75" PointY="26.375" />
-        <EntityTypeShape EntityType="CHubDBModel.TS_OR_HEADER" Width="1.5" PointX="11" PointY="0.75" />
-        <EntityTypeShape EntityType="CHubDBModel.TS_OR_DETAIL" Width="1.5" PointX="21.375" PointY="18" />
-        <AssociationConnector Association="CHubDBModel.TS_OR_HEADER_R05" />
-        <AssociationConnector Association="CHubDBModel.TS_OR_HEADER_R02" />
-        <AssociationConnector Association="CHubDBModel.TS_OR_HEADER_R04" />
-        <AssociationConnector Association="CHubDBModel.TS_OR_HEADER_R01" />
-        <AssociationConnector Association="CHubDBModel.TS_OR_HEADER_R03" />
-        <EntityTypeShape EntityType="CHubDBModel.TS_OR_DETAIL_STAGE" Width="1.5" PointX="5.375" PointY="20.75" />
-        <EntityTypeShape EntityType="CHubDBModel.TS_OR_HEADER_STAGE" Width="1.5" PointX="22.375" PointY="0.75" />
-        <EntityTypeShape EntityType="CHubDBModel.V_O_DOWNLOAD_DTL" Width="1.5" PointX="9.25" PointY="21.75" />
-        <EntityTypeShape EntityType="CHubDBModel.V_O_DOWNLOAD_HDR" Width="1.5" PointX="7.375" PointY="21.75" />
-        <EntityTypeShape EntityType="CHubDBModel.M_APPS" Width="1.5" PointX="10.375" PointY="7.75" />
-        <EntityTypeShape EntityType="CHubDBModel.TC_PART_CATEGORY" Width="1.5" PointX="21.75" PointY="12.875" />
-        <EntityTypeShape EntityType="CHubDBModel.TC_PART_CATEGORY_STG" Width="1.5" PointX="24" PointY="13.125" />
-        <EntityTypeShape EntityType="CHubDBModel.TC_PART_HS" Width="1.5" PointX="0.75" PointY="22.75" />
-        <EntityTypeShape EntityType="CHubDBModel.TC_PART_HS_AUDIT" Width="1.5" PointX="2.75" PointY="22.75" />
-        <EntityTypeShape EntityType="CHubDBModel.TC_PART_HS_INI" Width="1.5" PointX="21.75" PointY="22.75" />
-        <EntityTypeShape EntityType="CHubDBModel.TC_PART_HS_STG" Width="1.5" PointX="23.75" PointY="15.75" />
-        <EntityTypeShape EntityType="CHubDBModel.V_TC_CATEGORY_BY_SYS" Width="1.5" PointX="23.75" PointY="6.75" />
-        <EntityTypeShape EntityType="CHubDBModel.V_TC_IMPORT_WITH_HS" Width="1.5" PointX="23.75" PointY="22.75" />
-        <EntityTypeShape EntityType="CHubDBModel.V_TC_MDM_ALL" Width="1.5" PointX="25.75" PointY="0.75" />
-        <EntityTypeShape EntityType="CHubDBModel.V_TC_PART_HS" Width="1.5" PointX="2.75" PointY="25.75" />
-        <AssociationConnector Association="CHubDBModel.TC_PART_CATEGORY_STG_R02" />
-        <EntityTypeShape EntityType="CHubDBModel.M_PART" Width="1.5" PointX="24" PointY="29.625" />
-        <AssociationConnector Association="CHubDBModel.M_PART_R01" />
-        <AssociationConnector Association="CHubDBModel.M_PART_R02" />
-        <AssociationConnector Association="CHubDBModel.TC_PART_CATEGORY_STG_R01" />
-        <AssociationConnector Association="CHubDBModel.TC_PART_HS_R01" />
-        <EntityTypeShape EntityType="CHubDBModel.ITT_SHIPPING_D_SNAP" Width="1.5" PointX="5.375" PointY="30" />
-        <EntityTypeShape EntityType="CHubDBModel.ITT_SHIPPING_H" Width="1.5" PointX="17" PointY="0.75" />
-        <EntityTypeShape EntityType="CHubDBModel.ITT_SHIPPING_H_SNAP" Width="1.5" PointX="23.375" PointY="14" />
-        <EntityTypeShape EntityType="CHubDBModel.ITT_TRAN_TYPE" Width="1.5" PointX="14.75" PointY="29.875" />
-        <EntityTypeShape EntityType="CHubDBModel.ITT_CUST_LOAD" Width="1.5" PointX="11.375" PointY="30" />
-        <EntityTypeShape EntityType="CHubDBModel.ITT_SHIPPING_D" Width="1.5" PointX="8" PointY="35.375" />
-        <EntityTypeShape EntityType="CHubDBModel.V_ITT_SHIPPING_SMRY" Width="1.5" PointX="26.375" PointY="12" />
-        <AssociationConnector Association="CHubDBModel.ITT_SHIPPING_H_R03" />
-        <AssociationConnector Association="CHubDBModel.SYS_C0013895" />
-        <AssociationConnector Association="CHubDBModel.ITT_SHIPPING_D_R01" />
-        <EntityTypeShape EntityType="CHubDBModel.M_CALENDAR" Width="1.5" PointX="23.375" PointY="9.75" />
-		<EntityTypeShape EntityType="CHubDBModel.V_SHIPPING_ALL_BASE" Width="1.5" PointX="26.375" PointY="17.75" />
-        <EntityTypeShape EntityType="CHubDBModel.ITT_TRAN_LOAD" Width="1.5" PointX="17" PointY="26.25" />
-        <AssociationConnector Association="CHubDBModel.ITT_TRAN_LOAD_R01" />
-        <AssociationConnector Association="CHubDBModel.ITT_TRAN_LOAD_R02" />
-        <EntityTypeShape EntityType="CHubDBModel.ITT_EASY_QUERY_LOG" Width="1.5" PointX="5.375" PointY="26.125" />
-        <EntityTypeShape EntityType="CHubDBModel.M_INV" Width="1.5" PointX="11.375" PointY="26.125" />
-        <EntityTypeShape EntityType="CHubDBModel.ITT_EASY_WATCHING" Width="1.5" PointX="13.375" PointY="26.125" />
-        <EntityTypeShape EntityType="CHubDBModel.V_OPEN_QTY_ASN_PDC" Width="1.5" PointX="26.375" PointY="8.125" />
-        <EntityTypeShape EntityType="CHubDBModel.V_OPEN_QTY_ASN_RDC" Width="1.5" PointX="26.375" PointY="26.125" />
-        <EntityTypeShape EntityType="CHubDBModel.V_OPEN_QTY_PO_PDC" Width="1.5" PointX="28.375" PointY="1.125" />
-        <EntityTypeShape EntityType="CHubDBModel.V_OPEN_QTY_PO_RDC" Width="1.5" PointX="28.375" PointY="5.125" />
-        <EntityTypeShape EntityType="CHubDBModel.V_ITT_SHIPPING_ALLIN1" Width="1.5" PointX="28.375" PointY="8.75" />
-        <EntityTypeShape EntityType="CHubDBModel.ITT_PO" Width="1.5" PointX="28.375" PointY="24.75" />
-        <EntityTypeShape EntityType="CHubDBModel.ITT_SO" Width="1.5" PointX="19.375" PointY="29.75" />
-        <EntityTypeShape EntityType="CHubDBModel.DB_KPI" Width="1.5" PointX="32.625" PointY="1" />
-        <EntityTypeShape EntityType="CHubDBModel.DB_KPI_GROUP" Width="1.5" PointX="30.375" PointY="1.5" />
-        <EntityTypeShape EntityType="CHubDBModel.DB_KPI_HISTORY" Width="1.5" PointX="30.375" PointY="4.75" />
-        <AssociationConnector Association="CHubDBModel.DB_KPI_R01" />
-        <EntityTypeShape EntityType="CHubDBModel.DB_KPI_CODE" Width="1.5" PointX="30.375" PointY="8.875" />
-        <AssociationConnector Association="CHubDBModel.DB_KPI_HISTORY_R01" />
-        <AssociationConnector Association="CHubDBModel.DB_KPI_R02" />
-        <EntityTypeShape EntityType="CHubDBModel.EW_MESSAGE" Width="1.5" PointX="30.375" PointY="31.25" />
-        <EntityTypeShape EntityType="CHubDBModel.EW_MESSAGE_ATTACH" Width="1.5" PointX="32.625" PointY="12.125" />
-        <EntityTypeShape EntityType="CHubDBModel.EW_SCRIPT" Width="1.5" PointX="30.375" PointY="12" />
-        <EntityTypeShape EntityType="CHubDBModel.EW_LOG" Width="1.5" PointX="30.375" PointY="15.75" />
-        <AssociationConnector Association="CHubDBModel.EW_MESSAGE_ATTACH_R01" />
-        <AssociationConnector Association="CHubDBModel.EW_MESSAGE_ATTACH_R02" />
-        <EntityTypeShape EntityType="CHubDBModel.EW_MESSAGE_GROUP" Width="1.5" PointX="28.125" PointY="32.75" />
-        <EntityTypeShape EntityType="CHubDBModel.EW_SCHEDULE" Width="1.5" PointX="30.375" PointY="37.625" />
-        <EntityTypeShape EntityType="CHubDBModel.EW_SCHEDULE_TASK" Width="1.5" PointX="32.625" PointY="32.75" />
-        <EntityTypeShape EntityType="CHubDBModel.EW_USER_APPLY" Width="1.5" PointX="32.625" PointY="18.875" />
-        <AssociationConnector Association="CHubDBModel.EW_USER_APPLY_R01" />
-        <AssociationConnector Association="CHubDBModel.EW_MESSAGE_R01" />
-        <AssociationConnector Association="CHubDBModel.EW_SCHEDULE_TASK_R02" />
-        <AssociationConnector Association="CHubDBModel.EW_USER_APPLY_R02" />
-        <AssociationConnector Association="CHubDBModel.EW_SCHEDULE_TASK_R01" />
-        <EntityTypeShape EntityType="CHubDBModel.RP_ADR_MST" Width="1.5" PointX="33" PointY="25.625" />
-        <EntityTypeShape EntityType="CHubDBModel.RP_CAR_MST" Width="1.5" PointX="16" PointY="32.875" />
-        <EntityTypeShape EntityType="CHubDBModel.RP_CUST_PACK_TYPE" Width="1.5" PointX="30.75" PointY="23.125" />
-        <EntityTypeShape EntityType="CHubDBModel.RP_PRINTER" Width="1.5" PointX="32.75" PointY="5.875" />
-        <EntityTypeShape EntityType="CHubDBModel.RP_STATION" Width="1.5" PointX="35" PointY="6" />
-        <EntityTypeShape EntityType="CHubDBModel.RP_WAYBILL_BASICINFO" Width="1.5" PointX="0.75" PointY="32.75" />
-        <EntityTypeShape EntityType="CHubDBModel.RP_WAYBILL_TYPE" Width="1.5" PointX="13.75" PointY="33" />
-        <EntityTypeShape EntityType="CHubDBModel.V_RP_WAYBILL_D_BASE" Width="1.5" PointX="7.75" PointY="31.75" />
-        <EntityTypeShape EntityType="CHubDBModel.V_SHIPMENT_H_RP_ALL" Width="1.5" PointX="2.75" PointY="32.75" />
-        <AssociationConnector Association="CHubDBModel.APP_WH_R03" />
-        <AssociationConnector Association="CHubDBModel.RP_ADR_MST_R01" />
-        <AssociationConnector Association="CHubDBModel.RP_CAR_MST_R01" />
-        <AssociationConnector Association="CHubDBModel.RP_CUST_PACK_TYPE_R01" />
-        <AssociationConnector Association="CHubDBModel.RP_STATION_R02" />
-        <EntityTypeShape EntityType="CHubDBModel.RP_SHIP_TRACK" Width="1.5" PointX="7.375" PointY="31.75" />
-        <EntityTypeShape EntityType="CHubDBModel.RP_AUTOPACK_LOG" Width="1.5" PointX="32.375" PointY="15.75" />
-        <EntityTypeShape EntityType="CHubDBModel.RP_ORDTYP_MST" Width="1.5" PointX="32.375" PointY="9.75" />
-        <AssociationConnector Association="CHubDBModel.APP_USERS_R02" />
-        <EntityTypeShape EntityType="CHubDBModel.RP_LABEL_TYPE" Width="1.5" PointX="10.375" PointY="33.75" />
-        <EntityTypeShape EntityType="CHubDBModel.GOMS_ASN_H" Width="1.5" PointX="21.375" PointY="33.75" />
-        <EntityTypeShape EntityType="CHubDBModel.V_PLABEL_BY_LOD_PRINT" Width="1.5" PointX="23.375" PointY="33.75" />
-        <EntityTypeShape EntityType="CHubDBModel.RP_LABEL_TYPE2" Width="1.5" PointX="25.375" PointY="33.75" />
-        <EntityTypeShape EntityType="CHubDBModel.V_PLABEL_BY_PART_PRINT" Width="1.5" PointX="3.375" PointY="34.75" />
-        <EntityTypeShape EntityType="CHubDBModel.V_PLABEL_BY_ASN_PRINT" Width="1.5" PointX="35.375" PointY="8.75" />
-        <EntityTypeShape EntityType="CHubDBModel.V_PLABEL_BY_UNCATALOG_PRINT" Width="1.5" PointX="18.375" PointY="35.75" />
-        <EntityTypeShape EntityType="CHubDBModel.G_UNCATALOG_PART" Width="1.5" PointX="35.375" PointY="0.75" />
-        <EntityTypeShape EntityType="CHubDBModel.TC_HSCODE_MST" Width="1.5" PointX="24" PointY="65.75" />
-        <EntityTypeShape EntityType="CHubDBModel.TC_HSCODE_AUDIT" Width="1.5" PointX="27.375" PointY="35.75" />
-        <AssociationConnector Association="CHubDBModel.TC_HSCODE_MST_R01" />
-        <EntityTypeShape EntityType="CHubDBModel.TMS_ADR_AUTO_CORRECT" Width="1.5" PointX="32.375" PointY="35.75" />
-        <EntityTypeShape EntityType="CHubDBModel.V_PLABEL_BY_KITS_PRINT" Width="1.5" PointX="12.375" PointY="36.75" />
-        <EntityTypeShape EntityType="CHubDBModel.G_KITS" Width="2.25" PointX="37.625" PointY="1.25" />
-        <AssociationConnector Association="CHubDBModel.G_KITS_R01" />
+      <Diagram DiagramId="227844383f3843e8bcee4a7153d5a0f5" Name="Diagram1" ZoomLevel="89">
+        <EntityTypeShape EntityType="ChubDBModel.APP_CUST_ALIAS" Width="1.5" PointX="0.75" PointY="22.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_CUST_ALIAS_LINK" Width="1.5" PointX="3" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_DURATION" Width="1.5" PointX="6" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_NOTICE" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_ORDER_STATUS" Width="1.5" PointX="6.75" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_ORDER_TYPE" Width="1.5" PointX="6.75" PointY="27.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_PAGE_ROLE_LINK" Width="1.5" PointX="26" PointY="34.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_PAGES" Width="1.5" PointX="20.75" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_QUICK_SCREEN" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_RECENT_PAGES" Width="1.5" PointX="8.25" PointY="35" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_ROLES" Width="1.5" PointX="6" PointY="47" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_SHIP_SEQ" Width="1.5" PointX="6.75" PointY="30" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_SITES" Width="1.5" PointX="3.75" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_SPACE_PAGE_LINK" Width="1.5" PointX="23" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_USER_ALIAS_LINK" Width="1.5" PointX="9.25" PointY="29.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_USER_ROLE_LINK" Width="1.5" PointX="8.25" PointY="37.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_USERS" Width="1.5" PointX="6" PointY="33.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_WELCOME" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_WH" Width="1.5" PointX="6" PointY="17.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.APP_WORKSPACE" Width="1.5" PointX="20.75" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.DB_KPI" Width="1.5" PointX="21" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.DB_KPI_CODE" Width="1.5" PointX="18.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.DB_KPI_GROUP" Width="1.5" PointX="18.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.DB_KPI_HISTORY" Width="1.5" PointX="23.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.EW_LOG" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.EW_MESSAGE" Width="1.5" PointX="9" PointY="42.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.EW_MESSAGE_ATTACH" Width="1.5" PointX="11.25" PointY="43.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.EW_MESSAGE_GROUP" Width="1.5" PointX="6.75" PointY="44" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.EW_SCHEDULE" Width="1.5" PointX="9" PointY="48.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.EW_SCHEDULE_TASK" Width="1.5" PointX="11.25" PointY="41" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.EW_SCRIPT" Width="1.5" PointX="9" PointY="52.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.EW_USER_APPLY" Width="1.5" PointX="11.25" PointY="34.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.G_KITS" Width="1.5" PointX="26" PointY="23.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.G_PART_ADDTIONAL" Width="1.5" PointX="23.25" PointY="31.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.G_UNCATALOG_PART" Width="1.5" PointX="23.75" PointY="23" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.GOMS_ASN_H" Width="1.5" PointX="20.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.IA_2DSCAN_LOG" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.IA_CODE_TYPE" Width="1.5" PointX="16.75" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.IA_LOD_DTL" Width="1.5" PointX="19" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.IA_LOD_HDR" Width="1.5" PointX="16.75" PointY="18.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.IA_PART_AUTOMAP" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.IA_PRT_NOTE_CUST" Width="1.5" PointX="25.5" PointY="29.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.IA_STATUS_CODE" Width="1.5" PointX="14.5" PointY="19.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.IA_TODO" Width="1.5" PointX="25.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_AVLDTE" Width="1.5" PointX="8.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_CARRIER_CODES" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_CUST_LOAD" Width="1.5" PointX="13.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_CUSTOM_PROCESS" Width="1.5" PointX="10.75" PointY="24" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_EASY_QUERY_LOG" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_PO" Width="1.5" PointX="26.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_SHIPPING_D" Width="1.5" PointX="3" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_SHIPPING_D_SNAP" Width="1.5" PointX="13" PointY="24.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_SHIPPING_H" Width="1.5" PointX="3" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_SHIPPING_H_SNAP" Width="1.5" PointX="8.25" PointY="23.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_SHIPPING_H_STACK" Width="1.5" PointX="5.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_SO" Width="1.5" PointX="25.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_SUPPLIER_IN_SCOPE" Width="1.5" PointX="22.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_TRAN_LOAD" Width="1.5" PointX="6" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_TRAN_PROCESS" Width="1.5" PointX="6" PointY="22.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_TRAN_TYPE" Width="1.5" PointX="0.75" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.M_ADRNAM_MST" Width="1.5" PointX="21" PointY="27.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.M_APPS" Width="1.5" PointX="27.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.M_CALENDAR" Width="1.5" PointX="28.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.M_INV" Width="1.5" PointX="28.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.M_PARAMETER" Width="1.5" PointX="12.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.M_PART" Width="1.5" PointX="11" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.M_SYSTEM" Width="1.5" PointX="0.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.PART_COST_SNAP" Width="1.5" PointX="28.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.RP_ADR_MST" Width="1.5" PointX="14" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.RP_AUTOPACK_LOG" Width="1.5" PointX="28.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.RP_CAR_MST" Width="1.5" PointX="25" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.RP_CUST_PACK_TYPE" Width="1.5" PointX="11.75" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.RP_LABEL_PAPER_TYPE" Width="1.5" PointX="21" PointY="31.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.RP_LABEL_TYPE" Width="1.5" PointX="27.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.RP_LABEL_TYPE2" Width="1.5" PointX="18.75" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.RP_ORDTYP_MST" Width="1.5" PointX="29.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.RP_PACKAGE" Width="1.5" PointX="29.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.RP_PRINTER" Width="1.5" PointX="3.75" PointY="30.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.RP_SHIP_TRACK" Width="1.5" PointX="29.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.RP_STATION" Width="1.5" PointX="6" PointY="39.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.RP_WAYBILL_BASICINFO" Width="1.5" PointX="29.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.RP_WAYBILL_TYPE" Width="1.5" PointX="22.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.SNAP_LOD_TRACK" Width="1.5" PointX="29.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.SNAP_OPENASN_STATUS" Width="1.5" PointX="0.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.SNAP_SHIP_LIST_ALL" Width="1.5" PointX="31.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TC_HSCODE_MST" Width="1.5" PointX="11" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TC_PART_CATEGORY" Width="1.5" PointX="8.75" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TC_PART_CATEGORY_STG" Width="1.5" PointX="13.25" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TC_PART_HS" Width="1.5" PointX="16.25" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TMS_ADR_AUTO_CORRECT" Width="1.5" PointX="30.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TMS_SHIP_UPLOAD_STG" Width="1.5" PointX="31.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TS_OR_DETAIL" Width="1.5" PointX="31.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TS_OR_DETAIL_STAGE" Width="1.5" PointX="13.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TS_OR_HEADER" Width="1.5" PointX="9" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TS_OR_HEADER_STAGE" Width="1.5" PointX="15.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.EML_TASK" Width="1.5" PointX="24" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.G_KIT_JAN20" Width="1.5" PointX="33.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.G_KITS_BAK" Width="1.5" PointX="33.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.G_KITS_LOAD" Width="1.5" PointX="33.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.G_UNCATALOG_PART_LOAD" Width="1.5" PointX="33.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.IA_LOD_AUDIT" Width="1.5" PointX="33.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.IA_REPOSITORY_CLAIM_ORD" Width="1.5" PointX="0.75" PointY="34.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.IA_TODO_OLD" Width="1.5" PointX="2.75" PointY="34.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_CUSTOM_PROCESS_BACKUP" Width="1.5" PointX="33.75" PointY="34.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_CUSTOM_PROCESS_OLD" Width="1.5" PointX="35.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_EASY_WATCHING" Width="1.5" PointX="35.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.ITT_SO_ARCH" Width="1.5" PointX="35.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.M_INV_ARCH" Width="1.5" PointX="22.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.M_PART_BACKUP" Width="1.5" PointX="28.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.PART_SUPPLIER" Width="1.5" PointX="35.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.RP_LABEL_TYPE2_BACK0111" Width="1.5" PointX="35.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.RP_LABEL_TYPE2_BCK1121" Width="1.5" PointX="37.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.RP_SHIP_TRACK_AUDIT" Width="1.5" PointX="24.75" PointY="37.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TC_HSCODE_AUDIT" Width="1.5" PointX="37.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TC_PART_HS_AUDIT" Width="1.5" PointX="37.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TC_PART_HS_BAK0307" Width="1.5" PointX="37.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TC_PART_HS_INI" Width="1.5" PointX="13.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TC_PART_HS_LOAD" Width="1.5" PointX="15.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TC_PART_HS_LOADBACK" Width="1.5" PointX="26.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TC_PART_HS_STG" Width="1.5" PointX="28.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TMP_ASN" Width="1.5" PointX="39.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TMP_DCECPRT_EXPORT" Width="1.5" PointX="0.75" PointY="39.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TMP_WO_DTL" Width="1.5" PointX="2.75" PointY="39.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.TMP_WO_HDR" Width="1.5" PointX="39.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.G_PART_DESCRIPTION" Width="1.5" PointX="30.75" PointY="41.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.G_PART_SUPERSESSION_ALL" Width="1.5" PointX="32.75" PointY="41.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.P_ADDR_DFLT" Width="1.5" PointX="41.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.P_ADDR_SPL" Width="1.5" PointX="2.75" PointY="42.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.P_ASN" Width="1.5" PointX="43.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.P_AVLDTE" Width="1.5" PointX="43.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.P_CATALOG_CUSTOMER_PART" Width="1.5" PointX="43.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.P_PO" Width="1.5" PointX="43.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.R_ADDR_DFLT" Width="1.5" PointX="43.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.R_ADDR_SPL" Width="1.5" PointX="43.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.R_ASN" Width="1.5" PointX="43.75" PointY="37.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.R_AVLDTE" Width="1.5" PointX="41.75" PointY="44.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.R_CATALOG_CUSTOMER_PART" Width="1.5" PointX="43.75" PointY="44.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.R_PO" Width="1.5" PointX="45.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.SNAP_V_SHIP_LIST_ALL_P" Width="1.5" PointX="45.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.SNAP_V_SHIP_LIST_ALL_R" Width="1.5" PointX="13.75" PointY="45.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_ALIAS_ADDR_DFLT" Width="1.5" PointX="15.75" PointY="45.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_ALIAS_ADDR_SPL" Width="1.5" PointX="17.75" PointY="45.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_BTW_TEST" Width="1.5" PointX="45.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_CHK_DUPLICATE_DEST" Width="1.5" PointX="24.75" PointY="45.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_CHK_DURATION_MISSING" Width="1.5" PointX="11.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_CP_LOOKUP" Width="1.5" PointX="26.75" PointY="45.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_CTM_INB_ASN_SPDC" Width="1.5" PointX="37.75" PointY="45.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_CUSTREF_LIUGONG" Width="1.5" PointX="19.75" PointY="46.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_CUSTREF_YUTONG" Width="1.5" PointX="21.75" PointY="46.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_DURATION_WH2CITY" Width="1.5" PointX="32.75" PointY="46.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_GOMS_ASN_H" Width="1.5" PointX="47.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_IA_ALL" Width="1.5" PointX="47.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_IA_LOD_DTL" Width="1.5" PointX="47.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_IA_LOD_HDR" Width="1.5" PointX="47.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_IA_PRT_NOTE_CUST_ADDNEW" Width="1.5" PointX="47.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_IA_REPORT_PRINT" Width="1.5" PointX="47.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_IA_SIGN_IND" Width="1.5" PointX="47.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_IA_TODO_TODAY" Width="1.5" PointX="39.75" PointY="47.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_INV_SPDC" Width="1.5" PointX="47.75" PointY="41.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_ITT_SHIPPING_ALLIN1" Width="1.5" PointX="47.75" PointY="45.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_ITT_SHIPPING_ALLIN1_BACKUP" Width="1.5" PointX="41.75" PointY="48.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_ITT_SHIPPING_D" Width="1.5" PointX="49.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_ITT_SHIPPING_SMRY" Width="1.5" PointX="4.75" PointY="49.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_ITT_SO_FROM_MDC" Width="1.5" PointX="49.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_ITT_SO_FROM_SPDC" Width="1.5" PointX="49.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_KPI_HISTORY_ALL" Width="1.5" PointX="28.75" PointY="49.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_KPI_INV_SKU_P" Width="1.5" PointX="49.75" PointY="44.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_KPI_INV_SKU_R" Width="1.5" PointX="49.75" PointY="47.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_KPI_ITT_01" Width="1.5" PointX="0.75" PointY="50.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_KPI_ITT_02" Width="1.5" PointX="19.75" PointY="50.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_KPI_ITT_03" Width="1.5" PointX="21.75" PointY="50.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_KPI_ITT_DECLARE_AVG_LT_01" Width="1.5" PointX="23.75" PointY="50.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_KPI_ITT_DECLARE_AVG_LT_02" Width="1.5" PointX="30.75" PointY="50.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_KPI_ITT_DECLARE_AVG_LT_03" Width="1.5" PointX="32.75" PointY="50.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_KPI_ITT_DECLARE_ONTIME_01" Width="1.5" PointX="49.75" PointY="50.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_KPI_ITT_DECLARE_ONTIME_02" Width="1.5" PointX="51.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_KPI_ITT_DECLARE_ONTIME_03" Width="1.5" PointX="51.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_KPI_ITT_DO_ONTIME" Width="1.5" PointX="51.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_KPI_P2S_01" Width="1.5" PointX="51.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_KPI_P2S_02" Width="1.5" PointX="51.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_KPI_P2S_03" Width="1.5" PointX="51.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_KPI_P2S_04" Width="1.5" PointX="51.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_NAV_ALL" Width="1.5" PointX="51.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_O_DOWNLOAD_DTL" Width="1.5" PointX="51.75" PointY="33.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_O_DOWNLOAD_HDR" Width="1.5" PointX="51.75" PointY="36.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_OPEN_QTY_ASN_PDC" Width="1.5" PointX="51.75" PointY="39.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_OPEN_QTY_ASN_RDC" Width="1.5" PointX="51.75" PointY="43.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_OPEN_QTY_PO_PDC" Width="1.5" PointX="51.75" PointY="47.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_OPEN_QTY_PO_RDC" Width="1.5" PointX="51.75" PointY="51.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_PLABEL_BY_ASN_PRINT" Width="1.5" PointX="53.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_PLABEL_BY_KITS_PRINT" Width="1.5" PointX="53.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_PLABEL_BY_PART_PRINT" Width="1.5" PointX="2.75" PointY="54.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_PLABEL_BY_UNCATALOG_PRINT" Width="1.5" PointX="4.75" PointY="54.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_PLABEL_PRINT_OLD" Width="1.5" PointX="15.75" PointY="54.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_SHIP_H_LINK_PROC" Width="1.5" PointX="17.75" PointY="54.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_SHIPMENT_D_ALL1ONE_RP0" Width="1.5" PointX="19.75" PointY="54.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_SHIPMENT_D_ALL1ONE_RP1" Width="1.5" PointX="21.75" PointY="54.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_SHIPMENT_D_ALL1ONE_RP2" Width="1.5" PointX="23.75" PointY="54.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_SHIPMENT_H_RP0" Width="1.5" PointX="25.75" PointY="54.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_SHIPMENT_H_RP1" Width="1.5" PointX="27.75" PointY="54.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_SHIPMENT_H_RP2" Width="1.5" PointX="29.75" PointY="54.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_SHIPMENT_SMRY_RP0" Width="1.5" PointX="31.75" PointY="54.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_SHIPMENT_SMRY_RP1" Width="1.5" PointX="55.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_SHIPMENT_SMRY_RP2" Width="1.5" PointX="55.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_SHIPPING_ALL_BASE" Width="1.5" PointX="55.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_SHIPPING_D_SPDC" Width="1.5" PointX="55.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_SHIPPING_H_MDC" Width="1.5" PointX="55.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_SHIPPING_H_SPDC" Width="1.5" PointX="55.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_SUPPLIER_PARTS_PDC" Width="1.5" PointX="55.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_TC_CATEGORY_BY_SYS" Width="1.5" PointX="55.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_TC_DB_SENDOUT_DAILY" Width="1.5" PointX="55.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_TC_IMPORT_WITH_HS" Width="1.5" PointX="55.75" PointY="42.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_TC_MDM_ALL" Width="1.5" PointX="55.75" PointY="49.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_TC_PART_HS" Width="1.5" PointX="49.75" PointY="55.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_TMP_QUICK_ORDER_SUMMARY" Width="1.5" PointX="6.75" PointY="56.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_USER_ALIAS_LINK" Width="1.5" PointX="8.75" PointY="56.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_USER_NAV_ALL" Width="1.5" PointX="10.75" PointY="56.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_USER_PAGE_LINK" Width="1.5" PointX="43.75" PointY="56.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChubDBModel.V_USER_ROLE_LINK" Width="1.5" PointX="55.75" PointY="56.75" IsExpanded="true" />
+        <AssociationConnector Association="ChubDBModel.APP_CUST_ALIAS_LINK_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.APP_USER_ALIAS_LINK_R02" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.TS_OR_HEADER_R05" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.APP_CUST_ALIAS_LINK_R02" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.APP_DURATION_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.TS_OR_HEADER_R02" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.TS_OR_HEADER_R04" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.APP_PAGE_ROLE_LINK_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.APP_PAGE_ROLE_LINK_R02" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.APP_SPACE_PAGE_LINK_R02" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.APP_RECENT_PAGES_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.C00002" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.TS_OR_HEADER_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.APP_WH_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.RP_PRINTER_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.APP_SPACE_PAGE_LINK_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.APP_USER_ALIAS_LINK_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.APP_USER_ROLE_LINK_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.APP_USERS_R02" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.C0001" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.EW_USER_APPLY_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.APP_WH_R02" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.APP_WH_R03" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.DB_KPI_HISTORY_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.DB_KPI_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.DB_KPI_R02" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.EW_MESSAGE_ATTACH_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.EW_MESSAGE_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.EW_SCHEDULE_TASK_R02" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.EW_USER_APPLY_R02" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.EW_MESSAGE_ATTACH_R02" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.EW_SCHEDULE_TASK_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.G_KITS_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.G_PART_ADDTIONAL_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.IA_PRT_NOTE_CUST_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.IA_LOD_DTL_R02" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.IA_LOD_DTL_R03" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.IA_LOD_DTL_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.IA_LOD_HDR_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.IA_PRT_NOTE_CUST_R02" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.ITT_CARRIER_CODES_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.ITT_SHIPPING_D_SNAP_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.ITT_SHIPPING_D_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.ITT_SHIPPING_H_R03" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.SYS_C0044526" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.ITT_SHIPPING_H_SNAP_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.ITT_TRAN_LOAD_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.ITT_TRAN_LOAD_R02" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.ITT_TRAN_PROCESS_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.ITT_TRAN_PROCESS_R02" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.M_ADRNAM_MST_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.M_PART_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.M_PART_R02" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.TC_PART_CATEGORY_STG_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.TC_PART_HS_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.TS_OR_HEADER_R03" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.RP_ADR_MST_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.RP_CAR_MST_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.RP_CUST_PACK_TYPE_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.RP_LABEL_PAPER_TYPE_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.RP_STATION_R02" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.TC_HSCODE_MST_R01" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.TC_PART_HS_R02" ManuallyRouted="false" />
+        <AssociationConnector Association="ChubDBModel.TC_PART_CATEGORY_STG_R02" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ChubDBModel.COUNTRY_CODES" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="ChubDBModel.V_JD_ASN_BASE" Width="1.5" PointX="15.375" PointY="23.75" />
+        <EntityTypeShape EntityType="ChubDBModel.V_JD_ASN_LOAD" Width="1.5" PointX="15.375" PointY="27.75" />
+        <EntityTypeShape EntityType="ChubDBModel.V_JD_PICK_BASE" Width="1.5" PointX="21.375" PointY="39.75" />
+        <EntityTypeShape EntityType="ChubDBModel.V_JD_PICK_LOAD" Width="1.5" PointX="40.375" PointY="8.75" />
+        <EntityTypeShape EntityType="ChubDBModel.V_JD_PRT_MST_LOAD" Width="1.5" PointX="38.375" PointY="39.75" />
+        <EntityTypeShape EntityType="ChubDBModel.V_JD_WB_FORMAT" Width="1.5" PointX="40.375" PointY="15.75" />
+        <EntityTypeShape EntityType="ChubDBModel.V_PLABEL_BY_LOD_PRINT" Width="1.5" PointX="38.375" PointY="53.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

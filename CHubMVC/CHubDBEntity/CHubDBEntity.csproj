@@ -64,267 +64,454 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APP_CUST_ALIAS.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="APP_CUST_ALIAS_LINK.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="APP_DURATION.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="APP_NOTICE.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="APP_ORDER_STATUS.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="APP_ORDER_TYPE.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="APP_PAGES.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="APP_PAGE_ROLE_LINK.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="APP_QUICK_SCREEN.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="APP_RECENT_PAGES.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="APP_ROLES.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="APP_SHIP_SEQ.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="APP_SITES.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="APP_SPACE_PAGE_LINK.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="APP_USERS.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="APP_USER_ALIAS_LINK.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="APP_USER_ROLE_LINK.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="APP_WELCOME.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="APP_WH.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="APP_WORKSPACE.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="CHubDBModel.Context.cs">
+    <Compile Include="ChubDBModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CHubDBModel.Context.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="CHubDBModel.cs">
+    <Compile Include="ChubDBModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="CHubDBModel.Designer.cs">
+    <Compile Include="ChubDBModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CHubDBModel.edmx</DependentUpon>
+      <DependentUpon>ChubDBModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="COUNTRY_CODES.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DB_KPI.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DB_KPI_CODE.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DB_KPI_GROUP.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DB_KPI_HISTORY.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EML_TASK.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EW_LOG.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EW_MESSAGE.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EW_MESSAGE_ATTACH.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EW_MESSAGE_GROUP.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EW_SCHEDULE.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EW_SCHEDULE_TASK.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EW_SCRIPT.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EW_USER_APPLY.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ExtensionMethod\ExtensionMethod.cs" />
     <Compile Include="GOMS_ASN_H.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="G_KITS.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="G_KITS_BAK.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="G_KITS_LOAD.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="G_KIT_JAN20.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="G_PART_ADDTIONAL.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="G_PART_DESCRIPTION.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="G_PART_SUPERSESSION_ALL.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="G_UNCATALOG_PART.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="G_UNCATALOG_PART_LOAD.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IA_2DSCAN_LOG.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IA_CODE_TYPE.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IA_LOD_AUDIT.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IA_LOD_DTL.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IA_LOD_HDR.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IA_PART_AUTOMAP.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IA_PRT_NOTE_CUST.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IA_REPOSITORY_CLAIM_ORD.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IA_STATUS_CODE.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IA_TODO.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IA_TODO_OLD.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ITT_AVLDTE.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ITT_CARRIER_CODES.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ITT_CUSTOM_PROCESS.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ITT_CUSTOM_PROCESS_BACKUP.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ITT_CUSTOM_PROCESS_OLD.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ITT_CUST_LOAD.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ITT_EASY_QUERY_LOG.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ITT_EASY_WATCHING.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ITT_PO.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ITT_SHIPPING_D.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ITT_SHIPPING_D_SNAP.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ITT_SHIPPING_H.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ITT_SHIPPING_H_SNAP.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ITT_SHIPPING_H_STACK.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ITT_SO.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ITT_SO_ARCH.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ITT_SUPPLIER_IN_SCOPE.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ITT_TRAN_LOAD.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ITT_TRAN_PROCESS.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ITT_TRAN_TYPE.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="M_ADRNAM_MST.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="M_APPS.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="M_CALENDAR.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="M_INV.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="M_INV_ARCH.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="M_PARAMETER.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="M_PART.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="M_PART_BACKUP.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="M_SYSTEM.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="OtherPartials\ITT_CUST_LOAD.cs" />
     <Compile Include="OtherPartials\ITT_TRAN_LOAD.cs" />
+    <Compile Include="PART_COST_SNAP.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PART_SUPPLIER.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="P_ADDR_DFLT.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="P_ADDR_SPL.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="P_ASN.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="P_AVLDTE.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="P_CATALOG_CUSTOMER_PART.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="P_PO.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RP_ADR_MST.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RP_AUTOPACK_LOG.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RP_CAR_MST.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RP_CUST_PACK_TYPE.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RP_LABEL_PAPER_TYPE.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RP_LABEL_TYPE.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RP_LABEL_TYPE2.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RP_LABEL_TYPE2_BACK0111.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RP_LABEL_TYPE2_BCK1121.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RP_ORDTYP_MST.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RP_PACKAGE.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RP_PRINTER.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RP_SHIP_TRACK.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RP_SHIP_TRACK_AUDIT.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RP_STATION.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RP_WAYBILL_BASICINFO.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="RP_WAYBILL_TYPE.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="R_ADDR_DFLT.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="R_ADDR_SPL.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="R_ASN.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="R_AVLDTE.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="R_CATALOG_CUSTOMER_PART.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="R_PO.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SNAP_LOD_TRACK.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SNAP_OPENASN_STATUS.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SNAP_SHIP_LIST_ALL.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SNAP_V_SHIP_LIST_ALL_P.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SNAP_V_SHIP_LIST_ALL_R.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TC_HSCODE_AUDIT.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TC_HSCODE_MST.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TC_PART_CATEGORY.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TC_PART_CATEGORY_STG.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TC_PART_HS.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TC_PART_HS_AUDIT.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TC_PART_HS_BAK0307.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TC_PART_HS_INI.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TC_PART_HS_LOAD.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TC_PART_HS_LOADBACK.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TC_PART_HS_STG.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TMP_ASN.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TMP_DCECPRT_EXPORT.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TMP_WO_DTL.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TMP_WO_HDR.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TMS_ADR_AUTO_CORRECT.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TMS_SHIP_UPLOAD_STG.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TS_OR_DETAIL.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TS_OR_DETAIL_STAGE.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TS_OR_HEADER.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TS_OR_HEADER_STAGE.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="UnmanagedModel\APP_SECURE_PROC_ASSIGN.cs" />
     <Compile Include="UnmanagedModel\G_CATALOG_CUSTOMER_PART.cs" />
     <Compile Include="UnmanagedModel\G_OESALES_CATALOG.cs" />
     <Compile Include="UnmanagedModel\G_NETAVL.cs" />
+    <Compile Include="UnmanagedModel\IA_CODE_TYPE.cs" />
+    <Compile Include="UnmanagedModel\V_IA_LOD_BASE.cs" />
+    <Compile Include="UnmanagedModel\V_IA_LOD_DTL.cs" />
     <Compile Include="UnmanagedModel\V_INQ_TRACKNUM.cs" />
     <Compile Include="UnmanagedModel\V_INV_PDC.cs" />
     <Compile Include="UnmanagedModel\V_INV_RDC.cs" />
@@ -344,98 +531,287 @@
     <Compile Include="UnmanagedModel\V_SHIPMENT_D_ALL1ONE.cs" />
     <Compile Include="UnmanagedModel\V_SHIPMENT_H_RP_ALL.cs" />
     <Compile Include="V_ALIAS_ADDR_DFLT.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_ALIAS_ADDR_SPL.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_BTW_TEST.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_CHK_DUPLICATE_DEST.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_CHK_DURATION_MISSING.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_CP_LOOKUP.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_CTM_INB_ASN_SPDC.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_CUSTREF_LIUGONG.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_CUSTREF_YUTONG.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_DURATION_WH2CITY.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_GOMS_ASN_H.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_IA_ALL.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_IA_LOD_DTL.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_IA_LOD_HDR.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_IA_PRT_NOTE_CUST_ADDNEW.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_IA_REPORT_PRINT.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_IA_SIGN_IND.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_IA_TODO_TODAY.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_INV_SPDC.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_ITT_SHIPPING_ALLIN1.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_ITT_SHIPPING_ALLIN1_BACKUP.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_ITT_SHIPPING_D.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_ITT_SHIPPING_SMRY.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_ITT_SO_FROM_MDC.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_ITT_SO_FROM_SPDC.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_JD_ASN_BASE.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_JD_ASN_LOAD.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_JD_PICK_BASE.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_JD_PICK_LOAD.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_JD_PRT_MST_LOAD.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_JD_WB_FORMAT.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_KPI_HISTORY_ALL.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_KPI_INV_SKU_P.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_KPI_INV_SKU_R.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_KPI_ITT_01.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_KPI_ITT_02.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_KPI_ITT_03.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_KPI_ITT_DECLARE_AVG_LT_01.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_KPI_ITT_DECLARE_AVG_LT_02.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_KPI_ITT_DECLARE_AVG_LT_03.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_KPI_ITT_DECLARE_ONTIME_01.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_KPI_ITT_DECLARE_ONTIME_02.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_KPI_ITT_DECLARE_ONTIME_03.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_KPI_ITT_DO_ONTIME.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_KPI_P2S_01.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_KPI_P2S_02.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_KPI_P2S_03.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_KPI_P2S_04.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_NAV_ALL.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_OPEN_QTY_ASN_PDC.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_OPEN_QTY_ASN_RDC.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_OPEN_QTY_PO_PDC.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_OPEN_QTY_PO_RDC.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_O_DOWNLOAD_DTL.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_O_DOWNLOAD_HDR.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_PLABEL_BY_ASN_PRINT.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_PLABEL_BY_KITS_PRINT.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_PLABEL_BY_LOD_PRINT.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_PLABEL_BY_PART_PRINT.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_PLABEL_BY_UNCATALOG_PRINT.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_PLABEL_PRINT_OLD.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_SHIPMENT_D_ALL1ONE_RP0.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_SHIPMENT_D_ALL1ONE_RP1.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_SHIPMENT_D_ALL1ONE_RP2.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_SHIPMENT_H_RP0.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_SHIPMENT_H_RP1.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_SHIPMENT_H_RP2.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_SHIPMENT_SMRY_RP0.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_SHIPMENT_SMRY_RP1.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_SHIPMENT_SMRY_RP2.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_SHIPPING_ALL_BASE.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_SHIPPING_D_SPDC.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_SHIPPING_H_MDC.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_SHIPPING_H_SPDC.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_SHIP_H_LINK_PROC.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_SUPPLIER_PARTS_PDC.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_TC_CATEGORY_BY_SYS.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_TC_DB_SENDOUT_DAILY.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_TC_IMPORT_WITH_HS.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_TC_MDM_ALL.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_TC_PART_HS.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_TMP_QUICK_ORDER_SUMMARY.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_USER_ALIAS_LINK.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_USER_NAV_ALL.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="V_USER_PAGE_LINK.cs">
-      <DependentUpon>CHubDBModel.tt</DependentUpon>
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_USER_ROLE_LINK.cs">
+      <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="CHubDBModel.edmx">
+    <EntityDeploy Include="ChubDBModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>CHubDBModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>ChubDBModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="CHubDBModel.edmx.diagram">
-      <DependentUpon>CHubDBModel.edmx</DependentUpon>
+    <None Include="ChubDBModel.edmx.diagram">
+      <DependentUpon>ChubDBModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CHubDBModel.Context.tt">
+    <Content Include="ChubDBModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>CHubDBModel.edmx</DependentUpon>
-      <LastGenOutput>CHubDBModel.Context.cs</LastGenOutput>
+      <DependentUpon>ChubDBModel.edmx</DependentUpon>
+      <LastGenOutput>ChubDBModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="CHubDBModel.tt">
+    <Content Include="ChubDBModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>CHubDBModel.edmx</DependentUpon>
-      <LastGenOutput>CHubDBModel.cs</LastGenOutput>
+      <DependentUpon>ChubDBModel.edmx</DependentUpon>
+      <LastGenOutput>ChubDBModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\ChubDBChangesScript.sql" />
   </ItemGroup>

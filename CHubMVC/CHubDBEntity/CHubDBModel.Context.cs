@@ -12,6 +12,8 @@ namespace CHubDBEntity
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class CHubEntities : DbContext
     {
@@ -29,11 +31,14 @@ namespace CHubDBEntity
         public virtual DbSet<APP_CUST_ALIAS_LINK> APP_CUST_ALIAS_LINK { get; set; }
         public virtual DbSet<APP_DURATION> APP_DURATION { get; set; }
         public virtual DbSet<APP_NOTICE> APP_NOTICE { get; set; }
+        public virtual DbSet<APP_ORDER_STATUS> APP_ORDER_STATUS { get; set; }
         public virtual DbSet<APP_ORDER_TYPE> APP_ORDER_TYPE { get; set; }
         public virtual DbSet<APP_PAGE_ROLE_LINK> APP_PAGE_ROLE_LINK { get; set; }
         public virtual DbSet<APP_PAGES> APP_PAGES { get; set; }
+        public virtual DbSet<APP_QUICK_SCREEN> APP_QUICK_SCREEN { get; set; }
         public virtual DbSet<APP_RECENT_PAGES> APP_RECENT_PAGES { get; set; }
         public virtual DbSet<APP_ROLES> APP_ROLES { get; set; }
+        public virtual DbSet<APP_SHIP_SEQ> APP_SHIP_SEQ { get; set; }
         public virtual DbSet<APP_SITES> APP_SITES { get; set; }
         public virtual DbSet<APP_SPACE_PAGE_LINK> APP_SPACE_PAGE_LINK { get; set; }
         public virtual DbSet<APP_USER_ALIAS_LINK> APP_USER_ALIAS_LINK { get; set; }
@@ -42,96 +47,295 @@ namespace CHubDBEntity
         public virtual DbSet<APP_WELCOME> APP_WELCOME { get; set; }
         public virtual DbSet<APP_WH> APP_WH { get; set; }
         public virtual DbSet<APP_WORKSPACE> APP_WORKSPACE { get; set; }
+        public virtual DbSet<DB_KPI> DB_KPI { get; set; }
+        public virtual DbSet<DB_KPI_CODE> DB_KPI_CODE { get; set; }
+        public virtual DbSet<DB_KPI_GROUP> DB_KPI_GROUP { get; set; }
+        public virtual DbSet<DB_KPI_HISTORY> DB_KPI_HISTORY { get; set; }
+        public virtual DbSet<EW_LOG> EW_LOG { get; set; }
+        public virtual DbSet<EW_MESSAGE> EW_MESSAGE { get; set; }
+        public virtual DbSet<EW_MESSAGE_ATTACH> EW_MESSAGE_ATTACH { get; set; }
+        public virtual DbSet<EW_MESSAGE_GROUP> EW_MESSAGE_GROUP { get; set; }
+        public virtual DbSet<EW_SCHEDULE> EW_SCHEDULE { get; set; }
+        public virtual DbSet<EW_SCHEDULE_TASK> EW_SCHEDULE_TASK { get; set; }
+        public virtual DbSet<EW_SCRIPT> EW_SCRIPT { get; set; }
+        public virtual DbSet<EW_USER_APPLY> EW_USER_APPLY { get; set; }
+        public virtual DbSet<G_KITS> G_KITS { get; set; }
+        public virtual DbSet<G_PART_ADDTIONAL> G_PART_ADDTIONAL { get; set; }
+        public virtual DbSet<G_UNCATALOG_PART> G_UNCATALOG_PART { get; set; }
+        public virtual DbSet<GOMS_ASN_H> GOMS_ASN_H { get; set; }
+        public virtual DbSet<IA_2DSCAN_LOG> IA_2DSCAN_LOG { get; set; }
+        public virtual DbSet<IA_CODE_TYPE> IA_CODE_TYPE { get; set; }
+        public virtual DbSet<IA_LOD_DTL> IA_LOD_DTL { get; set; }
+        public virtual DbSet<IA_LOD_HDR> IA_LOD_HDR { get; set; }
+        public virtual DbSet<IA_PART_AUTOMAP> IA_PART_AUTOMAP { get; set; }
+        public virtual DbSet<IA_PRT_NOTE_CUST> IA_PRT_NOTE_CUST { get; set; }
+        public virtual DbSet<IA_STATUS_CODE> IA_STATUS_CODE { get; set; }
+        public virtual DbSet<IA_TODO> IA_TODO { get; set; }
+        public virtual DbSet<ITT_AVLDTE> ITT_AVLDTE { get; set; }
+        public virtual DbSet<ITT_CARRIER_CODES> ITT_CARRIER_CODES { get; set; }
+        public virtual DbSet<ITT_CUST_LOAD> ITT_CUST_LOAD { get; set; }
+        public virtual DbSet<ITT_CUSTOM_PROCESS> ITT_CUSTOM_PROCESS { get; set; }
+        public virtual DbSet<ITT_EASY_QUERY_LOG> ITT_EASY_QUERY_LOG { get; set; }
+        public virtual DbSet<ITT_PO> ITT_PO { get; set; }
+        public virtual DbSet<ITT_SHIPPING_D> ITT_SHIPPING_D { get; set; }
+        public virtual DbSet<ITT_SHIPPING_D_SNAP> ITT_SHIPPING_D_SNAP { get; set; }
+        public virtual DbSet<ITT_SHIPPING_H> ITT_SHIPPING_H { get; set; }
+        public virtual DbSet<ITT_SHIPPING_H_SNAP> ITT_SHIPPING_H_SNAP { get; set; }
+        public virtual DbSet<ITT_SHIPPING_H_STACK> ITT_SHIPPING_H_STACK { get; set; }
+        public virtual DbSet<ITT_SO> ITT_SO { get; set; }
+        public virtual DbSet<ITT_SUPPLIER_IN_SCOPE> ITT_SUPPLIER_IN_SCOPE { get; set; }
+        public virtual DbSet<ITT_TRAN_LOAD> ITT_TRAN_LOAD { get; set; }
+        public virtual DbSet<ITT_TRAN_PROCESS> ITT_TRAN_PROCESS { get; set; }
+        public virtual DbSet<ITT_TRAN_TYPE> ITT_TRAN_TYPE { get; set; }
+        public virtual DbSet<M_ADRNAM_MST> M_ADRNAM_MST { get; set; }
+        public virtual DbSet<M_APPS> M_APPS { get; set; }
+        public virtual DbSet<M_CALENDAR> M_CALENDAR { get; set; }
+        public virtual DbSet<M_INV> M_INV { get; set; }
         public virtual DbSet<M_PARAMETER> M_PARAMETER { get; set; }
+        public virtual DbSet<M_PART> M_PART { get; set; }
         public virtual DbSet<M_SYSTEM> M_SYSTEM { get; set; }
+        public virtual DbSet<PART_COST_SNAP> PART_COST_SNAP { get; set; }
+        public virtual DbSet<RP_ADR_MST> RP_ADR_MST { get; set; }
+        public virtual DbSet<RP_AUTOPACK_LOG> RP_AUTOPACK_LOG { get; set; }
+        public virtual DbSet<RP_CAR_MST> RP_CAR_MST { get; set; }
+        public virtual DbSet<RP_CUST_PACK_TYPE> RP_CUST_PACK_TYPE { get; set; }
+        public virtual DbSet<RP_LABEL_PAPER_TYPE> RP_LABEL_PAPER_TYPE { get; set; }
+        public virtual DbSet<RP_LABEL_TYPE> RP_LABEL_TYPE { get; set; }
+        public virtual DbSet<RP_LABEL_TYPE2> RP_LABEL_TYPE2 { get; set; }
+        public virtual DbSet<RP_ORDTYP_MST> RP_ORDTYP_MST { get; set; }
+        public virtual DbSet<RP_PACKAGE> RP_PACKAGE { get; set; }
+        public virtual DbSet<RP_PRINTER> RP_PRINTER { get; set; }
+        public virtual DbSet<RP_SHIP_TRACK> RP_SHIP_TRACK { get; set; }
+        public virtual DbSet<RP_STATION> RP_STATION { get; set; }
+        public virtual DbSet<RP_WAYBILL_BASICINFO> RP_WAYBILL_BASICINFO { get; set; }
+        public virtual DbSet<RP_WAYBILL_TYPE> RP_WAYBILL_TYPE { get; set; }
+        public virtual DbSet<SNAP_LOD_TRACK> SNAP_LOD_TRACK { get; set; }
+        public virtual DbSet<SNAP_OPENASN_STATUS> SNAP_OPENASN_STATUS { get; set; }
+        public virtual DbSet<SNAP_SHIP_LIST_ALL> SNAP_SHIP_LIST_ALL { get; set; }
+        public virtual DbSet<TC_HSCODE_MST> TC_HSCODE_MST { get; set; }
+        public virtual DbSet<TC_PART_CATEGORY> TC_PART_CATEGORY { get; set; }
+        public virtual DbSet<TC_PART_CATEGORY_STG> TC_PART_CATEGORY_STG { get; set; }
+        public virtual DbSet<TC_PART_HS> TC_PART_HS { get; set; }
+        public virtual DbSet<TMS_ADR_AUTO_CORRECT> TMS_ADR_AUTO_CORRECT { get; set; }
+        public virtual DbSet<TMS_SHIP_UPLOAD_STG> TMS_SHIP_UPLOAD_STG { get; set; }
+        public virtual DbSet<TS_OR_DETAIL> TS_OR_DETAIL { get; set; }
+        public virtual DbSet<TS_OR_DETAIL_STAGE> TS_OR_DETAIL_STAGE { get; set; }
+        public virtual DbSet<TS_OR_HEADER> TS_OR_HEADER { get; set; }
+        public virtual DbSet<TS_OR_HEADER_STAGE> TS_OR_HEADER_STAGE { get; set; }
+        public virtual DbSet<EML_TASK> EML_TASK { get; set; }
+        public virtual DbSet<G_KIT_JAN20> G_KIT_JAN20 { get; set; }
+        public virtual DbSet<G_KITS_BAK> G_KITS_BAK { get; set; }
+        public virtual DbSet<G_KITS_LOAD> G_KITS_LOAD { get; set; }
+        public virtual DbSet<G_UNCATALOG_PART_LOAD> G_UNCATALOG_PART_LOAD { get; set; }
+        public virtual DbSet<IA_LOD_AUDIT> IA_LOD_AUDIT { get; set; }
+        public virtual DbSet<IA_REPOSITORY_CLAIM_ORD> IA_REPOSITORY_CLAIM_ORD { get; set; }
+        public virtual DbSet<IA_TODO_OLD> IA_TODO_OLD { get; set; }
+        public virtual DbSet<ITT_CUSTOM_PROCESS_BACKUP> ITT_CUSTOM_PROCESS_BACKUP { get; set; }
+        public virtual DbSet<ITT_CUSTOM_PROCESS_OLD> ITT_CUSTOM_PROCESS_OLD { get; set; }
+        public virtual DbSet<ITT_EASY_WATCHING> ITT_EASY_WATCHING { get; set; }
+        public virtual DbSet<ITT_SO_ARCH> ITT_SO_ARCH { get; set; }
+        public virtual DbSet<M_INV_ARCH> M_INV_ARCH { get; set; }
+        public virtual DbSet<M_PART_BACKUP> M_PART_BACKUP { get; set; }
+        public virtual DbSet<PART_SUPPLIER> PART_SUPPLIER { get; set; }
+        public virtual DbSet<RP_LABEL_TYPE2_BACK0111> RP_LABEL_TYPE2_BACK0111 { get; set; }
+        public virtual DbSet<RP_LABEL_TYPE2_BCK1121> RP_LABEL_TYPE2_BCK1121 { get; set; }
+        public virtual DbSet<RP_SHIP_TRACK_AUDIT> RP_SHIP_TRACK_AUDIT { get; set; }
+        public virtual DbSet<TC_HSCODE_AUDIT> TC_HSCODE_AUDIT { get; set; }
+        public virtual DbSet<TC_PART_HS_AUDIT> TC_PART_HS_AUDIT { get; set; }
+        public virtual DbSet<TC_PART_HS_BAK0307> TC_PART_HS_BAK0307 { get; set; }
+        public virtual DbSet<TC_PART_HS_INI> TC_PART_HS_INI { get; set; }
+        public virtual DbSet<TC_PART_HS_LOAD> TC_PART_HS_LOAD { get; set; }
+        public virtual DbSet<TC_PART_HS_LOADBACK> TC_PART_HS_LOADBACK { get; set; }
+        public virtual DbSet<TC_PART_HS_STG> TC_PART_HS_STG { get; set; }
+        public virtual DbSet<TMP_ASN> TMP_ASN { get; set; }
+        public virtual DbSet<TMP_DCECPRT_EXPORT> TMP_DCECPRT_EXPORT { get; set; }
+        public virtual DbSet<TMP_WO_DTL> TMP_WO_DTL { get; set; }
+        public virtual DbSet<TMP_WO_HDR> TMP_WO_HDR { get; set; }
         public virtual DbSet<G_PART_DESCRIPTION> G_PART_DESCRIPTION { get; set; }
         public virtual DbSet<G_PART_SUPERSESSION_ALL> G_PART_SUPERSESSION_ALL { get; set; }
         public virtual DbSet<P_ADDR_DFLT> P_ADDR_DFLT { get; set; }
         public virtual DbSet<P_ADDR_SPL> P_ADDR_SPL { get; set; }
+        public virtual DbSet<P_ASN> P_ASN { get; set; }
+        public virtual DbSet<P_AVLDTE> P_AVLDTE { get; set; }
         public virtual DbSet<P_CATALOG_CUSTOMER_PART> P_CATALOG_CUSTOMER_PART { get; set; }
+        public virtual DbSet<P_PO> P_PO { get; set; }
         public virtual DbSet<R_ADDR_DFLT> R_ADDR_DFLT { get; set; }
         public virtual DbSet<R_ADDR_SPL> R_ADDR_SPL { get; set; }
+        public virtual DbSet<R_ASN> R_ASN { get; set; }
+        public virtual DbSet<R_AVLDTE> R_AVLDTE { get; set; }
         public virtual DbSet<R_CATALOG_CUSTOMER_PART> R_CATALOG_CUSTOMER_PART { get; set; }
+        public virtual DbSet<R_PO> R_PO { get; set; }
+        public virtual DbSet<SNAP_V_SHIP_LIST_ALL_P> SNAP_V_SHIP_LIST_ALL_P { get; set; }
+        public virtual DbSet<SNAP_V_SHIP_LIST_ALL_R> SNAP_V_SHIP_LIST_ALL_R { get; set; }
         public virtual DbSet<V_ALIAS_ADDR_DFLT> V_ALIAS_ADDR_DFLT { get; set; }
         public virtual DbSet<V_ALIAS_ADDR_SPL> V_ALIAS_ADDR_SPL { get; set; }
+        public virtual DbSet<V_BTW_TEST> V_BTW_TEST { get; set; }
+        public virtual DbSet<V_CHK_DUPLICATE_DEST> V_CHK_DUPLICATE_DEST { get; set; }
         public virtual DbSet<V_CHK_DURATION_MISSING> V_CHK_DURATION_MISSING { get; set; }
+        public virtual DbSet<V_CP_LOOKUP> V_CP_LOOKUP { get; set; }
+        public virtual DbSet<V_CTM_INB_ASN_SPDC> V_CTM_INB_ASN_SPDC { get; set; }
+        public virtual DbSet<V_CUSTREF_LIUGONG> V_CUSTREF_LIUGONG { get; set; }
+        public virtual DbSet<V_CUSTREF_YUTONG> V_CUSTREF_YUTONG { get; set; }
+        public virtual DbSet<V_DURATION_WH2CITY> V_DURATION_WH2CITY { get; set; }
+        public virtual DbSet<V_GOMS_ASN_H> V_GOMS_ASN_H { get; set; }
+        public virtual DbSet<V_IA_ALL> V_IA_ALL { get; set; }
+        public virtual DbSet<V_IA_LOD_DTL> V_IA_LOD_DTL { get; set; }
+        public virtual DbSet<V_IA_LOD_HDR> V_IA_LOD_HDR { get; set; }
+        public virtual DbSet<V_IA_PRT_NOTE_CUST_ADDNEW> V_IA_PRT_NOTE_CUST_ADDNEW { get; set; }
+        public virtual DbSet<V_IA_REPORT_PRINT> V_IA_REPORT_PRINT { get; set; }
+        public virtual DbSet<V_IA_SIGN_IND> V_IA_SIGN_IND { get; set; }
+        public virtual DbSet<V_IA_TODO_TODAY> V_IA_TODO_TODAY { get; set; }
+        public virtual DbSet<V_INV_SPDC> V_INV_SPDC { get; set; }
+        public virtual DbSet<V_ITT_SHIPPING_ALLIN1> V_ITT_SHIPPING_ALLIN1 { get; set; }
+        public virtual DbSet<V_ITT_SHIPPING_ALLIN1_BACKUP> V_ITT_SHIPPING_ALLIN1_BACKUP { get; set; }
+        public virtual DbSet<V_ITT_SHIPPING_D> V_ITT_SHIPPING_D { get; set; }
+        public virtual DbSet<V_ITT_SHIPPING_SMRY> V_ITT_SHIPPING_SMRY { get; set; }
+        public virtual DbSet<V_ITT_SO_FROM_MDC> V_ITT_SO_FROM_MDC { get; set; }
+        public virtual DbSet<V_ITT_SO_FROM_SPDC> V_ITT_SO_FROM_SPDC { get; set; }
+        public virtual DbSet<V_KPI_HISTORY_ALL> V_KPI_HISTORY_ALL { get; set; }
+        public virtual DbSet<V_KPI_INV_SKU_P> V_KPI_INV_SKU_P { get; set; }
+        public virtual DbSet<V_KPI_INV_SKU_R> V_KPI_INV_SKU_R { get; set; }
+        public virtual DbSet<V_KPI_ITT_01> V_KPI_ITT_01 { get; set; }
+        public virtual DbSet<V_KPI_ITT_02> V_KPI_ITT_02 { get; set; }
+        public virtual DbSet<V_KPI_ITT_03> V_KPI_ITT_03 { get; set; }
+        public virtual DbSet<V_KPI_ITT_DECLARE_AVG_LT_01> V_KPI_ITT_DECLARE_AVG_LT_01 { get; set; }
+        public virtual DbSet<V_KPI_ITT_DECLARE_AVG_LT_02> V_KPI_ITT_DECLARE_AVG_LT_02 { get; set; }
+        public virtual DbSet<V_KPI_ITT_DECLARE_AVG_LT_03> V_KPI_ITT_DECLARE_AVG_LT_03 { get; set; }
+        public virtual DbSet<V_KPI_ITT_DECLARE_ONTIME_01> V_KPI_ITT_DECLARE_ONTIME_01 { get; set; }
+        public virtual DbSet<V_KPI_ITT_DECLARE_ONTIME_02> V_KPI_ITT_DECLARE_ONTIME_02 { get; set; }
+        public virtual DbSet<V_KPI_ITT_DECLARE_ONTIME_03> V_KPI_ITT_DECLARE_ONTIME_03 { get; set; }
+        public virtual DbSet<V_KPI_ITT_DO_ONTIME> V_KPI_ITT_DO_ONTIME { get; set; }
+        public virtual DbSet<V_KPI_P2S_01> V_KPI_P2S_01 { get; set; }
+        public virtual DbSet<V_KPI_P2S_02> V_KPI_P2S_02 { get; set; }
+        public virtual DbSet<V_KPI_P2S_03> V_KPI_P2S_03 { get; set; }
+        public virtual DbSet<V_KPI_P2S_04> V_KPI_P2S_04 { get; set; }
         public virtual DbSet<V_NAV_ALL> V_NAV_ALL { get; set; }
-        public virtual DbSet<V_USER_PAGE_LINK> V_USER_PAGE_LINK { get; set; }
-        public virtual DbSet<V_USER_NAV_ALL> V_USER_NAV_ALL { get; set; }
-        public virtual DbSet<APP_ORDER_STATUS> APP_ORDER_STATUS { get; set; }
-        public virtual DbSet<APP_SHIP_SEQ> APP_SHIP_SEQ { get; set; }
-        public virtual DbSet<TS_OR_HEADER> TS_OR_HEADER { get; set; }
-        public virtual DbSet<TS_OR_DETAIL> TS_OR_DETAIL { get; set; }
-        public virtual DbSet<TS_OR_DETAIL_STAGE> TS_OR_DETAIL_STAGE { get; set; }
-        public virtual DbSet<TS_OR_HEADER_STAGE> TS_OR_HEADER_STAGE { get; set; }
         public virtual DbSet<V_O_DOWNLOAD_DTL> V_O_DOWNLOAD_DTL { get; set; }
         public virtual DbSet<V_O_DOWNLOAD_HDR> V_O_DOWNLOAD_HDR { get; set; }
-        public virtual DbSet<M_APPS> M_APPS { get; set; }
-        public virtual DbSet<TC_PART_CATEGORY> TC_PART_CATEGORY { get; set; }
-        public virtual DbSet<TC_PART_CATEGORY_STG> TC_PART_CATEGORY_STG { get; set; }
-        public virtual DbSet<TC_PART_HS> TC_PART_HS { get; set; }
-        public virtual DbSet<TC_PART_HS_AUDIT> TC_PART_HS_AUDIT { get; set; }
-        public virtual DbSet<TC_PART_HS_INI> TC_PART_HS_INI { get; set; }
-        public virtual DbSet<TC_PART_HS_STG> TC_PART_HS_STG { get; set; }
-        public virtual DbSet<V_TC_CATEGORY_BY_SYS> V_TC_CATEGORY_BY_SYS { get; set; }
-        public virtual DbSet<V_TC_IMPORT_WITH_HS> V_TC_IMPORT_WITH_HS { get; set; }
-        public virtual DbSet<V_TC_MDM_ALL> V_TC_MDM_ALL { get; set; }
-        public virtual DbSet<V_TC_PART_HS> V_TC_PART_HS { get; set; }
-        public virtual DbSet<M_PART> M_PART { get; set; }
-        public virtual DbSet<ITT_SHIPPING_D_SNAP> ITT_SHIPPING_D_SNAP { get; set; }
-        public virtual DbSet<ITT_SHIPPING_H> ITT_SHIPPING_H { get; set; }
-        public virtual DbSet<ITT_SHIPPING_H_SNAP> ITT_SHIPPING_H_SNAP { get; set; }
-        public virtual DbSet<ITT_TRAN_TYPE> ITT_TRAN_TYPE { get; set; }
-        public virtual DbSet<ITT_CUST_LOAD> ITT_CUST_LOAD { get; set; }
-        public virtual DbSet<ITT_SHIPPING_D> ITT_SHIPPING_D { get; set; }
-        public virtual DbSet<V_ITT_SHIPPING_SMRY> V_ITT_SHIPPING_SMRY { get; set; }
-        public virtual DbSet<M_CALENDAR> M_CALENDAR { get; set; }
-        public virtual DbSet<ITT_TRAN_LOAD> ITT_TRAN_LOAD { get; set; }
-        public virtual DbSet<ITT_EASY_QUERY_LOG> ITT_EASY_QUERY_LOG { get; set; }
-        public virtual DbSet<M_INV> M_INV { get; set; }
-        public virtual DbSet<ITT_EASY_WATCHING> ITT_EASY_WATCHING { get; set; }
         public virtual DbSet<V_OPEN_QTY_ASN_PDC> V_OPEN_QTY_ASN_PDC { get; set; }
         public virtual DbSet<V_OPEN_QTY_ASN_RDC> V_OPEN_QTY_ASN_RDC { get; set; }
         public virtual DbSet<V_OPEN_QTY_PO_PDC> V_OPEN_QTY_PO_PDC { get; set; }
         public virtual DbSet<V_OPEN_QTY_PO_RDC> V_OPEN_QTY_PO_RDC { get; set; }
-        public virtual DbSet<V_ITT_SHIPPING_ALLIN1> V_ITT_SHIPPING_ALLIN1 { get; set; }
-        public virtual DbSet<ITT_PO> ITT_PO { get; set; }
-        public virtual DbSet<ITT_SO> ITT_SO { get; set; }
-        public virtual DbSet<DB_KPI> DB_KPI { get; set; }
-        public virtual DbSet<DB_KPI_GROUP> DB_KPI_GROUP { get; set; }
-        public virtual DbSet<DB_KPI_HISTORY> DB_KPI_HISTORY { get; set; }
-        public virtual DbSet<DB_KPI_CODE> DB_KPI_CODE { get; set; }
-        public virtual DbSet<EW_MESSAGE> EW_MESSAGE { get; set; }
-        public virtual DbSet<EW_MESSAGE_ATTACH> EW_MESSAGE_ATTACH { get; set; }
-        public virtual DbSet<EW_SCRIPT> EW_SCRIPT { get; set; }
-        public virtual DbSet<EW_LOG> EW_LOG { get; set; }
-        public virtual DbSet<EW_MESSAGE_GROUP> EW_MESSAGE_GROUP { get; set; }
-        public virtual DbSet<EW_SCHEDULE> EW_SCHEDULE { get; set; }
-        public virtual DbSet<EW_SCHEDULE_TASK> EW_SCHEDULE_TASK { get; set; }
-        public virtual DbSet<EW_USER_APPLY> EW_USER_APPLY { get; set; }
-        public virtual DbSet<RP_ADR_MST> RP_ADR_MST { get; set; }
-        public virtual DbSet<RP_CAR_MST> RP_CAR_MST { get; set; }
-        public virtual DbSet<RP_CUST_PACK_TYPE> RP_CUST_PACK_TYPE { get; set; }
-        public virtual DbSet<RP_PRINTER> RP_PRINTER { get; set; }
-        public virtual DbSet<RP_STATION> RP_STATION { get; set; }
-        public virtual DbSet<RP_WAYBILL_BASICINFO> RP_WAYBILL_BASICINFO { get; set; }
-        public virtual DbSet<RP_WAYBILL_TYPE> RP_WAYBILL_TYPE { get; set; }
-        public virtual DbSet<RP_SHIP_TRACK> RP_SHIP_TRACK { get; set; }
-        public virtual DbSet<RP_AUTOPACK_LOG> RP_AUTOPACK_LOG { get; set; }
-        public virtual DbSet<RP_ORDTYP_MST> RP_ORDTYP_MST { get; set; }
-        public virtual DbSet<RP_LABEL_TYPE> RP_LABEL_TYPE { get; set; }
-        public virtual DbSet<GOMS_ASN_H> GOMS_ASN_H { get; set; }
-        public virtual DbSet<V_PLABEL_BY_LOD_PRINT> V_PLABEL_BY_LOD_PRINT { get; set; }
-        public virtual DbSet<RP_LABEL_TYPE2> RP_LABEL_TYPE2 { get; set; }
-        public virtual DbSet<V_PLABEL_BY_PART_PRINT> V_PLABEL_BY_PART_PRINT { get; set; }
         public virtual DbSet<V_PLABEL_BY_ASN_PRINT> V_PLABEL_BY_ASN_PRINT { get; set; }
-        public virtual DbSet<V_PLABEL_BY_UNCATALOG_PRINT> V_PLABEL_BY_UNCATALOG_PRINT { get; set; }
-        public virtual DbSet<G_UNCATALOG_PART> G_UNCATALOG_PART { get; set; }
-        public virtual DbSet<V_SHIPPING_ALL_BASE> V_SHIPPING_ALL_BASE { get; set; }
-        public virtual DbSet<TC_HSCODE_MST> TC_HSCODE_MST { get; set; }
-        public virtual DbSet<TC_HSCODE_AUDIT> TC_HSCODE_AUDIT { get; set; }
-        public virtual DbSet<TMS_ADR_AUTO_CORRECT> TMS_ADR_AUTO_CORRECT { get; set; }
         public virtual DbSet<V_PLABEL_BY_KITS_PRINT> V_PLABEL_BY_KITS_PRINT { get; set; }
-        public virtual DbSet<G_KITS> G_KITS { get; set; }
+        public virtual DbSet<V_PLABEL_BY_PART_PRINT> V_PLABEL_BY_PART_PRINT { get; set; }
+        public virtual DbSet<V_PLABEL_BY_UNCATALOG_PRINT> V_PLABEL_BY_UNCATALOG_PRINT { get; set; }
+        public virtual DbSet<V_PLABEL_PRINT_OLD> V_PLABEL_PRINT_OLD { get; set; }
+        public virtual DbSet<V_SHIP_H_LINK_PROC> V_SHIP_H_LINK_PROC { get; set; }
+        public virtual DbSet<V_SHIPMENT_D_ALL1ONE_RP0> V_SHIPMENT_D_ALL1ONE_RP0 { get; set; }
+        public virtual DbSet<V_SHIPMENT_D_ALL1ONE_RP1> V_SHIPMENT_D_ALL1ONE_RP1 { get; set; }
+        public virtual DbSet<V_SHIPMENT_D_ALL1ONE_RP2> V_SHIPMENT_D_ALL1ONE_RP2 { get; set; }
+        public virtual DbSet<V_SHIPMENT_H_RP0> V_SHIPMENT_H_RP0 { get; set; }
+        public virtual DbSet<V_SHIPMENT_H_RP1> V_SHIPMENT_H_RP1 { get; set; }
+        public virtual DbSet<V_SHIPMENT_H_RP2> V_SHIPMENT_H_RP2 { get; set; }
+        public virtual DbSet<V_SHIPMENT_SMRY_RP0> V_SHIPMENT_SMRY_RP0 { get; set; }
+        public virtual DbSet<V_SHIPMENT_SMRY_RP1> V_SHIPMENT_SMRY_RP1 { get; set; }
+        public virtual DbSet<V_SHIPMENT_SMRY_RP2> V_SHIPMENT_SMRY_RP2 { get; set; }
+        public virtual DbSet<V_SHIPPING_ALL_BASE> V_SHIPPING_ALL_BASE { get; set; }
+        public virtual DbSet<V_SHIPPING_D_SPDC> V_SHIPPING_D_SPDC { get; set; }
+        public virtual DbSet<V_SHIPPING_H_MDC> V_SHIPPING_H_MDC { get; set; }
+        public virtual DbSet<V_SHIPPING_H_SPDC> V_SHIPPING_H_SPDC { get; set; }
+        public virtual DbSet<V_SUPPLIER_PARTS_PDC> V_SUPPLIER_PARTS_PDC { get; set; }
+        public virtual DbSet<V_TC_CATEGORY_BY_SYS> V_TC_CATEGORY_BY_SYS { get; set; }
+        public virtual DbSet<V_TC_DB_SENDOUT_DAILY> V_TC_DB_SENDOUT_DAILY { get; set; }
+        public virtual DbSet<V_TC_IMPORT_WITH_HS> V_TC_IMPORT_WITH_HS { get; set; }
+        public virtual DbSet<V_TC_MDM_ALL> V_TC_MDM_ALL { get; set; }
+        public virtual DbSet<V_TC_PART_HS> V_TC_PART_HS { get; set; }
+        public virtual DbSet<V_TMP_QUICK_ORDER_SUMMARY> V_TMP_QUICK_ORDER_SUMMARY { get; set; }
+        public virtual DbSet<V_USER_ALIAS_LINK> V_USER_ALIAS_LINK { get; set; }
+        public virtual DbSet<V_USER_NAV_ALL> V_USER_NAV_ALL { get; set; }
+        public virtual DbSet<V_USER_PAGE_LINK> V_USER_PAGE_LINK { get; set; }
+        public virtual DbSet<V_USER_ROLE_LINK> V_USER_ROLE_LINK { get; set; }
+        public virtual DbSet<COUNTRY_CODES> COUNTRY_CODES { get; set; }
+        public virtual DbSet<V_JD_ASN_BASE> V_JD_ASN_BASE { get; set; }
+        public virtual DbSet<V_JD_ASN_LOAD> V_JD_ASN_LOAD { get; set; }
+        public virtual DbSet<V_JD_PICK_BASE> V_JD_PICK_BASE { get; set; }
+        public virtual DbSet<V_JD_PICK_LOAD> V_JD_PICK_LOAD { get; set; }
+        public virtual DbSet<V_JD_PRT_MST_LOAD> V_JD_PRT_MST_LOAD { get; set; }
+        public virtual DbSet<V_JD_WB_FORMAT> V_JD_WB_FORMAT { get; set; }
+        public virtual DbSet<V_PLABEL_BY_LOD_PRINT> V_PLABEL_BY_LOD_PRINT { get; set; }
+    
+        public virtual int P_IANOTEC_NEW(string v_PART_NO, string v_ADRNAM, string v_QC_NOTE, string v_USERID)
+        {
+            var v_PART_NOParameter = v_PART_NO != null ?
+                new ObjectParameter("V_PART_NO", v_PART_NO) :
+                new ObjectParameter("V_PART_NO", typeof(string));
+    
+            var v_ADRNAMParameter = v_ADRNAM != null ?
+                new ObjectParameter("V_ADRNAM", v_ADRNAM) :
+                new ObjectParameter("V_ADRNAM", typeof(string));
+    
+            var v_QC_NOTEParameter = v_QC_NOTE != null ?
+                new ObjectParameter("V_QC_NOTE", v_QC_NOTE) :
+                new ObjectParameter("V_QC_NOTE", typeof(string));
+    
+            var v_USERIDParameter = v_USERID != null ?
+                new ObjectParameter("V_USERID", v_USERID) :
+                new ObjectParameter("V_USERID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_IANOTEC_NEW", v_PART_NOParameter, v_ADRNAMParameter, v_QC_NOTEParameter, v_USERIDParameter);
+        }
+    
+        public virtual int P_IA_NEW(string vLOD, string vUSR)
+        {
+            var vLODParameter = vLOD != null ?
+                new ObjectParameter("VLOD", vLOD) :
+                new ObjectParameter("VLOD", typeof(string));
+    
+            var vUSRParameter = vUSR != null ?
+                new ObjectParameter("VUSR", vUSR) :
+                new ObjectParameter("VUSR", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_IA_NEW", vLODParameter, vUSRParameter);
+        }
+    
+        public virtual int P_IA_TODO_REFRESH()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_IA_TODO_REFRESH");
+        }
+    
+        public virtual int PRE_WORK_RP_D(string v_WH)
+        {
+            var v_WHParameter = v_WH != null ?
+                new ObjectParameter("V_WH", v_WH) :
+                new ObjectParameter("V_WH", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PRE_WORK_RP_D", v_WHParameter);
+        }
+    
+        public virtual int PRE_WORK_RP_H(string v_WH)
+        {
+            var v_WHParameter = v_WH != null ?
+                new ObjectParameter("V_WH", v_WH) :
+                new ObjectParameter("V_WH", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PRE_WORK_RP_H", v_WHParameter);
+        }
+    
+        public virtual int PRE_WORK_RP_SMRY(string v_WH)
+        {
+            var v_WHParameter = v_WH != null ?
+                new ObjectParameter("V_WH", v_WH) :
+                new ObjectParameter("V_WH", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PRE_WORK_RP_SMRY", v_WHParameter);
+        }
+    
+        public virtual int PRE_WORK_LOD_PRINT(string v_WH, string v_SHIP, string v_LOD)
+        {
+            var v_WHParameter = v_WH != null ?
+                new ObjectParameter("V_WH", v_WH) :
+                new ObjectParameter("V_WH", typeof(string));
+    
+            var v_SHIPParameter = v_SHIP != null ?
+                new ObjectParameter("V_SHIP", v_SHIP) :
+                new ObjectParameter("V_SHIP", typeof(string));
+    
+            var v_LODParameter = v_LOD != null ?
+                new ObjectParameter("V_LOD", v_LOD) :
+                new ObjectParameter("V_LOD", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PRE_WORK_LOD_PRINT", v_WHParameter, v_SHIPParameter, v_LODParameter);
+        }
     }
 }
