@@ -47,32 +47,45 @@ namespace CHubMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel model, string returnUrl)
         {
-            APP_USERS appUser = DomainUserAuth.IsAuthenticated("CED", model.UserName, model.Password);
-            if (appUser!=null)
+            try
             {
-                //FormsAuthentication.SetAuthCookie(model.UserName, true);
-
-                var claims = new List<Claim>();
-                claims.Add(new Claim(ClaimTypes.Name, appUser.FIRST_NAME));
-                claims.Add(new Claim(ClaimTypes.Email, appUser.EMAIL_ADDR));
-                claims.Add(new Claim(ClaimTypes.NameIdentifier, model.UserName));
-
-                ClaimsIdentity cIdentity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
-                AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, cIdentity);
-
-                APP_USERS_BLL userBLL = new APP_USERS_BLL();
-                APP_USERS user = userBLL.GetAppUserByDomainName(model.UserName);
-        
-                if (user == null)
+                APP_USERS appUser = DomainUserAuth.IsAuthenticated("CED", model.UserName, model.Password);
+                if (appUser != null)
                 {
-                    if (!userBLL.AddAppUserWithRole(model.UserName, appUser.FIRST_NAME, appUser.EMAIL_ADDR))
-                        throw new Exception("Fail to add App User");
-                    user = userBLL.GetAppUserByDomainName(model.UserName);
+                    //FormsAuthentication.SetAuthCookie(model.UserName, true);
+
+                    var claims = new List<Claim>();
+                    claims.Add(new Claim(ClaimTypes.Name, appUser.FIRST_NAME));
+                    claims.Add(new Claim(ClaimTypes.Email, appUser.EMAIL_ADDR));
+                    claims.Add(new Claim(ClaimTypes.NameIdentifier, model.UserName));
+
+                    ClaimsIdentity cIdentity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
+                    AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, cIdentity);
+
+                    APP_USERS_BLL userBLL = new APP_USERS_BLL();
+                    APP_USERS user = userBLL.GetAppUserByDomainName(model.UserName);
+
+                    if (user == null)
+                    {
+                        if (!userBLL.AddAppUserWithRole(model.UserName, appUser.FIRST_NAME, appUser.EMAIL_ADDR))
+                            throw new Exception("Fail to add App User");
+                        user = userBLL.GetAppUserByDomainName(model.UserName);
+                    }
+                    Session[CHubConstValues.SessionUser] = user.APP_USER;
+                    LogHelper.WriteLog("log in action, user: " + user.APP_USER);
+                    return RedirectToLocal(returnUrl);
                 }
-                Session[CHubConstValues.SessionUser] = user.APP_USER;
-                LogHelper.WriteLog("log in action, user: "+ user.APP_USER);
-                return RedirectToLocal(returnUrl);
+                else
+                {
+                    TxtLog.WriteLog("appUser为空");
+                }
             }
+            catch (Exception ex)
+            {
+                TxtLog.WriteLog(ex.Message);
+            }
+
+
 
             //not success remail login page
             return View();

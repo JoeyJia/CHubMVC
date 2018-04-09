@@ -1,0 +1,187 @@
+﻿@{
+    ViewBag.Title = "Mobile IAToday";
+    Layout = "~/Views/Shared/_MobileLayout.cshtml";
+}
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>QUERY</b></div>
+        <form class="form-horizontal" id="iatodayForm">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="txtPart_NO" class="col-sm-2 control-label">WH:</label>
+                    <div class="col-sm-2">
+                        <select id="WH_ID" class="form-control"></select>
+                    </div>
+                    <div class="col-sm-2" style="padding-top: 5px;font-size:16px;">
+                        <span id="WHID_DESC"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtCust" class="col-sm-2 control-label">CUST:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="Cust" placeholder="CUST" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-offset-6">
+                        <input type="button" class="btn btn-primary btn-sm" id="refresh" value="Refresh" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default" style="">
+                    <div class="panel-heading"><b>RESULT</b></div>
+                    <table id="resultTable" class="table table-striped table-hover table-bordered .table-condensed">
+                        <thead>
+                            <tr>
+                                <th>SEVERITY</th>
+                                <th>WH</th>
+                                <th>BOX</th>
+                                <th>CUST</th>
+                                <th>TIME</th>
+                                <th>RMK</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_LoadingModal")
+
+
+<script type="text/javascript">
+    $(function () {
+        $.ajax({
+            url: '/ia/GetWHID',
+            type: 'post',
+            async: false,
+            dataType: 'json',
+            success: function (data) {
+                if (data.Success) {
+                    if (data.Data != null) {
+                        $("#WH_ID").empty();
+                        $("<option></option").val("").text("").appendTo("#WH_ID");
+                        for (var i = 0; i < data.Data.length; i++) {
+                            $("<option></option").val(data.Data[i]).text(data.Data[i]).appendTo("#WH_ID");
+                        }
+                    }
+                } else {
+                    alert(data.Msg);
+                }
+            }, error: function (obj) {
+                alert("fail to get");
+            }
+        })
+    });
+
+
+    $(document).ready(function () {
+        $("#WH_ID").on("change", function () {
+            $.ajax({
+                url: '/ia/GetWHIDDESC',
+                type: 'post',
+                async: false,
+                data: { WH_ID: $("#WH_ID").val(), Cust: $("#Cust").val() },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Success) {
+                        $("#WHID_DESC").empty();
+                        $("#WHID_DESC").text(data.Data);
+                    } else {
+                        alert(data.Msg);
+                    }
+                }, error: function (obj) {
+                    alert("fail to get");
+                }
+
+            })
+
+        })
+
+        $("#refresh").on("click", function () {
+            if ($("#WH_ID").val() == "") {
+                $("#resultBody").empty();
+                alert("No Data Selected");
+                return false;
+            }
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/ia/GetIATodoToday',
+                type: 'post',
+                async: false,
+                data: { WH_ID: $("#WH_ID").val() },
+                dataType: 'json',
+                success: function (data) {
+                    $("#resultBody").empty();
+                    if (data.Success) {
+                        CreateTable(data.Data);
+                        $("#loadingModal").modal("hide");
+                    } else {
+                        $("#loadingModal").modal("hide");
+                        alert(data.Msg);
+                    }
+                }, error: function (obj) {
+                    alert("fail to get");
+                }
+            })
+
+        })
+
+        function CreateTable(data) {
+            var html = "";
+            for (var i = 0; i < data.length; i++) {
+                data[i].SEVERITY == null ? "" : data[i].SEVERITY;
+                data[i].WH_ID == null ? "" : data[i].WH_ID;
+                data[i].LODNUM_DISPLAY == null ? "" : data[i].LODNUM_DISPLAY;
+                data[i].ADRNAM == null ? "" : data[i].ADRNAM;
+
+                var dt = "";
+                if (data[i].STGDTE != null) {
+                    var stgdte = new Date(data[i].STGDTE);
+                    dt = stgdte.getFullYear() + "-" + (stgdte.getMonth() + 1) + "-" + stgdte.getDate() + " " + stgdte.getHours() + ":" + stgdte.getMinutes() + ":" + stgdte.getSeconds();
+                }
+                data[i].COMMENTS == null ? "" : data[i].COMMENTS;
+
+                html += "<tr>";
+                html += "<td>" + data[i].SEVERITY + "</td>";
+                html += "<td>" + data[i].WH_ID + "</td>";
+                html += "<td>" + data[i].LODNUM_DISPLAY + "</td>";
+                html += "<td>" + data[i].ADRNAM + "</td>";
+                html += "<td>" + dt + "</td>";
+                html += "<td>" + data[i].COMMENTS + "</td>";
+                html += "<td>" + "<input type=\"button\" class=\"btn btn-primary btn-sm GoButton\" value=\"GO\" data-id=\"" + data[i].LODNUM_DISPLAY + "\" />";
+                html += "</tr>";
+            }
+            $("#resultBody").append(html);
+        }
+
+
+        $("#resultBody").on('click', '.GoButton', function () {
+            var loddis = $(this).attr("data-id");
+            window.location.href = "./IAScan_M?LODNUM_DISPLAY=" + loddis;
+        })
+
+    })
+
+
+</script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+
+    });
+</script>

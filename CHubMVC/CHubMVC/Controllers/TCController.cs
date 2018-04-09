@@ -11,6 +11,8 @@ using static CHubCommon.CHubEnum;
 using System.IO;
 using System.Data;
 using System.Net;
+using CHubModel.WebArg;
+using System.Reflection;
 
 namespace CHubMVC.Controllers
 {
@@ -41,9 +43,17 @@ namespace CHubMVC.Controllers
         public ActionResult QueryAction(string partNo, string hsCode, string declrName, string element,int currentPage,int pageSize)
         {
             CHubEntities db = new CHubEntities();
-            V_TC_MDM_ALL_BLL mdmBLL = new V_TC_MDM_ALL_BLL(db);
+            V_TC_MDM_ALL_BLL mdmBLL = new V_TC_MDM_ALL_BLL();
+            List<V_TC_MDM_ALL> result = new List<V_TC_MDM_ALL>();
             int totalCount = 0;
-            List<V_TC_MDM_ALL> result = mdmBLL.GetTCMDMList(partNo, hsCode, declrName, element, currentPage, pageSize,out totalCount);
+            try
+            {
+                 result = mdmBLL.GetTCMDMList(partNo, hsCode, declrName, element, currentPage, pageSize, out totalCount);
+            }
+            catch (Exception ex)
+            {
+
+            }
 
             var obj = new
             {
@@ -316,6 +326,114 @@ namespace CHubMVC.Controllers
         }
 
         #endregion
+
+
+        [Authorize]
+        public ActionResult HSCODE()
+        {
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, CHubEnum.PageNameEnum.hscode.ToString(), this.Request.Url.AbsoluteUri);
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult GetCID()
+        {
+            TC_PART_CATEGORY_BLL bll = new TC_PART_CATEGORY_BLL();
+            try
+            {
+                var result = bll.GetCIDList();
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("RP GetCID");
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+
+        /// <summary>
+        /// SearchByCode
+        /// </summary>
+        /// <param name="HSCODE"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPost]
+        public ActionResult GetHSCODEByCode(string HSCODE)
+        {
+            TC_HSCODE_MST_BLL bll = new TC_HSCODE_MST_BLL();
+            TC_PART_CATEGORY_BLL cbll = new TC_PART_CATEGORY_BLL();
+            try
+            {
+                var result = bll.GetHSCODEByCode(HSCODE);
+                var cresult = cbll.GetCIDList();
+                return Json(new { Success = true, Data = result, Data1 = cresult });
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("RP GetHSCODEByCode");
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult AddHSCODE(TCHSCODEMSTArg HSCode,string Type)
+        {
+            TC_HSCODE_MST_BLL bll = new TC_HSCODE_MST_BLL();
+            TC_HSCODE_MST tc = new TC_HSCODE_MST();
+            try
+            {
+                if (Type == "Update")
+                {
+                    tc.RECORD_DATE = DateTime.Now;
+                }
+                else
+                {
+                    if (bll.IsExistHSCODE(HSCode.HSCODE))
+                        return Json(new RequestResult(false, "The Data is Exist!"));
+                    else
+                        tc.CREATE_DATE = DateTime.Now;
+                }
+
+                foreach (PropertyInfo info in tc.GetType().GetProperties())
+                {
+                    if (HSCode.GetType().GetProperty(info.Name) != null)
+                    {
+                        info.SetValue(tc, HSCode.GetType().GetProperty(info.Name).GetValue(HSCode), null);
+                    }
+                }
+
+                bll.AddOrUpdate(tc, Type);
+                return Json(new RequestResult(true, "Data Has Saved"));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("RP AddHSCODE");
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult GetHSCODEAUDIT(string HSCODE)
+        {
+            TC_HSCODE_MST_BLL bll = new TC_HSCODE_MST_BLL();
+            try
+            {
+                var result = bll.GetHsCodeAudit(HSCODE);
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("RP GetHSCODEAUDIT");
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+
 
 
     }

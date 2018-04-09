@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8" />
+    @*
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">*@
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/boostrapvalidate")
+    @RenderSection("scripts", required: false)
+
+
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-collapse collapse ng-scope" ng-app="appLink" ng-controller="menuCtrl">
+                <ul class="nav navbar-nav">
+                    <li><a class="navbar-brand" href="/Mobile/Home">Home</a></li>
+                </ul>
+                @Html.Partial("_MobileLoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" style="margin-top:60px;">
+        @RenderBody()
+    </div>
+
+</body>
+</html>

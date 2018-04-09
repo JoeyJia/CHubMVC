@@ -512,16 +512,17 @@
         {
             //debugger;
             $scope.editAction = true;
-            if ($scope.currentData.TC_CATEGORY_BY_MAN != null)
-            {
+            if ($scope.currentData.TC_CATEGORY_BY_MAN != null) {
                 for (var i = 0; i < $scope.cateList.length; i++) {
-                    if ($scope.cateList[i].TC_CATEGORY_ID == $scope.currentData.TC_CATEGORY_BY_MAN)
-                    {
+                    if ($scope.cateList[i].TC_CATEGORY_ID == $scope.currentData.TC_CATEGORY_BY_MAN) {
                         $scope.selectCate = $scope.cateList[i];
                         break;
                     }
 
                 }
+            }
+            else {
+                $scope.selectCate = "";
             }
         }
 

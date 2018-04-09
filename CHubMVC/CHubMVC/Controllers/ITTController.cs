@@ -15,6 +15,9 @@ using Newtonsoft.Json;
 using System.Text;
 using CHubModel.ExtensionModel;
 using CHubDBEntity.UnmanagedModel;
+using CHubModel.WebArg;
+using System.Reflection;
+
 
 namespace CHubMVC.Controllers
 {
@@ -32,10 +35,10 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult SearchWillBill(string willBillNo,string invoiceNo)
+        public ActionResult SearchWillBill(string willBillNo, string invoiceNo)
         {
             V_ITT_SHIPPING_SMRY_BLL ittBLL = new V_ITT_SHIPPING_SMRY_BLL();
-            List<V_ITT_SHIPPING_SMRY> result = ittBLL.GetWillBillList(willBillNo,invoiceNo);
+            List<V_ITT_SHIPPING_SMRY> result = ittBLL.GetWillBillList(willBillNo, invoiceNo);
             return Json(result);
         }
 
@@ -114,7 +117,7 @@ namespace CHubMVC.Controllers
                 return Json(new RequestResult(false, ex.Message));
             }
         }
-          
+
 
         [HttpPost]
         [Authorize]
@@ -122,13 +125,13 @@ namespace CHubMVC.Controllers
         {
             try
             {
-                if(model.WILL_BILL_NO==null||model.FROM_SYSTEM==null)
+                if (model.WILL_BILL_NO == null || model.FROM_SYSTEM == null)
                     return Json(new RequestResult(false, "WillBillNo or FromSystem can't be empty"));
 
                 string msg = SaveTranLoadAction(model);
-                if(!string.IsNullOrEmpty(msg))
-                     return Json(new RequestResult(false, msg));
-                return Json(new RequestResult(true,null,model.LOAD_BATCH_TOKEN));
+                if (!string.IsNullOrEmpty(msg))
+                    return Json(new RequestResult(false, msg));
+                return Json(new RequestResult(true, null, model.LOAD_BATCH_TOKEN));
             }
             catch (Exception ex)
             {
@@ -169,7 +172,7 @@ namespace CHubMVC.Controllers
                 if (!Directory.Exists(folder.FullName))
                     Directory.CreateDirectory(folder.FullName);
                 //fb.filename - to get short file name parse string
-                 string errorLogName = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss") + tempGuid + ".txt";
+                string errorLogName = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss") + tempGuid + ".txt";
                 string errorLogWebName = "/temp/" + errorLogName;
                 string errorLogFullName = folder.FullName + errorLogName;
                 TxtLog txtLog = new TxtLog();
@@ -199,7 +202,7 @@ namespace CHubMVC.Controllers
                 int failCount = 0;
                 foreach (var item in modelList)
                 {
-                    if (item.INVOICE_NO!=null&&item.INVOICE_NO.Contains("/"))
+                    if (item.INVOICE_NO != null && item.INVOICE_NO.Contains("/"))
                     {
                         string[] invoiceArray = item.INVOICE_NO.Split('/');
                         foreach (var inNo in invoiceArray)
@@ -338,7 +341,7 @@ namespace CHubMVC.Controllers
                 if (!string.IsNullOrEmpty(msg))
                     return Json(new RequestResult(false, msg));
 
-                return Json(new RequestResult(true,null,model.LOAD_BATCH_TOKEN));
+                return Json(new RequestResult(true, null, model.LOAD_BATCH_TOKEN));
             }
             catch (Exception ex)
             {
@@ -354,8 +357,8 @@ namespace CHubMVC.Controllers
         {
             try
             {
-                if(string.IsNullOrEmpty(token))
-                    return Json(new RequestResult(false,"token is empty"));
+                if (string.IsNullOrEmpty(token))
+                    return Json(new RequestResult(false, "token is empty"));
                 ITT_CUST_LOAD_BLL custBLL = new ITT_CUST_LOAD_BLL();
                 custBLL.Delete(token);
                 return Json(new RequestResult(true));
@@ -412,7 +415,7 @@ namespace CHubMVC.Controllers
                     if (string.IsNullOrEmpty(msg))
                     {
                         successCount++;
-                        LogHelper.WriteLog(string.Format("willBillNo:{0},data:{1}", item.WILL_BILL_NO,JsonConvert.SerializeObject(item)));
+                        LogHelper.WriteLog(string.Format("willBillNo:{0},data:{1}", item.WILL_BILL_NO, JsonConvert.SerializeObject(item)));
                     }
                     else
                     {
@@ -466,6 +469,19 @@ namespace CHubMVC.Controllers
             return View();
         }
 
+        [Authorize]
+        public ActionResult InVinq()
+        {
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, CHubEnum.PageNameEnum.invinq.ToString(), this.Request.Url.AbsoluteUri);
+            return View();
+        }
+
+
+
+
+
         [HttpPost]
         [Authorize]
         public ActionResult FuzzyQueryParNo(string fuzzypartNo)
@@ -473,6 +489,14 @@ namespace CHubMVC.Controllers
             G_PART_DESCRIPTION_BLL gpBLL = new G_PART_DESCRIPTION_BLL();
             return Json(gpBLL.fuzzyqueryByPartNo(fuzzypartNo));
         }
+
+        [Authorize]
+        public ActionResult FuzzyQueryParNo_New(string PartNo, string Print_PartNo)
+        {
+            G_PART_DESCRIPTION_BLL gpBLL = new G_PART_DESCRIPTION_BLL();
+            return Json(gpBLL.fuzzyqueryByPartNo_New(PartNo, Print_PartNo));
+        }
+
 
         [HttpPost]
         [Authorize]
@@ -521,7 +545,7 @@ namespace CHubMVC.Controllers
             catch (Exception ex)
             {
                 LogHelper.WriteLog("getWatchingOutList", ex);
-                return Json(new RequestResult(false,ex.Message));
+                return Json(new RequestResult(false, ex.Message));
             }
         }
 
@@ -548,12 +572,12 @@ namespace CHubMVC.Controllers
         {
             try
             {
-                
+
                 using (CHubEntities db = new CHubEntities())
                 {
                     V_INV_PDC_BLL pdcBLL = new V_INV_PDC_BLL(db);
                     List<V_INV_PDC> pdcList = pdcBLL.GetPDCData(partNo);
-                    
+
 
                     V_INV_RDC_BLL rdcBLL = new V_INV_RDC_BLL(db);
                     List<V_INV_RDC> rdcList = rdcBLL.GetRDCData(partNo);
@@ -561,7 +585,7 @@ namespace CHubMVC.Controllers
 
                     M_INV_BLL miBLL = new M_INV_BLL();
                     List<M_INV> interPDCList = miBLL.GetInterPDCData(partNo);
-                    
+
 
                     var obj = new
                     {
@@ -571,14 +595,15 @@ namespace CHubMVC.Controllers
                     };
 
                     return Json(new RequestResult(obj));
-                }    
+                }
             }
             catch (Exception ex)
             {
                 LogHelper.WriteLog("GetSnapShot", ex);
-                return Json(new RequestResult(false,ex.Message));
+                return Json(new RequestResult(false, ex.Message));
             }
         }
+
 
         [HttpPost]
         [Authorize]
@@ -589,9 +614,9 @@ namespace CHubMVC.Controllers
                 using (CHubEntities db = new CHubEntities())
                 {
                     List<OpeningQtySnapshot> openPDCList = new List<OpeningQtySnapshot>();
-                    
+
                     List<OpeningQtySnapshot> openRDCList = new List<OpeningQtySnapshot>();
-                    
+
 
                     //PDC part
                     V_OPEN_QTY_SO_PDC_BLL soPDCBLL = new V_OPEN_QTY_SO_PDC_BLL(db);
@@ -608,7 +633,7 @@ namespace CHubMVC.Controllers
                     {
                         if (!soPDCList.Any(a => a.WAREHOUSE == item.WAREHOUSE))
                         {
-                            soPDCList.Add(new V_OPEN_QTY_SO_PDC { WAREHOUSE = item.WAREHOUSE,WH_ALIAS=item.WH_ALIAS});
+                            soPDCList.Add(new V_OPEN_QTY_SO_PDC { WAREHOUSE = item.WAREHOUSE, WH_ALIAS = item.WH_ALIAS });
                         }
                     }
 
@@ -637,7 +662,7 @@ namespace CHubMVC.Controllers
                         }
                         openPDCList.Add(openSS);
                     }
-                   
+
 
                     //RDC part
                     V_OPEN_QTY_SO_RDC_BLL soRDCBLL = new V_OPEN_QTY_SO_RDC_BLL(db);
@@ -725,7 +750,7 @@ namespace CHubMVC.Controllers
                 return Json(new RequestResult(false, ex.Message));
             }
 
-            
+
         }
 
         [HttpPost]
@@ -736,7 +761,7 @@ namespace CHubMVC.Controllers
             {
                 ITT_PO_BLL poBLL = new ITT_PO_BLL();
                 List<ITT_PO_LEVEL_1> result = poBLL.GetLevel1Data(partNo);
-                
+
                 return Json(new RequestResult(result));
             }
             catch (Exception ex)
@@ -748,12 +773,12 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult GetPOLevel2Data(string partNo,string poNo)
+        public ActionResult GetPOLevel2Data(string partNo, string poNo)
         {
             try
             {
                 ITT_PO_BLL poBLL = new ITT_PO_BLL();
-                List<ITT_PO_LEVEL_2> result = poBLL.GetLevel2Data(partNo,poNo);
+                List<ITT_PO_LEVEL_2> result = poBLL.GetLevel2Data(partNo, poNo);
 
                 return Json(new RequestResult(result));
             }
@@ -766,12 +791,12 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult GetPOReleaseData(string partNo, string poNo,long poLineNo)
+        public ActionResult GetPOReleaseData(string partNo, string poNo, long poLineNo)
         {
             try
             {
                 ITT_PO_BLL poBLL = new ITT_PO_BLL();
-                List<ITT_PO_Release> result = poBLL.GetPOReleaseData(partNo, poNo,poLineNo);
+                List<ITT_PO_Release> result = poBLL.GetPOReleaseData(partNo, poNo, poLineNo);
 
                 return Json(new RequestResult(result));
             }
@@ -784,12 +809,12 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult GetPOLevel3Data(string partNo, string poNo,decimal poLineNo)
+        public ActionResult GetPOLevel3Data(string partNo, string poNo, decimal poLineNo)
         {
             try
             {
                 ITT_SO_BLL soBLL = new ITT_SO_BLL();
-                List<ITT_SO> result = soBLL.GetLevel3Data(partNo, poNo,poLineNo);
+                List<ITT_SO> result = soBLL.GetLevel3Data(partNo, poNo, poLineNo);
 
                 return Json(new RequestResult(result));
             }
@@ -924,8 +949,5 @@ namespace CHubMVC.Controllers
                 item.COLOR_60 = ValueConvert.GetColorFullName(item.COLOR_60);
         }
         #endregion
-
-
-
     }
 }

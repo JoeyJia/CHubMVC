@@ -18,6 +18,14 @@ namespace CHubMVC
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "Mobiles",
+                url: "mobile/{action}/{id}",
+                defaults: new { controller = "Mobile", action = "Login", id = UrlParameter.Optional }
+            );
+
+
         }
     }
 }

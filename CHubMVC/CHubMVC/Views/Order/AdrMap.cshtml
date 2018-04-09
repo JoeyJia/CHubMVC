@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "Order AdrMap";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" id="adrmapDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form id="adrmapForm" class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="GOMS_ADDR" class="col-sm-2 control-label">GOMS ADDRESS:</label>
+                    <div class="col-sm-2 col-lg-2">
+                        <input type="text" class="form-control input-sm" id="txtGOMS_ADDR" placeholder="GOMS ADDRESS" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="CREATE_DATE" class="col-sm-2 control-label">Loaded in Last X days:</label>
+                    <div class="col-sm-2 col-lg-2">
+                        <input type="text" class="form-control input-sm" id="txtCREATE_DATE" value="7" />
+                    </div>
+                    <div class="col-sm-2 col-lg-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="searchBtn" value="Submit" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <table class="table table-bordered table-striped table-hover" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th style="width:5%;">ID</th>
+                                <th style="width:40%;">GOMS ADDRESS</th>
+                                <th style="width:40%;">CONVERTED ADDRESS </th>
+                                <th style="width:10%;">CREATE DATE</th>
+                                <th style="width:5%;">Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_LoadingModal")
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#searchBtn").on('click', function () {
+            var GOMS_ADDR = $("#txtGOMS_ADDR").val();
+            var CREATE_DATE = $("#txtCREATE_DATE").val();
+            if (CREATE_DATE == 0 || CREATE_DATE == "") {
+                alert("The Date Error");
+                return false;
+            }
+
+            $("#loadingModal").modal("show");
+
+            $.ajax({
+                url: '/order/SearchAdrMap',
+                type: 'POST',
+                async: true,
+                data: { GOMS_ADDR: GOMS_ADDR, CREATE_DATE: CREATE_DATE },
+                success: function (obj) {
+                    $("#resultTbody").empty();
+
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+
+
+
+            })
+        })
+
+
+    })
+
+
+</script>
+

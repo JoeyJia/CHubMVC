@@ -1,0 +1,145 @@
+﻿@{
+    ViewBag.Title = "IA PrtAddt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using CHubDBEntity
+@model CHubMVC.Models.IAModels
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>QUERY</b></div>
+        <form class="form-horizontal" id="prtaddtForm" action="/ia/PrtAddt" method="post">
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtPart_NO" class="col-sm-2 control-label">Part NO:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" name="Part_NO" id="txtPart_NO" value="@Model.PART_NO" placeholder="Part NO" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="submit" class="btn btn-primary btn-sm" id="searchButton" value="Search" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default" style="">
+                    <div class="panel-heading"><b>DISPLAY</b></div>
+                    <table id="resultTable" class="table table-striped table-hover table-bordered .table-condensed">
+                        <thead>
+                            <tr>
+                                <th style="width:9%;">Part NO</th>
+                                <th style="width:9%;">Print Part No</th>
+                                <th style="width:9%;">防伪标签(Paper)</th>
+                                <th style="width:9%;">NOTE</th>
+                                <th style="width:9%;">MOQ override</th>
+                                <th style="width:9%">PACKING MOQ</th>
+                                <th style="width:9%;">QC NOTE</th>
+                                <th style="width:9%;">Addt. MSG1</th>
+                                <th style="width:9%;">Addt. MSG2</th>
+                                <th style="width:9%;">Addt. MSG3</th>
+                                <th style="width:9%;">Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultBody">
+                            @if(Model.prtaddt!=null && Model.prtaddt.Any())
+                            {
+                            foreach(var item in Model.prtaddt)
+                            {
+                            <tr>
+                                <td><input type="text" class="form-control resultPART_NO" value="@item.PART_NO" title="@item.PART_NO" disabled="disabled" /></td>
+                                <td><input type="text" class="form-control resultPRINT_PART_NO" value="@item.PRINT_PART_NO" title="@item.PRINT_PART_NO" disabled="disabled" /></td>
+                                <td>
+                                    <select class="form-control resultPAPER_ID">
+                                        @foreach(var pp in ViewBag.PaperIDList)
+                                        {
+                                        if(@item.PAPER_ID==@pp.PAPER_ID)
+                                        {
+                                        <option value="@pp.PAPER_ID" selected="selected" title="@pp.PAPER_DESC">@pp.PAPER_ID</option>
+                                        }
+                                        else
+                                        {
+                                        <option value="@pp.PAPER_ID" title="@pp.PAPER_DESC">@pp.PAPER_ID</option>
+                                        }
+                                        }
+                                    </select>
+                                </td>
+                                <td><input type="text" class="form-control resultNOTE" value="@item.NOTE" title="@item.NOTE" /></td>
+                                <td><input type="text" class="form-control resultMOQ_OVERRIDE" value="@item.MOQ_OVERRIDE" title="@item.MOQ_OVERRIDE" /></td>
+                                <td><input type="text" class="form-control resultPACKING_MOQ" value="@item.PACKING_MOQ" title="@item.PACKING_MOQ" /></td>
+                                <td><input type="text" class="form-control resultQC_NOTE" value="@item.QC_NOTE" title="@item.QC_NOTE" /></td>
+                                <td><input type="text" class="form-control resultMSG_ADDT1" value="@item.MSG_ADDT1" title="@item.MSG_ADDT1" /></td>
+                                <td><input type="text" class="form-control resultMSG_ADDT2" value="@item.MSG_ADDT2" title="@item.MSG_ADDT2" /></td>
+                                <td><input type="text" class="form-control resultMSG_ADDT3" value="@item.MSG_ADDT3" title="@item.MSG_ADDT3" /></td>
+                                <td><input type="button" class="btn btn-primary btn-sm saveButton" value="SAVE" /></td>
+                            </tr>
+                            }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_LoadingModal")
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#searchButton").on('click', function () {
+            if ($("#txtPart_NO").val() == "") {
+                alert("No Part_NO Input");
+                return false;
+            }
+        });
+
+        $(".saveButton").on('click', function () {
+            var tr = $(this).parent().parent();
+            var obj = {
+                PART_NO: tr.find(".resultPART_NO").val(),
+                PRINT_PART_NO: tr.find(".resultPRINT_PART_NO").val(),
+                PAPER_ID: tr.find(".resultPAPER_ID").val(),
+                NOTE: tr.find(".resultNOTE").val(),
+                MOQ_OVERRIDE: tr.find(".resultMOQ_OVERRIDE").val(),
+                PACKING_MOQ: tr.find(".resultPACKING_MOQ").val(),
+                QC_NOTE: tr.find(".resultQC_NOTE").val(),
+                MSG_ADDT1: tr.find(".resultMSG_ADDT1").val(),
+                MSG_ADDT2: tr.find(".resultMSG_ADDT2").val(),
+                MSG_ADDT3: tr.find(".resultMSG_ADDT3").val()
+            };
+
+            $.ajax({
+                url: '/ia/SavePrtAddt',
+                type: 'post',
+                async: false,
+                data: JSON.stringify({
+                    prtaddt: obj
+                }),
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Success) {
+                        alert(data.Msg);
+                    }
+                    else {
+                        alert(data.Msg);
+                    }
+                },
+                error: function (e) {
+                    alert("fail to save");
+                }
+            })
+        })
+
+    })
+</script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+
+    });
+</script>

@@ -1,0 +1,66 @@
+﻿@model CHubMVC.Models.LoginViewModel
+@{
+    ViewBag.Title = "Mobile Login";
+    Layout = null;
+}
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+
+<title>@ViewBag.Title</title>
+
+<body>
+    <div class="container-fluid" style="width:100%;height:87.5%;">
+        <div class="row" style="margin-top:5%;">
+            <div class="col-md-12 col-sm-12 text-center">
+                <img src="/Images/hubLogo.png" style="margin-top:25px;height:75px;">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12" style="background-color:#C32518;height:375px;">
+                <div class="row">
+                    <div class="col-md-2 col-sm-2"></div>
+                    <div class="col-md-8 col-sm-8">
+                        <div class="panel panel-default" style="height:295px;background-color:#eee;margin-top:50px">
+                            <section id="loginform">
+                                @using (Html.BeginForm("Login", "Mobile", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                                {
+                                @Html.AntiForgeryToken()
+                                <div class="panel panel-default" style="height:75%;">
+                                    <div class="form-group" style="margin-top:20px">
+                                        <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1">
+                                            <label for="" style="font-size:20px;">User Name:</label>
+                                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @id = "userName", @placeholder = "Your WWID", @required = "required" })
+                                            @*<input type="text" id="username" name="username" class="form-control" placeholder="Your WWID" value="" />*@
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin-top:20px">
+                                        <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1">
+                                            <label for="" style="font-size:20px;">PassWord:</label>
+                                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @id = "pwd", @placeholder = "Your CED Password" })
+                                            @Html.ValidationSummary()
+                                            @*<input type="text" id="password" name="password" class="form-control" placeholder="Your CED Password" value="" />*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-append col-md-4 col-md-offset-2 col-sm-offset-2 col-sm-4 col-lg-4 col-lg-offset-1">
+                                        <button class="btn btn-primary btn-block" style="background-color:brown;" type="submit">LogIn</button>
+                                    </div>
+                                </div>
+                                }
+                            </section>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+

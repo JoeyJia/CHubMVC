@@ -12,6 +12,7 @@ using System.Net;
 using System.Text;
 using static CHubCommon.CHubEnum;
 using CHubMVC.Validations;
+using Newtonsoft.Json;
 
 namespace CHubMVC.Controllers
 {
@@ -60,6 +61,8 @@ namespace CHubMVC.Controllers
                     orderType = aotList,
                     defaultOrderType = CHubConstValues.DefaultOrderType
                 };
+
+                var res = JsonConvert.SerializeObject(obj);
 
                 return Json(obj);
             }
@@ -233,7 +236,7 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult SearchAddrs(string shipName, string addr,string aliasName, bool isSpecialShip,string destName, long? destLocation)
+        public ActionResult SearchAddrs(string shipName, string addr, string aliasName, bool isSpecialShip, string destName, long? destLocation)
         {
             try
             {
@@ -242,7 +245,7 @@ namespace CHubMVC.Controllers
                 if (isSpecialShip)
                 {
                     V_ALIAS_ADDR_SPL_BLL bll = new V_ALIAS_ADDR_SPL_BLL();
-                    list = bll.GetAliasAddrSPL(shipName.Trim(), addr.Trim(),destName.Trim(),destLocation, aliasName);
+                    list = bll.GetAliasAddrSPL(shipName.Trim(), addr.Trim(), destName.Trim(), destLocation, aliasName);
                 }
                 else
                 {
@@ -251,7 +254,7 @@ namespace CHubMVC.Controllers
                 }
 
                 //Get from parameter table***
-                if (list.Count > 20)
+                if (list.Count > 30)
                 {
                     return Json(new RequestResult(false, string.Format("Result has {0} items, Make Condition more strict", list.Count.ToString())));
                 }
@@ -311,11 +314,11 @@ namespace CHubMVC.Controllers
                 TS_OR_HEADER_STAGE_BLL bll = new TS_OR_HEADER_STAGE_BLL(db);
 
                 //Header part
-                TS_OR_HEADER_STAGE orHeaderStage = ManualClassConvert.ConvertExAliaAddr2HeaderStage(arg.headInfo,arg.seq, arg.dueDate,arg.orderType,arg.shipCompFlag,arg.customerPONO, arg.orderNote,arg.isSpecialShip,appUser);
+                TS_OR_HEADER_STAGE orHeaderStage = ManualClassConvert.ConvertExAliaAddr2HeaderStage(arg.headInfo, arg.seq, arg.dueDate, arg.orderType, arg.shipCompFlag, arg.customerPONO, arg.orderNote, arg.isSpecialShip, appUser);
                 TS_OR_HEADER_STAGE altORHeaderStage = null;
                 if (arg.altHeadInfo != null)
                 {
-                    altORHeaderStage = ManualClassConvert.ConvertExAliaAddr2HeaderStage(arg.altHeadInfo,arg.seq, arg.dueDate, arg.orderType, arg.shipCompFlag,arg.customerPONO, arg.orderNote, arg.isSpecialShip,appUser,true);
+                    altORHeaderStage = ManualClassConvert.ConvertExAliaAddr2HeaderStage(arg.altHeadInfo, arg.seq, arg.dueDate, arg.orderType, arg.shipCompFlag, arg.customerPONO, arg.orderNote, arg.isSpecialShip, appUser, true);
                 }
 
                 //Detail Part
@@ -335,9 +338,9 @@ namespace CHubMVC.Controllers
 
                 decimal seq = 0;
                 if (string.IsNullOrEmpty(arg.seq))
-                    seq = bll.AddHeadersWithDetailsStage(orHeaderStage, altORHeaderStage,dStageList);
+                    seq = bll.AddHeadersWithDetailsStage(orHeaderStage, altORHeaderStage, dStageList);
                 else
-                    seq = bll.UpdateHeadersWithDetailsStage(orHeaderStage, altORHeaderStage,dStageList);
+                    seq = bll.UpdateHeadersWithDetailsStage(orHeaderStage, altORHeaderStage, dStageList);
 
                 if (seq != 0.00M)
                     return Content(seq.ToString());
@@ -347,7 +350,7 @@ namespace CHubMVC.Controllers
                     return Content("Fail to save draft");
                 }
             }
-            catch(Exception ee)
+            catch (Exception ee)
             {
                 //log ee
                 Response.StatusCode = (int)HttpStatusCode.InternalServerError;
@@ -370,11 +373,11 @@ namespace CHubMVC.Controllers
                 TS_OR_HEADER_BLL bll = new TS_OR_HEADER_BLL(db);
 
                 //Header part
-                TS_OR_HEADER orHeader = ManualClassConvert.ConvertExAliaAddr2Header(arg.headInfo, arg.seq, arg.dueDate, arg.orderType, arg.shipCompFlag, arg.customerPONO, arg.orderNote,arg.isSpecialShip, appUser);
+                TS_OR_HEADER orHeader = ManualClassConvert.ConvertExAliaAddr2Header(arg.headInfo, arg.seq, arg.dueDate, arg.orderType, arg.shipCompFlag, arg.customerPONO, arg.orderNote, arg.isSpecialShip, appUser);
                 TS_OR_HEADER altORHeader = null;
                 if (arg.altHeadInfo != null)
                 {
-                    altORHeader = ManualClassConvert.ConvertExAliaAddr2Header(arg.altHeadInfo,arg.seq, arg.dueDate, arg.orderType, arg.shipCompFlag, arg.customerPONO, arg.orderNote, arg.isSpecialShip,appUser, true);
+                    altORHeader = ManualClassConvert.ConvertExAliaAddr2Header(arg.altHeadInfo, arg.seq, arg.dueDate, arg.orderType, arg.shipCompFlag, arg.customerPONO, arg.orderNote, arg.isSpecialShip, appUser, true);
                 }
 
                 //Detail part
@@ -394,9 +397,9 @@ namespace CHubMVC.Controllers
 
                 decimal seq = 0;
                 if (string.IsNullOrEmpty(arg.seq))
-                    seq = bll.AddHeadersWithDetails(orHeader, altORHeader,detailList);
+                    seq = bll.AddHeadersWithDetails(orHeader, altORHeader, detailList);
                 else
-                    seq = bll.UpdateHeadersWithDetails(orHeader, altORHeader,detailList);
+                    seq = bll.UpdateHeadersWithDetails(orHeader, altORHeader, detailList);
 
                 if (seq != 0.00M)
                     return Content(seq.ToString());
@@ -469,7 +472,7 @@ namespace CHubMVC.Controllers
         }
 
         [Authorize]
-        public ActionResult DownLoadOrder(decimal? orderSeq,decimal shipFrom = 0)
+        public ActionResult DownLoadOrder(decimal? orderSeq, decimal shipFrom = 0)
         {
             try
             {
@@ -579,7 +582,7 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult QueryAction(decimal? orderSeq,string custAlias,string poNum, int currentPage, int pageSize)
+        public ActionResult QueryAction(decimal? orderSeq, string custAlias, string poNum, int currentPage, int pageSize)
         {
             if (Session[CHubConstValues.SessionUser] == null)
                 return RedirectToAction("Login", "Account");
@@ -587,7 +590,7 @@ namespace CHubMVC.Controllers
             int totalCount = 0;
             CHubEntities db = new CHubEntities();
             TS_OR_HEADER_BLL hBLL = new TS_OR_HEADER_BLL(db);
-            List<TS_OR_HEADER> result = hBLL.GetHeaders(orderSeq, custAlias, poNum,  currentPage,  pageSize,out totalCount);
+            List<TS_OR_HEADER> result = hBLL.GetHeaders(orderSeq, custAlias, poNum, currentPage, pageSize, out totalCount);
 
             var obj = new
             {
@@ -604,14 +607,14 @@ namespace CHubMVC.Controllers
 
 
         #region *** private function ***
-        private string GetPartNoFromCustPartNo(string custPartNo,string customerNo)
+        private string GetPartNoFromCustPartNo(string custPartNo, string customerNo)
         {
             if (string.IsNullOrEmpty(custPartNo))
                 return string.Empty;
             using (CHubEntities db = new CHubEntities())
             {
                 G_CATALOG_CUSTOMER_PART_BLL custBLL = new G_CATALOG_CUSTOMER_PART_BLL(db);
-                string PartNo = custBLL.GetPartNoFromCustPartNo(custPartNo,customerNo);
+                string PartNo = custBLL.GetPartNoFromCustPartNo(custPartNo, customerNo);
                 if (string.IsNullOrEmpty(PartNo))
                 {
                     G_PART_DESCRIPTION_BLL partBLL = new G_PART_DESCRIPTION_BLL(db);
@@ -647,7 +650,7 @@ namespace CHubMVC.Controllers
 
             string msg = string.Empty;
 
-            olArg.olItem.PartNo = GetPartNoFromCustPartNo(olArg.olItem.CustomerPartNo,olArg.customerNo);
+            olArg.olItem.PartNo = GetPartNoFromCustPartNo(olArg.olItem.CustomerPartNo, olArg.customerNo);
 
 
             olArg.olItem.PartNoPlaceHolder = string.Empty;
@@ -672,7 +675,7 @@ namespace CHubMVC.Controllers
                 {
                     olArg.olItem.WarningMsg = string.Format("SSC:{0},", pDesc.CURRENT_SALES_STATUS_CODE);
                     //olArg.olItem.WarningColor = CHubConstValues.WarningColor;
-                    
+
                 }
 
                 string usingSysID = olArg.primarySysID;
@@ -717,9 +720,9 @@ namespace CHubMVC.Controllers
                 }
 
                 //Do G_OESALES_CATALOG_VALIDATION
-                G_OESALES_CATALOG_VALIDATION oeSaleValidation = new G_OESALES_CATALOG_VALIDATION(usingSysID, olArg.olItem.PartNo,olArg.olItem.Qty);
+                G_OESALES_CATALOG_VALIDATION oeSaleValidation = new G_OESALES_CATALOG_VALIDATION(usingSysID, olArg.olItem.PartNo, olArg.olItem.Qty);
                 olArg.olItem.WarningMsg += oeSaleValidation.ValidationAction();
-                if(!string.IsNullOrEmpty(olArg.olItem.WarningMsg))
+                if (!string.IsNullOrEmpty(olArg.olItem.WarningMsg))
                     olArg.olItem.WarningColor = CHubConstValues.WarningColor;
             }
 
@@ -727,6 +730,25 @@ namespace CHubMVC.Controllers
         }
 
         #endregion
+
+
+
+
+        public ActionResult AdrMap()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SearchAdrMap(string GOMS_ADDR, string CREATE_DATE)
+        {
+
+
+            return View();
+        }
+
+
+
 
 
     }

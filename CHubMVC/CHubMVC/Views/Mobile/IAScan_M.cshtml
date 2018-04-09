@@ -1,0 +1,961 @@
+﻿@{
+    ViewBag.Title = "Mobile IAScan_M";
+    Layout = "~/Views/Shared/_MobileLayout.cshtml";
+}
+
+<style type="text/css">
+    .title {
+        height: 30px;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .subtitle {
+        height: 20px;
+        background-color: #f9f9f9;
+    }
+
+    .colname {
+        font-size: 14px;
+        text-align: right;
+        height: 30px;
+        padding-left: 0px;
+    }
+
+    .table tbody > tr > td {
+        padding: 0px;
+        vertical-align: middle;
+        text-align: center;
+    }
+
+
+    span {
+        font-size: 18px;
+    }
+
+
+    .oraColor {
+        background-color: #FFA54F;
+    }
+
+        .oraColor input {
+            background-color: #FFA54F;
+        }
+
+        .oraColor select {
+            background-color: #FFA54F;
+        }
+
+    .greColor {
+        background-color: #43CD80;
+    }
+
+        .greColor input {
+            background-color: #43CD80;
+        }
+
+        .greColor select {
+            background-color: #43CD80;
+        }
+
+
+    .form-control:focus {
+        outline: 2px solid #43CD80;
+    }
+
+
+
+    label {
+        text-align: right;
+    }
+
+    .txtInput {
+        border: 0;
+        width: 100%;
+        background-color: #FFFFE0;
+        font-size: 16px;
+    }
+
+    table tbody {
+        display: block;
+        height: 250px;
+        overflow-y: scroll;
+    }
+
+
+    table thead, tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+        height: 40px;
+    }
+
+    table thead {
+        width: calc( 100% - 1.5em );
+    }
+
+        table thead th {
+            background: #ccc;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+    table tbody tr td {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row" style="margin-top:15px;">
+        <div class="col-sm-12">
+            @*<a href="Javascript:window.history.go(-1)" class="btn btn-primary btn-sm" style="float:left;">返回</a>*@
+            <input type="button" class="btn btn-primary btn-sm" id="returnButton" style="float:left;" value="返回" />
+            @*<input type="button" class="btn btn-primary btn-sm" id="closeButton" style="float:right;" value="关闭" />*@
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 title">
+            <b>OB Inspection Auditor</b>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-xs-12">
+            <label for="txtLODNUM_DISPLAY" class="col-sm-1 col-xs-1 colname">BOX:</label>
+            <div class="col-sm-9 col-xs-8">
+                <input type="text" class="form-control txtInput" id="txtLODNUM_DISPLAY" />
+            </div>
+            <div class="col-sm-2 col-xs-1">
+                <input type="button" class="btn btn-primary btn-sm" id="btnGO" value="GO" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-xs-12">
+            <label for="txtADRNAM" class="col-sm-1 col-xs-1 colname">CUST:</label>
+            <div class="col-sm-9 col-xs-10">
+                <span id="txtADRNAM"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-xs-12">
+            <label for="txtSTATUS" class="col-sm-1 col-xs-1 colname">STS</label>
+            <div class="col-sm-3 col-xs-2">
+                <span id="txtIA_STATUS"></span>
+            </div>
+            <div class="col-sm-8 col-xs-8">
+                <span id="txtSTATUS_DESC"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-xs-12">
+            <label for="txtNOTE" class="col-sm-1 col-xs-1 colname">ATTN:</label>
+            <div class="col-sm-9 col-xs-10">
+                <span id="txtNOTE"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-xs-12">
+            <label for="txtScanInput" class="col-sm-1 col-xs-1 colname">SCAN:</label>
+            <div class="col-sm-9 col-xs-8">
+                <input type="text" class="form-control txtInput" id="txtScanInput" />
+            </div>
+            <div class="col-sm-2 col-xs-1">
+                <input type="button" class="btn btn-primary btn-sm" id="btnOK" value="OK" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-xs-12">
+            <label for="txtPart_No" class="col-sm-1 col-xs-1 colname">PN:</label>
+            <div class="col-sm-4 col-xs-4">
+                <span id="txtPart_No"></span>
+            </div>
+            <div class="col-sm-5 col-xs-4">
+                <span id="txtDTLNOTE"></span>
+            </div>
+            <div class="col-sm-2 col-xs-1">
+                <input type="button" class="btn btn-primary btn-sm" id="btnMap" value="MAP" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-xs-12">
+            <label for="txtQTY" class="col-sm-1 col-xs-1 colname">QTY:</label>
+            <div class="col-sm-9 col-xs-8">
+                <input type="text" class="form-control txtInput" id="txtQTY" />
+            </div>
+            <div class="col-sm-2 col-xs-1">
+                <input type="button" class="btn btn-primary btn-sm" id="btnQTYOK" value="OK" />
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:15px;">
+        <div class="col-sm-12 col-xs-12">
+            <div class="col-sm-4 col-xs-4">
+                <div class="col-sm-offset-6">
+                    <input type="button" class="btn btn-primary btn-sm" id="btnCancel" value="清空(新建) F7" />
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-4">
+                <div class="col-sm-offset-4">
+                    <input type="button" class="btn btn-primary btn-sm" id="btnSave" value="保存 F8" />
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-4">
+                <input type="button" class="btn btn-primary btn-sm" id="btnComplete" value="完成 F10" />
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:15px;">
+        <div class="col-sm-12 col-xs-12">
+            <table class="table table-bordered" id="Lod" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;">SEQ</th>
+                        <th style="text-align:center;">PN</th>
+                        <th style="text-align:center;">NOTE</th>
+                        <th style="text-align:center;">INSP.QTY</th>
+                        <th style="text-align:center;">Code1</th>
+                        <th style="text-align:center;">Code2</th>
+                    </tr>
+                </thead>
+                <tbody id="LodDetail"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <audio id="partno">
+        <source src="~/Content/sound/nopart.mp3" type="audio/mpeg" />
+    </audio>
+    <audio id="partok">
+        <source src="~/Content/sound/partok.mp3" type="audio/mpeg" />
+    </audio>
+    <audio id="qtyok">
+        <source src="~/Content/sound/qtyok.mp3" type="audio/mpeg" />
+    </audio>
+</div>
+
+@Html.Partial("_LoadingModal")
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" id="myModalText">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 col-xs-12">
+                        <div class="col-sm-8 col-xs-8">
+                            <input type="text" class="form-control input-sm" id="mapPRTNUM" value="" />
+                        </div>
+                        <input type="button" class="btn btn-primary btn-sm col-sm-2 col-xs-2" id="btnmapCancel" value="Cancel" />
+                        <input type="button" class="btn btn-primary btn-sm col-sm-2 col-xs-2" id="btnmapOK" value="OK" />
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!--模态框 Comp_Comm-->
+<div class="modal fade" id="Comp_Comm" role="dialog" aria-labelledby="Comp_CommLabel">
+    <div class="modal-dialog modal-lg" id="Comp_CommModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="Comp_CommLabel">
+                    Completion Comments
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <input type="text" class="form-control" id="txtCompComm" value="" />
+                    </div>
+                    <div class="col-sm-12 text-center">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnModalCancel" value="Cancel" />
+                        &nbsp;
+                        <input type="button" class="btn btn-primary btn-sm" id="btnModalOK" value="OK" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //进入页面
+        $("#txtLODNUM_DISPLAY").focus();
+        $("#btnMap").attr("disabled", "disabled");
+
+        var IA_CODEList = [];
+        var LODDTList = [];
+        var LODNUM = "";
+        var PRTNUM = "";
+        var IASTATUS = "";
+        var tr;
+        var color = ["#0000FF", "#99FF00", "#660033", "#CC66CC"];
+        $(function () {
+            $.ajax({
+                url: '/ia/GetIACODEList',
+                type: 'post',
+                async: false,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Success)
+                        IA_CODEList = data.Data;
+                    else
+                        alert(data.Msg);
+                },
+                error: function (obj) {
+                    alert("fail to get");
+                }
+            })
+        });
+
+        //Box number
+        $("#txtLODNUM_DISPLAY").keydown(function (event) {
+            var LodDisplay = $("#txtLODNUM_DISPLAY").val();
+            if (event.keyCode == 13) {
+                if (LodDisplay == "")
+                    return false;
+
+                $("#loadingModal").modal("show");
+                //Go Step
+                GetInfoFromHDR(LodDisplay);
+            }
+        });
+        //Box number Button
+        $("#btnGO").on('click', function () {
+            var LodDisplay = $("#txtLODNUM_DISPLAY").val();
+            if (LodDisplay == "")
+                return false;
+
+            $("#loadingModal").modal("show");
+            //Go Step
+            GetInfoFromHDR(LodDisplay);
+        })
+        //Step 1 found
+        function GetInfoFromHDR(LodDisplay) {
+            $.ajax({
+                url: '/ia/GetInfoFromHDR',
+                type: 'post',
+                async: true,
+                data: {
+                    LODNUM_DISPLAY: LodDisplay
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Success) {
+                        //readonly
+                        $("#txtADRNAM")[0].style.color = "";
+                        $("#txtADRNAM").text(data.Data[0].ADRNAM);
+                        $("#txtIA_STATUS").text(data.Data[0].IA_STATUS);
+                        $("#txtSTATUS_DESC").text(data.Data[0].STATUS_DESC);
+                        if (data.Data[0].NOTE != "" && data.Data[0].NOTE != null) {
+                            $("#txtNOTE").addClass("oraColor");
+                            $("#txtNOTE").text(data.Data[0].NOTE);
+                        }
+                        $("#txtLODNUM_DISPLAY").attr("disabled", "disabled");
+
+                        //全局变量赋值
+                        LODNUM = data.Data[0].LODNUM;
+                        IASTATUS = data.Data[0].IA_STATUS;
+
+                        //GetTable
+                        GetInfoLODDTL(data.Data[0].LODNUM);
+
+                        $("#loadingModal").modal("hide");
+
+                        //箱号状态
+                        if (IASTATUS != "INP") {
+                            $("#txtScanInput").attr("disabled", "disabled");
+                            $("#txtQTY").attr("disabled", "disabled");
+                        } else {
+                            $("#txtScanInput").focus();
+                        }
+                    }
+                    else {
+                        //Step 2
+                        GetInfoFromBASE(LodDisplay);
+                    }
+                },
+                error: function (obj) {
+                    alert("fail to get");
+                }
+            });
+        }
+        //Step 2 not found
+        function GetInfoFromBASE(LodDisplay) {
+            $.ajax({
+                url: '/ia/GetInfoFromBASE',
+                type: 'post',
+                async: false,
+                data: {
+                    LODNUM_DISPLAY: LodDisplay
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (!data.Success) { //not found
+                        $("#txtADRNAM")[0].style.color = "red";
+                        $("#txtADRNAM").text(data.Msg);
+                        $("#txtLODNUM_DISPLAY").focus();
+                        $("#txtLODNUM_DISPLAY").select();
+                        $("#loadingModal").modal("hide");
+                    }
+                    else {
+                        $("#txtADRNAM")[0].style.color = "";
+                        GetInfoFromHDR(LodDisplay);
+                    }
+                },
+                error: function (obj) {
+                    alert("fail to get");
+                }
+
+            })
+        }
+        //GetTable
+        function GetInfoLODDTL(LodNum) {
+            //alert(1);
+            $.ajax({
+                url: '/ia/GetInfoLODDTL',
+                type: 'post',
+                async: false,
+                data: {
+                    LODNUM: LodNum
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Success) {
+                        CreateTable(data.Data);
+                        LODDTList = data.Data;
+                    }
+                    else
+                        alert(data.Msg);
+                },
+                error: function (obj) {
+                    alert("fail to get");
+                }
+            })
+        }
+        //CreateTable
+        function CreateTable(data) {
+            var html = "";
+            if (data != null && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].IA_QTY != null)
+                        html += "<tr class=\"greColor\" data-id=\"" + data[i].PRTNUM + "\">";
+                    else
+                        html += "<tr data-id=\"" + data[i].PRTNUM + "\">";
+
+                    //SEQ
+                    html += "<td>" + (i + 1) + "</td>";
+
+                    //PRTNUM
+                    html += "<td>" + data[i].PRTNUM + "</td>";
+
+                    //NOTE
+                    //if (data[i].NOTE != null)
+                    //    html += "<td class=\"oraColor\">" + data[i].NOTE + "</td>";
+                    //else
+                    //    html += "<td></td>";
+
+                    //QTY
+                    if (data[i].QTY_DISPLAY != null)
+                        html += "<td>" + data[i].QTY_DISPLAY + "</td>";
+                    else
+                        html += "<td></td>";
+
+                    //INSP. QTY
+                    if (IASTATUS != "INP") {
+                        if (data[i].IA_QTY != null)
+                            html += "<td>" + data[i].IA_QTY + "</td>";
+                        else
+                            html += "<td></td>";
+                    } else {
+                        if (data[i].IA_QTY != null)
+                            html += "<td>" + "<input type=\"text\" class=\"form-control txtIA_QTY\" value=\"" + data[i].IA_QTY + "\" /></td>";
+                        else
+                            html += "<td>" + "<input type=\"text\" class=\"form-control txtIA_QTY\" value=\"\" /></td>";
+                    }
+
+                    //R Code1
+                    if (IASTATUS != "INP") {
+                        if (data[i].IA_CODE1 != null)
+                            html += "<td>" + data[i].IA_CODE1 + "</td>";
+                        else
+                            html += "<td></td>";
+                    } else {
+                        html += "<td><select class=\"form-control txtIA_CODE1\">";
+                        html += "<option value=\"\"></option>";
+                        for (var j = 0; j < IA_CODEList.length; j++) {
+                            if (data[i].IA_CODE1 == IA_CODEList[j].IA_CODE)
+                                html += "<option value=\"" + IA_CODEList[j].IA_CODE + "\" selected=\"selected\">" + IA_CODEList[j].IA_CODE + "</option>";
+                            else
+                                html += "<option value=\"" + IA_CODEList[j].IA_CODE + "\">" + IA_CODEList[j].IA_CODE + "</option>";
+                        }
+                        html += "</select></td>";
+                    }
+
+                    //R Code2
+                    if (IASTATUS != "INP") {
+                        if (data[i].IA_CODE2 != null)
+                            html += "<td>" + data[i].IA_CODE2 + "</td>";
+                        else
+                            html += "<td></td>";
+                    } else {
+                        html += "<td><select class=\"form-control txtIA_CODE2\">";
+                        html += "<option value=\"\"></option>";
+                        for (var j = 0; j < IA_CODEList.length; j++) {
+                            if (data[i].IA_CODE2 == IA_CODEList[j].IA_CODE)
+                                html += "<option value=\"" + IA_CODEList[j].IA_CODE + "\" selected=\"selected\">" + IA_CODEList[j].IA_CODE + "</option>";
+                            else
+                                html += "<option value=\"" + IA_CODEList[j].IA_CODE + "\">" + IA_CODEList[j].IA_CODE + "</option>";
+                        }
+                        html += "</select></td>";
+                    }
+
+                    html += "</tr>";
+                }
+            }
+            $("#LodDetail").html(html);
+        }
+
+        //Scanning inputs
+        $("#txtScanInput").keydown(function (event) {
+            if (event.keyCode == 13) {
+                //禁止换行
+                //event.returnValue = false;
+                //event.preventDefault();
+                ScanInputKeyDown();
+            }
+        })
+        //Scanning inputs Button
+        $("#btnOK").on('click', function () {
+            ScanInputKeyDown();
+        })
+        //Scanning inputs Function
+        function ScanInputKeyDown() {
+            if ($("#txtScanInput").val() == "")
+                return false;
+
+            $.ajax({
+                url: '/ia/GetPartConvert',
+                type: 'post',
+                async: false,
+                data: {
+                    LODNUM: LODNUM,
+                    PRTNUM: $("#txtScanInput").val()
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Success) {
+                        $("#txtPart_No")[0].style.color = "";
+                        $("#txtPart_No").text(data.Data);
+                        $("#txtQTY").val(1);
+                        $("#txtQTY").select();
+                        $("#txtQTY").focus();
+                        //全局变量赋值
+                        PRTNUM = data.Data;
+                        //定位tr
+                        tr = $("#LodDetail").find("tr[data-id='" + PRTNUM + "']");
+                        tr.attr("class", "oraColor");
+                        $("#LodDetail").animate({ scrollTop: tr[0].offsetTop - 45 }, "slow");
+
+                        for (var i = 0; i < LODDTList.length; i++) {
+                            if (LODDTList[i].PRTNUM == data.Data) {
+                                if (LODDTList[i].NOTE != null) {
+                                    $("#txtDTLNOTE").text(LODDTList[i].NOTE);
+                                    $("#txtDTLNOTE").attr("class", "oraColor");
+                                }
+                                else {
+                                    $("#txtDTLNOTE").text("");
+                                    $("#txtDTLNOTE").attr("class", "");
+                                }
+                            }
+                        }
+                        $("#btnMap").attr("disabled", "disabled");
+                        $("#partok")[0].play();
+                    }
+                    else {
+                        $("#btnMap").removeAttr("disabled");
+                        $("#txtPart_No")[0].style.color = "red";
+                        $("#txtPart_No").text(data.Msg);
+                        $("#txtDTLNOTE").text("");
+                        $("#txtDTLNOTE").attr("class", "");
+                        $("#txtScanInput").focus();
+                        $("#txtScanInput").select();
+                        $("#partno")[0].play();
+                    }
+                },
+                error: function (obj) {
+                    alert("fail to get");
+                }
+            })
+        }
+
+        //QTY
+        $("#txtQTY").keydown(function (event) {
+            if (event.keyCode == 13) {
+                //debugger;
+                QTYKeyDown();
+            }
+        })
+        //QTY Button
+        $("#btnQTYOK").on('click', function () {
+            QTYKeyDown();
+        })
+        //QTY Function
+        function QTYKeyDown() {
+            var qtyNum = $("#txtQTY").val();
+            $IA_QTY = tr.find("td .txtIA_QTY");
+            var reg = new RegExp("^[0-9]*$");
+
+            if (qtyNum == "" || !reg.test(qtyNum) || parseInt(qtyNum) > 9999) {
+                if ($IA_QTY.val() == "" || $IA_QTY.val() == null)
+                    $IA_QTY.val(parseInt(1));
+                else
+                    $IA_QTY.val(parseInt($IA_QTY.val()) + parseInt(1));
+
+                if ($IA_QTY.val() == "")
+                    tr.attr("class", "");
+                else {
+                    tr.attr("class", "greColor");
+                }
+                $("#txtScanInput").val(qtyNum);
+                //shake();
+                changeposition(true, 3);
+                ScanInputKeyDown();
+                $("#qtyok")[0].play();
+                return;
+                //$("#txtQTY").focus();
+                //$("#txtQTY").select();
+                //$("#partno")[0].play();
+                //return false;
+            }
+
+            if (qtyNum != "" && reg.test(qtyNum)) {
+                if ($IA_QTY.val() == "" || $IA_QTY.val() == null)
+                    $IA_QTY.val(parseInt(qtyNum));
+                else
+                    $IA_QTY.val(parseInt($IA_QTY.val()) + parseInt(qtyNum));
+            }
+
+            if ($IA_QTY.val() == "")
+                tr.attr("class", "");
+            else {
+                tr.attr("class", "greColor");
+            }
+            $("#txtScanInput")[0].style.color = "#555";
+            $("#txtScanInput")[0].style.fontSize = "14px";
+            $("#txtScanInput").focus();
+            $("#txtScanInput").select();
+            $("#qtyok")[0].play();
+            setTimeout("$(\"#txtQTY\").val(\"\");", 1000);
+        }
+
+        //MAP
+        $("#btnMap").on('click', function () {
+            var scaninput = $("#txtScanInput").val();
+            $.ajax({
+                url: '/ia/GetMapPRTNUM',
+                type: 'post',
+                async: false,
+                data: {
+                    ScanInput: scaninput
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Success)
+                        $("#mapPRTNUM").val(data.Data);
+                    else
+                        alert(data.Msg);
+                },
+                error: function (obj) {
+                    alert("fail to get");
+                }
+            })
+            $("#myModal").modal("show");
+            $("#mapPRTNUM").focus();
+        })
+        //Map Enter
+        $("#mapPRTNUM").keydown(function (event) {
+            if (event.keyCode == 13) {
+                SaveMap();
+            }
+        })
+        //MAPOK
+        $("#btnmapOK").on('click', function () {
+            SaveMap();
+        })
+        function SaveMap() {
+            if ($("#mapPRTNUM").val() == "") {
+                alert("No PRTNUM Input");
+                return false;
+            }
+            $.ajax({
+                url: '/ia/AddOrUpdateMap',
+                type: 'post',
+                async: false,
+                data: {
+                    ScanInput: $("#txtScanInput").val(),
+                    PRTNUM: $("#mapPRTNUM").val()
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Success) {
+                        $("#myModal").modal("hide");
+                        $("#txtScanInput").focus();
+                        $("#txtScanInput").select();
+                    }
+                    else {
+                        alert(data.Msg);
+                        $("#mapPRTNUM").focus();
+                        $("#mapPRTNUM").select();
+                    }
+                }, error: function (obj) {
+                    alert("fail to get");
+                }
+            })
+        }
+        //MAPCancel
+        $("#btnmapCancel").on('click', function () {
+            $("#myModal").modal("hide");
+            $("#txtScanInput").focus();
+            $("#txtScanInput").select();
+        })
+
+
+        //Save
+        $("#btnSave").on('click', function () {
+            CheckQTY();
+            Save();
+        });
+        //Cancel
+        $("#btnCancel").on('click', function () {
+            Cancel();
+        })
+        //Complete
+        $("#btnComplete").on('click', function () {
+            CheckQTY();
+            Complete();
+        })
+
+        $("#btnModalOK").on('click', function () {
+            btnModalOKClick();
+        })
+        $("#btnModalCancel").on('click', function () {
+            btnModalCancelClick();
+        })
+
+        //F8 保存
+        function Save() {
+            $("#loadingModal").modal("show");
+            var DTList = [];
+
+            var tableTr = $("#LodDetail").find("tr");
+            for (var i = 0; i < tableTr.length; i++) {
+                tableTd = $(tableTr[i]).find("td");
+                var list = {
+                    PRTNUM: tableTd.eq(1).text(),
+                    QTY_DISPLAY: tableTd.eq(2).text(),
+                    IA_QTY: tableTd.find(".txtIA_QTY").val(),
+                    IA_CODE1: tableTd.find(".txtIA_CODE1").val(),
+                    IA_CODE2: tableTd.find(".txtIA_CODE2").val()
+                }
+                DTList.push(list);
+            }
+
+            $.ajax({
+                url: '/ia/SaveIALODDTL',
+                type: 'post',
+                async: false,
+                data: JSON.stringify({
+                    DList: DTList,
+                    LODNUM: LODNUM
+                }),
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (data) {
+                    $("#loadingModal").modal("hide");
+                    $("#txtScanInput").focus();
+                    $("#txtScanInput").select();
+                },
+                error: function (obj) {
+                    alert("fail to save");
+                }
+            })
+        }
+        //F7 清空
+        function Cancel() {
+            $("#txtLODNUM_DISPLAY").val("");
+            $("#txtLODNUM_DISPLAY").attr("disabled", false);
+            $("#txtLODNUM_DISPLAY").focus();
+            $("#txtADRNAM")[0].style.color = "";
+            $("#txtADRNAM").text("");
+            $("#txtIA_STATUS").text("");
+            $("#txtSTATUS_DESC").text("");
+            $("#txtNOTE").removeClass("oraColor");
+            $("#txtNOTE").text("");
+            $("#txtScanInput").val("");
+            $("#txtPart_No")[0].style.color = "";
+            $("#txtPart_No").text("");
+            $("#txtQTY").val("");
+            $("#LodDetail").html("");
+            $("#txtDTLNOTE").text("");
+            $("#txtScanInput").attr("disabled", false);
+            $("#txtQTY").attr("disabled", false);
+        }
+        //F10 完成
+        function Complete() {
+            $("#loadingModal").modal("show");
+            var DTList = [];
+
+            var tableTr = $("#LodDetail").find("tr");
+            for (var i = 0; i < tableTr.length; i++) {
+                tableTd = $(tableTr[i]).find("td");
+                var list = {
+                    PRTNUM: tableTd.eq(1).text(),
+                    QTY_DISPLAY: tableTd.eq(2).text(),
+                    IA_QTY: tableTd.find(".txtIA_QTY").val(),
+                    IA_CODE1: tableTd.find(".txtIA_CODE1").val(),
+                    IA_CODE2: tableTd.find(".txtIA_CODE2").val()
+                }
+                DTList.push(list);
+            }
+
+            $.ajax({
+                url: '/ia/CompleteIALODDTL',
+                type: 'post',
+                async: false,
+                data: JSON.stringify({
+                    DList: DTList,
+                    LODNUM: LODNUM
+                }),
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (data) {
+                    $("#loadingModal").modal("hide");
+                    if (data.Success) {
+                        $("#txtCompComm").val("");
+                        $("#Comp_Comm").modal("show");
+                    }
+                    else {
+                        alert(data.Msg);
+                    }
+                    //Cancel();
+                },
+                error: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to save");
+                }
+            })
+        }
+        //误操作
+        function CheckQTY() {
+            var qtyNum = $("#txtQTY").val();
+            if (qtyNum != "") {
+                $IA_QTY = tr.find("td .txtIA_QTY");
+
+                if ($IA_QTY.val() == "" || $IA_QTY.val() == null)
+                    $IA_QTY.val(parseInt(1));
+                else
+                    $IA_QTY.val(parseInt($IA_QTY.val()) + parseInt(1));
+            }
+        }
+
+        function btnModalOKClick() {
+            $.ajax({
+                url: '/ia/CompleteComment',
+                type: 'post',
+                async: false,
+                data: {
+                    LODNUM: LODNUM,
+                    Comp_Comm: $("#txtCompComm").val()
+                },
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#Comp_Comm").modal("hide");
+                        $("#txtIA_STATUS").text("Comp");
+                        $("#txtSTATUS_DESC").text("Completed 完成");
+                        //Cancel();
+                    } else {
+                        alert(obj.Msg);
+                    }
+
+                }, error: function (e) {
+                    alert("fail to get");
+                }
+            })
+        }
+        function btnModalCancelClick() {
+            $("#Comp_Comm").modal("hide");
+        }
+
+        $(document).keydown(function (event) {
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if (e.keyCode == 119) { //F8
+                Save();
+            }
+            if (e.keyCode == 118) { //F7
+                Cancel();
+            }
+            if (e.keyCode == 121) {//F10
+                Complete();
+            }
+        })
+
+        Go();
+
+        function Go() {
+            var loddis = '@ViewBag.LODNUM_DISPLAY';
+            if (loddis != "") {
+                $("#txtLODNUM_DISPLAY").val(loddis);
+            }
+        }
+
+        $("#returnButton").on('click', function () {
+            window.history.back(-1);
+        })
+        $("#closeButton").on('click', function () {
+
+        })
+
+    })
+
+
+</script>
+<script type="text/javascript">
+    var t;
+    function changeposition(a, times) {
+        var xuan = document.getElementById("txtScanInput");
+        xuan.style.color = a ? "#0f0" : "#534";
+        xuan.style.fontSize = a ? "20px" : "14px";
+        a = !a;
+        if (times < 0) {
+            clearTimeout(t);
+            return;
+        }
+        times = times - 1;
+        t = setTimeout("changeposition(" + a + "," + times + ")", 200);
+    }
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+        $("#myModalText").css("margin-top", "300px");
+        $("#Comp_CommModal").css("margin-top", "300px");
+    });
+</script>

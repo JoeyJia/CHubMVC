@@ -1,0 +1,236 @@
+﻿@{
+    ViewBag.Title = "Test MobileHomeTest";
+    Layout = null;
+}
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+
+<title>@ViewBag.Title</title>
+
+<style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+
+    .menuList ul {
+        list-style-type: none;
+        zoom: 1;
+    }
+
+        .menuList ul li {
+            float: left;
+            /*margin: 10px;*/
+            display: inline;
+            /*border: 1px solid #CCC;*/
+        }
+
+            .menuList ul li a img {
+                width: 150px;
+                /*padding: 5px;*/
+                border: 0;
+                display: block;
+            }
+
+            .menuList ul li a.wenzi {
+                line-height: 20px;
+                color: #666;
+                display: block;
+                text-align: center;
+            }
+</style>
+
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-collapse collapse ng-scope" ng-app="appLink" ng-controller="menuCtrl">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                </ul>
+                <form action="/Account/LogOff" class="navbar-right ng-pristine ng-valid" id="logoutForm" method="post">
+                    <ul class="nav navbar-nav navbar-right" style="margin-right:50px">
+                        <li>
+                            <a href="" title="">Hello Infosys</a>
+                        </li>
+                        <li><a href="/Test/MobileLoginTest">Log off</a></li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" style="width:100%;height:86%;">
+        <div class="row" style="margin-top:80px">
+            <div class="col-sm-12" style="height:100%;">
+                <div class="row">
+                    <div class="col-sm-12" style="padding-right:0px;">
+                        <div class="panel panel-default text-center">
+                            <h3>Welcome to CPDC iHUB! Easy Work! Easy Life!</h3>
+                            <h3>---- From CSCO China IT Team</h3>
+                            <h3>THIS IS TESTING ENV!!!</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12" style="padding-right:0px;">
+                        <div class="panel panel-default">
+                            <div class="form-group">
+                                <label for="" class="col-sm-12" style="font-size:20px;">Quality Control</label>
+                                <div class="row menuList">
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-2">
+                                            <ul>
+                                                <li>
+                                                    <a href="/ia/iascan"><img src="~/Images/hubLogo.png" /></a>
+                                                    <a href="#" class="wenzi">图片1</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <ul>
+                                                <li>
+                                                    <a href="#"><img src="~/Images/hubLogo.png" /></a>
+                                                    <a href="#" class="wenzi">图片2</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <ul>
+                                                <li>
+                                                    <a href="#"><img src="~/Images/hubLogo.png" /></a>
+                                                    <a href="#" class="wenzi">图片3</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <ul>
+                                                <li>
+                                                    <a href="#"><img src="~/Images/hubLogo.png" /></a>
+                                                    <a href="#" class="wenzi">图片4</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <ul>
+                                                <li>
+                                                    <a href="#"><img src="~/Images/hubLogo.png" /></a>
+                                                    <a href="#" class="wenzi">图片5</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="form-group">
+                                <label for="" class="col-sm-12" style="font-size:20px;">Quality Control</label>
+                                <div class="row menuList">
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-2">
+                                            <ul>
+                                                <li>
+                                                    <a href="#"><img src="~/Images/hubLogo.png" /></a>
+                                                    <a href="#" class="wenzi">图片1</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <ul>
+                                                <li>
+                                                    <a href="#"><img src="~/Images/hubLogo.png" /></a>
+                                                    <a href="#" class="wenzi">图片2</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <ul>
+                                                <li>
+                                                    <a href="#"><img src="~/Images/hubLogo.png" /></a>
+                                                    <a href="#" class="wenzi">图片3</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <ul>
+                                                <li>
+                                                    <a href="#"><img src="~/Images/hubLogo.png" /></a>
+                                                    <a href="#" class="wenzi">图片4</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <ul>
+                                                <li>
+                                                    <a href="#"><img src="~/Images/hubLogo.png" /></a>
+                                                    <a href="#" class="wenzi">图片5</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="form-group">
+                                <label for="" class="col-sm-12" style="font-size:20px;">Quality Control</label>
+                                <div class="row menuList">
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-2">
+                                            <ul>
+                                                <li>
+                                                    <a href="#"><img src="~/Images/hubLogo.png" /></a>
+                                                    <a href="#" class="wenzi">图片1</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <ul>
+                                                <li>
+                                                    <a href="#"><img src="~/Images/hubLogo.png" /></a>
+                                                    <a href="#" class="wenzi">图片2</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <ul>
+                                                <li>
+                                                    <a href="#"><img src="~/Images/hubLogo.png" /></a>
+                                                    <a href="#" class="wenzi">图片3</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <ul>
+                                                <li>
+                                                    <a href="#"><img src="~/Images/hubLogo.png" /></a>
+                                                    <a href="#" class="wenzi">图片4</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <ul>
+                                                <li>
+                                                    <a href="#"><img src="~/Images/hubLogo.png" /></a>
+                                                    <a href="#" class="wenzi">图片5</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+

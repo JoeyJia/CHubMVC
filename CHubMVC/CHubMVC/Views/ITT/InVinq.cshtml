@@ -1,0 +1,1263 @@
+﻿@{
+    ViewBag.Title = "InVinq";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style typeof="text/css">
+    .titleTD {
+        background-color: #F5F5F5;
+    }
+
+    .title {
+        background-color: #F5F5F5;
+    }
+
+    .silver {
+        background-color: #C0C0C0;
+    }
+</style>
+
+@Styles.Render("~/Content/progressbarcss")
+@Scripts.Render("~/bundles/progressbar")
+
+<div class="container-fluid" id="easyQueryBody" ng-app="easyQueryApp" ng-controller="easyQueryCtrl">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:silver"><b>InVinq</b></div>
+        <form class="form-horizontal" id="searchForm">
+            <div class="row" style="margin-top:20px;">
+                <div class="form-group">
+                    <label for="orderID" class="col-sm-2 control-label small">Print_PartNo (Movex):</label>
+                    <div class="col-sm-2 col-lg-2">
+                        <input type="text" class="form-control input-sm" ng-model="print_partNo" placeholder="Print_PartNo (Movex)">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="orderID" class="col-sm-2 control-label small">Part No.</label>
+                    <div class="col-sm-2 col-lg-2">
+                        <input type="text" class="form-control input-sm" ng-model="partNo" placeholder="Part No.">
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary btn-sm" ng-click="fuzzySearch()">Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div style="margin-bottom:-20px" class="tab-pane fade in active" id="h-default-basic" role="tabpanel" hidden>
+            <div class="bs-example">
+                <div class="">
+                    <div class="progress"><div class="progress-bar" role="progressbar" data-transitiongoal-backup="100"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <!--Page body-->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="background-color:silver"><b>Part Basic Info</b></div>
+                    <table class="table table-bordered table-condensed">
+                        <tr>
+                            <td class="titleTD"><b>PartNo</b></td>
+                            <td colspan="3">{{selectedPart.PART_NO}}</td>
+                        </tr>
+                        <tr>
+                            <td style="width:180px" class="titleTD"><b>Description</b></td>
+                            <td>{{selectedPart.DESCRIPTION}}</td>
+                            <td style="width:150px" class="titleTD"><b>Chinese Desc</b></td>
+                            <td>{{selectedPart.DESC_CN}}</td>
+                        </tr>
+                        <tr>
+                            <td class="titleTD"><b>Buyer</b></td>
+                            <td>{{selectedPart.PLANNER_BUYER}}</td>
+                            <td class="titleTD"><b>Print Part No.</b></td>
+                            <td>{{selectedPart.PRINT_PART_NO}}</td>
+                        </tr>
+                        <tr>
+                            <td class="titleTD"><b>SSC</b></td>
+                            <td>{{selectedPart.CURRENT_SALES_STATUS_CODE}}</td>
+                            <td class="titleTD"><b>Part Status</b></td>
+                            <td>{{selectedPart.PART_STATUS}}</td>
+                        </tr>
+                        <tr>
+                            <td class="titleTD"><b>L*W*H</b></td>
+                            <td>{{selectedPart.LWH}}</td>
+                            <td class="titleTD"><b>Weight</b></td>
+                            <td>{{selectedPart.PART_WEIGHT}}</td>
+                        </tr>
+                        <tr>
+                            <td class="titleTD"><b>Make to Order</b></td>
+                            <td>{{selectedPart.MAKE_TO_FLAG}}</td>
+                            <td class="titleTD"><b>Tran Code</b></td>
+                            <td>{{selectedPart.TRANSP_PART_CODE}}</td>
+                        </tr>
+                        <tr>
+                            <td class="titleTD"><b>Release Date</b></td>
+                            <td>{{selectedPart.CREATE_DATE | date:'yyyy-MM-dd'}}</td>
+                            <td class="titleTD"><b>Note</b></td>
+                            <td>{{selectedPart.NOTE_TEXT}}</td>
+                        </tr>
+                        <tr>
+                            <td class="titleTD"><b>Remark 1</b></td>
+                            <td>{{selectedPart.REMARK1}}</td>
+                            <td class="titleTD"><b>Remark 2</b></td>
+                            <td>{{selectedPart.REMARK2}}</td>
+                        </tr>
+                        <tr>
+                            <td class="titleTD"><b>Remark 3</b></td>
+                            <td>{{selectedPart.REMARK3}}</td>
+                            <td class="titleTD"><b>Remark 4</b></td>
+                            <td>{{selectedPart.REMARK4}}</td>
+                        </tr>
+                        <tr>
+                            <td class="titleTD"><b>Remark 5</b></td>
+                            <td colspan="3">{{selectedPart.REMARK5}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!--Inventory Shapshot Part-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" style="background-color:silver"><b>Inventory Shapshot</b></div>
+                            <table class="table table-bordered table-condensed">
+                                <thead class="title">
+                                    <tr>
+
+                                        <th>Site</th>
+                                        <th>Bay No</th>
+                                        <th>Qty Available</th>
+                                        @*
+                                        <th>Qty Onhand</th>
+                                        <th>Qty Reserved</th>
+                                        <th>Qty In Receiving</th>*@
+                                    </tr>
+                                </thead>
+                                <tr style="background-color:#F0FFFF" ng-repeat="ip in invPDCList">
+
+                                    <td>{{ip.WH_ALIAS}}</td>
+                                    <td>{{ip.BAY_NO}}</td>
+                                    <td>{{ip.QTY_AVL}}</td>
+                                    @*
+                                    <td>{{ip.QTY_ONHAND}}</td>
+                                    <td>{{ip.QTY_RESERVED}}</td>
+                                    <td>{{ip.QTY_IN_RECEIVING}}</td>*@
+                                </tr>
+
+                                <tr style="background-color:#FDF5E6" ng-repeat="ir in invRDCList">
+
+                                    <td>{{ir.WH_ALIAS}}</td>
+                                    <td>{{ir.BAY_NO}}</td>
+                                    <td>{{ir.QTY_AVL}}</td>
+                                    @*
+                                    <td>{{ir.QTY_ONHAND}}</td>
+                                    <td>{{ir.QTY_RESERVED}}</td>
+                                    <td>{{ir.QTY_IN_RECEIVING}}</td>*@
+                                </tr>
+
+                                @*<tr style="background-color:#FAFAD2" ng-repeat="iip in invInterPDCList">
+
+                                    <td>{{iip.WH_ALIAS}}</td>
+                                    <td>{{iip.BAY_NO}}</td>
+                                    <td>{{iip.QTY_AVL}}</td>
+                                    
+                                    <td>{{iip.QTY_ONHAND}}</td>
+                                    <td>{{iip.QTY_RESERVED}}</td>
+                                    <td>{{iip.QTY_IN_RECEIVING}}</td>
+                                </tr>*@
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Part List Modal-->
+<div class="modal fade" id="partListModal" role="dialog" aria-labelledby="result" aria-hidden="true" ng-app="partListApp" ng-controller="partListCtrl">
+    <div class="modal-dialog" style="width:90%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Part No List</h4>
+            </div>
+
+            <div class="modal-body">
+
+                <table id="tbPartNoList" class="table table-striped table-hover table-bordered .table-condensed">
+                    <thead>
+                        <tr>
+                            <th style="width:10px"></th>
+                            <th style="">Part No.</th>
+                            <th style="">Description</th>
+                            <th style="">Chinese Desc</th>
+                            <th>Buyer</th>
+                            <th>Part Status</th>
+                            <th>SSC</th>
+                            <th>Print Part No.</th>
+                            <th>L*W*H</th>
+                            <th>Weight</th>
+                        </tr>
+                    </thead>
+                    <tbody style="">
+                        <tr ng-repeat="pl in partList ">
+                            <td style="">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRdios" id="optionsRdios$index" class="partRadio" seq="{{$index}}" value="">
+                                    </label>
+                                </div>
+                            </td>
+                            <td>{{pl.PART_NO}}</td>
+                            <td>{{pl.DESCRIPTION}}</td>
+                            <td>{{pl.DESC_CN}}</td>
+                            <td>{{pl.PLANNER_BUYER}}</td>
+                            <td>{{pl.PART_STATUS}}</td>
+                            <td>{{pl.CURRENT_SALES_STATUS_CODE}}</td>
+                            <td>{{pl.PRINT_PART_NO}}</td>
+                            <td>{{pl.LWH}}</td>
+                            <td>{{pl.PART_WEIGHT}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-md-2 col-md-offset-10">
+                        <button type="button" class="btn btn-primary" onclick="confirmAddr()">Confirm</button>
+                        <button type="button" class="btn btn-primary" onclick="cancelAddr()">Cancel</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    angular.module('easyQueryApp', []).controller('easyQueryCtrl', function ($scope, $http) {
+        $scope.result = [];
+        $scope.partNo = "";
+        $scope.print_partNo = "";
+        $scope.selectedPart = "";
+        $scope.logSeq = 0;
+
+        $scope.watchingList = [];
+        $scope.mdmData = "";
+
+        $scope.invPDCList = [];
+        $scope.invRDCList = [];
+        $scope.invInterPDCList = [];
+
+        $scope.openPDCList = [];
+        $scope.openRDCList = [];
+
+        $scope.shipmentList = [];
+        $scope.shipmentBackup = [];
+        //Filter args
+        $scope.fromArg = "All";
+        $scope.toArg = "All";
+        $scope.tranArg = "All";
+        $scope.ssArg = "Opening";
+        $scope.inNoArg = "";
+        $scope.shipArg = "";
+        $scope.WayNoArg = "";
+
+        //PO part
+        $scope.poLevel1List = [];
+        $scope.poLevel1Backup = [];
+        //Filter Args
+        $scope.buyForArg = "PDC";
+        $scope.buyFromArg = "InterPDC";
+        $scope.statusArg = "Open";
+        $scope.poNoArg = "";
+        $scope.suppCodeArg = "";
+        $scope.suppNameArg = "";
+        $scope.wareHouseArg = "";
+
+
+
+        $scope.poLevel2List = [];
+
+        $scope.soLevel3List = [];
+
+        $scope.v1Level4List = [];
+
+
+        //Search
+        $scope.fuzzySearch = function () {
+            if ($scope.partNo == "" && $scope.print_partNo == "")
+                return;
+            showPB();
+            $('#h-default-basic .progress-bar').attr('data-transitiongoal', 5).progressbar();
+
+            $.ajax({
+                url: "/itt/FuzzyQueryParNo_New",
+                data: {
+                    PartNo: $scope.partNo,
+                    Print_PartNo: $scope.print_partNo
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    $scope.result = obj;
+                    if ($scope.result == null || $scope.result.length == 0) {
+                        hidePB();
+                        alert("No Data!");
+                        return;
+                    }
+
+
+                    $('#h-default-basic .progress-bar').attr('data-transitiongoal', 10).progressbar();
+                    if ($scope.result != null && $scope.result.length == 1) {
+                        $scope.selectedPart = $scope.result[0];
+                        $scope.initAlldata();
+                        //initAlldata();
+                    }
+                    else {
+                        var appElement = document.querySelector('[ng-controller=partListCtrl]');
+                        var scope = angular.element(appElement).scope();
+                        scope.partList = $scope.result;
+                        scope.$apply();
+                        $("#partListModal").modal("show");
+                    }
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+
+        };
+
+        $scope.initAlldata = function () {
+            //debugger;
+
+            addEQLog();
+            $('#h-default-basic .progress-bar').attr('data-transitiongoal', 20).progressbar();
+            getWatchingout();
+            $('#h-default-basic .progress-bar').attr('data-transitiongoal', 30).progressbar();
+            getMDMData();
+            $('#h-default-basic .progress-bar').attr('data-transitiongoal', 40).progressbar();
+            getInvSnapShot();
+            $('#h-default-basic .progress-bar').attr('data-transitiongoal', 80).progressbar();
+            getOpenSnapShot();
+            $('#h-default-basic .progress-bar').attr('data-transitiongoal', 90).progressbar();
+            getShipmentData();
+            getPOLevel1Data();
+            initPoTab();
+            $('#h-default-basic .progress-bar').attr('data-transitiongoal', 100).progressbar();
+            setTimeout(hidePB, 3000);
+        };
+
+        $scope.submitFilter = function () {
+            $scope.shipmentList = $scope.shipmentBackup.slice(0);
+
+            if ($scope.fromArg != "All") {
+                for (var i = $scope.shipmentList.length - 1; i >= 0; i--) {
+                    if ($scope.shipmentList[i].FROM_SYSTEM != $scope.fromArg)
+                        $scope.shipmentList.splice(i, 1);
+                }
+            }
+
+            if ($scope.toArg != "All") {
+                for (var i = $scope.shipmentList.length - 1; i >= 0; i--) {
+                    if ($scope.shipmentList[i].SHIP_TO_ABBR != $scope.toArg)
+                        $scope.shipmentList.splice(i, 1);
+                }
+            }
+
+            if ($scope.tranArg != "All") {
+                for (var i = $scope.shipmentList.length - 1; i >= 0; i--) {
+                    if ($scope.shipmentList[i].TRAN_TYPE != $scope.tranArg)
+                        $scope.shipmentList.splice(i, 1);
+                }
+            }
+
+            if ($scope.ssArg != "All") {
+                for (var i = $scope.shipmentList.length - 1; i >= 0; i--) {
+                    if ($scope.shipmentList[i].SHIP_STATUS != $scope.ssArg)
+                        $scope.shipmentList.splice(i, 1);
+                }
+            }
+
+            if ($scope.inNoArg != "") {
+                for (var i = $scope.shipmentList.length - 1; i >= 0; i--) {
+                    if ($scope.shipmentList[i].INVOICE_NO != $scope.inNoArg)
+                        $scope.shipmentList.splice(i, 1);
+                }
+            }
+
+            if ($scope.shipArg != "") {
+                for (var i = $scope.shipmentList.length - 1; i >= 0; i--) {
+                    if ($scope.shipmentList[i].SHIPMENT_NO != $scope.shipArg)
+                        $scope.shipmentList.splice(i, 1);
+                }
+            }
+
+            if ($scope.WayNoArg != "") {
+                for (var i = $scope.shipmentList.length - 1; i >= 0; i--) {
+                    if ($scope.shipmentList[i].WILL_BILL_NO != $scope.WayNoArg)
+                        $scope.shipmentList.splice(i, 1);
+                }
+            }
+
+        }
+
+        $scope.submitPOFilter = function () {
+            filterPOData();
+            var $table = $('#tablePO');
+            $table.bootstrapTable('load', $scope.poLevel1List);
+        }
+
+        //function part
+        function filterPOData() {
+            $scope.poLevel1List = $scope.poLevel1Backup.slice(0);
+
+            if ($scope.buyForArg != "All") {
+                for (var i = $scope.poLevel1List.length - 1; i >= 0; i--) {
+                    if ($scope.poLevel1List[i].BUY_FOR != $scope.buyForArg)
+                        $scope.poLevel1List.splice(i, 1);
+                }
+            }
+
+            if ($scope.buyFromArg != "All") {
+                for (var i = $scope.poLevel1List.length - 1; i >= 0; i--) {
+                    if ($scope.poLevel1List[i].SUPPLIER_TYPE != $scope.buyFromArg)
+                        $scope.poLevel1List.splice(i, 1);
+                }
+            }
+
+            if ($scope.statusArg != "All") {
+                for (var i = $scope.poLevel1List.length - 1; i >= 0; i--) {
+                    if ($scope.poLevel1List[i].PO_STATUS != $scope.statusArg)
+                        $scope.poLevel1List.splice(i, 1);
+                }
+            }
+
+            if ($scope.poNoArg != "") {
+                for (var i = $scope.poLevel1List.length - 1; i >= 0; i--) {
+                    if ($scope.poLevel1List[i].PUR_ORDER_ID != $scope.poNoArg)
+                        $scope.poLevel1List.splice(i, 1);
+                }
+            }
+
+            if ($scope.suppCodeArg != "") {
+                for (var i = $scope.poLevel1List.length - 1; i >= 0; i--) {
+                    if ($scope.poLevel1List[i].BUY_FROM_COMPANY != $scope.suppCodeArg)
+                        $scope.poLevel1List.splice(i, 1);
+                }
+            }
+
+            if ($scope.suppNameArg != "") {
+                for (var i = $scope.poLevel1List.length - 1; i >= 0; i--) {
+                    if ($scope.poLevel1List[i].COMPANY_NAME.indexOf($scope.suppNameArg) < 0)
+                        $scope.poLevel1List.splice(i, 1);
+                }
+            }
+            if ($scope.wareHouseArg != "") {
+                for (var i = $scope.poLevel1List.length - 1; i >= 0; i--) {
+                    if ($scope.poLevel1List[i].WAREHOUSE != $scope.wareHouseArg)
+                        $scope.poLevel1List.splice(i, 1);
+                }
+            }
+        }
+
+        function hidePB() {
+            $('#h-default-basic .progress-bar').attr('data-transitiongoal', 0).progressbar();
+            $("#h-default-basic").attr('hidden', true);
+        }
+        function showPB() {
+            $("#h-default-basic").attr('hidden', false);
+        }
+        function addEQLog() {
+            if ($scope.selectedPart == "")
+                return;
+
+            $.ajax({
+                url: "/itt/AddEasyQueryLog",
+                data: {
+                    partNo: $scope.selectedPart.PART_NO,
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    if (obj.Success) {
+
+                        $scope.logSeq = obj.Data;
+                    }
+                    else
+                        alert(obj.Msg);
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        }
+
+        function getWatchingout() {
+            if ($scope.logSeq == 0)
+                return;
+
+            $.ajax({
+                url: "/itt/GetWatchingOutList",
+                data: {
+                    token: $scope.logSeq,
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+
+                    if (obj.Success) {
+                        $scope.watchingList = obj.Data;
+                    }
+                    else
+                        alert(obj.Msg);
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        }
+
+        function getMDMData() {
+            if ($scope.selectedPart == "")
+                return;
+
+            $.ajax({
+                url: "/itt/GetMDMData",
+                data: {
+                    partNo: $scope.selectedPart.PART_NO,
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+
+                    if (obj.Success) {
+                        $scope.mdmData = obj.Data;
+                    }
+                    else
+                        alert(obj.Msg);
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        }
+
+        function getInvSnapShot() {
+            if ($scope.selectedPart == "")
+                return;
+
+            $.ajax({
+                url: "/itt/GetInvSnapShotData",
+                data: {
+                    partNo: $scope.selectedPart.PART_NO
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    //debugger;
+                    if (obj.Success) {
+                        $scope.invPDCList = obj.Data.pdcList;
+                        $scope.invRDCList = obj.Data.rdcList;
+                        $scope.invInterPDCList = obj.Data.interPDCList;
+                    }
+                    else
+                        alert(obj.Msg);
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+        function getOpenSnapShot() {
+            if ($scope.selectedPart == "")
+                return;
+
+            $.ajax({
+                url: "/itt/GetOpenSnapShotData",
+                data: {
+                    partNo: $scope.selectedPart.PART_NO,
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    //debugger;
+                    if (obj.Success) {
+                        $scope.openPDCList = obj.Data.pdcList;
+                        $scope.openRDCList = obj.Data.rdcList;
+                    }
+                    else
+                        alert(obj.Msg);
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+        function getShipmentData() {
+            if ($scope.selectedPart == "")
+                return;
+
+            $.ajax({
+                url: "/itt/GetShipmentData",
+                data: {
+                    partNo: $scope.selectedPart.PART_NO,
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    //debugger;
+                    if (obj.Success) {
+                        //$scope.shipmentList = obj.Data;
+                        $scope.shipmentBackup = obj.Data;
+                        $scope.submitFilter();
+                    }
+                    else
+                        alert(obj.Msg);
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+        //Po part function
+
+        function getPOLevel1Data() {
+            if ($scope.selectedPart == "")
+                return;
+
+            $.ajax({
+                url: "/itt/GetPOLevel1Data",
+                data: {
+                    partNo: $scope.selectedPart.PART_NO,
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    //debugger;
+                    if (obj.Success) {
+                        //$scope.poLevel1List = obj.Data;
+                        $scope.poLevel1Backup = obj.Data;
+                        filterPOData();
+                    }
+                    else
+                        alert(obj.Msg);
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+        function getPOLevel2Data(poNo) {
+            if ($scope.selectedPart == "")
+                return;
+
+            $.ajax({
+                url: "/itt/GetPOLevel2Data",
+                data: {
+                    partNo: $scope.selectedPart.PART_NO,
+                    poNo: poNo
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    //debugger;
+                    if (obj.Success) {
+                        //debugger;
+                        $scope.poLevel2List = obj.Data;
+                        return obj.Data.slice(0);
+
+                    }
+                    else {
+                        alert(obj.Msg);
+                        return [];
+                    }
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+        function getPOLevel3Data(poNo, poLineNo) {
+            if ($scope.selectedPart == "")
+                return;
+            //debugger;
+            $.ajax({
+                url: "/itt/GetPOLevel3Data",
+                data: {
+                    partNo: $scope.selectedPart.PART_NO,
+                    poNo: poNo,
+                    poLineNo: poLineNo
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    //debugger;
+                    if (obj.Success) {
+                        //debugger;
+                        $scope.soLevel3List = obj.Data;
+                        return obj.Data.slice(0);
+
+                    }
+                    else {
+                        alert(obj.Msg);
+                        return [];
+                    }
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+        function getPOLevel4Data(orderNo, lineNo) {
+            if ($scope.selectedPart == "")
+                return;
+            //debugger;
+            $.ajax({
+                url: "/itt/GetPOLevel4Data",
+                data: {
+                    partNo: $scope.selectedPart.PART_NO,
+                    orderNo: orderNo,
+                    lineNo: lineNo
+                },
+                type: "post",
+                async: false,
+                success: function (obj) {
+                    //debugger;
+                    if (obj.Success) {
+                        //debugger;
+                        $scope.sv1Level4List = obj.Data;
+                        return obj.Data.slice(0);
+
+                    }
+                    else {
+                        alert(obj.Msg);
+                        return [];
+                    }
+
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        };
+
+
+        function initPoTab() {
+            var $table = $('#tablePO');
+            buildTable($table);
+        };
+
+        function expandlevel4($detail, pRow, index) {
+            //debugger;
+            $t = $detail.html('<div class="panel panel-default" style="margin-left:25px"><div class="panel-heading" style="background-color:silver;padding:2px;"><b> shipment ( interPDC only)</b></div><table></table></div>').find('table');
+            //$t.attr("class", "table table-bordered table-condensed");
+            $t.attr("bgcolor", "#FAFAD2");
+            //$t.attr("width", "450px");
+            var columns = [];
+            var data = [];
+            columns.push({
+                field: '',
+                title: 'ICO',
+                formatter: icoFormatter
+            });
+
+            columns.push({
+                field: 'FROM_SYSTEM',
+                title: 'Ship From'
+            });
+            columns.push({
+                field: 'SHIP_STATUS',
+                title: 'Status'
+            });
+            columns.push({
+                field: 'S10_DISPLAY',
+                title: 'Act. Port Arrival',
+                formatter: dateFormatter,
+                cellStyle: getCellStyle
+            });
+            columns.push({
+                field: 'S30_DISPLAY',
+                title: 'Act. 300 arrival date',
+                formatter: dateFormatter,
+                cellStyle: getCellStyle
+            });
+            columns.push({
+                field: 'S50_DISPLAY',
+                title: 'Act. 305 arrival date',
+                formatter: dateFormatter,
+                cellStyle: getCellStyle
+            });
+            columns.push({
+                field: 'EST_S10_PORT_ARRIVAL_DATE',
+                title: 'Est. Port Arrival',
+                formatter: dateFormatter
+            });
+            columns.push({
+                field: 'EST_S60_AVL_DATE',
+                title: 'Est. AVL Date',
+                formatter: dateFormatter
+            });
+            columns.push({
+                field: 'AVL_DATE',
+                title: 'AVL Date',
+                formatter: dateFormatter,
+                cellStyle: getCellStyle
+            });
+            columns.push({
+                field: 'PART_NO',
+                title: 'Part No'
+            });
+            columns.push({
+                field: 'QTY_SHIPPED',
+                title: 'Qty Shipped'
+            });
+
+            columns.push({
+                field: 'SHIPMENT_NO',
+                title: 'Shipment No'
+
+            });
+            columns.push({
+                field: 'SHIP_DATE',
+                title: 'Ship Date',
+                formatter: dateFormatter
+
+            });
+            columns.push({
+                field: 'SHIP_TO_ABBR',
+                title: 'Abbr'
+            });
+            columns.push({
+                field: 'TRAN_TYPE',
+                title: 'Tran Type'
+            });
+            columns.push({
+                field: 'SHIPMENT_LINE_NO',
+                title: 'Shipment Line No'
+            });
+            columns.push({
+                field: 'INVOICE_NO',
+                title: 'Invoice no'
+            });
+            columns.push({
+                field: 'LODNUM',
+                title: 'Lod Number'
+            });
+            columns.push({
+                field: 'S00_DISPLAY',
+                title: 'Act. Depart Date',
+                formatter: dateFormatter
+            });
+
+            columns.push({
+                field: 'S20_DISPLAY',
+                title: 'Act. Do relase date',
+                formatter: dateFormatter
+            });
+
+            columns.push({
+                field: 'S40_DISPLAY',
+                title: 'Act. 300 out date',
+                formatter: dateFormatter
+            });
+
+            columns.push({
+                field: 'TRACKING_NO',
+                title: 'Tracking No',
+            });
+            columns.push({
+                field: 'WILL_BILL_NO',
+                title: 'Way Bill No'
+            });
+            columns.push({
+                field: 'CARRIER_CODE',
+                title: 'Carrier code'
+            });
+            columns.push({
+                field: 'TRAN_PROCESS_ID',
+                title: 'Tran Process'
+            });
+            columns.push({
+                field: 'CUSTOM_PROCESS_ID',
+                title: 'CT Process'
+            });
+
+            var level4Data = [];
+            //debugger;
+            level4Data = getPOLevel4Data(pRow.ORDER_NO, pRow.LINE_NO);
+
+            $t.bootstrapTable({
+                columns: columns,
+                data: $scope.sv1Level4List.slice(0),
+                detailView: false
+
+            });
+            $t.bootstrapTable('hideLoading');
+        }
+
+        function expandlevel3($detail, pRow, index, poNo) {
+            //debugger;
+            //var poNo = row.PUR_ORDER_ID;
+            $t = $detail.html('<div class="panel panel-default" style="margin-left:25px"><div class="panel-heading" style="background-color:silver;padding:2px;"><b>InterPDC SO</b></div><table></table></div>').find('table');
+            //$t.attr("class", "table table-bordered table-condensed");
+            $t.attr("bgcolor", "#FDF5E6");
+            //$t.attr("width", "450px");
+            var columns = [];
+            var data = [];
+            columns.push({
+                field: 'FROM_SYSTEM',
+                title: 'from interPDC'
+
+            });
+            columns.push({
+                field: 'ORDER_NO',
+                title: 'Order No'
+
+            });
+            columns.push({
+                field: 'LINE_NO',
+                title: 'Order Line No'
+            });
+            columns.push({
+                field: 'SHIP_TO_ABBR',
+                title: 'Ship to Abbr'
+            });
+            columns.push({
+                field: 'DUE_DATE_CODE',
+                title: 'Order Type'
+            });
+            columns.push({
+                field: 'BUY_QTY',
+                title: 'Buy Qty'
+            });
+            columns.push({
+                field: 'QTY_RESERVED',
+                title: 'QTY Reserved'
+            });
+            columns.push({
+                field: 'QTY_PICKED',
+                title: 'QTY Picked'
+            });
+            columns.push({
+                field: 'QTY_SHIPPED',
+                title: 'Qty Shipped'
+            });
+            columns.push({
+                field: 'RDD',
+                title: 'RDD',
+                formatter: dateFormatter
+            });
+            columns.push({
+                field: 'ESD',
+                title: 'ESD',
+                formatter: dateFormatter
+
+            });
+            columns.push({
+                field: '',
+                title: '',
+                width: '1000'
+            });
+            var level3Data = [];
+            //debugger;
+            level3Data = getPOLevel3Data(poNo, pRow.PUR_ORDER_LINE_NO);
+
+            $t.bootstrapTable({
+                columns: columns,
+                data: $scope.soLevel3List.slice(0),
+                detailView: true,
+                onExpandRow: function (index, row, $detail) {
+                    expandlevel4($detail, row, index);
+                }
+            });
+            $t.bootstrapTable('hideLoading');
+        }
+
+        function expandlevel2($detail, pRow, index) {
+            //debugger;
+            var poNo = pRow.PUR_ORDER_ID;
+            $t = $detail.html('<div class="panel panel-default" style="margin-left:25px"><div class="panel-heading" style="background-color:silver;padding:2px;"><b>PO Lines</b></div><table></table></div>').find('table');
+            //$t.attr("class", "table table-bordered table-condensed");
+            $t.attr("margin-left", "200px");
+            $detail.attr("bgcolor", "#FAFAD2");
+            //debugger;
+            var columns = [];
+            var data = [];
+            columns.push({
+                field: 'PUR_ORDER_LINE_NO',
+                title: 'Line No',
+                width: '100'
+
+            });
+            columns.push({
+                field: 'PART_NO',
+                title: 'Part No',
+                width: '100'
+
+            });
+            columns.push({
+                field: 'PUR_ORDER_DESC',
+                title: 'Description',
+                width: '300'
+
+            });
+            columns.push({
+                field: 'UOM_CODE',
+                title: 'UOM',
+                width: '100'
+            });
+            columns.push({
+                field: '',
+                title: 'Operation',
+                width: '100',
+                events: operateEvents,
+                formatter: level2OperationFormatter
+            }
+            );
+            columns.push({
+                field: '',
+                title: '',
+                width: '2250'
+            });
+            var level2Data = [];
+            //debugger;
+            level2Data = getPOLevel2Data(pRow.PUR_ORDER_ID);
+
+            $t.bootstrapTable({
+                columns: columns,
+                data: $scope.poLevel2List.slice(0),
+                detailView: true,
+                onExpandRow: function (index, row, $detail) {
+                    expandlevel3($detail, row, index, poNo);
+                }
+            });
+            $t.bootstrapTable('hideLoading');
+
+        };
+
+
+        function buildTable($t) {
+            var columns = [];
+            var data = [];
+            columns.push({
+                field: 'BUY_FOR',
+                title: 'Buy For'
+            });
+            columns.push({
+                field: 'PUR_ORDER_ID',
+                title: 'PO Number'
+            });
+            columns.push({
+                field: 'WAREHOUSE',
+                title: 'WareHouse'
+            });
+            columns.push({
+                field: 'BUY_FROM_COMPANY',
+                title: 'Buy From'
+            });
+            columns.push({
+                field: 'COMPANY_NAME',
+                title: 'Company Name'
+            });
+            columns.push({
+                field: 'EC_PUR_ORDER_TYPE_CODE',
+                title: 'PO Type'
+            });
+            columns.push({
+                field: 'BUYER_CODE',
+                title: 'Buyer Code'
+            });
+            columns.push({
+                field: 'SUPPLIER_TYPE',
+                title: 'Supplier Type'
+            });
+            columns.push({
+                field: 'PO_STATUS',
+                title: 'Status'
+            });
+            columns.push({
+                field: '',
+                title: '',
+                width: '1000'
+            });
+
+            $t.bootstrapTable({
+                columns: columns,
+                data: $scope.poLevel1List,
+                detailView: true,
+                onExpandRow: function (index, row, $detail) {
+                    expandlevel2($detail, row, index);
+                }
+            });
+            $t.bootstrapTable('hideLoading');
+        };
+
+        //Formatter
+        function dateFormatter(value, row, index) {
+            //debugger;
+            if (value == undefined)
+                return "";
+            //if date has "()" not do format action
+            if (value.indexOf(')') > 0)
+                return value;
+
+            if (value.length < 10)
+                return value;
+            return value.substr(0, 10);
+        }
+
+        function icoFormatter(value, row, index) {
+            var result = [];
+            result.push('<ul class="list-inline" style="margin-bottom:-8px;">');
+            if (row.T_ICON1 != null)
+                result.push('<li ><img src="/Images/ico/' + row.T_ICON1 + '" class="img-responsive" alt="Responsive image"></li>');
+            if (row.T_ICON2 != null)
+                result.push('<li ><img src="/Images/ico/' + row.T_ICON2 + '" class="img-responsive" alt="Responsive image"></li>');
+            if (row.C_ICON1 != null)
+                result.push('<li ><img src="/Images/ico/' + row.C_ICON1 + '" class="img-responsive" alt="Responsive image"></li>');
+            if (row.C_ICON2 != null)
+                result.push('<li ><img src="/Images/ico/' + row.C_ICON2 + '" class="img-responsive" alt="Responsive image"></li>');
+            if (row.C_ICON3 != null)
+                result.push('<li ><img src="/Images/ico/' + row.C_ICON3 + '" class="img-responsive" alt="Responsive image"></li>');
+
+            result.push('</ul>');
+            return result.join('');
+        }
+
+        function level2OperationFormatter(value, row, index) {
+            return [
+           '<a class="detail" href="javascript:void(0)" title="PO Release">',
+           '<i class="glyphicon glyphicon-list-alt"></i>',
+           '</a> '
+            ].join('');
+
+        }
+
+        window.operateEvents = {
+            'click .detail': function (e, value, row, index) {
+                if ($scope.selectedPart == "")
+                    return;
+
+                $.ajax({
+                    url: "/itt/GetPOReleaseData",
+                    data: {
+                        partNo: $scope.selectedPart.PART_NO,
+                        poNo: row.PUR_ORDER_ID,
+                        poLineNo: row.PUR_ORDER_LINE_NO
+                    },
+                    type: "post",
+                    async: false,
+                    success: function (obj) {
+                        //debugger;
+                        if (obj.Success) {
+                            //debugger;
+                            var appElement = document.querySelector('[ng-controller=poReleaseCtrl]');
+                            var scope = angular.element(appElement).scope();
+                            scope.poReleaseList = obj.Data;
+                            scope.$apply();
+                            $("#poReleaseModal").modal("show");
+
+                        }
+                        else {
+                            alert(obj.Msg);
+                        }
+
+                    },
+                    error: function (obj) {
+                        alert(obj.responseText);
+                    }
+                });
+
+            }
+
+        };
+
+
+        function getCellStyle(value, row, index, field) {
+            if (field == 'S10_DISPLAY')
+                return { classes: '', css: { "background-color": row.COLOR_10 } };
+            if (field == 'S30_DISPLAY')
+                return { classes: '', css: { "background-color": row.COLOR_30 } };
+            if (field == 'S50_DISPLAY')
+                return { classes: '', css: { "background-color": row.COLOR_50 } };
+            if (field == 'AVL_DATE')
+                return { classes: '', css: { "background-color": row.COLOR_60 } };
+        }
+
+
+    });
+
+    //manual load app
+    angular.bootstrap(document.getElementById("easyQueryBody"), ['easyQueryApp']);
+
+    //For part modal part
+    angular.module('partListApp', []).controller('partListCtrl', function ($scope, $http) {
+        $scope.partList = [];
+
+    });
+
+    //Add second app to document
+    angular.bootstrap(document.getElementById("partListModal"), ['partListApp']);
+
+</script>
+<script>
+
+    $(document).ready(function () {
+        $('.progress .progress-bar').progressbar();
+        $('.progress .progress-bar').progressbar({ display_text: 'center' });
+    });
+
+
+    function confirmAddr() {
+        for (var i = 0; i < $(".partRadio").length ; i++) {
+            if ($(".partRadio")[i].checked) {
+                $("#partListModal").modal("hide");
+
+                var seq = $(".partRadio")[i].attributes['seq'].value;
+                var appElement = document.querySelector('[ng-controller=partListCtrl]');
+                var scope = angular.element(appElement).scope();
+                var selected = scope.partList[seq];
+
+                var appElement1 = document.querySelector('[ng-controller=easyQueryCtrl]');
+                var scope1 = angular.element(appElement1).scope();
+                scope1.selectedPart = selected;
+
+                scope1.initAlldata();
+                scope1.$apply();
+                break;
+            }
+        }
+    }
+
+    function cancelAddr() {
+        $("#partListModal").modal("hide");
+    }
+
+    function closePOReleaseModal() {
+        $("#poReleaseModal").modal("hide");
+    }
+
+</script>

@@ -1,9 +1,11 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Track Num Query";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style type="text/css">
+
+</style>
 
 <div class="container-fluid" id="trackNumBody" ng-app="trackNumApp" ng-controller="trackNumCtrl">
     <div class="panel panel-default">
@@ -13,34 +15,24 @@
 
             <div class="row" style="margin-top:30px;">
                 <div class="form-group">
-                    <label for="txtWhID" class="col-sm-2 control-label">WareHouse</label>
-                    <div class="col-sm-2">
-                        <select class="form-control input-sm" id="txtWhID" ng-model="whID"  ng-options="w.WH_ID as w.WH_ID for w in appWHList"></select>
-                    </div>
-
-                    <label for="txtGSOM" class="col-sm-2 control-label">GOMS Order Number</label>
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control input-sm" id="txtGSOM" ng-model="SalesOrdNum" placeholder="GOMS Order Number">
-                    </div>
-                </div>
-            </div>
-
-
-            @*<div class="row">
-                <div class="form-group">
-                    <label for="txtGSOM" class="col-sm-2 control-label">GOMS Order Number</label>
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control input-sm" id="txtGSOM" ng-model="SalesOrdNum" placeholder="GOMS Order Number">
-                    </div>
-                </div>
-            </div>*@
-
-            <div class="row">
-                <div class="form-group">
                     <label for="txtCPO" class="col-sm-2 control-label">Customer PO Number</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtCPO" ng-model="VCCpoNum" placeholder="Customer PO Number">
                     </div>
+                    <label for="txtWhID" class="col-sm-2 control-label">WareHouse</label>
+                    <div class="col-sm-2">
+                        <select class="form-control input-sm" id="txtWhID" ng-model="whID" ng-options="w.WH_ID as w.WH_ID for w in appWHList"></select>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtGSOM" class="col-sm-2 control-label">GOMS Order Number</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtGSOM" ng-model="SalesOrdNum" placeholder="GOMS Order Number">
+                    </div>
 
                     <label for="txtTrackNo" class="col-sm-2 control-label">Track Number</label>
                     <div class="col-sm-2">
@@ -57,7 +49,7 @@
                     </div>
                 </div>
             </div>*@
-          
+
             <div class="row">
                 <div class="form-group">
                     <label for="txtShipID" class="col-sm-2 control-label">SHIP ID</label>
@@ -178,17 +170,43 @@
     </div>
 </div>
 
-<div class="modal " id="progressModal" role="dialog" data-keyboard="false">
+<div class="modal fade" id="progressModal" role="dialog" data-keyboard="false">
     <div class="vertical-alignment-helper">
-        <div class="modal-dialog text-center" id="tabDiag">
-            <img src="~/Images/inprogress.jpg">
-            
+        <div class="modal-dialog @*text-center*@" id="tabDiag">
+            @*<img src="~/Images/inprogress.jpg">*@
+            <div class="modal-content" id="content">
+
+            </div>
         </div>
     </div>
 
 </div>
 
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <div style="width:540px;height:100px;">
+                    <img src="~/Images/TrackLogo/cummins.jpg" style="float:left;" />
+                    <img src="~/Images/TrackLogo/wechat.jpg" style="float:right;" />
+                </div>
+                <iframe id="myIframe" style="width:540px;height:600px;" frameborder="0"></iframe>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
 @Html.Partial("_LoadingModal")
+
 
 
 <script>
@@ -243,8 +261,11 @@
 
 
         $scope.searchAction = function () {
-            if ($scope.whID == "")
+            if (($scope.whID == "" || $scope.whID == null) && $scope.SalesOrdNum == "" && $scope.VCCpoNum == "" && $scope.TrackNum == "" && $scope.ShipID == "" && $scope.PRTNum == "" && $scope.CSTPRT == "" && $scope.LodNum == "" && $scope.OrdNum == "" && $scope.ADRNam == "" && $scope.ADRLN1 == "" && $scope.ADRLN2 == "") {
+                alert("Please Input One Condition!");
                 return;
+            }
+
 
             $scope.arg.whID = $scope.whID;
             $scope.arg.SalesOrdNum = $scope.SalesOrdNum;
@@ -314,7 +335,7 @@
                 field: 'LODNUM',
                 title: 'Box Number'
             });
-            
+
             columns.push({
                 field: 'ORDNUM',
                 title: 'PickList Number'
@@ -493,17 +514,148 @@
 
         window.operateEvents = {
             'click .trackTab': function (e, value, row, index) {
-                //alert("print action");
-                $("#progressModal").modal("show");
+                $("#myModalLabel").empty();
+                $("#myModalLabel").append("<span style='color:red'>【" + row.TRACK_NUM + "】</span>跟踪信息")
+                $("#myIframe").empty();
+                var url = "http://cummins.hi-genious.com/TransportManagement/PodTrack/Index?TrackNum=" + row.TRACK_NUM;
+                $("#myIframe").attr("src", url);
+                $("#myModal").modal("show");
 
+
+
+                //window.open(url, "_blank", "titlebar=0, height=" + height + ", width=" + width + ", top=" + top + ", left=" + left + ", toolbar=no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no");
+
+
+                //‘newwindow’ ： 弹出窗口的名字（不是文件名），非必须，可用空”代替；
+                //height=100 ： 窗口高度；
+                //width=400 ： 窗口宽度；
+                //top=0 ： 窗口距离屏幕上方的象素值；
+                //left=0 ： 窗口距离屏幕左侧的象素值；
+                //toolbar=no ： 是否显示工具栏，yes为显示；
+                //menubar ： 表示菜单栏；
+                //scrollbars :表示滚动栏；
+                //resizable=no ： 是否允许改变窗口大小，yes为允许；
+                //location=no ： 是否显示地址栏，yes为允许；
+                //status=no ： 是否显示状态栏内的信息（通常是文件已经打开），yes为允许；
+
+
+                //$.ajax({
+                //    url: "/rp/GetTrackInfo", ///rp/GetTrackInfo
+                //    type: "POST",
+                //    contentType: "application/json;charset=UTF-8",
+                //    data: JSON.stringify({ UserID: "Cummins", Sign: "abc123!", TrackNum: row.TRACK_NUM }),
+                //    async: false,
+                //    dataType: "json",
+                //    success: function (obj) {
+                //        var list = JSON.parse(obj.data);
+                //        var str = "";
+                //        str += "<div class='modal-header'>";
+                //        str += "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>x</button>";
+                //        str += "<h4 class='modal-title'>" + row.TRACK_NUM + "</h4>";
+                //        str += "</div>";
+                //        str += "<div class='modal-body'>";
+                //        str += "<table class='result-info' style='width:800px'>";
+                //        str += "<thead><tr style='text-align:center;font-size:16px'><td style='width:200px;'>时间</td><td colspan='2'>物流信息</td></tr></thead>";
+                //        str += "<tbody>";
+                //        if (list.message == "Success") {
+                //            for (var i = 0; i < list.data.length; i++) {
+                //                if (i == 0)
+                //                    str += "<tr class='last'>";
+                //                else
+                //                    str += "<tr>";
+                //                str += "<td>" + list.data[i].Time + "</td>";
+                //                str += "<td class='status'>";
+                //                if (i == list.data.length - 1)
+                //                    str += "<span class='glyphicon glyphicon-record'></span>";
+                //                else
+                //                    str += "<span class='glyphicon glyphicon-ok-circle'></span>";
+                //                str += "</td>";
+                //                str += "<td>" + list.data[i].CurrentState + "</td>";
+                //                str += "</tr>";
+                //            }
+                //            str += "</tbody>";
+                //            str += "</table>";
+                //            str += "</div>";
+                //            $("#content").empty();
+                //            $("#content").append(str);
+                //            $("#loadingModal").modal("hide");
+                //            $("#progressModal").modal("show");
+                //        }
+                //        else {
+                //            $("#loadingModal").modal("hide");
+                //            alert("Has No TrackInfo");
+                //        }
+                //    },
+                //    error: function (obj) {
+                //        alert(obj.responseText);
+                //    }
+                //});
+                //var tracks = [];
+                //tracks.push({
+                //    "Time": "2017.09.18 15:43",
+                //    "Desc": "黄冈市 本人-已签收，感谢您选择申通快递，期待再次为您服务。"
+                //}, {
+                //    "Time": "2017.09.18 07:58",
+                //    "Desc": "黄冈市 湖北黄冈公司(0713-8610000)-三清国际(18971748895)-派件中"
+                //}, {
+                //    "Time": "2017.09.18 07:05",
+                //    "Desc": "黄冈市 已到达-湖北黄冈公司"
+                //}, {
+                //    "Time": "2017.09.17 21:01",
+                //    "Desc": "鄂州市 湖北武昌中转部-已发往-湖北黄冈公司"
+                //}, {
+                //    "Time": "2017.09.17 01:48",
+                //    "Desc": "杭州市 浙江杭州航空部-已发往-湖北武昌航空部"
+                //}, {
+                //    "Time": "2017.09.16 20:30",
+                //    "Desc": "杭州市 浙江杭州留下公司-已发往-浙江杭州航空部"
+                //}, {
+                //    "Time": "2017.09.16 20:30",
+                //    "Desc": "杭州市 浙江杭州留下公司-已发往-"
+                //}, {
+                //    "Time": "2017.09.16 19:31",
+                //    "Desc": "杭州市 浙江杭州留下公司(0571-85225800)-博客业务员(15306517830)-已收件"
+                //});
+                //var str = "";
+                //str += "<div class='modal-header'>";
+                //str += "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>x</button>";
+                //str += "<h4 class='modal-title'>" + row.TRACK_NUM + "</h4>";
+                //str += "</div>";
+                //str += "<div class='modal-body'>";
+                //str += "<table class='result-info' style='width:800px'>";
+                //str += "<thead><tr style='text-align:center;font-size:16px'><td>时间</td><td colspan='2'>物流信息</td></tr></thead>";
+                //str += "<tbody>";
+                //for (var i = 0; i < tracks.length; i++) {
+                //    if (i == 0)
+                //        str += "<tr class='last'>";
+                //    else
+                //        str += "<tr>";
+                //    str += "<td>" + tracks[i].Time + "</td>";
+                //    str += "<td class='status'>";
+                //    if (i == tracks.length - 1)
+                //        str += "<span class='glyphicon glyphicon-record'></span>";
+                //    else
+                //        str += "<span class='glyphicon glyphicon-ok-circle'></span>";
+                //    str += "<div class='col2'>";
+                //    str += "<span class='line'></span>";
+                //    str += "</div>";
+                //    str += "</td>";
+                //    str += "<td>" + tracks[i].Desc + "</td>";
+                //    str += "</tr>";
+                //}
+                //str += "</tbody>";
+                //str += "</table>";
+                //str += "</div>";
+                //$("#content").empty();
+                //$("#content").append(str);
+                //$("#progressModal").modal("show");
                 //$currTable = $("#tableResult tr[data-index= '"+index+"' ] + tr table[tag=level2] ");
-                ////alert($currTable[0].innerHTML);
+                //alert($currTable[0].innerHTML);
                 //var selectedRows = [];
                 //if ($currTable!=null &&  $currTable.length != 0)
                 //    selectedRows = $currTable.bootstrapTable('getSelections');
-                ////var $table = $('.tbLevel2');
-                ////var selectedRows = $table.bootstrapTable('getSelections')
-
+                //var $table = $('.tbLevel2');
+                //var selectedRows = $table.bootstrapTable('getSelections')
                 //$.ajax({
                 //    url: "/rp/GetPrintFile",
                 //    data: JSON.stringify({
@@ -525,12 +677,10 @@
                 //            //window.location.href = obj.Data;
                 //            window.open(obj.Data);
                 //            //alert(obj.Msg)
-
                 //        }
                 //        else {
                 //            alert(obj.Msg);
                 //        }
-
                 //    },
                 //    error: function (obj) {
                 //        alert(obj.responseText);
@@ -539,9 +689,8 @@
             }
         };
 
-        function getLevel2Data(shipID)
-        {
-            
+        function getLevel2Data(shipID) {
+
             $.ajax({
                 url: "/rp/GetTrackNumLevel2",
                 data: JSON.stringify({
@@ -580,6 +729,7 @@
 <script>
     $(document).ready(function () {
         $("#tabDiag").css("margin-top", "300px");
+        $("#tabDiag").css("width", "800px");
         $("#imgDiag").css("margin-top", "300px");
     });
 

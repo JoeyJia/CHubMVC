@@ -255,22 +255,22 @@
         $scope.saveItem = function (curr)
         {
             //date check
-            if (curr.DOCK_DATE != null && curr.CREATE_DATE != null)
-                if (curr.DOCK_DATE <= curr.CREATE_DATE) {
-                    alert("Dock Date should larger than create date");
-                    return;
-                }
+//            if (curr.DOCK_DATE != null && curr.CREATE_DATE != null)
+  //              if (curr.DOCK_DATE <= curr.CREATE_DATE) {
+    //                alert("Dock Date should larger than create date");
+      //              return;
+        //        }
             if (curr.DOCK_DATE != null && curr.SHIPMENT_DATE != null)
                 if (curr.DOCK_DATE <= curr.SHIPMENT_DATE) {
-                    alert("Dock Date should larger than Shipment date");
+                    alert("到货时间要大于发货时间！");
                     return;
                 }
             //shipment Date part
-            if (curr.SHIPMENT_DATE != null && curr.EST_DLVY_DATE != null)
-                if (curr.SHIPMENT_DATE >= curr.EST_DLVY_DATE) {
-                    alert("Shipment Date should less than EST DLVY date");
-                    return;
-                }
+    //        if (curr.SHIPMENT_DATE != null && curr.EST_DLVY_DATE != null)
+    //            if (curr.SHIPMENT_DATE >= curr.EST_DLVY_DATE) {
+    //                alert("Shipment Date should less than EST DLVY date");
+    //                return;
+     //           }
 
 
 
