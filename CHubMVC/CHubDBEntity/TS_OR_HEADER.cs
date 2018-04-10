@@ -9,6 +9,7 @@
 
 namespace CHubDBEntity
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     
@@ -21,7 +22,7 @@ namespace CHubDBEntity
         public string CUSTOMER_NO { get; set; }
         public decimal BILL_TO_LOCATION { get; set; }
         public decimal SHIP_TO_LOCATION { get; set; }
-        public Nullable<decimal> DEST_LOCATION { get; set; }
+        public decimal DEST_LOCATION { get; set; }
         public System.DateTime DUE_DATE { get; set; }
         public string ORDER_TYPE { get; set; }
         public string CUSTOMER_PO_NO { get; set; }
@@ -33,11 +34,16 @@ namespace CHubDBEntity
         public Nullable<System.DateTime> RECORD_DATE { get; set; }
         public string UPDATED_BY { get; set; }
         public string ORDER_NOTES { get; set; }
-    
+
+        [JsonIgnore]
         public virtual APP_CUST_ALIAS APP_CUST_ALIAS { get; set; }
+        [JsonIgnore]
         public virtual APP_ORDER_STATUS APP_ORDER_STATUS { get; set; }
+        [JsonIgnore]
         public virtual APP_ORDER_TYPE APP_ORDER_TYPE { get; set; }
+        [JsonIgnore]
         public virtual APP_SHIP_SEQ APP_SHIP_SEQ { get; set; }
+        [JsonIgnore]
         public virtual M_SYSTEM M_SYSTEM { get; set; }
     }
 }
