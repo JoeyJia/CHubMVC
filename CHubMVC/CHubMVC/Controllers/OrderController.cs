@@ -732,10 +732,15 @@ namespace CHubMVC.Controllers
 
         #endregion
 
-
+        //string appUser = Session[CHubConstValues.SessionUser].ToString();
+        //APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+        //rpBLL.Add(appUser, CHubEnum.PageNameEnum.wbprt.ToString(), this.Request.Url.AbsoluteUri);
 
         public ActionResult XCECWB()
         {
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, CHubEnum.PageNameEnum.xcecwb.ToString(), this.Request.Url.AbsoluteUri);
             return View();
         }
 
@@ -1006,6 +1011,9 @@ namespace CHubMVC.Controllers
 
         public ActionResult AdrMap()
         {
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, CHubEnum.PageNameEnum.adrmap.ToString(), this.Request.Url.AbsoluteUri);
             return View();
         }
 
@@ -1038,6 +1046,7 @@ namespace CHubMVC.Controllers
         /// <param name="JID"></param>
         /// <param name="CONVERTED_ADDR"></param>
         /// <returns></returns>
+        [HttpPost]
         public ActionResult SaveAdrMap(string JID, string CONVERTED_ADDR)
         {
             JD_ADDR_CONVERT_BLL bll = new JD_ADDR_CONVERT_BLL();
