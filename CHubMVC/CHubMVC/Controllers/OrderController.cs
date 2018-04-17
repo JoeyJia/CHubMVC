@@ -13,6 +13,7 @@ using System.Text;
 using static CHubCommon.CHubEnum;
 using CHubMVC.Validations;
 using Newtonsoft.Json;
+using CHubDBEntity.UnmanagedModel;
 
 namespace CHubMVC.Controllers
 {
@@ -733,21 +734,347 @@ namespace CHubMVC.Controllers
 
 
 
+        public ActionResult XCECWB()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SearchXcecWB(string CUST_ORDER_NO, string CUST_NAME, string CREATE_DATE)
+        {
+            V_XCEC_ORDER_HDR_BASE_BLL bll = new V_XCEC_ORDER_HDR_BASE_BLL();
+            try
+            {
+                var result = bll.SearchXcecWB(CUST_ORDER_NO, CUST_NAME, CREATE_DATE);
+                var mainHtml = GetXcecWBHtml(result);
+                return Json(new RequestResult(mainHtml));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("Order SearchXcecWB", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult GetXcecWBDetails(string WAREHOUSE, string IHUB_ORDER_NO, string CUST_ORDER_NO)
+        {
+            V_XCEC_ORDER_HDR_BASE_BLL bll = new V_XCEC_ORDER_HDR_BASE_BLL();
+            string headerHtml = string.Empty;
+            string linesHtml = string.Empty;
+
+            try
+            {
+                #region order header
+                var Headerresult = bll.SearchXcecWBDetail(WAREHOUSE, IHUB_ORDER_NO).First();
+                headerHtml = GetXcecWBDetailHtml(Headerresult);
+                #endregion
+
+                #region order lines
+                var Linesresult = bll.GetLinesDetail(CUST_ORDER_NO);
+                linesHtml = GetLinesDetailHtml(Linesresult);
+                #endregion
+
+                return Json(new RequestResult(true, headerHtml, linesHtml));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("Order GetXcecWBDetails", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        /// <summary>
+        /// Xcec_Addr_All
+        /// </summary>
+        /// <param name="WAREHOUSE"></param>
+        /// <param name="ADDR_NAME"></param>
+        /// <param name="ADDR_1"></param>
+        /// <param name="ADDR_2"></param>
+        /// <param name="ADDR_3"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult SearchXcecAddrAll(string WAREHOUSE, string ADDR_NAME, string ADDR_1, string ADDR_2, string ADDR_3)
+        {
+            V_XCEC_ADDR_ALL_BLL bll = new V_XCEC_ADDR_ALL_BLL();
+            try
+            {
+                var result = bll.SearchXcecAddrAll(WAREHOUSE, ADDR_NAME, ADDR_1, ADDR_2, ADDR_3);
+                if (result.Count() > 50)
+                    return Json(new RequestResult(false, "Result more than 50,Please make condition more strict!"));
+
+                var mainHtml = GetXcecAddrAll(result);
+                return Json(new RequestResult(mainHtml));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("Order SearchXcecAddrAll", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ConfirmToMatch(string WAREHOUSE, string DEST_LOCATION, string XCEC_ADDR_SEQ)
+        {
+            V_XCEC_ADDR_ALL_BLL bll = new V_XCEC_ADDR_ALL_BLL();
+            try
+            {
+                string User = Session[CHubConstValues.SessionUser].ToString();
+                //权限
+                if (!bll.SecureCheck(User))
+                    return Json(new RequestResult(false, "You are not the Signer"));
+
+                //查询出选中的数据
+                var result = bll.GetXcecAddrAll(WAREHOUSE, DEST_LOCATION).First();
+
+                //更新XCEC_INT.XCEC_ADDR_MST（KEY: XCEC_ADDR_SEQ)
+                bll.UpdateXcecAddrAll(result, XCEC_ADDR_SEQ, User);
+
+                return Json(new RequestResult(true));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("Order ConfirmToMatch", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+
+        private string GetXcecWBHtml(List<V_XCEC_ORDER_HDR_BASE> result)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (result != null && result.Any())
+            {
+                foreach (var item in result)
+                {
+                    //style="background-color:blue;"
+                    sb.Append("<tr style=\"background-color:" + GetTrColor(item.PROCESS_STATUS) + ";\">");
+                    sb.Append("<td>").Append(item.PROCESS_STATUS).Append("</td>");
+                    sb.Append("<td>").Append(item.SHIP_WH).Append("</td>");
+                    sb.Append("<td>").Append(item.CUST_ORDER_NO).Append("</td>");
+                    sb.Append("<td>").Append(item.CUST_NAME).Append("</td>");
+                    sb.Append("<td>").Append(item.ORDER_TYPE).Append("</td>");
+                    sb.Append("<td>").Append(item.DUE_DATE.ToString("yyyy-MM-dd")).Append("</td>");
+                    sb.Append("<td>").Append(item.KITS_NO).Append("</td>");
+                    sb.Append("<td>").Append(item.DEALER_PO_NO).Append("</td>");
+                    sb.Append("<td>").Append(item.NOTE).Append("</td>");
+                    sb.Append("<td>").Append(item.IHUB_ORDER_NO).Append("</td>");
+                    sb.Append("<td>").Append(item.CREATE_DATE.Value.ToString("yyyy-MM-dd")).Append("</td>");
+                    sb.Append("<td>").Append("<input type=\"button\" class=\"btn btn-primary btn-sm DetailBtn\" value=\"DETAILS\" data-warehouse=\"" + item.WAREHOUSE + "\" data-ihuborderno=\"" + item.IHUB_ORDER_NO + "\" data-custorderno=\"" + item.CUST_ORDER_NO + "\" />").Append("&nbsp;&nbsp;").
+                                      Append("<input type=\"button\" class=\"btn btn-primary btn-sm DownloadBtn\" value=\"Download\" data-orderseqno=\"" + item.ORDER_SEQ_NO + "\" />").Append("</td>");
+                    sb.Append("</tr>");
+                }
+            }
+
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Header Detail Html
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        private string GetXcecWBDetailHtml(V_XCEC_ORDER_HDR_BASE result)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("     <tr>");
+            sb.Append("         <td style=\"background-color:grey\">").Append("Customer PO:").Append("</td>");
+            sb.Append("         <td>").Append(result.CUST_ORDER_NO).Append("</td>");
+            sb.Append("         <td style=\"background-color:grey\">").Append("Order TYPE:").Append("</td>");
+            sb.Append("         <td>").Append(result.ORDER_TYPE).Append("</td>");
+            sb.Append("         <td style=\"background-color:grey\">").Append("DUE DATE:").Append("</td>");
+            sb.Append("         <td>").Append(result.DUE_DATE.ToString("yyyy-MM-dd")).Append("</td>");
+            sb.Append("         <td style=\"background-color:grey\">").Append("KITS NO:").Append("</td>");
+            sb.Append("         <td>").Append(result.KITS_NO).Append("</td>");
+            sb.Append("         <td style=\"background-color:grey\">").Append("SHIP FROM:").Append("</td>");
+            sb.Append("         <td>").Append(result.SHIP_WH).Append("</td>");
+            sb.Append("     </tr>");
+            sb.Append("     <tr>");
+            sb.Append("         <td style=\"background-color:grey\">").Append("CUSTOMER NAME:").Append("</td>");
+            sb.Append("         <td colspan=\"9\">").Append(result.CUST_NAME).Append("</td>");
+            sb.Append("     </tr>");
+            sb.Append("     <tr>");
+            sb.Append("         <td style=\"background-color:grey\">").Append("ADDRESS:").Append("</td>");
+            sb.Append("         <td colspan=\"9\">").Append(result.XCEC_ADDR).Append("</td>");
+            sb.Append("     </tr>");
+            sb.Append("     <tr>");
+            sb.Append("         <td style=\"background-color:grey\">").Append("GOMS ADDR:").Append("</td>");
+            sb.Append("         <td colspan=\"9\">").Append(result.GOMS_ADDR_MATCHED).Append("</td>");
+            sb.Append("     </tr>");
+            sb.Append("     <tr>");
+            sb.Append("         <td style=\"background-color:grey\">").Append("ERROR MSG:").Append("</td>");
+            if (!string.IsNullOrEmpty(result.LAST_ERROR_MSG))
+                sb.Append("         <td colspan=\"9\" style=\"background-color:red\">").Append(result.LAST_ERROR_MSG).Append("</td>");
+            else
+                sb.Append("         <td colspan=\"9\">").Append(result.LAST_ERROR_MSG).Append("</td>");
+            sb.Append("     </tr>");
+            sb.Append("     <tr>");
+            sb.Append("         <td  colspan=\"10\" style=\"text-align:right;\">").Append("<input type=\"button\" class=\"btn btn-primary btn-sm\" id=\"RematchBtn\" data-warehouse=\"" + result.WAREHOUSE + "\" data-xcecaddrseq=\"" + result.XCEC_ADDR_SEQ + "\" value=\"GOMS ADDR REMATCH\" />").Append("</td>");
+            sb.Append("     </tr>");
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Lines Detai Html
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        private string GetLinesDetailHtml(List<V_XCEC_ORDER_LN_BASE> result)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (result != null && result.Any())
+            {
+                foreach (var item in result)
+                {
+                    sb.Append("     <tr>");
+                    sb.Append("         <td>").Append(item.ORDER_LINE_NO).Append("</td>");
+                    sb.Append("         <td>").Append(item.PART_NO).Append("</td>");
+                    sb.Append("         <td>").Append(item.CUST_PART_NO).Append("</td>");
+                    sb.Append("         <td>").Append(item.QTY).Append("</td>");
+                    sb.Append("         <td>").Append(item.DESCRIPTION).Append("</td>");
+                    sb.Append("         <td>").Append(item.DESC_CN).Append("</td>");
+                    sb.Append("     </tr>");
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Addr All Html
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        private string GetXcecAddrAll(List<V_XCEC_ADDR_ALL> result)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (result != null && result.Any())
+            {
+                foreach (var item in result)
+                {
+                    sb.Append("     <tr>");
+                    sb.Append("         <td>").Append("<input type=\"radio\" name=\"radio\" />").Append("</td>");
+                    sb.Append("         <td>").Append(item.CUSTOMER_NO).Append("</td>");
+                    sb.Append("         <td>").Append(item.DEST_LOCATION).Append("</td>");
+                    sb.Append("         <td>").Append(item.CONTACT).Append("</td>");
+                    sb.Append("         <td>").Append(item.TEL).Append("</td>");
+                    sb.Append("         <td>").Append(item.ADDR_NAME).Append("</td>");
+                    sb.Append("         <td>").Append(item.ADDR_1).Append("</td>");
+                    sb.Append("         <td>").Append(item.ADDR_2).Append("</td>");
+                    sb.Append("         <td>").Append(item.ADDR_3).Append("</td>");
+                    sb.Append("</tr>");
+                }
+
+                sb.Append("     <tr>");
+                sb.Append("         <td colspan=\"9\" style=\"text-align:right;\">").Append("<input type=\"button\" class=\"btn btn-primary btn-sm ConfirmBtn\" value=\"Comfirm to Match\" style=\"height: 50px;\" />").Append("</td>");
+                sb.Append("     </tr>");
+            }
+
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// 每行颜色
+        /// </summary>
+        /// <param name="PROCESS_STATUS">Q - 灰色；E - 红色 ；C-蓝色； G： 绿色：其他 白色</param>
+        /// <returns></returns>
+        private static string GetTrColor(string PROCESS_STATUS)
+        {
+            string color = string.Empty;
+            switch (PROCESS_STATUS)
+            {
+                case "Q":
+                    color = "grey";
+                    break;
+                case "E":
+                    color = "red";
+                    break;
+                case "C":
+                    color = "blue";
+                    break;
+                case "G":
+                    color = "green";
+                    break;
+            }
+            return color;
+        }
+
+
 
         public ActionResult AdrMap()
         {
             return View();
         }
 
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="GOMS_ADDR"></param>
+        /// <param name="CREATE_DATE"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult SearchAdrMap(string GOMS_ADDR, string CREATE_DATE)
         {
+            JD_ADDR_CONVERT_BLL bll = new JD_ADDR_CONVERT_BLL();
+            try
+            {
+                var result = bll.SearchAdrMap(GOMS_ADDR, CREATE_DATE);
+                var mainHtml = GetAdrMapHtml(result);
+                return Json(new RequestResult(mainHtml));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("Order SearchAdrMap", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
 
-
-            return View();
+        /// <summary>
+        /// 保存
+        /// </summary>
+        /// <param name="JID"></param>
+        /// <param name="CONVERTED_ADDR"></param>
+        /// <returns></returns>
+        public ActionResult SaveAdrMap(string JID, string CONVERTED_ADDR)
+        {
+            JD_ADDR_CONVERT_BLL bll = new JD_ADDR_CONVERT_BLL();
+            try
+            {
+                var result = bll.SearchAdrMap(JID);
+                result.CONVERTED_ADDR = CONVERTED_ADDR;
+                result.UPDATED_BY = Session[CHubConstValues.SessionUser].ToString();
+                result.RECORD_DATE = DateTime.Now;
+                bll.UpdateAdrMap(result);
+                return Json(new RequestResult(true, "Success"));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("Order SaveAdrMap", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
         }
 
 
+        public static string GetAdrMapHtml(List<JD_ADDR_CONVERT> result)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (result != null && result.Any())
+            {
+                foreach (var item in result)
+                {
+                    sb.Append("<tr>");
+                    sb.Append("<td>").Append(item.JID).Append("</td>");
+                    sb.Append("<td title=\"" + item.GOMS_ADDR + "\">").Append(item.GOMS_ADDR).Append("</td>");
+                    sb.Append("<td title=\"" + item.CONVERTED_ADDR + "\">").Append("<input type=\"text\" class=\"form-control input-sm CONV_ADDR\" value=\"" + item.CONVERTED_ADDR + "\" />").Append("</td>");
+                    sb.Append("<td>").Append(item.CREATE_DATE.HasValue ? item.CREATE_DATE.Value.ToString("yyyy-MM-dd") : "").Append("</td>");
+                    sb.Append("<td>").Append("<input type=\"button\" class=\"btn btn-primary btn-sm saveBtn\" value=\"SAVE\" data-id=\"" + item.JID + "\" />").Append("</td>");
+                }
+            }
+            return sb.ToString();
+        }
 
 
 
