@@ -1,0 +1,378 @@
+﻿@{
+    ViewBag.Title = "MD MDReqInq";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" id="mdreqinqDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="MD_REQ_NO" class="col-sm-2 control-label">Request No:</label>
+                    <div class="col-lg-2 col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtMD_REQ_NO" placeholder="Request No" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="PART_NO" class="col-sm-2 control-label">Part No:</label>
+                    <div class="col-lg-2 col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtPART_NO" placeholder="Part No" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="REQ_DATE" class="col-sm-2 control-label">Requested in Last Days:</label>
+                    <div class="col-lg-2 col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtREQ_DATE" value="30" placeholder="Requested in Last Days" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="REQ_BY" class="col-sm-2 control-label">Requested by </label>
+                    <div class="col-lg-2 col-sm-2">
+                        <label class="checkbox-inline">
+                            <input type="radio" name="Radio" checked="checked" value="" />All
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="Radio" value="@ViewBag.AppUser" />My request only
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Query" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnApprove" value="Approve" data-status="APPROVED" />
+                        <input type="button" class="btn btn-primary btn-sm" id="btnReject" value="Reject" data-status="REJECTED" />
+                        <input type="button" class="btn btn-primary btn-sm" id="btnOnhold" value="Onhold" data-status="ONHOLD" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <table class="table table-bordered table-hover table-striped" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="selectAll" /> </th>
+                                <th>Status</th>
+                                <th>Request No</th>
+                                <th>Line No</th>
+                                <th>Part No</th>
+                                <th>Description</th>
+                                <th>Approval</th>
+                                <th>Comments</th>
+                                <th>Product Group</th>
+                                <th>Comm Part(Y/N)</th>
+                                <th>EXIST?</th>
+                                <th>PRI SUP?</th>
+                                <th>PRI PB?</th>
+                                <th>BPA?</th>
+                                <th>COST?</th>
+                                <th>Global PrtNo</th>
+                                <th>Global DESC</th>
+                                <th>Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header panel-default" style="padding:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 30px;height: 30px;">
+                    &times;
+                </button>
+                <div class="modal-title panel-heading" style="text-align: center;">
+                    New Request Approve
+                </div>
+            </div>
+            <div class="modal-body" style="padding:10px;">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="Comments" class="col-sm-2 control-label">Comments:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control input-sm" id="txtAPP_COMMENTS" placeholder="Comments" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-3 col-sm-offset-2">
+                            <input type="button" class="btn btn-primary btn-sm" id="btnCancel" value="Cancel" />
+                        </div>
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <input type="button" class="btn btn-primary btn-sm" id="btnOK" value="OK" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_LoadingModal")
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var appStatus;
+        var list = [];
+        //Search
+        $("#btnSearch").on('click', function () {
+            var MD_REQ_NO = $("#txtMD_REQ_NO").val();
+            var PART_NO = $("#txtPART_NO").val();
+            var REQ_DATE = $("#txtREQ_DATE").val();
+            var REQ_BY = $("input[name='Radio']:checked").val();
+
+            //alert(REQ_BY);
+            if (REQ_DATE == "" || REQ_DATE <= 0) {
+                alert("Days Error!");
+                return false;
+            }
+
+            $("#loadingModal").modal('show');
+
+            $.ajax({
+                url: '/md/MDReqInqSearch',
+                type: 'post',
+                async: true,
+                data: {
+                    MD_REQ_NO: MD_REQ_NO,
+                    PART_NO: PART_NO,
+                    REQ_DATE: REQ_DATE,
+                    REQ_BY: REQ_BY
+                },
+                success: function (obj) {
+                    $('#loadingModal').modal('hide');
+                    $("#resultTbody").empty();
+                    if (obj.Success)
+                        $("#resultTbody").html(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $('#loadingModal').modal('hide');
+                    alert("fail to search");
+                }
+            });
+        });
+
+        //selectAll
+        $('#selectAll').on('click', function () {
+            var checkbox = $("#resultTbody input[type=checkbox]");
+            if (this.checked)
+                checkbox.prop("checked", true);
+            else
+                checkbox.prop("checked", false);
+            RefreshCheckbox();
+        })
+
+        function RefreshCheckbox() {
+            list = [];
+            var checkbox = $("#resultTbody input[type=checkbox]");
+            var count = 0;
+
+            for (var i = 0; i < checkbox.length; i++) {
+                if (checkbox[i].checked) {
+                    count++;
+                    list.push({
+                        MD_REQ_NO: $(checkbox[i]).attr("data-mdreqno"),
+                        REQ_LINE_NO: $(checkbox[i]).attr("data-reqlineno")
+                    })
+                }
+            }
+
+            if (count == checkbox.length)
+                $('#selectAll').prop("checked", true);
+            else
+                $('#selectAll').prop("checked", false);
+        }
+
+        $("#resultTbody").on('click', "input[type=checkbox]", function () {
+            RefreshCheckbox();
+        })
+
+        //Global PrtNo
+        $("#resultTbody").on('blur', '.GLOBAL_PARTNO', function () {
+            //alert($(this).val());
+            var target = $(this);
+
+            if (target.val() == "") {
+                alert("No PART_NO Input");
+                return false;
+            }
+
+            $.ajax({
+                url: '/md/GetPartDesc',
+                type: 'post',
+                async: true,
+                data: { PART_NO: target.val() },
+                success: function (obj) {
+                    if (obj.Success)
+                        target.parent().next().text(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get");
+                }
+            });
+            //target.parent().next().text("aaaaa");
+
+        })
+
+        //Description
+        $("#resultTbody").on('blur', '.PART_DESC', function () {
+            var str = $(this);
+            if (str.val() == "")
+                alert("Description Error!");
+        })
+
+        //Save
+        $("#resultTbody").on('click', '.btnSave', function () {
+            var target = $(this);
+            var MD_REQ_NO = target.attr("data-mdreqno");
+            var REQ_LINE_NO = target.attr("data-reqlineno");
+
+            var td = target.parent().parent().find("td");
+            var PART_DESC = $(td).eq(5).find(".PART_DESC").val();
+            var PRODUCT_GROUP_ID = $(td).eq(8).find(".PRODUCT_GROUP_ID").val();
+            var COMM_PART = $(td).eq(9).find(".COMM_PART").val();
+            var GLOBAL_PARTNO = $(td).eq(15).find(".GLOBAL_PARTNO").val();
+
+            //alert(PART_DESC + "|" + PRODUCT_GROUP_ID + "|" + COMM_PART + "|" + GLOBAL_PARTNO);
+
+            if (PART_DESC == "" || PRODUCT_GROUP_ID == "") {
+                alert("Empty Data!");
+                return false;
+            }
+
+            $('#loadingModal').modal('show');
+
+            $.ajax({
+                url: '/md/MDReqInqSave',
+                type: "post",
+                async: true,
+                data: JSON.stringify({
+                    MD_REQ_NO: MD_REQ_NO,
+                    REQ_LINE_NO: REQ_LINE_NO,
+                    PART_DESC: PART_DESC,
+                    PRODUCT_GROUP_ID: PRODUCT_GROUP_ID,
+                    COMM_PART: COMM_PART,
+                    GLOBAL_PARTNO: GLOBAL_PARTNO
+                }),
+                contentType: 'application/json;charset=utf-8',
+                success: function (obj) {
+                    $('#loadingModal').modal('hide');
+                    if (obj.Success)
+                        $("#btnSearch").click();
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $('#loadingModal').modal('hide');
+                    alert("fail to do");
+                }
+            });
+        })
+
+        //Approve
+        $("#btnApprove").on('click', function () {
+            appStatus = $(this).attr("data-status");
+            $("#txtAPP_COMMENTS").val("");
+            $("#myModal").modal('show');
+            //alert(appStatus);
+        })
+        //Reject
+        $("#btnReject").on('click', function () {
+            appStatus = $(this).attr("data-status");
+            $("#txtAPP_COMMENTS").val("");
+            $("#myModal").modal('show');
+            //alert(appStatus);
+        })
+        //Onhold
+        $("#btnOnhold").on('click', function () {
+            appStatus = $(this).attr("data-status");
+            $("#txtAPP_COMMENTS").val("");
+            $("#myModal").modal('show');
+            //alert(appStatus);
+        })
+
+        //Cancel
+        $("#btnCancel").on('click', function () {
+            $("#myModal").modal('hide');
+            $("#txtAPP_COMMENTS").val("");
+        })
+
+        //OK
+        $("#btnOK").on('click', function () {
+            var APP_STATUS = appStatus;
+            var APP_COMMENTS = $("#txtAPP_COMMENTS").val();
+
+            //判断：PART_DESC,Product_group 不能为空
+
+            if (list == null) {
+                alert("No data select!");
+                return false;
+            }
+
+            $('#loadingModal').modal('show');
+
+            $.ajax({
+                url: '/md/MDReqInqStatusChange',
+                type: 'post',
+                async: true,
+                data: JSON.stringify({
+                    APP_STATUS: APP_STATUS,
+                    APP_COMMENTS: APP_COMMENTS,
+                    detaillist: list
+                }),
+                contentType: 'application/json:charset=utf-8',
+                success: function (obj) {
+                    $('#loadingModal').modal('hide');
+                    if (obj.Success) {
+                        $("#myModal").modal('hide');
+                        $("#btnSearch").click();
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $('#loadingModal').modal('hide');
+                    alert("fail to change");
+                }
+            })
+
+
+        })
+
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+        $("#myModal").css("margin-top", "200px");
+    });
+</script>
