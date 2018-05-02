@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "MD MDJvItem";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" id="mdjvitemDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="Part_NO" class="col-sm-2 control-label">Part No：</label>
+                    <div class="col-lg-2 col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtPart_NO" placeholder="Part No" />
+                    </div>
+                    <div class="col-lg-2 col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnQuery" value="Query" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <table class="table table-bordered table-hover table-striped" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th>Product Group</th>
+                                <th>Group Desc</th>
+                                <th>Part No</th>
+                                <th>Part Desc</th>
+                                <th>Part Status</th>
+                                <th>NOTE</th>
+                                <th>Product Line</th>
+                                <th>Part Type</th>
+                                <th>Part Desc (CN)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_LoadingModal")
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnQuery").on('click', function () {
+            var Part_NO = $("#txtPart_NO").val();
+            if (Part_NO == null || Part_NO == "") {
+                alert("No Part_NO Input");
+                return false;
+            }
+
+            $("#loadingModal").modal("show");
+
+            $.ajax({
+                url: '/md/MDJvItemSearch',
+                type: 'post',
+                async: true,
+                data: { Part_NO: Part_NO },
+                success: function (obj) {
+                    $('#loadingModal').modal('hide');
+                    $("#resultTbody").empty();
+                    if (obj.Success)
+                        $("#resultTbody").html(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal('hide');
+                    alert("fail to search");
+                }
+            })
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+
+    });
+</script>
