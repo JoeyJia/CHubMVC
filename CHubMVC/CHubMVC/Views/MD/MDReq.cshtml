@@ -2,6 +2,11 @@
     ViewBag.Title = "MD MDReq";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style type="text/css">
+    .form-control {
+        margin-bottom: 0px;
+    }
+</style>
 
 <div class="container-fluid" id="mdreqDiv">
     <div class="panel panel-default">
@@ -10,33 +15,408 @@
         </div>
         <form class="form-horizontal">
             <div class="row" style="margin-top:15px;">
-                <div class="form-group">
-
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnCopy" value="Copy from clipboard" />
+                        &nbsp;&nbsp;
+                        <input type="button" class="btn btn-primary btn-sm" id="btnClear" value=" Clear Data" />
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnConvert" value="Convert to request" />
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:15px;">
+                <div class="col-sm-12">
+                    <table class="table table-bordered table-hover table-condensed" id="ResultTable" style="white-space:nowrap;text-overflow:ellipsis;padding:5px;">
+                        <thead>
+                            <tr>
+                                <th style="background-color:coral;"></th>
+                                <th style="background-color:coral;">Part No</th>
+                                <th style="background-color:coral;">Description</th>
+                                <th style="background-color:burlywood;">EXIST?</th>
+                                <th style="background-color:burlywood;">Global Part</th>
+                                <th style="background-color:burlywood;">Global Part Desc</th>
+                                <th style="background-color:burlywood;">Primary Sup?</th>
+                                <th style="background-color:burlywood;">Primary PB?</th>
+                                <th style="background-color:burlywood;">BPA?</th>
+                                <th style="background-color:burlywood;">COST?</th>
+                                <th style="background-color:burlywood;">PROD GROUP</th>
+                                <th style="background-color:aqua;">OPT</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ResultTbody"></tbody>
+                        <tfoot id="ResultTfoot">
+                            <tr>
+                                <td colspan="12">
+                                    <input type="button" class="btn btn-primary btn-sm" id="btnNewLine" value="New Line" />
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
         </form>
-        <div class="row">
-            <div class="col-md-12 col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <b>Result</b>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header panel-default" style="padding:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 30px;height: 30px;">
+                    &times;
+                </button>
+                <div class="modal-title panel-heading" style="text-align: center;">
+                    New Request
+                </div>
+            </div>
+            <div class="modal-body" style="padding:10px;">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="MD_REQ_NO" class="col-sm-3 control-label" style="text-align: right;">Request No:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control input-sm" id="txtMD_REQ_NO" placeholder="Request No" />
+                        </div>
                     </div>
-                    <table class="table table-bordered table-hover table-striped" id="resultTable">
-                        <thead>
-                            <tr></tr>
-                        </thead>
-                        <tbody id="resultTbody"></tbody>
-                    </table>
+                </div>
+                <div class="row" style="margin-top:10px;">
+                    <div class="form-group">
+                        <label for="DESC" class="col-sm-3 control-label" style="text-align: right;">Description:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control input-sm" id="txtDESC" placeholder="Description" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:10px;">
+                    <div class="col-sm-12">
+                        <div class="col-sm-3 col-sm-offset-2">
+                            <input type="button" class="btn btn-primary btn-sm" id="btnCancel" value="Cancel" />
+                        </div>
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <input type="button" class="btn btn-primary btn-sm" id="btnOK" value="OK" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
 @Html.Partial("_LoadingModal")
 
 <script type="text/javascript">
     $(document).ready(function () {
+        var MDReqList = []
+        //btn Copy from clipboard Done
+        $("#btnCopy").on('click', function () {
+            var str = "";
+            if (window.clipboardData) {
+                str = window.clipboardData.getData('Text');
+            }
+            else {
+                alert("当前浏览器不支持操作剪切板内容，请更换IE使用！");
+                return false;
+            }
+
+            //var lineno = 0;
+            //var length = $("#OneTbody").find("tr").length;
+            //if (length != 0) {
+            //    lineno = length;
+            //}
+            $("#loadingModal").modal("show");
+
+            $.ajax({
+                url: '/md/CallFunction',
+                type: 'post',
+                async: true,
+                data: JSON.stringify({ str: str }),
+                contentType: 'application/json;charset=utf-8',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#ResultTbody").html(obj.Data);
+                        //alert(JSON.stringify(obj.Data[0]));
+                        //$("#OneTbody").html(obj.Data[0]);
+                        //$(obj.Data[0]).appendTo($("#OneTbody"));
+                        //$("#TwoTbody").html(obj.Data[1]);
+                        //$(obj.Data[1]).appendTo($("#TwoTbody"))
+                        //$("#ThreeTbody").html(obj.Data[2]);
+                        //$(obj.Data[2]).appendTo($("#ThreeTbody"));
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to get");
+                }
+            })
+        });
+
+        //btn Clear Data Done
+        $("#btnClear").on('click', function () {
+            $("#ResultTbody").empty();
+        });
+
+        //btn Convert to request Done
+        $("#btnConvert").on('click', function () {
+            //alert("btnConvert")
+            //$("#myModal").modal("show");
+            MDReqList = [];
+            //Check1 - Part NO and description & PROD GROUP 不能为空
+            var tr = $("#ResultTable #ResultTbody").find("tr");
+            for (var i = 0; i < tr.length; i++) {
+                var td = $(tr[i]).find("td");
+                MDReqList.push({
+                    REQ_LINE_NO: td.eq(0).text(),
+                    PART_NO: td.eq(1).find("input[type=text]").val(),
+                    PART_DESC: td.eq(2).find("input[type=text]").val(),
+                    CHECK_EXIST: td.eq(3).find("span").text(),
+                    GLOBAL_PARTNO: td.eq(4).text(),
+                    GLOBAL_PARTDESC: td.eq(5).text(),
+                    CHECK_PRI_SUP: td.eq(6).find("span").text(),
+                    CHECK_PRI_PB: td.eq(7).find("span").text(),
+                    CHECK_PRI_BPA: td.eq(8).find("span").text(),
+                    CHECK_COST: td.eq(9).find("span").text(),
+                    PRODUCT_GROUP_ID: td.eq(10).find(".PRODUCT_GROUP_ID").val()
+                })
+            }
+
+            //Check1 - Part NO and description & PROD GROUP 不能为空
+            //var OneTr = $("#OneTable #OneTbody").find("tr");
+            //for (var i = 0; i < OneTr.length; i++) {
+            //    var td = $(OneTr[i]).find("td");
+            //    OneList.push({
+            //        REQ_LINE_NO: td.eq(0).text(),
+            //        PART_NO: td.eq(1).find("input[type=text]").val(),
+            //        PART_DESC: td.eq(2).find("input[type=text]").val()
+            //    })
+            //}
+            //var TwoTr = $("#TwoTable #TwoTbody").find("tr");
+            //for (var i = 0; i < TwoTr.length; i++) {
+            //    var td = $(TwoTr[i]).find("td");
+            //    TwoList.push({
+            //        PART_NO: $(TwoTr[i]).attr("data-partno"),
+            //        CHECK_EXIST: td.eq(0).find("span").text(),
+            //        GLOBAL_PARTNO: td.eq(1).text(),
+            //        CHECK_PRI_SUP: td.eq(3).find("span").text(),
+            //        CHECK_PRI_PB: td.eq(4).find("span").text(),
+            //        CHECK_PRI_BPA: td.eq(5).find("span").text(),
+            //        CHECK_COST: td.eq(6).find("span").text(),
+            //        PRODUCT_GROUP_ID: td.eq(7).find(".PRODUCT_GROUP_ID").val()
+            //    })
+            //}
+            $("#loadingModal").modal('show');
+            $.ajax({
+                url: '/md/GetRequestNo',
+                type: 'post',
+                async: true,
+                data: JSON.stringify({
+                    MDReqList: MDReqList
+                }),
+                contentType: 'application/json;charset=utf-8',
+                success: function (obj) {
+                    $("#loadingModal").modal('hide');
+                    if (obj.Success) {
+                        $("#txtMD_REQ_NO").val(obj.Data);
+                        $("#txtDESC").val("");
+                        $("#myModal").modal("show");
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (e) {
+                    $("#loadingModal").modal('hide');
+                    alert("fail to get");
+                }
+            })
+        });
+
+        //btn New Line  Done
+        $("#ResultTable #ResultTfoot").on('click', '#btnNewLine', function () {
+            //alert("btnNewLine");
+            var length = $("#ResultTbody").find("tr").length;
+            $.ajax({
+                url: '/md/MDReqNewLine',
+                type: 'post',
+                async: true,
+                data: { Length: length },
+                success: function (obj) {
+                    if (obj.Success)
+                        $(obj.Data).appendTo($("#ResultTbody"));
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to new");
+                }
+            })
+            //alert(length);
+            //var html = "";
+            //if (length == 0) {
+            //    html += "    <tr data-partno=\"\">";
+            //    html += "       <td>1</td>";
+            //    html += "       <td><input type=\"text\" class=\"form-control input-sm txtPART_NO\" value=\"\" /></td>";
+            //    html += "       <td><input type=\"text\" class=\"form-control input-sm txtPART_DESC\" value=\"\" /></td>";
+            //    html += "    </tr>";
+            //} else {
+            //    html += "    <tr data-partno=\"\">";
+            //    html += "       <td>" + (length + 1) + "</td>";
+            //    html += "       <td><input type=\"text\" class=\"form-control input-sm txtPART_NO\" value=\"\" /></td>";
+            //    html += "       <td><input type=\"text\" class=\"form-control input-sm txtPART_DESC\" value=\"\" /></td>";
+            //    html += "    </tr>";
+            //}
+            //$(html).appendTo($("#OneTbody"));
+        });
+
+        //btn btnDelete Done
+        $("#ResultTable #ResultTbody").on('click', '.btnDelete', function () {
+            //alert("btnDelete");
+            var btn = $(this);
+            var tr = btn.parent().parent();
+            if (confirm("Be sure to delete?"))
+                tr.remove();
+            //序列号重新排序
+            ReArray();
+        });
+        function ReArray() {
+            var tr = $("#ResultTable #ResultTbody").find("tr");
+            for (var i = 0; i < tr.length; i++) {
+                var td = $(tr[i]).find("td").eq(0);
+                td.text(i + 1);
+            }
+        }
+
+        //btn OK Done
+        $("#btnOK").on('click', function () {
+            var MD_REQ_NO = $("#txtMD_REQ_NO").val();
+            var REQ_DESC = $("#txtDESC").val();
+
+            $.ajax({
+                url: '/md/MDReqSave',
+                type: 'post',
+                async: true,
+                data: JSON.stringify({
+                    MD_REQ_NO: MD_REQ_NO,
+                    REQ_DESC: REQ_DESC,
+                    MDReqList: MDReqList
+                }),
+                contentType: 'application/json;charset=utf-8',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#myModal").modal("hide");
+                    } else {
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (e) {
+                    alert("fail to save");
+                }
+            })
+        });
+        //btn Cancel Done
+        $("#btnCancel").on("click", function () {
+            $("#txtDESC").val("");
+            $("#myModal").modal('hide');
+        });
+
+        //修改PART_NO Done
+        $("#ResultTable #ResultTbody").on('blur', '.txtPART_NO', function () {
+            //alert($(this).val());
+            var samenum = [];
+            var str = $(this);
+            var num = str.parent().prev().text();//序列号
+            var tr = $("#ResultTable #ResultTbody").find("tr");
+            //修改PART_NO要进行唯一性检查
+            for (var i = 0; i < tr.length; i++) {
+                if ((i + 1) == num)
+                    continue;
+                else {
+                    if ($(tr[i]).find("td").eq(1).find("input[type=text]").val() == str.val()) {
+                        samenum.push({
+                            count: i + 1
+                        });
+                    }
+                }
+            }
+            if (samenum != null && samenum.length > 0) {
+                var html = "";
+                for (var i = 0; i < samenum.length; i++) {
+                    if (i == 0) {
+                        html += "第" + samenum[i].count + "行";
+                    } else {
+                        html += ",第" + samenum[i].count + "行";
+                    }
+                }
+                html += "与当前第" + num + "行PART_NO相同";
+                alert(html);
+                return false;
+            }
+
+            $("#loadingModal").modal("show");
+            //alert("go");
+            $.ajax({
+                url: '/md/MDReq_PARTNOChange',
+                type: 'post',
+                async: true,
+                data: {
+                    PART_NO: str.val()
+                },
+                success: function (obj) {
+                    $("#loadingModal").modal('hide');
+                    if (obj.Success) {
+                        Part_NOChange(str, obj.Data);
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+                }, error: function (e) {
+                    $("#loadingModal").modal('hide');
+                    alert("fail to change");
+                }
+            })
+        })
+
+        //str 当前修改的part_no
+        function Part_NOChange(str, data) {
+            var tr = $(str).parent().parent();
+            var td = tr.find("td");
+            td.eq(1).find(".txtPART_NO").val(data.PART_NO);
+            td.eq(2).find(".txtPART_DESC").val(data.PART_DESC);
+            td.eq(3).find("span").text(data.CHECK_EXIST);
+            if (data.CHECK_EXIST == "OK")
+                td.eq(3).find("span").css('color', 'green');
+            else
+                td.eq(3).find("span").css('color', 'red');
+            td.eq(4).text(data.GLOBAL_PARTNO);
+            td.eq(5).text(data.GLOBAL_PARTDESC);
+            td.eq(6).find("span").text(data.CHECK_PRI_SUP);
+            if (data.CHECK_PRI_SUP == "OK")
+                td.eq(6).find("span").css('color', 'green');
+            else
+                td.eq(6).find("span").css('color', 'red');
+            td.eq(7).find("span").text(data.CHECK_PRI_PB);
+            if (data.CHECK_PRI_PB == "OK")
+                td.eq(7).find("span").css('color', 'green');
+            else
+                td.eq(7).find("span").css('color', 'red');
+            td.eq(8).find("span").text(data.CHECK_PRI_BPA);
+            if (data.CHECK_PRI_BPA == "OK")
+                td.eq(8).find("span").css('color', 'green');
+            else
+                td.eq(8).find("span").css('color', 'red');
+            td.eq(9).find("span").text(data.CHECK_COST);
+            if (data.CHECK_COST == "OK")
+                td.eq(9).find("span").css('color', 'green');
+            else
+                td.eq(9).find("span").css('color', 'red');
+            td.eq(10).find(".PRODUCT_GROUP_ID").val(data.PRODUCT_GROUP_ID);
+        }
+
 
     })
 </script>
@@ -45,6 +425,6 @@
         //debugger;
         var ss = window.innerHeight;
         $("#imgDiag").css("margin-top", "300px");
-
+        $("#myModal").css("margin-top", "200px");
     });
 </script>
