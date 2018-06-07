@@ -1,0 +1,233 @@
+﻿@{ 
+    ViewBag.Title = "RP HSCODE";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" id="ittHscode" ng-app="myApp" ng-controller="myCtrl">
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>QUERY</b></div>
+        <form class="form-horizontal" id="adrForm">
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtHSCODE" class="col-sm-2 control-label">HS CODE:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtHSCODE" ng-model="HSCODE" placeholder="HS CODE" />
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary btn-sm" ng-click="searchAction()">Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default" style="">
+                    <div class="panel-heading"><b>DISPLAY</b></div>
+                    <table id="resultTable" class="table table-striped table-hover table-bordered .table-condensed">
+                        <thead>
+                            <tr>
+                                <th>HS CODE</th>
+                                <th>DESC</th>
+                                <th>TC Category ID (by Man)</th>
+                                <th>NOTE1</th>
+                                <th>NOTE2</th>
+                                <th>NOTE3</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="x in list">
+                                <td style=""><input type="text" class="form-control IsDisabled" ng-model="x.HSCODE" ng-readonly="display"/></td>
+                                <td style=""><input type="text" class="form-control" ng-model="x.HSCODE_DESC" /></td>
+                                <td style=""><select class="form-control" id="TC_CATEGORY_ID" ng-model="x.TC_CATEGORY_ID" ng-options="r for r in CIDlist">
+                                    <option value=""></option>
+                                    </select></td>
+                                <td style=""><input type="text" class="form-control" ng-model="x.NOTE1" /></td>
+                                <td style=""><input type="text" class="form-control" ng-model="x.NOTE2" /></td>
+                                <td style=""><input type="text" class="form-control" ng-model="x.NOTE3" /></td>
+                                <td style="">
+                                    <button class="btn btn-primary input-sm" ng-click="saveAction(x)">SAVE</button>
+                                    <button class="btn btn-primary input-sm" ng-click="auditAction(x)">Audit trail</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn-primary input-sm" id="btnAdd" ng-click="addAction()">Add</button>
+                </div>
+            </div>
+        </div>
+
+    </div> 
+
+
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="AuditTrail">
+        <div class="modal-dialog modal-lg" role="document" style="width:1000px;">
+            <div class="modal-content">
+                <h4 class="modal-title" id="myModalLabel">Audit Trail for HSCODE </h4>
+                <table class="table table-striped table-bordered table-hover" style="margin-top:20px;">
+                    <thead>
+                        <tr>
+                            <th>HSCODE</th>
+                            <th>DESC (New)</th>
+                            <th>DESC(OLD)</th>
+                            <th>Category (New)</th>
+                            <th>Category (Old)</th>
+                            <th>Activity Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="AuditResult">
+                        <tr ng-repeat="x in auditlist">
+                            <td>{{x.HSCODE}}</td>
+                            <td>{{x.NEW_HACODE_DESC}}</td>
+                            <td>{{x.OLD_HSCODE_DESC}}</td>
+                            <td>{{x.NEW_TC_CATEGORY_ID}}</td>
+                            <td>{{x.OLD_TC_CATEGORY_ID}}</td>
+                            <td>{{x.ACTIVITY_DATE | date:'yyyy-MM-dd'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+@Html.Partial("_LoadingModal")
+
+<script type="text/javascript">
+    angular.module('myApp', []).controller('myCtrl', function ($scope, $http) {
+        $scope.HSCODE = "";
+        $scope.list = [];
+        $scope.CIDlist = [];
+        $scope.display = true;
+        $scope.auditlist = [];
+
+        $http.post("/rp/GetCID", null, null).then(
+           function (obj) {
+               if (obj.data.Success) {
+                   $scope.CIDlist = obj.data.Data;
+               }
+               else
+                   alert(obj.data.Msg)
+           },
+            function (resp) {
+                alert("Fail!");
+            }
+       );
+
+        $scope.searchAction = function () {
+            $scope.display = true;
+            if ($scope.HSCODE == "") {
+                alert("No Data Input");
+                return;
+            }
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/rp/GetHSCODEByCode',
+                type: 'post',
+                async: false,
+                data: { HSCODE: $scope.HSCODE },
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#loadingModal").modal("hide");
+                        $scope.CIDlist = obj.Data1;
+                        $scope.list = obj.Data;                        
+                    }
+                    else {
+                        $("#loadingModal").modal("hide");
+                        alert(obj.Msg);
+                    }                    
+                }, error: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to get");
+                }
+            })
+        }
+
+        $scope.saveAction = function (data) {
+            if (data.HSCODE == "")
+            {
+                alert("HSCODE Can Not Be Empty");
+                return;
+            }
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/rp/AddHSCODE',
+                type: 'post',
+                async: false,
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify({
+                    HSCode: data
+                }),
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#loadingModal").modal("hide");
+                        alert(obj.Msg);
+                    }
+                    else {
+                        $("#loadingModal").modal("hide");
+                        alert(obj.Msg);
+                    }
+                }, error: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to save");
+                }
+            });
+
+        }
+        
+        $scope.addAction = function () {
+            var newItem = {
+                HSCODE: "",
+                HSCODE_DESC: "",
+                TC_CATEGORY_ID: "",
+                NOTE1: "",
+                NOTE2: "",
+                NOTE3: ""
+            }
+            
+            if ($scope.HSCODE != "") {
+                newItem.HSCODE = $scope.HSCODE;
+            }
+            else {
+                $scope.display = false;
+            }
+            $scope.list.push(newItem);
+        }
+
+        $scope.auditAction = function (data) {
+            var hscode = data.HSCODE;
+            $.ajax({
+                url: "/rp/GetHSCODEAUDIT",
+                type: "post",
+                data: {
+                    HSCODE:hscode
+                },
+                async: false,
+                success: function (obj) {
+                    if (obj.Success) {
+                        $scope.auditlist = obj.Data;
+                        $("#AuditTrail").modal("show");
+                    }
+                }
+            })
+        }
+
+
+    });
+    angular.bootstrap(document.getElementById('ittHscode'), ['myApp']);
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+        $("#AuditTrail").css("margin-top", "200px");
+
+    });
+
+</script>
+ 
