@@ -1,0 +1,504 @@
+﻿@{
+    ViewBag.Title = "EXP EXPWB";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    /*#fileInput {
+        margin-top: 6px;
+    }
+
+    #btnUpload {
+        margin-left: 20px;
+    }*/
+</style>
+
+<div class="container-fluid" id="expwb">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>WMS Staged Shipments Loading..</b>
+        </div>
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="SHIP_TO_LOCATION" class="col-sm-2 control-label">SHIP TO:</label>
+                    <div class="col-sm-2">
+                        <select class="form-control" id="txtSHIP_TO_LOCATION">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4" style="padding: 8px;">
+                        <span id="txtSHIP_TO_ALIAS"></span>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnPullFromRP" value="Pull from RP" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <form id="expUpload" class="form-inline" name="expForm">
+                <div class="col-sm-2 text-right">
+                    <label for="">Excel Upload:</label>
+                </div>
+                <div class="form-group">
+                    <input type="file" name="fileInput" id="expFile" />
+                </div>
+                <input type="button" class="btn btn-primary btn-sm" id="btnUpload" value="Upload" />
+                <input type="button" class="btn btn-primary btn-sm" id="btnDownload" value="Download Template" />
+            </form>
+        </div>
+        <div class="panel-heading">
+            <b>Create Commercial Invoice and Packing List…</b>
+        </div>
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="SHIP_TO_INDEX" class="col-sm-2 control-label">SHIP TO:</label>
+                    <div class="col-sm-2">
+                        <select class="form-control" id="txtSHIP_TO_INDEX">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row" style="margin-top:15px;">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default">
+                    <form class="form-horizontal">
+                        <div class="row">
+                            <div class="form-group" style="margin-bottom:0;">
+                                <label for="" class="col-sm-2 control-label">Quick Summary:</label>
+                                <label for="" class="col-sm-1 control-label">Volume(M<sup>3</sup>):</label>
+                                <label for="" class="col-sm-1 control-label" id="txtTotalVolume" style="color:green;"></label>
+                                <label for="" class="col-sm-1 control-label">Weight (kg):</label>
+                                <label for="" class="col-sm-1 control-label" id="txtTotalWeight" style="color:green;"></label>
+                                <label for="" class="col-sm-1 control-label" style="width:10%;">Est.Amt(USD):</label>
+                                <label for="" class="col-sm-1 control-label" id="txtTotalEstAmt" style="color:green;"></label>
+                                <label for="" class="col-sm-1 control-label">Boxes:</label>
+                                <label for="" class="col-sm-1 control-label" id="txtTotalBoxes" style="color:green;"></label>
+                                <div class="col-sm-2 text-right" style="width:14%;">
+                                    <input type="button" class="btn btn-primary btn-sm" id="btnCreateInv" value="Create INV" style="margin-top:10px;" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <table class="table table-bordered table-hover" id="resultTable">
+                        <thead>
+                            <tr style="background-color:#f5f5f5">
+                                <th style="width:3%;"><input type="checkbox" id="selectAll" /></th>
+                                <th>PICKLIST</th>
+                                <th>ABBR</th>
+                                <th>CARRIER</th>
+                                <th>SHIP ID (STG)</th>
+                                <th>LODNUM</th>
+                                <th>VOL（M<sup style="font-size:10px;">3</sup>）</th>
+                                <th>WEIGHT(KG)</th>
+                                <th>EST. AMT(USD)</th>
+                                <th width="4%;">Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header panel-default" style="padding:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 30px;height: 30px;">
+                    &times;
+                </button>
+                <div class="modal-title panel-heading" style="text-align: left;font-weight:bold;">
+                    Create Commercial Invoice
+                </div>
+            </div>
+            <div class="modal-body" style="padding:10px;">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Commercial Invoice No:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control input-sm" id="txtCOMM_INV_ID" disabled />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Comments:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control input-sm" id="txtCOMM_DESC" placeholder="Comments" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-3 col-sm-offset-2">
+                            <input type="button" class="btn btn-primary btn-sm" id="btnCancel" value="Cancel" />
+                        </div>
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <input type="button" class="btn btn-primary btn-sm" id="btnOK" value="OK" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 200px;width: 1000px;">
+        <div class="modal-content">
+            <div class="modal-header panel-default" style="padding:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 30px;height: 30px;">
+                    &times;
+                </button>
+                <div class="modal-title panel-heading" style="text-align: left;">
+                    Details in Box
+                </div>
+            </div>
+            <div class="modal-body" style="padding:0;">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="panel panel-default">
+                            <table class="table table-bordered table-striped" id="resultTableModal">
+                                <thead>
+                                    <tr>
+                                        <th>LODNUM</th>
+                                        <th>PRTNUM</th>
+                                        <th>QTY</th>
+                                        <th>COO</th>
+                                        <th>PICKLIST</th>
+                                        <th>ORDLIN</th>
+                                        <th>SHIP ID(STG)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resultTbodyModal"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@Html.Partial("_LoadingModal")
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var volumn = 0;
+        var weight = 0;
+        var estamt = 0;
+        var boxes = 0;
+        var list = [];
+        $("#txtTotalVolume").text(volumn);
+        $("#txtTotalWeight").text(weight);
+        $("#txtTotalEstAmt").text(estamt);
+        $("#txtTotalBoxes").text(boxes);
+        //SHIP_TO_LOCATION
+        $(function () {
+            $.ajax({
+                url: '/exp/GetSHIP_TO_LOCATION',
+                type: 'post',
+                async: true,
+                data: {},
+                success: function (obj) {
+                    if (obj.Success) {
+                        for (var i = 0; i < obj.Data.length; i++) {
+                            $("<option></option>").val(obj.Data[i].SHIP_TO_LOCATION).text(obj.Data[i].SHIP_TO_LOCATION).appendTo("#txtSHIP_TO_LOCATION");
+                        }
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get");
+                }
+            })
+        });
+        //SHIP_TO_ALIAS
+        $("#txtSHIP_TO_LOCATION").on('change', function () {
+            var ship_to_location = $(this);
+            if (ship_to_location.val() == "") {
+                $("#txtSHIP_TO_ALIAS").text("");
+                return false;
+            }
+            $.ajax({
+                url: '/exp/GetSHIP_TO_ALIAS',
+                type: 'post',
+                async: true,
+                data: { SHIP_TO_LOCATION: ship_to_location.val() },
+                success: function (obj) {
+                    if (obj.Success)
+                        $("#txtSHIP_TO_ALIAS").text(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get");
+                }
+            })
+        });
+        //btn Pull from RP
+        $("#btnPullFromRP").on('click', function () {
+            if ($("#txtSHIP_TO_LOCATION").val() == "") {
+                alert("No Select");
+                return false;
+            }
+
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/exp/ExecP_Load_Stg_from_RP',
+                type: 'post',
+                async: true,
+                data: { SHIP_TO_LOCATION: $("#txtSHIP_TO_LOCATION").val() },
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        alert("Loading successfully");
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to exec");
+                }
+            })
+        })
+
+        //SHIP_TO_INDEX
+        $(function () {
+            $.ajax({
+                url: '/exp/GetSHIP_TO_INDEX',
+                type: 'post',
+                async: true,
+                data: {},
+                success: function (obj) {
+                    if (obj.Success) {
+                        for (var i = 0; i < obj.Data.length; i++) {
+                            $("<option></option").val(obj.Data[i].SHIP_TO_INDEX).text(obj.Data[i].SHIP_TO_INDEX).appendTo("#txtSHIP_TO_INDEX");
+                        }
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get");
+                }
+            })
+        });
+
+        //SHIP_TO_INDEX change search
+        $("#txtSHIP_TO_INDEX").on('change', function () {
+            var ship_to_index = $(this);
+            if (ship_to_index.val() == "") {
+                $("#resultTbody").empty();
+                return false;
+            }
+            //alert(1);
+            $("#loadingModal").modal("show");
+
+            $.ajax({
+                url: '/exp/SearchV_EXP_STAGE_UNINVOICED',
+                type: 'post',
+                async: true,
+                data: { SHIP_TO_INDEX: ship_to_index.val() },
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    $("#resultTbody").empty();
+                    if (obj.Success)
+                        $("#resultTbody").html(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+            })
+
+        })
+
+        //selectALL
+        $("#selectAll").on('click', function () {
+            var checkbox = $("#resultTbody input[type='checkbox']");
+            if (this.checked)
+                checkbox.prop("checked", true);
+            else
+                checkbox.prop("checked", false);
+            RefreshCheckbox()
+        })
+        //checkbox select
+        $("#resultTbody").on('click', function () {
+            RefreshCheckbox();
+        });
+
+        function RefreshCheckbox() {
+            list = [];
+            volumn = 0; weight = 0; estamt = 0; boxes = 0;
+            var checkbox = $("#resultTbody input[type='checkbox']");
+            var count = 0;
+            for (var i = 0; i < checkbox.length; i++) {
+                if (checkbox[i].checked) {
+                    var tr = $(checkbox[i]).parent().parent();
+                    volumn += Number($(tr).find("td").eq(6).text());
+                    weight += Number($(tr).find("td").eq(7).text());
+                    estamt += Number($(tr).find("td").eq(8).text());
+                    var lodnum = $(tr).find("td").eq(5).text();
+                    list.push({
+                        LODNUM: lodnum
+                    })
+                    boxes++;
+                    count++;
+                }
+            }
+            if (count == checkbox.length)
+                $("#selectAll").prop("checked", true);
+            else
+                $("#selectAll").prop("checked", false);
+
+            $("#txtTotalVolume").text(volumn.toFixed(2));
+            $("#txtTotalWeight").text(weight);
+            $("#txtTotalEstAmt").text(estamt.toFixed(2));
+            $("#txtTotalBoxes").text(boxes);
+        }
+
+        //btn Details
+        $("#resultTbody").on('click', '.btnDetail', function () {
+            var LODNUM = $(this).attr("data-lodnum");
+            //$("#DetailModal").modal("show");
+            $.ajax({
+                url: '/exp/SearchDetailsByEXP_STG_D',
+                type: 'post',
+                async: true,
+                data: { LODNUM: LODNUM },
+                success: function (obj) {
+                    $("#resultTbodyModal").empty();
+                    if (obj.Success) {
+                        $("#resultTbodyModal").html(obj.Data);
+                        $("#DetailModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to search");
+                }
+            })
+        })
+
+        //btn CreateInv
+        $("#btnCreateInv").on('click', function () {
+            //$("#myModal").modal("show");
+            if (list.length == 0) {
+                alert("No Data Select");
+                return false;
+            }
+
+            $.ajax({
+                url: '/exp/CheckSecurityOfbtnCreateInv',
+                type: 'post',
+                async: true,
+                data: {},
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#txtCOMM_INV_ID").val(obj.Data);
+                        $("#txtCOMM_DESC").val("");
+                        $("#myModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to check");
+                }
+            })
+        })
+        //btn Cancel
+        $("#btnCancel").on('click', function () {
+            $("#myModal").modal("hide");
+        })
+        //btn OK
+        $("#btnOK").on('click', function () {
+            var data = {};
+            data.COMM_INV_ID = $("#txtCOMM_INV_ID").val();
+            data.COMM_DESC = $("#txtCOMM_DESC").val();
+            data.SHIP_TO_INDEX = $("#txtSHIP_TO_INDEX").val();
+            data.TOTAL_WGT = $("#txtTotalWeight").text();
+            data.TOTAL_VOL = $("#txtTotalVolume").text();
+            data.TOTAL_AMT = $("#txtTotalEstAmt").text();
+            data.BOXES = $("#txtTotalBoxes").text();
+
+            $.ajax({
+                url: '/exp/AddEXP_COMM_INV',
+                type: 'post',
+                async: true,
+                data: JSON.stringify({
+                    COMM: data,
+                    STG: list
+                }),
+                contentType: 'application/json;charset=utf-8',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#myModal").modal("hide");
+                        alert("Successfully");
+                        EmptyData();
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to add");
+                }
+            })
+        });
+
+        function EmptyData() {
+            $("#txtSHIP_TO_INDEX").val("");
+            $("#txtTotalVolume").text(0);
+            $("#txtTotalWeight").text(0);
+            $("#txtTotalEstAmt").text(0);
+            $("#txtTotalBoxes").text(0);
+            $("#resultTbody").empty();
+        }
+
+
+        $("#btnUpload").on('click', function () {
+            var form = $("form[name=expForm]");
+            var options = {
+                url: '/exp/UploadEXPFile',
+                type: 'post',
+                enctype: "multipart/form-data",
+                success: function (data) {
+                    if (data.Success)
+                        alert(data.Msg);
+                    else {
+                        alert(data.Msg);
+                    }
+                }
+            };
+            form.ajaxSubmit(options);
+        })
+
+        $("#btnDownload").on('click', function () {
+            window.location.href = "/exp/DownloadEXPFileTemplate";
+        })
+
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+        $("#myModal").css("margin-top", "200px");
+    });
+</script>
