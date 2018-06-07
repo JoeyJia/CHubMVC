@@ -1,0 +1,256 @@
+﻿@{
+    ViewBag.Title = "EXP CINVINQ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" id="cinvinq">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="COMM_INV_ID" class="col-sm-2 control-label">Commercial Invoice No:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtCOMM_INV_ID" placeholder="Commercial Invoice No" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="SHIP_TO_INDEX" class="col-sm-2 control-label">SHIP TO:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtSHIP_TO_INDEX" placeholder="SHIP TO" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="CREATE_DATE" class="col-sm-2 control-label">Created in last days:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtCREATE_DATE" value="30" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="CREATED_BY" class="col-sm-2 control-label">Created By:</label>
+                    <div class="col-sm-2">
+                        <label class="checkbox-inline">
+                            <input type="radio" name="Radio" value="" checked /> All
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="Radio" value="@ViewBag.AppUser" />My Invoice only
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnQuery" value="QUERY" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row" style="margin-top:15px;">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default">
+                    <table class="table table-bordered table-hover" id="resultTable">
+                        <thead>
+                            <tr style="background-color:#f5f5f5">
+                                <th>INV NO</th>
+                                <th>SHIP TO</th>
+                                <th>CREATED BY</th>
+                                <th>CREATE DATE</th>
+                                <th>WEIGHT(KG)</th>
+                                <th>VOL(M<sup>3</sup>)</th>
+                                <th>AMT(USD)</th>
+                                <th>BOXES</th>
+                                <th>DESC</th>
+                                <th>STATUS</th>
+                                <th style="width: 21%;">Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 200px;width: 1000px;">
+        <div class="modal-content">
+            <div class="modal-header panel-default" style="padding:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 30px;height: 30px;">
+                    &times;
+                </button>
+                <div class="modal-title panel-heading" style="text-align: left;">
+                    Details
+                </div>
+            </div>
+            <div class="modal-body" style="padding:0;">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="panel panel-default">
+                            <table class="table table-bordered table-striped" id="resultTableModal">
+                                <thead>
+                                    <tr>
+                                        <th>PICKLIST</th>
+                                        <th>STCUST</th>
+                                        <th>SHIP ID (STG)</th>
+                                        <th>LODNUM</th>
+                                        <th>WEIGHT(KG)</th>
+                                        <th>LENGTH</th>
+                                        <th>WIDTH</th>
+                                        <th>HEIGHT</th>
+                                        <th>VOL(M<sup>3</sup>)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resultTbodyModal"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_LoadingModal")
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //btn Query
+        $("#btnQuery").on('click', function () {
+            //alert(1);
+            if ($("#txtCREATE_DATE").val() == "" || $("#txtCREATE_DATE").val() <= 0) {
+                alert("Date cannot null");
+            }
+
+            $("#loadingModal").modal("show");
+
+            $.ajax({
+                url: '/exp/SearchEXP_COMM_INV',
+                type: 'post',
+                async: true,
+                data: JSON.stringify({
+                    COMM_INV_ID: $("#txtCOMM_INV_ID").val(),
+                    SHIP_TO_INDEX: $("#txtSHIP_TO_INDEX").val(),
+                    CREATE_DATE: $("#txtCREATE_DATE").val(),
+                    CREATED_BY: $("input[type=radio]:checked").val()
+                }),
+                contentType: "application/json;charset=utf-8",
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    $("#resultTbody").empty();
+                    if (obj.Success) {
+                        $("#resultTbody").html(obj.Data);
+                    } else {
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+            })
+        });
+        //btn DETAIL
+        $("#resultTbody").on('click', '.btnDetail', function () {
+            // $("#DetailModal").modal("show");
+            var COMM_INV_ID = $(this).attr("data-comminvid");
+            $.ajax({
+                url: '/exp/SearchDetailsByV_EXP_STAGE_BASE',
+                type: 'post',
+                async: true,
+                data: { COMM_INV_ID: COMM_INV_ID },
+                success: function (obj) {
+                    $("#resultTbodyModal").empty();
+                    if (obj.Success) {
+                        $("#resultTbodyModal").html(obj.Data);
+                        $("#DetailModal").modal("show");
+                    } else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to search");
+                }
+            })
+        })
+        //btn COMPLETE
+        $("#resultTbody").on('click', '.btnComplete', function () {
+            var COMM_INV_ID = $(this).attr("data-comminvid");
+            if (CheckSecurity()) {
+                if (confirm("Are you sure to COMPLETE?")) {
+                    $.ajax({
+                        url: '/exp/ExecP_EXP_INV_COMP',
+                        type: 'post',
+                        async: true,
+                        data: { COMM_INV_ID: COMM_INV_ID },
+                        success: function (obj) {
+                            if (obj.Success)
+                                $("#btnQuery").click();
+                            else
+                                alert(obj.Msg);
+                        },
+                        error: function (e) {
+                            alert("fail to exec");
+                        }
+                    })
+                }
+            }
+        });
+        //btn DISCARD
+        $("#resultTbody").on('click', '.btnDiscard', function () {
+            var COMM_INV_ID = $(this).attr("data-comminvid");
+            //check security
+            if (CheckSecurity()) {
+                if (confirm("Are you sure to DISCARD?")) {
+                    $.ajax({
+                        url: '/exp/ExecP_EXP_INV_DISCARD',
+                        type: 'post',
+                        async: true,
+                        data: { COMM_INV_ID: COMM_INV_ID },
+                        success: function (obj) {
+                            if (obj.Success)
+                                $("#btnQuery").click();
+                            else
+                                alert(obj.Msg);
+                        },
+                        error: function (e) {
+                            alert("fail to exec");
+                        }
+                    })
+                }
+            }
+        });
+
+        function CheckSecurity() {
+            var check = true;
+            $.ajax({
+                url: '/exp/CheckSecurity',
+                type: 'post',
+                async: false,
+                data: {},
+                success: function (obj) {
+                    if (!obj.Success) {
+                        check = false;
+                        alert("You cannot operate");
+                    }
+                },
+                error: function (e) {
+                    alert("fail to check");
+                }
+            });
+            return check;
+        }
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+    });
+</script>
