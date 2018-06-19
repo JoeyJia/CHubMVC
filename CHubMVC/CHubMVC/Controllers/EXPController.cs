@@ -97,11 +97,29 @@ namespace CHubMVC.Controllers
             {
                 var result = eBLL.SearchV_EXP_STAGE_UNINVOICED(SHIP_TO_INDEX);
                 string mainHtml = GetSearchHTML(result);
-                return Json(new RequestResult(mainHtml));
+                var ordtyp = result.Select(a => a.ORDTYP).Distinct();
+                return Json(new { Success = true, Data = mainHtml, OrdType = ordtyp });
             }
             catch (Exception ex)
             {
                 LogHelper.WriteLog("EXP SearchV_EXP_STAGE_UNINVOICED", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ChangeByORDTYP(string SHIP_TO_INDEX, string ORDTYP)
+        {
+            EXPWB_BLL eBLL = new EXPWB_BLL();
+            try
+            {
+                var result = eBLL.ChangeByORDTYP(SHIP_TO_INDEX, ORDTYP);
+                string mainHtml = GetSearchHTML(result);
+                return Json(new RequestResult(mainHtml));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("EXP ChangeByORDTYP", ex);
                 return Json(new RequestResult(false, ex.Message));
             }
         }
@@ -155,6 +173,7 @@ namespace CHubMVC.Controllers
             {
                 //添加新纪录到 EXP_COMM_INV
                 COMM.CREATED_BY = Session[CHubConstValues.SessionUser].ToString();
+                COMM.EXCHANGE_RATE = Convert.ToDecimal(eBLL.CallFunc_GET_EXP_EXCHANGE_RATE());
                 eBLL.AddEXP_COMM_INV(COMM);
                 //修改 table EXP_STG_H ( COMM_INV_ID) 按照 关键字 （LODNUM）
                 var COMM_INV_ID = COMM.COMM_INV_ID;
@@ -205,8 +224,12 @@ namespace CHubMVC.Controllers
 
                 foreach (var item in expList)
                 {
+                    //新增
                     eBLL.AddEXP_STG_LOAD(item, LOAD_BATCH, appUser);
                 }
+                //执行存过 P_EXP_STG_LOAD_POST
+                eBLL.ExecP_EXP_STG_LOAD_POST(LOAD_BATCH);
+
                 return Json(new RequestResult(true, "Successfully"));
             }
             catch (Exception ex)
@@ -233,6 +256,7 @@ namespace CHubMVC.Controllers
                 {
                     sb.Append("     <tr>");
                     sb.Append("         <td>").Append("<input type=\"checkbox\" class=\"selectCheckbox\" />").Append("</td>");
+                    sb.Append("         <td>").Append(item.ORDTYP).Append("</td>");
                     sb.Append("         <td>").Append(item.PICKLIST_NO).Append("</td>");
                     sb.Append("         <td>").Append(item.STCUST).Append("</td>");
                     sb.Append("         <td>").Append(item.CARRIER_CODE).Append("</td>");
@@ -373,6 +397,41 @@ namespace CHubMVC.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult Export(string COMM_INV_ID)
+        {
+            CINVINQ_BLL cBLL = new CINVINQ_BLL();
+            try
+            {
+                //执行存过 P_EXP_UPT_HSCODE
+                cBLL.ExecP_EXP_UPT_HSCODE(COMM_INV_ID);
+                //执行Function F_EXP_HSCODE_CHK
+                var msg = cBLL.CallFuncF_EXP_HSCODE_CHK(COMM_INV_ID);
+                if (msg != "OK")
+                    return Json(new RequestResult(false, msg));//function返回不是OK,就报错显示返回值
+                //function返回值为OK
+                var getSql = cBLL.CallFunc_GET_SQL(COMM_INV_ID);
+                string filename = getSql.Split('~')[0];
+                string sql = getSql.Split('~')[1];
+                DataTable dt = cBLL.RunSql(sql);
+                string basePath = Server.MapPath(CHubConstValues.ChubTempFolder);
+                string fullName = basePath + filename + ".xlsx";
+                NPOIExcelHelper npoi = new NPOIExcelHelper(fullName);
+                npoi.DataTableToExcel(dt, "Sheet1");
+                return Json(new RequestResult(fullName));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("EXP Export", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        public ActionResult DownLoad(string fullname)
+        {
+            return File(fullname, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Path.GetFileName(fullname));
+        }
+
 
         public string GetSearchEXP_COMM_INVHTML(List<EXP_COMM_INV> list)
         {
@@ -453,7 +512,8 @@ namespace CHubMVC.Controllers
             }
             sb.Append("         <td>").Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnDetail\" value=\"DETAILS\" data-comminvid=\"" + COMM_INV_ID + "\" " + detailDisplay + " />")
                                       .Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnComplete\" value=\"COMPLETE\" data-comminvid=\"" + COMM_INV_ID + "\" " + completeDisplay + " />")
-                                      .Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnDiscard\" value=\"DISCARD\" data-comminvid=\"" + COMM_INV_ID + "\" " + discardDisplay + " />");
+                                      .Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnDiscard\" value=\"DISCARD\" data-comminvid=\"" + COMM_INV_ID + "\" " + discardDisplay + " />")
+                                      .Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnExport\" value=\"EXPORT\" data-comminvid=\"" + COMM_INV_ID + "\" />");
             return sb;
         }
 
