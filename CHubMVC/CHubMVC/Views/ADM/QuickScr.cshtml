@@ -1,0 +1,234 @@
+﻿@{
+    ViewBag.Title = "ADM QuickScr";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Scripts.Render("~/bundles/datetime")
+@Styles.Render("~/Content/datatimecss")
+<style type="text/css">
+    #resultTable {
+    }
+
+        /*#resultTable > tbody > tr > td {
+            background-color: red;
+        }*/
+</style>
+
+<div class="container-fluid" id="admquickscr">
+    <div class="panel panel-default">
+        <div class="panel panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Screen Name</label>
+                    <div class="col-sm-2">
+                        <select class="form-control" id="txtQUICK_SCREEN">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4" style="padding: 8px;">
+                        <span id="txtQUICK_DESC"></span>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row" style="margin-top:15px;">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel panel-heading">
+                        <b>Display</b>
+                    </div>
+                    <div style="width:100%;overflow-x:auto;overflow-y:hidden;margin-top: -15px;">
+                        <div style="width:150%;">
+                            <table class="table table-bordered table-hover" id="resultTable"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_LoadingModal")
+
+
+<script type="text/javascript">
+    //Get QUICK_SCREEN LIST
+    $(function () {
+        $.ajax({
+            url: '/adm/GetQUICK_SCREEN',
+            type: 'post',
+            async: true,
+            data: {},
+            success: function (obj) {
+                if (obj.Success) {
+                    for (var i = 0; i < obj.Data.length; i++) {
+                        $("<option></option>").text(obj.Data[i]).val(obj.Data[i]).appendTo("#txtQUICK_SCREEN");
+                    }
+                }
+                else
+                    alert(obj.Msg);
+            },
+            error: function (e) {
+                alert("fail to get");
+            }
+        })
+    });
+    $(document).ready(function () {
+        var method = "";
+        var pkval = "";
+        var quickscreen = {};
+        //QUCIK_SCREEN CHANGE
+        $("#txtQUICK_SCREEN").on('change', function () {
+            if ($(this).val() == "") {
+                $("#txtQUICK_DESC").text("");
+                $("#resultTable").empty();
+                return false;
+            }
+
+            GetQUICK_DESC();
+            GetTableResult();
+        })
+
+        function GetQUICK_DESC() {
+            $.ajax({
+                url: '/adm/GetQUICK_DESC',
+                type: 'post',
+                async: true,
+                data: {
+                    QUICK_SCREEN: $("#txtQUICK_SCREEN").val()
+                },
+                success: function (obj) {
+                    if (obj.Success)
+                        $("#txtQUICK_DESC").text(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get");
+                }
+            })
+        }
+        function GetTableResult() {
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/adm/GetTableResult',
+                type: 'post',
+                async: true,
+                data: {
+                    QUICK_SCREEN: $("#txtQUICK_SCREEN").val()
+                },
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    $("#resultTable").empty();
+                    if (obj.Success)
+                        $("#resultTable").append(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to get");
+                }
+            })
+        }
+
+        $("#resultTable").on('click', '.btnSave', function () {
+            quickscreen = {};
+            method = "";
+            pkval = "";
+            //alert(1);
+            //var tr = $(this).parent().parent();
+            //var td = $(tr).find("td");
+            //for (var i = 1; i < td.length; i++) {
+            //    var val = $(td[i]).find("input[type=text]").val();
+            //    alert(val);
+            //}
+            var btnSave = $(this);
+            var pk = btnSave.data().primary_key;
+            if (pk != "") {
+                method = "Update";
+                pkval = btnSave.data(pk);
+            }
+            else
+                method = "Insert";
+
+            var td = btnSave.parent().parent().find("td");
+            for (var i = 1; i < td.length; i++) {
+                var inputClass = $(td[i]).find("input[type=text]").attr("class").split(' ')[2];
+                quickscreen[inputClass] = $(td[i]).find("input[type=text]").val();
+            }
+
+            $.ajax({
+                url: '/adm/UpdateOrInsertQuickScreen',
+                type: 'post',
+                async: true,
+                data: {
+                    str: JSON.stringify(quickscreen),
+                    method: method,
+                    pkval: pkval,
+                    QUICK_SCREEN: $("#txtQUICK_SCREEN").val()
+                },
+                success: function (obj) {
+                    if (obj.Success) {
+                        alert("Success!");
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to do");
+                }
+            })
+        })
+
+        $("#resultTable").on('click', '#btnNew', function () {
+            $.ajax({
+                url: '/adm/NewLine',
+                type: 'post',
+                async: true,
+                data: {
+                    QUICK_SCREEN: $("#txtQUICK_SCREEN").val()
+                },
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#resultTable").find("tbody").append(obj.Data);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to new");
+                }
+            })
+
+
+        })
+
+
+    })
+    function ShowCalendar(txt) {
+        //alert($(txt).val());
+        $(txt).datetimepicker({
+            format: 'yyyy-mm-dd hh:mm:ss',//显示格式
+            todayHighlight: 1,//今天高亮
+            minView: "month",//设置只显示到月份
+            pickerPosition: 'bottom-left',
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            autoclose: 1//选择后自动关闭
+        }).datetimepicker('show');
+    }
+</script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+
+    });
+</script>
