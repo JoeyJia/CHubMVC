@@ -1,0 +1,151 @@
+﻿@{
+    ViewBag.Title = "EXP FinLoad";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" id="finload">
+    <div class="panel panel-default">
+        <div class="panel panel-heading">
+            <b>Step 1 - VAT Loading …</b>
+        </div>
+        <div class="row" style="margin-top:15px;">
+            <form id="finloadOneForm" class="form-inline" name="finloadOneForm">
+                <div class="col-sm-2 text-right">
+                    <label for="">Excel Upload:</label>
+                </div>
+                <div class="form-group">
+                    <input type="file" name="fileOneInput" id="fileOneInput" />
+                </div>
+                <input type="button" class="btn btn-primary btn-sm" id="btnStepOneUpload" value="Upload" />
+                <input type="button" class="btn btn-primary btn-sm" id="btnStepOneDownload" value="Download Template" />
+            </form>
+        </div>
+        <div class="panel panel-heading">
+            <b>Step 2 -  VAT XREF Loading..</b>
+        </div>
+        <div class="row" style="margin-top:15px;">
+            <form id="finloadTwoForm" class="form-inline" name="finloadTwoForm">
+                <div class="col-sm-2 text-right">
+                    <label for="">Excel Upload:</label>
+                </div>
+                <div class="form-group">
+                    <input type="file" name="fileTwoInput" id="fileTwoInput" />
+                </div>
+                <input type="button" class="btn btn-primary btn-sm" id="btnStepTwoUpload" value="Upload" />
+                <input type="button" class="btn btn-primary btn-sm" id="btnStepTwoDownload" value="Download Template" />
+            </form>
+        </div>
+        <div class="panel panel-heading">
+            <b>Step 3 -  USD Collection loading….</b>
+        </div>
+        <div class="row" style="margin-top:15px;">
+            <form id="finloadThreeForm" class="form-inline" name="finloadThreeForm">
+                <div class="col-sm-2 text-right">
+                    <label for="">Excel Upload:</label>
+                </div>
+                <div class="form-group">
+                    <input type="file" name="fileThreeInput" id="fileThreeInput" />
+                </div>
+                <input type="button" class="btn btn-primary btn-sm" id="btnStepThreeUpload" value="Upload" />
+                <input type="button" class="btn btn-primary btn-sm" id="btnStepThreeDownload" value="Download Template" />
+            </form>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_LoadingModal")
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$("#btnUpload").on('click', function () {
+        //    var form = $("form[name=finloadForm]");
+        //    var options = {
+        //        url: '/exp/UploadFinLoadFile',
+        //        type: 'post',
+        //        enctype: "multipart/form-data",
+        //        success: function (data) {
+        //            if (data.Success)
+        //                alert(data.Msg);
+        //            else {
+        //                alert(data.Msg);
+        //            }
+        //        }
+        //    };
+        //    form.ajaxSubmit(options);
+        //})
+
+        //$("#btnDownload").on('click', function () {
+        //    window.location.href = "/exp/DownloadFinLoadFileTemplate";
+        //})
+
+        $("#btnStepOneUpload").on('click', function () {
+            var form = $("form[name=finloadOneForm]");
+            var options = {
+                url: '/exp/UploadOneFinLoadFile',
+                type: 'post',
+                enctype: 'multipart/form-data',
+                success: function (data) {
+                    if (data.Success)
+                        alert(data.Msg);
+                    else {
+                        alert(data.Msg);
+                    }
+                }
+            };
+            form.ajaxSubmit(options)
+        });
+        $("#btnStepOneDownload").on('click', function () {
+            window.location.href = "/exp/DownloadOneFinLoadFileTemplate";
+        });
+
+
+        $("#btnStepTwoUpload").on('click', function () {
+            var form = $("form[name=finloadTwoForm]");
+            var options = {
+                url: '/exp/UploadTwoFinLoadFile',
+                type: 'post',
+                enctype: 'multipart/form-data',
+                success: function (data) {
+                    if (data.Success)
+                        alert(data.Msg);
+                    else {
+                        alert(data.Msg);
+                    }
+                }
+            };
+            form.ajaxSubmit(options);
+        })
+        $("#btnStepTwoDownload").on('click', function () {
+            window.location.href = "/exp/DownloadTwoFinLoadFileTemplate";
+        })
+
+
+        $("#btnStepThreeUpload").on('click', function () {
+            var form = $("form[name=finloadThreeForm]");
+            var options = {
+                url: '/exp/UploadThreeFinLoadFile',
+                type: 'post',
+                enctype: 'multipart/form-data',
+                success: function (data) {
+                    if (data.Success)
+                        alert(data.Msg);
+                    else {
+                        alert(data.Msg);
+                    }
+                }
+            };
+            form.ajaxSubmit(options);
+        });
+        $("#btnStepThreeDownload").on('click', function () {
+            window.location.href = "/exp/DownloadThreeFinLoadFileTemplate";
+        })
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+    });
+</script>
