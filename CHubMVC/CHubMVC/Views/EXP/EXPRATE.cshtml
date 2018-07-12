@@ -1,0 +1,206 @@
+﻿@{
+    ViewBag.Title = "EXP EXPRATE";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+<link href="~/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+
+<div class="container-fluid" id="exprate">
+    <div class="panel panel-default">
+        @*<div class="panel panel-heading">
+            <b>Display</b>
+        </div>*@
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default">
+                    <table class="table table-bordered table-hover" id="resultTable">
+                        <thead>
+                            <tr style="background-color:#f5f5f5">
+                                <th>
+                                    Excahnge Type
+                                    <select class="form-control input-sm" id="txtEXCHANGE_TYPE">
+                                        <option value=""></option>
+                                    </select>
+                                </th>
+                                <th>Begin Date</th>
+                                <th>End Date</th>
+                                <th>Exchange Rate</th>
+                                <th>NOTE</th>
+                                <th>Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="6">
+                                    <input type="button" class="btn btn-primary btn-sm" id="btnNew" value="NEW" />
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_LoadingModal")
+
+<script type="text/javascript">
+    function ShowCalendar(txt) {
+        $(txt).datetimepicker({
+            format: 'yyyy/mm/dd',//显示格式
+            todayHighlight: 1,//今天高亮
+            minView: "month",//设置只显示到月份
+            pickerPosition: 'bottom-left',
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            autoclose: 1//选择后自动关闭
+        }).datetimepicker('show');
+    }
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        GetEXCHANGE_TYPE();
+        GetTableResult();
+
+        function GetEXCHANGE_TYPE() {
+            $.ajax({
+                url: '/EXP/GetEXCHANGE_TYPE',
+                type: 'post',
+                async: true,
+                data: {},
+                success: function (obj) {
+                    if (obj.Success) {
+                        for (var i = 0; i < obj.Data.length; i++) {
+                            $("<option></option>").text(obj.Data[i]).val(obj.Data[i]).appendTo("#txtEXCHANGE_TYPE");
+                        }
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get");
+                }
+            });
+        };
+        function GetTableResult() {
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/EXP/GetTableResult',
+                type: 'post',
+                async: true,
+                data: {},
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    $("#resultTbody").empty();
+                    if (obj.Success)
+                        $("#resultTbody").append(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get");
+                }
+            });
+        };
+
+
+    })
+    $(document).ready(function () {
+        $("#txtEXCHANGE_TYPE").on('change', function () {
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/EXP/GetTableResult',
+                type: 'post',
+                async: true,
+                data: { EXCHANGE_TYPE: $("#txtEXCHANGE_TYPE").val() },
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    $("#resultTbody").empty();
+                    if (obj.Success)
+                        $("#resultTbody").append(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get");
+                }
+            });
+        })
+
+        $("#btnNew").on('click', function () {
+            var html = "";
+            html += "<tr>";
+            html += "     <td><input type=\"text\" class=\"form-control input-sm EXCHANGE_TYPE\" value=\"\" /></td>";
+            html += "     <td><input type=\"text\" class=\"form-control input-sm START_DATE\" value=\"\" onclick=\"ShowCalendar(this)\" /></td>";
+            html += "     <td><input type=\"text\" class=\"form-control input-sm END_DATE\" value=\"\" onclick=\"ShowCalendar(this)\" /></td>";
+            html += "     <td><input type=\"text\" class=\"form-control input-sm EXCHANGE_RATE\" value=\"\" /></td>";
+            html += "     <td><input type=\"text\" class=\"form-control input-sm NOTE\" value=\"\" /></td>";
+            html += "     <td><input type=\"button\" class=\"btn btn-primary btn-sm btnSave\" value=\"SAVE\" data-exchangetype=\"\" data-startdate=\"\" /></td>";
+            html += "</tr>";
+            $("#resultTbody").append(html);
+        })
+
+        $("#resultTbody").on('click', ".btnSave", function () {
+            var btn = $(this);
+            var EXCHANGETYPE = btn.attr("data-exchangetype");
+            var STARTDATE = btn.attr("data-startdate");
+
+            var method = "";
+            if (EXCHANGETYPE != "")
+                method = "Update";
+            else
+                method = "Insert";
+
+            var td = btn.parent().parent().find("td");
+            var EXCHANGE_TYPE = method == "Update" ? $(td).eq(0).text() : $(td).eq(0).find(".EXCHANGE_TYPE").val();
+            var START_DATE = $(td).eq(1).find(".START_DATE").val();
+            var END_DATE = $(td).eq(2).find(".END_DATE").val();
+            var EXCHANGE_RATE = $(td).eq(3).find(".EXCHANGE_RATE").val();
+            var NOTE = $(td).eq(4).find(".NOTE").val();
+            var objJson = {
+                EXCHANGE_TYPE: EXCHANGE_TYPE,
+                START_DATE: START_DATE,
+                END_DATE: END_DATE,
+                EXCHANGE_RATE: EXCHANGE_RATE,
+                NOTE: NOTE
+            };
+
+            $.ajax({
+                url: '/EXP/InsertOrUpdateEXPRATE',
+                type: 'post',
+                async: true,
+                data: JSON.stringify({
+                    EXCHANGETYPE: EXCHANGETYPE,
+                    STARTDATE: STARTDATE,
+                    eer: objJson,
+                    method:method
+                }),
+                contentType: "application/json;charset=utf-8",
+                success: function (obj) {
+                    if (obj.Success)
+                        alert("Success");
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to do");
+                }
+            });
+        })
+
+
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+    });
+</script>
