@@ -16,6 +16,7 @@ namespace CHubMVC.Controllers
 {
     public class EXPController : BaseController
     {
+        [Authorize]
         public ActionResult EXPWB()
         {
             string appUser = Session[CHubConstValues.SessionUser].ToString();
@@ -24,6 +25,7 @@ namespace CHubMVC.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult GetSHIP_TO_LOCATION()
         {
@@ -40,6 +42,7 @@ namespace CHubMVC.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult GetSHIP_TO_ALIAS(string SHIP_TO_LOCATION)
         {
@@ -56,6 +59,7 @@ namespace CHubMVC.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult ExecP_Load_Stg_from_RP(string SHIP_TO_LOCATION)
         {
@@ -72,6 +76,7 @@ namespace CHubMVC.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult GetSHIP_TO_INDEX()
         {
@@ -88,7 +93,7 @@ namespace CHubMVC.Controllers
             }
         }
 
-
+        [Authorize]
         [HttpPost]
         public ActionResult SearchV_EXP_STAGE_UNINVOICED(string SHIP_TO_INDEX)
         {
@@ -107,6 +112,7 @@ namespace CHubMVC.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult ChangeByORDTYP(string SHIP_TO_INDEX, string ORDTYP)
         {
@@ -124,6 +130,7 @@ namespace CHubMVC.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult SearchDetailsByEXP_STG_D(string LODNUM)
         {
@@ -141,7 +148,7 @@ namespace CHubMVC.Controllers
             }
         }
 
-
+        [Authorize]
         [HttpPost]
         public ActionResult CheckSecurityOfbtnCreateInv()
         {
@@ -165,6 +172,7 @@ namespace CHubMVC.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult AddEXP_COMM_INV(EXPCOMMINVArg COMM, List<EXPSTGHArg> STG)
         {
@@ -190,7 +198,7 @@ namespace CHubMVC.Controllers
             }
         }
 
-
+        [Authorize]
         [HttpPost]
         public ActionResult UploadEXPFile()
         {
@@ -254,8 +262,9 @@ namespace CHubMVC.Controllers
             {
                 foreach (var item in list)
                 {
+                    var EstAmt = CallFunc_GET_EXP_EST_AMT(item.LODNUM);
                     sb.Append("     <tr>");
-                    sb.Append("         <td>").Append("<input type=\"checkbox\" class=\"selectCheckbox\" />").Append("</td>");
+                    sb.Append("         <td>").Append("<input type=\"checkbox\" class=\"selectCheckbox\" data-picklistno=\"" + item.PICKLIST_NO + "\" />").Append("</td>");
                     sb.Append("         <td>").Append(item.ORDTYP).Append("</td>");
                     sb.Append("         <td>").Append(item.PICKLIST_NO).Append("</td>");
                     sb.Append("         <td>").Append(item.STCUST).Append("</td>");
@@ -264,13 +273,24 @@ namespace CHubMVC.Controllers
                     sb.Append("         <td>").Append(item.LODNUM).Append("</td>");
                     sb.Append("         <td>").Append(item.VC_VOL).Append("</td>");
                     sb.Append("         <td>").Append(item.VC_PALWGT).Append("</td>");
-                    sb.Append("         <td>").Append(CallFunc_GET_EXP_EST_AMT(item.LODNUM)).Append("</td>");
+                    sb.Append("         <td>").Append(EstAmt).Append("</td>");
+                    CallF_EXP_HSCODE_CHK_BY_LOD(sb, item.LODNUM);
                     sb.Append("         <td>").Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnDetail\" value=\"Details\" data-lodnum=\"" + item.LODNUM + "\" />").Append("</td>");
                     sb.Append("     </tr>");
                 }
             }
             return sb.ToString();
         }
+
+        public void CallF_EXP_HSCODE_CHK_BY_LOD(StringBuilder sb, string LODNUM)
+        {
+            string msg = new EXPWB_BLL().CallF_EXP_HSCODE_CHK_BY_LOD(LODNUM);
+            if (msg == "OK")
+                sb.Append("         <td style=\"color:green;\">").Append(msg).Append("</td>");
+            else
+                sb.Append("         <td style=\"color:red;\">").Append(msg).Append("</td>");
+        }
+
         public string GetSearchDetailHTML(List<EXP_STG_D> list)
         {
             StringBuilder sb = new StringBuilder();
@@ -300,7 +320,7 @@ namespace CHubMVC.Controllers
             return result;
         }
 
-
+        [Authorize]
         public ActionResult CINVINQ()
         {
             string appUser = Session[CHubConstValues.SessionUser].ToString();
@@ -310,6 +330,7 @@ namespace CHubMVC.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult SearchEXP_COMM_INV(string COMM_INV_ID, string SHIP_TO_INDEX, string CREATE_DATE, string CREATED_BY)
         {
@@ -327,6 +348,7 @@ namespace CHubMVC.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult CheckSecurity()
         {
@@ -348,6 +370,7 @@ namespace CHubMVC.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult ExecP_EXP_INV_DISCARD(string COMM_INV_ID)
         {
@@ -364,6 +387,7 @@ namespace CHubMVC.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult ExecP_EXP_INV_COMP(string COMM_INV_ID)
         {
@@ -380,6 +404,7 @@ namespace CHubMVC.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult SearchDetailsByV_EXP_STAGE_BASE(string COMM_INV_ID)
         {
@@ -397,6 +422,7 @@ namespace CHubMVC.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult Export(string COMM_INV_ID)
         {
@@ -408,7 +434,11 @@ namespace CHubMVC.Controllers
                 //执行Function F_EXP_HSCODE_CHK
                 var msg = cBLL.CallFuncF_EXP_HSCODE_CHK(COMM_INV_ID);
                 if (msg != "OK")
-                    return Json(new RequestResult(false, msg));//function返回不是OK,就报错显示返回值
+                {
+                    string fullpath = CreateTXT(msg);
+                    return Json(new RequestResult(false, msg, fullpath));//function返回不是OK,就报错显示返回值
+                }
+
                 //function返回值为OK
                 var getSql = cBLL.CallFunc_GET_SQL(COMM_INV_ID);
                 string filename = getSql.Split('~')[0];
@@ -425,6 +455,37 @@ namespace CHubMVC.Controllers
                 LogHelper.WriteLog("EXP Export", ex);
                 return Json(new RequestResult(false, ex.Message));
             }
+        }
+
+        //生成文件
+        public string CreateTXT(string msg)
+        {
+            string filename = DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt";
+            string filepath = Server.MapPath(CHubConstValues.ChubTempFolder);
+            string fullpath = filepath + filename;
+            FileStream fs = new FileStream(fullpath, FileMode.OpenOrCreate);
+            StreamWriter sw = new StreamWriter(fs, Encoding.UTF8);
+            sw.WriteLine(msg);
+            sw.Flush();
+            sw.Close();
+            fs.Close();
+            return fullpath;
+        }
+
+
+
+        public void DownloadTXT(string fullpath)
+        {
+            FileStream fs = new FileStream(fullpath, FileMode.OpenOrCreate);
+            byte[] bytes = new byte[(int)fs.Length];
+            fs.Read(bytes, 0, bytes.Length);
+            fs.Close();
+            Response.ContentType = "application/octet-stream";
+            //通知浏览器下载文件而不是打开
+            Response.AddHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(Path.GetFileName(fullpath), System.Text.Encoding.UTF8));
+            Response.BinaryWrite(bytes);
+            Response.Flush();
+            Response.End();
         }
 
         public ActionResult DownLoad(string fullname)
@@ -502,7 +563,7 @@ namespace CHubMVC.Controllers
 
         public StringBuilder GetButtonDisplay(StringBuilder sb, string COMM_STATUS, string COMM_INV_ID)
         {
-            string detailDisplay = string.Empty; string completeDisplay = string.Empty; string discardDisplay = string.Empty;
+            string detailDisplay = string.Empty; string completeDisplay = string.Empty; string discardDisplay = string.Empty; string exportDisplay = string.Empty;
             if (COMM_STATUS == "DISCARD")
                 detailDisplay = "disabled";
             if (COMM_STATUS != "DRAFT")
@@ -510,13 +571,311 @@ namespace CHubMVC.Controllers
                 completeDisplay = "disabled";
                 discardDisplay = "disabled";
             }
+            else
+                exportDisplay = "disabled";
             sb.Append("         <td>").Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnDetail\" value=\"DETAILS\" data-comminvid=\"" + COMM_INV_ID + "\" " + detailDisplay + " />")
                                       .Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnComplete\" value=\"COMPLETE\" data-comminvid=\"" + COMM_INV_ID + "\" " + completeDisplay + " />")
                                       .Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnDiscard\" value=\"DISCARD\" data-comminvid=\"" + COMM_INV_ID + "\" " + discardDisplay + " />")
-                                      .Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnExport\" value=\"EXPORT\" data-comminvid=\"" + COMM_INV_ID + "\" />");
+                                      .Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnExport\" value=\"EXPORT\" data-comminvid=\"" + COMM_INV_ID + "\" " + exportDisplay + " />");
             return sb;
         }
 
+        [Authorize]
+        public ActionResult EXPRATE()
+        {
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, CHubEnum.PageNameEnum.exprate.ToString(), this.Request.Url.AbsoluteUri);
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult GetEXCHANGE_TYPE()
+        {
+            EXP_EXCHANGE_RATE_BLL eerBLL = new EXP_EXCHANGE_RATE_BLL();
+            try
+            {
+                var result = eerBLL.GetEXCHANGE_TYPE();
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("EXP GetEXCHANGE_TYPE", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult GetTableResult(string EXCHANGE_TYPE)
+        {
+            EXP_EXCHANGE_RATE_BLL eerBLL = new EXP_EXCHANGE_RATE_BLL();
+            try
+            {
+                var result = eerBLL.GetTableResult(EXCHANGE_TYPE);
+                string mainHTML = GetEXPRATEHtml(result);
+                return Json(new RequestResult(mainHTML));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("EXP GetTableResult", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult InsertOrUpdateEXPRATE(string EXCHANGETYPE, string STARTDATE, EXP_EXCHANGE_RATE eer, string method)
+        {
+            EXP_EXCHANGE_RATE_BLL eerBLL = new EXP_EXCHANGE_RATE_BLL();
+            try
+            {
+                string appUser = Session[CHubConstValues.SessionUser].ToString();
+                if (string.IsNullOrEmpty(appUser))
+                    return RedirectToAction("Login", "Account");
+                eerBLL.InsertOrUpdateEXPRATE(EXCHANGETYPE, STARTDATE, eer, method, appUser);
+                return Json(new RequestResult(true));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("EXP InsertOrUpdateEXPRATE", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+
+        public static string GetEXPRATEHtml(List<EXP_EXCHANGE_RATE> result)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (result != null && result.Any())
+            {
+                foreach (var item in result)
+                {
+                    sb.Append("     <tr>");
+                    sb.Append("         <td>").Append(item.EXCHANGE_TYPE).Append("</td>");
+                    sb.Append("         <td>").Append("<input type=\"text\" class=\"form-control input-sm START_DATE\" value=\"" + item.START_DATE.ToString("yyyy/MM/dd") + "\" onclick=\"ShowCalendar(this)\" />").Append("</td>");
+                    sb.Append("         <td>").Append("<input type=\"text\" class=\"form-control input-sm END_DATE\" value=\"" + item.END_DATE.ToString("yyyy/MM/dd") + "\" onclick=\"ShowCalendar(this)\" />").Append("</td>");
+                    sb.Append("         <td>").Append("<input type=\"text\" class=\"form-control input-sm EXCHANGE_RATE\" value=\"" + item.EXCHANGE_RATE + "\" />").Append("</td>");
+                    sb.Append("         <td>").Append("<input type=\"text\" class=\"form-control input-sm NOTE\" value=\"" + item.NOTE + "\" />").Append("</td>");
+                    sb.Append("         <td>").Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnSave\" value=\"SAVE\" data-exchangetype=\"" + item.EXCHANGE_TYPE + "\" data-startdate=\"" + item.START_DATE.ToString("yyyy/MM/dd") + "\" />").Append("</td>");
+                    sb.Append("     </tr>");
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        [Authorize]
+        public ActionResult FinLoad()
+        {
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, CHubEnum.PageNameEnum.finload.ToString(), this.Request.Url.AbsoluteUri);
+            return View();
+        }
+
+        #region
+        //[Authorize]
+        //[HttpPost]
+        //public ActionResult UploadFinLoadFile()
+        //{
+        //    FINLOAD_BLL flBLL = new FINLOAD_BLL();
+        //    try
+        //    {
+        //        HttpPostedFileBase hpf = Request.Files[0];
+
+        //        DataTable dt = GetDataTable(hpf);
+        //        if (dt == null && dt.Rows.Count == 0)
+        //            return Content("No data in excel");
+
+        //        List<EXP_VAT_LOAD> list = ClassConvert.DataTableToList<EXP_VAT_LOAD>(dt);
+        //        if (list == null || list.Count == 0)
+        //            return Content("Wrong excel strut");
+
+        //        //每批导入去一次批次号 EXP_VAT_TOKEN.NEXTVAL
+        //        //string LOAD_BATCH = flBLL.GetLOAD_BATCH();
+        //        string appUser = Session[CHubConstValues.SessionUser].ToString();
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogHelper.WriteLog("EXP UploadFinLoadFile", ex);
+        //        return Json(new RequestResult(false, ex.Message));
+        //    }
+        //    return View();
+        //}
+
+        //public ActionResult DownloadFinLoadFileTemplate()
+        //{
+        //    string templateFolder = Server.MapPath(CHubConstValues.ChubTemplateFolder);
+        //    string fileName = CHubConstValues.EXPFinLoadTemplateName;
+        //    return File(templateFolder + fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        //}
+        #endregion
+
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult UploadOneFinLoadFile()
+        {
+            FINLOAD_BLL flBLL = new FINLOAD_BLL();
+            try
+            {
+                //获取文件
+                HttpPostedFileBase hpf = Request.Files[0];
+
+                DataTable dt = GetDataTable(hpf);
+                if (dt == null && dt.Rows.Count == 0)
+                    return Content("No data in excel");
+
+                List<EXP_VAT_LOAD> evlists = ClassConvert.DataTableToList<EXP_VAT_LOAD>(dt);
+                if (evlists == null || evlists.Count == 0)
+                    return Content("Wrong excel strut");
+
+                //每批导入取一次EXP_VAT_TOKEN.NEXTVAL
+                var LOAD_BATCH = flBLL.GetExpVatLoad_Batch();
+                string appUser = Session[CHubConstValues.SessionUser].ToString();
+
+                foreach (var item in evlists)
+                {
+                    //新增
+                    flBLL.InsertIntoEXP_VAT_LOAD(item, Convert.ToDecimal(LOAD_BATCH), appUser);
+                }
+                //执行Procedure
+                flBLL.ExecP_EXP_VAT_LOAD_POST(LOAD_BATCH);
+                //查询导入成功数据的数量
+                string num = flBLL.GetNumOfEXP_VAT_D(LOAD_BATCH);
+                return Json(new RequestResult(true, "成功导入数据: " + num + "条"));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("EXP UploadOneFinLoadFile", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        public ActionResult DownloadOneFinLoadFileTemplate()
+        {
+            string templateFolder = Server.MapPath(CHubConstValues.ChubTemplateFolder);
+            string fileName = CHubConstValues.EXPFinLoadOneTemplateName;
+            return File(templateFolder + fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult UploadTwoFinLoadFile()
+        {
+            FINLOAD_BLL flBLL = new FINLOAD_BLL();
+            try
+            {
+                //获取文件
+                HttpPostedFileBase hpf = Request.Files[0];
+
+                //文件内容转DataTable
+                DataTable dt = GetDataTable(hpf);
+                if (dt == null && dt.Rows.Count == 0)
+                    return Content("No data in excel");
+
+                //DataTable转List
+                IList<EXP_VAT_XREF_LOAD> evxlists = ClassConvert.DataTableToList<EXP_VAT_XREF_LOAD>(dt);
+                if (evxlists == null || evxlists.Count == 0)
+                    return Content("Wrong excel strut");
+
+                //每批导入取一次EXP_XREF_TOKEN.NEXTVAL
+                var LOAD_BATCH = flBLL.GetExpXrefLoad_Batch();
+                string appUser = Session[CHubConstValues.SessionUser].ToString();
+
+                foreach (var item in evxlists)
+                {
+                    //新增
+                    flBLL.InsertIntoEXP_VAT_XREF_LOAD(item, Convert.ToDecimal(LOAD_BATCH), appUser);
+                }
+                //查询导入成功数据的数量
+                string num = flBLL.GetNumOfEXP_VAT_XREF_LOAD(LOAD_BATCH);
+                return Json(new RequestResult(true, "成功导入数据: " + num + "条"));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("EXP UploadTwoFinLoadFile", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        public ActionResult DownloadTwoFinLoadFileTemplate()
+        {
+            string templateFolder = Server.MapPath(CHubConstValues.ChubTemplateFolder);
+            string fileName = CHubConstValues.EXPFinLoadTwoTemplateName;
+            return File(templateFolder + fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult UploadThreeFinLoadFile()
+        {
+            FINLOAD_BLL flBLL = new FINLOAD_BLL();
+            try
+            {
+                //获取文件
+                HttpPostedFileBase hpf = Request.Files[0];
+
+                //文件内容转DataTable
+                DataTable dt = GetDataTable(hpf);
+                if (dt == null && dt.Rows.Count == 0)
+                    return Content("No data in excel");
+
+                //DataTable转List
+                IList<EXP_COLLECTION_LOAD> eclists = ClassConvert.DataTableToList<EXP_COLLECTION_LOAD>(dt);
+                if (eclists == null || eclists.Count == 0)
+                    return Content("Wrong excel strut");
+
+                //每批导入取一次 EXP_COLLECTION_TOKEN.NEXTVAL
+                var LOAD_BATCH = flBLL.GetExpCollectionLoad_Batch();
+                string appUser = Session[CHubConstValues.SessionUser].ToString();
+
+                foreach (var item in eclists)
+                {
+                    //新增
+                    flBLL.InsertIntoEXP_COLLECTION_LOAD(item, Convert.ToDecimal(LOAD_BATCH), appUser);
+                }
+                //查询导入成功数据的数量
+                string num = flBLL.GetNumOfEXP_COLLECTION_LOAD(LOAD_BATCH);
+                return Json(new RequestResult(true, "成功导入数据: " + num + "条"));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("EXP UploadThreeFinLoadFile", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        public ActionResult DownloadThreeFinLoadFileTemplate()
+        {
+            string templateFolder = Server.MapPath(CHubConstValues.ChubTemplateFolder);
+            string fileName = CHubConstValues.EXPFinLoadThreeTemplateName;
+            return File(templateFolder + fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+
+
+        public DataTable GetDataTable(HttpPostedFileBase hpf)
+        {
+            DataTable dt = new DataTable();
+            string tempGuid = Guid.NewGuid().ToString();
+            string folderPath = Server.MapPath(CHubConstValues.ChubTempFolder);
+            FileInfo folder = new FileInfo(folderPath);
+            if (!Directory.Exists(folder.FullName))
+                Directory.CreateDirectory(folder.FullName);
+
+            string fileFullName = folder.FullName + tempGuid + ".xls";
+            hpf.SaveAs(fileFullName);
+
+            NPOIExcelHelper excelHelper = new NPOIExcelHelper(fileFullName);
+            dt = excelHelper.ExcelToDataTable();
+            System.IO.File.Delete(fileFullName);
+
+            return dt;
+        }
 
     }
 }
