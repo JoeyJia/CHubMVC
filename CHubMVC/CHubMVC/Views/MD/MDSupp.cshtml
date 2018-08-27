@@ -1,0 +1,172 @@
+﻿@{
+    ViewBag.Title = "MD MDSupp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    #tableHead > thead > tr > th {
+        background-color: #f5f5f5;
+    }
+
+    .table {
+        max-width: 150%;
+    }
+</style>
+<style type="text/css">
+    #tabdiv{
+         width:100%;
+         height:400px;
+         min-height:300px;
+         overflow-x:scroll;
+         overflow-y:auto;
+     }
+     #tableHead{
+         width:150%;
+         top:0px;
+         position:relative;
+         margin-bottom:0px;
+     }
+     #resultTable{
+         width:150%;
+     }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#tabdiv").on("scroll", function () {
+            var yheight = $(this).scrollTop();
+            $("#tableHead").css("top", yheight + "px");
+        })
+    })
+</script>
+
+<div class="container-fluid" id="mdsuppDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="txtCOMPANY_CODE" class="col-sm-2 control-label">Company Code</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtCOMPANY_CODE" value="" placeholder="Company Code" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnQuery" value="Qurey" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <div id="tabdiv">
+                       <table class="table table-bordered table-hover" id="tableHead">
+                           <thead id="tabhead">
+                               <tr>
+                                   <th style="width:4%;">Operation</th>
+                                   <th style="width:7%;">COMPANY CODE</th>
+                                   <th style="width:20%;">COMPANY NAME</th>
+                                   <th style="width:10%;">COMPANY NAME CN</th>
+                                   <th style="width:10%;">PLANNER</th>
+                                   <th style="width:10%;">PLANNER CODE</th>
+                                   <th style="width:10%;">NOTE</th>
+                                   <th style="width:10%;">GSM</th>
+                                   <th style="width:10%;">SITE ID</th>
+                                   <th style="width:10%;">BPA</th>
+                               </tr>
+                           </thead>
+                       </table>
+                        <table class="table table-bordered table-hover" id="resultTable">
+                            <tbody id="resultTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_LoadingModal")
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //Search
+        $("#btnQuery").on('click', function () {
+            if ($("#txtCOMPANY_CODE").val() == "" || $("#txtCOMPANY_CODE").val() == null) {
+                alert("No data input");
+                return false;
+            }
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/md/MDSuppSearch',
+                type: 'post',
+                async: true,
+                data: {
+                    COMPANY_CODE: $("#txtCOMPANY_CODE").val()
+                },
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    $("#resultTbody").empty();
+                    if (obj.Success)
+                        $("#resultTbody").html(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+            });
+        });
+
+        //Save
+        $("#resultTbody").on('click', '.btnSave', function () {
+            var data = {};
+            var btn = $(this);
+            var COMPANY_CODE = btn.attr("data-companycode");
+            //alert(COMPANY_CODE);
+            //td
+            var td = btn.parent().parent().find("td");
+            data.COMPANY_CODE = COMPANY_CODE;
+            data.COMPANY_NAME_CN = $(td).find(".COMPANY_NAME_CN").val();
+            data.PLANNER = $(td).find(".PLANNER").val();
+            data.PLANNER_CODE = $(td).find(".PLANNER_CODE").val();
+            data.NOTE = $(td).find(".NOTE").val();
+            data.GSM_SUPPLIER_NO = $(td).find(".GSM_SUPPLIER_NO").val();
+            data.VENDOR_SITE_ID = $(td).find(".VENDOR_SITE_ID").val();
+            data.BPA_NO = $(td).find(".BPA_NO").val();
+
+            $.ajax({
+                url: '/md/MDSuppSave',
+                type: 'post',
+                async: true,
+                data: JSON.stringify(data),
+                contentType: 'application/json;charset=utf-8',
+                success: function (obj) {
+                    if (obj.Success)
+                        $("#btnQuery").click();
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to save");
+                }
+            });
+
+
+        });
+
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+    });
+</script>
