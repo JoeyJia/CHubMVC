@@ -2,31 +2,22 @@
     ViewBag.Title = "Mobile LBScan_M";
     Layout = "~/Views/Shared/_MobileLayout.cshtml";
 }
-
-<div class="container-fluid">
-    
-</div>
-
-
-@Html.Partial("_LoadingModal")
-
-
+<iframe src="@ViewBag.Url?appUser=@ViewBag.AppUser&type=@ViewBag.Type" id="lbscan" frameborder="0" style="width:100%;min-height: 1000px;"></iframe>
 
 
 <script type="text/javascript">
+    //$(document).ready(function () {
+    //    var height = document.body.clientHeight;
+    //    $("#lbscan")[0].style.height = height;
+    //})
+    $('body').height($(window).height());
+
     $(document).ready(function () {
-        
-    })
+        $("#jt")[0].style.display = "";
 
-
-</script>
-
-
-
-<script>
-    $(document).ready(function () {
-        //debugger;
-        var ss = window.innerHeight;
-        $("#imgDiag").css("margin-top", "300px");
+        $("#jt").on('click', function () {
+            window.location.href = "/mobile/home";
+        })
     });
+
 </script>
