@@ -16,5 +16,6 @@ namespace CHubDBEntity.UnmanagedModel
         public decimal ORDER_LINE_NO { get; set; }
         public string PART_NO { get; set; }
         public decimal? QTY { get; set; }
+        public DateTime DUE_DATE { get; set; }
     }
 }

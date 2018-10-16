@@ -14,5 +14,6 @@ namespace CHubDBEntity.UnmanagedModel
         public DateTime? CREATE_DATE { get; set; }
         public string UPDATED_BY { get; set; }
         public DateTime? RECORD_DATE { get; set; }
+        public string TERRITORY { get; set; }
     }
 }
