@@ -1,0 +1,556 @@
+﻿@{
+    ViewBag.Title = "Order XCECWB";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    #resultTable thead > tr > th {
+        padding: 8px;
+    }
+
+    #resultTable tbody > tr > td {
+        padding: 2px;
+        vertical-align: middle;
+    }
+
+    #XcecAddrAllModal .col-sm-10 {
+        padding-left: 0px;
+        width: 92%;
+    }
+
+    #XcecAddrAllModal .col-sm-offset-1 {
+        margin-left: 4%;
+    }
+</style>
+
+<div class="container-fluid" id="xcecwbDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form id="xcecwbForm" class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="CUST_ORDER_NO" class="col-sm-2 control-label">Customer PO NO:</label>
+                    <div class="col-sm-2 col-lg-2">
+                        <input type="text" class="form-control input-sm" id="txtCUST_ORDER_NO" placeholder="Customer PO NO" />
+                    </div>
+                    <label for="CUST_NAME" class="col-sm-2 control-label">Customer Name:</label>
+                    <div class="col-sm-2 col-lg-2">
+                        <input type="text" class="form-control input-sm" id="txtCUST_NAME" placeholder="Customer Name" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="CREATE_DATE" class="col-sm-2 control-label">Created in last days:</label>
+                    <div class="col-sm-2 col-lg-2">
+                        <input type="text" class="form-control input-sm" id="txtCREATE_DATE" value="7" />
+                    </div>
+                    <label for="Status" class="col-sm-2 control-label">Status:</label>
+                    <div class="col-sm-2 col-lg-4">
+                        <label class="checkbox-inline">
+                            <input type="radio" name="Radio" checked="checked" value="" />All
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="Radio" value="E" />E(error)
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="Radio" value="C" />C(completed)
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="Radio" value="G" />G(In GOMS)
+                        </label>
+                    </div>
+                    <div class="col-sm-2 col-lg-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="searchBtn" value="Qurey" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <table class="table table-bordered" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 2%;">Status</th>
+                                <th style="width: 2%;">WH</th>
+                                <th style="width: 5%;">CUST PO</th>
+                                <th style="width:21%;">CUSTOMER NAME</th>
+                                <th style="width: 3%;">TYPE</th>
+                                <th style="width: 6%;">DUE DATE</th>
+                                <th style="width: 5%;">KITS NO</th>
+                                <th style="">DEALER PO</th>
+                                <th style="width: 14%;">NOTE</th>
+                                <th style="width: 10%;">IHUB NO</th>
+                                <th style="width: 8%;">CREATE DATE</th>
+                                <th style="width: 12%;">Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                        <tfoot id="resultTfoot" style="display:none;">
+                            <tr>
+                                <td colspan="12" style="text-align:center"><a id="btnmore" style="text-decoration:none;cursor:pointer;">MORE...</a></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_LoadingModal")
+
+<!--模态框Modal V_XCEC_ORDER_LN_BASE-->
+<div class="modal fade" id="OrderLineModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" style="width:95%;height:95%;">
+        <div class="modal-content" style="height:100%;">
+            <div class="modal-header panel-default" style="padding:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 50px;height: 50px;">
+                    &times;
+                </button>
+                <h4 class="modal-title panel-heading" id="myModalLabel">
+                    Order Header -
+                </h4>
+            </div>
+            <div class="modal-body" style="padding:0;">
+                <table class="table table-bordered" id="HeaderTable" style="table-layout:fixed;">
+                    <tbody id="HeaderTbody"></tbody>
+                </table>
+            </div>
+            <div class="modal-header panel-default" style="padding:0;">
+                <h4 class="modal-title panel-heading" id="myModalLabel">
+                    Order LINES -
+                </h4>
+            </div>
+            <div class="modal-body" style="padding:0;overflow-y: scroll;height: 44%;">
+                <table class="table table-bordered" id="LinesTable" @*style="table-layout:fixed;"*@>
+                    <thead>
+                        <tr>
+                            <th style="width:5%;">LINE NO</th>
+                            <th>PART NO</th>
+                            <th>Customer Part no</th>
+                            <th>QTY</th>
+                            <th>DESCRIPTION</th>
+                            <th>DESCRIPTION (CN)</th>
+                            <th>DUE DATE</th>
+                        </tr>
+                    </thead>
+                    <tbody id="LinesTbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--模态框Modal V_XCEC_ADDR_ALL-->
+<div class="modal fade" id="XcecAddrAllModal" tabindex="1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" style="width:80%;height:95%;">
+        <div class="modal-content" style="height:100%;">
+            <div class="modal-header panel-default" style="padding:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 50px;height: 50px;">
+                    &times;
+                </button>
+                <h4 class="modal-title panel-heading" id="myModalLabel">
+                    QUERY -
+                </h4>
+            </div>
+            <div class="modal-body" style="padding:0;">
+                <form id="addrallForm" class="form-horizontal">
+                    <div class="row" style="margin-top:15px;">
+                        <label for="" class="col-sm-11 col-sm-offset-1">XCEC:</label>
+                        <div class="row">
+                            <div class="col-sm-10 col-sm-offset-1" style="border:1px solid #ddd;">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="CustomerName" class="col-sm-2 control-label">CUSTOMER NAME:</label>
+                                        <div class="col-sm-4 col-lg-4" style="margin-top:7px;">
+                                            <span id="txtCustomerName"></span>
+                                        </div>
+                                        <label for="ADDRESS" class="col-sm-2 control-label">ADDRESS:</label>
+                                        <div class="col-sm-4 col-lg-4" style="margin-top: 7px;">
+                                            <span id="txtADDRESS"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="" class="col-sm-11 col-sm-offset-1">GOMS:</label>
+                        <div class="row">
+                            <div class="col-sm-10 col-sm-offset-1" style="border:1px solid #ddd;">
+                                <div class="row" style="margin-top:10px;">
+                                    <div class="form-group">
+                                        <label for="ADDR_NAME" class="col-sm-2 control-label">ADDR NAME:</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control input-sm" id="txtADDR_NAME" placeholder="ADDR NAME" />
+                                        </div>
+                                        <label for="ADDR_1" class="col-sm-2 control-label">ADDR1:</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control input-sm" id="txtADDR_1" placeholder="ADDR1" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="ADDR_2" class="col-sm-2 control-label">ADDR2:</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control input-sm" id="txtADDR_2" placeholder="ADDR2" />
+                                        </div>
+                                        <label for="ADDR_3" class="col-sm-2 control-label">ADDR3:</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control input-sm" id="txtADDR_3" placeholder="ADDR3" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-sm-6 col-sm-offset-6" style="text-align:right">
+                                            <input type="button" class="btn btn-primary btn-sm" id="addrSearchBtn" value="Query" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-header panel-default" style="padding:0;">
+                <h4 class="modal-title panel-heading" id="myModalLabel">
+                    Result -
+                </h4>
+            </div>
+            <div class="modal-body" style="padding:0;overflow-y:scroll;height: 39%;">
+                <table class="table table-bordered table-hover table-striped" id="AddrAllResultTable">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Customer No</th>
+                            <th>DEST Location</th>
+                            <th>Contact</th>
+                            <th>tel</th>
+                            <th>ADDR Name</th>
+                            <th>ADDR1</th>
+                            <th>ADDR2</th>
+                            <th>ADDR3</th>
+                        </tr>
+                    </thead>
+                    <tbody id="AddrAllTbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //全局变量
+        var WAREHOUSE;
+        var XCEC_ADDR_SEQ;
+        var IHUB_ORDER_NO;
+        var CUST_ORDER_NO;
+
+        //分页
+        var PageIndex;
+        var PageSize = 50;
+
+
+        //查询
+        $("#searchBtn").on('click', function () {
+            $("#resultTbody").empty();
+            PageIndex = 1;
+            SearchXcecWB(PageIndex, PageSize);
+
+            //if (CREATE_DATE <= 0 || CREATE_DATE == "") {
+            //    alert("No Date Input");
+            //    return false;
+            //}
+
+            //$.ajax({
+            //    url: '/order/SearchXcecWB',
+            //    type: 'post',
+            //    async: true,
+            //    data: {
+            //        CUST_ORDER_NO: CUST_ORDER_NO,
+            //        CUST_NAME: CUST_NAME,
+            //        CREATE_DATE: CREATE_DATE,
+            //        PROCESS_STATUS: PROCESS_STATUS,
+            //        PageIndex: PageIndex,
+            //        PageSize: PageSize
+            //    },
+            //    success: function (obj) {
+            //        $("#resultTbody").empty();
+            //        $("#loadingModal").modal("hide");
+            //        if (obj.Success) {
+            //            $("#resultTbody").html(obj.Data);
+            //        }
+            //        else {
+            //            alert(obj.Msg);
+            //        }
+            //    },
+            //    error: function (e) {
+            //             $("#loadingModal").modal("hide");
+            //             alert("fail to search");
+            //    }
+            //});
+        });
+
+        //分页More
+        $("#btnmore").on('click', function () {
+            PageIndex++;
+            SearchXcecWB(PageIndex, PageSize);
+        })
+
+        function SearchXcecWB(PageIndex, PageSize) {
+            var CUST_ORDER_NO = $("#txtCUST_ORDER_NO").val();
+            var CUST_NAME = $("#txtCUST_NAME").val();
+            var CREATE_DATE = $("#txtCREATE_DATE").val();
+            var PROCESS_STATUS = $('input[type=radio]:checked').val();
+
+            $("#loadingModal").modal("show");
+
+            $.ajax({
+                url: "/order/SearchXcecWB",
+                type: "post",
+                async: true,
+                data: {
+                    CUST_ORDER_NO: CUST_ORDER_NO,
+                    CUST_NAME: CUST_NAME,
+                    CREATE_DATE: CREATE_DATE,
+                    PROCESS_STATUS: PROCESS_STATUS,
+                    PageIndex: PageIndex,
+                    PageSize: PageSize
+                },
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        if (obj.Msg == "complete")
+                            $("#resultTfoot")[0].style.display = "none";
+                        else
+                            $("#resultTfoot")[0].style.display = "";
+                        $("#resultTbody").append(obj.Data);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+            });
+        };
+
+
+
+
+        //detail
+        $("#resultTbody").on('click', '.DetailBtn', function () {
+            //alert(1);
+            WAREHOUSE = $(this).attr("data-warehouse");
+            IHUB_ORDER_NO = $(this).attr("data-ihuborderno");
+            CUST_ORDER_NO = $(this).attr("data-custorderno");
+            var PROCESS_STATUS = $(this).attr("data-status");
+
+            $("#loadingModal").modal('show');
+
+            HDRDetailSearch(PROCESS_STATUS);
+            //$("#OrderLineModal").modal("show");
+        })
+        //Download
+        $("#resultTbody").on('click', '.DownloadBtn', function () {
+            var ORDER_SEQ_NO = $(this).attr("data-orderseqno");
+
+            $.ajax({
+                url: "/order/DownLoadOrder",
+                data: {
+                    orderSeq: ORDER_SEQ_NO,
+                    shipFrom: 0,
+                },
+                type: "get",
+                async: false,
+                success: function () {
+                    window.location.href = "/order/DownLoadOrder?orderSeq=" + ORDER_SEQ_NO + "&shipFrom=" + 0;
+                },
+                error: function (obj) {
+                    alert(obj.responseText);
+                }
+            });
+        })
+        //REPROCESS
+        $("#resultTbody").on('click', '.ReProcessBtn', function () {
+            WAREHOUSE = $(this).attr("data-warehouse");
+            IHUB_ORDER_NO = $(this).attr("data-ihuborderno");
+
+            $("#loadingModal").modal('show');
+            $.ajax({
+                url: '/order/ReProcessXcecWB',
+                type: 'post',
+                async: true,
+                data: {
+                    WAREHOUSE: WAREHOUSE,
+                    IHUB_ORDER_NO: IHUB_ORDER_NO
+                },
+                success: function (obj) {
+                    $("#loadingModal").modal('hide');
+                    if (obj.Success)
+                        $("#searchBtn").click();
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal('hide');
+                    alert("fail to reprocess");
+                }
+            });
+        })
+
+        function HDRDetailSearch(PROCESS_STATUS) {
+            $.ajax({
+                url: '/order/GetXcecWBDetails',
+                type: 'post',
+                async: true,
+                data: { WAREHOUSE: WAREHOUSE, IHUB_ORDER_NO: IHUB_ORDER_NO, CUST_ORDER_NO: CUST_ORDER_NO },
+                success: function (obj) {
+                    $("#HeaderTbody").empty();
+                    $("#LinesTbody").empty();
+                    $("#loadingModal").modal('hide');
+                    if (obj.Success) {
+                        $("#HeaderTbody").html(obj.Msg);
+                        $("#LinesTbody").html(obj.Data);
+                        if (PROCESS_STATUS != "E")
+                            $("#RematchBtn").attr("disabled", true);
+                        else
+                            $("#RematchBtn").attr("disabled", false);
+                        $("#OrderLineModal").modal("show");
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (e) {
+                    $('#loadingModal').modal('hide');
+                    alert("fail to get");
+                }
+            });
+        }
+
+
+        //GOMS ADDR REMATCH
+        $("#HeaderTbody").on('click', '#RematchBtn', function () {
+            //alert(1);
+            WAREHOUSE = $(this).attr("data-warehouse");
+            XCEC_ADDR_SEQ = $(this).attr("data-xcecaddrseq");
+            var address = $(this).parent().parent().prev().prev().prev().find("td").eq(1).text();
+            var customername = $(this).parent().parent().prev().prev().prev().prev().find("td").eq(1).text();
+            //alert(address);
+            $("#XcecAddrAllModal").modal('show');
+            $("#txtCustomerName").text(customername);
+            $("#txtADDRESS").text(address);
+            $("#txtADDR_NAME").val("");
+            $("#txtADDR_1").val("");
+            $("#txtADDR_2").val("");
+            $("#txtADDR_3").val("");
+            $("#AddrAllTbody").empty();
+        });
+
+        //GOMS ADDR REMATCH > ADDR ALL >Query
+        $("#addrSearchBtn").on('click', function () {
+            //alert(1);
+            var button = $(this);
+            var ADDR_NAME = $("#txtADDR_NAME").val();
+            var ADDR_1 = $("#txtADDR_1").val();
+            var ADDR_2 = $("#txtADDR_2").val();
+            var ADDR_3 = $("#txtADDR_3").val();
+
+            if (ADDR_NAME == "" && ADDR_1 == "" && ADDR_2 == "" && ADDR_3 == "") {
+                alert("No Data Input");
+                return false;
+            }
+
+            $("#loadingModal").modal('show');
+            button.attr("disabled", "disabled");
+
+            $.ajax({
+                url: '/order/SearchXcecAddrAll',
+                type: 'post',
+                async: true,
+                data: {
+                    WAREHOUSE: WAREHOUSE,
+                    ADDR_NAME: ADDR_NAME,
+                    ADDR_1: ADDR_1,
+                    ADDR_2: ADDR_2,
+                    ADDR_3: ADDR_3
+                },
+                success: function (obj) {
+                    $("#AddrAllTbody").empty();
+                    $("#loadingModal").modal('hide');
+                    button.removeAttr("disabled");
+                    if (obj.Success)
+                        $('#AddrAllTbody').html(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal('hide');
+                    button.removeAttr("disabled");
+                    alert("fail to search");
+                }
+            });
+        })
+
+        //Comfirm to Match
+        $("#AddrAllTbody").on('click', '.ConfirmBtn', function () {
+            var button = $(this);
+            var radio = $("input[type=radio]:checked");
+            var td = radio.parent().parent().find('td');
+            var DEST_LOCATION = td.eq(2).text();
+
+            //alert(DEST_LOCATION);
+            $("#loadingModal").modal("show");
+            button.attr("disabled", "disabled");
+
+            $.ajax({
+                url: '/order/ConfirmToMatch',
+                type: 'post',
+                async: true,
+                cache: false,
+                data: {
+                    WAREHOUSE: WAREHOUSE,
+                    DEST_LOCATION: DEST_LOCATION,
+                    XCEC_ADDR_SEQ: XCEC_ADDR_SEQ
+                },
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    button.removeAttr("disabled");
+                    if (obj.Success) {
+                        $("#XcecAddrAllModal").modal('hide');
+                        HDRDetailSearch();
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal('hide');
+                    button.removeAttr("disabled");
+                    alert("fail to match");
+                }
+            });
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+        $("#XcecAddrAllModal").css("margin-top", "30px");
+    });
+</script>

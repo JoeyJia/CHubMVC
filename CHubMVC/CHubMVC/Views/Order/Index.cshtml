@@ -655,7 +655,7 @@
             var custPONO = $("#poNum").val();
             var isSpecialShip = $("#ssto")[0].checked;
 
-            debugger;
+            //debugger;
             //Re calulate order_Line_No
             if ($scope.orderLines != null && $scope.orderLines.length > 0) {
                 for (var i = 0; i < $scope.orderLines.length; i++) {
@@ -1097,10 +1097,17 @@
             return;
         //var reg = /^[u4E00-u9FA5]+$/;
         var reg1 = /^[a-zA-Z0-9]{1,25}$/;
-        if (!reg1.test(txt)) {
+        //if (!reg1.test(txt)) {
+        //    alert("Have illegal character ");
+        //    $("#poNum").val("");
+        //}
+
+        if (!(reg1.test(txt) || (txt.indexOf("-") >= 0))) {
             alert("Have illegal character ");
             $("#poNum").val("");
         }
+
+
 
     }
 

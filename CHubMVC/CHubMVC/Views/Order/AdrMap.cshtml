@@ -39,9 +39,10 @@
                         <thead>
                             <tr>
                                 <th style="width:5%;">ID</th>
-                                <th style="width:50%;">GOMS ADDRESS</th>
-                                <th style="width:30%;">CONVERTED ADDRESS </th>
-                                <th style="width:10%;">CREATE DATE</th>
+                                <th style="width:30%;">GOMS ADDRESS</th>
+                                <th style="width:18%">TERRITORY</th>
+                                <th style="width:35%;">CONVERTED ADDRESS </th>
+                                <th style="width:7%;">CREATE DATE</th>
                                 <th style="width:5%;">Operation</th>
                             </tr>
                         </thead>
@@ -54,13 +55,33 @@
 </div>
 @Html.Partial("_LoadingModal")
 
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" style="width: 20%;margin-top: 200px;">
+        <div class="modal-content">
+            <div class="modal-header panel-default" style="padding:0;height: 30px;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="height: 30px;width: 30px;">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body" style="padding:10px;">
+                <div id="adrmapTree" style="width:100%;overflow-y:auto;height: 300px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 <script type="text/javascript">
     $(document).ready(function () {
+        var objData;
         //查询
         $("#searchBtn").on('click', function () {
             var GOMS_ADDR = $("#txtGOMS_ADDR").val();
             var CREATE_DATE = $("#txtCREATE_DATE").val();
-            if (CREATE_DATE == 0 || CREATE_DATE == "") {
+            if (CREATE_DATE <= 0 || CREATE_DATE == "") {
                 alert("The Date Error");
                 return false;
             }
@@ -74,11 +95,10 @@
                 data: { GOMS_ADDR: GOMS_ADDR, CREATE_DATE: CREATE_DATE },
                 success: function (obj) {
                     $("#resultTbody").empty();
+                    $("#loadingModal").modal("hide");
                     if (obj.Success) {
-                        $("#loadingModal").modal("hide");
                         $("#resultTbody").html(obj.Data);
                     } else {
-                        $("#loadingModal").modal("hide");
                         alert(obj.Msg);
                     }
                 },
@@ -91,28 +111,95 @@
 
         //保存
         $("#resultTbody").on('click', ".saveBtn", function () {
-            var jid = $(this).attr("data-id");
-            var converted_addr = $(this).parent().parent().find("td").eq(2).find(".CONV_ADDR").val();
+            if (CheckSecurity()) {
+                var jid = $(this).attr("data-id");
+                var converted_addr = $(this).parent().parent().find("td").eq(3).find(".CONV_ADDR").val();
+                var territory = $(this).parent().parent().find("td").eq(2).find(".txtTERRITORY").text();
 
-            $("#loadingModal").modal("show");
+                $("#loadingModal").modal("show");
 
+                $.ajax({
+                    url: '/order/SaveAdrMap',
+                    type: 'post',
+                    async: true,
+                    data: { JID: jid, CONVERTED_ADDR: converted_addr, TERRITORY: territory },
+                    success: function (obj) {
+                        $("#loadingModal").modal("hide");
+                        if (obj.Success) {
+                        } else {
+                            alert(obj.Msg);
+                        }
+                    },
+                    error: function (e) {
+                        $("#loadingModal").modal("hide");
+                        alert("fail to save");
+                    }
+                })
+
+            }            
+        })
+
+        function CheckSecurity() {
+            var check = true;
             $.ajax({
-                url: '/order/SaveAdrMap',
+                url: '/order/CheckSecurityOfAMSave',
                 type: 'post',
-                async: true,
-                data: { JID: jid, CONVERTED_ADDR: converted_addr },
+                async: false,
+                data: {},
                 success: function (obj) {
-                    $("#loadingModal").modal("hide");
-                    if (obj.Success) {
-                    } else {
+                    if (!obj.Success) {
+                        check = false;
                         alert(obj.Msg);
                     }
                 },
                 error: function (e) {
-                    $("#loadingModal").modal("hide");
-                    alert("fail to save");
+                    alert("fail to check");
                 }
             })
+            return check;
+        }
+
+
+        setTimeout($(function () {
+            $.ajax({
+                url: '/order/GetArea',
+                type: 'post',
+                async: true,
+                data: {},
+                success: function (obj) {
+                    if (obj.Success) {
+                        objData = obj.Data;
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get");
+                }
+            })
+        }), 1000);
+
+        $("#resultTbody").on('click', '.txtArea', function () {
+            var area = $(this);
+            $("#adrmapTree").treeview({
+                data: objData,
+                color: "#428bca",
+                showBorder: false,
+                levels: 1,
+                onNodeSelected: function (event, node) {
+                    area.parent().prev().text(node.value);
+                    $("#myModal").modal("hide");
+                    //alert(node.value);//这里拿到id和name，就可以通过函数跳转触发点击事件
+                },
+                onNodeUnselected: function (event, node) {
+                }
+            });
+            $("#myModal").modal("show");
+        });
+
+        $("#resultTbody").on('click', '.txtRemove', function () {
+            var obj = $(this);
+            obj.parent().prev().text("");
         })
     })
 
@@ -123,6 +210,5 @@
         //debugger;
         var ss = window.innerHeight;
         $("#imgDiag").css("margin-top", "300px");
-
     });
 </script>
