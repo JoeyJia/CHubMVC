@@ -38,10 +38,10 @@
                     <label for="CREATED_BY" class="col-sm-2 control-label">Created By:</label>
                     <div class="col-sm-2">
                         <label class="checkbox-inline">
-                            <input type="radio" name="Radio" value="" checked /> All
+                            <input type="radio" name="Radio" value="" /> All
                         </label>
                         <label class="checkbox-inline">
-                            <input type="radio" name="Radio" value="@ViewBag.AppUser" />My Invoice only
+                            <input type="radio" name="Radio" value="@ViewBag.AppUser" checked />My Invoice only
                         </label>
                     </div>
                     <div class="col-sm-2">
@@ -78,7 +78,7 @@
 </div>
 
 <div class="modal fade" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="margin-top: 200px;width: 1000px;">
+    <div class="modal-dialog" style="margin-top: 100px;width: 1000px;">
         <div class="modal-content">
             <div class="modal-header panel-default" style="padding:0;">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 30px;height: 30px;">
@@ -224,6 +224,32 @@
                 }
             }
         });
+
+        //btn EXPORT
+        $("#resultTbody").on('click', ".btnExport", function () {
+            var COMM_INV_ID = $(this).attr("data-comminvid");
+            //alert(COMM_INV_ID);
+            $.ajax({
+                url: '/exp/Export',
+                type: 'post',
+                async: true,
+                data: { COMM_INV_ID: COMM_INV_ID },
+                success: function (obj) {
+                    if (obj.Success)
+                        window.location.href = "/exp/DownLoad?fullname=" + obj.Data;
+                    else {
+                        if (obj.Data != null && obj.Data != "") {
+                            alert(obj.Msg);
+                            window.location.href = "/exp/DownloadTXT?fullpath=" + obj.Data;
+                        } else
+                            alert(obj.Msg);
+                    }
+                },
+                error: function (e) {
+                    alert("fail to export");
+                }
+            })
+        })
 
         function CheckSecurity() {
             var check = true;

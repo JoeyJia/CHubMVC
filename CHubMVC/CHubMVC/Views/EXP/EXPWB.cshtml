@@ -15,7 +15,7 @@
 <div class="container-fluid" id="expwb">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <b>WMS Staged Shipments Loading..</b>
+            <b>Step 1 - WMS Staged Shipments Loading..</b>
         </div>
         <form class="form-horizontal">
             <div class="row" style="margin-top:15px;">
@@ -48,16 +48,14 @@
             </form>
         </div>
         <div class="panel-heading">
-            <b>Create Commercial Invoice and Packing List…</b>
+            <b>Step 2 - Create Commercial Invoice and Packing List…</b>
         </div>
         <form class="form-horizontal">
             <div class="row" style="margin-top:15px;">
                 <div class="form-group">
                     <label for="SHIP_TO_INDEX" class="col-sm-2 control-label">SHIP TO:</label>
                     <div class="col-sm-2">
-                        <select class="form-control" id="txtSHIP_TO_INDEX">
-                            <option value=""></option>
-                        </select>
+                        <select class="form-control" id="txtSHIP_TO_INDEX"></select>
                     </div>
                 </div>
             </div>
@@ -87,6 +85,11 @@
                         <thead>
                             <tr style="background-color:#f5f5f5">
                                 <th style="width:3%;"><input type="checkbox" id="selectAll" /></th>
+                                <th>
+                                    ORDTYP <select class="form-control input-sm" id="txtORDTYP">
+                                        <option value=""></option>
+                                    </select>
+                                </th>
                                 <th>PICKLIST</th>
                                 <th>ABBR</th>
                                 <th>CARRIER</th>
@@ -95,6 +98,7 @@
                                 <th>VOL（M<sup style="font-size:10px;">3</sup>）</th>
                                 <th>WEIGHT(KG)</th>
                                 <th>EST. AMT(USD)</th>
+                                <th>HSCODE Readiness</th>
                                 <th width="4%;">Operation</th>
                             </tr>
                         </thead>
@@ -107,7 +111,7 @@
 </div>
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog">
+    <div class="modal-dialog" id="myModalDialog">
         <div class="modal-content">
             <div class="modal-header panel-default" style="padding:0;">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 30px;height: 30px;">
@@ -191,6 +195,27 @@
 @Html.Partial("_LoadingModal")
 
 <script type="text/javascript">
+    //SHIP_TO_LOCATION
+    $(function () {
+        $.ajax({
+            url: '/exp/GetSHIP_TO_LOCATION',
+            type: 'post',
+            async: true,
+            data: {},
+            success: function (obj) {
+                if (obj.Success) {
+                    for (var i = 0; i < obj.Data.length; i++) {
+                        $("<option></option>").val(obj.Data[i].SHIP_TO_LOCATION).text(obj.Data[i].SHIP_TO_LOCATION).appendTo("#txtSHIP_TO_LOCATION");
+                    }
+                }
+                else
+                    alert(obj.Msg);
+            },
+            error: function (e) {
+                alert("fail to get");
+            }
+        })
+    });
     $(document).ready(function () {
         var volumn = 0;
         var weight = 0;
@@ -201,27 +226,7 @@
         $("#txtTotalWeight").text(weight);
         $("#txtTotalEstAmt").text(estamt);
         $("#txtTotalBoxes").text(boxes);
-        //SHIP_TO_LOCATION
-        $(function () {
-            $.ajax({
-                url: '/exp/GetSHIP_TO_LOCATION',
-                type: 'post',
-                async: true,
-                data: {},
-                success: function (obj) {
-                    if (obj.Success) {
-                        for (var i = 0; i < obj.Data.length; i++) {
-                            $("<option></option>").val(obj.Data[i].SHIP_TO_LOCATION).text(obj.Data[i].SHIP_TO_LOCATION).appendTo("#txtSHIP_TO_LOCATION");
-                        }
-                    }
-                    else
-                        alert(obj.Msg);
-                },
-                error: function (e) {
-                    alert("fail to get");
-                }
-            })
-        });
+
         //SHIP_TO_ALIAS
         $("#txtSHIP_TO_LOCATION").on('change', function () {
             var ship_to_location = $(this);
@@ -261,6 +266,7 @@
                 success: function (obj) {
                     $("#loadingModal").modal("hide");
                     if (obj.Success) {
+                        GetSHIP_TO_INDEX();
                         alert("Loading successfully");
                     }
                     else
@@ -273,14 +279,18 @@
             })
         })
 
+        GetSHIP_TO_INDEX();
+
         //SHIP_TO_INDEX
-        $(function () {
+        function GetSHIP_TO_INDEX() {
             $.ajax({
                 url: '/exp/GetSHIP_TO_INDEX',
                 type: 'post',
                 async: true,
                 data: {},
                 success: function (obj) {
+                    $("#txtSHIP_TO_INDEX").empty();
+                    $("<option></option>").text("").val("").appendTo("#txtSHIP_TO_INDEX");
                     if (obj.Success) {
                         for (var i = 0; i < obj.Data.length; i++) {
                             $("<option></option").val(obj.Data[i].SHIP_TO_INDEX).text(obj.Data[i].SHIP_TO_INDEX).appendTo("#txtSHIP_TO_INDEX");
@@ -293,13 +303,15 @@
                     alert("fail to get");
                 }
             })
-        });
+        };
 
         //SHIP_TO_INDEX change search
         $("#txtSHIP_TO_INDEX").on('change', function () {
             var ship_to_index = $(this);
             if (ship_to_index.val() == "") {
                 $("#resultTbody").empty();
+                $("#txtORDTYP").empty();
+                $("<option></option").text("").val("").appendTo("#txtORDTYP");
                 return false;
             }
             //alert(1);
@@ -313,8 +325,14 @@
                 success: function (obj) {
                     $("#loadingModal").modal("hide");
                     $("#resultTbody").empty();
-                    if (obj.Success)
+                    $("#txtORDTYP").empty();
+                    if (obj.Success) {
                         $("#resultTbody").html(obj.Data);
+                        $("<option></option").text("").val("").appendTo("#txtORDTYP");
+                        for (var i = 0; i < obj.OrdType.length; i++) {
+                            $("<option></option>").text(obj.OrdType[i]).val(obj.OrdType[i]).appendTo("#txtORDTYP");
+                        }
+                    }
                     else
                         alert(obj.Msg);
                 },
@@ -326,6 +344,33 @@
 
         })
 
+
+        $("#txtORDTYP").on('change', function () {
+            var ORDTYP = $(this).val();
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: "/exp/ChangeByORDTYP",
+                type: 'post',
+                async: true,
+                data: {
+                    SHIP_TO_INDEX: $("#txtSHIP_TO_INDEX").val(),
+                    ORDTYP: ORDTYP
+                },
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    $("#resultTbody").empty();
+                    if (obj.Success)
+                        $("#resultTbody").html(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to change");
+                }
+            })
+        })
+
+
         //selectALL
         $("#selectAll").on('click', function () {
             var checkbox = $("#resultTbody input[type='checkbox']");
@@ -336,9 +381,26 @@
             RefreshCheckbox()
         })
         //checkbox select
-        $("#resultTbody").on('click', function () {
+        $("#resultTbody").on('click', '.selectCheckbox', function () {
+            //选中的时候，将对应PICKLIST一样的都选，取消的时候只取消当前一条
+            CheckboxSelect(this);
+
             RefreshCheckbox();
         });
+
+        function CheckboxSelect(obj) {
+            var objpicklistno = $(obj).attr("data-picklistno");
+            var checkbox = $("#resultTbody input[type='checkbox']");
+            if (obj.checked) {
+                for (var i = 0; i < checkbox.length; i++) {
+                    var picklistno = $(checkbox[i]).attr("data-picklistno");
+                    if (picklistno == objpicklistno)
+                        $(checkbox[i]).prop("checked", true);
+                }
+            }
+            else
+                $(obj).prop("checked", false);
+        }
 
         function RefreshCheckbox() {
             list = [];
@@ -348,10 +410,10 @@
             for (var i = 0; i < checkbox.length; i++) {
                 if (checkbox[i].checked) {
                     var tr = $(checkbox[i]).parent().parent();
-                    volumn += Number($(tr).find("td").eq(6).text());
-                    weight += Number($(tr).find("td").eq(7).text());
-                    estamt += Number($(tr).find("td").eq(8).text());
-                    var lodnum = $(tr).find("td").eq(5).text();
+                    volumn += Number($(tr).find("td").eq(7).text());
+                    weight += Number($(tr).find("td").eq(8).text());
+                    estamt += Number($(tr).find("td").eq(9).text());
+                    var lodnum = $(tr).find("td").eq(6).text();
                     list.push({
                         LODNUM: lodnum
                     })
@@ -450,6 +512,7 @@
                         $("#myModal").modal("hide");
                         alert("Successfully");
                         EmptyData();
+                        GetSHIP_TO_INDEX();
                     }
                     else
                         alert(obj.Msg);
@@ -461,12 +524,15 @@
         });
 
         function EmptyData() {
-            $("#txtSHIP_TO_INDEX").val("");
+            //$("#txtSHIP_TO_INDEX").val("");
             $("#txtTotalVolume").text(0);
             $("#txtTotalWeight").text(0);
             $("#txtTotalEstAmt").text(0);
             $("#txtTotalBoxes").text(0);
             $("#resultTbody").empty();
+            $("#txtORDTYP").empty();
+            $("<option></option").text("").val("").appendTo("#txtORDTYP");
+            $("#selectAll").attr("checked", false);
         }
 
 
@@ -477,8 +543,10 @@
                 type: 'post',
                 enctype: "multipart/form-data",
                 success: function (data) {
-                    if (data.Success)
+                    if (data.Success) {
+                        GetSHIP_TO_INDEX();
                         alert(data.Msg);
+                    }
                     else {
                         alert(data.Msg);
                     }
@@ -499,6 +567,6 @@
         //debugger;
         var ss = window.innerHeight;
         $("#imgDiag").css("margin-top", "300px");
-        $("#myModal").css("margin-top", "200px");
+        $("#myModalDialog").css("margin-top", "200px");
     });
 </script>
