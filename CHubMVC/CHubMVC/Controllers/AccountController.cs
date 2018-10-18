@@ -71,6 +71,9 @@ namespace CHubMVC.Controllers
                             throw new Exception("Fail to add App User");
                         user = userBLL.GetAppUserByDomainName(model.UserName);
                     }
+                    else
+                        userBLL.UpdateLAST_LOGIN(user);
+
                     Session[CHubConstValues.SessionUser] = user.APP_USER;
                     LogHelper.WriteLog("log in action, user: " + user.APP_USER);
                     return RedirectToLocal(returnUrl);

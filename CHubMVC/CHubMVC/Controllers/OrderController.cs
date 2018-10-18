@@ -339,9 +339,9 @@ namespace CHubMVC.Controllers
 
                 decimal seq = 0;
                 if (string.IsNullOrEmpty(arg.seq))
-                    seq = bll.AddHeadersWithDetailsStage(orHeaderStage, altORHeaderStage, dStageList);
+                    seq = bll.AddHeadersWithDetailsStage(orHeaderStage, altORHeaderStage, dStageList, arg.dueDate);
                 else
-                    seq = bll.UpdateHeadersWithDetailsStage(orHeaderStage, altORHeaderStage, dStageList);
+                    seq = bll.UpdateHeadersWithDetailsStage(orHeaderStage, altORHeaderStage, dStageList,arg.dueDate);
 
                 if (seq != 0.00M)
                     return Content(seq.ToString());
@@ -398,9 +398,9 @@ namespace CHubMVC.Controllers
 
                 decimal seq = 0;
                 if (string.IsNullOrEmpty(arg.seq))
-                    seq = bll.AddHeadersWithDetails(orHeader, altORHeader, detailList);
+                    seq = bll.AddHeadersWithDetails(orHeader, altORHeader, detailList, arg.dueDate);
                 else
-                    seq = bll.UpdateHeadersWithDetails(orHeader, altORHeader, detailList);
+                    seq = bll.UpdateHeadersWithDetails(orHeader, altORHeader, detailList,arg.dueDate);
 
                 if (seq != 0.00M)
                     return Content(seq.ToString());
@@ -736,6 +736,7 @@ namespace CHubMVC.Controllers
         //APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
         //rpBLL.Add(appUser, CHubEnum.PageNameEnum.wbprt.ToString(), this.Request.Url.AbsoluteUri);
 
+        [Authorize]
         public ActionResult XCECWB()
         {
             string appUser = Session[CHubConstValues.SessionUser].ToString();
@@ -744,15 +745,32 @@ namespace CHubMVC.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="CUST_ORDER_NO"></param>
+        /// <param name="CUST_NAME"></param>
+        /// <param name="CREATE_DATE"></param>
+        /// <returns></returns>
+        [Authorize]
         [HttpPost]
-        public ActionResult SearchXcecWB(string CUST_ORDER_NO, string CUST_NAME, string CREATE_DATE)
+        public ActionResult SearchXcecWB(string CUST_ORDER_NO, string CUST_NAME, string CREATE_DATE, string PROCESS_STATUS, int PageIndex, int PageSize)
         {
             V_XCEC_ORDER_HDR_BASE_BLL bll = new V_XCEC_ORDER_HDR_BASE_BLL();
             try
             {
-                var result = bll.SearchXcecWB(CUST_ORDER_NO, CUST_NAME, CREATE_DATE);
+                string comp = string.Empty;
+                var result = bll.SearchXcecWB(CUST_ORDER_NO, CUST_NAME, CREATE_DATE, PROCESS_STATUS);
+                if (result.Count() <= PageSize * PageIndex)
+                    comp = "complete";
+                //分页
+                result = result.OrderByDescending(r => r.CREATE_DATE).Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
                 var mainHtml = GetXcecWBHtml(result);
-                return Json(new RequestResult(mainHtml));
+                return Json(new RequestResult(true, comp, mainHtml));
+                //if (!string.IsNullOrEmpty(mainHtml))
+                //    return Json(new RequestResult(true, comp, mainHtml));
+                //else
+                //    return Json(new RequestResult(true, comp, "Empty"));
             }
             catch (Exception ex)
             {
@@ -761,6 +779,13 @@ namespace CHubMVC.Controllers
             }
         }
 
+        /// <summary>
+        /// Details
+        /// </summary>
+        /// <param name="WAREHOUSE"></param>
+        /// <param name="IHUB_ORDER_NO"></param>
+        /// <param name="CUST_ORDER_NO"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult GetXcecWBDetails(string WAREHOUSE, string IHUB_ORDER_NO, string CUST_ORDER_NO)
         {
@@ -785,6 +810,34 @@ namespace CHubMVC.Controllers
             catch (Exception ex)
             {
                 LogHelper.WriteLog("Order GetXcecWBDetails", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        /// <summary>
+        /// ReProcess
+        /// </summary>
+        /// <param name="WAREHOUSE"></param>
+        /// <param name="IHUB_ORDER_NO"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ReProcessXcecWB(string WAREHOUSE, string IHUB_ORDER_NO)
+        {
+            V_XCEC_ORDER_HDR_BASE_BLL bll = new V_XCEC_ORDER_HDR_BASE_BLL();
+            try
+            {
+                //找到对应数据
+                var result = bll.SearchXcecWBDetail(WAREHOUSE, IHUB_ORDER_NO).First();
+                //将PROCESS_STATUS E/Q -> Q
+                if (result.PROCESS_STATUS == "E")
+                    bll.UpdateProcessStatus(result);
+                //执行Proc
+                bll.ExecProc();
+                return Json(new RequestResult(true));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("Order ReProcessXcecWB", ex);
                 return Json(new RequestResult(false, ex.Message));
             }
         }
@@ -818,6 +871,13 @@ namespace CHubMVC.Controllers
             }
         }
 
+        /// <summary>
+        /// Confirm to Match
+        /// </summary>
+        /// <param name="WAREHOUSE"></param>
+        /// <param name="DEST_LOCATION"></param>
+        /// <param name="XCEC_ADDR_SEQ"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult ConfirmToMatch(string WAREHOUSE, string DEST_LOCATION, string XCEC_ADDR_SEQ)
         {
@@ -844,7 +904,11 @@ namespace CHubMVC.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Header Html
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
         private string GetXcecWBHtml(List<V_XCEC_ORDER_HDR_BASE> result)
         {
             StringBuilder sb = new StringBuilder();
@@ -853,24 +917,33 @@ namespace CHubMVC.Controllers
                 foreach (var item in result)
                 {
                     //style="background-color:blue;"
-                    sb.Append("<tr style=\"background-color:" + GetTrColor(item.PROCESS_STATUS) + ";\">");
-                    sb.Append("<td>").Append(item.PROCESS_STATUS).Append("</td>");
-                    sb.Append("<td>").Append(item.SHIP_WH).Append("</td>");
-                    sb.Append("<td>").Append(item.CUST_ORDER_NO).Append("</td>");
-                    sb.Append("<td>").Append(item.CUST_NAME).Append("</td>");
-                    sb.Append("<td>").Append(item.ORDER_TYPE).Append("</td>");
-                    sb.Append("<td>").Append(item.DUE_DATE.ToString("yyyy-MM-dd")).Append("</td>");
-                    sb.Append("<td>").Append(item.KITS_NO).Append("</td>");
-                    sb.Append("<td>").Append(item.DEALER_PO_NO).Append("</td>");
-                    sb.Append("<td>").Append(item.NOTE).Append("</td>");
-                    sb.Append("<td>").Append(item.IHUB_ORDER_NO).Append("</td>");
-                    sb.Append("<td>").Append(item.CREATE_DATE.Value.ToString("yyyy-MM-dd")).Append("</td>");
-                    sb.Append("<td>").Append("<input type=\"button\" class=\"btn btn-primary btn-sm DetailBtn\" value=\"DETAILS\" data-warehouse=\"" + item.WAREHOUSE + "\" data-ihuborderno=\"" + item.IHUB_ORDER_NO + "\" data-custorderno=\"" + item.CUST_ORDER_NO + "\" />").Append("&nbsp;&nbsp;").
-                                      Append("<input type=\"button\" class=\"btn btn-primary btn-sm DownloadBtn\" value=\"Download\" data-orderseqno=\"" + item.ORDER_SEQ_NO + "\" />").Append("</td>");
+                    sb.Append("     <tr style=\"background-color:" + GetTrColor(item.PROCESS_STATUS) + ";\">");
+                    sb.Append("         <td title=\"" + item.PROCESS_STATUS + "\">").Append(item.PROCESS_STATUS).Append("</td>");
+                    sb.Append("         <td title=\"" + item.SHIP_WH + "\">").Append(item.SHIP_WH).Append("</td>");
+                    sb.Append("         <td title=\"" + item.CUST_ORDER_NO + "\">").Append(item.CUST_ORDER_NO).Append("</td>");
+                    sb.Append("         <td title=\"" + item.CUST_NAME + "\">").Append(item.CUST_NAME).Append("</td>");
+                    sb.Append("         <td title=\"" + item.ORDER_TYPE + "\">").Append(item.ORDER_TYPE).Append("</td>");
+                    sb.Append("         <td title=\"" + item.DUE_DATE.ToString("yyyy-MM-dd") + "\">").Append(item.DUE_DATE.ToString("yyyy-MM-dd")).Append("</td>");
+                    sb.Append("         <td title=\"" + item.KITS_NO + "\">").Append(item.KITS_NO).Append("</td>");
+                    sb.Append("         <td title=\"" + item.DEALER_PO_NO + "\">").Append(item.DEALER_PO_NO).Append("</td>");
+                    sb.Append("         <td title=\"" + item.NOTE + "\">").Append(item.NOTE).Append("</td>");
+                    sb.Append("         <td title=\"" + item.IHUB_ORDER_NO + "\">").Append(item.IHUB_ORDER_NO).Append("</td>");
+                    sb.Append("         <td title=\"" + item.CREATE_DATE.Value.ToString("yyyy-MM-dd HH:mm:ss") + "\">").Append(item.CREATE_DATE.Value.ToString("yyyy-MM-dd HH:mm:ss")).Append("</td>");
+                    //button: PROCESS_STATUS E/Q REPROCESS 可用；C DOWNLOAD 可用
+                    string reprocess = string.Empty; string download = string.Empty;
+                    if (!(item.PROCESS_STATUS == "E" || item.PROCESS_STATUS == "Q"))
+                        reprocess = "disabled=\"disabled\"";
+                    if (!(item.PROCESS_STATUS == "C"))
+                        download = "disabled=\"disabled\"";
+                    sb.Append("         <td>").Append("<input type=\"button\" class=\"btn btn-primary btn-sm DetailBtn\" value=\"更多..\" data-warehouse=\"" + item.WAREHOUSE + "\" data-ihuborderno=\"" + item.IHUB_ORDER_NO + "\" data-custorderno=\"" + item.CUST_ORDER_NO + "\" data-status=\"" + item.PROCESS_STATUS + "\" />")
+                                              .Append("&nbsp;&nbsp;")
+                                              .Append("<input type=\"button\" class=\"btn btn-primary btn-sm DownloadBtn\" value=\"下载\" data-orderseqno=\"" + item.ORDER_SEQ_NO + "\" " + download + " />")
+                                              .Append("&nbsp;&nbsp;")
+                                              .Append("<input type=\"button\" class=\"btn btn-primary btn-sm ReProcessBtn\" value=\"处理\" data-warehouse=\"" + item.WAREHOUSE + "\" data-ihuborderno=\"" + item.IHUB_ORDER_NO + "\" " + reprocess + " />")
+                      .Append("         </td>");
                     sb.Append("</tr>");
                 }
             }
-
 
             return sb.ToString();
         }
@@ -910,7 +983,7 @@ namespace CHubMVC.Controllers
             sb.Append("     <tr>");
             sb.Append("         <td style=\"background-color:grey\">").Append("ERROR MSG:").Append("</td>");
             if (!string.IsNullOrEmpty(result.LAST_ERROR_MSG))
-                sb.Append("         <td colspan=\"9\" style=\"background-color:red\">").Append(result.LAST_ERROR_MSG).Append("</td>");
+                sb.Append("         <td colspan=\"9\" style=\"background-color:#ff6666\">").Append(result.LAST_ERROR_MSG).Append("</td>");
             else
                 sb.Append("         <td colspan=\"9\">").Append(result.LAST_ERROR_MSG).Append("</td>");
             sb.Append("     </tr>");
@@ -940,6 +1013,7 @@ namespace CHubMVC.Controllers
                     sb.Append("         <td>").Append(item.QTY).Append("</td>");
                     sb.Append("         <td>").Append(item.DESCRIPTION).Append("</td>");
                     sb.Append("         <td>").Append(item.DESC_CN).Append("</td>");
+                    sb.Append("         <td>").Append(item.DUE_DATE.ToString("yyyy-MM-dd")).Append("</td>");
                     sb.Append("     </tr>");
                 }
             }
@@ -977,7 +1051,6 @@ namespace CHubMVC.Controllers
                 sb.Append("     </tr>");
             }
 
-
             return sb.ToString();
         }
 
@@ -992,16 +1065,16 @@ namespace CHubMVC.Controllers
             switch (PROCESS_STATUS)
             {
                 case "Q":
-                    color = "grey";
+                    color = "#cccccc";
                     break;
                 case "E":
-                    color = "red";
+                    color = "#ff6666";
                     break;
                 case "C":
-                    color = "blue";
+                    color = "#99ccff";
                     break;
                 case "G":
-                    color = "green";
+                    color = "#ccff99";
                     break;
             }
             return color;
@@ -1047,13 +1120,14 @@ namespace CHubMVC.Controllers
         /// <param name="CONVERTED_ADDR"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult SaveAdrMap(string JID, string CONVERTED_ADDR)
+        public ActionResult SaveAdrMap(string JID, string CONVERTED_ADDR, string TERRITORY)
         {
             JD_ADDR_CONVERT_BLL bll = new JD_ADDR_CONVERT_BLL();
             try
             {
                 var result = bll.SearchAdrMap(JID);
                 result.CONVERTED_ADDR = CONVERTED_ADDR;
+                result.TERRITORY = TERRITORY;
                 result.UPDATED_BY = Session[CHubConstValues.SessionUser].ToString();
                 result.RECORD_DATE = DateTime.Now;
                 bll.UpdateAdrMap(result);
@@ -1062,6 +1136,26 @@ namespace CHubMVC.Controllers
             catch (Exception ex)
             {
                 LogHelper.WriteLog("Order SaveAdrMap", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult CheckSecurityOfAMSave()
+        {
+            JD_ADDR_CONVERT_BLL bll = new JD_ADDR_CONVERT_BLL();
+            try
+            {
+                string SECURE_ID = "JD_ADDR_CVT";
+                string APP_USER = Session[CHubConstValues.SessionUser].ToString();
+                if (bll.CheckSecurityOfAMSave(SECURE_ID, APP_USER))
+                    return Json(new RequestResult(true));
+                else
+                    return Json(new RequestResult(false, "You cannot operate"));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("order CheckSecurityOfAMSave", ex);
                 return Json(new RequestResult(false, ex.Message));
             }
         }
@@ -1077,7 +1171,13 @@ namespace CHubMVC.Controllers
                     sb.Append("<tr>");
                     sb.Append("<td>").Append(item.JID).Append("</td>");
                     sb.Append("<td title=\"" + item.GOMS_ADDR + "\">").Append(item.GOMS_ADDR).Append("</td>");
-                    sb.Append("<td title=\"" + item.CONVERTED_ADDR + "\">").Append("<input type=\"text\" class=\"form-control input-sm CONV_ADDR\" value=\"" + item.CONVERTED_ADDR + "\" />").Append("</td>");
+                    sb.Append("<td title=\"" + item.TERRITORY + "\">").Append("<span class=\"txtTERRITORY\">").Append(item.TERRITORY).Append("</span>")
+                        .Append("<div style=\"float:right\">")
+                                .Append("<span class=\"glyphicon glyphicon-th-list txtArea\" style=\"cursor:pointer;\"></span>&nbsp;")
+                                .Append("<span class=\"glyphicon glyphicon-remove txtRemove\" title=\"Remove\" style=\"cursor: pointer;\"></span>")
+                         .Append("</div>")
+                       .Append("</td>");
+                    sb.Append("<td title=\"" + item.CONVERTED_ADDR + "\">").Append("<input type=\"text\" class=\"form-control input-sm CONV_ADDR\" value=\"" + item.CONVERTED_ADDR + "\" title=\"" + item.CONVERTED_ADDR + "\" style=\"width:100%;\" />").Append("</td>");
                     sb.Append("<td>").Append(item.CREATE_DATE.HasValue ? item.CREATE_DATE.Value.ToString("yyyy-MM-dd") : "").Append("</td>");
                     sb.Append("<td>").Append("<input type=\"button\" class=\"btn btn-primary btn-sm saveBtn\" value=\"SAVE\" data-id=\"" + item.JID + "\" />").Append("</td>");
                 }
@@ -1085,6 +1185,77 @@ namespace CHubMVC.Controllers
             return sb.ToString();
         }
 
+
+        [HttpPost]
+        public ActionResult GetArea()
+        {
+            JD_ADDR_CONVERT_BLL acBLL = new JD_ADDR_CONVERT_BLL();
+            List<Areas> areaList = new List<Areas>();
+            try
+            {
+                var result = acBLL.GetArea("1");
+                //var province = acBLL.GetArea("1").Select(a => a.PROVINCE).ToList();
+                var province = result.Select(p => p.PROVINCE).Distinct().ToList();
+                foreach (var p in province)//省
+                {
+                    Areas areaPro = new Areas();
+                    areaPro.text = p;
+                    areaPro.value = p;
+                    areaPro.nodes = new List<Areas>();
+                    //var city = acBLL.GetArea("2", p).Select(a=>a.CITY).ToList();
+                    var city = result.Where(a => a.PROVINCE == p).Select(b => b.CITY).Distinct().ToList();
+                    foreach (var c in city)//市
+                    {
+                        Areas areaCity = new Areas();
+                        areaCity.text = c;
+                        areaCity.value = p + c;
+                        areaCity.nodes = new List<Areas>();
+                        areaPro.nodes.Add(areaCity);
+                        //var county = acBLL.GetArea("3", p, c).Select(a=>a.COUNTY).ToList();
+                        var county = result.Where(a => a.PROVINCE == p && a.CITY == c).Select(b => b.COUNTY).Distinct().ToList();
+                        foreach (var co in county)//村
+                        {
+                            Areas areaCounty = new Areas();
+                            areaCounty.text = co;
+                            areaCounty.value = p + c + co;
+                            //var town = acBLL.GetArea("4", p, c, co).Select(a => a.TOWN).ToList();
+                            var town = result.Where(a => a.PROVINCE == p && a.CITY == c && a.COUNTY == co).Select(b => b.TOWN).Distinct().ToList();
+                            if (town.Count() == 1 && town[0] == null)
+                                areaCounty.nodes = null;
+                            else
+                                areaCounty.nodes = new List<Areas>();
+                            areaCity.nodes.Add(areaCounty);
+                            foreach (var t in town)//镇
+                            {
+                                Areas areaTown = new Areas();
+                                if (!string.IsNullOrEmpty(t))
+                                {
+                                    areaTown.text = t;
+                                    areaTown.value = p + c + co + t;
+                                    areaCounty.nodes.Add(areaTown);
+                                }
+                            }
+
+                        }
+                    }
+                    areaList.Add(areaPro);
+                }
+                return Json(new RequestResult(areaList));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("Order GetArea", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+
+        public class Areas
+        {
+            public string text { get; set; }
+            public string value { get; set; }
+            public List<Areas> nodes { get; set; }
+        }
 
 
     }

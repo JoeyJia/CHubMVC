@@ -25,6 +25,9 @@ namespace CHubMVC.Controllers
             //APP_QUICK_SCREEN_BLL bll = new APP_QUICK_SCREEN_BLL();
             //vm.aqs = bll.GetAPPQUICKSCREENList();
             //return View(vm);
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, CHubEnum.PageNameEnum.quickscr.ToString(), this.Request.Url.AbsoluteUri);
             return View();
         }
 
@@ -162,7 +165,7 @@ namespace CHubMVC.Controllers
                                 if (i != columnValue.Split('\'').Count() - 1)
                                     cv += columnValue.Split('\'')[i] + "''";
                                 else
-                                    cv += columnValue.Split('\'')[i];                                
+                                    cv += columnValue.Split('\'')[i];
                             }
                             columnValue = cv;
                         }
@@ -201,11 +204,11 @@ namespace CHubMVC.Controllers
                                     cv += columnValue.Split('\'')[i];
                             }
                             columnValue = cv;
-                        }                        
+                        }
                         if (columnType == "DATE")
                             sb.Append(" to_date('" + columnValue + "','yyyy-mm-dd hh24:mi:ss'),");
                         else
-                            sb.Append(" '" + columnValue + "',");                       
+                            sb.Append(" '" + columnValue + "',");
                     }
                     sb.Remove(sb.Length - 1, 1);
                     sb.Append(")");

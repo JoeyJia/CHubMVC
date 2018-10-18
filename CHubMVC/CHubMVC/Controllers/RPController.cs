@@ -22,11 +22,15 @@ using System.Drawing.Printing;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using System.Threading;
+using System.Configuration;
 
 namespace CHubMVC.Controllers
 {
     public class RPController : BaseController
     {
+        private static string webUrl = ConfigurationManager.AppSettings["WebUrl"].ToString();
+        private static string webType = ConfigurationManager.AppSettings["WebType"].ToString();
+
         [Authorize]
         public ActionResult Index()
         {
@@ -517,19 +521,21 @@ namespace CHubMVC.Controllers
         }
 
 
-        [Authorize]
+        
         public ActionResult Label2()
         {
             string appUser = Session[CHubConstValues.SessionUser].ToString();
             APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
             rpBLL.Add(appUser, CHubEnum.PageNameEnum.lbprt2.ToString(), this.Request.Url.AbsoluteUri);
             ViewBag.AppUser = appUser;
+            ViewBag.Url = webUrl;
+            ViewBag.Type = webType;
             return View();
         }
 
 
 
-        [Authorize]
+        
         public ActionResult LabelType()
         {
             RP_LABEL_TYPE2_BLL BLL = new RP_LABEL_TYPE2_BLL();
@@ -547,6 +553,22 @@ namespace CHubMVC.Controllers
             }
         }
 
+
+        public ActionResult GetWHID()
+        {
+            APP_WH_BLL bll = new APP_WH_BLL();
+            List<string> whid = new List<string>();
+            try
+            {
+                whid = bll.GetAppWHList().Select(w => w.WH_ID).ToList();
+                return Json(new RequestResult(whid));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("RP GetWHID", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
 
         public ActionResult GetLabel_Code()
         {
@@ -749,6 +771,45 @@ namespace CHubMVC.Controllers
             }
         }
 
+
+        [HttpPost]
+        public ActionResult PrintLBScan_M(LBScanPrintItems item)
+        {
+            TxtLog.WriteLog("打印准备");
+            V_PLABEL_BY_MOBILE_PRINT_BLL vBLL = new V_PLABEL_BY_MOBILE_PRINT_BLL();
+            try
+            {
+                var result = vBLL.GetPrintData(item.VID, item.WH_ID, item.LODNUM, item.PRTNUM, item.LABEL_CODE);
+                if (result == null || result.Count == 0)
+                    return Json(new RequestResult(false, "Get no page data"));
+
+                string basePath = Server.MapPath(CHubConstValues.ChubTemplateFolder);
+                TxtLog.WriteLog("网络路径：" + basePath);
+
+                LabelPrintBLL lpBll = new LabelPrintBLL(basePath);
+                string baseBTW = new RP_LABEL_TYPE2_BLL().GetBTW(item.LABEL_CODE);//调用的模板文件名
+                TxtLog.WriteLog("调用模板" + baseBTW);
+
+                var bo = lpBll.PrintLBScan_M(result, item, baseBTW, item.PrinterName, Session[CHubConstValues.SessionUser].ToString());
+                if (bo)
+                {
+                    TxtLog.WriteLog("打印通过");
+                    return Json(new RequestResult(true));
+                }
+                else
+                {
+                    TxtLog.WriteLog("打印失败");
+                    return Json(new RequestResult(false, "fail to Print"));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                TxtLog.WriteLog(ex.Message);
+                LogHelper.WriteLog("RP PrintLBScan_M", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
 
         /// <summary>
         /// By Parts Search
@@ -1722,7 +1783,7 @@ namespace CHubMVC.Controllers
         public ActionResult AddHSCODE(TCHSCODEMSTArg HSCode)
         {
             TC_HSCODE_MST_BLL bll = new TC_HSCODE_MST_BLL();
-            TC_HSCODE_MST tc = new TC_HSCODE_MST();
+            CHubDBEntity.UnmanagedModel.TC_HSCODE_MST tc = new CHubDBEntity.UnmanagedModel.TC_HSCODE_MST();
             try
             {
                 string type = string.Empty;

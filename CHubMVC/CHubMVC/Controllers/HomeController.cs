@@ -126,5 +126,27 @@ namespace CHubMVC.Controllers
 
             return View();
         }
+
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult LogPageClick(string URL)
+        {
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            try
+            {
+                string appUser = Session[CHubConstValues.SessionUser].ToString();
+                string PAGE_NAME = rpBLL.GetPAGE_NAME(URL);
+
+                rpBLL.AddPageLog(appUser, PAGE_NAME);
+                return Json(new RequestResult(true));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("Home LogPageClick", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
     }
 }

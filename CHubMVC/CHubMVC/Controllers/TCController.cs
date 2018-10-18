@@ -13,6 +13,8 @@ using System.Data;
 using System.Net;
 using CHubModel.WebArg;
 using System.Reflection;
+using CHubDBEntity.UnmanagedModel;
+using System.Text;
 
 namespace CHubMVC.Controllers
 {
@@ -40,7 +42,7 @@ namespace CHubMVC.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult QueryAction(string partNo, string hsCode, string declrName, string element,int currentPage,int pageSize)
+        public ActionResult QueryAction(string partNo, string hsCode, string declrName, string element, int currentPage, int pageSize)
         {
             CHubEntities db = new CHubEntities();
             V_TC_MDM_ALL_BLL mdmBLL = new V_TC_MDM_ALL_BLL();
@@ -48,7 +50,7 @@ namespace CHubMVC.Controllers
             int totalCount = 0;
             try
             {
-                 result = mdmBLL.GetTCMDMList(partNo, hsCode, declrName, element, currentPage, pageSize, out totalCount);
+                result = mdmBLL.GetTCMDMList(partNo, hsCode, declrName, element, currentPage, pageSize, out totalCount);
             }
             catch (Exception ex)
             {
@@ -62,6 +64,71 @@ namespace CHubMVC.Controllers
             };
             return Json(obj);
         }
+
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult GetGOOD_DESC(string HSCODE, string CIQ)
+        {
+            V_TC_MDM_ALL_BLL vBLL = new V_TC_MDM_ALL_BLL();
+            try
+            {
+                var result = vBLL.GetGOOD_DESC(HSCODE, CIQ);
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("TC GetGOOD_DESC");
+                return Json(new RequestResult(new RequestResult(false, ex.Message)));
+            }
+        }
+        [Authorize]
+        [HttpPost]
+        public ActionResult GetELEMENTCK(string PART_NO)
+        {
+            V_TC_MDM_ALL_BLL vBLL = new V_TC_MDM_ALL_BLL();
+            try
+            {
+                var result = vBLL.GetELEMENTCK(PART_NO);
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("TC GetELEMENTCK");
+                return Json(new RequestResult(new RequestResult(false, ex.Message)));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult GetCIQLists(string HSCODE)
+        {
+            V_TC_MDM_ALL_BLL vBLL = new V_TC_MDM_ALL_BLL();
+            var lists = new List<TC_HSCODE_CIQ_MST>();
+            lists.Add(new TC_HSCODE_CIQ_MST()
+            {
+                HSCODE = HSCODE,
+                CIQ = "",
+                GOOD_DESC = "",
+                NOTE = ""
+            });
+            try
+            {
+                var result = vBLL.GetCIQLists(HSCODE);
+                foreach (var item in result)
+                {
+                    lists.Add(item);
+                }
+                return Json(new RequestResult(lists));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("TC GetCIQLists");
+                return Json(new RequestResult(new RequestResult(false, ex.Message)));
+            }
+        }
+        
+
 
         [HttpPost]
         [Authorize]
@@ -85,6 +152,62 @@ namespace CHubMVC.Controllers
             }
         }
 
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult CheckHSCODE(string HSCODE)
+        {
+            TC_HSCODE_MST_BLL tBLL = new TC_HSCODE_MST_BLL();
+            try
+            {
+                var bo = tBLL.IsExistHSCODE(HSCODE);
+                if (bo)
+                    return Json(new RequestResult(true, "EXIST"));
+                else
+                    return Json(new RequestResult(false, "HSCODE Not EXIST"));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("TC CheckHSCODE", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult CopySearch(string PART_NO)
+        {
+            M_PART_BLL bll = new M_PART_BLL();
+            try
+            {
+                var result = bll.CopySearch(PART_NO);
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("TC CopySearch", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult CopyData(string PART_NO)
+        {
+            M_PART_BLL bll = new M_PART_BLL();
+            try
+            {
+                var result = bll.CopyData(PART_NO);
+                return Json(new RequestResult(result.FirstOrDefault()));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("TC CopyData", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+
         [HttpPost]
         [Authorize]
         public ActionResult SaveAction(V_TC_MDM_ALL mdmAll)
@@ -103,6 +226,9 @@ namespace CHubMVC.Controllers
             else
                 return Content("Fail");
         }
+
+
+        
 
         /// <summary>
         /// For HS code upload
@@ -134,6 +260,9 @@ namespace CHubMVC.Controllers
                 if (dt == null || dt.Rows.Count == 0)
                     return Content("No data in excel");
 
+                dt.Columns.Remove("TAX_REFUND_RATE");
+                dt.Columns.Remove("MFN_RATE");
+                dt.Columns.Remove("UOM");
                 //DataTable dt = ExcelHelper.GetDTFromExcel(fileFullName);
                 List<TC_PART_HS> partList = ClassConvert.ConvertDT2List<TC_PART_HS>(dt);
 
@@ -142,7 +271,7 @@ namespace CHubMVC.Controllers
 
                 int successCount = 0;
                 int failCount = 0;
-                
+
                 foreach (var item in partList)
                 {
                     if (SaveTCPartData(item, null))
@@ -168,7 +297,7 @@ namespace CHubMVC.Controllers
             string templateFolder = Server.MapPath(CHubConstValues.ChubTemplateFolder);
             string fileName = CHubConstValues.HSPartExcelTemplateName;
 
-            return File(templateFolder+fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",fileName);
+            return File(templateFolder + fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
         /// <summary>
         /// TC Category Upload
@@ -181,7 +310,7 @@ namespace CHubMVC.Controllers
             HttpPostedFileBase fb = Request.Files[0];
             //HttpPostedFileBase fb = fileInput.ToArray()[0];
             string tempGuid = Guid.NewGuid().ToString();
-            string folderPath = Server.MapPath(CHubConstValues.ChubTempFolder); 
+            string folderPath = Server.MapPath(CHubConstValues.ChubTempFolder);
             FileInfo folder = new FileInfo(folderPath);
             if (!Directory.Exists(folder.FullName))
                 Directory.CreateDirectory(folder.FullName);
@@ -213,7 +342,7 @@ namespace CHubMVC.Controllers
                 M_PART mpart = new M_PART();
                 mpart.PART_NO = dt.Rows[i][0].ToString();
                 mpart.TC_CATEGORY_BY_MAN = dt.Rows[i][1].ToString();
-                if(SaveMPart(mpart))
+                if (SaveMPart(mpart))
                     successCount++;
                 else
                     failCount++;
@@ -227,7 +356,7 @@ namespace CHubMVC.Controllers
             string templateFolder = Server.MapPath(CHubConstValues.ChubTemplateFolder);
             string fileName = CHubConstValues.MPartExcelTemplateName;
 
-            return File(templateFolder + fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",fileName);
+            return File(templateFolder + fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
 
         [HttpPost]
@@ -250,7 +379,7 @@ namespace CHubMVC.Controllers
                 if (mPartBLL.Exist(partHS.PART_NO))
                 {
                     //must exist in m_part otherwise error
-                    if (mPart!=null && !string.IsNullOrEmpty(mPart.TC_CATEGORY_BY_MAN))
+                    if (mPart != null && !string.IsNullOrEmpty(mPart.TC_CATEGORY_BY_MAN))
                     {
                         M_PART currMpart = mPartBLL.GetMPartByPartNo(partHS.PART_NO);
                         currMpart.TC_CATEGORY_BY_MAN = mPart.TC_CATEGORY_BY_MAN;
@@ -284,7 +413,7 @@ namespace CHubMVC.Controllers
                             partHS.CREATE_DATE = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"));
                             partHS.UPDATED_BY = Session[CHubConstValues.SessionUser].ToString();
                             partHS.RECORD_DATE = partHS.CREATE_DATE;
-                            pHSBLL.Add(partHS,false);
+                            pHSBLL.Add(partHS, false);
                         }
                     }
                     db.SaveChanges();
@@ -296,7 +425,7 @@ namespace CHubMVC.Controllers
                     LogHelper.WriteErrorLog(string.Format("Fail Save Action, reason: Wrong partNo {0}", partHS.PART_NO));
                     return false;
                 }
-            }  
+            }
         }
 
         private bool SaveMPart(M_PART mPart)
@@ -313,7 +442,7 @@ namespace CHubMVC.Controllers
                         currMpart.TC_CATEGORY_BY_MAN = mPart.TC_CATEGORY_BY_MAN;
                         mPartBLL.Update(currMpart);
                     }
-                   
+
                     return true;
                 }
                 else
@@ -380,15 +509,16 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult AddHSCODE(TCHSCODEMSTArg HSCode,string Type)
+        public ActionResult AddHSCODE(TCHSCODEMSTArg HSCode, string Type)
         {
             TC_HSCODE_MST_BLL bll = new TC_HSCODE_MST_BLL();
-            TC_HSCODE_MST tc = new TC_HSCODE_MST();
+            CHubDBEntity.UnmanagedModel.TC_HSCODE_MST tc = new CHubDBEntity.UnmanagedModel.TC_HSCODE_MST();
             try
             {
                 if (Type == "Update")
                 {
                     tc.RECORD_DATE = DateTime.Now;
+                    tc.UPDATED_BY = Session[CHubConstValues.SessionUser].ToString();
                 }
                 else
                 {
