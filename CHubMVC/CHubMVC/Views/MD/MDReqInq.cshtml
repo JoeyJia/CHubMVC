@@ -3,10 +3,43 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style type="text/css">
-    table > thead > tr > th {
+    #resultTable > thead > tr > th {
         background-color: #f5f5f5;
     }
+
+    .table {
+        max-width: 200%;
+    }
 </style>
+<style type="text/css">
+    .form-group{
+        margin-bottom:0px;
+    }
+    #tabdiv{
+         width:100%;
+         height:400px;
+         min-height:300px;
+         overflow-x:scroll;
+         overflow-y:auto;
+     }
+     #tableHead{
+         width:150%;
+         top:0px;
+         position:relative;
+         margin-bottom:0px;
+     }
+     #resultTable{
+         width:200%;
+     }
+</style>
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    $("#tabdiv").on("scroll", function () {
+    //        var yheight = $(this).scrollTop();
+    //        $("#tableHead").css("top", yheight + "px");
+    //    })
+    //})
+</script>
 
 <div class="container-fluid" id="mdreqinqDiv">
     <div class="panel panel-default">
@@ -20,10 +53,6 @@
                     <div class="col-lg-2 col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtMD_REQ_NO" placeholder="Request No" />
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
                     <label for="PART_NO" class="col-sm-2 control-label">Part No:</label>
                     <div class="col-lg-2 col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtPART_NO" placeholder="Part No" />
@@ -36,20 +65,39 @@
                     <div class="col-lg-2 col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtREQ_DATE" value="30" placeholder="Requested in Last Days" />
                     </div>
+                    <label for="" class="col-sm-2 control-label">Approval Status:</label>
+                    <div class="col-lg-2 col-sm-2">
+                        <select class="form-control input-sm" id="txtAPP_STATUS">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-sm-2" style="padding-top:10px;">
+                        <span id="txtAPP_STATUS_DESC"></span>
+                    </div>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group">
+                    <label for="COMM_PART" class="col-sm-2 control-label">Comm Part</label>
+                    <div class="col-sm-2">
+                        <select class="form-control input-sm" id="txtCOMM_PART">
+                            <option value=""></option>
+                            <option value="Y">Y</option>
+                            <option value="N">N</option>
+                            <option value="NA">NA</option>
+                            <option value="TBD">TBD</option>
+                        </select>
+                    </div>
                     <label for="REQ_BY" class="col-sm-2 control-label">Requested by </label>
                     <div class="col-lg-4 col-sm-4">
                         <div class="col-sm-2 checkbox-inline">
-                            <input type="radio" name="Radio" checked="checked" value="" />All
+                            <input type="radio" name="Radio" value="" />All
                         </div>
                         <div class="col-sm-4">
                             <input type="text" class="form-control input-sm" id="txtWWID" placeholder="WWID" />
                         </div>
                         <div class="col-sm-4 checkbox-inline">
-                            <input type="radio" name="Radio" value="@ViewBag.AppUser" />My request only
+                            <input type="radio" name="Radio" checked="checked" value="@ViewBag.AppUser" />My request only
                         </div>
                     </div>
                     <div class="col-sm-2">
@@ -73,33 +121,48 @@
                     <div class="panel-heading">
                         <b>Result</b>
                     </div>
-                    <table class="table table-bordered table-hover table-striped" id="resultTable">
-                        <thead>
-                            <tr>
-                                <th style="width:3%;"><input type="checkbox" id="selectAll" /> </th>
-                                <th>Status</th>
-                                <th>Request No</th>
-                                <th>Line No</th>
-                                <th>Part No</th>
-                                <th>Description</th>
-                                <th>Approval</th>
-                                <th>Comments</th>
-                                <th>Product Group</th>
-                                <th>Comm Part(Y/N)</th>
-                                <th>Req By</th>
-                                <th>Req Date</th>
-                                <th>EXIST?</th>
-                                <th>PRI SUP?</th>
-                                <th>PRI PB?</th>
-                                <th>BPA?</th>
-                                <th>COST?</th>
-                                <th>Global PrtNo</th>
-                                <th>Global DESC</th>
-                                <th>Operation</th>
-                            </tr>
-                        </thead>
-                        <tbody id="resultTbody"></tbody>
-                    </table>
+                    <div id="tabdiv">
+                        @*<table class="table table-bordered table-hover" id="tableHead">
+                            
+                        </table>*@
+                        <table class="table table-bordered table-hover" id="resultTable">
+                            <thead>
+                                <tr>
+                                    <th @*style="width:2%;"*@>
+                                        <input type="checkbox" id="selectAll" />
+                                    </th>
+                                    <th @*style="width:4%;"*@>Operation</th>
+                                    <th @*style="width:4%;"*@>Request No</th>
+                                    <th @*style="width:3%;"*@>Line No</th>
+                                    <th @*style="width:7%;"*@>Part No</th>
+                                    <th @*style="width:5%;"*@>Description</th>
+                                    <th style="width:10%;">NOTE</th>
+                                    <th style="width:10%;">Sourcing NOTE</th>
+                                    <th @*style="width:4%;"*@>Global PrtNo</th>
+                                    <th @*style="width:10%;"*@>Global DESC</th>
+                                    <th @*style="width:5%;"*@>Short DESC</th>
+                                    <th @*style="width:5%;"*@>Approval</th>
+                                    <th @*style="width:5%;"*@>Comments</th>
+                                    <th @*style="width:5%;"*@>Product Group</th>
+                                    <th @*style="width:4%;"*@>Comm Part(Y/N)</th>
+                                    <th @*style="width:3%;"*@>Req By</th>
+                                    <th @*style="width:4%;"*@>Req Date</th>
+                                    <th @*style="width:5%;"*@>
+                                        <span>EXIST?</span>
+                                        <select class="form-control input-sm" id="txtCHECK_EXIST">
+                                            <option value=""></option>
+                                        </select>
+                                    </th>
+                                    <th @*style="width:5%;"*@>PRI SUP?</th>
+                                    <th @*style="width:5%;"*@>PRI PB?</th>
+                                    <th @*style="width:4%;"*@>BPA?</th>
+                                    <th @*style="width:7%;"*@>COST?</th>
+                                    <th style="width:12%;">Req Desc</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultTbody"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -148,13 +211,63 @@
         var appStatus;
         var list = [];
 
+        GetAPP_STATUS();
+        function GetAPP_STATUS() {
+            $.ajax({
+                url: '/md/GetAPP_STATUS',
+                type: 'post',
+                async: true,
+                data: {},
+                success: function (obj) {
+                    if (obj.Success) {
+                        for (var i = 0; i < obj.Data.length; i++) {
+                            $("<option></option>").text(obj.Data[i]).val(obj.Data[i]).appendTo("#txtAPP_STATUS");
+                        }
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get");
+                }
+            });
+        }
+
+        $("#txtAPP_STATUS").on('change', function () {
+            if ($("#txtAPP_STATUS").val() == "") {
+                $("#txtAPP_STATUS_DESC").text("");
+                return false;
+            }
+
+            $.ajax({
+                url: '/md/GetAPP_STATUS_DESC',
+                type: 'post',
+                async: true,
+                data: {
+                    APP_STATUS: $("#txtAPP_STATUS").val()
+                },
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#txtAPP_STATUS_DESC").text(obj.Data);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get");
+                }
+            });
+        })
+
         //Search
         $("#btnSearch").on('click', function () {
             var MD_REQ_NO = $("#txtMD_REQ_NO").val();
             var PART_NO = $("#txtPART_NO").val();
             var REQ_DATE = $("#txtREQ_DATE").val();
+            var APP_STATUS = $("#txtAPP_STATUS").val();
             var REQ_BY = $("input[name='Radio']:checked").val();
             var WWID = $("#txtWWID").val();
+            var COMM_PART = $("#txtCOMM_PART").val();
 
             //alert(REQ_BY);
             if (REQ_DATE == "" || REQ_DATE <= 0) {
@@ -172,8 +285,64 @@
                     MD_REQ_NO: MD_REQ_NO,
                     PART_NO: PART_NO,
                     REQ_DATE: REQ_DATE,
+                    APP_STATUS: APP_STATUS,
                     REQ_BY: REQ_BY,
-                    WWID: WWID
+                    WWID: WWID,
+                    COMM_PART:COMM_PART
+                },
+                success: function (obj) {
+                    $('#loadingModal').modal('hide');
+                    $("#resultTbody").empty();
+                    $("#txtCHECK_EXIST").empty();
+                    if (obj.Success) {
+                        $("#resultTbody").html(obj.Data);
+
+                        $("<option></option>").text("").val("").appendTo("#txtCHECK_EXIST");
+                        if (obj.ExistList != null && obj.ExistList.length > 0) {
+                            for (var i = 0; i < obj.ExistList.length; i++) {
+                                $("<option></option>").text(obj.ExistList[i]).val(obj.ExistList[i]).appendTo("#txtCHECK_EXIST");
+                            }
+                        }
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $('#loadingModal').modal('hide');
+                    alert("fail to search");
+                }
+            });
+        });
+
+        $("#txtCHECK_EXIST").on('change', function () {
+            var MD_REQ_NO = $("#txtMD_REQ_NO").val();
+            var PART_NO = $("#txtPART_NO").val();
+            var REQ_DATE = $("#txtREQ_DATE").val();
+            var APP_STATUS = $("#txtAPP_STATUS").val();
+            var REQ_BY = $("input[name='Radio']:checked").val();
+            var WWID = $("#txtWWID").val();
+            var CHECK_EXIST = $("#txtCHECK_EXIST").val();
+
+            //alert(REQ_BY);
+            if (REQ_DATE == "" || REQ_DATE <= 0) {
+                alert("Days Error!");
+                return false;
+            }
+
+            $("#loadingModal").modal('show');
+
+            $.ajax({
+                url: '/md/MDReqInqSearch',
+                type: 'post',
+                async: true,
+                data: {
+                    MD_REQ_NO: MD_REQ_NO,
+                    PART_NO: PART_NO,
+                    REQ_DATE: REQ_DATE,
+                    APP_STATUS: APP_STATUS,
+                    REQ_BY: REQ_BY,
+                    WWID: WWID,
+                    CHECK_EXIST: CHECK_EXIST
                 },
                 success: function (obj) {
                     $('#loadingModal').modal('hide');
@@ -187,8 +356,10 @@
                     $('#loadingModal').modal('hide');
                     alert("fail to search");
                 }
+
             });
-        });
+        })
+
 
         //selectAll
         $('#selectAll').on('click', function () {
@@ -241,8 +412,10 @@
                 async: true,
                 data: { PART_NO: target.val() },
                 success: function (obj) {
-                    if (obj.Success)
-                        target.parent().next().text(obj.Data);
+                    if (obj.Success) {
+                        target.parent().next().text(obj.DESC);
+                        target.parent().next().next().find(".PART_DESC_SHORT").val(obj.SHORT_DESC);
+                    }
                     else
                         alert(obj.Msg);
                 },
@@ -270,9 +443,13 @@
 
             var td = target.parent().parent().find("td");
             var PART_DESC = $(td).eq(5).find(".PART_DESC").val();
-            var PRODUCT_GROUP_ID = $(td).eq(8).find(".PRODUCT_GROUP_ID").val();
-            var COMM_PART = $(td).eq(9).find(".COMM_PART").val();
-            var GLOBAL_PARTNO = $(td).eq(15).find(".GLOBAL_PARTNO").val();
+            var NOTE = $(td).eq(6).find(".NOTE").val();
+            var GLOBAL_PARTNO = $(td).eq(8).find(".GLOBAL_PARTNO").val();
+            var GLOBAL_DESC = $(td).eq(9).text();
+            var PART_DESC_SHORT = $(td).eq(10).find(".PART_DESC_SHORT").val();
+            var PRODUCT_GROUP_ID = $(td).eq(13).find(".PRODUCT_GROUP_ID").val();
+            var COMM_PART = $(td).eq(14).find(".COMM_PART").val();
+
 
             //alert(PART_DESC + "|" + PRODUCT_GROUP_ID + "|" + COMM_PART + "|" + GLOBAL_PARTNO);
 
@@ -291,9 +468,12 @@
                     MD_REQ_NO: MD_REQ_NO,
                     REQ_LINE_NO: REQ_LINE_NO,
                     PART_DESC: PART_DESC,
+                    NOTE:NOTE,
+                    GLOBAL_PARTNO: GLOBAL_PARTNO,
+                    GLOBAL_DESC: GLOBAL_DESC,
+                    PART_DESC_SHORT: PART_DESC_SHORT,
                     PRODUCT_GROUP_ID: PRODUCT_GROUP_ID,
-                    COMM_PART: COMM_PART,
-                    GLOBAL_PARTNO: GLOBAL_PARTNO
+                    COMM_PART: COMM_PART
                 }),
                 contentType: 'application/json;charset=utf-8',
                 success: function (obj) {
@@ -312,25 +492,38 @@
 
         //Approve
         $("#btnApprove").on('click', function () {
-            appStatus = $(this).attr("data-status");
-            $("#txtAPP_COMMENTS").val("");
-            $("#myModal").modal('show');
+            ModalShow($(this).attr("data-status"));
+            //appStatus = $(this).attr("data-status");
+            //$("#txtAPP_COMMENTS").val("");
+            //$("#myModal").modal('show');
             //alert(appStatus);
         });
         //Reject
         $("#btnReject").on('click', function () {
-            appStatus = $(this).attr("data-status");
-            $("#txtAPP_COMMENTS").val("");
-            $("#myModal").modal('show');
+            ModalShow($(this).attr("data-status"));
+            //appStatus = $(this).attr("data-status");
+            //$("#txtAPP_COMMENTS").val("");
+            //$("#myModal").modal('show');
             //alert(appStatus);
         });
         //Onhold
         $("#btnOnhold").on('click', function () {
-            appStatus = $(this).attr("data-status");
-            $("#txtAPP_COMMENTS").val("");
-            $("#myModal").modal('show');
+            ModalShow($(this).attr("data-status"));
+            //appStatus = $(this).attr("data-status");
+            //$("#txtAPP_COMMENTS").val("");
+            //$("#myModal").modal('show');
             //alert(appStatus);
         });
+        function ModalShow(status) {
+            if (list.length > 0 && list != null) {
+                appStatus = status;
+                $("#txtAPP_COMMENTS").val("");
+                $("#myModal").modal('show');
+            }
+            else
+                alert("No data select");
+        }
+
 
         //Cancel
         $("#btnCancel").on('click', function () {
@@ -367,6 +560,7 @@
                     if (obj.Success) {
                         $("#myModal").modal('hide');
                         $("#btnSearch").click();
+                        $("#selectAll").attr("checked", false);
                     }
                     else
                         alert(obj.Msg);
@@ -385,7 +579,8 @@
                 $("#txtWWID").attr("disabled", true);
             else
                 $("#txtWWID").attr("disabled", false);
-        })
+        });
+        $("#txtWWID").attr("disabled", true);
 
     })
 </script>

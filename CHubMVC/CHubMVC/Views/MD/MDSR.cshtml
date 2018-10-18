@@ -6,7 +6,40 @@
     #resultTable > thead > tr > th {
         background-color: #f5f5f5;
     }
+
+    .table {
+        max-width: 200%;
+    }
 </style>
+<style type="text/css">
+     #tabdiv{
+         width:100%;
+         height:400px;
+         min-height:300px;
+         overflow-x:scroll;
+         overflow-y:auto;
+     }
+     #tableHead{
+         width:150%;
+         top:0px;
+         position:relative;
+         margin-bottom:0px;
+     }
+     #resultTable{
+         width:150%;
+     }
+     .form-group{
+         margin-bottom:0px;
+     }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#tabdiv").on("scroll", function () {
+            var yheight = $(this).scrollTop();
+            $("#tableHead").css("top", yheight + "px");
+        })
+    })
+</script>
 
 <div class="container-fluid" id="mdsrDiv">
     <div class="panel panel-default">
@@ -20,18 +53,19 @@
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtPART_NO" placeholder="Part No" />
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
                     <label for="COMPANY_CODE" class="col-sm-2 control-label">Company Code:</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtCOMPANY_CODE" placeholder="Company Code" />
                     </div>
+                    <label for="" class="col-sm-4" id="txtCOMPANY_NAME" style="padding-top:7px;"></label>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group">
+                    <label for="REQ_DATE" class="col-sm-2 control-label">Requested in Last days:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtREQ_DATE" value="30" placeholder="Requested in Last days" />
+                    </div>
                     <label for="SR_STATUS" class="col-sm-2 control-label">Status:</label>
                     <div class="col-sm-2">
                         <select class="form-control input-sm" id="txtSR_STATUS">
@@ -45,60 +79,82 @@
             </div>
             <div class="row">
                 <div class="form-group">
-                    <label for="REQ_DATE" class="col-sm-2 control-label">Requested in Last days:</label>
+                    <label for="IS_COMMON" class="col-sm-2 control-label">COMM PART</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control input-sm" id="txtREQ_DATE" value="30" placeholder="Requested in Last days" />
+                        <select class="form-control input-sm" id="txtIS_COMMON">
+                            <option value=""></option>
+                            <option value="Y">Y</option>
+                            <option value="N">N</option>
+                            <option value="NA">NA</option>
+                            <option value="TBD">TBD</option>
+                        </select>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-2 col-sm-offset-2">
                         <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Submit" />
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="col-sm-6">
-                        <input type="button" class="btn btn-primary btn-sm" id="btnConfirm" value="Confirm" data-status="CONFIRM" />
-                        <input type="button" class="btn btn-primary btn-sm" id="btnReject" value="Reject" data-status="REJECT" />
-                        <input type="button" class="btn btn-primary btn-sm" id="btnOnhold" value="Onhold" data-status="ONHOLD" />
-                    </div>
-                    <div class="col-sm-2">
-                        <input type="button" class="btn btn-primary btn-sm" id="btnUploadCopy" value="Upload from clipboard" />
-                    </div>
-                    <div class="col-sm-2">
-                        <input type="button" class="btn btn-primary btn-sm" id="btnDownloadTemp" value="download template" />
-                    </div>
-                </div>
-            </div>
         </form>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col-sm-6">
+                    <input type="button" class="btn btn-primary btn-sm" id="btnConfirm" value="Confirm" data-status="CONFIRM" />
+                    @*<input type="button" class="btn btn-primary btn-sm" id="btnReject" value="Reject" data-status="REJECT" />*@
+                    <input type="button" class="btn btn-primary btn-sm" id="btnOnhold" value="Onhold" data-status="ONHOLD" />
+                    <input type="button" class="btn btn-primary btn-sm" id="btnRefreshStatus" value="Refresh Status" />
+                </div>
+                <div class="col-sm-6">
+                    <form name="mdsrForm" class="form-inline" id="mdsrUpload">
+                        <div class="form-group">
+                            <input type="file" name="mdsrInput" id="mdsrInput" />
+                        </div>
+                        <input type="button" class="btn btn-primary btn-sm" id="btnUpload" value="upload" />
+                        <input type="button" class="btn btn-primary btn-sm" id="btnDownloadTemplate" value="download template" />
+                    </form>
+                </div>
+                @*<div class="col-sm-2">
+                    <input type="button" class="btn btn-primary btn-sm" id="btnUploadCopy" value="Upload from clipboard" />
+                </div>*@
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-12 col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <b>Result</b>
                     </div>
-                    <table class="table table-bordered table-hover" id="resultTable">
-                        <thead>
-                            <tr>
-                                <th style="width:3%;"><input type="checkbox" id="selectAll" /></th>
-                                <th>Status</th>
-                                <th>SEQ</th>
-                                <th>Part No</th>
-                                <th>Supplier</th>
-                                <th>Price</th>
-                                <th>MOQ</th>
-                                <th>LeadTime</th>
-                                <th>Comm Part?</th>
-                                <th>Comments</th>
-                                <th>Record Date</th>
-                                <th>Updated By</th>
-                                <th>REQ Date</th>
-                                <th>Description</th>
-                                <th>Company Name</th>
-                                <th>Operation</th>
-                            </tr>
-                        </thead>
-                        <tbody id="resultTbody"></tbody>
-                    </table>
+                    <div id="tabdiv">
+                        @*<table class="table table-bordered table-hover" id="tableHead">
+                            
+                        </table>*@ 
+                        <table class="table table-bordered table-hover" id="resultTable">
+                            <thead>
+                                <tr>
+                                    <th style="width:2%;"><input type="checkbox" id="selectAll" /></th>
+                                    <th style="width:4%;">Operation</th>
+                                    <th>Status</th>
+                                    <th>SEQ</th>
+                                    <th>Part No</th>
+                                    <th style="width:5%;">Supplier</th>
+                                    <th>Supp PartNo</th>
+                                    <th style="width:5%;">Price</th>
+                                    <th style="width:3%;">MOQ</th>
+                                    <th style="width:3%;">Lot Size</th>
+                                    <th style="width:3%;">LeadTime</th>
+                                    <th style="width:5%;">Comm Part?</th>
+                                    <th>Comments</th>
+                                    <th style="width:4%;">Req By</th>
+                                    <th style="width:4%;">Record Date</th>
+                                    <th style="width:4%;">Updated By</th>
+                                    <th style="width:4%;">REQ Date</th>
+                                    <th style="width:8%;">Description</th>
+                                    <th>Company Name</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultTbody"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -194,6 +250,7 @@
             var COMPANY_CODE = $("#txtCOMPANY_CODE").val();
             var SR_STATUS = $("#txtSR_STATUS").val();
             var REQ_DATE = $("#txtREQ_DATE").val();
+            var IS_COMMON = $("#txtIS_COMMON").val();
 
             $("#loadingModal").modal("show");
 
@@ -205,7 +262,8 @@
                     PART_NO: PART_NO,
                     COMPANY_CODE: COMPANY_CODE,
                     SR_STATUS: SR_STATUS,
-                    REQ_DATE: REQ_DATE
+                    REQ_DATE: REQ_DATE,
+                    IS_COMMON: IS_COMMON
                 },
                 success: function (obj) {
                     $("#loadingModal").modal("hide");
@@ -254,16 +312,12 @@
                 $("#selectAll").prop("checked", false);
         };
 
-        //COMPANY_CODE可编辑，不能为空，且在表MD_COMPANY_SNAP中存在
-        $("#resultTbody").on('blur', '.COMPANY_CODE', function () {
-            //alert($(this).val());
+        $("#txtCOMPANY_CODE").on('blur', function () {
             var cc = $(this);
-
             if (cc.val() == "") {
-                alert("No Data");
+                $("#txtCOMPANY_NAME").text("");
                 return false;
             }
-
             $.ajax({
                 url: '/md/CheckCOMPANY_CODE',
                 type: 'post',
@@ -271,58 +325,175 @@
                 data: { COMPANY_CODE: cc.val() },
                 success: function (obj) {
                     if (obj.Success) {
-                        var tr = cc.parent().parent();
-                        $(tr).find("td").eq(14).text(obj.Data);
+                        $("#txtCOMPANY_NAME").text(obj.Data);
                     } else {
-                        alert(obj.Msg);
-                        $(cc).focus();
+                        $("#txtCOMPANY_NAME").text("");
                     }
                 },
                 error: function (e) {
                     alert("fail to check");
                 }
             })
+        })
 
+        //COMPANY_CODE可编辑，不能为空，且在表MD_COMPANY_SNAP中存在
+        $("#resultTbody").on('blur', '.COMPANY_CODE', function () {
+            //alert($(this).val());
+            var cc = $(this);
+
+            //if (cc.val() == "") {
+            //    alert("No Data");
+            //    return false;
+            //}
+            if (cc.val() != "") {
+                $.ajax({
+                    url: '/md/CheckCOMPANY_CODE',
+                    type: 'post',
+                    async: true,
+                    data: { COMPANY_CODE: cc.val() },
+                    success: function (obj) {
+                        if (obj.Success) {
+                            var tr = cc.parent().parent();
+                            $(tr).find("td").eq(18).text(obj.Data);
+                        } else {
+                            alert(obj.Msg);
+                            $(cc).focus();
+                        }
+                    },
+                    error: function (e) {
+                        alert("fail to check");
+                    }
+                })
+            }
         });
         //PRICE可编辑，不能为空，只能是数字
-        $("#resultTbody").on('blur', '.PRICE', function () {
-            var obj = $(this);
-            CheckNum(obj);
-        })
+        //$("#resultTbody").on('blur', '.PRICE', function () {
+        //    var obj = $(this);
+        //    CheckNum(obj);
+        //})
         //MOQ可编辑，不能为空，只能是数字
-        $("#resultTbody").on('blur', '.MOQ', function () {
-            var obj = $(this);
-            CheckNum(obj);
-        })
+        //$("#resultTbody").on('blur', '.MOQ', function () {
+        //    var obj = $(this);
+        //    CheckNum(obj);
+        //})
         //LT可编辑，不能为空，只能是数字
-        $("#resultTbody").on('blur', '.LT', function () {
-            var obj = $(this);
-            CheckNum(obj);
-        })
+        //$("#resultTbody").on('blur', '.LT', function () {
+        //    var obj = $(this);
+        //    CheckNum(obj);
+        //})
+
+        //判断
         function CheckNum(obj) {
             var reg = /^\d+(\.\d+)?$/;
             if (obj.val() == "") {
                 alert("No Data");
                 $(obj).focus();
             }
-
             else if (!reg.exec(obj.val())) {
                 alert("Please enter a number");
                 $(obj).focus();
             }
         }
 
+        function IsEmpty(obj) {
+            if (obj == "")
+                return false;
+            else
+                return true;
+        }
+
+        function IsNumber(obj) {
+            var reg = /^\d+(\.\d+)?$/;
+            if (!reg.exec(obj))
+                return false;
+            else
+                return true;
+        }
+
+
+
         //btn Save
         $("#resultTbody").on('click', '.btnSave', function () {
             var obj = $(this);
             var SR_REQ_NO = obj.attr("data-srreqno");
             var td = obj.parent().parent().find("td");
-            var COMPANY_CODE = $(td).eq(4).find(".COMPANY_CODE").val();
-            var PRICE = $(td).eq(5).find(".PRICE").val();
-            var MOQ = $(td).eq(6).find(".MOQ").val();
-            var LT = $(td).eq(7).find(".LT").val();
-            var IS_COMMON = $(td).eq(8).find(".IS_COMMON").val();
-            var SR_COMMENTS = $(td).eq(9).find(".SR_COMMENTS").val();
+            var COMPANY_CODE = $(td).eq(5).find(".COMPANY_CODE").val();
+            var Supplier_PARTNO = $(td).eq(6).find(".Supplier_PARTNO").val();
+            var PRICE = $(td).eq(7).find(".PRICE").val();
+            var MOQ = $(td).eq(8).find(".MOQ").val();
+            var LOT_SIZE = $(td).eq(9).find(".LOT_SIZE").val();
+            var LT = $(td).eq(10).find(".LT").val();
+            var IS_COMMON = $(td).eq(11).find(".IS_COMMON").val();
+            var SR_COMMENTS = $(td).eq(12).find(".SR_COMMENTS").val();
+
+            //save时判断 可以全部为空
+            //if (COMPANY_CODE == "" && PRICE == "" && MOQ == "" && LOT_SIZE == "" && LT == "") {
+            //    alert("No Data Input");
+            //    return false;
+            //}
+
+            if (PRICE != "") {
+                if (!IsNumber(PRICE)) {
+                    alert("Price is not a number");
+                    return false;
+                }
+            }
+            if (MOQ != "") {
+                if (!IsNumber(MOQ)) {
+                    alert("MOQ is not a number");
+                    return false;
+                }
+            }
+            if (LOT_SIZE != "") {
+                if (!IsNumber(LOT_SIZE)) {
+                    alert("Lot Size is not a number");
+                    return false;
+                }
+            }
+            if (LT != "") {
+                if (!IsNumber(LT)) {
+                    alert("LT is not a number");
+                    return false;
+                }
+            }
+
+
+            //if (!IsEmpty(PRICE)) {
+            //    alert("Price No data");
+            //    return false;
+            //}
+            //else if (!IsNumber(PRICE)) {
+            //    alert("Price is not a number");
+            //    return false;
+            //}
+
+            //if (!IsEmpty(MOQ)) {
+            //    alert("MOQ No data");
+            //    return false;
+            //}
+            //else if (!IsNumber(MOQ)) {
+            //    alert("MOQ is not a number");
+            //    return false;
+            //}
+
+            //if (!IsEmpty(LOT_SIZE)) {
+            //    alert("Lot Size No data");
+            //    return false;
+            //}
+            //else if (!IsNumber(LOT_SIZE)) {
+            //    alert("Lot Size is not a number");
+            //    return false;
+            //}
+
+            //if (!IsEmpty(LT)) {
+            //    alert("LT not data");
+            //    return false;
+            //}
+            //else if (!IsNumber(LT)) {
+            //    alert("LT is not a number");
+            //    return false;
+            //}
+
 
             $("#loadingModal").modal("show");
 
@@ -333,8 +504,10 @@
                 data: JSON.stringify({
                     SR_REQ_NO: SR_REQ_NO,
                     COMPANY_CODE: COMPANY_CODE,
+                    Supplier_PARTNO: Supplier_PARTNO,
                     PRICE: PRICE,
                     MOQ: MOQ,
+                    LOT_SIZE: LOT_SIZE,
                     LT: LT,
                     IS_COMMON: IS_COMMON,
                     SR_COMMENTS: SR_COMMENTS
@@ -354,10 +527,34 @@
             })
         });
 
+        //btnUpload
+        $("#btnUpload").on('click', function () {
+            UploadTemplate();
+        });
+        function UploadTemplate() {
+            var form = $("form[name=mdsrForm]");
+            var options = {
+                url: '/md/MDSRUploadTemplate',
+                type: 'post',
+                enctype: "multipart/form-data",
+                success: function (data) {
+                    if (data.Success)
+                        alert(data.Msg);
+                    else
+                        alert(data.Msg);
+                }
+            };
+            form.ajaxSubmit(options);
+        }
+
+
         //btn download template
-        $("#btnDownloadTemp").on('click', function () {
+        $("#btnDownloadTemplate").on('click', function () {
+            DownloadTemplate();
+        });
+        function DownloadTemplate() {
             $.ajax({
-                url: '/md/MDSRDownloadTemp',
+                url: '/md/MDSRDownloadTemplate',
                 type: 'post',
                 async: true,
                 data: {},
@@ -370,8 +567,8 @@
                 error: function (e) {
                     alert("fail to download");
                 }
-            })
-        });
+            });
+        }
 
         //btn  Upload from clipboard
         $("#btnUploadCopy").on('click', function () {
@@ -413,7 +610,10 @@
         //btn Confirm
         $("#btnConfirm").on('click', function () {
             var status = $(this).attr("data-status");
-            CheckAndShowModal(status);
+            if (srList != null && srList.length > 0)
+                CheckAndShowModal(status);
+            else
+                alert("No data select");
         });
         //btn Reject
         $("#btnReject").on('click', function () {
@@ -423,28 +623,104 @@
         //btn Onhold
         $("#btnOnhold").on('click', function () {
             var status = $(this).attr("data-status");
-            CheckAndShowModal(status);
+            if (srList != null && srList.length > 0)
+                CheckAndShowModal(status);
+            else
+                alert("No data select");
         })
         function CheckAndShowModal(status) {
-            $.ajax({
-                url: '/md/MDSRIsShowModal',
-                type: 'post',
-                async: true,
-                data: {},
-                success: function (obj) {
-                    if (obj.Success) {
-                        $("#myModal").modal("show");
-                        $("#txtSR_COMMENTS").val("");
-                        sr_status = status;
+            var SEQ; var goOn = true;
+            if (status == "CONFIRM") {//status为CONFIRM时，必须都有
+                var checkbox = $("#resultTbody input[type=checkbox]");
+                for (var i = 0; i < checkbox.length; i++) {
+                    if (checkbox[i].checked) {
+                        SEQ = $(checkbox[i]).attr("data-srreqno");
+                        var td = $(checkbox[i]).parent().parent().find("td");
+                        var COMPANY_CODE = $(td).eq(5).find(".COMPANY_CODE").val();
+                        var PRICE = $(td).eq(7).find(".PRICE").val();
+                        var MOQ = $(td).eq(8).find(".MOQ").val();
+                        var LOT_SIZE = $(td).eq(9).find(".LOT_SIZE").val();
+                        var LT = $(td).eq(10).find(".LT").val();
+                        if (COMPANY_CODE == "" || PRICE == "" || MOQ == "" || LOT_SIZE == "" || LT == "") {
+                            goOn = false;
+                            break;
+                        }
                     }
-                    else
-                        alert(obj.Msg);
+                }
+            }
+            if (!goOn) {
+                alert("SEQ为" + SEQ + " No Data Input");
+                return false;
+            }
+            
+            if (TotalSave()) {
+                $.ajax({
+                    url: '/md/MDSRIsShowModal',
+                    type: 'post',
+                    async: true,
+                    data: {},
+                    success: function (obj) {
+                        if (obj.Success) {
+                            $("#myModal").modal("show");
+                            $("#txtSR_COMMENTS").val("");
+                            sr_status = status;
+                        }
+                        else
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        alert("fail to get");
+                    }
+                });
+            }
+        }
+
+        function TotalSave() {
+            var check = true;
+            var srList = [];
+            var checkbox = $("#resultTbody input[type=checkbox]");
+            for (var i = 0; i < checkbox.length; i++) {
+                if (checkbox[i].checked) {
+                    var SR_REQ_NO = $(checkbox[i]).attr("data-srreqno");
+                    var td = $(checkbox[i]).parent().parent().find("td");
+                    srList.push({
+                        SR_REQ_NO: SR_REQ_NO,
+                        COMPANY_CODE: $(td).eq(5).find(".COMPANY_CODE").val(),
+                        Supplier_PARTNO: $(td).eq(6).find(".Supplier_PARTNO").val(),
+                        PRICE: $(td).eq(7).find(".PRICE").val(),
+                        MOQ: $(td).eq(8).find(".MOQ").val(),
+                        LOT_SIZE: $(td).eq(9).find(".LOT_SIZE").val(),
+                        LT: $(td).eq(10).find(".LT").val(),
+                        IS_COMMON: $(td).eq(11).find(".IS_COMMON").val(),
+                        SR_COMMENTS: $(td).eq(12).find(".SR_COMMENTS").val()
+                        //COMPANY_CODE: $(td).eq(4).find(".COMPANY_CODE").val(),
+                        //PRICE: $(td).eq(5).find(".PRICE").val(),
+                        //MOQ: $(td).eq(6).find(".MOQ").val(),
+                        //LT: $(td).eq(7).find(".LT").val(),
+                        //IS_COMMON: $(td).eq(8).find(".IS_COMMON").val(),
+                        //SR_COMMENTS: $(td).eq(9).find(".SR_COMMENTS").val()
+                    })
+                }
+            }
+            $.ajax({
+                url: '/md/MDSRSaveCheck',
+                type: 'post',
+                async: false,
+                data: JSON.stringify({
+                    srList: srList
+                }),
+                contentType: "application/json;charset=utf-8",
+                success: function (obj) {
+                    if (!obj.Success)
+                        check = false;
                 },
                 error: function (e) {
-                    alert("fail to get");
+                    alert("fail to save");
                 }
-            });
+            })
+            return check;
         }
+
 
         //btn OK
         $("#btnOK").on('click', function () {
@@ -484,6 +760,28 @@
         $("#btnCancel").on('click', function () {
             $("#myModal").modal("hide");
         });
+
+        //Refresh Status
+        $("#btnRefreshStatus").on('click', function () {
+            RefreshStatus();
+        });
+        function RefreshStatus() {
+            $.ajax({
+                url: '/md/RunP_MD_SR_UPD_Status',
+                type: 'post',
+                async: true,
+                data: {},
+                success: function (obj) {
+                    if (!obj.Success)
+                        alert(obj.Msg);
+                    else
+                        alert("Run Successfully");
+                },
+                error: function (e) {
+                    alert("fail to run");
+                }
+            });
+        }
 
     })
 </script>

@@ -6,6 +6,9 @@
     .form-control {
         margin-bottom: 0px;
     }
+    .table {
+        max-width:150%;
+    }
 </style>
 
 <div class="container-fluid" id="mdreqDiv">
@@ -30,32 +33,37 @@
             </div>
             <div class="row" style="margin-top:15px;">
                 <div class="col-sm-12">
-                    <table class="table table-bordered table-hover table-condensed" id="ResultTable" style="white-space:nowrap;text-overflow:ellipsis;padding:5px;">
-                        <thead>
-                            <tr>
-                                <th style="background-color:#CDC9C9;"></th>
-                                <th style="background-color:#CDC9C9;">Part No</th>
-                                <th style="background-color:#CDC9C9;">Description</th>
-                                <th style="background-color:#A3A3A3;">EXIST?</th>
-                                <th style="background-color:#A3A3A3;">Global Part</th>
-                                <th style="background-color:#A3A3A3;">Global Part Desc</th>
-                                <th style="background-color:#A3A3A3;">Primary Sup?</th>
-                                <th style="background-color:#A3A3A3;">Primary PB?</th>
-                                <th style="background-color:#A3A3A3;">BPA?</th>
-                                <th style="background-color:#A3A3A3;">COST?</th>
-                                <th style="background-color:#A3A3A3;">PROD GROUP</th>
-                                <th style="background-color:#707070;">OPT</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ResultTbody"></tbody>
-                        <tfoot id="ResultTfoot">
-                            <tr>
-                                <td colspan="12">
-                                    <input type="button" class="btn btn-primary btn-sm" id="btnNewLine" value="New Line" />
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                    <div style="width:100%;height:400px;min-height:300px;overflow-x:scroll;overflow-y:auto;">
+                            <table class="table table-bordered table-hover table-condensed" id="ResultTable" style="white-space:nowrap;text-overflow:ellipsis;padding:5px;width:150%;">
+                                <thead>
+                                    <tr>
+                                        <th style="background-color:#CDC9C9;"></th>
+                                        <th style="background-color:#CDC9C9;">Part No</th>
+                                        <th style="background-color:#CDC9C9;">Description</th>
+                                        <th style="background-color:#CDC9C9;">NOTE</th>
+                                        <th style="background-color:#A3A3A3;">EXIST?</th>
+                                        <th style="background-color:#A3A3A3;">Global Part</th>
+                                        <th style="background-color:#A3A3A3;">Global Part Desc</th>
+                                        <th style="background-color:#A3A3A3;">SHORT DESC</th>
+                                        <th style="background-color:#A3A3A3;">Primary Sup?</th>
+                                        <th style="background-color:#A3A3A3;">Primary PB?</th>
+                                        <th style="background-color:#A3A3A3;">BPA?</th>
+                                        <th style="background-color:#A3A3A3;">COST?</th>
+                                        <th style="background-color:#A3A3A3;">PROD GROUP</th>
+                                        <th style="background-color:#707070;width:3%;">OPT</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ResultTbody"></tbody>
+                                <tfoot id="ResultTfoot">
+                                    <tr>
+                                        <td colspan="14">
+                                            <input type="button" class="btn btn-primary btn-sm" id="btnNewLine" value="New Line" />
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                       
+                    </div>
                 </div>
             </div>
         </form>
@@ -63,7 +71,7 @@
 </div>
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog" style="height:300px;">
+    <div class="modal-dialog" id="myModalDialog" style="height:300px;">
         <div class="modal-content" style="height:300px;">
             <div class="modal-header panel-default" style="padding:0;height:50px;">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 30px;height: 30px;">
@@ -178,14 +186,16 @@
                     REQ_LINE_NO: td.eq(0).text(),
                     PART_NO: td.eq(1).find("input[type=text]").val(),
                     PART_DESC: td.eq(2).find("input[type=text]").val(),
-                    CHECK_EXIST: td.eq(3).find("span").text(),
-                    GLOBAL_PARTNO: td.eq(4).text(),
-                    GLOBAL_PARTDESC: td.eq(5).text(),
-                    CHECK_PRI_SUP: td.eq(6).find("span").text(),
-                    CHECK_PRI_PB: td.eq(7).find("span").text(),
-                    CHECK_PRI_BPA: td.eq(8).find("span").text(),
-                    CHECK_COST: td.eq(9).find("span").text(),
-                    PRODUCT_GROUP_ID: td.eq(10).find(".PRODUCT_GROUP_ID").val()
+                    NOTE:td.eq(3).find("input[type=text]").val(),
+                    CHECK_EXIST: td.eq(4).find("span").text(),
+                    GLOBAL_PARTNO: td.eq(5).text(),
+                    GLOBAL_PARTDESC: td.eq(6).text(),
+                    SHORT_DESC:td.eq(7).text(),
+                    CHECK_PRI_SUP: td.eq(8).find("span").text(),
+                    CHECK_PRI_PB: td.eq(9).find("span").text(),
+                    CHECK_PRI_BPA: td.eq(10).find("span").text(),
+                    CHECK_COST: td.eq(11).find("span").text(),
+                    PRODUCT_GROUP_ID: td.eq(12).find(".PRODUCT_GROUP_ID").val()
                 })
                 //}
             }
@@ -231,9 +241,14 @@
                 success: function (obj) {
                     $("#loadingModal").modal('hide');
                     if (obj.Success) {
-                        $("#txtMD_REQ_NO").val(obj.Data);
-                        $("#txtDESC").val("");
-                        $("#myModal").modal("show");
+                        if (obj.Msg == "EXISTOK") {
+                            $("#ResultTbody").empty();
+                            alert("Request已提交完成");
+                        } else {
+                            $("#txtMD_REQ_NO").val(obj.Data);
+                            $("#txtDESC").val("");
+                            $("#myModal").modal("show");
+                        }
                     }
                     else {
                         alert(obj.Msg);
@@ -257,14 +272,16 @@
                         REQ_LINE_NO: td.eq(0).text(),
                         PART_NO: td.eq(1).find("input[type=text]").val(),
                         PART_DESC: td.eq(2).find("input[type=text]").val(),
-                        CHECK_EXIST: td.eq(3).find("span").text(),
-                        GLOBAL_PARTNO: td.eq(4).text(),
-                        GLOBAL_PARTDESC: td.eq(5).text(),
-                        CHECK_PRI_SUP: td.eq(6).find("span").text(),
-                        CHECK_PRI_PB: td.eq(7).find("span").text(),
-                        CHECK_PRI_BPA: td.eq(8).find("span").text(),
-                        CHECK_COST: td.eq(9).find("span").text(),
-                        PRODUCT_GROUP_ID: td.eq(10).find(".PRODUCT_GROUP_ID").val()
+                        NOTE:td.eq(3).find("input[type=text]").val(),
+                        CHECK_EXIST: td.eq(4).find("span").text(),
+                        GLOBAL_PARTNO: td.eq(5).text(),
+                        GLOBAL_PARTDESC: td.eq(6).text(),
+                        SHORT_DESC:td.eq(7).text(),
+                        CHECK_PRI_SUP: td.eq(8).find("span").text(),
+                        CHECK_PRI_PB: td.eq(9).find("span").text(),
+                        CHECK_PRI_BPA: td.eq(10).find("span").text(),
+                        CHECK_COST: td.eq(11).find("span").text(),
+                        PRODUCT_GROUP_ID: td.eq(12).find(".PRODUCT_GROUP_ID").val()
                     })
                 }
 
@@ -466,34 +483,35 @@
             var td = tr.find("td");
             td.eq(1).find(".txtPART_NO").val(data.PART_NO);
             td.eq(2).find(".txtPART_DESC").val(data.PART_DESC);
-            td.eq(3).find("span").text(data.CHECK_EXIST);
+            td.eq(4).find("span").text(data.CHECK_EXIST);
             if (data.CHECK_EXIST.indexOf("OK") >= 0)
-                td.eq(3).find("span").css('color', 'green');
+                td.eq(4).find("span").css('color', 'green');
             else
-                td.eq(3).find("span").css('color', 'red');
-            td.eq(4).text(data.GLOBAL_PARTNO);
-            td.eq(5).text(data.GLOBAL_PARTDESC);
-            td.eq(6).find("span").text(data.CHECK_PRI_SUP);
+                td.eq(4).find("span").css('color', 'red');
+            td.eq(5).text(data.GLOBAL_PARTNO);
+            td.eq(6).text(data.GLOBAL_PARTDESC);
+            td.eq(7).text(data.SHORT_DESC);
+            td.eq(8).find("span").text(data.CHECK_PRI_SUP);
             if (data.CHECK_PRI_SUP == "OK")
-                td.eq(6).find("span").css('color', 'green');
-            else
-                td.eq(6).find("span").css('color', 'red');
-            td.eq(7).find("span").text(data.CHECK_PRI_PB);
-            if (data.CHECK_PRI_PB == "OK")
-                td.eq(7).find("span").css('color', 'green');
-            else
-                td.eq(7).find("span").css('color', 'red');
-            td.eq(8).find("span").text(data.CHECK_PRI_BPA);
-            if (data.CHECK_PRI_BPA == "OK")
                 td.eq(8).find("span").css('color', 'green');
             else
                 td.eq(8).find("span").css('color', 'red');
-            td.eq(9).find("span").text(data.CHECK_COST);
-            if (data.CHECK_COST == "OK")
+            td.eq(9).find("span").text(data.CHECK_PRI_PB);
+            if (data.CHECK_PRI_PB.indexOf("OK") >= 0)
                 td.eq(9).find("span").css('color', 'green');
             else
                 td.eq(9).find("span").css('color', 'red');
-            td.eq(10).find(".PRODUCT_GROUP_ID").val(data.PRODUCT_GROUP_ID);
+            td.eq(10).find("span").text(data.CHECK_PRI_BPA);
+            if (data.CHECK_PRI_BPA == "OK")
+                td.eq(10).find("span").css('color', 'green');
+            else
+                td.eq(10).find("span").css('color', 'red');
+            td.eq(11).find("span").text(data.CHECK_COST);
+            if (data.CHECK_COST == "OK")
+                td.eq(11).find("span").css('color', 'green');
+            else
+                td.eq(11).find("span").css('color', 'red');
+            td.eq(12).find(".PRODUCT_GROUP_ID").val(data.PRODUCT_GROUP_ID);
         }
 
         //Description大写
@@ -512,6 +530,6 @@
         //debugger;
         var ss = window.innerHeight;
         $("#imgDiag").css("margin-top", "300px");
-        $("#myModal").css("margin-top", "200px");
+        $("#myModalDialog").css("margin-top", "200px");
     });
 </script>
