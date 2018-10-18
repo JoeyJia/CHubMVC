@@ -1,4 +1,4 @@
-﻿@{ 
+﻿@{
     ViewBag.Title = "TC HSCODE";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -29,20 +29,30 @@
                             <tr>
                                 <th>HS CODE</th>
                                 <th>DESC</th>
+                                <th>TAX REFUND RATE</th>
+                                <th>MFN RATE</th>
+                                <th>UOM</th>
+                                <th>REGULATION</th>
                                 <th>TC Category ID (by Man)</th>
                                 <th>NOTE1</th>
                                 <th>NOTE2</th>
                                 <th>NOTE3</th>
-                                <th></th>
+                                <th style="width: 11%;"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="x in list">
-                                <td style=""><input type="text" class="form-control IsDisabled" ng-model="x.HSCODE" ng-readonly="display"/></td>
+                                <td style=""><input type="text" class="form-control IsDisabled" ng-model="x.HSCODE" ng-readonly="display" /></td>
                                 <td style=""><input type="text" class="form-control" ng-model="x.HSCODE_DESC" /></td>
-                                <td style=""><select class="form-control" id="TC_CATEGORY_ID" ng-model="x.TC_CATEGORY_ID" ng-options="r for r in CIDlist">
-                                    <option value=""></option>
-                                    </select></td>
+                                <td style=""><input type="text" class="form-control" ng-model="x.TAX_REFUND_RATE" /></td>
+                                <td style=""><input type="text" class="form-control" ng-model="x.MFN_RATE" /></td>
+                                <td style=""><input type="text" class="form-control" ng-model="x.UOM" /></td>
+                                <td style=""><input type="text" class="form-control" ng-model="x.REGULATION" /></td>
+                                <td style="">
+                                    <select class="form-control" id="TC_CATEGORY_ID" ng-model="x.TC_CATEGORY_ID" ng-options="r for r in CIDlist">
+                                        <option value=""></option>
+                                    </select>
+                                </td>
                                 <td style=""><input type="text" class="form-control" ng-model="x.NOTE1" /></td>
                                 <td style=""><input type="text" class="form-control" ng-model="x.NOTE2" /></td>
                                 <td style=""><input type="text" class="form-control" ng-model="x.NOTE3" /></td>
@@ -58,7 +68,7 @@
             </div>
         </div>
 
-    </div> 
+    </div>
 
 
     <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="AuditTrail">
@@ -145,7 +155,7 @@
                     else {
                         $("#loadingModal").modal("hide");
                         alert(obj.Msg);
-                    }                    
+                    }
                 }, error: function (obj) {
                     $("#loadingModal").modal("hide");
                     alert("fail to get");
@@ -154,8 +164,7 @@
         }
 
         $scope.saveAction = function (data) {
-            if (data.HSCODE == "")
-            {
+            if (data.HSCODE == "") {
                 alert("HSCODE Can Not Be Empty");
                 return;
             }
@@ -172,7 +181,7 @@
                 contentType: "application/json;charset=utf-8",
                 data: JSON.stringify({
                     HSCode: data,
-                    Type:str
+                    Type: str
                 }),
                 success: function (obj) {
                     if (obj.Success) {
@@ -192,7 +201,7 @@
             });
 
         }
-        
+
         $scope.addAction = function () {
             var newItem = {
                 HSCODE: "",
@@ -212,7 +221,7 @@
                 url: "/tc/GetHSCODEAUDIT",
                 type: "post",
                 data: {
-                    HSCODE:hscode
+                    HSCODE: hscode
                 },
                 async: false,
                 success: function (obj) {
@@ -241,4 +250,3 @@
     });
 
 </script>
- 

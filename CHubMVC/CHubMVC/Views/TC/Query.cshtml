@@ -135,6 +135,23 @@
 
                     <div class="row">
                         <div class="form-group">
+                            <label for="modalNote3" class="col-sm-2 control-label">CIQ</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-sm" id="modalNote3" ng-model="currentData.NOTE3" ng-readonly="isReadOnly" placeholder="CIQ" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalCIQDESC" class="col-sm-2 control-label">CIQ货物名称</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control input-sm" id="modalCIQDESC" rows="5" ng-model="currentData.CIQDESC" ng-readonly="isReadOnly" placeholder="CIQ货物名称"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
                             <label for="modalMFNRate" class="col-sm-2 control-label">最惠国关税</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control input-sm" id="modalMFNRate" ng-model="currentData.MFN_RATE" ng-readonly="isReadOnly" placeholder="MFN Rate">
@@ -170,8 +187,14 @@
                             <div class="col-sm-8">
                                 <textarea class="form-control input-sm" id="modalElement" rows="5" ng-model="currentData.ELEMENT" ng-readonly="isReadOnly" placeholder="Element"></textarea>
                             </div>
-
-                            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalElementCK" class="col-sm-2 control-label">申报要素(参考)</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control input-sm" id="modalElementCK" rows="5" ng-model="currentData.ELEMENTCK" ng-readonly="isReadOnly" placeholder="申报要素(参考)"></textarea>
+                            </div>
                         </div>
                     </div>
 
@@ -239,35 +262,38 @@
                                 <input type="text" class="form-control input-sm" id="modalNote2" ng-model="currentData.NOTE2" ng-readonly="isReadOnly" placeholder="Note2">
                             </div>
 
-                            <label for="modalNote3" class="col-sm-2 control-label">备注3</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalNote3" ng-model="currentData.NOTE3" ng-readonly="isReadOnly" placeholder="Note3">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group">
                             <label for="modalFlex1" class="col-sm-2 control-label">预留字段1</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control input-sm" id="modalFlex1" ng-model="currentData.FLEX1" ng-readonly="isReadOnly" placeholder="Flex1">
                             </div>
 
-                            <label for="modalFlex2" class="col-sm-2 control-label">预留字段2</label>
+                            @*<label for="modalNote3" class="col-sm-2 control-label">备注3</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalFlex2" ng-model="currentData.FLEX2" ng-readonly="isReadOnly" placeholder="Flex2">
-                            </div>
+                                <input type="text" class="form-control input-sm" id="modalNote3" ng-model="currentData.NOTE3" ng-readonly="isReadOnly" placeholder="Note3">
+                            </div>*@
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group">
+                           
+
+                            <label for="modalFlex2" class="col-sm-2 control-label">预留字段2</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-sm" id="modalFlex2" ng-model="currentData.FLEX2" ng-readonly="isReadOnly" placeholder="Flex2">
+                            </div>
                             <label for="modalFlex3" class="col-sm-2 control-label">预留字段3</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control input-sm" id="modalFlex3" ng-model="currentData.FLEX3" ng-readonly="isReadOnly" placeholder="Flex3">
                             </div>
                         </div>
                     </div>
+
+                    @*<div class="row">
+                        <div class="form-group">
+                            
+                        </div>
+                    </div>*@
 
                     <div class="row">
                         <div class="form-group">
@@ -398,11 +424,56 @@
         {
             var appElement = document.querySelector('[ng-controller=partReadFormCtrl]');
             var scope = angular.element(appElement).scope();
+            GetGOOD_DESC(obj);
+            GetELEMENTCK(obj);
             scope.currentData = obj;
 
             scope.$apply();
             $("#partReadModal").modal("show");
         }
+
+        function GetGOOD_DESC(data) {
+            $.ajax({
+                url: '/tc/GetGOOD_DESC',
+                type: 'post',
+                async: false,
+                data: {
+                    HSCODE: data.HSCODE,
+                    CIQ: data.NOTE3
+                },
+                success: function (obj) {
+                    if (obj.Success) {
+                        data.CIQDESC = obj.Data;
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert(e.responseText);
+                }
+            });
+        };
+        function GetELEMENTCK(data) {
+            $.ajax({
+                url:'/tc/GetELEMENTCK',
+                type:'post',
+                async:false,
+                data: {
+                    PART_NO:data.PART_NO
+                },
+                success: function (obj) {
+                    if (obj.Success)
+                        data.ELEMENTCK = obj.Data;
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert(e.responseText);
+                }
+            });
+        };
+
+
 
     });
 

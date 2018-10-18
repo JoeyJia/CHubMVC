@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "TC Maint";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -50,11 +49,12 @@
 
             </div>
         </form>
-      <hr />
+        <hr />
 
         <!--HS part upload form-->
         <div class="row">
-            <form class="form-inline" name="hsForm" id="hsUpload"  >@*//method="post" action="/tc/UploadHSFile" enctype="multipart/form-data"*@
+            <form class="form-inline" name="hsForm" id="hsUpload">
+                @*//method="post" action="/tc/UploadHSFile" enctype="multipart/form-data"*@
                 <div class="col-sm-2 text-right">
                     <label style="margin-left:20px">HS Upload</label>
                 </div>
@@ -69,7 +69,8 @@
 
         <!--TC Category upload form-->
         <div class="row" style="margin-top:10px;margin-bottom:10px">
-            <form class="form-inline" name="tcCateForm" id="tcCateUpload" >@*enctype="multipart/form-data" method="post" action="/tc/UploadTCCateFile"*@
+            <form class="form-inline" name="tcCateForm" id="tcCateUpload">
+                @*enctype="multipart/form-data" method="post" action="/tc/UploadTCCateFile"*@
                 <div class="col-sm-2 text-right">
                     <label style="margin-left:20px">TC Category Upload</label>
                 </div>
@@ -77,10 +78,9 @@
                     <label class="sr-only" for="exampleInputFile">TC Category Upload</label>
                     <input type="file" name="fileInput" id="exampleInputFile">
                 </div>
-                <button  class="btn btn-primary btn-sm" onclick="uploadTCCateFile()">Upload</button>
+                <button class="btn btn-primary btn-sm" onclick="uploadTCCateFile()">Upload</button>
                 <button class="btn btn-primary btn-sm" onclick="downloadMPartTemplate()">Download Template</button>
             </form>
-
         </div>
 
         @*<div class="row" style="margin-top:15px;margin-bottom:10px">
@@ -88,8 +88,8 @@
                 <button class="btn btn-primary" onclick="addNewPart()">Add New Part</button>
             </div>
         </div>*@
-        
-        
+
+
 
         <!--Order List-->
         <div class="row">
@@ -137,7 +137,8 @@
 
 <!-- TC Part HS modal-->
 <div class="modal fade" id="partModal" role="dialog" aria-labelledby="result" aria-hidden="true" ng-app="partFormApp" ng-controller="partFormCtrl">
-    <div class="modal-dialog" style="width:90%" >@*//*@
+    <div class="modal-dialog" style="width:90%">
+        @*//*@
         <div class="modal-content">
             <div class="modal-header">
                 <h4>TC Part HS Form</h4>
@@ -154,7 +155,7 @@
 
                             <label for="modalDesc" class="col-sm-2 control-label">Description</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalDesc" ng-model="currentData.DESCRIPTION"  placeholder="Description" readonly>
+                                <input type="text" class="form-control input-sm" id="modalDesc" ng-model="currentData.DESCRIPTION" placeholder="Description" readonly>
                             </div>
                         </div>
                     </div>
@@ -168,7 +169,23 @@
 
                             <label for="modalHSCode" class="col-sm-2 control-label">申报税号</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalHSCode" ng-model="currentData.HSCODE" placeholder="HSCode">
+                                <input type="text" class="form-control input-sm" id="modalHSCode" ng-model="currentData.HSCODE" ng-blur="checkHSCODE()" placeholder="HSCode">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalNote3" class="col-sm-2 control-label">CIQ</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-sm" id="modalNote3" ng-model="currentData.NOTE3" ng-focus="CIQChange()" placeholder="CIQ" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label form="modalCIQDESC" class="col-sm-2 control-label">CIQ货物名称</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control input-sm" id="modalCIQDESC" rows="5" ng-model="currentData.CIQDESC" placeholder="CIQ货物名称" readonly></textarea>
                             </div>
                         </div>
                     </div>
@@ -177,7 +194,7 @@
                         <div class="form-group">
                             <label for="modalMFNRate" class="col-sm-2 control-label">最惠国关税</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalMFNRate" ng-model="currentData.MFN_RATE" placeholder="MFN Rate">
+                                <input type="text" class="form-control input-sm" id="modalMFNRate" ng-model="currentData.MFN_RATE" placeholder="MFN Rate" readonly>
                             </div>
 
                             <label for="modalTaxRate" class="col-sm-2 control-label">关税</label>
@@ -193,12 +210,12 @@
                         <div class="form-group">
                             <label for="modalTaxRFRate" class="col-sm-2 control-label">退税率</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalTaxRFRate" ng-model="currentData.TAX_REFUND_RATE" placeholder="Tax Refund Rate">
+                                <input type="text" class="form-control input-sm" id="modalTaxRFRate" ng-model="currentData.TAX_REFUND_RATE" placeholder="Tax Refund Rate" readonly>
                             </div>
 
                             <label for="modalUOM" class="col-sm-2 control-label">计量单位</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalUOM" ng-model="currentData.UOM" placeholder="UOM">
+                                <input type="text" class="form-control input-sm" id="modalUOM" ng-model="currentData.UOM" placeholder="UOM" readonly>
                             </div>
                         </div>
                     </div>
@@ -210,11 +227,16 @@
                             <div class="col-sm-8">
                                 <textarea class="form-control input-sm" id="modalElement" rows="5" ng-model="currentData.ELEMENT" placeholder="Element"></textarea>
                             </div>
-
-                            
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="modalElementCK" class="col-sm-2 control-label">申报要素(参考)</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control input-sm" id="modalElementCK" rows="5" ng-model="currentData.ELEMENTCK" placeholder="申报要素(参考)" readonly></textarea>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="row">
                         <div class="form-group">
@@ -239,11 +261,11 @@
 
                             <label for="modalRegulation" class="col-sm-2 control-label">监管条件</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalRegulation" ng-model="currentData.REGULATION" placeholder="Regulation">
+                                <input type="text" class="form-control input-sm" id="modalRegulation" ng-model="currentData.REGULATION" placeholder="Regulation" readonly>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="form-group">
                             <label for="modalInspection" class="col-sm-2 control-label">检验检疫</label>
@@ -265,7 +287,7 @@
                                 <input type="text" class="form-control input-sm" id="modalVoltage" ng-model="currentData.VOLTAGE" placeholder="Voltage">
                             </div>
 
-                            <label for="modalNote1" class="col-sm-2 control-label">备注1</label>
+                            <label for="modalNote1" class="col-sm-2 control-label">工程师确认的品名</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control input-sm" id="modalNote1" ng-model="currentData.NOTE1" placeholder="Note1">
                             </div>
@@ -278,36 +300,36 @@
                             <div class="col-sm-3">
                                 <input type="text" class="form-control input-sm" id="modalNote2" ng-model="currentData.NOTE2" placeholder="Note2">
                             </div>
-
-                            <label for="modalNote3" class="col-sm-2 control-label">备注3</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalNote3" ng-model="currentData.NOTE3" placeholder="Note3">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group">
                             <label for="modalFlex1" class="col-sm-2 control-label">预留字段1</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control input-sm" id="modalFlex1" ng-model="currentData.FLEX1" placeholder="Flex1">
                             </div>
 
-                            <label for="modalFlex2" class="col-sm-2 control-label">预留字段2</label>
+                            @*<label for="modalNote3" class="col-sm-2 control-label">备注3</label>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm" id="modalFlex2" ng-model="currentData.FLEX2" placeholder="Flex2">
-                            </div>
+                                <input type="text" class="form-control input-sm" id="modalNote3" ng-model="currentData.NOTE3" placeholder="Note3">
+                            </div>*@
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group">
+                            <label for="modalFlex2" class="col-sm-2 control-label">预留字段2</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-sm" id="modalFlex2" ng-model="currentData.FLEX2" placeholder="Flex2">
+                            </div>
                             <label for="modalFlex3" class="col-sm-2 control-label">预留字段3</label>
                             <div class="col-sm-3">
                                 <input type="text" class="form-control input-sm" id="modalFlex3" ng-model="currentData.FLEX3" placeholder="Flex3">
                             </div>
                         </div>
                     </div>
+
+                    @*<div class="row">
+                        <div class="form-group">
+
+                        </div>
+                    </div>*@
 
                     <div class="row">
                         <div class="form-group">
@@ -329,7 +351,8 @@
 
                 </form>
                 <div class="row">
-                    <div class="col-md-4 col-md-offset-5">
+                    <div class="col-md-4 col-md-offset-4">
+                        <button type="button" class="btn btn-primary" ng-click="copyfrom()" ng-disabled="CanClick">COPYFROM</button>
                         <button type="button" class="btn btn-primary" ng-click="showAuditLog()">Audit Log</button>
                         <button type="button" class="btn btn-primary" ng-click="saveAction()">Save</button>
                         <button type="button" class="btn btn-primary" ng-click="cancel()">Close</button>
@@ -341,6 +364,60 @@
     </div>
 </div>
 
+<div class="modal fade" id="copyModal" role="dialog" aria-labelledby="result" aria-hidden="true" ng-app="copyFormApp" ng-controller="copyFormCtrl" style="height:800px;overflow-y:auto;">
+    <div class="modal-dialog" style="width:70%;">
+        <div class="modal-content panel panel-default" style="height: 600px;overflow-y: auto;overflow-x: hidden;">
+            <div class="panel panel-heading">
+                Query
+            </div>
+            <form class="form-horizontal">
+                <div class="row" style="margin-top:20px;">
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">PART NO</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control input-sm" ng-model="copyPartNo" placeholder="PART NO" />
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="button" class="btn btn-primary btn-sm" ng-click="search()" value="Search" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <div class="panel panel-default">
+                        @*<div class="panel panel-heading">
+                            Result
+                        </div>*@
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>PART NO</th>
+                                    <th>DECLARATION NAME</th>
+                                    <th>HSCODE</th>
+                                    <th>Operation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="r in copyresult">
+                                    <td>{{r.PART_NO}}</td>
+                                    <td>{{r.DECLARATION_NAME}}</td>
+                                    <td>{{r.HSCODE}}</td>
+                                    <td>
+                                        <input type="button" class="btn btn-primary btn-sm" ng-click="OKAction(r)" value="OK" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <!--Audit Log Modal-->
 <div class="modal fade" id="auditLogModal" role="dialog" aria-labelledby="result" aria-hidden="true" ng-app="auditLogApp" ng-controller="auditLogCtrl">
     <div class="modal-dialog" style="width:60%">
@@ -350,7 +427,7 @@
             </div>
 
             <div class="modal-body">
-                
+
                 <table id="tbAuditLog" class="table table-striped table-hover table-bordered .table-condensed">
                     <thead>
                         <tr>
@@ -377,8 +454,55 @@
     </div>
 </div>
 
+
+<!--CIQ CHANGE-->
+<div class="modal fade" id="CIQModal" tabindex="-1" role="dialog" aria-labelledby="result" aria-hidden="true" ng-app="ciqListApp" ng-controller="ciqListCtrl">
+    <div class="modal-dialog" style="width:80%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">
+                    ×
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    CIQ LISTS
+                </h4>
+            </div>
+            <div class="modal-body" style="padding:0;">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width: 3%;"></th>
+                            <th>CIQ</th>
+                            <th>CIQ货物名称</th>
+                            <th>NOTE</th>
+                            @*<th style="width:5%;">Operation</th>*@
+                        </tr>
+                    </thead>
+                    <tbody id="CIQResultTbody">
+                        <tr ng-repeat="r in ciqList">
+                            <td><input type="radio" name="Radio" ng-model="$parent.modalCIQ" value="{{r.CIQ}}" /></td>
+                            <td>{{r.CIQ}}</td>
+                            <td>{{r.GOOD_DESC}}</td>
+                            <td>{{r.NOTE}}</td>
+                            @*
+                            <td><input type="button" class="btn btn-primary btn-sm" ng-click="SaveCiq(r)" value="Save" /> </td>*@
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4"><input type="button" class="btn btn-primary btn-sm" ng-click="SaveCIQ()" value="OK" /></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
-    
+
 
     angular.module('maintApp', ['tm.pagination']).controller('maintCtrl', function ($scope, $http) {
         $scope.result = [];
@@ -389,30 +513,27 @@
         $scope.loading = true;
 
         $scope.paginationConf = {
-            currentPage:1,
-            itemsPerPage:10,
+            currentPage: 1,
+            itemsPerPage: 10,
             totalItems: 0,
-            pagesLength:3,
+            pagesLength: 3,
             perPageOptions: [10, 20, 30, 40, 50],
         };
 
         $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', searchHSPart);
 
 
-        $scope.searchAction = function ()
-        {
+        $scope.searchAction = function () {
             searchHSPart();
         }
 
-         function  searchHSPart() {
-            if ($scope.loading)
-            {
+        function searchHSPart() {
+            if ($scope.loading) {
                 //first time load ignore
                 $scope.loading = false;
                 return;
             }
-            if ($scope.partNo == "" && $scope.hsCode == "" && $scope.declrName == "" && $scope.element == "")
-            {
+            if ($scope.partNo == "" && $scope.hsCode == "" && $scope.declrName == "" && $scope.element == "") {
                 alert("No Condition");
                 return;
             }
@@ -442,18 +563,62 @@
             });
         };
 
-        $scope.viewDetail = function(obj)
-        {
-           
+        $scope.viewDetail = function (obj) {
             var appElement = document.querySelector('[ng-controller=partFormCtrl]');
             var scope = angular.element(appElement).scope();
+            GetGOOD_DESC(obj);
+            GetELEMENTCK(obj);
             scope.currentData = obj;
+            if (scope.currentData.HSCODE != null)
+                scope.CanClick = true;
+            else
+                scope.CanClick = false;
             scope.beginEdit();
 
             scope.$apply();
             $("#partModal").modal("show");
-
         }
+
+        function GetGOOD_DESC(data) {
+            $.ajax({
+                url: '/tc/GetGOOD_DESC',
+                type: 'post',
+                async: false,
+                data: {
+                    HSCODE: data.HSCODE,
+                    CIQ: data.NOTE3
+                },
+                success: function (obj) {
+                    if (obj.Success)
+                        data.CIQDESC = obj.Data;
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert(e.responseText);
+                }
+            })
+        };
+        function GetELEMENTCK(data) {
+            $.ajax({
+                url: '/tc/GetELEMENTCK',
+                type: 'post',
+                async: false,
+                data: {
+                    PART_NO: data.PART_NO
+                },
+                success: function (obj) {
+                    if (obj.Success)
+                        data.ELEMENTCK = obj.Data;
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert(e.responseText);
+                }
+            });
+        }
+
 
     });
 
@@ -463,10 +628,11 @@
     //For part modal part
     angular.module('partFormApp', []).controller('partFormCtrl', function ($scope, $http) {
         //Alias addres list
-        $scope.currentData = "";
+        $scope.currentData = {};
         $scope.editAction = false;
         $scope.selectCate = "";
         $scope.cateList = [];
+        $scope.CanClick = false;
 
         //Get sys man status list
         $http.post("/tc/InitTCPartForm", null, null).then(function (resp) {
@@ -478,19 +644,32 @@
                  // $scope.resp = resp;
              });
 
-        //only For add function using  , can delete 
-        $scope.checkPartNo = function ()
-        {
+        //$http.post("/tc/GetGOOD_DESC", { HSCODE: $scope.currentData.HSCODE, CIQ: $scope.currentData.NOTE3 }, null).then(
+        //    function (obj) {
+        //        if (obj.data.Success) {
+        //            $scope.currentData.CIQDESC = obj.data.Data;
+        //        }
+        //        else
+        //            alert(obj.data.Msg);
+        //    },
+        //    function (resp) {
+        //        alert("Fail!");
+        //    }
+        //   );
+
+
+        //only For add function using  , can delete
+        $scope.checkPartNo = function () {
             if ($scope.currentData.PART_NO == "" || $scope.currentData.PART_NO == null)
                 return;
-    
+
             $.ajax({
                 url: "/TC/CheckPartNo",
                 data: { partNo: $scope.currentData.PART_NO },
                 type: "post",
                 async: false,
                 success: function (obj) {
-                    $scope.currentData.DESCRIPTION = obj;  
+                    $scope.currentData.DESCRIPTION = obj;
                 },
                 error: function (obj) {
                     alert("wrong part No.");
@@ -498,9 +677,29 @@
                 }
             });
         }
+        $scope.checkHSCODE = function () {
+            if ($scope.currentData.HSCODE == "" || $scope.currentData.HSCODE == null)
+                return;
+            $.ajax({
+                url: '/tc/CheckHSCODE',
+                type: 'post',
+                async: false,
+                data: {
+                    HSCODE: $scope.currentData.HSCODE
+                },
+                success: function (obj) {
+                    if (obj.Success)
+                        GetCIQLists();
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get");
+                }
+            });
+        }
 
-        $scope.onCateChange = function ()
-        {
+        $scope.onCateChange = function () {
             //debugger;
             if ($scope.selectCate != null)
                 $scope.currentData.TC_CATEGORY_BY_MAN = $scope.selectCate.TC_CATEGORY_ID;
@@ -508,8 +707,7 @@
                 $scope.currentData.TC_CATEGORY_BY_MAN = null;
         }
 
-        $scope.beginEdit = function()
-        {
+        $scope.beginEdit = function () {
             //debugger;
             $scope.editAction = true;
             if ($scope.currentData.TC_CATEGORY_BY_MAN != null) {
@@ -518,7 +716,6 @@
                         $scope.selectCate = $scope.cateList[i];
                         break;
                     }
-
                 }
             }
             else {
@@ -526,9 +723,8 @@
             }
         }
 
-        //For add function using  , can delete 
-        $scope.beginAdd = function ()
-        {
+        //For add function using  , can delete
+        $scope.beginAdd = function () {
             $scope.currentData = {
                 PART_NO: "", DESCRIPTION: "", TC_CATEGORY_BY_SYS: "", TC_CATEGORY_BY_MAN: "", DECLARATION_NAME: "", HSCODE: "",
                 MFN_RATE: "", TAX_RATE: "", TAX_REFUND_RATE: "",
@@ -563,13 +759,12 @@
             });
         };
 
-        $scope.cancel = function ()
-        {
+        $scope.cancel = function () {
+            $scope.currentData = {};
             $("#partModal").modal("hide");
         }
 
-        $scope.showAuditLog = function ()
-        {
+        $scope.showAuditLog = function () {
             //debugger;
             var appElement = document.querySelector('[ng-controller=auditLogCtrl]');
             var scope = angular.element(appElement).scope();
@@ -579,19 +774,168 @@
             $("#auditLogModal").modal("show");
         }
 
+        $scope.copyfrom = function () {
+            var part_no = $scope.currentData.PART_NO;
+            var appElement = document.querySelector('[ng-controller=copyFormCtrl]');
+            var scope = angular.element(appElement).scope();
+            scope.copyPartNo = "";
+            scope.copyresult = [];
+            scope.PART_NO = part_no;
+
+            scope.$apply();
+            $("#copyModal").modal("show");
+        }
+
+        $scope.CIQChange = function () {
+            //var CIQ = $("#modalNote3").val();
+            //$scope.currentData.CIQDESC = CIQ;
+
+            GetCIQLists();
+
+            // $("#CIQModal").modal("show");
+        }
+
+        function GetCIQLists() {
+            $.ajax({
+                url: '/tc/GetCIQLists',
+                type: 'post',
+                async: false,
+                data: {
+                    HSCODE: $scope.currentData.HSCODE
+                },
+                success: function (obj) {
+                    if (obj.Success) {
+                        var ciqElement = document.querySelector('[ng-controller=ciqListCtrl]');
+                        var scope = angular.element(ciqElement).scope();
+                        scope.ciqList = obj.Data;
+                        scope.$apply();
+                        $("#CIQModal").modal("show");
+                    }
+                },
+                error: function (e) {
+                    alert("fail to get");
+                }
+            });
+        }
+
+
     });
 
     //Add second app to document
     angular.bootstrap(document.getElementById("partModal"), ['partFormApp']);
 
+
+    //CIQ
+    angular.module("ciqListApp", []).controller("ciqListCtrl", function ($scope, $http) {
+        $scope.ciqList = [];
+        $scope.modalCIQ = "";
+
+        //$scope.SaveCiq = function (data) {
+        //    //alert(data.CIQ);
+        //    SaveCIQ(data);
+        //};
+
+        $scope.SaveCIQ = function () {
+            var data = {};
+            var CIQ = $scope.modalCIQ;
+            var CIQDESC="";
+            for (var i = 0; i < $scope.ciqList.length; i++) {
+                if ($scope.ciqList[i].CIQ == CIQ) {
+                    CIQDESC = $scope.ciqList[i].GOOD_DESC;
+                    break;
+                }                    
+            }
+            data.CIQ = CIQ;
+            data.GOOD_DESC = CIQDESC;
+            SaveCIQ(data);
+        };
+
+        function SaveCIQ(data) {
+            var CIQ = data.CIQ;
+            var GOOD_DESC = data.GOOD_DESC;
+            var partElement = document.querySelector('[ng-controller=partFormCtrl]');
+            var scope = angular.element(partElement).scope();
+            scope.currentData.NOTE3 = CIQ;
+            scope.currentData.CIQDESC = GOOD_DESC;
+            scope.$apply();
+            $("#CIQModal").modal("hide");
+        }
+
+
+    });
+    angular.bootstrap(document.getElementById("CIQModal"), ['ciqListApp']);
+
+
+    angular.module('copyFormApp', []).controller('copyFormCtrl', function ($scope, $http) {
+        $scope.copyresult = [];
+        $scope.copyPartNo = "";
+        $scope.PART_NO = "";
+        $scope.search = function () {
+            if ($scope.copyPartNo == "") {
+                alert("No Data Input");
+                return false;
+            }
+            $.ajax({
+                url: '/tc/CopySearch',
+                type: 'post',
+                async: false,
+                data: {
+                    PART_NO: $scope.copyPartNo
+                },
+                success: function (obj) {
+                    if (obj.Success) {
+                        //alert(1);
+                        $scope.copyresult = obj.Data;
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert(e.responseText);
+                }
+            })
+        }
+        $scope.OKAction = function (obj) {
+            var PART_NO = obj.PART_NO;
+            $.ajax({
+                url: '/tc/CopyData',
+                type: 'post',
+                async: false,
+                data: {
+                    PART_NO: PART_NO
+                },
+                success: function (obj) {
+                    if (obj.Success) {
+                        var part_no = $scope.PART_NO;
+                        var appElement = document.querySelector('[ng-controller=partFormCtrl]');
+                        var scope = angular.element(appElement).scope();
+                        scope.currentData = obj.Data;
+                        scope.currentData.PART_NO = part_no;
+
+                        scope.$apply();
+                        $("#copyModal").modal("hide");
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to copy");
+                }
+            })
+        }
+    });
+    angular.bootstrap(document.getElementById("copyModal"), ['copyFormApp']);
+
+
+
     //Audit log part
     angular.module('auditLogApp', []).controller('auditLogCtrl', function ($scope, $http) {
-        
+
         $scope.partNo = "";
         $scope.auditLog = [];
 
         $scope.loadAuditLog = function () {
-            
+
             $.ajax({
                 url: "/TC/GetPartAuditLog",
                 data: { partNo: $scope.partNo },
@@ -616,24 +960,22 @@
 <script>
     function uploadHSFile() {
         var form = $("form[name=hsForm]");
-                var options  = {
-                    url: '/tc/UploadHSFile',
-                        type: 'post',
-                        enctype:"multipart/form-data",
-                        success: function (data) {
-                            if (data.Success)
-                                alert(data.Msg);
-                            else {
-                                alert(data.Msg);
-                            }
-
-                        }
-                    };
-                form.ajaxSubmit(options);
+        var options = {
+            url: '/tc/UploadHSFile',
+            type: 'post',
+            enctype: "multipart/form-data",
+            success: function (data) {
+                if (data.Success)
+                    alert(data.Msg);
+                else {
+                    alert(data.Msg);
+                }
+            }
+        };
+        form.ajaxSubmit(options);
     }
 
-    function uploadTCCateFile()
-    {
+    function uploadTCCateFile() {
         var form = $("form[name=tcCateForm]");
         var options = {
             url: '/tc/UploadTCCateFile',
@@ -645,12 +987,11 @@
             }
         };
         form.ajaxSubmit(options);
-       
+
         //$(function () {setInterval("link()",1000) });
     }
 
-    function addNewPart()
-    {
+    function addNewPart() {
         var appElement = document.querySelector('[ng-controller=partFormCtrl]');
         var scope = angular.element(appElement).scope();
         scope.beginAdd();
@@ -659,14 +1000,12 @@
         $("#partModal").modal("show");
     }
 
-    function downloadHSPartTemplate()
-    {
-     window.location.href = "/tc/DownloadHSFileTemplate";
+    function downloadHSPartTemplate() {
+        window.location.href = "/tc/DownloadHSFileTemplate";
     }
 
-    function downloadMPartTemplate()
-    {
-     window.location.href = "/tc/DownloadMPartFileTemplate";
+    function downloadMPartTemplate() {
+        window.location.href = "/tc/DownloadMPartFileTemplate";
     }
 
 </script>
