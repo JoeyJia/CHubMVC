@@ -1,0 +1,238 @@
+﻿@{
+    ViewBag.Title = "IA IAMap";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>QUERY</b></div>
+        <form class="form-horizontal" id="iamapForm">
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtINPUT_PART" class="col-sm-2 control-label">INPUT STRING:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" name="INPUT_PART" id="txtINPUT_PART" placeholder="INPUT STRING" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtPRTNUM" class="col-sm-2 control-label">PartNo Auto Mapping:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" name="PRTNUM" id="txtPRTNUM" placeholder="PartNo Auto Mapping" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="searchButton" value="Search" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default" style="">
+                    <div class="panel-heading"><b>DISPLAY</b></div>
+                    <table id="resultTable" class="table table-striped table-hover table-bordered .table-condensed">
+                        <thead>
+                            <tr>
+                                <th style="width:20%;">INPUT String</th>
+                                <th style="width:20%;">PartNo Auto Mapping</th>
+                                <th style="width:20%;">MAP Group</th>
+                                <th style="width:20%;">NOTE</th>
+                                <th style="width:20%;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultBody"></tbody>
+                    </table>
+                    <button type="button" class="btn btn-primary input-sm" id="addButton">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_LoadingModal")
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#searchButton").on("click", function () {
+            if ($("#txtINPUT_PART").val() == "") {
+                alert("No INPUT_PART Input");
+                return false;
+            }
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/ia/GetIaMap',
+                type: 'post',
+                aysnc: false,
+                data: {
+                    INPUT_PART: $("#txtINPUT_PART").val(),
+                    PRTNUM: $("#txtPRTNUM").val()
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Success) {
+                        $("#loadingModal").modal("hide");
+                        $("#resultBody").empty();
+                        $("#resultBody").append(mainHtml(data.Data));
+                    }
+                    else {
+                        $("#loadingModal").modal("hide");
+                    }
+                },
+                error: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+            });
+        })
+
+        //Add
+        $("#addButton").on('click', function () {
+            var html = "";
+            html += "<tr>";
+            html += "<td><input type='text' class='form-control INPUT_PART' value='' /> </td>";
+            html += "<td><input type='text' class='form-control PRTNUM' value='' /></td>";
+            html += "<td><input type='text' class='form-control MAP_GROUP' value='' /></td>";
+            html += "<td><input type='text' class='form-control NOTE' value='' /></td>";
+            html += "<td><input type='button' class='btn btn-primary btn-sm saveButtonAdd' onclick=\"addSave(this)\" value='SAVE' />&nbsp;<input type='button' class='btn btn-primary btn-sm deleteButton' onclick=\"deletebtn(this)\" value='DELETE' /></td>";
+            html += "</tr>";
+            $("#resultBody").append(html);
+        })
+
+        function mainHtml(data) {
+            var html = "";
+            if (data != null && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    html += "<tr>";
+                    html += "<td><input type='text' class='form-control INPUT_PART' value='" + data[i].INPUT_PART + "' title='" + data[i].INPUT_PART + "' disabled='disabled' /> </td>";
+                    html += "<td><input type='text' class='form-control PRTNUM' value='" + data[i].PRTNUM + "' title='" + data[i].PRTNUM + "' /></td>";
+                    if (data[i].MAP_GROUP == null)
+                        html += "<td><input type='text' class='form-control MAP_GROUP' value='' /></td>";
+                    else
+                        html += "<td><input type='text' class='form-control MAP_GROUP' value='" + data[i].MAP_GROUP + "' title='" + data[i].MAP_GROUP + "' /></td>";
+                    if (data[i].NOTE == null)
+                        html += "<td><input type='text' class='form-control NOTE' value='' /></td>";
+                    else
+                        html += "<td><input type='text' class='form-control NOTE' value='" + data[i].NOTE + "' title='" + data[i].NOTE + "' /></td>";
+                    html += "<td><input type='button' class='btn btn-primary btn-sm saveButton' onclick=\"save(this)\" value='SAVE' />&nbsp;<input type='button' class='btn btn-primary btn-sm deleteButton' onclick=\"deletebtn(this)\" value='DELETE' /></td>";
+                    html += "</tr>";
+                }
+            }
+            return html;
+        }
+
+
+
+    })
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+
+    });
+</script>
+
+<script type="text/javascript">
+    //Save
+    function save(obj) {
+        var tr = $(obj).parent().parent();
+        var INPUT_PART = $(tr).find(".INPUT_PART").val();
+        var PRTNUM = $(tr).find(".PRTNUM").val();
+        var MAP_GROUP = $(tr).find(".MAP_GROUP").val();
+        var NOTE = $(tr).find(".NOTE").val();
+
+        if (INPUT_PART == "") {
+            alert("Please Input INPUT_PART");
+            return;
+        }
+
+        $.ajax({
+            url: '/ia/saveiamap',
+            type: 'post',
+            async: false,
+            data: {
+                INPUT_PART: INPUT_PART, PRTNUM: PRTNUM, MAP_GROUP: MAP_GROUP, NOTE: NOTE
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.Success) {
+                    alert(data.Msg);
+                } else {
+                    alert(data.Msg);
+                }
+            },
+            error: function (obj) {
+                alert("fail to save");
+            }
+        })
+    }
+
+    //AddSave
+    function addSave(obj) {
+        var tr = $(obj).parent().parent();
+        var INPUT_PART = $(tr).find(".INPUT_PART").val();
+        var PRTNUM = $(tr).find(".PRTNUM").val();
+        var MAP_GROUP = $(tr).find(".MAP_GROUP").val();
+        var NOTE = $(tr).find(".NOTE").val();
+
+        if (INPUT_PART == "") {
+            alert("Please Input INPUT_PART");
+            return;
+        }
+
+        $.ajax({
+            url: '/ia/addiamap',
+            type: 'post',
+            async: false,
+            data: {
+                INPUT_PART: INPUT_PART, PRTNUM: PRTNUM, MAP_GROUP: MAP_GROUP, NOTE: NOTE
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.Success) {
+                    alert(data.Msg);
+                    $(tr).find(".INPUT_PART").attr("disabled", true);
+                } else {
+                    alert(data.Msg);
+                }
+            },
+            error: function (obj) {
+                alert("fail to save");
+            }
+        })
+    }
+
+    //Delete
+    function deletebtn(obj) {
+        var tr = $(obj).parent().parent();
+        var INPUT_PART = $(tr).find(".INPUT_PART").val();
+        if (confirm("Are you sure to Delete")) {
+            var tr = $(obj).parent().parent();
+            $.ajax({
+                url: '/ia/deleteiamap',
+                type: 'post',
+                async: false,
+                data: {
+                    INPUT_PART: INPUT_PART
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Success) {
+                        alert(data.Msg);
+                        tr.remove();
+                    }
+                    else {
+                        alert(data.Msg);
+                    }
+                },
+                error: function (obj) {
+                    alert("fail to delete");
+                }
+            })
+        }
+    }
+
+
+</script>

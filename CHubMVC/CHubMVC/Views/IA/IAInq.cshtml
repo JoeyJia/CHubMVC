@@ -1,0 +1,500 @@
+﻿@{
+    ViewBag.Title = "IA IAInq";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .modal-header {
+        padding: 5px;
+    }
+
+    .modal-body {
+        padding: 5px;
+    }
+
+    #resultTable {
+        table-layout: fixed;
+    }
+
+        #resultTable thead tr th, #resultTable tbody tr td {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+</style>
+
+
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>QUERY</b></div>
+        <form class="form-horizontal" id="iainqForm">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="txtWH_ID" class="col-sm-2 control-label">Warehouse:</label>
+                    <div class="col-sm-2">
+                        <select class="form-control" name="WH_ID" id="txtWH_ID"></select>
+                    </div>
+                    <label for="txtADRNAM" class="col-sm-2 control-label">Customer name:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" name="ADRNAM" id="txtADRNAM" placeholder="Customer name" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtLODNUM_DISPLAY" class="col-sm-2 control-label">Box Number:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" name="LODNUM_DISPLAY" id="txtLODNUM_DISPLAY" placeholder="Box Number" />
+                    </div>
+                    <label for="txtNeed_SIGN" class="col-sm-2 control-label">Sign Status:</label>
+                    <div class="col-sm-2">
+                        <label class="checkbox-inline">
+                            <input type="radio" name="Need_SIGN" style="padding:0px" checked="checked" value="" /> ALL
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="Need_SIGN" style="padding:0px;" value="Y" /> Need Sign Off
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtStatus" class="col-sm-2 control-label">Status:</label>
+                    <div class="col-sm-4">
+                        <label class="checkbox-inline">
+                            <input type="radio" name="Status" style="padding:0px;" checked="checked" value="" /> ALL
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="Status" style="padding:0px;" value="Comp" /> Comp
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="Status" style="padding:0px;" value="INP" /> INP
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtCREATE_DATE" class="col-sm-2 control-label">Last  Days:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" name="CREATE_DATE" id="txtCREATE_DATE" placeholder="Last  Days" />
+                    </div>
+                    <div class="col-sm-2 col-sm-offset-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="searchButton" value="Search" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default" style="">
+                    <div class="panel-heading"><b>DISPLAY</b></div>
+                    <table id="resultTable" class="table table-striped table-hover table-bordered table-condensed">
+                        <thead>
+                            <tr>
+                                <th style="" title="BOX NO">BOX NO</th>
+                                <th style="" title="Warehouse">Warehouse</th>
+                                <th style="" title="Customer Name">Customer Name</th>
+                                <th style="" title="Stage Date">Stage Date</th>
+                                <th style="" title="Status">Status</th>
+                                <th style="" title="Auditor">Auditor</th>
+                                <th style="" title="NOTE">NOTE</th>
+                                <th style="" title="Start Date">Start Date</th>
+                                <th style="" title="Comp Date">Comp Date</th>
+                                <th style="" title="Comp Comments">Comp Comments</th>
+                                <th style="" title="SIGNER">SIGNER</th>
+                                <th style="" title="SIGN COMMENTS">SIGN COMMENTS</th>
+                                <th style="width:14%;">Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_LoadingModal")
+
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" id="myModals" style="width:90%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    RESULT
+                </h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-hover table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>SEQ</th>
+                            <th>Prtnum</th>
+                            <th>Description</th>
+                            <th>Description CN</th>
+                            <th>QTY</th>
+                            <th>Inspection QTY</th>
+                            <th>Reason Code1</th>
+                            <th>Reason Code2</th>
+                            <th>NOTE</th>
+                        </tr>
+                    </thead>
+                    <tbody id="DTLBody"></tbody>
+                </table>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--模态框 SIGN Comments -->
+<div class="modal fade" id="SignComm" role="dialog" aria-labelledby="SignCommLable">
+    <div class="modal-dialog modal-lg" id="SignModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="SignCommLable">
+                    SIGN Comments
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <input type="text" class="form-control" id="txtSign" value="" />
+                    </div>
+                    <div class="col-sm-12 text-center">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnModalSign" value="SIGN OFF" />
+                        &nbsp;
+                        <input type="button" class="btn btn-primary btn-sm" id="btnModalCancel" value="Cancel" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var IA_STATUSList = [];
+        var LODNUM = "";
+        //$(function () {
+        //    $.ajax({
+        //        url: '/ia/GetIAStatus',
+        //        type: 'post',
+        //        async: false,
+        //        dataType: 'json',
+        //        success: function (data) {
+        //            if (data.Success)
+        //                IA_STATUSList = data.Data;
+        //            else
+        //                alert(data.Msg);
+        //        }, error: function (obj) {
+        //            alert("fail to get");
+        //        }
+        //    })
+        //})
+
+
+        $("#txtCREATE_DATE").val(7);//last days默认为7
+
+        //Search
+        $("#searchButton").on('click', function () {
+            searchClick();
+        })
+        function searchClick() {
+            if ($("#txtCREATE_DATE").val() == "")
+                $("#txtCREATE_DATE").val(7);
+            if ($("#txtCREATE_DATE").val() > 90) {
+                alert("The date can't be more than 90");
+                return false;
+            }
+
+            var WH_ID = $("#txtWH_ID").val();
+            var ADRNAM = $("#txtADRNAM").val();
+            var LODNUM_DISPLAY = $("#txtLODNUM_DISPLAY").val();
+            var NEED_SIGN_YN = $("input[name='Need_SIGN']:checked").val();
+            var IA_STATUS = $("input[name='Status']:checked").val();
+            var CREATE_DATE = $("#txtCREATE_DATE").val();
+
+            //alert($("#txtCREATE_DATE").val());
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/ia/GetVIALODHDR',
+                type: 'post',
+                async: true,
+                data: {
+                    WH_ID: WH_ID,
+                    ADRNAM: ADRNAM,
+                    LODNUM_DISPLAY: LODNUM_DISPLAY,
+                    NEED_SIGN_YN: NEED_SIGN_YN,
+                    IA_STATUS: IA_STATUS,
+                    CREATE_DATE: CREATE_DATE
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Success) {
+                        $("#resultBody").html(data.Data);
+                        $("#loadingModal").modal("hide");
+                    }
+                    else {
+                        $("#loadingModal").modal("hide");
+                        alert(data.Msg);
+                    }
+                },
+                error: function (obj) {
+                    alert("fail to get");
+                }
+            })
+        }
+
+        //Line
+        $("#resultBody").on('click', '.Lines', function () {
+            var LODNUM = $(this).attr("data-id");
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/ia/GetVIALODDTL',
+                type: 'post',
+                async: false,
+                data: {
+                    LODNUM: LODNUM
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Success) {
+                        CreateDTLTable(data.Data);
+                        $("#loadingModal").modal("hide");
+                        $("#myModal").modal("show");
+                    }
+                    else {
+                        $("#loadingModal").modal("hide");
+                        alert(data.Msg);
+                    }
+                },
+                error: function (obj) {
+                    alert("fail to get");
+                }
+            })
+
+        })
+        //Print
+        $("#resultBody").on('click', ".PrintReport", function () {
+            var LODNUM = $(this).attr("data-id");
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/ia/IAReportPrint',
+                type: 'post',
+                async: false,
+                data: {
+                    LODNUM: LODNUM
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Success) {
+                        $("#loadingModal").modal("hide");
+                        window.open(data.Data);
+                    }
+                    else {
+                        $("#loadingModal").modal("hide");
+                        alert(data.Msg);
+                    }
+                },
+                error: function (obj) {
+                    alert("fail to get");
+                }
+            })
+        })
+        //Save
+        $("#resultBody").on('click', ".Save", function () {
+            var LODNUM = $(this).attr("data-id");
+            var tr = $(this).parent().parent();
+            var IA_STATUS = $(tr).find(".ia_status").val();
+            var NOTE = $(tr).find(".note").val();
+            $.ajax({
+                url: '/ia/SaveIALODHDR',
+                type: 'post',
+                async: false,
+                data: {
+                    LODNUM: LODNUM,
+                    IA_STATUS: IA_STATUS,
+                    NOTE: NOTE
+                },
+                dataType: 'json',
+                success: function (data) {
+                    alert(data.Msg);
+                }, error: function (obj) {
+                    alert("fail to get");
+                }
+            })
+
+        })
+        //Sign
+        $("#resultBody").on('click', ".Sign", function () {
+            LODNUM = $(this).attr("data-id");
+            $("#txtSign").val("");
+            //$("#SignComm").modal("show");
+            $.ajax({
+                url: '/ia/CheckIAINQUser',
+                type: 'post',
+                async: false,
+                data: { LODNUM: LODNUM },
+                success: function (obj) {
+                    if (obj.Success) {
+                        if (obj.Data != null) {
+                            $("#txtSign").val(obj.Data);
+                        }
+                        $("#SignComm").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                }, error: function (e) {
+                    alert("fail to get");
+                }
+            })
+        })
+
+        $("#btnModalSign").on('click', function () {
+            $.ajax({
+                url: '/ia/SaveSignComm',
+                type: 'post',
+                async: false,
+                data: {
+                    LODNUM: LODNUM,
+                    SIGN_COMMENTS: $("#txtSign").val()
+                },
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#SignComm").modal("hide");
+                        var data = obj.Data.split('|');
+                        var tr = $("#resultBody").find("tr[data-id=\"" + data[0] + "\"]");
+                        var td1 = tr.find("td").eq(10);
+                        var td2 = tr.find("td").eq(11);
+                        td1[0].innerHTML = data[1];
+                        td2[0].innerHTML = data[2];
+                    }
+                    else
+                        alert("fail to Save");
+                }, error: function (e) {
+                    alert("fail to get");
+                }
+            })
+        })
+
+        $("#btnModalCancel").on('click', function () {
+            $("#SignComm").modal("hide");
+        })
+
+        //function CreateTable(data) {
+        //    var html = "";
+        //    if (data != null && data.length > 0) {
+        //        for (var i = 0; i < data.length; i++) {
+        //            var sd = ""; var cd = "";
+        //            if (data[i].STGDTE != null) {
+        //                var stgdate = new Date(data[i].STGDTE);
+        //                sd = stgdate.getFullYear() + "-" + (stgdate.getMonth() + 1) + "-" + stgdate.getDate() + " " + stgdate.getHours() + ":" + stgdate.getMinutes() + ":" + stgdate.getSeconds();
+        //            }
+
+        //            if (data[i].CREATE_DATE != null) {
+        //                var credate = new Date(data[i].CREATE_DATE);
+        //                cd = credate.getFullYear() + "-" + (credate.getMonth() + 1) + "-" + credate.getDate() + " " + credate.getHours() + ":" + credate.getMinutes() + ":" + credate.getSeconds();
+        //            }
+
+        //            if (data[i].NOTE == null)
+        //                data[i].NOTE = "";
+
+        //            html += "<tr>";
+        //            html += "<td>" + data[i].LODNUM + "</td>";
+        //            html += "<td>" + data[i].WH_ID + "</td>";
+        //            html += "<td>" + data[i].ADRNAM + "</td>";
+        //            html += "<td>" + sd + "</td>";
+        //            html += "<td><select class=\"form-control ia_status\">"
+        //            html += "<option value=\"\"></option>";
+        //            for (var j = 0; j < IA_STATUSList.length; j++) {
+        //                if (IA_STATUSList[j].IA_STATUS == data[i].IA_STATUS)
+        //                    html += "<option value=\"" + IA_STATUSList[j].IA_STATUS + "\" title=\"" + IA_STATUSList[j].STATUS_DESC + "\" selected=\"selected\">" + IA_STATUSList[j].IA_STATUS + "</option>";
+        //                else
+        //                    html += "<option value=\"" + IA_STATUSList[j].IA_STATUS + "\" title=\"" + IA_STATUSList[j].STATUS_DESC + "\">" + IA_STATUSList[j].IA_STATUS + "</option>";
+        //            }
+        //            html += "</select></td>";
+        //            html += "<td>" + data[i].IA_AUDITOR + "</td>";
+        //            html += "<td><input type=\"text\" class=\"form-control note\" value=\"" + data[i].NOTE + "\" /></td>";
+        //            html += "<td>" + cd + "</td>";
+        //            html += "<td>" + "<input type=\"button\" class=\"btn btn-primary btn-sm Save\" data-id=\"" + data[i].LODNUM + "\" value=\"Save\" />&nbsp;<input type=\"button\" class=\"btn btn-primary btn-sm Lines\" data-id=\"" + data[i].LODNUM + "\" value=\"Lines\" />&nbsp<input type=\"button\" class=\"btn btn-primary btn-sm PrintReport\" data-id=\"" + data[i].LODNUM + "\" value=\"Print Report\" />" + "</td>";
+        //            html += "</tr>";
+        //        }
+        //    }
+        //    $("#resultBody").html(html);
+        //}
+
+        function CreateDTLTable(data) {
+            var html = "";
+            if (data != null && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].IA_QTY == null)
+                        data[i].IA_QTY = "";
+                    if (data[i].IA_CODE1 == null)
+                        data[i].IA_CODE1 = "";
+                    if (data[i].IA_CODE2 == null)
+                        data[i].IA_CODE2 = "";
+                    if (data[i].NOTE == null)
+                        data[i].NOTE = "";
+
+                    html += "<tr>";
+                    html += "<td>" + (i + 1) + "</td>";
+                    html += "<td>" + data[i].PRTNUM + "</td>";
+                    html += "<td>" + data[i].DESCRIPTION + "</td>";
+                    html += "<td>" + data[i].DESC_CN + "</td>";
+                    html += "<td>" + data[i].QTY_DISPLAY + "</td>";
+                    html += "<td>" + data[i].IA_QTY + "</td>";
+                    html += "<td>" + data[i].IA_CODE1 + "</td>";
+                    html += "<td>" + data[i].IA_CODE2 + "</td>";
+                    html += "<td>" + data[i].NOTE + "</td>";
+                    html += "</tr>";
+                }
+            }
+            $("#DTLBody").html(html);
+        }
+
+    })
+</script>
+
+<!--Warehouse-->
+<script type="text/javascript">
+    $(function () {
+        $.ajax({
+            url: '/ia/GetIAINQWH_ID',
+            type: 'post',
+            async: false,
+            dataType: 'json',
+            success: function (obj) {
+                if (obj.Success) {
+                    $("#txtWH_ID").empty();
+                    $("<option></option>").val("").text("").appendTo("#txtWH_ID");
+                    for (var i = 0; i < obj.Data.length; i++) {
+                        $("<option></option>").val(obj.Data[i]).text(obj.Data[i]).appendTo("#txtWH_ID");
+                    }
+                } else {
+                    alert(obj.Msg);
+                }
+            }, error: function (e) {
+                alert("fail to get");
+            }
+        })
+
+    })
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+        $("#myModals").css("margin-top", "200px");
+        $("#SignModal").css("margin-top", "200px");
+    });
+</script>

@@ -1,0 +1,130 @@
+﻿@{
+    ViewBag.Title = "IA IAScanTest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-xs-12">
+            <form role="form">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12 col-xs-12">
+                            <label for="" style="font-size:20px;">Scanning String:</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="ScanStr" style="height:40px;font-size:26px;margin-left:2%;" />
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="button" class="btn btn-primary" id="Convert" style="width:100px;" value="CONVERT" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label for="" style="font-size:20px;">Converted String:</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="ConvStr" style="height:40px;font-size:26px;margin-left:2%;" disabled="disabled" readonly="readonly" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <label for="">NOTE:</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="Note" style="font-size:20px;margin-left:2%;" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <audio id="partno">
+        <source src="~/Content/sound/nopart.mp3" type="audio/mpeg" />
+    </audio>
+    <audio id="partok">
+        <source src="~/Content/sound/partok.mp3" type="audio/mpeg" />
+    </audio>
+</div>
+<script type="text/javascript">
+    $("#ScanStr").keypress(function (event) {
+        if (event.keyCode == 13) {
+            if ($("#ScanStr").val() == "")
+                return false;
+
+            //禁止换行
+            event.returnValue = false;
+            event.preventDefault();
+
+            $.ajax({
+                url: '/ia/ConvertIAScan',
+                type: 'post',
+                async: false,
+                data: {
+                    ScanStr: $("#ScanStr").val()
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#ConvStr").val(data.Data);
+                    if (!data.Success) {
+                        $("#Note")[0].style.color = "red";
+                        $("#Note").val(data.Msg);
+                        $("#partno")[0].play();
+                    }
+                    else {
+                        $("#Note")[0].style.color = "green";
+                        $("#Note").val("零件存在");
+                        $("#partok")[0].play();
+                    }
+                }, error: function (e) {
+                    alert("fail to convert");
+                }
+            })
+            $("#ScanStr").focus();
+            $("#ScanStr").select();
+        }
+    });
+
+    $("#Convert").on('click', function () {
+        if ($("#ScanStr").val() == "")
+            return false;
+
+        $.ajax({
+            url: '/ia/ConvertIAScan',
+            type: 'post',
+            async: false,
+            data: {
+                ScanStr: $("#ScanStr").val()
+            },
+            dataType: 'json',
+            success: function (data) {
+                $("#ConvStr").val(data.Data);
+                if (!data.Success) {
+                    $("#Note")[0].style.color = "red";
+                    $("#Note").val(data.Msg);
+                    $("#partno")[0].play();
+                }
+                else {
+                    $("#Note")[0].style.color = "green";
+                    $("#Note").val("零件存在");
+                    $("#partok")[0].play();
+                }
+            }, error: function (e) {
+                alert("fail to convert");
+            }
+        })
+        $("#ScanStr").focus();
+        $("#ScanStr").select();
+    })
+
+</script>

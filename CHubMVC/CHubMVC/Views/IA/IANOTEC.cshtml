@@ -1,0 +1,426 @@
+﻿@{
+    ViewBag.Title = "IA IANOTEC";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>QUERY</b></div>
+        <form class="form-horizontal" id="ianotecForm">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="txtPart_NO" class="col-sm-2 control-label">Part Number:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtPart_No" name="Part_No" placeholder="Part Number" />
+                    </div>
+                    <div class="col-sm-4" style="padding-top: 18px;">
+                        <span id="Desc"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtPrint_Part_No" class="col-sm-2 control-label">Part Number(RP):</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtPrint_Part_No" name="Print_Part_No" placeholder="Part Number(RP)" />
+                    </div>
+                </div>
+            </div>
+            @*<div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-offset-2">输入零件号回车确认</label>
+                </div>
+            </div>*@
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-offset-4">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSubmit" value="Query" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-sm-12">
+                <label class="col-sm-1">客户关键字：</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control input-sm" id="txtADRNAM" name="ADRNAM" />
+                </div>
+                <div class="col-sm-2">
+                    <input type="button" class="btn btn-primary btn-sm" id="btnAdd" value="ADD NEW" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default" style="">
+                    <div class="panel-heading"><b>RESULT</b></div>
+                    <table id="resultTable" class="table table-striped table-hover table-bordered table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Customer Name</th>
+                                <th>QC NOTE</th>
+                                <th>ACTIVE(Y/N)</th>
+                                <th>User ID</th>
+                                <th>RECORD DATE</th>
+                                <th>Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_LoadingModal")
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" id="myModals">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-hover table-bordered .table-condensed" id="TableModal">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" name="selectAll" id="selectAll" />
+                            </th>
+                            <th>
+                                Customer
+                            </th>
+                            <th>
+                                QC NOTE
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="BodyModal"></tbody>
+                </table>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="text-center">
+                            <input type="button" class="btn btn-primary btn-sm" id="btnSaveNew" value="Save" />
+                            <input type="button" class="btn btn-primary btn-sm" id="btnCancelNew" value="Cancel" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var PART_NO = "";
+
+
+        $("#btnAdd").attr("disabled", true);
+        //Search
+        $("#btnSubmit").on('click', function () {
+            SearchButtonClick();
+        })
+        function SearchButtonClick() {
+            var $PN = $("#txtPart_No");
+            var $PPN = $("#txtPrint_Part_No");
+
+            if ($PN.val() == "" && $PPN.val() == "") {
+                alert("No Data Input");
+                return;
+            }
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/ia/GetIANOTEC',
+                type: 'post',
+                async: true,
+                data: {
+                    PART_NO: $PN.val(),
+                    PRINT_PART_NO: $PPN.val()
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        CreateTable(obj.Data);
+                        $("#loadingModal").modal("hide");
+                        if (obj.Msg.indexOf("不存在此零件号") != -1)
+                            $("#Desc")[0].style.color = "red";
+                        else
+                            $("#Desc")[0].style.color = "";
+                        $("#Desc").text(obj.Msg);
+                        PART_NO = obj.Part_No;
+                    }
+                    else {
+                        $("#loadingModal").modal("hide");
+                        alert("fail to get");
+                    }
+                }, error: function () {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to get");
+                }
+            });
+        }
+        function CreateTable(data) {
+            var html = "";
+            if (data != null && data != "") {
+                $.each(data, function (i, item) {
+                    html += "<tr>";
+                    html += "<td title='" + item.ADRNAM + "'>" + item.ADRNAM + "</td>";
+
+                    if (item.QC_NOTE == null)
+                        item.QC_NOTE = "";
+                    html += "<td><input type='text' class='form-control input-sm QC_NOTE' value='" + item.QC_NOTE + "' title='" + item.QC_NOTE + "' /></td>";
+
+                    html += "<td><select class='form-control ACTIVEIND'>";
+                    if (item.ACTIVEIND == "Y") {
+                        html += "<option value='Y' selected>Y</option>";
+                        html += "<option value='N'>N</option>";
+                    }
+                    else {
+                        html += "<option value='Y'>Y</option>";
+                        html += "<option value='N' selected>N</option>";
+                    }
+                    html += "</select></td>";
+
+                    if (item.USERID == null)
+                        item.USERID = "";
+                    html += "<td title='" + item.USERID + "'>" + item.USERID + "</td>";
+
+                    var rd;
+                    if (item.RECORD_DATE == null)
+                        rd = "";
+                    else {
+                        var date = new Date(item.RECORD_DATE);
+                        rd = date.toLocaleDateString() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+                    }
+                    html += "<td title='" + rd + "'>" + rd + "</td>";
+
+                    html += "<td><input type='button' class='btn btn-primary btn-sm btnSave' data-PartNo='" + item.PART_NO + "' data-Adrnam='" + item.ADRNAM + "' value='Save' /></td>";
+
+                    html += "</tr>";
+                })
+            }
+            $("#resultBody").html(html);
+        }
+
+        //Save
+        $("#resultBody").on('click', '.btnSave', function () {
+            var Part_No = $(this).attr("data-PartNo");
+            var ADRNAM = $(this).attr("data-Adrnam");
+            //alert(Part_No + ADRNAM);
+            var tr = $(this).parent().parent();
+            var $QC_NOTE = tr.find(".QC_NOTE");
+            var $ACTIVEIND = tr.find(".ACTIVEIND");
+            //alert($QC_NOTE.val() + $ACTIVEIND.val());
+
+            $("#loadingModal").modal("show");
+
+            $.ajax({
+                url: '/ia/SaveIANOTEC',
+                type: 'post',
+                async: true,
+                data: {
+                    PART_NO: Part_No,
+                    ADRNAM: ADRNAM,
+                    QC_NOTE: $QC_NOTE.val(),
+                    ACTIVEIND: $ACTIVEIND.val()
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (!obj.Success)
+                        alert(obj.Msg);
+                }, error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to save");
+                }
+            })
+        })
+
+        //按钮启用和禁用
+        $("#txtADRNAM").on('input propertychange', function () {
+            if ($("#txtADRNAM").val() == "")
+                $("#btnAdd").attr("disabled", true);
+            else
+                $("#btnAdd").attr("disabled", false);
+        })
+
+        //Add New
+        $("#btnAdd").on('click', function () {
+            var ADRNAM = $("#txtADRNAM").val();
+            if (PART_NO == "") {
+                alert("No PART_NO Existed");
+                return;
+            }
+            $.ajax({
+                url: '/ia/GetIANOTECNEW',
+                type: 'post',
+                async: false,
+                data: { PART_NO: PART_NO, ADRNAM: ADRNAM },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        CreateNewTable(obj.Data);
+                        $("#myModal").modal("show");
+                    } else {
+                        alert(obj.Msg);
+                    }
+                }, error: function (e) {
+                    alert("fail to get");
+                }
+            })
+
+        })
+        function CreateNewTable(data) {
+            var html = "";
+            $.each(data, function (i, item) {
+                if (item.QC_NOTE == null)
+                    item.QC_NOTE = "";
+                html += "<tr>";
+                html += "<td>" + "<input type='checkbox' class='btnSelect' name='checkItem' data-partno='" + item.PART_NO + "' data-adrnam='" + item.ADRNAM + "' />" + "</td>";
+                html += "<td>" + item.ADRNAM + "</td>";
+
+                html += "<td>" + "<input type='text' class='form-control input-sm QC_NOTENEW' value='" + item.QC_NOTE + "' />" + "</td>";
+                html += "</tr>";
+            })
+            $("#BodyModal").html(html);
+        }
+
+        //checkbox selectAll
+        $("#selectAll").on('click', function () {
+            $("#BodyModal").find("[name=checkItem]:checkbox").prop("checked", this.checked);
+        })
+
+        //Add New Save
+        $("#btnSaveNew").on('click', function () {
+            //var PART_NO = $("#txtPart_No").val();
+            var List = [];
+
+            var $checkList = $("#BodyModal").find("[name=checkItem]:checkbox");
+            for (var i = 0; i < $checkList.length; i++) {
+                if ($checkList[i].checked) {
+                    var tr = $checkList[i].parentNode.parentNode;
+                    var adrnam = tr.children[1].innerHTML;
+                    var qc_note = tr.children[2].children[0].value;
+                    //alert(adrnam + qc_note);
+
+                    List.push({
+                        PART_NO: PART_NO,
+                        ADRNAM: adrnam,
+                        QC_NOTE: qc_note
+                    })
+                }
+            }
+
+            $.ajax({
+                url: '/ia/IANOTECSaveNew',
+                type: 'post',
+                async: false,
+                data: JSON.stringify({
+                    arg: List
+                }),
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#myModal").modal("hide");
+                        $("#btnSubmit").click();
+                    } else {
+                        alert(obj.Msg);
+                    }
+                }, error: function (e) {
+                    alert("fail to save");
+                }
+            })
+        })
+
+        //Cancel
+        $("#btnCancelNew").on('click', function () {
+            $("#myModal").modal("hide");
+        });
+
+        //Desc Part_No
+        //$("#txtPart_No").keydown(function (event) {
+        //    if (event.keyCode == 13) {
+        //        if ($("#txtPart_No").val() == "") {
+        //            $("#Desc").text("");
+        //            return;
+        //        }
+
+        //        PART_NO = $("#txtPart_No").val();
+
+        //        $.ajax({
+        //            url: '/ia/GetDescByPartNo',
+        //            type: 'post',
+        //            async: false,
+        //            data: { PART_NO: $("#txtPart_No").val() },
+        //            success: function (obj) {
+        //                if (obj.Success) {
+        //                    if (obj.Data.indexOf("不存在此零件号") != -1)
+        //                        $("#Desc")[0].style.color = "red";
+        //                    else
+        //                        $("#Desc")[0].style.color = "";
+        //                    $("#Desc").text(obj.Data);
+        //                }
+        //                else
+        //                    alert(obj.Msg);
+        //            },
+        //            error: function (e) {
+        //                alert("fail to get");
+        //            }
+        //        })
+        //    }
+        //})
+
+        //Desc Print_Part_No
+        //$("#txtPrint_Part_No").keydown(function (event) {
+        //    if (event.keyCode == 13) {
+        //        if ($("#txtPrint_Part_No").val() == "") {
+        //            $("#Desc").text("");
+        //            return;
+        //        }
+
+        //        $.ajax({
+        //            url: '/ia/GetDescByPrintPartNo',
+        //            type: 'post',
+        //            async: false,
+        //            data: { PRINT_PART_NO: $("#txtPrint_Part_No").val() },
+        //            success: function (obj) {
+        //                if (obj.Success) {
+        //                    if (obj.Data.indexOf("不存在此零件号") != -1)
+        //                        $("#Desc")[0].style.color = "red";
+        //                    else {
+        //                        $("#Desc")[0].style.color = "";
+        //                        PART_NO = obj.Msg;
+        //                    }
+        //                    $("#Desc").text(obj.Data);
+        //                }
+        //                else
+        //                    alert(obj.Msg);
+        //            },
+        //            error: function (e) {
+        //                alert("fail to get");
+        //            }
+        //        })
+        //    }
+        //})
+
+
+
+    })
+</script>
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+        //$("#myModals").css("margin-top", "100px");
+    });
+</script>
