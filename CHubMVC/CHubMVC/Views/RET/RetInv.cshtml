@@ -1,0 +1,327 @@
+﻿@{
+    ViewBag.Title = "RET RetInv";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .form-group {
+        margin-bottom: 0px;
+    }
+
+    .tdTitle {
+        background-color: #f5f5f5;
+        text-align: right;
+        font-weight: bold;
+    }
+
+    #modalHeaderTable > tbody > tr > td {
+        width: 16%;
+        border-top: 0;
+    }
+</style>
+
+<input type="hidden" id="txtAppUser" value="@ViewBag.AppUser" />
+
+<div class="container-fluid" id="retinvDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Customer No:</label>
+                    <div class="col-sm-3">
+                        <select class="form-control input-sm" id="txtCUSTOMER_NO">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">RGA#:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtREFERENCE_NO" placeholder="RGA#" />
+                    </div>
+                    <label for="" class="col-sm-2 control-label">INVOICE ID:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtINVOICE_ID" placeholder="INVOICE ID" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">REQUEST NO:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtRET_REQ_NO" placeholder="REQUEST NO" />
+                    </div>
+                    <label for="" class="col-sm-2 control-label">INVOICE DATE ( Last days):</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtINVOICE_DATE" value="30" placeholder="INVOICE DATE" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnQuery" value="Query" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <table class="table table-bordered table-hover" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th>RGA#</th>
+                                <th>Request No</th>
+                                <th>Invoice Date</th>
+                                <th>Amount</th>
+                                <th>Charges</th>
+                                <th>Reconcile Status</th>
+                                <th>NOTE</th>
+                                <th>INVOICE_ID</th>
+                                <th>Customer No</th>
+                                <th>Cust Name</th>
+                                <th>Warehouse</th>
+                                <th style="width:3%;">Opreation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_LoadingModal")
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" style="width:96%;">
+        <div class="modal-content">
+            <div class="modal-header panel-default" style="padding:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 40px; height: 40px;font-size:30px;">
+                    &times;
+                </button>
+                <div class="modal-title panel-heading">
+                    <b>Header:</b>
+                </div>
+            </div>
+            <div class="modal-body panel-default" style="padding:0;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table" id="modalHeaderTable">
+                            <tr>
+                                <td class="tdTitle">INVOICE ID:</td>
+                                <td id="tdINVOICE_ID"></td>
+                                <td class="tdTitle">Customer no:</td>
+                                <td id="tdCUSTOMER_NO"></td>
+                                <td class="tdTitle">Customer name:</td>
+                                <td id="tdCUST_DESC"></td>
+                            </tr>
+                            <tr>
+                                <td class="tdTitle">RGA#:</td>
+                                <td id="tdREFERENCE_NO"></td>
+                                <td class="tdTitle">Request No:</td>
+                                <td id="tdRET_REQ_NO"></td>
+                                <td class="tdTitle">Invoice Date:</td>
+                                <td id="tdINVOICE_DATE"></td>
+                            </tr>
+                            <tr>
+                                <td class="tdTitle">Warehouse:</td>
+                                <td id="tdWAREHOUSE"></td>
+                                <td class="tdTitle">NOTE:</td>
+                                <td id="tdNOTE"></td>
+                            </tr>
+                            <tr>
+                                <td class="tdTitle">Amount:</td>
+                                <td id="tdINVOICE_AMT"></td>
+                                <td class="tdTitle">Charges:</td>
+                                <td id="tdCHARGES"></td>
+                                <td class="tdTitle">Reconcile Status:</td>
+                                <td id="tdRECONCILE_STATUS"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnReconcile" value="Reconcile" />
+                        <input type="button" class="btn btn-primary btn-sm" id="btnDownload" value="Download" />
+                        <input type="button" class="btn btn-primary btn-sm" id="btn" value="......" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <b>Details:</b>
+                            </div>
+                            <table class="table table-bordered table-hover" id="modalDetailTable">
+                                <thead>
+                                    <tr>
+                                        <th>LINE NO</th>
+                                        <th>Part No</th>
+                                        <th>Movex Item</th>
+                                        <th>Description</th>
+                                        <th>QTY</th>
+                                        <th>Unit Price</th>
+                                        <th>Amount</th>
+                                        <th>Charge</th>
+                                        <th>NOTE</th>
+                                        <th>Remaining Qty</th>
+                                        <th style="width:40%;">Reconciled VAT</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="modalDetailTbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    $(function () {
+        $.ajax({
+            url: '/ret/GetCustomer_No',
+            type: 'post',
+            async: true,
+            data: { AppUser: $("#txtAppUser").val() },
+            success: function (obj) {
+                if (obj.Success) {
+                    if (obj.Data.length > 0) {
+                        for (var i = 0; i < obj.Data.length; i++) {
+                            $("<option></option>").text(obj.Data[i].CUSTOMER_NO + " " + obj.Data[i].CUST_DESC).val(obj.Data[i].CUSTOMER_NO).appendTo("#txtCUSTOMER_NO");
+                        }
+                    }
+                }
+                else
+                    alert(obj.Msg);
+            },
+            error: function (e) {
+                alert("fail to get" + e.responseText);
+            }
+        });
+    })
+
+    $(document).ready(function () {
+        $("#btnQuery").on('click', function () {
+            var arg = {};
+
+            arg.CUSTOMER_NO = $("#txtCUSTOMER_NO").val();
+            arg.REFERENCE_NO = $("#txtREFERENCE_NO").val();
+            arg.INVOICE_ID = $("#txtINVOICE_ID").val();
+            arg.RET_REQ_NO = $("#txtRET_REQ_NO").val();
+            arg.INVOICE_DATE = $("#txtINVOICE_DATE").val();
+
+            if (arg.CUSTOMER_NO == "") {
+                alert("No CUSTOMER_NO Select");
+                return false;
+            }
+
+            $("#loadingModal").modal("show");
+
+            $.ajax({
+                url: '/ret/RetInvSearch',
+                type: 'post',
+                async: true,
+                data: JSON.stringify(arg),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#resultTbody").html(obj.Data);
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search" + e.responseText);
+                }
+            });
+        });
+
+        $("#resultTbody").on('click', '.btnDetail', function () {
+            //var s = "<span style=\"color:green\">dadwadw</span>";
+            //$("#tdRECONCILE_STATUS").html(s);
+            //$("#myModal").modal("show");
+            var tr = $(this).parent().parent();
+            var td = $(tr).find("td");
+
+            FillHeaderData(td);//fill header data
+
+            var INVOICE_ID = $(td).eq(7).html();
+            //fill detail data
+            $.ajax({
+                url: '/ret/GetRetInvDetailModal',
+                type: 'post',
+                async: true,
+                data: { INVOICE_ID: INVOICE_ID },
+                dataType: 'json',
+                success: function (obj) {
+                    //$("#modalDetailTbody").empty();
+                    if (obj.Success) {
+                        $("#modalDetailTbody").html(obj.Data);
+                        $("#myModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get detail" + e.responseText);
+                }
+            });
+        });
+
+        function FillHeaderData(td) {
+            var REFERENCE_NO = $(td).eq(0).html();
+            var RET_REQ_NO = $(td).eq(1).html();
+            var INVOICE_DATE = $(td).eq(2).html();
+            var INVOICE_AMT = $(td).eq(3).html();
+            var CHARGES = $(td).eq(4).html();
+            var RECONCILE_STATUS = $(td).eq(5).html();
+            var NOTE = $(td).eq(6).html();
+            var INVOICE_ID = $(td).eq(7).html();
+            var CUSTOMER_NO = $(td).eq(8).html();
+            var CUST_DESC = $(td).eq(9).html();
+            var WAREHOUSE = $(td).eq(10).html();
+
+            $("#tdREFERENCE_NO").html(REFERENCE_NO);
+            $("#tdRET_REQ_NO").html(RET_REQ_NO);
+            $("#tdINVOICE_DATE").html(INVOICE_DATE);
+            $("#tdINVOICE_AMT").html(INVOICE_AMT);
+            $("#tdCHARGES").html(CHARGES);
+            $("#tdRECONCILE_STATUS").html(RECONCILE_STATUS);
+            $("#tdNOTE").html(NOTE);
+            $("#tdINVOICE_ID").html(INVOICE_ID);
+            $("#tdCUSTOMER_NO").html(CUSTOMER_NO);
+            $("#tdCUST_DESC").html(CUST_DESC);
+            $("#tdWAREHOUSE").html(WAREHOUSE);
+        };
+
+
+
+    })
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+
+    });
+</script>
