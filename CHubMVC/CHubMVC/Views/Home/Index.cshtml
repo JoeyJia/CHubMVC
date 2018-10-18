@@ -5,13 +5,25 @@
 }
 
 <style type="text/css">
-a.NoLine:link { text-decoration: none}
-a.NoLine:visited { text-decoration: none}
-a.NoLine:hover {text-decoration: none}
+    a.NoLine:link {
+        text-decoration: none;
+    }
 
-.popover{
-    max-width: 60%; /* Max Width of the popover (depending on the container!) */
-}
+    a.NoLine:visited {
+        text-decoration: none;
+    }
+
+    a.NoLine:hover {
+        text-decoration: none;
+    }
+
+    .popover {
+        max-width: 60%; /* Max Width of the popover (depending on the container!) */
+    }
+</style>
+
+<style type="text/css">
+     
 </style>
 
 <div class="container-fluid body-content">
@@ -25,7 +37,7 @@ a.NoLine:hover {text-decoration: none}
                     <div class="panel panel-default text-center">
                         @foreach (var item in ViewBag.welcomeList)
                         {
-                            <h3>@item.WEL_MSG</h3>
+                        <h3>@item.WEL_MSG</h3>
                         }
                     </div>
                 </div>
@@ -40,12 +52,12 @@ a.NoLine:hover {text-decoration: none}
                             <div class="form-group" style="margin-left:10px;margin-top:10px;">
                                 @foreach (var item in ViewBag.recentList)
                                 {
-                                    <div class="col-md-3">
-                                        <p><a class="NoLine" href="@item.URL">@item.DISPLAY</a></p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <p>@item.DESCRIPTION</p>
-                                    </div>
+                                <div class="col-md-3">
+                                    <p><a class="NoLine" href="@item.URL">@item.DISPLAY</a></p>
+                                </div>
+                                <div class="col-md-8">
+                                    <p>@item.DESCRIPTION</p>
+                                </div>
                                 }
                             </div>
                         </form>
@@ -104,4 +116,16 @@ a.NoLine:hover {text-decoration: none}
         $('.poptd').popover()
     })
 
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".indexLeft").css("border", "1px solid #ccc");
+        $(".indexLeft").css("display", "");
+        $(".indexLeft").css("z-index", 0);
+        $(".indexRight").css("width", "78%");
+        $(".indexRight").css("float", "right");
+        $(".indexRight").css("margin-left", "0px");
+        $(".treeBtn2").hide();
+    })
 </script>
