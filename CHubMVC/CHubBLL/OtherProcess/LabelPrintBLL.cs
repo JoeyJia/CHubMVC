@@ -30,6 +30,8 @@ namespace CHubBLL.OtherProcess
         //图片路径
         private static readonly string imagepath = System.Configuration.ConfigurationManager.AppSettings["ImagePath"].ToString();
 
+        private CHubCommonHelper ccHelper;
+
         public string BasePath = string.Empty;
         // ariblk.ttf    simsun.ttc
         //本地 C:\Users\oo450\Desktop\  测试/正式 C:\Windows\Fonts\
@@ -72,6 +74,7 @@ namespace CHubBLL.OtherProcess
             fontHelper = new FontHelper();
             // BoldFont = new Font(BF_Light, ContentFontSize, Font.BOLD);
             BoldFont = new Font(BF_Light, ContentFontSize);
+            ccHelper = new CHubCommonHelper();
         }
 
 
@@ -649,6 +652,67 @@ namespace CHubBLL.OtherProcess
             }
             catch (Exception ex)
             {
+                return false;
+            }
+
+        }
+
+
+        public bool PrintLBScan_M(List<V_PLABEL_BY_MOBILE_PRINT> printDatas, LBScanPrintItems labelItems, string baseBTW, string PrinterName, string UserName)
+        {
+            string fullpath = BasePath + baseBTW;
+            TxtLog.WriteLog("调用模板绝对路径：" + fullpath);
+            List<BartenderPrintDatas> bpd = new List<BartenderPrintDatas>();
+
+            var Printer_ID = ccHelper.ExecuteFunc("select PRINTER_ID from RP_Printer where PRINTER_NAME='" + PrinterName + "'");
+            TxtLog.WriteLog("打印机ID为" + Printer_ID);
+
+            foreach (var pd in printDatas)
+            {
+                int copies = labelItems.COPIES;
+                int moq = labelItems.MOQ;
+                string orgcod = labelItems.COO;
+                string country_desc_cn = pd.COUNTRY_DESC_CN;
+
+                string c15 = pd.C15.HasValue ? pd.C15.Value.ToString() : "";
+                //Function
+                var sql = string.Format(@"select GET_2D_Str_by_LOD('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}',
+                                            '{12}','{13}','{14}','{15}','{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}','{24}','{25}') from dual", pd.LABEL_CODE, UserName, Printer_ID,
+                                pd.WH_ID, pd.SHIP_ID, pd.LODNUM, pd.ADRNAM, pd.PRTNUM, pd.VC_CPONUM, pd.PART_NO, pd.C10, pd.C11, orgcod, pd.C13, pd.C14, c15, pd.C16, pd.C17, moq.ToString(), pd.C19,
+                                country_desc_cn, pd.C21, pd.C22, pd.C23, pd.C24, copies);//执行function语句
+                TxtLog.WriteLog("function执行语句：" + sql);
+                string str = ccHelper.ExecuteFunc(sql);//执行funciton结果 赋值给C10
+                TxtLog.WriteLog("function执行结果：" + str);
+
+                bpd.Add(new BartenderPrintDatas()
+                {
+                    C10 = !string.IsNullOrEmpty(str) ? str : pd.C10,
+                    C11 = pd.C11,
+                    C12 = orgcod, //pd.C12,
+                    C13 = pd.C13,
+                    C14 = pd.C14,
+                    C15 = c15,
+                    C16 = pd.C16,
+                    C17 = pd.C17,
+                    C18 = moq.ToString(),
+                    C19 = pd.C19,
+                    C20 = country_desc_cn, //pd.C20,
+                    C21 = pd.C21,
+                    C22 = pd.C22,
+                    C23 = pd.C23,
+                    C24 = pd.C24,
+                    Copies = copies
+                });
+            }
+            try
+            {
+                TxtLog.WriteLog("LOD准备打印");
+                Bartender_Print(bpd, fullpath, PrinterName);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                TxtLog.WriteLog("打印失败，" + ex.Message);
                 return false;
             }
 
@@ -1859,13 +1923,13 @@ namespace CHubBLL.OtherProcess
         /// <param name="Printer_Name"></param>
         public void Bartender_Print(List<BartenderPrintDatas> list, string ModelPath, string Printer_Name)
         {
-            Process pro = new Process();
+            //Process pro = new Process();
             //BarTender.Application btapp;
             //BarTender.Format btformat;
-
+            Engine btEngine = new Engine();
             try
             {
-                #region Bartender
+                #region Bartender OLD
                 //TxtLog.WriteLog("打印准备开始");
                 //btapp = new BarTender.Application();
                 //btformat = btapp.Formats.Open(@"D:\IIS\CHub\Template\BASE.btw");
@@ -1893,7 +1957,7 @@ namespace CHubBLL.OtherProcess
                 //btapp.Quit(BarTender.BtSaveOptions.btSaveChanges); //退出时同步退出bartender进程
                 //TxtLog.WriteLog("打印结束，进程已关闭");
                 #endregion
-                #region
+                #region OLD
                 //foreach (var li in list)
                 //{
                 //    string C10 = !string.IsNullOrEmpty(li.C10) ? li.C10.Replace(" ", "/!") : "";
@@ -1932,46 +1996,51 @@ namespace CHubBLL.OtherProcess
                 #region
                 //Engine btEngine = new Engine(true);
                 //TxtLog.WriteLog("引擎启动");
-                //LabelFormatDocument btFormat = btEngine.Documents.Open(@"D:\IIS\CHub\Template\BASE.btw"); //C:\Users\oo450\Desktop //D:\IIS\CHub\Template
-                //btFormat.PrintSetup.PrinterName = "WGQ";
+                //LabelFormatDocument btFormat = btEngine.Documents.Open(ModelPath); //C:\Users\oo450\Desktop //D:\IIS\CHub\Template
+                //btFormat.PrintSetup.PrinterName = Printer_Name;
                 //btFormat.PrintSetup.IdenticalCopiesOfLabel = 1;
-                ////////foreach (var li in list)
-                ////////{
-                ////////    TxtLog.WriteLog("引擎启动");
-                ////////    Engine btEngine = new Engine(true);
-                ////////    LabelFormatDocument btFormat = btEngine.Documents.Open(ModelPath);
-                ////////    btFormat.SubStrings["C10"].Value = !string.IsNullOrEmpty(li.C10) ? li.C10 : "";
-                ////////    btFormat.SubStrings["C11"].Value = !string.IsNullOrEmpty(li.C11) ? li.C11 : "";
-                ////////    btFormat.SubStrings["C12"].Value = !string.IsNullOrEmpty(li.C12) ? li.C12 : "";
-                ////////    btFormat.SubStrings["C13"].Value = !string.IsNullOrEmpty(li.C13) ? li.C13 : "";
-                ////////    btFormat.SubStrings["C14"].Value = !string.IsNullOrEmpty(li.C14) ? li.C14 : "";
-                ////////    btFormat.SubStrings["C15"].Value = !string.IsNullOrEmpty(li.C15) ? li.C15 : "";
-                ////////    btFormat.SubStrings["C16"].Value = !string.IsNullOrEmpty(li.C16) ? li.C16 : "";
-                ////////    btFormat.SubStrings["C17"].Value = !string.IsNullOrEmpty(li.C17) ? li.C17 : "";
-                ////////    btFormat.SubStrings["C18"].Value = !string.IsNullOrEmpty(li.C18) ? li.C18 : "";
-                ////////    btFormat.SubStrings["C19"].Value = !string.IsNullOrEmpty(li.C19) ? li.C19 : "";
-                ////////    btFormat.SubStrings["C20"].Value = !string.IsNullOrEmpty(li.C20) ? li.C20 : "";
-                ////////    btFormat.SubStrings["C21"].Value = !string.IsNullOrEmpty(li.C21) ? li.C21 : "";
-                ////////    btFormat.SubStrings["C22"].Value = !string.IsNullOrEmpty(li.C22) ? li.C22 : "";
-                ////////    btFormat.SubStrings["C23"].Value = !string.IsNullOrEmpty(li.C23) ? li.C23 : "";
-                ////////    btFormat.SubStrings["C24"].Value = !string.IsNullOrEmpty(li.C24) ? li.C24 : "";
-                ////////    btFormat.PrintSetup.PrinterName = Printer_Name;
-                ////////    btFormat.PrintSetup.IdenticalCopiesOfLabel = li.Copies;
-
-                //TxtLog.WriteLog("开始打印");
-                //btFormat.Print();
-                //btEngine.Documents.Close(ModelPath, SaveOptions.DoNotSaveChanges);
-                //btEngine.Stop();
-                //TxtLog.WriteLog("结束打印");
-                ////}
                 #endregion
+                bool IsAlive = btEngine.IsAlive;
+                TxtLog.WriteLog(IsAlive ? "启动中" : "未启动");
+                if (IsAlive)
+                    btEngine.Stop();
+                btEngine.Start();
+                TxtLog.WriteLog("程序启动");
+                LabelFormatDocument btFormat = btEngine.Documents.Open(ModelPath);
+                btFormat.PrintSetup.PrinterName = Printer_Name;
+                foreach (var li in list)
+                {
+                    btFormat.SubStrings["C10"].Value = !string.IsNullOrEmpty(li.C10) ? li.C10 : "";
+                    btFormat.SubStrings["C11"].Value = !string.IsNullOrEmpty(li.C11) ? li.C11 : "";
+                    btFormat.SubStrings["C12"].Value = !string.IsNullOrEmpty(li.C12) ? li.C12 : "";
+                    btFormat.SubStrings["C13"].Value = !string.IsNullOrEmpty(li.C13) ? li.C13 : "";
+                    btFormat.SubStrings["C14"].Value = !string.IsNullOrEmpty(li.C14) ? li.C14 : "";
+                    btFormat.SubStrings["C15"].Value = !string.IsNullOrEmpty(li.C15) ? li.C15 : "";
+                    btFormat.SubStrings["C16"].Value = !string.IsNullOrEmpty(li.C16) ? li.C16 : "";
+                    btFormat.SubStrings["C17"].Value = !string.IsNullOrEmpty(li.C17) ? li.C17 : "";
+                    btFormat.SubStrings["C18"].Value = !string.IsNullOrEmpty(li.C18) ? li.C18 : "";
+                    btFormat.SubStrings["C19"].Value = !string.IsNullOrEmpty(li.C19) ? li.C19 : "";
+                    btFormat.SubStrings["C20"].Value = !string.IsNullOrEmpty(li.C20) ? li.C20 : "";
+                    btFormat.SubStrings["C21"].Value = !string.IsNullOrEmpty(li.C21) ? li.C21 : "";
+                    btFormat.SubStrings["C22"].Value = !string.IsNullOrEmpty(li.C22) ? li.C22 : "";
+                    btFormat.SubStrings["C23"].Value = !string.IsNullOrEmpty(li.C23) ? li.C23 : "";
+                    btFormat.SubStrings["C24"].Value = !string.IsNullOrEmpty(li.C24) ? li.C24 : "";
+                    btFormat.PrintSetup.IdenticalCopiesOfLabel = li.Copies;//打印份数
+
+                    TxtLog.WriteLog("开始打印");
+                    btFormat.Print();
+                    TxtLog.WriteLog("结束打印");
+                }
+                btEngine.Documents.Close(ModelPath, SaveOptions.DoNotSaveChanges);
+                btEngine.Stop();
+                TxtLog.WriteLog("-------------------打印完成");
             }
             catch (Exception ex)
             {
+                btEngine.Stop();
                 TxtLog.WriteLog(ex.Message);
             }
         }
-
 
         /// <summary>
         /// GetElementPosition

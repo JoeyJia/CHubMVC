@@ -129,7 +129,7 @@ namespace CHubBLL.OtherProcess
                 cell = pdfUtility.BuildCell(hData.DETAIL_TITLE5, new iTextSharp.text.Font(BF_Light, ContentFontSize));
                 cell.BorderWidth = 0f;
                 dTable.AddCell(cell);
-                dTable.SetTotalWidth(new float[] { 5f, 18f, 18f, 18f, 18f, 18f });
+                dTable.SetTotalWidth(new float[] { 5f, 10f, 12f, 10f, 12f, 46f });
                 decimal totalWGT = 0;
                 decimal totalM3 = 0;
                 if (dPrintList != null && dPrintList.Count != 0)
