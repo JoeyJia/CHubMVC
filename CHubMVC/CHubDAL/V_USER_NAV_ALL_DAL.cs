@@ -28,7 +28,11 @@ namespace CHubDAL
 
         public List<V_USER_NAV_ALL> GetMobilePageByAppUser(string appuser)
         {
-            return db.V_USER_NAV_ALL.Where(a => a.APP_USER == appuser && a.MOBILE == "Y").ToList();
+            string sql = string.Format(@"select * from V_USER_NAV_ALL where APP_USER='{0}' and MOBILE='Y'", appuser);
+            var result = db.Database.SqlQuery<V_USER_NAV_ALL>(sql).ToList();
+            return result;
+
+            //return db.V_USER_NAV_ALL.Where(a => a.APP_USER == appuser && a.MOBILE == "Y").ToList();
         }
 
 

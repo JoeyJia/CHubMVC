@@ -11,13 +11,18 @@ namespace CHubDAL
 {
     public class APP_RECENT_PAGES_DAL : BaseDAL
     {
+        private CHubCommonHelper ccHelper;
         public APP_RECENT_PAGES_DAL()
             : base()
-        { }
+        {
+            ccHelper = new CHubCommonHelper();
+        }
 
         public APP_RECENT_PAGES_DAL(CHubEntities db)
             : base(db)
-        { }
+        {
+            ccHelper = new CHubCommonHelper();
+        }
 
         public List<APP_RECENT_PAGES> GetRecentPages(string appUser)
         {
@@ -40,6 +45,19 @@ namespace CHubDAL
             return result.FirstOrDefault(); //db.APP_RECENT_PAGES.FirstOrDefault(a => a.APP_USER == appUser && a.PAGE_NAME == pageName);
         }
 
+        public string GetPAGE_NAME(string URL)
+        {
+            string sql = string.Format(@"select PAGE_NAME from APP_PAGES where URL='{0}'", URL);
+            var result = db.Database.SqlQuery<string>(sql).ToList().FirstOrDefault();
+            return result;
+        }
+
+        public void AddPageLog(string appUser, string PAGE_NAME)
+        {
+            string sql = string.Format(@"Insert into APP_PAGES_USAGE(PAGE_NAME,APP_USER,ACTIVITY_DATE,NOTE)
+                                    Values('{0}','{1}',sysdate,'')", PAGE_NAME, appUser);
+            ccHelper.Update(sql);
+        }
 
     }
 }

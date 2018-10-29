@@ -10,14 +10,18 @@ namespace CHubDAL
     public class ITT_TRAN_TYPE_DAL : BaseDAL
     {
         public ITT_TRAN_TYPE_DAL()
-            : base() { }
+            : base()
+        { }
 
         public ITT_TRAN_TYPE_DAL(CHubEntities db)
-            : base(db) { }
+            : base(db)
+        { }
 
         public List<ITT_TRAN_TYPE> GetTranType()
         {
-            return db.ITT_TRAN_TYPE.ToList();
+            string sql = string.Format(@"select * from ITT_TRAN_TYPE");
+            return db.Database.SqlQuery<ITT_TRAN_TYPE>(sql).ToList();
+            //return db.ITT_TRAN_TYPE.ToList();
         }
 
     }

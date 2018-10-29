@@ -48,6 +48,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -58,8 +59,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APP_QUICK_SCREEN_DAL.cs" />
+    <Compile Include="CINVINQ_DAL.cs" />
     <Compile Include="DB_KPI_HISTORY_DAL.cs" />
     <Compile Include="DB_KPI_GROUP_DAL.cs" />
+    <Compile Include="DL_DAL.cs" />
     <Compile Include="EW_USER_APPLY_DAL.cs" />
     <Compile Include="EW_SCHEDULE_TASK_DAL.cs" />
     <Compile Include="EW_SCHEDULE_DAL.cs" />
@@ -67,6 +70,9 @@
     <Compile Include="EW_SCRIPT_DAL.cs" />
     <Compile Include="EW_MESSAGE_ATTACH_DAL.cs" />
     <Compile Include="EW_LOG_DAL.cs" />
+    <Compile Include="EXPWB_DAL.cs" />
+    <Compile Include="EXP_EXCHANGE_RATE_DAL.cs" />
+    <Compile Include="FINLOAD_DAL.cs" />
     <Compile Include="G_KITS_DAL.cs" />
     <Compile Include="G_OESALES_CATALOG_DAL.cs" />
     <Compile Include="G_PART_ADDTIONAL_DAL.cs" />
@@ -87,16 +93,27 @@
     <Compile Include="EW_MESSAGE_DAL.cs" />
     <Compile Include="APP_WH_DAL.cs" />
     <Compile Include="GOMS_ASN_H_DAL.cs" />
-    <Compile Include="M_ADRNAM_MST_DAL.cs" />
-    <Compile Include="RP_LABEL_TYPE2_DAL.cs" />
-    <Compile Include="TC_HSCODE_MST_DAL.cs" />
-    <Compile Include="TMS_ADR_AUTO_CORRECT_DAL.cs" />
+    <Compile Include="JD_ADDR_CONVERT_DAL.cs" />
+    <Compile Include="MDSUPP_DAL.cs" />
+    <Compile Include="MD_REQ_DAL.cs" />
+    <Compile Include="RETINV_DAL.cs" />
+    <Compile Include="RETMAIN_DAL.cs" />
     <Compile Include="V_IA_LOD_BASE_DAL.cs" />
     <Compile Include="V_IA_LOD_DTL_DAL.cs" />
     <Compile Include="V_IA_LOD_HDR_DAL.cs" />
     <Compile Include="V_IA_PRT_NOTE_CUST_ADDNEW_DAL.cs" />
-    <Compile Include="V_IA_REPORT_PRINT_DAL.cs" />
     <Compile Include="V_IA_TODO_TODAY_DAL.cs" />
+    <Compile Include="V_MD_ENTITY_ITEM_DAL.cs" />
+    <Compile Include="V_MD_REQ_ALL1ONE_DAL.cs" />
+    <Compile Include="V_MD_SR_ALL_DAL.cs" />
+    <Compile Include="V_PLABEL_BY_MOBILE_PRINT_DAL.cs" />
+    <Compile Include="V_XCEC_ADDR_ALL_DAL.cs" />
+    <Compile Include="V_XCEC_ORDER_LN_BASE_DAL.cs" />
+    <Compile Include="M_ADRNAM_MST_DAL.cs" />
+    <Compile Include="RP_LABEL_TYPE2_DAL.cs" />
+    <Compile Include="TC_HSCODE_MST_DAL.cs" />
+    <Compile Include="TMS_ADR_AUTO_CORRECT_DAL.cs" />
+    <Compile Include="V_IA_REPORT_PRINT_DAL.cs" />
     <Compile Include="V_INQ_TRACKNUM_DAL.cs" />
     <Compile Include="V_PLABEL_BY_ASN_PRINT_DAL.cs" />
     <Compile Include="V_PLABEL_BY_KITS_PRINT_DAL.cs" />
@@ -175,6 +192,7 @@
     <Compile Include="G_CATALOG_CUSTOMER_PART_DAL.cs" />
     <Compile Include="G_PART_DESCRIPTION_DAL.cs" />
     <Compile Include="V_USER_NAV_ALL_DAL.cs" />
+    <Compile Include="V_XCEC_ORDER_HDR_BASE_DAL.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

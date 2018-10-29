@@ -11,11 +11,16 @@ namespace CHubDAL
 {
     public class TS_OR_HEADER_STAGE_DAL : BaseDAL
     {
+        private CHubCommonHelper ccHelper;
         public TS_OR_HEADER_STAGE_DAL()
-            : base() { }
+            : base() {
+            ccHelper = new CHubCommonHelper();
+        }
 
         public TS_OR_HEADER_STAGE_DAL(CHubEntities db)
-            : base(db) { }
+            : base(db) {
+            ccHelper = new CHubCommonHelper();
+        }
 
         public TS_OR_HEADER_STAGE GetSpecifyHeaderStage(decimal orderSeq,decimal shipFromSeq)
         {
@@ -51,6 +56,12 @@ namespace CHubDAL
             TS_OR_HEADER_STAGE hStage = db.TS_OR_HEADER_STAGE.FirstOrDefault(a => a.ORDER_REQ_NO == orderSeq && a.SHIPFROM_SEQ == shipFrom);
             if (hStage != null)
                 Delete(hStage);
+        }
+
+        public void UpdateTS_OR_DETAIL_STAGE_DUEDATE(decimal ORDER_REQ_NO,decimal ORDER_LINE_NO,string DUE_DATE)
+        {
+            string sql = string.Format(@"Update TS_OR_DETAIL_STAGE set DUE_DATE=to_date('{0}','yyyy/mm/dd') where ORDER_REQ_NO='{1}' and ORDER_LINE_NO='{2}'", DUE_DATE, ORDER_REQ_NO, ORDER_LINE_NO);
+            ccHelper.Update(sql);
         }
 
     }

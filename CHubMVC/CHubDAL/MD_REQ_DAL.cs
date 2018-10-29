@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubCommon;
 using CHubDBEntity.UnmanagedModel;
+using Oracle.ManagedDataAccess.Client;
 
 namespace CHubDAL
 {
@@ -47,6 +48,13 @@ namespace CHubDAL
         public string GetGLOBAL_PARTDESC(string GLOBAL_PARTNO)
         {
             string sql = GetSql("F_MD_GET_GLOBAL_DESC", GLOBAL_PARTNO);
+            var result = cchelper.ExecuteFunc(sql);
+            return result;
+        }
+
+        public string GetSHORT_DESC(string GLOBAL_PARTNO)
+        {
+            string sql = GetSql("F_MD_GET_GLOBAL_DESC_SHORT", GLOBAL_PARTNO);
             var result = cchelper.ExecuteFunc(sql);
             return result;
         }
@@ -103,14 +111,55 @@ namespace CHubDAL
 
         public void SaveMD_REQ_DETAIL(MD_REQ_DETAIL mrDetail)
         {
-            string sql = string.Format(@"insert into MD_REQ_DETAIL(MD_REQ_NO,REQ_LINE_NO,PART_NO,PART_DESC,
-                                    CHECK_EXIST,CHECK_PRI_SUP,CHECK_PRI_PB,CHECK_PRI_BPA,CHECK_COST,
-                                    GLOBAL_PARTNO,PRODUCT_GROUP_ID)
-                                    values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}')",
-                                    mrDetail.MD_REQ_NO, mrDetail.REQ_LINE_NO, mrDetail.PART_NO, mrDetail.PART_DESC,
-                                    mrDetail.CHECK_EXIST, mrDetail.CHECK_PRI_SUP, mrDetail.CHECK_PRI_PB, mrDetail.CHECK_PRI_BPA, mrDetail.CHECK_COST,
-                                    mrDetail.GLOBAL_PARTNO, mrDetail.PRODUCT_GROUP_ID);
-            cchelper.Update(sql);
+            string sql = string.Format(@"insert into MD_REQ_DETAIL(
+                                            MD_REQ_NO,REQ_LINE_NO,PART_NO,PART_DESC,CHECK_EXIST,CHECK_PRI_SUP,CHECK_PRI_PB,CHECK_PRI_BPA,CHECK_COST,GLOBAL_PARTNO,PRODUCT_GROUP_ID,NOTE,PART_DESC_SHORT,GLOBAL_DESC)
+                                            values(
+                                            :MD_REQ_NO,
+                                            :REQ_LINE_NO,
+                                            :PART_NO,
+                                            :PART_DESC,
+                                            :CHECK_EXIST,
+                                            :CHECK_PRI_SUP,
+                                            :CHECK_PRI_PB,
+                                            :CHECK_PRI_BPA,
+                                            :CHECK_COST,
+                                            :GLOBAL_PARTNO,
+                                            :PRODUCT_GROUP_ID,
+                                            :NOTE,
+                                            :PART_DESC_SHORT,
+                                            :GLOBAL_DESC
+                                            )");
+            OracleParameter[] param = new OracleParameter[] {
+                new OracleParameter(":MD_REQ_NO",OracleDbType.Decimal),
+                new OracleParameter(":REQ_LINE_NO",OracleDbType.Decimal),
+                new OracleParameter(":PART_NO",OracleDbType.Varchar2),
+                new OracleParameter(":PART_DESC",OracleDbType.Varchar2),
+                new OracleParameter(":CHECK_EXIST",OracleDbType.Varchar2),
+                new OracleParameter(":CHECK_PRI_SUP",OracleDbType.Varchar2),
+                new OracleParameter(":CHECK_PRI_PB",OracleDbType.Varchar2),
+                new OracleParameter(":CHECK_PRI_BPA",OracleDbType.Varchar2),
+                new OracleParameter(":CHECK_COST",OracleDbType.Varchar2),
+                new OracleParameter(":GLOBAL_PARTNO",OracleDbType.Varchar2),
+                new OracleParameter(":PRODUCT_GROUP_ID",OracleDbType.Varchar2),
+                new OracleParameter(":NOTE",OracleDbType.Varchar2),
+                new OracleParameter(":PART_DESC_SHORT",OracleDbType.Varchar2),
+                new OracleParameter(":GLOBAL_DESC",OracleDbType.Varchar2),
+            };
+            param[0].Value = mrDetail.MD_REQ_NO;
+            param[1].Value = mrDetail.REQ_LINE_NO;
+            param[2].Value = mrDetail.PART_NO;
+            param[3].Value = mrDetail.PART_DESC;
+            param[4].Value = mrDetail.CHECK_EXIST;
+            param[5].Value = mrDetail.CHECK_PRI_SUP;
+            param[6].Value = mrDetail.CHECK_PRI_PB;
+            param[7].Value = mrDetail.CHECK_PRI_BPA;
+            param[8].Value = mrDetail.CHECK_COST;
+            param[9].Value = mrDetail.GLOBAL_PARTNO;
+            param[10].Value = mrDetail.PRODUCT_GROUP_ID;
+            param[11].Value = mrDetail.NOTE;
+            param[12].Value = mrDetail.PART_DESC_SHORT;
+            param[13].Value = mrDetail.GLOBAL_DESC;
+            cchelper.AddOrUpdateWithParams(sql, param);           
         }
 
 
@@ -120,9 +169,9 @@ namespace CHubDAL
             return str;
         }
 
-        public void ExecP_MD_SR_NEW(string PART_NO, string PRODUCT_GROUP_ID)
+        public void ExecP_MD_SR_NEW(string PART_NO, string PRODUCT_GROUP_ID, string NOTE, string REQ_BY)
         {
-            cchelper.ExecP_MD_SR_NEW(PART_NO, PRODUCT_GROUP_ID);
+            cchelper.ExecP_MD_SR_NEW(PART_NO, PRODUCT_GROUP_ID, NOTE, REQ_BY);
         }
 
     }

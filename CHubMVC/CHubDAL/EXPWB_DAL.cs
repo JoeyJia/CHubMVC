@@ -38,7 +38,7 @@ namespace CHubDAL
 
         public List<V_EXP_STAGE_UNINVOICED> GetSHIP_TO_INDEX()
         {
-            string sql = string.Format(@"select distinct SHIP_TO_INDEX from V_EXP_STAGE_UNINVOICED");
+            string sql = string.Format(@"select distinct SHIP_TO_INDEX from V_EXP_STAGE_UNINVOICED order by SHIP_TO_INDEX");
             var result = cchelper.Search<V_EXP_STAGE_UNINVOICED>(sql);
             return result;
         }
@@ -52,9 +52,20 @@ namespace CHubDAL
             return result;
         }
 
+        public List<V_EXP_STAGE_UNINVOICED> ChangeByORDTYP(string SHIP_TO_INDEX, string ORDTYP)
+        {
+            string sql = string.Format(@"select * from V_EXP_STAGE_UNINVOICED where 1=1");
+            if (!string.IsNullOrEmpty(SHIP_TO_INDEX))
+                sql += string.Format(@" and SHIP_TO_INDEX ='{0}'", SHIP_TO_INDEX);
+            if (!string.IsNullOrEmpty(ORDTYP))
+                sql += string.Format(@" and ORDTYP ='{0}'", ORDTYP);
+            var result = cchelper.Search<V_EXP_STAGE_UNINVOICED>(sql);
+            return result;
+        }
+
         public string CallFunc_GET_EXP_EST_AMT(string LODNUM)
         {
-            string sql = string.Format(@"select get_EXP_EST_AMT('{0}') from dual", LODNUM);
+            string sql = string.Format(@"select GET_EXP_EST_AMT('{0}') from dual", LODNUM);
             var result = cchelper.ExecuteFunc(sql);
             return result;
         }
@@ -76,6 +87,13 @@ namespace CHubDAL
                 return false;
         }
 
+        public string CallFunc_GET_EXP_EXCHANGE_RATE()
+        {
+            string sql = string.Format(@"select GET_EXP_EXCHANGE_RATE('INV') from dual");
+            var result = cchelper.ExecuteFunc(sql);
+            return result;
+        }
+
         public void AddEXP_COMM_INV(EXPCOMMINVArg arg)
         {
             string sql = string.Format(@"insert into EXP_COMM_INV(
@@ -87,9 +105,10 @@ namespace CHubDAL
                                         TOTAL_WGT,
                                         TOTAL_VOL,
                                         TOTAL_AMT,
-                                        BOXES
-                                        ) values('{0}','{1}','{2}',{3},'{4}','{5}','{6}','{7}','{8}')",
-                                        arg.COMM_INV_ID, arg.COMM_DESC, arg.CREATED_BY, "sysdate", arg.SHIP_TO_INDEX, arg.TOTAL_WGT, arg.TOTAL_VOL, arg.TOTAL_AMT, arg.BOXES);
+                                        BOXES,
+                                        EXCHANGE_RATE
+                                        ) values('{0}','{1}','{2}',{3},'{4}','{5}','{6}','{7}','{8}','{9}')",
+                                        arg.COMM_INV_ID, arg.COMM_DESC, arg.CREATED_BY, "sysdate", arg.SHIP_TO_INDEX, arg.TOTAL_WGT, arg.TOTAL_VOL, arg.TOTAL_AMT, arg.BOXES, arg.EXCHANGE_RATE);
             cchelper.Update(sql);
         }
 
@@ -146,5 +165,16 @@ namespace CHubDAL
             cchelper.Update(sql);
         }
 
+        public void ExecP_EXP_STG_LOAD_POST(string LOAD_BATCH)
+        {
+            cchelper.ExecP_EXP_STG_LOAD_POST(LOAD_BATCH);
+        }
+
+        public string CallF_EXP_HSCODE_CHK_BY_LOD(string LODNUM)
+        {
+            string sql = string.Format(@"select F_exp_hscode_chk_by_lod('{0}') from dual", LODNUM);
+            var result = cchelper.ExecuteFunc(sql);
+            return result;
+        }
     }
 }

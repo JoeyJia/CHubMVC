@@ -33,7 +33,10 @@ namespace CHubDAL
             return true;
         }
 
-
+        public void UpdateLAST_LOGIN(APP_USERS appUser)
+        {
+            this.Update(appUser);
+        }
 
     }
 }

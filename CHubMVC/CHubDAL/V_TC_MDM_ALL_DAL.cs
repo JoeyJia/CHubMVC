@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDBEntity;
 using CHubCommon;
+using CHubDBEntity.UnmanagedModel;
 
 namespace CHubDAL
 {
@@ -46,6 +47,27 @@ namespace CHubDAL
             var result = db.Database.SqlQuery<V_TC_MDM_ALL>(sql);
 
             return result.FirstOrDefault(); //db.V_TC_MDM_ALL.FirstOrDefault(a => a.PART_NO == partNo);
+        }
+
+        public string GetGOOD_DESC(string HSCODE, string CIQ)
+        {
+            string sql = string.Format(@"select GOOD_DESC from TC_HSCODE_CIQ_MST where HSCODE = '{0}' and CIQ= '{1}'", HSCODE, CIQ);
+            var result = db.Database.SqlQuery<string>(sql).ToList().FirstOrDefault();
+            return result == null ? "" : result;
+        }
+
+        public string GetELEMENTCK(string PART_NO)
+        {
+            string sql = string.Format(@"select ELEMENT2 from TC_PART_ELEMENT2 where part_no='{0}'", PART_NO);
+            var result = db.Database.SqlQuery<string>(sql).ToList().FirstOrDefault();
+            return result == null ? "" : result;
+        }
+
+        public List<TC_HSCODE_CIQ_MST> GetCIQLists(string HSCODE)
+        {
+            string sql = string.Format(@"select * from TC_HSCODE_CIQ_MST where HSCODE='{0}' order by CIQ", HSCODE);
+            var result = db.Database.SqlQuery<TC_HSCODE_CIQ_MST>(sql).ToList();
+            return result;
         }
     }
 }
