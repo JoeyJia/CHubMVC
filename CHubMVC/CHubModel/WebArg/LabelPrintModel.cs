@@ -31,4 +31,18 @@ namespace CHubModel.WebArg
 
     }
 
+    public class LBScanPrintItems
+    {
+        public string VID { get; set; }
+        public string PrinterName { get; set; }
+        public string LABEL_CODE { get; set; }
+        public string WH_ID { get; set; }
+        public string LODNUM { get; set; }
+        public string PRTNUM { get; set; }
+        public string COO { get; set; }
+        public int MOQ { get; set; }
+        public int COPIES { get; set; }
+        public string ADDITIONAL { get; set; }
+    }
+
 }

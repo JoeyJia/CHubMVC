@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CHubModel.WebArg
 {
-  public  class TCHSCODEMSTArg
+    public class TCHSCODEMSTArg
     {
         public string HSCODE { get; set; }
         public string HSCODE_DESC { get; set; }
@@ -14,5 +14,10 @@ namespace CHubModel.WebArg
         public string NOTE1 { get; set; }
         public string NOTE2 { get; set; }
         public string NOTE3 { get; set; }
+        public decimal TAX_REFUND_RATE { get; set; }
+        public decimal MFN_RATE { get; set; }
+        public string UOM { get; set; }
+        public string REGULATION { get; set; }
+
     }
 }
