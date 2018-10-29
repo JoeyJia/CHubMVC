@@ -1,0 +1,667 @@
+﻿@{
+    ViewBag.Title = "RET RetMain";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .form-group {
+        margin-bottom: 0px;
+    }
+
+    .tdTitle {
+        background-color: #f5f5f5;
+        text-align: right;
+        font-weight: bold;
+    }
+
+    #modalHeaderTable > tbody > tr > td {
+        width: 16%;
+        border-top: 0;
+    }
+</style>
+
+<input type="hidden" id="txtAppUser" value="@ViewBag.AppUser" />
+
+<div class="container-fluid" id="retmainDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Customer No:</label>
+                    <div class="col-sm-3">
+                        <select class="form-control input-sm" id="txtCUSTOMER_NO">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">REQUEST NO:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtRET_REQ_NO" placeholder="REQUEST NO" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">REQUEST  DATE ( Last days):</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtREQ_DATE" value="30" placeholder="REQUEST  DATE ( Last days)" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnQuery" value="Query" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <table class="table table-bordered table-hover" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th>Request No</th>
+                                <th>Movex WH</th>
+                                <th>Customer name</th>
+                                <th>Customer No</th>
+                                <th>Req DESC</th>
+                                <th>Req Date</th>
+                                <th>NOTE</th>
+                                <th>Req By</th>
+                                <th>Req Status</th>
+                                <th style="width:3%;">Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_LoadingModal")
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" style="width:96%;">
+        <div class="modal-content">
+            <div class="modal-header panel-default" style="padding:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 40px; height: 40px;font-size:30px;">
+                    &times;
+                </button>
+                <div class="modal-title panel-heading">
+                    <b>Header:</b>
+                </div>
+            </div>
+            <div class="modal-body panel-default" style="padding:0;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table" id="modalHeaderTable">
+                            <tr>
+                                <td class="tdTitle">Request No</td>
+                                <td id="tdRET_REQ_NO"></td>
+                                <td class="tdTitle">Customer no</td>
+                                <td id="tdCUSTOMER_NO"></td>
+                                <td class="tdTitle">Customer name</td>
+                                <td id="tdCUST_DESC"></td>
+                            </tr>
+                            <tr>
+                                <td class="tdTitle">Movex WH</td>
+                                <td id="tdMOVEX_WH"></td>
+                                <td class="tdTitle">Req Date</td>
+                                <td id="tdREQ_DATE"></td>
+                                <td class="tdTitle">Req By</td>
+                                <td id="tdREQ_BY"></td>
+                            </tr>
+                            <tr>
+                                <td class="tdTitle">Req DESC</td>
+                                <td id="tdRET_REQ_DESC"></td>
+                                <td class="tdTitle">NOTE</td>
+                                <td id="tdNOTE"></td>
+                                <td class="tdTitle">Req Status</td>
+                                <td id="tdREQ_STATUS"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <!--按钮区域-->
+                    <div class="col-sm-12">
+                        <div class="col-sm-3">
+                            <input type="button" class="btn btn-primary btn-sm" id="btnReVerify" value="Re-Verify" />
+                            <input type="button" class="btn btn-primary btn-sm" id="btnSave" value="SAVE" />
+                            <input type="button" class="btn btn-primary btn-sm" id="btnCancel" value="Cancel" />
+                            <input type="button" class="btn btn-primary btn-sm" id="btnSubmit" value="Submit" />
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="button" class="btn btn-primary btn-sm" id="btnDownloadToExcel" value="Download to Excel" />
+                            <input type="button" class="btn btn-primary btn-sm" id="btnDownloadToRGA" value="download to RGA" />
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="button" class="btn btn-primary btn-sm" id="btnApprove" value="APPROVE" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <b>Details:</b>
+                            </div>
+                            <table class="table table-bordered table-hover" id="modalDetailTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:5%;">LINE NO</th>
+                                        <th style="width:8%;">Movex Item</th>
+                                        <th style="width:5%;">QTY</th>
+                                        <th style="width:8%;">Part_no</th>
+                                        <th>Description</th>
+                                        <th style="width:8%;">QTY APPROVED</th>
+                                        <th>Reject Reason</th>
+                                        <th style="width:8%;">Part group</th>
+                                        <th style="width:8%;">Supplier</th>
+                                        <th style="width:3%">Operation</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="modalDetailTbody"></tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="10">
+                                            <input type="button" class="btn btn-primary btn-sm" id="btnNewLine" value="NEW LINE" />
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    $(function () {
+        $.ajax({
+            url: '/ret/GetCustomer_No',
+            type: 'post',
+            async: true,
+            data: { AppUser: $("#txtAppUser").val() },
+            success: function (obj) {
+                if (obj.Success) {
+                    if (obj.Data.length > 0) {
+                        for (var i = 0; i < obj.Data.length; i++) {
+                            $("<option></option>").text(obj.Data[i].CUSTOMER_NO + " " + obj.Data[i].CUST_DESC).val(obj.Data[i].CUSTOMER_NO).appendTo("#txtCUSTOMER_NO");
+                        }
+                    }
+                }
+                else
+                    alert(obj.Msg);
+            },
+            error: function (e) {
+                alert("fail to get" + e.responseText);
+            }
+        });
+    })
+
+    $(document).ready(function () {
+        //全局变量，后面有用
+        var RET_REQ_NO, MOVEX_WH, CUST_DESC, CUSTOMER_NO, RET_REQ_DESC, REQ_DATE, NOTE, REQ_BY, REQ_STATUS, REQ_STATUS_HTML;
+        var arglist = [];
+
+        //btn Query
+        $("#btnQuery").on('click', function () {
+            $("#resultTbody").empty();
+
+            if ($("#txtCUSTOMER_NO").val() == "") {
+                alert("No CUSTOMER_NO Select");
+                return false;
+            }
+
+            $("#loadingModal").modal("show");
+
+            $.ajax({
+                url: '/ret/RetMainSearch',
+                type: 'post',
+                async: true,
+                dataType: 'json',
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify({
+                    CUSTOMER_NO: $("#txtCUSTOMER_NO").val(),
+                    RET_REQ_NO: $("#txtRET_REQ_NO").val(),
+                    REQ_DATE: $("#txtREQ_DATE").val()
+                }),
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#resultTbody").html(obj.Data);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search" + e.responseText);
+                }
+            })
+        });
+
+        //btn Detail
+        $("#resultTbody").on('click', '.btnDetail', function () {
+            //$("#myModal").modal("show");
+            var tr = $(this).parent().parent();
+            var td = $(tr).find("td");
+            GetAndFillData(td);//填充Header数据
+            BtnCanClick(td);//按钮状态
+
+            $("#loadingModal").modal("show");
+            //Detail数据
+            $.ajax({
+                url: '/ret/GetRetMainDetailModal',
+                type: 'post',
+                async: true,
+                dataType: 'json',
+                data: { RET_REQ_NO: RET_REQ_NO, REQ_STATUS: REQ_STATUS },
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#modalDetailTbody").html(obj.Data);
+                        $("#myModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to get" + e.responseText);
+                }
+            });
+        });
+        function GetAndFillData(td) {
+            RET_REQ_NO = $(td).eq(0).html();
+            MOVEX_WH = $(td).eq(1).html();
+            CUST_DESC = $(td).eq(2).html();
+            CUSTOMER_NO = $(td).eq(3).html();
+            RET_REQ_DESC = $(td).eq(4).html();
+            REQ_DATE = $(td).eq(5).html();
+            NOTE = $(td).eq(6).html();
+            REQ_BY = $(td).eq(7).html();
+            REQ_STATUS = $(td).eq(8).text();
+            REQ_STATUS_HTML = $(td).eq(8).html();
+
+
+            $("#tdRET_REQ_NO").html(RET_REQ_NO);
+            $("#tdCUSTOMER_NO").html(CUSTOMER_NO);
+            $("#tdCUST_DESC").html(CUST_DESC);
+            $("#tdMOVEX_WH").html(MOVEX_WH);
+            $("#tdREQ_DATE").html(REQ_DATE);
+            $("#tdREQ_BY").html(REQ_BY);
+            $("#tdRET_REQ_DESC").html(RET_REQ_DESC);
+            $("#tdNOTE").html(NOTE);
+            $("#tdREQ_STATUS").html(REQ_STATUS_HTML);
+        }
+        function BtnCanClick(td) {
+            //btnReVerify状态是NEW和SUBMITED时可用
+            if (!(REQ_STATUS == "NEW" || REQ_STATUS == "SUBMITTED"))
+                $("#btnReVerify").attr("disabled", true);
+            else
+                $("#btnReVerify").attr("disabled", false);
+            //btnSave，btnCancel，btnSubmit状态是NEW时可用
+            if (!(REQ_STATUS == "NEW")) {
+                $("#btnSave").attr("disabled", true);
+                $("#btnCancel").attr("disabled", true);
+                $("#btnSubmit").attr("disabled", true);
+            }
+            else {
+                $("#btnSave").attr("disabled", false);
+                $("#btnCancel").attr("disabled", false);
+                $("#btnSubmit").attr("disabled", false);
+            }
+            //btnDownloadToExcel，btnDownloadToRGA状态是APPROVED时可用
+            if (!(REQ_STATUS == "APPROVED")) {
+                $("#btnDownloadToExcel").attr("disabled", true);
+                $("#btnDownloadToRGA").attr("disabled", true);
+            }
+            else {
+                $("#btnDownloadToExcel").attr("disabled", false);
+                $("#btnDownloadToRGA").attr("disabled", false);
+            }
+            //btnApprove状态是SUBMITED时可用
+            if (!(REQ_STATUS == "SUBMITTED"))
+                $("#btnApprove").attr("disabled", true);
+            else
+                $("#btnApprove").attr("disabled", false);
+
+        }
+
+        //btn Delete
+        $("#modalDetailTbody").on('click', '.btnDelete', function () {
+            var btnDelete = $(this);
+            var tr = btnDelete.parent().parent();
+            var LINE_NO = btnDelete.attr("data-lineno");
+            //alert(LINE_NO);
+            if (confirm("Confirm to delete?")) {
+                //alert(LINE_NO);
+                //$(tr).remove();
+                $.ajax({
+                    url: '/ret/DeleteFromRET_REQ_D',
+                    type: 'post',
+                    async: true,
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        RET_REQ_NO: RET_REQ_NO,
+                        LINE_NO: LINE_NO
+                    }),
+                    contentType: 'application/json;charset=utf-8',
+                    success: function (obj) {
+                        if (obj.Success){
+                            $(tr).remove();
+                            alert("Success");
+                        }                            
+                        else
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        alert("fail to delete");
+                    }
+                });
+            }
+        });
+
+        //btn Re-Verify
+        $("#btnReVerify").on('click', function () {
+            arglist = [];
+            var tr = $("#modalDetailTbody").find("tr");
+            for (var i = 0; i < $(tr).length; i++) {
+                var td = $(tr[i]).find("td");
+                arglist.push({
+                    LINE_NO: $(td).find('.txtLINE_NO').val(),
+                    CUST_ITEM: $(td).find('.txtCUST_ITEM').val(),
+                    QTY: $(td).find('.txtQTY').val(),
+                    PART_NO: $(td).find('.txtPART_NO').val(),
+                    DESCRIPTION: $(td).find('.txtDESCRIPTION').val(),
+                    QTY_APPROVED: $(td).find('.txtQTY_APPROVED').val(),
+                    REJECT_REASON: $(td).find('.txtREJECT_REASON').val(),
+                    PART_GROUP: $(td).find('.txtPART_GROUP').val(),
+                    SUPPLIER_CODE: $(td).find('.txtSUPPLIER_CODE').val()
+                });
+            }
+
+            $.ajax({
+                url: '/ret/ReVerify',
+                type: 'post',
+                async: true,
+                dataType: 'json',
+                data: JSON.stringify({
+                    arg: arglist,
+                    RET_REQ_NO:RET_REQ_NO
+                }),
+                contentType: 'application/json;charset=utf-8',
+                success: function (obj) {
+                    if (obj.Success) {
+                        alert("Success");
+                        for (var i = 0; i < $(tr).length; i++) {
+                            var td = $(tr[i]).find("td");
+                            if (!($(td).find(".txtCUST_ITEM")[0].readOnly)) {
+                                $(td).find(".txtCUST_ITEM")[0].readOnly = true;
+                                $(td).find(".txtQTY")[0].readOnly = true;
+                                $(td).find(".txtPART_NO")[0].readOnly = true;
+                                $(td).find(".txtDESCRIPTION")[0].readOnly = true;
+                            }
+                        }
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to ReVerify");
+                }
+            });
+
+        });
+
+        //btn SAVE
+        $("#btnSave").on('click', function () {
+            SaveRET_REQ_D();
+        });
+        function SaveRET_REQ_D() {
+            arglist = [];
+            var tr = $("#modalDetailTbody").find("tr");
+            for (var i = 0; i < $(tr).length; i++) {
+                var td = $(tr[i]).find("td");
+                arglist.push({
+                    LINE_NO: $(td).find('.txtLINE_NO').val(),
+                    CUST_ITEM: $(td).find('.txtCUST_ITEM').val(),
+                    QTY: $(td).find('.txtQTY').val(),
+                    PART_NO: $(td).find('.txtPART_NO').val(),
+                    DESCRIPTION: $(td).find('.txtDESCRIPTION').val(),
+                    QTY_APPROVED: $(td).find('.txtQTY_APPROVED').val(),
+                    REJECT_REASON: $(td).find('.txtREJECT_REASON').val(),
+                    PART_GROUP: $(td).find('.txtPART_GROUP').val(),
+                    SUPPLIER_CODE: $(td).find('.txtSUPPLIER_CODE').val()
+                });
+            }
+
+            $.ajax({
+                url: '/ret/SaveRET_REQ_D',
+                type: 'post',
+                async: true,
+                dataType: 'json',
+                data: JSON.stringify({
+                    arg: arglist,
+                    RET_REQ_NO:RET_REQ_NO
+                }),
+                contentType: 'application/json;charset=utf-8',
+                success: function (obj) {
+                    if (obj.Success){
+                        alert("Success");
+                        for (var i = 0; i < $(tr).length; i++) {
+                            var td = $(tr[i]).find("td");
+                            if (!($(td).find(".txtCUST_ITEM")[0].readOnly)) {
+                                $(td).find(".txtCUST_ITEM")[0].readOnly = true;
+                                $(td).find(".txtQTY")[0].readOnly = true;
+                                $(td).find(".txtPART_NO")[0].readOnly = true;
+                                $(td).find(".txtDESCRIPTION")[0].readOnly = true;
+                            }
+                        }
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to Save");
+                }
+            })
+        }
+
+        //btn Cancel
+        $("#btnCancel").on('click', function () {
+            if (confirm("Confirm to Cancel?")) {
+                $.ajax({
+                    url: '/ret/CancelRET_REQ_H',
+                    type: 'post',
+                    async: true,
+                    dataType: 'json',
+                    data: {
+                        RET_REQ_NO:RET_REQ_NO
+                    },
+                    success: function (obj) {
+                        if (obj.Success) {
+                            alert("Success");
+                            $("#myModal").modal("hide");
+                            $("#btnQuery").click();
+                        }
+                        else
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        alert("fail to Cancel");
+                    }
+                });
+            }
+        });
+
+        //btn Submit
+        $("#btnSubmit").on('click', function () {
+            if (confirm("Confirm to Submit?")) {
+                arglist = [];
+                var tr = $("#modalDetailTbody").find("tr");
+                for (var i = 0; i < $(tr).length; i++) {
+                    var td = $(tr[i]).find("td");
+                    arglist.push({
+                        LINE_NO: $(td).find('.txtLINE_NO').val(),
+                        CUST_ITEM: $(td).find('.txtCUST_ITEM').val(),
+                        QTY: $(td).find('.txtQTY').val(),
+                        PART_NO: $(td).find('.txtPART_NO').val(),
+                        DESCRIPTION: $(td).find('.txtDESCRIPTION').val(),
+                        QTY_APPROVED: $(td).find('.txtQTY_APPROVED').val(),
+                        REJECT_REASON: $(td).find('.txtREJECT_REASON').val(),
+                        PART_GROUP: $(td).find('.txtPART_GROUP').val(),
+                        SUPPLIER_CODE: $(td).find('.txtSUPPLIER_CODE').val()
+                    });
+                }
+
+                $.ajax({
+                    url: '/ret/SubmitRET_REQ_H',
+                    type: 'post',
+                    async: true,
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        arg: arglist,
+                        RET_REQ_NO: RET_REQ_NO
+                    }),
+                    contentType: 'application/json;charset=utf-8',
+                    success: function (obj) {
+                        if (obj.Success) {
+                            alert("Success");
+                            $("#myModal").modal("hide");
+                            $("#btnQuery").click();
+                        }
+                        else
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        alert("fail to Submit");
+                    }
+                });
+
+
+            }
+        });
+
+        //btn DownloadToExcel
+        $("#btnDownloadToExcel").on('click', function () {
+            alert("Building");
+        });
+
+        //btn DownloadToRGA
+        $("#btnDownloadToRGA").on('click', function () {
+            alert("Building");
+        });
+
+        //btn Approve
+        $("#btnApprove").on('click', function () {
+            alert("Building");
+        });
+
+        //btn NEW LINE
+        $("#btnNewLine").on('click', function () {
+            var tr = $("#modalDetailTbody").find("tr");
+            var lastTr = $(tr)[tr.length - 1];
+            var lastTd = $(lastTr).find("td");
+            var lineNo = $(lastTd).find(".txtLINE_NO").val();
+            
+            var lineNO_New = parseInt(lineNo) + 1;
+
+            $.ajax({
+                url: '/ret/DetailNewLine',
+                type: 'post',
+                async: true,
+                dataType: 'json',
+                data: {
+                    LINE_NO: lineNO_New,
+                    REQ_STATUS:REQ_STATUS
+                },
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#modalDetailTbody").append(obj.Data);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to newline");
+                }
+            });
+        });
+
+        $("#modalDetailTbody").on('blur', '.txtCUST_ITEM', function () {
+            var txtCUST_ITEM = $(this);
+            var tr = $(txtCUST_ITEM).parent().parent();
+            var td = $(tr).find("td");
+            if (!(txtCUST_ITEM[0].readOnly)) {
+                $.ajax({
+                    url: '/ret/CallDetailFunction',
+                    type: 'post',
+                    async: true,
+                    data: {
+                        CUST_ITEM:txtCUST_ITEM.val()
+                    },
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success) {
+                            $(td).find('.txtPART_NO').val(obj.Data.PART_NO);
+                            $(td).find('.txtDESCRIPTION').val(obj.Data.DESCRIPTION);
+                            $(td).find('.txtPART_GROUP').val(obj.Data.PART_GROUP);
+                            $(td).find('.txtSUPPLIER_CODE').val(obj.Data.SUPPLIER_CODE);
+                        }
+                    },
+                    error: function (e) {
+                        alert("fail to call");
+                    }
+                })
+            }                
+        });
+        
+        //number only
+        $("#modalDetailTbody").on('blur', '.txtQTY_APPROVED', function () {
+            var txtQTY_APPROVED = $(this);
+            var regex = /^[0-9]*$/;
+            if (!regex.test(txtQTY_APPROVED.val())) {
+                alert("Number Only");
+                $(txtQTY_APPROVED).focus();
+            }
+        });
+        //number only
+        $("#modalDetailTbody").on('blur', '.txtQTY', function () {
+            var txtQTY = $(this);
+            var regex = /^[0-9]*$/;
+            if (!(txtQTY[0].readOnly)) {
+                if (!regex.test(txtQTY.val())) {
+                    alert("Number Only");
+                    $(txtQTY).focus();
+                }
+            }
+        });
+    })
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+
+    });
+</script>
