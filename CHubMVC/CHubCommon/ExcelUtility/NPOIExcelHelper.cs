@@ -146,6 +146,12 @@ namespace CHubCommon
                     else
                     {
                         startRow = sheet.FirstRowNum;
+                        //新增
+                        for (int i = 0; i < cellCount; i++)
+                        {
+                            DataColumn column = new DataColumn(i.ToString());
+                            data.Columns.Add(column);
+                        }
                     }
 
                     //最后一列的标号
@@ -167,7 +173,7 @@ namespace CHubCommon
 
                 return data;
             }
-            catch
+            catch(Exception ex)
             {
                 throw;
             }
