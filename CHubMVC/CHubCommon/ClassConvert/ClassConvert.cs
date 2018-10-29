@@ -30,7 +30,7 @@ namespace CHubCommon
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -62,7 +62,7 @@ namespace CHubCommon
             }
         }
 
-        public static void DrawObj(object from, object to,List<String> skipList)
+        public static void DrawObj(object from, object to, List<String> skipList)
         {
             try
             {
@@ -83,9 +83,9 @@ namespace CHubCommon
                 throw ex;
             }
         }
-       
 
-        public static List<T> ConvertDT2List<T>(DataTable dt, bool hasSpecial = true) 
+
+        public static List<T> ConvertDT2List<T>(DataTable dt, bool hasSpecial = true)
         {
             PropertyInfo[] properties = typeof(T).GetProperties();
             List<T> list = new List<T>();
@@ -145,6 +145,45 @@ namespace CHubCommon
             }
             return result;
         }
+
+
+        public static List<T> DataTableToList<T>(DataTable dt) where T : class, new()
+        {
+            //定义一个集合
+            List<T> list = new List<T>();
+            //定义一个临时变量
+            string tempName = string.Empty;
+            //遍历DataTable所有的数据行
+            foreach (DataRow dr in dt.Rows)
+            {
+                //定义一个对象
+                T t = new T();
+                //获取此对象的公共属性
+                PropertyInfo[] propertys = t.GetType().GetProperties();
+                //遍历该对象的所有属性
+                foreach (PropertyInfo pi in propertys)
+                {
+                    //将属性名赋值给临时变量
+                    tempName = pi.Name;
+                    //检查DataTable是否包含此属性名（列名==属性名）
+                    if (dt.Columns.Contains(tempName))
+                    {
+                        //取值
+                        object value = dr[tempName];
+                        if (value != DBNull.Value)
+                        {
+                            pi.SetValue(t, value, null);
+                        }
+                    }
+                }
+                //将对象添加到集合中
+                list.Add(t);
+            }
+
+            return list;
+        }
+
+
 
     }
 }

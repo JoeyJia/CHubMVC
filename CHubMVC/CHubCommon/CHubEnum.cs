@@ -120,7 +120,64 @@ namespace CHubCommon
             /// <summary>
             /// /ia/iatoday
             /// </summary>
-            iatoday
+            iatoday,
+            /// <summary>
+            /// /order/xcecwb
+            /// </summary>
+            xcecwb,
+            /// <summary>
+            /// /order/adrmap
+            /// </summary>
+            adrmap,
+            /// <summary>
+            /// /md/mdjvitem
+            /// </summary>
+            mdjvitem,
+            /// <summary>
+            /// /md/mdreqinq
+            /// </summary>
+            mdreqinq,
+            /// <summary>
+            /// /md/mdreq
+            /// </summary>
+            mdreq,
+            /// <summary>
+            /// /md/mdsr
+            /// </summary>
+            mdsr,
+            /// <summary>
+            /// /exp/expwb
+            /// </summary>
+            expwb,
+            /// <summary>
+            /// /exp/exprate
+            /// </summary>
+            exprate,
+            /// <summary>
+            /// /exp/finload
+            /// </summary>
+            finload,
+            /// <summary>
+            /// /exp/cinvinq
+            /// </summary>
+            cinvinq,
+            quickscr,
+            /// <summary>
+            /// /md/mdsupp
+            /// </summary>
+            mdsupp,
+            /// <summary>
+            /// /dl/ihubload
+            /// </summary>
+            ihubload,
+            /// <summary>
+            /// /ret/retinv
+            /// </summary>
+            retinv,
+            /// <summary>
+            /// /ret/retmain
+            /// </summary>
+            retmain
         }
 
         public enum OrderStatusEnum
