@@ -42,7 +42,7 @@ namespace CHubBLL
         {
             dal.DeleteDraft(orderSeq, shipFrom);
         }
-        public decimal AddHeadersWithDetailsStage(TS_OR_HEADER_STAGE orHeaderStage, TS_OR_HEADER_STAGE altORHeaderStage, List<TS_OR_DETAIL_STAGE> dStageList)
+        public decimal AddHeadersWithDetailsStage(TS_OR_HEADER_STAGE orHeaderStage, TS_OR_HEADER_STAGE altORHeaderStage, List<TS_OR_DETAIL_STAGE> dStageList,string DUE_DATE)
         {
             decimal nextVal = dal.GetOrderSqeNextVal();
             orHeaderStage.ORDER_REQ_NO = nextVal;
@@ -64,11 +64,21 @@ namespace CHubBLL
             }
 
             dal.SaveChanges();
+
+            if (dStageList != null && dStageList.Count > 0)
+            {
+                foreach (var item in dStageList)
+                {
+                    item.ORDER_REQ_NO = nextVal;
+                    dal.UpdateTS_OR_DETAIL_STAGE_DUEDATE(item.ORDER_REQ_NO, item.ORDER_LINE_NO, DUE_DATE);
+                }
+            }
+
             return nextVal;
             
         }
 
-        public decimal UpdateHeadersWithDetailsStage(TS_OR_HEADER_STAGE orHeaderStage, TS_OR_HEADER_STAGE altORHeaderStage, List<TS_OR_DETAIL_STAGE> dStageList)
+        public decimal UpdateHeadersWithDetailsStage(TS_OR_HEADER_STAGE orHeaderStage, TS_OR_HEADER_STAGE altORHeaderStage, List<TS_OR_DETAIL_STAGE> dStageList,string DUE_DATE)
         {
             dal.Update(orHeaderStage, false);
             if (altORHeaderStage != null)
@@ -101,6 +111,16 @@ namespace CHubBLL
             }
 
             dal.SaveChanges();
+
+            if (dStageList != null && dStageList.Count > 0)
+            {
+                foreach (var item in dStageList)
+                {
+                    dal.UpdateTS_OR_DETAIL_STAGE_DUEDATE(item.ORDER_REQ_NO, item.ORDER_LINE_NO, DUE_DATE);
+                }
+            }
+
+
             return orHeaderStage.ORDER_REQ_NO;
         }
 

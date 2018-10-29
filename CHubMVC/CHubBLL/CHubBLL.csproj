@@ -78,6 +78,11 @@
   <ItemGroup>
     <Compile Include="APP_QUICK_SCREEN_BLL.cs" />
     <Compile Include="APP_WH_BLL.cs" />
+    <Compile Include="CINVINQ_BLL.cs" />
+    <Compile Include="DL_BLL.cs" />
+    <Compile Include="EXPWB_BLL.cs" />
+    <Compile Include="EXP_EXCHANGE_RATE_BLL.cs" />
+    <Compile Include="FINLOAD_BLL.cs" />
     <Compile Include="GOMS_ASN_H_BLL.cs" />
     <Compile Include="G_KITS_BLL.cs" />
     <Compile Include="G_PART_ADDTIONAL_BLL.cs" />
@@ -87,7 +92,12 @@
     <Compile Include="IA_LOD_DTL_BLL.cs" />
     <Compile Include="IA_PART_AUTOMAP_BLL.cs" />
     <Compile Include="IA_PRT_NOTE_CUST_BLL.cs" />
+    <Compile Include="JD_ADDR_CONVERT_BLL.cs" />
+    <Compile Include="MDSUPP_BLL.cs" />
+    <Compile Include="MD_REQ_BLL.cs" />
     <Compile Include="M_ADRNAM_MST_BLL.cs" />
+    <Compile Include="RETINV_BLL.cs" />
+    <Compile Include="RETMAIN_BLL.cs" />
     <Compile Include="RP_LABEL_TYPE2_BLL.cs" />
     <Compile Include="TC_HSCODE_MST_BLL.cs" />
     <Compile Include="TMS_ADR_AUTO_CORRECT_BLL.cs" />
@@ -98,9 +108,13 @@
     <Compile Include="V_IA_REPORT_PRINT_BLL.cs" />
     <Compile Include="V_IA_TODO_TODAY_BLL.cs" />
     <Compile Include="V_INQ_TRACKNUM_BLL.cs" />
+    <Compile Include="V_MD_ENTITY_ITEM_BLL.cs" />
+    <Compile Include="V_MD_REQ_ALL1ONE_BLL.cs" />
+    <Compile Include="V_MD_SR_ALL_BLL.cs" />
     <Compile Include="V_PLABEL_BY_ASN_PRINT_BLL.cs" />
     <Compile Include="V_PLABEL_BY_KITS_PRINT_BLL.cs" />
     <Compile Include="V_PLABEL_BY_LOD_PRINT_BLL.cs" />
+    <Compile Include="V_PLABEL_BY_MOBILE_PRINT_BLL.cs" />
     <Compile Include="V_PLABEL_BY_PART_PRINT_BLL.cs" />
     <Compile Include="V_PLABEL_BY_UNCATALOG_PRINT_BLL.cs" />
     <Compile Include="V_RP_PACK_H_QUEUE_BLL.cs" />
@@ -196,6 +210,8 @@
     <Compile Include="V_ALIAS_ADDR_DFLT_BLL.cs" />
     <Compile Include="G_PART_DESCRIPTION_BLL.cs" />
     <Compile Include="V_USER_NAV_ALL_BLL.cs" />
+    <Compile Include="V_XCEC_ADDR_ALL_BLL.cs" />
+    <Compile Include="V_XCEC_ORDER_HDR_BASE_BLL.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

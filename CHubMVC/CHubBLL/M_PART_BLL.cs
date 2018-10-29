@@ -42,5 +42,15 @@ namespace CHubBLL
             dal.Add(model, autoSave);
         }
 
+        public List<TC_PART_HS> CopySearch(string PART_NO)
+        {
+            return dal.CopySearch(PART_NO);
+        }
+
+        public List<V_TC_MDM_ALL> CopyData(string PART_NO)
+        {
+            return dal.CopyData(PART_NO);
+        }
+
     }
 }

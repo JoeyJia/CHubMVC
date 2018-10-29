@@ -22,7 +22,7 @@ namespace CHubBLL
             dal = new TC_HSCODE_MST_DAL(db);
         }
 
-        public List<TC_HSCODE_MST> GetHSCODEByCode(string HSCODE)
+        public List<CHubDBEntity.UnmanagedModel.TC_HSCODE_MST> GetHSCODEByCode(string HSCODE)
         {
             return dal.GetHSCODEByCode(HSCODE);
         }
@@ -33,7 +33,7 @@ namespace CHubBLL
             return dal.IsExistHSCODE(HSCODE);
         }
 
-        public void AddOrUpdate(TC_HSCODE_MST tc,string type)
+        public void AddOrUpdate(CHubDBEntity.UnmanagedModel.TC_HSCODE_MST tc,string type)
         {
             dal.AddOrUpdate(tc, type);
         }

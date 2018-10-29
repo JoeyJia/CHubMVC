@@ -43,5 +43,10 @@ namespace CHubBLL
             return dal.GetArea(type, province, city, county);
         }
 
+        public bool CheckSecurityOfAMSave(string SECURE_ID, string APP_USER)
+        {
+            return dal.CheckSecurityOfAMSave(SECURE_ID, APP_USER);
+        }
+
     }
 }

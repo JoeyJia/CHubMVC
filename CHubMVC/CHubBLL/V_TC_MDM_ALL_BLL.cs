@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
 using CHubModel.ExtensionModel;
+using CHubDBEntity.UnmanagedModel;
 
 namespace CHubBLL
 {
@@ -32,6 +33,20 @@ namespace CHubBLL
             return dal.GetSpecifyMDM(partNo);
         }
 
+        public string GetGOOD_DESC(string HSCODE, string CIQ)
+        {
+            return dal.GetGOOD_DESC(HSCODE, CIQ);
+        }
+
+        public string GetELEMENTCK(string PART_NO)
+        {
+            return dal.GetELEMENTCK(PART_NO);
+        }
+
+        public List<TC_HSCODE_CIQ_MST> GetCIQLists(string HSCODE)
+        {
+            return dal.GetCIQLists(HSCODE);
+        }
 
     }
 }

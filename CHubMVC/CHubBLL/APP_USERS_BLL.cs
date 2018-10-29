@@ -43,10 +43,17 @@ namespace CHubBLL
                 EMAIL_ADDR = mail??string.Format(CHubConstValues.EmailFormat, domainName),
                 CREATED_BY = domainName,
                 CREATE_DATE = DateTime.Now,
-                STATUS = UserStatesEnum.A.ToString()
+                STATUS = UserStatesEnum.A.ToString(),
+                LAST_LOGIN = DateTime.Now
             };
 
             return dal.AddAppUserWithRole(appUser);
+        }
+
+        public void UpdateLAST_LOGIN(APP_USERS appUser)
+        {
+            appUser.LAST_LOGIN = DateTime.Now;
+            dal.UpdateLAST_LOGIN(appUser);
         }
 
     }

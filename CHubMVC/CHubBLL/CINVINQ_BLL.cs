@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity.UnmanagedModel;
+using System.Data;
 
 namespace CHubBLL
 {
@@ -37,6 +38,25 @@ namespace CHubBLL
         public List<V_EXP_STAGE_BASE> SearchDetailsByV_EXP_STAGE_BASE(string COMM_INV_ID)
         {
             return dal.SearchDetailsByV_EXP_STAGE_BASE(COMM_INV_ID);
+        }
+
+        public void ExecP_EXP_UPT_HSCODE(string COMM_INV_ID)
+        {
+            dal.ExecP_EXP_UPT_HSCODE(COMM_INV_ID);
+        }
+
+        public string CallFuncF_EXP_HSCODE_CHK(string COMM_INV_ID)
+        {
+            return dal.CallFuncF_EXP_HSCODE_CHK(COMM_INV_ID);
+        }
+
+        public string CallFunc_GET_SQL(string COMM_INV_ID)
+        {
+            return dal.CallFunc_GET_SQL(COMM_INV_ID);
+        }
+        public DataTable RunSql(string sql)
+        {
+            return dal.RunSql(sql);
         }
     }
 }

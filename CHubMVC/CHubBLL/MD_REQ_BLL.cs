@@ -42,6 +42,11 @@ namespace CHubBLL
             return dal.GetGLOBAL_PARTDESC(globalpartno);
         }
 
+        public string GetSHORT_DESC(string GLOBAL_PARTNO)
+        {
+            return dal.GetSHORT_DESC(GLOBAL_PARTNO);
+        }
+
         public string GetCHECK_PRI_SUP(string partno)
         {
             return dal.GetCHECK_PRI_SUP(partno);
@@ -82,9 +87,9 @@ namespace CHubBLL
             dal.SaveMD_REQ_DETAIL(mrDetail);
         }
 
-        public void ExecP_MD_SR_NEW(string PART_NO, string PRODUCT_GROUP_ID)
+        public void ExecP_MD_SR_NEW(string PART_NO, string PRODUCT_GROUP_ID, string NOTE, string REQ_BY)
         {
-            dal.ExecP_MD_SR_NEW(PART_NO, PRODUCT_GROUP_ID);
+            dal.ExecP_MD_SR_NEW(PART_NO, PRODUCT_GROUP_ID, NOTE, REQ_BY);
         }
 
     }

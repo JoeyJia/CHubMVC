@@ -72,5 +72,13 @@ namespace CHubBLL
             
         }
 
+        public string GetPAGE_NAME(string URL)
+        {
+            return dal.GetPAGE_NAME(URL);
+        }
+        public void AddPageLog(string appUser, string PAGE_NAME)
+        {
+            dal.AddPageLog(appUser, PAGE_NAME);
+        }
     }
 }

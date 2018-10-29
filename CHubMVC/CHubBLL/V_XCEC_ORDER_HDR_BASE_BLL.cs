@@ -22,9 +22,9 @@ namespace CHubBLL
             dal = new V_XCEC_ORDER_HDR_BASE_DAL(db);
         }
 
-        public List<V_XCEC_ORDER_HDR_BASE> SearchXcecWB(string CUST_ORDER_NO, string CUST_NAME, string CREATE_DATE)
+        public List<V_XCEC_ORDER_HDR_BASE> SearchXcecWB(string CUST_ORDER_NO, string CUST_NAME, string CREATE_DATE,string PROCESS_STATUS)
         {
-            return dal.SearchXcecWB(CUST_ORDER_NO, CUST_NAME, CREATE_DATE);
+            return dal.SearchXcecWB(CUST_ORDER_NO, CUST_NAME, CREATE_DATE, PROCESS_STATUS);
         }
 
         public List<V_XCEC_ORDER_HDR_BASE> SearchXcecWBDetail(string WAREHOUSE, string IHUB_ORDER_NO)
@@ -35,6 +35,16 @@ namespace CHubBLL
         public List<V_XCEC_ORDER_LN_BASE> GetLinesDetail(string CUST_ORDER_NO)
         {
             return dal.GetLinesDetail(CUST_ORDER_NO);
+        }
+
+        public void UpdateProcessStatus(V_XCEC_ORDER_HDR_BASE result)
+        {
+            dal.UpdateProcessStatus(result);
+        }
+
+        public void ExecProc()
+        {
+            dal.ExecProc();
         }
 
     }

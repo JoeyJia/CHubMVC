@@ -36,7 +36,7 @@ namespace CHubBLL
         }
 
 
-        public decimal AddHeadersWithDetails(TS_OR_HEADER orHeader, TS_OR_HEADER altORHeader, List<TS_OR_DETAIL> detailList)
+        public decimal AddHeadersWithDetails(TS_OR_HEADER orHeader, TS_OR_HEADER altORHeader, List<TS_OR_DETAIL> detailList,string DUE_DATE)
         {
             try
             {
@@ -61,6 +61,16 @@ namespace CHubBLL
                 }
 
                 dal.SaveChanges();
+
+                if (detailList != null && detailList.Count > 0)
+                {
+                    foreach (var item in detailList)
+                    {
+                        item.ORDER_REQ_NO = nextVal;
+                        dal.UpdateTS_OR_DETAIL_DUEDATE(item.ORDER_REQ_NO, item.ORDER_LINE_NO, DUE_DATE);
+                    }
+                }
+                
                 return nextVal;
 
             }
@@ -78,7 +88,7 @@ namespace CHubBLL
         /// <param name="altORHeader"></param>
         /// <param name="detailList"></param>
         /// <returns></returns>
-        public decimal UpdateHeadersWithDetails(TS_OR_HEADER orHeader, TS_OR_HEADER altORHeader, List<TS_OR_DETAIL> detailList)
+        public decimal UpdateHeadersWithDetails(TS_OR_HEADER orHeader, TS_OR_HEADER altORHeader, List<TS_OR_DETAIL> detailList,string DUE_DATE)
         {
             TS_OR_HEADER_STAGE_BLL hsBLL = new TS_OR_HEADER_STAGE_BLL(dal.db);
             //Or Header part => if exist stage =>delete stage and add header. if not exist stage => update header
@@ -138,6 +148,15 @@ namespace CHubBLL
             }
 
             dal.SaveChanges();
+
+            if (detailList != null && detailList.Count > 0)
+            {
+                foreach (var item in detailList)
+                {
+                    detailDal.UpdateTS_OR_DETAIL_DUEDATE(item.ORDER_REQ_NO, item.ORDER_LINE_NO, DUE_DATE);
+                }
+            }
+            
             return orHeader.ORDER_REQ_NO;
         }
 
