@@ -17,6 +17,35 @@
         width: 16%;
         border-top: 0;
     }
+
+    @@-webkit-keyframes spin {
+        from {
+            -webkit-transform: rotate(0deg);
+        }
+
+        to {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .glyphicon {
+        display: inline-block;
+    }
+
+    .glyphicon-refresh {
+        -webkit-animation: spin 2s infinite linear;
+        animation: spin 2s infinite linear;
+    }
 </style>
 
 <input type="hidden" id="txtAppUser" value="@ViewBag.AppUser" />
@@ -135,8 +164,10 @@
                     <!--按钮区域-->
                     <div class="col-sm-12">
                         <div class="col-sm-3">
-                            <input type="button" class="btn btn-primary btn-sm" id="btnReVerify" value="Re-Verify" />
-                            <input type="button" class="btn btn-primary btn-sm" id="btnSave" value="SAVE" />
+                            @*<input type="button" class="btn btn-primary btn-sm" id="btnReVerify" value="Re-Verify" />*@
+                            <button type="button" class="btn btn-primary btn-sm" id="btnReVerify" data-loading-text="<i class='glyphicon glyphicon-refresh'></i>" autocomplete="off">Re-Verify</button>
+                            @*<input type="button" class="btn btn-primary btn-sm" id="btnSave" value="SAVE" />*@
+                            <button type="button" class="btn btn-primary btn-sm" id="btnSave" data-loading-text="<i class='glyphicon glyphicon-refresh'></i>" autocomplete="off">SAVE</button>
                             <input type="button" class="btn btn-primary btn-sm" id="btnCancel" value="Cancel" />
                             <input type="button" class="btn btn-primary btn-sm" id="btnSubmit" value="Submit" />
                         </div>
@@ -229,7 +260,9 @@
             }
 
             $("#loadingModal").modal("show");
-
+            RetMainSearch();            
+        });
+        function RetMainSearch() {
             $.ajax({
                 url: '/ret/RetMainSearch',
                 type: 'post',
@@ -253,8 +286,8 @@
                     $("#loadingModal").modal("hide");
                     alert("fail to search" + e.responseText);
                 }
-            })
-        });
+            });
+        }
 
         //btn Detail
         $("#resultTbody").on('click', '.btnDetail', function () {
@@ -263,29 +296,9 @@
             var td = $(tr).find("td");
             GetAndFillData(td);//填充Header数据
             BtnCanClick(td);//按钮状态
-
             $("#loadingModal").modal("show");
-            //Detail数据
-            $.ajax({
-                url: '/ret/GetRetMainDetailModal',
-                type: 'post',
-                async: true,
-                dataType: 'json',
-                data: { RET_REQ_NO: RET_REQ_NO, REQ_STATUS: REQ_STATUS },
-                success: function (obj) {
-                    $("#loadingModal").modal("hide");
-                    if (obj.Success) {
-                        $("#modalDetailTbody").html(obj.Data);
-                        $("#myModal").modal("show");
-                    }
-                    else
-                        alert(obj.Msg);
-                },
-                error: function (e) {
-                    $("#loadingModal").modal("hide");
-                    alert("fail to get" + e.responseText);
-                }
-            });
+            GetRetMainDetail();//Details数据
+            
         });
         function GetAndFillData(td) {
             RET_REQ_NO = $(td).eq(0).html();
@@ -343,6 +356,30 @@
                 $("#btnApprove").attr("disabled", false);
 
         }
+        function GetRetMainDetail() {
+            //Detail数据
+            $.ajax({
+                url: '/ret/GetRetMainDetailModal',
+                type: 'post',
+                async: true,
+                dataType: 'json',
+                data: { RET_REQ_NO: RET_REQ_NO, REQ_STATUS: REQ_STATUS },
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#modalDetailTbody").html(obj.Data);
+                        $("#myModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to get" + e.responseText);
+                }
+            });
+
+        }
 
         //btn Delete
         $("#modalDetailTbody").on('click', '.btnDelete', function () {
@@ -364,10 +401,10 @@
                     }),
                     contentType: 'application/json;charset=utf-8',
                     success: function (obj) {
-                        if (obj.Success){
+                        if (obj.Success) {
                             $(tr).remove();
                             alert("Success");
-                        }                            
+                        }
                         else
                             alert(obj.Msg);
                     },
@@ -379,7 +416,13 @@
         });
 
         //btn Re-Verify
+        //Save first,Then exec Proc,last need refresh
         $("#btnReVerify").on('click', function () {
+            var $this = $(this);
+            ReVerify($this)
+        });
+        function ReVerify($this) {
+            $this.button("loading");
             arglist = [];
             var tr = $("#modalDetailTbody").find("tr");
             for (var i = 0; i < $(tr).length; i++) {
@@ -404,37 +447,41 @@
                 dataType: 'json',
                 data: JSON.stringify({
                     arg: arglist,
-                    RET_REQ_NO:RET_REQ_NO
+                    RET_REQ_NO: RET_REQ_NO
                 }),
                 contentType: 'application/json;charset=utf-8',
                 success: function (obj) {
+                    $this.button("reset");
                     if (obj.Success) {
+                        RefreshRetMainDetailTbodyModal();
                         alert("Success");
-                        for (var i = 0; i < $(tr).length; i++) {
-                            var td = $(tr[i]).find("td");
-                            if (!($(td).find(".txtCUST_ITEM")[0].readOnly)) {
-                                $(td).find(".txtCUST_ITEM")[0].readOnly = true;
-                                $(td).find(".txtQTY")[0].readOnly = true;
-                                $(td).find(".txtPART_NO")[0].readOnly = true;
-                                $(td).find(".txtDESCRIPTION")[0].readOnly = true;
-                            }
-                        }
+                        //for (var i = 0; i < $(tr).length; i++) {
+                        //    var td = $(tr[i]).find("td");
+                        //    if (!($(td).find(".txtCUST_ITEM")[0].readOnly)) {
+                        //        $(td).find(".txtCUST_ITEM")[0].readOnly = true;
+                        //        $(td).find(".txtQTY")[0].readOnly = true;
+                        //        $(td).find(".txtPART_NO")[0].readOnly = true;
+                        //        $(td).find(".txtDESCRIPTION")[0].readOnly = true;
+                        //    }
+                        //}
                     }
                     else
                         alert(obj.Msg);
                 },
                 error: function (e) {
+                    $this.button("reset");
                     alert("fail to ReVerify");
                 }
             });
-
-        });
+        }
 
         //btn SAVE
         $("#btnSave").on('click', function () {
-            SaveRET_REQ_D();
+            var $this = $(this);
+            SaveRET_REQ_D($this);
         });
-        function SaveRET_REQ_D() {
+        function SaveRET_REQ_D($this) {
+            $this.button("loading");
             arglist = [];
             var tr = $("#modalDetailTbody").find("tr");
             for (var i = 0; i < $(tr).length; i++) {
@@ -459,29 +506,54 @@
                 dataType: 'json',
                 data: JSON.stringify({
                     arg: arglist,
-                    RET_REQ_NO:RET_REQ_NO
+                    RET_REQ_NO: RET_REQ_NO
                 }),
                 contentType: 'application/json;charset=utf-8',
                 success: function (obj) {
-                    if (obj.Success){
+                    $this.button("reset");
+                    if (obj.Success) {
+                        RefreshRetMainDetailTbodyModal();
                         alert("Success");
-                        for (var i = 0; i < $(tr).length; i++) {
-                            var td = $(tr[i]).find("td");
-                            if (!($(td).find(".txtCUST_ITEM")[0].readOnly)) {
-                                $(td).find(".txtCUST_ITEM")[0].readOnly = true;
-                                $(td).find(".txtQTY")[0].readOnly = true;
-                                $(td).find(".txtPART_NO")[0].readOnly = true;
-                                $(td).find(".txtDESCRIPTION")[0].readOnly = true;
-                            }
-                        }
+                        //for (var i = 0; i < $(tr).length; i++) {
+                        //    var td = $(tr[i]).find("td");
+                        //    if (!($(td).find(".txtCUST_ITEM")[0].readOnly)) {
+                        //        $(td).find(".txtCUST_ITEM")[0].readOnly = true;
+                        //        $(td).find(".txtQTY")[0].readOnly = true;
+                        //        $(td).find(".txtPART_NO")[0].readOnly = true;
+                        //        $(td).find(".txtDESCRIPTION")[0].readOnly = true;
+                        //    }
+                        //}
                     }
                     else
                         alert(obj.Msg);
                 },
                 error: function (e) {
+                    $this.button("reset");
                     alert("fail to Save");
                 }
             })
+        }
+
+        //Refres modalDetailTbody
+        function RefreshRetMainDetailTbodyModal() {
+            $.ajax({
+                url: '/ret/GetRetMainDetailModal',
+                type: 'post',
+                async: true,
+                dataType: 'json',
+                data: { RET_REQ_NO: RET_REQ_NO, REQ_STATUS: REQ_STATUS },
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#modalDetailTbody").html(obj.Data);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get" + e.responseText);
+                }
+            });
+
         }
 
         //btn Cancel
@@ -493,7 +565,7 @@
                     async: true,
                     dataType: 'json',
                     data: {
-                        RET_REQ_NO:RET_REQ_NO
+                        RET_REQ_NO: RET_REQ_NO
                     },
                     success: function (obj) {
                         if (obj.Success) {
@@ -580,7 +652,7 @@
             var lastTr = $(tr)[tr.length - 1];
             var lastTd = $(lastTr).find("td");
             var lineNo = $(lastTd).find(".txtLINE_NO").val();
-            
+
             var lineNO_New = parseInt(lineNo) + 1;
 
             $.ajax({
@@ -590,7 +662,7 @@
                 dataType: 'json',
                 data: {
                     LINE_NO: lineNO_New,
-                    REQ_STATUS:REQ_STATUS
+                    REQ_STATUS: REQ_STATUS
                 },
                 success: function (obj) {
                     if (obj.Success) {
@@ -615,7 +687,7 @@
                     type: 'post',
                     async: true,
                     data: {
-                        CUST_ITEM:txtCUST_ITEM.val()
+                        CUST_ITEM: txtCUST_ITEM.val()
                     },
                     dataType: 'json',
                     success: function (obj) {
@@ -630,9 +702,9 @@
                         alert("fail to call");
                     }
                 })
-            }                
+            }
         });
-        
+
         //number only
         $("#modalDetailTbody").on('blur', '.txtQTY_APPROVED', function () {
             var txtQTY_APPROVED = $(this);

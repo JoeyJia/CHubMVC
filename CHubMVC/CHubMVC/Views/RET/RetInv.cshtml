@@ -17,6 +17,39 @@
         width: 16%;
         border-top: 0;
     }
+    #modalDetailTable {
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+
+    @@-webkit-keyframes spin {
+        from {
+            -webkit-transform: rotate(0deg);
+        }
+
+        to {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .glyphicon {
+        display: inline-block;
+    }
+
+    .glyphicon-refresh {
+        -webkit-animation: spin 2s infinite linear;
+        animation: spin 2s infinite linear;
+    }
 </style>
 
 <input type="hidden" id="txtAppUser" value="@ViewBag.AppUser" />
@@ -55,7 +88,7 @@
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtRET_REQ_NO" placeholder="REQUEST NO" />
                     </div>
-                    <label for="" class="col-sm-2 control-label">INVOICE DATE ( Last days):</label>
+                    <label for="" class="col-sm-2 control-label">INVOICE DATE (Last days):</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtINVOICE_DATE" value="30" placeholder="INVOICE DATE" />
                     </div>
@@ -149,7 +182,8 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <input type="button" class="btn btn-primary btn-sm" id="btnReconcile" value="Reconcile" />
+                        @*<input type="button" class="btn btn-primary btn-sm" id="btnReconcile" data-loading-text="<i></i>" value="Reconcile" />*@
+                        <button type="button" class="btn btn-primary btn-sm" id="btnReconcile" data-loading-text="<i class='glyphicon glyphicon-refresh'></i>" autocomplete="off">Reconcile</button>
                         <input type="button" class="btn btn-primary btn-sm" id="btnDownload" value="Download" />
                         <input type="button" class="btn btn-primary btn-sm" id="btn" value="......" />
                     </div>
@@ -160,7 +194,7 @@
                             <div class="panel-heading">
                                 <b>Details:</b>
                             </div>
-                            <table class="table table-bordered table-hover" id="modalDetailTable">
+                            <table class="table table-bordered" id="modalDetailTable">
                                 <thead>
                                     <tr>
                                         <th>LINE NO</th>
@@ -214,7 +248,12 @@
     })
 
     $(document).ready(function () {
+        var INVOICE_ID_OBJ;
+        var btnDetail;
+
+
         $("#btnQuery").on('click', function () {
+            $("#resultTbody").empty();
             var arg = {};
 
             arg.CUSTOMER_NO = $("#txtCUSTOMER_NO").val();
@@ -222,6 +261,8 @@
             arg.INVOICE_ID = $("#txtINVOICE_ID").val();
             arg.RET_REQ_NO = $("#txtRET_REQ_NO").val();
             arg.INVOICE_DATE = $("#txtINVOICE_DATE").val();
+
+            $("#resultTbody").empty();
 
             if (arg.CUSTOMER_NO == "") {
                 alert("No CUSTOMER_NO Select");
@@ -254,24 +295,25 @@
         });
 
         $("#resultTbody").on('click', '.btnDetail', function () {
-            //var s = "<span style=\"color:green\">dadwadw</span>";
-            //$("#tdRECONCILE_STATUS").html(s);
-            //$("#myModal").modal("show");
-            var tr = $(this).parent().parent();
+            btnDetail = $(this);
+            var tr = $(btnDetail).parent().parent();
             var td = $(tr).find("td");
 
             FillHeaderData(td);//fill header data
 
-            var INVOICE_ID = $(td).eq(7).html();
+            INVOICE_ID_OBJ = $(td).eq(7).html();
+
+            $("#loadingModal").modal("show");
             //fill detail data
             $.ajax({
                 url: '/ret/GetRetInvDetailModal',
                 type: 'post',
                 async: true,
-                data: { INVOICE_ID: INVOICE_ID },
+                data: { INVOICE_ID: INVOICE_ID_OBJ },
                 dataType: 'json',
                 success: function (obj) {
                     //$("#modalDetailTbody").empty();
+                    $("#loadingModal").modal("hide");
                     if (obj.Success) {
                         $("#modalDetailTbody").html(obj.Data);
                         $("#myModal").modal("show");
@@ -280,11 +322,11 @@
                         alert(obj.Msg);
                 },
                 error: function (e) {
+                    $("#loadingModal").modal("hide");
                     alert("fail to get detail" + e.responseText);
                 }
             });
         });
-
         function FillHeaderData(td) {
             var REFERENCE_NO = $(td).eq(0).html();
             var RET_REQ_NO = $(td).eq(1).html();
@@ -311,6 +353,52 @@
             $("#tdWAREHOUSE").html(WAREHOUSE);
         };
 
+        $("#btnReconcile").on('click', function () {
+            var $this = $(this);
+            $this.button("loading");//loading
+            // setTimeout(function () { $this.button('reset'); }, 3000);
+            $.ajax({
+                url: '/ret/RunProc_P_RET_Match',
+                type: 'post',
+                async: true,
+                data: { INVOICE_ID: INVOICE_ID_OBJ },
+                dataType: 'json',
+                success: function (obj) {
+                    $this.button("reset");
+                    if (!obj.Success)
+                        alert(obj.Msg);
+                    else {
+                        alert("Success");
+                        RefreshRetInvDetailTbodyModal();
+                    }
+                        
+                },
+                error: function (e) {
+                    $this.button("reset");
+                    alert("fail to Run" + e.responseText);
+                }
+            })
+        });
+
+        function RefreshRetInvDetailTbodyModal() {
+            $.ajax({
+                url: '/ret/GetRetInvDetailModal',
+                type: 'post',
+                async: true,
+                data: { INVOICE_ID: INVOICE_ID_OBJ },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#modalDetailTbody").html(obj.Data);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get detail" + e.responseText);
+                }
+            });
+        }
 
 
     })
