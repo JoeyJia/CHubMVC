@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = "Adhoc CwsCust";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .form-group {
+        margin-bottom:0;
+    }
+</style>
+
+<div class="container-fluid" id="cwscustDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Customer NO:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtCUSTOMER_NO" placeholder="Customer NO" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnOK" value="OK" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <table class="table table-bordered table-hover" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th style="width:8%;">Customer No</th>
+                                <th style="width:36%;">Customer Name</th>
+                                <th style="width:6%;">CWS (Y/N)</th>
+                                <th>FLAG01</th>
+                                <th>FLAG02</th>
+                                <th>FLAG03</th>
+                                <th>NOTE</th>
+                                <th style="width:3%;">Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_LoadingModal")
+
+<script>
+    $(document).ready(function () {
+        var arg = {};
+
+        $("#btnOK").on('click', function () {
+            //$("#resultTbody").empty();
+            var CUSTOMER_NO = $("#txtCUSTOMER_NO").val();
+            if (CUSTOMER_NO == "") {
+                alert("No CUSTOMER_NO Input");
+                return false;
+            }
+
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/adhoc/CwsCustSearch',
+                type: 'post',
+                async: true,
+                data: JSON.stringify({
+                    CUSTOMER_NO: CUSTOMER_NO
+                }),
+                dataType: 'json',
+                contentType: 'application/json;charset=utf-8',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success)
+                        $("#resultTbody").html(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+            })
+        });
+
+        $("#resultTbody").on('click', '.btnSave', function () {
+            var $this = $(this);
+            arg = {};
+            var CUSTOMER_NO = $this.attr("data-customerno");
+            var td = $this.parent().parent().find("td");
+            arg.CUSTOMER_NO = CUSTOMER_NO;
+            arg.CWS_FLAG = $(td).find(".CWS_FLAG").val();
+            arg.FLAG01 = $(td).find(".FLAG01").val();
+            arg.FLAG02 = $(td).find(".FLAG02").val();
+            arg.FLAG03 = $(td).find(".FLAG03").val();
+            arg.NOTE = $(td).find(".NOTE").val();
+
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/adhoc/CwsCustSave',
+                type: 'post',
+                async: true,
+                data: JSON.stringify({
+                    arg:arg
+                }),
+                dataType: 'json',
+                contentType: 'application/json;charset=utf-8',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success){
+                        alert("Success");
+                        $("#btnOK").click();
+                    }                        
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to save");
+                }
+            })
+        });
+
+
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+
+    });
+</script>
