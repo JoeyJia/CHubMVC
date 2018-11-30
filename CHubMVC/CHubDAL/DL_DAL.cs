@@ -141,6 +141,22 @@ namespace CHubDAL
             //ccHelper.AddOrUpdateWithParams(sql, param);
         }
 
+        public void AddIHUB_LOAD_BASE(IHUB_LOAD_BASE ilb, string LOAD_BATCH, string LOAD_TYPE, string LOAD_BY, string LOAD_LINE_NO, string INPUT1, string INPUT2, string INPUT3)
+        {
+            string sql = string.Format(@"insert into IHUB_LOAD_BASE(
+                                LOAD_BATCH,LOAD_TYPE,LOAD_BY,LOAD_DATE,ERR_MSG,LOAD_LINE_NO,
+                                T01,T02,T03,T04,T05,T06,T07,T08,T09,T10,T11,T12,
+                                T13,T14,T15,T16,T17,T18,T19,T20,T21,T22,T23,T24,INPUT1,INPUT2,INPUT3) values(
+                                '{0}','{1}','{2}',to_date('{3}','yyyy-mm-dd hh24:mi:ss'),'{4}','{5}',
+                                '{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}',
+                                '{18}','{19}','{20}','{21}','{22}','{23}','{24}','{25}','{26}','{27}','{28}','{29}','{30}','{31}','{32}'
+                                )", LOAD_BATCH, LOAD_TYPE, LOAD_BY, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "", LOAD_LINE_NO,
+                                ilb.T01, ilb.T02, ilb.T03, ilb.T04, ilb.T05, ilb.T06, ilb.T07, ilb.T08, ilb.T09, ilb.T10, ilb.T11, ilb.T12,
+                                ilb.T13, ilb.T14, ilb.T15, ilb.T16, ilb.T17, ilb.T18, ilb.T19, ilb.T20, ilb.T21, ilb.T22, ilb.T23, ilb.T24, INPUT1, INPUT2, INPUT3
+                                );
+            ccHelper.Update(sql);
+        }
+
 
         public void ExecP_IHUB_LOAD_POST(decimal LOAD_BATCH, string LOAD_TYPE)
         {

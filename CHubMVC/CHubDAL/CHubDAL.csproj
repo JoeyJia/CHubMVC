@@ -59,7 +59,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APP_QUICK_SCREEN_DAL.cs" />
+    <Compile Include="Chart_DAL.cs" />
     <Compile Include="CINVINQ_DAL.cs" />
+    <Compile Include="CWSCUST_DAL.cs" />
     <Compile Include="DB_KPI_HISTORY_DAL.cs" />
     <Compile Include="DB_KPI_GROUP_DAL.cs" />
     <Compile Include="DL_DAL.cs" />
@@ -98,6 +100,7 @@
     <Compile Include="MD_REQ_DAL.cs" />
     <Compile Include="RETINV_DAL.cs" />
     <Compile Include="RETMAIN_DAL.cs" />
+    <Compile Include="RETRESTRICT_DAL.cs" />
     <Compile Include="V_IA_LOD_BASE_DAL.cs" />
     <Compile Include="V_IA_LOD_DTL_DAL.cs" />
     <Compile Include="V_IA_LOD_HDR_DAL.cs" />

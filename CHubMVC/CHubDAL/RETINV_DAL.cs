@@ -65,5 +65,30 @@ namespace CHubDAL
             ccHelper.ExecProcedure("P_RET_Match", param);
         }
 
+        public void RunProc_P_RET_INV_CLOSE(string INVOICE_ID)
+        {
+            OracleParameter[] param = new OracleParameter[] {
+                new OracleParameter("v_inv_id",OracleDbType.Varchar2)
+            };
+            param[0].Value = INVOICE_ID;
+            param[0].Direction = ParameterDirection.Input;
+
+            ccHelper.ExecProcedure("P_RET_INV_CLOSE", param);
+        }
+
+        public string RetInvGetSql(string INVOICE_ID)
+        {
+            string sql = string.Format(@"select get_sql('RET_INV','{0}','','','','') from dual", INVOICE_ID);
+            var result = ccHelper.ExecuteFunc(sql);
+            return result;
+        }
+
+        public DataTable RunRetInvSql(string sql)
+        {
+            DataTable dt = ccHelper.ExecuteSqlToDataTable(sql);
+            return dt;
+        }
+
+
     }
 }

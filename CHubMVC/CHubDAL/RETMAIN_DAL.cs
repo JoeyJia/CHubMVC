@@ -36,6 +36,15 @@ namespace CHubDAL
             var result = ccHelper.Search<V_RET_REQ_D>(sql);
             return result;
         }
+        public List<V_RET_REQ_D> GetRetMainDetailByRejectReason(string RET_REQ_NO, string REJECT_REASON)
+        {
+            string sql = string.Format(@"select * from  V_RET_REQ_D where ret_req_no ='{0}'", RET_REQ_NO);
+            if (!string.IsNullOrEmpty(REJECT_REASON))
+                sql += string.Format(@" and REJECT_REASON='{0}'", REJECT_REASON);
+            sql += string.Format(@" order by LINE_NO");
+            var result = ccHelper.Search<V_RET_REQ_D>(sql);
+            return result;
+        }
 
         public List<RET_PART_GROUP> GetPART_GROUP()
         {
@@ -56,10 +65,12 @@ namespace CHubDAL
             OracleParameter[] param = null;
             string existSql = string.Format(@"select * from V_RET_REQ_D where RET_REQ_NO='{0}' and LINE_NO='{1}'", RET_REQ_NO, arg.LINE_NO);
             var result = ccHelper.Search<V_RET_REQ_D>(existSql);
+            //更新
             if (result != null && result.Count() > 0)
             {
-                sql = string.Format(@"update RET_REQ_D set QTY_APPROVED=:QTY_APPROVED,REJECT_REASON=:REJECT_REASON,PART_GROUP=:PART_GROUP,SUPPLIER_CODE=:SUPPLIER_CODE where RET_REQ_NO=:RET_REQ_NO and LINE_NO=:LINE_NO");
+                sql = string.Format(@"update RET_REQ_D set QTY=:QTY,QTY_APPROVED=:QTY_APPROVED,REJECT_REASON=:REJECT_REASON,PART_GROUP=:PART_GROUP,SUPPLIER_CODE=:SUPPLIER_CODE where RET_REQ_NO=:RET_REQ_NO and LINE_NO=:LINE_NO");
                 param = new OracleParameter[] {
+                    new OracleParameter(":QTY",OracleDbType.Int64),
                     new OracleParameter(":QTY_APPROVED",OracleDbType.Decimal),
                     new OracleParameter(":REJECT_REASON",OracleDbType.Varchar2),
                     new OracleParameter(":PART_GROUP",OracleDbType.Varchar2),
@@ -67,15 +78,16 @@ namespace CHubDAL
                     new OracleParameter(":RET_REQ_NO",OracleDbType.Decimal),
                     new OracleParameter(":LINE_NO",OracleDbType.Int64),
                 };
-                param[0].Value = Convert.ToDecimal(arg.QTY_APPROVED);
-                param[1].Value = arg.REJECT_REASON;
-                param[2].Value = arg.PART_GROUP;
-                param[3].Value = arg.SUPPLIER_CODE;
-                param[4].Value = Convert.ToDecimal(RET_REQ_NO);
-                param[5].Value = Convert.ToInt64(arg.LINE_NO);
+                param[0].Value = Convert.ToInt64(arg.QTY);
+                param[1].Value = Convert.ToDecimal(arg.QTY_APPROVED);
+                param[2].Value = arg.REJECT_REASON;
+                param[3].Value = arg.PART_GROUP;
+                param[4].Value = arg.SUPPLIER_CODE;
+                param[5].Value = Convert.ToDecimal(RET_REQ_NO);
+                param[6].Value = Convert.ToInt64(arg.LINE_NO);
 
             }
-            else
+            else//新增
             {
                 sql = string.Format(@"insert into RET_REQ_D(RET_REQ_NO,LINE_NO,CUST_ITEM,QTY,PART_NO,DESCRIPTION,QTY_APPROVED,REJECT_REASON,PART_GROUP,SUPPLIER_CODE,CREATE_DATE) 
                                 values(:RET_REQ_NO,:LINE_NO,:CUST_ITEM,:QTY,:PART_NO,:DESCRIPTION,:QTY_APPROVED,:REJECT_REASON,:PART_GROUP,:SUPPLIER_CODE,:CREATE_DATE)");
@@ -153,6 +165,52 @@ namespace CHubDAL
             return result;
         }
 
+        public string RetMainGetSql(string RET_REQ_NO)
+        {
+            string sql = string.Format(@"select get_sql('RET_REQ','{0}','','','','') from dual", RET_REQ_NO);
+            var result = ccHelper.ExecuteFunc(sql);
+            return result;
+        }
+        public DataTable RunRetMainSql(string sql)
+        {
+            DataTable dt = ccHelper.ExecuteSqlToDataTable(sql);
+            return dt;
+        }
+        public void ChangeRET_REQ_H_Status(string RET_REQ_NO)
+        {
+            string sql = string.Format(@"Update RET_REQ_H set REQ_STATUS='{0}' where RET_REQ_NO='{1}'", "APPROVED", RET_REQ_NO);
+            ccHelper.Update(sql);
+        }
 
+        public List<string> GetLOAD_TYPEs(string appUser)
+        {
+            List<string> str = new List<string>();
+            string sql = string.Format(@"select * from IHUB_LOAD_TYPE_AUTH where APP_USER='{0}' and AUTH_BEGIN_DATE <=sysdate and (AUTH_END_DATE>=sysdate or AUTH_END_DATE is null)", appUser);
+            var result = ccHelper.Search<IHUB_LOAD_TYPE_AUTH>(sql);
+            str = result.Select(a => a.LOAD_TYPE).ToList();
+            return str;
+        }
+        public string GetLOAD_DESC(string LOAD_TYPE)
+        {
+            string str = string.Empty;
+            string sql = string.Format(@"select * from IHUB_LOAD_TYPE where LOAD_TYPE='{0}'", LOAD_TYPE);
+            var result = ccHelper.Search<IHUB_LOAD_TYPE>(sql);
+            str = result.Select(a => a.LOAD_DESC).FirstOrDefault();
+            return str;
+        }
+
+        public List<RET_RETURN_TYPE> GetRETURN_TYPEs()
+        {
+            string sql = string.Format(@"select * from RET_RETURN_TYPE");
+            var result = ccHelper.Search<RET_RETURN_TYPE>(sql);
+            return result;
+        }
+
+        public IHUB_LOAD_TYPE GetIHUB_LOAD_TYPE(string LOAD_TYPE)
+        {
+            string sql = string.Format(@"select * from IHUB_LOAD_TYPE where LOAD_TYPE='{0}'", LOAD_TYPE);
+            var result = ccHelper.Search<IHUB_LOAD_TYPE>(sql).First();
+            return result;
+        }
     }
 }
