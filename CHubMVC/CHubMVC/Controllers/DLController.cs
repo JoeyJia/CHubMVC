@@ -97,7 +97,7 @@ namespace CHubMVC.Controllers
         {
             if (!string.IsNullOrEmpty(LOAD_TYPE))
             {
-                HttpPostedFileBase hpf = Request.Files[0];//xls,xlsx;csv
+                HttpPostedFileBase hpf = Request.Files["ihubloadInput"];//xls,xlsx;csv
                 DL_BLL dBLL = new DL_BLL();
                 IHUB_LOAD_TYPE ilt = new IHUB_LOAD_TYPE();
                 try
@@ -387,7 +387,7 @@ namespace CHubMVC.Controllers
 
         public void DownloadTXT(string fileName)
         {
-            string folderPath = Server.MapPath(CHubConstValues.ChubTempFolder);
+            string folderPath = Server.MapPath(CHubConstValues.ChubTemplateFolder);
             FileInfo folder = new FileInfo(folderPath);
             if (!Directory.Exists(folder.FullName))
                 Directory.CreateDirectory(folder.FullName);
@@ -407,7 +407,7 @@ namespace CHubMVC.Controllers
 
         public ActionResult DownLoad(string fileName)
         {
-            string folderPath = Server.MapPath(CHubConstValues.ChubTempFolder);
+            string folderPath = Server.MapPath(CHubConstValues.ChubTemplateFolder);
             FileInfo folder = new FileInfo(folderPath);
             if (!Directory.Exists(folder.FullName))
                 Directory.CreateDirectory(folder.FullName);

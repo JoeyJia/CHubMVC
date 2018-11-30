@@ -1,0 +1,190 @@
+﻿@{
+    ViewBag.Title = "RET RetRestrict";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .form-group {
+        margin-top: 0;
+    }
+</style>
+<input type="hidden" id="txtAppUser" value="@ViewBag.AppUser" />
+
+<div class="container-fluid" id="retrestrictDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Part No:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtPART_NO" placeholder="Part No" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnQuery" value="Query" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row" style="margin-top:30px;">
+            <div class="col-sm-12">
+                <input type="button" class="btn btn-primary btn-sm" id="btnSave" value="SAVE" />
+                <input type="button" class="btn btn-primary btn-sm" id="btnDownload" value="DownLoad" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <table class="table table-bordered table-hover" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th>Part NO</th>
+                                <th>Return Restrict (Y/N)</th>
+                                <th>Return MOQ</th>
+                                <th>Record Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        //Search
+        $("#btnQuery").on('click', function () {
+            $("#resultTbody").empty();
+            var PART_NO = $("#txtPART_NO").val();//不可为空，模糊查询
+            if (PART_NO == "") {
+                alert("No PART_NO Input");
+                return;
+            }
+            
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/ret/RetRestrictSearch',
+                type: 'post',
+                async: true,
+                data: { PART_NO: PART_NO },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#resultTbody").html(obj.Data);
+                        SelectColor();
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+            });
+        });
+        function SelectColor() {
+            var $RETURN_RESTRICT = $("#resultTbody").find(".RETURN_RESTRICT");
+            $($RETURN_RESTRICT).css('color', 'red');
+            $($RETURN_RESTRICT.find("option")).css('color', '#555');
+            for (var i = 0; i < $RETURN_RESTRICT.length; i++) {
+                var $firstVal = $($RETURN_RESTRICT[i]).find("option:first").val();
+                var $thisVal = $($RETURN_RESTRICT[i]).val();
+                if ($thisVal == $firstVal)
+                    $($RETURN_RESTRICT[i]).css('color', 'red');
+                else
+                    $($RETURN_RESTRICT[i]).css('color', '#555');
+            }
+
+        }
+        $("#resultTbody").on('change', '.RETURN_RESTRICT', function () {
+            SelectColor();
+        })
+
+    
+        //Save
+        $("#btnSave").on('click', function () {
+            var list = [];
+            var $tr = $("#resultTbody").find("tr");
+            for (var i = 0; i < $tr.length; i++) {
+                var $td = $($tr[i]).find("td");
+                list.push({
+                    PART_NO: $td.find(".PART_NO").val(),
+                    RETURN_RESTRICT: $td.find(".RETURN_RESTRICT").val(),
+                    RETURN_MOQ: $td.find(".RETURN_MOQ").val()
+                });
+            }
+            $.ajax({
+                url: '/ret/RetRestrictSave',
+                type: 'post',
+                async: true,
+                data: JSON.stringify({
+                    arg:list
+                }),
+                dataType: 'json',
+                contentType: 'application/json;charset=utf-8',
+                success: function (obj) {
+                    if (obj.Success)
+                        alert("Success");
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to save");
+                }
+            });
+
+
+
+        });
+        //Download
+        $("#btnDownload").on('click', function () {
+            $.ajax({
+                url: '/ret/RetRestrictDownload',
+                type: 'post',
+                async: true,
+                data: {},
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success)
+                        window.location.href = "/ret/DownLoad?fileName=" + obj.Data;
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to download");
+                }
+            })
+        });
+
+        $("#resultTbody").on('blur', ".RETURN_MOQ", function () {
+            var $RETURN_MOQ = $(this);
+
+            var reg = /^[+]{0,1}(\d+)$/;
+            if (!reg.test($RETURN_MOQ.val()) || $RETURN_MOQ.val() <= 0) {
+                alert("Error format");
+                $RETURN_MOQ.focus();
+                $RETURN_MOQ.select();
+                return;
+            }
+        })
+    });
+</script>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+    })
+</script>
+

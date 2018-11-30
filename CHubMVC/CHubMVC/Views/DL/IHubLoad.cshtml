@@ -29,7 +29,7 @@
         </form>
         <div class="row">
             <div class="form-group">
-                <form class="form-horizontal" name="ihubloadForm" id="ihubload">
+                <form class="form-horizontal" name="ihubloadForm" id="ihubload" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label">Select Source:</label>
                         <div class="col-sm-3">
@@ -96,23 +96,46 @@
         });
 
         $("#btnUpload").on('click', function () {
+            var path = $("#ihubloadInput").val();
+            if (path = "") {
+                alert("导入文件不能为空");
+                return;
+            }
             $("#loadingModal").modal("show");
-
-            var form = $("form[name=ihubloadForm]");
-            var options = {
+            $("#ihubload").ajaxSubmit({
                 url: '/dl/IHubUpload',
                 type: 'post',
                 data: { LOAD_TYPE: $("#txtLOAD_TYPE").val() },
-                enctype: "multipart/form-data",
+                dataType: 'json',
                 success: function (data) {
                     $("#loadingModal").modal("hide");
                     if (data.Success)
                         alert(data.Msg);
                     else
                         alert(data.Msg);
+                },
+                error: function (msg) {
+                    $("#loadingModal").modal("hide");
+                    alert("文件上传失败");
                 }
-            };
-            form.ajaxSubmit(options);
+            });
+
+            //$("#loadingModal").modal("show");
+            //var form = $("form[name=ihubloadForm]");
+            //var options = {
+            //    url: '/dl/IHubUpload',
+            //    type: 'post',
+            //    data: { LOAD_TYPE: $("#txtLOAD_TYPE").val() },
+            //    enctype: "multipart/form-data",
+            //    success: function (data) {
+            //        $("#loadingModal").modal("hide");
+            //        if (data.Success)
+            //            alert(data.Msg);
+            //        else
+            //            alert(data.Msg);
+            //    }
+            //};
+            //form.ajaxSubmit(options);
         });
 
         $("#btnDownload").on('click', function () {

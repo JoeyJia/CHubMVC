@@ -46,7 +46,7 @@
         display: inline-block;
     }
 
-    .glyphicon-refresh {
+    .glyphicon-asterisk {
         -webkit-animation: spin 2s infinite linear;
         animation: spin 2s infinite linear;
     }
@@ -133,7 +133,7 @@
 
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog" style="width:96%;">
+    <div class="modal-dialog" style="width:98%;">
         <div class="modal-content">
             <div class="modal-header panel-default" style="padding:0;">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 40px; height: 40px;font-size:30px;">
@@ -183,9 +183,10 @@
                 <div class="row">
                     <div class="col-sm-12">
                         @*<input type="button" class="btn btn-primary btn-sm" id="btnReconcile" data-loading-text="<i></i>" value="Reconcile" />*@
-                        <button type="button" class="btn btn-primary btn-sm" id="btnReconcile" data-loading-text="<i class='glyphicon glyphicon-refresh'></i>" autocomplete="off">Reconcile</button>
+                        <button type="button" class="btn btn-primary btn-sm" id="btnReconcile" data-loading-text="<i class='glyphicon glyphicon-asterisk'></i>" autocomplete="off">Reconcile</button>
+                        @*<input type="button" class="btn btn-primary btn-sm" id="btnCloseInvoice" value="Close Invoice" />*@
+                        <button type="button" class="btn btn-primary btn-sm" id="btnCloseInvoice" data-loading-text="<i class='glyphicon glyphicon-asterisk'></i>" autocomplete="off">Close Invoice</button>
                         <input type="button" class="btn btn-primary btn-sm" id="btnDownload" value="Download" />
-                        <input type="button" class="btn btn-primary btn-sm" id="btn" value="......" />
                     </div>
                 </div>
                 <div class="row">
@@ -197,17 +198,17 @@
                             <table class="table table-bordered" id="modalDetailTable">
                                 <thead>
                                     <tr>
-                                        <th>LINE NO</th>
-                                        <th>Part No</th>
-                                        <th>Movex Item</th>
+                                        <th style="width: 6%;">LINE NO</th>
+                                        <th style="width: 7%;">Part No</th>
+                                        <th style="width: 7%;">Movex Item</th>
                                         <th>Description</th>
-                                        <th>QTY</th>
-                                        <th>Unit Price</th>
+                                        <th style="width: 4%;">QTY</th>
+                                        <th style="width: 7%;">Unit Price</th>
                                         <th>Amount</th>
-                                        <th>Charge</th>
-                                        <th>NOTE</th>
-                                        <th>Remaining Qty</th>
-                                        <th style="width:40%;">Reconciled VAT</th>
+                                        <th style="width: 5%;">Charge</th>
+                                        <th style="width: 5%;">NOTE</th>
+                                        <th style="width: 9%;">Remaining Qty</th>
+                                        <th style="width:28%;">Reconciled VAT</th>
                                     </tr>
                                 </thead>
                                 <tbody id="modalDetailTbody"></tbody>
@@ -248,12 +249,14 @@
     })
 
     $(document).ready(function () {
-        var INVOICE_ID_OBJ;
         var btnDetail;
+        //全局变量
+        var REFERENCE_NO, RET_REQ_NO, INVOICE_DATE, INVOICE_AMT, CHARGES, RECONCILE_STATUS, NOTE, INVOICE_ID, CUSTOMER_NO, CUST_DESC, WAREHOUSE;
+        //状态内容
+        var RECONCILE_STATUS_TEXT;
 
-
+        //查询
         $("#btnQuery").on('click', function () {
-            $("#resultTbody").empty();
             var arg = {};
 
             arg.CUSTOMER_NO = $("#txtCUSTOMER_NO").val();
@@ -268,7 +271,7 @@
                 alert("No CUSTOMER_NO Select");
                 return false;
             }
-
+            $("#resultTbody").empty();
             $("#loadingModal").modal("show");
 
             $.ajax({
@@ -294,14 +297,14 @@
             });
         });
 
+        //btn Detail
         $("#resultTbody").on('click', '.btnDetail', function () {
             btnDetail = $(this);
             var tr = $(btnDetail).parent().parent();
             var td = $(tr).find("td");
 
             FillHeaderData(td);//fill header data
-
-            INVOICE_ID_OBJ = $(td).eq(7).html();
+            BtnCanClick(td);//btn can click
 
             $("#loadingModal").modal("show");
             //fill detail data
@@ -309,7 +312,7 @@
                 url: '/ret/GetRetInvDetailModal',
                 type: 'post',
                 async: true,
-                data: { INVOICE_ID: INVOICE_ID_OBJ },
+                data: { INVOICE_ID: INVOICE_ID },
                 dataType: 'json',
                 success: function (obj) {
                     //$("#modalDetailTbody").empty();
@@ -328,17 +331,17 @@
             });
         });
         function FillHeaderData(td) {
-            var REFERENCE_NO = $(td).eq(0).html();
-            var RET_REQ_NO = $(td).eq(1).html();
-            var INVOICE_DATE = $(td).eq(2).html();
-            var INVOICE_AMT = $(td).eq(3).html();
-            var CHARGES = $(td).eq(4).html();
-            var RECONCILE_STATUS = $(td).eq(5).html();
-            var NOTE = $(td).eq(6).html();
-            var INVOICE_ID = $(td).eq(7).html();
-            var CUSTOMER_NO = $(td).eq(8).html();
-            var CUST_DESC = $(td).eq(9).html();
-            var WAREHOUSE = $(td).eq(10).html();
+            REFERENCE_NO = $(td).eq(0).html();
+            RET_REQ_NO = $(td).eq(1).html();
+            INVOICE_DATE = $(td).eq(2).html();
+            INVOICE_AMT = $(td).eq(3).html();
+            CHARGES = $(td).eq(4).html();
+            RECONCILE_STATUS = $(td).eq(5).html();
+            NOTE = $(td).eq(6).html();
+            INVOICE_ID = $(td).eq(7).html();
+            CUSTOMER_NO = $(td).eq(8).html();
+            CUST_DESC = $(td).eq(9).html();
+            WAREHOUSE = $(td).eq(10).html();
 
             $("#tdREFERENCE_NO").html(REFERENCE_NO);
             $("#tdRET_REQ_NO").html(RET_REQ_NO);
@@ -352,16 +355,26 @@
             $("#tdCUST_DESC").html(CUST_DESC);
             $("#tdWAREHOUSE").html(WAREHOUSE);
         };
+        function BtnCanClick(td) {
+            RECONCILE_STATUS_TEXT = $(td).eq(5).text();
+            if (RECONCILE_STATUS_TEXT == "Closed") {
+                $("#btnReconcile").attr('disabled', true);
+                $("#btnCloseInvoice").attr('disabled', true);
+            }
+            else {
+                $("#btnReconcile").attr('disabled', false);
+                $("#btnCloseInvoice").attr('disabled', false);
+            }
+        }
 
         $("#btnReconcile").on('click', function () {
             var $this = $(this);
-            $this.button("loading");//loading
-            // setTimeout(function () { $this.button('reset'); }, 3000);
+            $this.button("loading");//button loading
             $.ajax({
                 url: '/ret/RunProc_P_RET_Match',
                 type: 'post',
                 async: true,
-                data: { INVOICE_ID: INVOICE_ID_OBJ },
+                data: { INVOICE_ID: INVOICE_ID },
                 dataType: 'json',
                 success: function (obj) {
                     $this.button("reset");
@@ -369,9 +382,11 @@
                         alert(obj.Msg);
                     else {
                         alert("Success");
+                        $("#btnQuery").click();
                         RefreshRetInvDetailTbodyModal();
+                        var html = $(btnDetail.parent().parent()).find("td").eq(5).html();
+                        $("#tdRECONCILE_STATUS").html(html);
                     }
-                        
                 },
                 error: function (e) {
                     $this.button("reset");
@@ -380,12 +395,82 @@
             })
         });
 
+        $("#btnCloseInvoice").on('click', function () {
+            var $this = $(this);
+            $this.button("loading");//button loading
+            //check security
+            var security = "RET_INV_CLOSE";
+            if (!CheckSecurity(security)) {
+                alert("You can not Operate!");
+                $this.button("reset");
+            }
+            else {
+                //confirm proc
+                if (confirm("Confirm to Close Invoice")) {
+                    //alert(11);
+                    $.ajax({
+                        url: '/ret/RunProc_P_RET_INV_CLOSE',
+                        type: 'post',
+                        async: true,
+                        data: {
+                            INVOICE_ID:INVOICE_ID
+                        },
+                        dataType: 'json',
+                        success: function (obj) {
+                            if (!obj.Success)
+                                alert(obj.Msg);
+                            else {
+                                alert("Success");
+                                //刷新
+                                RefreshRetInvDetailTbodyModal();
+                                $("#btnQuery").click();
+                                var html = $(btnDetail.parent().parent()).find("td").eq(5).html();
+                                $("#tdRECONCILE_STATUS").html(html);
+                                //$("#tdRECONCILE_STATUS").html("<span style=\"color: blue;\">Closed</span>");
+                                //btn 禁用
+                                $("#btnReconcile").attr('disabled', true);
+                                $("#btnCloseInvoice").attr('disabled', true);
+                            }
+                            $this.button("reset");
+                        },
+                        error: function (e) {
+                            alert("fail to run");
+                            $this.button("reset");
+                        }
+                    });
+                }
+                else
+                    $this.button("reset");
+            }
+        });
+        function CheckSecurity(SECURE_ID) {
+            var check = true;
+            $.ajax({
+                url: '/ret/RetInvCheckSecurity',
+                type: 'post',
+                async: false,
+                data: {
+                    SECURE_ID: SECURE_ID,
+                    APP_USER: $("#txtAppUser").val()
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (!obj.Success)
+                        check = false;
+                },
+                error: function (e) {
+                    alert("fail to check");
+                }
+            });
+            return check;
+        }
+        
         function RefreshRetInvDetailTbodyModal() {
             $.ajax({
                 url: '/ret/GetRetInvDetailModal',
                 type: 'post',
                 async: true,
-                data: { INVOICE_ID: INVOICE_ID_OBJ },
+                data: { INVOICE_ID: INVOICE_ID },
                 dataType: 'json',
                 success: function (obj) {
                     if (obj.Success) {
@@ -400,6 +485,26 @@
             });
         }
 
+        $('#btnDownload').on('click', function () {
+            $.ajax({
+                url: '/ret/RetInvDownload',
+                type: 'post',
+                async: true,
+                data: {
+                    INVOICE_ID:INVOICE_ID
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success)
+                        window.location.href = "/ret/DownLoad?fileName=" + obj.Data;
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to download");
+                }
+            });
+        });
 
     })
 </script>
@@ -410,6 +515,5 @@
         //debugger;
         var ss = window.innerHeight;
         $("#imgDiag").css("margin-top", "300px");
-
     });
 </script>

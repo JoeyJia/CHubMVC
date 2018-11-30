@@ -16,6 +16,9 @@ namespace CHubMVC.Controllers
         // GET: Adhoc
         public ActionResult CwsCust()
         {
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, CHubEnum.PageNameEnum.cwscust.ToString(), this.Request.Url.AbsoluteUri);
             return View();
         }
 
@@ -80,7 +83,10 @@ namespace CHubMVC.Controllers
         public string GetCWS_FLAG(string CWS_FLAG)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(" <select class=\"form-control input-sm CWS_FLAG\">");
+            if (CWS_FLAG == "Y")
+                sb.Append(" <select class=\"form-control input-sm CWS_FLAG\" style=\"border-color:#00EE00;\">");
+            else
+                sb.Append(" <select class=\"form-control input-sm CWS_FLAG\">");
             string[] YorN = { "Y", "N" };
             foreach (var i in YorN)
             {

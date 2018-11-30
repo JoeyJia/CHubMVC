@@ -1,14 +1,15 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Mobile", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-<ul class="nav navbar-nav navbar-right" style="margin-right:50px">
+    @*using (Html.BeginForm("LogOff", "Mobile", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {*@
+<ul class="nav navbar-nav navbar-right" style="float:right;">
     <li>
         @Html.ActionLink("Hello " + User.Identity.GetUserName(), null, null, routeValues: null, htmlAttributes: new { @class="navbar-brand", title = "" })
     </li>
-    <li><a class="navbar-brand" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+    @*<li><a class="navbar-brand" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>*@
+    <li><a class="navbar-brand" href="/Mobile/LogOff">Log off</a></li>
 </ul>
-    }
+    @*}*@
 }
 

@@ -1,0 +1,865 @@
+﻿@{
+    ViewBag.Title = "Chart Dash_Ship_Chart";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/echarts.min.js"></script>
+    <script src="~/Scripts/china.js"></script>
+    <script src="~/Scripts/world.js"></script>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            /*background-color:#404a59;*/
+        }
+        body {
+            background: url('../../Images/ChartImage.jpg') no-repeat;
+            background-size:100%;
+        }
+
+        .row {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .txtTitle {
+            height: 10%;
+        }
+
+        .txtBody {
+            height: 90%;
+            /*background-color:red;*/
+            /*margin-top:-10%;*/
+        }
+            .txtBody > ul {
+                height:5%;
+            }
+
+        .text-color {
+            color: #fff;
+        }
+
+        .nav-tabs {
+            border-bottom: 0;
+        }
+
+        #myTab > li > a {
+            color: #fff;
+        }
+
+            #myTab > li > a:hover {
+                background: red;
+            }
+
+        #myTab > li.active > a {
+            background-color: blue;
+        }
+
+        #myTabContent {
+            height:95%;
+            width:100%;
+        }
+        .nav > li > a:hover, .nav > li > a:focus {
+            background:none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid body-content" style="height:100%;">
+        <div class="row txtTitle">
+            <div class="col-lg-12 col-md-12 col-sm-12 text-center text-color">
+                <h2>CSCO domestic shipping outlook (MTD)</h2>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-lg-offset-8 col-md-offset-8 col-sm-offset-8 text-color">
+                <span id="txtTime"></span>
+            </div>
+        </div>
+        <div class="row txtBody">
+            <ul id="myTab" class="nav nav-tabs">
+                <li class="active"><a href="#Chart1" data-toggle="tab">DOMESTIC</a></li>
+                <li><a href="#Chart2" data-toggle="tab">EXPORT</a></li>
+                <li><a href="#Chart3" data-toggle="tab">EXPORT333</a></li>
+                <li><a href="#Chart4" data-toggle="tab">EXPORT444</a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="Chart1" style="height:100%;">
+                    <div id="Dash_Ship11" style="width:100%;height:98%;"></div>
+                    <div id="Dash_Ship12" style="width:50%;height:35%;margin-top:-16%;"></div>
+                </div>
+                <div class="tab-pane fade" id="Chart2" style="height:100%;">
+                    <div id="Dash_Ship21" style="width:100%;height:98%;"></div>
+                    <div id="Dash_Ship22" style="width:40%;height:35%;margin-top:-16%; "></div>
+                </div>
+                <div class="tab-pane fade" id="Chart3" style="height:100%;background-color:red;"></div>
+                <div class="tab-pane fade" id="Chart4" style="height:100%;background-color:blue;"></div>
+            </div>
+        </div>
+    </div>
+    <!--GetTIme-->
+    <script>
+        GetTimeTxt();
+        function GetTimeTxt() {
+            var today = new Date();
+            var year = today.getFullYear();
+            var month = today.getMonth() + 1;
+            var day = today.getDate();
+            var hour = today.getHours();
+            var minute = today.getMinutes();
+            var second = today.getSeconds();
+            month = CheckTimeTxt(month);
+            day = CheckTimeTxt(day);
+            hour = CheckTimeTxt(hour);
+            minute = CheckTimeTxt(minute);
+            second = CheckTimeTxt(second);
+            var time = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+            $("#txtTime").html(time);
+            t = setTimeout("GetTimeTxt()", 500);
+        }
+        function CheckTimeTxt(i) {
+            if (i < 10) { i = "0" + i }
+            return i
+        }
+    </script>
+    <!--Chart-->
+    <script>
+        $(document).ready(function () {
+            //color
+            var color = ['#a6c84c', '#ffa022', '#46bee9', '#FF34B3', '#CD5C5C'];
+            
+            var setTabChangeTime = 300000;//tab切换时间--5分钟
+            var setlegendChangeTime = 60000;//图表1-中国地图 图例切换时间--1分钟
+            var setTotalRefreshTime = 600000;//总数据刷新时间--10分钟
+
+            
+            //tab定时切换
+            var tabInterval; var num;
+            clearInterval(tabInterval);
+            tabInterval = setInterval(SetTabInterval, setTabChangeTime);
+            function SetTabInterval() {
+                var li = $("#myTab").find("li");
+                for (var i = 0; i < $(li).length; i++) {
+                    if ($(li[i]).hasClass('active')) {
+                        num = i + 1;
+                        if (num == $(li).length)
+                            num = 0;
+                        break;
+                    }
+                }
+                var tab = "#myTab li:eq(" + num + ") a";
+                $(tab).tab('show');
+            }
+
+
+
+            //var num = 0;
+            //var setTime = window.setInterval(function () {
+            //    var li = $("#myTab").find("li");
+            //    if (num == $(li).length) {
+            //        num = 0;
+            //    }
+            //    var tab = "#myTab li:eq(" + num + ") a";
+            //    $(tab).tab("show");
+            //    num++;
+            //}, 4000);
+
+            var windowWidth = window.innerWidth;//页面宽度
+            var windowHeight = $("#myTabContent").height();//主体高度
+
+            //tab Chart11设置宽高
+            var chart11 = $('#Dash_Ship11');
+            chart11[0].style.width = windowWidth + 'px';
+            chart11[0].style.height = parseFloat(windowHeight) * 0.98 + 'px';
+
+            //tab Chart12设置宽高
+            var chart12 = $('#Dash_Ship12');
+            chart12[0].style.width = parseFloat(windowWidth) * 0.5 + 'px';
+            chart12[0].style.height = parseFloat(windowHeight) * 0.35 + 'px';
+
+            //tab Chart21设置高宽
+            var chart21 = $('#Dash_Ship21');
+            chart21[0].style.width = windowWidth + 'px';
+            chart21[0].style.height = parseFloat(windowHeight) * 0.98 + 'px';
+
+            //tab Chart22设置高宽
+            var chart22 = $("#Dash_Ship22");
+            chart22[0].style.width = parseFloat(windowWidth) * 0.4 + 'px';
+            chart22[0].style.height = parseFloat(windowHeight) * 0.35 + 'px';
+
+            //基于DOM，初始化echarts实例
+            var DSChart11 = echarts.init(document.getElementById("Dash_Ship11"));
+            var DSChart12 = echarts.init(document.getElementById("Dash_Ship12"));
+            var DSChart21 = echarts.init(document.getElementById("Dash_Ship21"));
+            var DSChart22 = echarts.init(document.getElementById("Dash_Ship22"));
+
+            /*主体*/
+            SetDashShipChart();
+            function SetDashShipChart() {
+                //alert(111);
+                //图表1-中国地图
+                GetDashShipChart11();
+                //图标1-折线图
+                GetDashShipChart12();
+                //图表2-世界地图
+                GetDashShipChart21();
+                //图表2-折线图
+                GetDashShipChart22();
+            }
+            var interval;
+            clearInterval(interval);
+            interval = setInterval(SetDashShipChart, setTotalRefreshTime);//计时 整体刷新
+
+           
+            //图表1-中国地图
+            function GetDashShipChart11() {
+                //chart加载
+                DSChart11.showLoading({
+                    text: '正在加载数据'
+                });
+                $.ajax({
+                    url: '/chart/GetDashShipChart11',
+                    type: 'post',
+                    async: true,
+                    data: {},
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success) {
+                            SetDashShipChart11(obj.Data);
+                        }
+                        else
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        alert("fail to get chart11");
+                    }
+                });
+            };
+            function SetDashShipChart11(result) {
+                //地理位置
+                var geoCoordMap = {};
+                geoCoordMap['上海PDC'] = [121.46201, 31.37605];
+                geoCoordMap['北京BJRDC'] = [116.50799, 39.80518];
+                geoCoordMap['成都SWRDC'] = [104.295441, 30.836817];
+                geoCoordMap['沈阳SYRDC'] = [123.25731, 41.78175];
+                geoCoordMap['西安XARDC'] = [108.897522, 34.37764];
+                geoCoordMap['上海'] = [121.4879, 31.2492];
+                geoCoordMap['北京'] = [116.3956, 39.93];
+                geoCoordMap['成都'] = [104.0679, 30.6799];
+                geoCoordMap['沈阳'] = [123.4328, 41.8086];
+                geoCoordMap['西安'] = [108.897522, 34.37764];
+                for (var i = 0; i < result.length; i++) {
+                    if (geoCoordMap[result[i].SHIP_TO])
+                        continue;
+                    else {
+                        var loc = result[i].GPS_LOCATION.split(',');
+                        var lng = parseFloat(loc[1]);//经度
+                        var lat = parseFloat(loc[0]);//纬度
+                        geoCoordMap[result[i].SHIP_TO] = [lng, lat];//地址坐标
+                    }
+                }
+
+                //数据
+                var SHPDCData = [];//上海PDC
+                var BJRDCData = [];//北京BJRDC
+                var SWRDCData = [];//成都SWRDC
+                var SYRDCData = [];//沈阳SYRDC
+                var XARDCData = [];//西安XARDC
+                var SHSum = 0, BJSum = 0, SWSum = 0, SYSum = 0, XASum = 0;
+                for (var i = 0; i < result.length; i++) {
+                    var SHIP_FROM = result[i].SHIP_FROM;//始发地址
+                    if (SHIP_FROM == "上海PDC") {
+                        var SH = [];
+                        SH.push({ name: '上海PDC' }, { name: result[i].SHIP_TO, value: result[i].SHIP_LINES });
+                        SHPDCData.push(SH);
+                        SHSum += result[i].SHIP_LINES;
+                    }
+                    if (SHIP_FROM == "北京BJRDC") {
+                        var BJ = [];
+                        BJ.push({ name: '北京BJRDC' }, { name: result[i].SHIP_TO, value: result[i].SHIP_LINES });
+                        BJRDCData.push(BJ);
+                        BJSum += result[i].SHIP_LINES;
+                    }
+                    if (SHIP_FROM == "成都SWRDC") {
+                        var SW = [];
+                        SW.push({ name: '成都SWRDC' }, { name: result[i].SHIP_TO, value: result[i].SHIP_LINES });
+                        SWRDCData.push(SW);
+                        SWSum += result[i].SHIP_LINES;
+                    }
+                    if (SHIP_FROM == "沈阳SYRDC") {
+                        var SY = [];
+                        SY.push({ name: '沈阳SYRDC' }, { name: result[i].SHIP_TO, value: result[i].SHIP_LINES });
+                        SYRDCData.push(SY);
+                        SYSum += result[i].SHIP_LINES;
+                    }
+                    if (SHIP_FROM == "西安XARDC") {
+                        var XA = [];
+                        XA.push({ name: '西安XARDC' }, { name: result[i].SHIP_TO, value: result[i].SHIP_LINES });
+                        XARDCData.push(XA);
+                        XASum += result[i].SHIP_LINES;
+                    }
+                }
+
+                var TotalSum = [];
+                TotalSum.push(SHSum);
+                TotalSum.push(BJSum);
+                TotalSum.push(SWSum);
+                TotalSum.push(SYSum);
+                TotalSum.push(XASum);
+
+                //Convert Data
+                var convertData = function (data) {
+                    var res = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var dataItem = data[i];
+                        var fromCoord = geoCoordMap[dataItem[0].name];
+                        var toCoord = geoCoordMap[dataItem[1].name];
+                        if (fromCoord && toCoord) {
+                            res.push({
+                                fromName: dataItem[0].name,
+                                toName: dataItem[1].name,
+                                coords: [fromCoord, toCoord]
+                            });
+                        }
+                    }
+                    return res;
+                };
+
+                //数据数组
+                var series = [];
+                [['上海PDC', SHPDCData], ['北京BJRDC', BJRDCData], ['成都SWRDC', SWRDCData], ['沈阳SYRDC', SYRDCData], ['西安XARDC', XARDCData]].forEach(function (item, i) {
+                    series.push(
+                       {
+                           type: 'lines',
+                           name: item[0] + " " + TotalSum[i] + "",
+                           zlevel: 1,
+                           effect: {
+                               show: true,
+                               period: 10,//特效动画的时间，默认4
+                               trailLength: 0.7,//特效尾迹的长度，从0到1取值
+                               color: color[i],//'#fff',//特效标记的颜色
+                               symbolSize: 3//特效标记的大小，默认3
+                           },
+                           lineStyle: {
+                               normal: {
+                                   color: color[i],
+                                   width: 0,//线宽，默认1
+                                   opacity: '0.5',//图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+                                   curveness: 0.2 //边的曲度，支持从 0 到 1 的值，值越大曲度越大。默认0
+                               }
+                           },
+                           data: convertData(item[1])
+                       },
+                       {
+                           name: item[0] + " " + TotalSum[i] + "",
+                           type: 'effectScatter',
+                           coordinateSystem: 'geo',//该系列使用的坐标系，默认非geo
+                           zlevel: 2,
+                           rippleEffect: {
+                               period: 4,//动画的周期，秒数，默认4
+                               scale: 2.5,//动画中波纹的最大缩放比例
+                               brushType: 'stroke' //波纹的绘制方式，可选 'stroke' 和 'fill'，默认'fill'
+                           },
+                           label: {
+                               normal: {
+                                   show: true,//是否显示标签，默认false
+                                   position: 'right',//标签的位置
+                                   distance: 5,//距离图形元素的距离。当 position 为字符描述值（如 'top'、'insideRight'）时候有效。
+                                   formatter: '{b}', //标签内容格式器，{a}系列名；{b}数据名；{c}数据值
+                                   textStyle: {
+                                           color:'#fff'
+                                   }
+                               }
+                           },
+                           symbolSize: function (val) {
+                               return val[2] / 50;
+                           },
+                           itemStyle: {
+                               normal: {
+                                   color: color[i]
+                               }
+                           },
+                           data: item[1].map(function (dataItem) {
+                               return {
+                                   name: dataItem[1].name + " " + dataItem[1].value,
+                                   value: geoCoordMap[dataItem[1].name].concat([dataItem[1].value])
+                               };
+                           })
+                       });
+                });
+                //指定图标的配置项和数据
+                var option = {
+                    backgroundColor: '',
+                    title: {
+
+                    },
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        top: 'bottom',
+                        left: 'right',
+                        padding: [20, 25],
+                        data: ['上海PDC' + " " + SHSum + "", '北京BJRDC' + " " + BJSum + "", '成都SWRDC' + " " + SWSum + "", '沈阳SYRDC' + " " + SYSum + "", '西安XARDC' + " " + XASum + ""],
+                        textStyle: {
+                            color: '#fff'
+                        },
+                        selectedMode: 'single',
+                    },
+                    geo: {
+                        map: 'china',
+                        roam: false,
+                        label: {
+                            normal: {
+                                show: false,
+                                textStyle: {
+                                    color: '#fff'
+                                }
+                            }
+                        },
+                        layoutCenter: ['60%', '48%'],//左右，上下
+                        layoutSize: 910,
+                        itemStyle: {
+                            normal: {
+                                borderColor: '',
+                                areaColor: '#0000FF'//'#00BFFF'// '#87CEEB' //#98F5FF
+                            },
+                            emphasis: {
+                                areaColor: '#fff',
+                                shadowOffsetX: 0,
+                                shadowOffsetY: 0,
+                                shadowBlur: 20,
+                                borderWidth: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    },
+                    series: series
+                };
+
+                DSChart11.hideLoading();//关闭提示
+                //使用刚指定的配置项和数据显示图表
+                DSChart11.setOption(option);
+                DSChart11.resize();
+                var num = 1;
+                //切换图例的选中状态
+                var setDSChart11 = window.setInterval(function () {
+                    var legendData = option.legend.data;
+                    DSChart11.dispatchAction({
+                        type: 'legendSelect',
+                        name: legendData[num]
+                    });
+                    if (num == 0) {
+                        DSChart11.dispatchAction({
+                            type: 'legendUnSelect',
+                            name: legendData[4]
+                        });
+                    }
+                    else {
+                        DSChart11.dispatchAction({
+                            type: 'legendUnSelect',
+                            name: legendData[num - 1]
+                        });
+                    }
+                    num++;
+                    if (num == legendData.length)
+                        num = 0;                
+                }, setlegendChangeTime);
+            };
+
+            //图表1-折线图
+            function GetDashShipChart12() {
+                //alert(1);
+                $.ajax({
+                    url: '/chart/GetDashShipChart12',
+                    type: 'post',
+                    async: true,
+                    data: {},
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success) {
+                            SetDashShipChart12(obj);
+                        }
+                        else
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        alert("fail to get chart12");
+                    }
+                });
+            };
+            function SetDashShipChart12(obj) {
+                //Convert Data
+                var convertData = function (data) {
+                    var res = [];
+                    for (var i = 0; i < data.length; i++) {
+                        res.push(data[i]);
+                    }
+                    return res;
+                };
+               
+                var series = [];
+                [['上海PDC', obj.SHData], ['北京BJRDC', obj.BJData], ['成都SWRDC', obj.SWData], ['沈阳SYRDC', obj.SYData], ['西安XARDC',obj.XAData]].forEach(function (item, i) {
+                    series.push({
+                        name: item[0],
+                        type: 'line',
+                        itemStyle: {
+                            normal: {
+                                color:color[i]
+                            }
+                        },
+                        data:convertData(item[1])                        
+                    });
+                })
+
+                var option = {
+                    title: {
+                        text: ''
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        //left: 'right',
+                        //top: '30%',
+                        //orient: 'vertical',
+                        top: '20px',
+                        //left:'50px',
+                        textStyle: {
+                            color: '#fff'
+                        },
+                        data: ['上海PDC', '北京BJRDC', '成都SWRDC', '沈阳SYRDC', '西安XARDC']
+                    },
+                    grid: {
+                        left: '1%',
+                        bottom:'2%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        axisLabel: {
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        data: convertData(obj.PERIOD)
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLabel: {
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#fff'
+                            }
+                        }
+                    },
+                    series:series
+                };
+                DSChart12.setOption(option);
+                DSChart12.resize();
+            };
+
+            //图表2-世界地图
+            function GetDashShipChart21() {
+                $.ajax({
+                    url: '/chart/GetDashShipChart21',
+                    type: 'post',
+                    async: true,
+                    data: {},
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success) {
+                            SetDashShipChart21(obj.Data);
+                        }
+                        else
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        alert("fail to get Chart21");
+                    }
+                });
+            }
+            function SetDashShipChart21(result) {
+                //地理位置
+                var geoCoordMap = {};
+                geoCoordMap['上海PDC'] = [121.46201, 31.37605];
+                for (var i = 0; i < result.length; i++) {
+                    if (geoCoordMap[result[i].SHIP_TO])
+                        continue;
+                    else {
+                        var loc = result[i].GPS_COUNTRY.split(',');
+                        var lng = parseFloat(loc[1]);//经度
+                        var lat = parseFloat(loc[0]);//纬度
+                        geoCoordMap[result[i].SHIP_TO] = [lng, lat];//国外地址坐标
+                    }
+                }
+
+                //数据
+                var SHPDCData = [];
+                for (var i = 0; i < result.length; i++) {
+                    var SHIP_TO = result[i].SHIP_TO;
+                    var SHIP_LINES = result[i].SHIP_LINES;
+                    var SH = [];
+                    SH.push({ name: '上海PDC' }, { name: SHIP_TO, value: SHIP_LINES });
+                    SHPDCData.push(SH);
+                }
+
+                //Convert Data
+                var convertData = function (data) {
+                    var res = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var dataItem = data[i];
+                        var fromCoord = geoCoordMap[dataItem[0].name];
+                        var toCoord = geoCoordMap[dataItem[1].name];
+                        if (fromCoord && toCoord) {
+                            res.push({
+                                fromName: dataItem[0].name,
+                                toName: dataItem[1].name,
+                                coords: [fromCoord, toCoord]
+                            });
+                        }
+                    }
+                    return res;
+                };
+                
+                //数据数组
+                var series = [];
+                [['上海PDC', SHPDCData]].forEach(function (item, i) {
+                    series.push(
+                        {
+                            type: 'lines',
+                            name: item[0],
+                            zlevel: 1,
+                            effect: {
+                                show: true,
+                                period: 10,//特效动画的时间，默认4
+                                trailLength: 0.7,//特效尾迹的长度，从0到1取值
+                                color: '#fff',//特效标记的颜色
+                                symbolSize: 3//特效标记的大小，默认3
+                            },
+                            lineStyle: {
+                                normal: {
+                                    color: color[i],
+                                    width: 0,//线宽，默认1
+                                    opacity: '0.5',//图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+                                    curveness: 0.2 //边的曲度，支持从 0 到 1 的值，值越大曲度越大。默认0
+                                }
+                            },
+                            data: convertData(item[1])
+                        },
+                       {
+                           name: item[0],
+                           type: 'effectScatter',
+                           coordinateSystem: 'geo',//该系列使用的坐标系，默认非geo
+                           zlevel: 2,
+                           rippleEffect: {
+                               period: 4,//动画的周期，秒数，默认4
+                               scale: 2.5,//动画中波纹的最大缩放比例
+                               brushType: 'stroke' //波纹的绘制方式，可选 'stroke' 和 'fill'，默认'fill'
+                           },
+                           label: {
+                               normal: {
+                                   show: true,//是否显示标签，默认false
+                                   position: 'right',//标签的位置
+                                   distance: 5,//距离图形元素的距离。当 position 为字符描述值（如 'top'、'insideRight'）时候有效。
+                                   formatter: '{b}', //标签内容格式器，{a}系列名；{b}数据名；{c}数据值
+                                   textStyle: {
+                                       color:'#fff'
+                                   }
+                               }
+                           },
+                           symbolSize: function (val) {
+                               return val[2] / 50;
+                           },
+                           itemStyle: {
+                               normal: {
+                                   color: color[i]
+                               }
+                           },
+                           data: item[1].map(function (dataItem) {
+                               return {
+                                   name: dataItem[1].name + " " + dataItem[1].value,
+                                   value: geoCoordMap[dataItem[1].name].concat([dataItem[1].value])
+                               };
+                           })
+                       }
+                    );
+                });
+
+                var option = {
+                    backgroundColor: '',
+                    title: {
+
+                    },
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        top: 'bottom',
+                        left: 'right',
+                        padding: [10, 20],
+                        data: ['上海PDC'],
+                        textStyle: {
+                            color: '#fff'
+                        },
+                        selectedMode: 'single',
+                    },
+                    geo: {
+                        map: 'world',
+                        roam: false,
+                        label: {
+                            normal: {
+                                show: false,
+                                textStyle: {
+                                    color: '#fff'
+                                }
+                            }
+                        },
+                        layoutCenter: ['60%', '48%'],//左右，上下
+                        //layoutSize: 800,
+                        itemStyle: {
+                            normal: {
+                                borderColor: '',
+                                areaColor: '#0000FF' //'#87CEEB' //#98F5FF
+                            },
+                            emphasis: {
+                                areaColor: '#fff',
+                                shadowOffsetX: 0,
+                                shadowOffsetY: 0,
+                                shadowBlur: 20,
+                                borderWidth: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    },
+                    series: series
+                };
+                DSChart21.setOption(option);
+                DSChart21.resize();
+            }
+
+            //图表2-折线图
+            function GetDashShipChart22() {
+                $.ajax({
+                    url: '/chart/GetDashShipChart22',
+                    type: 'post',
+                    async: true,
+                    data: {},
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success) {
+                            SetDashShipChart22(obj);
+                        }
+                        else
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        alert("fail to get Chart22");
+                    }
+                });
+            }
+            function SetDashShipChart22(obj) {
+                //Convert Data
+                var convertData = function (data) {
+                    var res = [];
+                    for (var i = 0; i < data.length; i++) {
+                        res.push(data[i]);
+                    }
+                    return res;
+                };
+                var option = {
+                    title: {
+                        text: ''
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        //left: 'right',
+                        //top: '30%',
+                        //orient: 'vertical',
+                        top: '20px',
+                        textStyle: {
+                            color: '#fff'
+                        },
+                        data: ['上海PDC']
+                    },
+                    grid: {
+                        left: '1%',
+                        bottom: '2%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        axisLabel: {
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        data: convertData(obj.PERIOD)
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLabel: {
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#fff'
+                            }
+                        }
+                    },
+                    series: [
+                        {
+                            name: '上海PDC',
+                            type: 'line',
+                            itemStyle:{
+                                normal:{
+                                    color:color[0]
+                                }
+                            },
+                            data: convertData(obj.SHIP_LINES)
+                        }
+                    ]
+                };
+                DSChart22.setOption(option);
+                DSChart22.resize();
+            }
+
+        });
+    </script>
+
+</body>
+</html>

@@ -18,25 +18,30 @@
 
     <style typeof="text/css">
         .RequireRedStar {
-            color:red;
-            padding-left: 2px
-            }
+            color: red;
+            padding-left: 2px;
+        }
 
         .indexLeft, .indexRight {
-            padding:0px;
+            padding: 0px;
         }
 
         .indexLeft {
-            width:20%;
-            float:left;
+            width: 20%;
+            float: left;
+            position: absolute;
         }
+
         .indexRight {
-            width:78%;
-            float:right;
+            /*width: 78%;
+            float: right;*/
+            width: 98%;
+            float: left;
+            margin-left: 20px;
         }
 
         body {
-            font-size:12px;
+            font-size: 12px;
         }
     </style>
 </head>
@@ -54,11 +59,9 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Application<span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu" >
+                        <ul class="dropdown-menu" role="menu">
                             <li ng-repeat="r in result"><a href="{{r.URL}}" target="_blank">{{r.APP_DISPLAY}}</a></li>
                         </ul>
-
-
                     </li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                 </ul>
@@ -69,15 +72,17 @@
     <div class="container-fluid body-content">
         <div class="row" style="margin-top:60px;">
 
-                <div class="panel panel-default indexLeft" id="leftTree">
-                    <div class="panel-heading">WorkSpace
-                        <div class="treeBtn1" style="text-align:right;cursor:pointer;" title="Collapse"><<</div>
-                    </div>
-                    <div id="tree" ></div>
+            <div class="panel panel-default indexLeft" id="leftTree" style="display:none;z-index:1;">
+                <div class="panel-heading">
+                    WorkSpace
+                    <div class="treeBtn1" style="text-align:right;cursor:pointer;" title="Collapse"><<</div>
                 </div>
-            <div class="treeBtn2" style="margin-left:5px;cursor:pointer;" title="Collapse" hidden>>></div>
+                <div id="tree"></div>
+            </div>
+            <div class="treeBtn2" style="margin-left:20px;cursor:pointer;float:left;" title="Collapse">>></div>
 
-            <div class="panel panel-default indexRight" >@*style="overflow:scroll"*@
+            <div class="panel panel-default indexRight">
+                @*style="overflow:scroll"*@
                 @RenderBody()
                 <hr />
             </div>
@@ -117,7 +122,7 @@
                         enableLinks: true,
                         levels: 1,
                         onNodeSelected: function (event, data) {
-                            $('#tree').treeview('expandNode', [data.nodeId, { silent: true}]);
+                            $('#tree').treeview('expandNode', [data.nodeId, { silent: true }]);
                         }
                     });
                 }
@@ -131,7 +136,7 @@
                 //debugger;
                 $scope.result = resp.data;
 
-               },
+            },
             function (resp) {
                 alert("Fail!");
                 // $scope.resp = resp;
@@ -141,7 +146,27 @@
         });
 
         ///////
-        $(".treeBtn1").click(function () {
+
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(".treeBtn2").mouseenter(function () {
+                if ($(".indexLeft")[0].style.zIndex == 1) {
+                    $("#leftTree").show();
+                    //$("#leftTree")[0].style.marginTop = "18px";
+                }
+            })
+            $(".indexLeft").mouseleave(function () {
+                if ($(".indexLeft")[0].style.zIndex == 1)
+                    $("#leftTree").hide();
+            })
+
+
+
+
+            $(".treeBtn1").click(function () {
 
                 $("#leftTree").slideUp();
                 //$(".indexLeft").animate({
@@ -157,26 +182,61 @@
                 $(".indexRight").css("margin-left", "20px");
                 $(".treeBtn2").css("margin-left", "20px");
                 $(".treeBtn2").show();
-                
-        })
 
-        $(".treeBtn2").click(function () {
+            });
 
-            $(".indexLeft").css("border", "1px solid #ccc");
-            //$(".indexLeft").animate({
-            //    width: "20%"
-            //}, 1000);
-            $("#leftTree").slideDown();
-            $(".indexRight").animate({
-                width: "78%"
-            }, 100);
-            $(".indexRight").css("float", "right");
-            $(".indexRight").css("margin-left", "0px");
-            //$(".treeBtn").css("margin-left", "5px");
-            $(".treeBtn2").hide();
+            $(".treeBtn2").click(function () {
 
-        })
+                $(".indexLeft").css("border", "1px solid #ccc");
+                //$(".indexLeft").animate({
+                //    width: "20%"
+                //}, 1000);
+                $("#leftTree").slideDown();
+                $(".indexRight").animate({
+                    width: "78%"
+                }, 100);
+                $(".indexRight").css("float", "right");
+                $(".indexRight").css("margin-left", "0px");
+                //$(".treeBtn").css("margin-left", "5px");
+                $(".treeBtn2").hide();
+
+            });
+        });
+
+
 
     </script>
+
+    <script>
+        $(document).ready(function () {
+            //alert(1);
+            $('#tree').on("nodeSelected", function (event, data) {
+                var url = data.href;
+                if (url != null && url != "") {
+                    $.ajax({
+                        url: "/Home/LogPageClick",
+                        type: 'post',
+                        data: { URL: url },
+                        async: true,
+                        success: function (obj) {
+                            if (obj.Success) {
+
+                            }
+                            else
+                                alert(obj.Msg);
+                        },
+                        error: function (e) {
+                            alert("fail to log");
+                        }
+                    });
+
+
+                }
+            })
+
+
+        })
+    </script>
+
 </body>
 </html>
