@@ -7,6 +7,7 @@ using CHubDAL;
 using CHubCommon;
 using CHubDBEntity.UnmanagedModel;
 using CHubModel.WebArg;
+using System.Data;
 
 namespace CHubBLL
 {
@@ -24,6 +25,10 @@ namespace CHubBLL
         public List<V_RET_REQ_D> GetRetMainDetailModal(string RET_REQ_NO)
         {
             return dal.GetRetMainDetailModal(RET_REQ_NO);
+        }
+        public List<V_RET_REQ_D> GetRetMainDetailByRejectReason(string RET_REQ_NO, string REJECT_REASON)
+        {
+            return dal.GetRetMainDetailByRejectReason(RET_REQ_NO, REJECT_REASON);
         }
         public List<RET_PART_GROUP> GetPART_GROUP()
         {
@@ -64,6 +69,34 @@ namespace CHubBLL
         public string CallF_RET_PART_supp(string CUST_ITEM)
         {
             return dal.CallF_RET_PART_supp(CUST_ITEM);
+        }
+        public string RetMainGetSql(string RET_REQ_NO)
+        {
+            return dal.RetMainGetSql(RET_REQ_NO);
+        }
+        public DataTable RunRetMainSql(string sql)
+        {
+            return dal.RunRetMainSql(sql);
+        }
+        public void ChangeRET_REQ_H_Status(string RET_REQ_NO)
+        {
+            dal.ChangeRET_REQ_H_Status(RET_REQ_NO);
+        }
+        public List<string> GetLOAD_TYPEs(string appUser)
+        {
+            return dal.GetLOAD_TYPEs(appUser);
+        }
+        public string GetLOAD_DESC(string LOAD_TYPE)
+        {
+            return dal.GetLOAD_DESC(LOAD_TYPE);
+        }
+        public List<RET_RETURN_TYPE> GetRETURN_TYPEs()
+        {
+            return dal.GetRETURN_TYPEs();
+        }
+        public IHUB_LOAD_TYPE GetIHUB_LOAD_TYPE(string LOAD_TYPE)
+        {
+            return dal.GetIHUB_LOAD_TYPE(LOAD_TYPE);
         }
     }
 }

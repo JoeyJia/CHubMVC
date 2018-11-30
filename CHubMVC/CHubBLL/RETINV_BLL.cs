@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CHubDBEntity.UnmanagedModel;
 using CHubDAL;
 using CHubModel.WebArg;
+using System.Data;
 
 namespace CHubBLL
 {
@@ -35,6 +36,18 @@ namespace CHubBLL
         public void RunProc_P_RET_Match(string INVOICE_ID)
         {
             dal.RunProc_P_RET_Match(INVOICE_ID);
+        }
+        public void RunProc_P_RET_INV_CLOSE(string INVOICE_ID)
+        {
+            dal.RunProc_P_RET_INV_CLOSE(INVOICE_ID);
+        }
+        public string RetInvGetSql(string INVOICE_ID)
+        {
+            return dal.RetInvGetSql(INVOICE_ID);
+        }
+        public DataTable RunRetInvSql(string sql)
+        {
+            return dal.RunRetInvSql(sql);
         }
     }
 }

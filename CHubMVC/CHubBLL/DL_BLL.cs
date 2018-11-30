@@ -37,6 +37,10 @@ namespace CHubBLL
         {
             dal.AddIHUB_LOAD_BASE(ilb, LOAD_BATCH, LOAD_TYPE, LOAD_BY, LOAD_LINE_NO);
         }
+        public void AddIHUB_LOAD_BASE(IHUB_LOAD_BASE ilb, string LOAD_BATCH, string LOAD_TYPE, string LOAD_BY, string LOAD_LINE_NO, string INPUT1, string INPUT2, string INPUT3)
+        {
+            dal.AddIHUB_LOAD_BASE(ilb, LOAD_BATCH, LOAD_TYPE, LOAD_BY, LOAD_LINE_NO, INPUT1, INPUT2, INPUT3);
+        }
         public void ExecP_IHUB_LOAD_POST(decimal LOAD_BATCH, string LOAD_TYPE)
         {
             dal.ExecP_IHUB_LOAD_POST(LOAD_BATCH, LOAD_TYPE);
