@@ -91,6 +91,7 @@
     <Compile Include="WebArg\OrderSaveArg.cs" />
     <Compile Include="WebArg\PlabelByKITSPrintArg.cs" />
     <Compile Include="WebArg\RetInvArg.cs" />
+    <Compile Include="WebArg\RetRestrictArg.cs" />
     <Compile Include="WebArg\RET_REQ_DArg.cs" />
     <Compile Include="WebArg\TableColumnListArg.cs" />
     <Compile Include="WebArg\TCHSCODEMSTArg.cs" />
