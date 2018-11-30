@@ -17,5 +17,6 @@ namespace CHubDBEntity.UnmanagedModel
         public string NOTE { get; set; }
         public string REQ_BY { get; set; }
         public string REQ_STATUS { get; set; }
+        public string RETURN_TYPE { get; set; }
     }
 }

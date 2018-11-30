@@ -12,13 +12,12 @@ namespace CHubDBEntity
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
-    
+
     public partial class TS_OR_HEADER
     {
         public decimal ORDER_REQ_NO { get; set; }
         public decimal SHIPFROM_SEQ { get; set; }
         public string TO_SYSTEM { get; set; }
-        public string ALIAS_NAME { get; set; }
         public string CUSTOMER_NO { get; set; }
         public decimal BILL_TO_LOCATION { get; set; }
         public decimal SHIP_TO_LOCATION { get; set; }
@@ -33,6 +32,7 @@ namespace CHubDBEntity
         public string CREATED_BY { get; set; }
         public Nullable<System.DateTime> RECORD_DATE { get; set; }
         public string UPDATED_BY { get; set; }
+        public string ALIAS_NAME { get; set; }
         public string ORDER_NOTES { get; set; }
 
         [JsonIgnore]

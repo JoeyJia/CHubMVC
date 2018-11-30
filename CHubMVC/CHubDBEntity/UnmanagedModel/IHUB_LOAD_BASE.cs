@@ -38,5 +38,8 @@ namespace CHubDBEntity.UnmanagedModel
         public string T22 { get; set; }
         public string T23 { get; set; }
         public string T24 { get; set; }
+        public string INPUT1 { get; set; }
+        public string INPUT2 { get; set; }
+        public string INPUT3 { get; set; }
     }
 }
