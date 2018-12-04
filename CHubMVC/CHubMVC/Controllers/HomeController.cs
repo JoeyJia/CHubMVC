@@ -33,10 +33,46 @@ namespace CHubMVC.Controllers
             APP_NOTICE_BLL noticeBLL = new APP_NOTICE_BLL();
             ViewBag.noticeList = noticeBLL.GetValidAppNotice();
 
+            ViewBag.pageList = GetPages(userName);
+
             ViewBag.userName = userName;
 
             return View();
         }
+
+
+        public List<PageList> GetPages(string appUser)
+        {
+            V_USER_NAV_ALL_BLL navBLL = new V_USER_NAV_ALL_BLL();
+            List<V_USER_NAV_ALL> navList = new List<V_USER_NAV_ALL>();
+            navList = navBLL.GetNavByAppUser(appUser);
+
+            List<PageList> pls = new List<PageList>();
+            string space_desc = string.Empty;
+            var navs = navList.GroupBy(i => i.SPACE_DESC).Select(a =>a).ToList();
+            foreach (var i in navs)
+            {
+                PageList pl = new PageList();
+                pl.SPACE_DESC = i.Key;
+                pl.pages = new List<PageList>();
+                foreach (var j in i)
+                {
+                    PageList pp = new PageList();
+                    pp.SPACE_DESC = j.SPACE_DESC;
+                    pp.URL = j.URL;
+                    pp.DISPLAY = j.DISPLAY;
+                    pp.DESCRIPTION = j.DESCRIPTION;
+                    pp.ICON = j.ICON;
+                    pp.ICON_DESC = j.ICON_DESC;
+                    pl.pages.Add(pp);
+                }
+                pls.Add(pl);
+            }
+            return pls;
+        }
+
+
+
 
         /// <summary>
         /// Use session user to get nav tree data
