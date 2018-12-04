@@ -71,18 +71,16 @@
     </div>
     <div class="container-fluid body-content">
         <div class="row" style="margin-top:60px;">
-
-            <div class="panel panel-default indexLeft" id="leftTree" style="display:none;z-index:1;">
+            @*<div class="panel panel-default indexLeft" id="leftTree" style="display:none;z-index:1;">
                 <div class="panel-heading">
                     WorkSpace
                     <div class="treeBtn1" style="text-align:right;cursor:pointer;" title="Collapse"><<</div>
                 </div>
                 <div id="tree"></div>
             </div>
-            <div class="treeBtn2" style="margin-left:20px;cursor:pointer;float:left;" title="Collapse">>></div>
+            <div class="treeBtn2" style="margin-left:20px;cursor:pointer;float:left;" title="Collapse">>></div>*@
 
             <div class="panel panel-default indexRight">
-                @*style="overflow:scroll"*@
                 @RenderBody()
                 <hr />
             </div>
@@ -104,7 +102,7 @@
 
     <script>
 
-        getLeftNav()
+        //getLeftNav()
 
         function getLeftNav() {
             $.ajax({
@@ -152,55 +150,51 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            $(".treeBtn2").mouseenter(function () {
-                if ($(".indexLeft")[0].style.zIndex == 1) {
-                    $("#leftTree").show();
-                    //$("#leftTree")[0].style.marginTop = "18px";
-                }
-            })
-            $(".indexLeft").mouseleave(function () {
-                if ($(".indexLeft")[0].style.zIndex == 1)
-                    $("#leftTree").hide();
-            })
+            //$(".treeBtn2").mouseenter(function () {
+            //    if ($(".indexLeft")[0].style.zIndex == 1) {
+            //        $("#leftTree").show();
+            //        //$("#leftTree")[0].style.marginTop = "18px";
+            //    }
+            //})
+            //$(".indexLeft").mouseleave(function () {
+            //    if ($(".indexLeft")[0].style.zIndex == 1)
+            //        $("#leftTree").hide();
+            //})
 
 
 
 
-            $(".treeBtn1").click(function () {
+            //$(".treeBtn1").click(function () {
+            //    $("#leftTree").slideUp();
+            //    //$(".indexLeft").animate({
+            //    //    width: "0%"
+            //    //}, 1000);
+            //    $(".indexRight").animate({
+            //        width: "98%",
+            //    }, 100);
+            //    //setTimeout(function () {
+            //    //    $(".indexLeft").css("border", "0px");
+            //    //}, 1000)
+            //    $(".indexRight").css("float", "left");
+            //    $(".indexRight").css("margin-left", "20px");
+            //    $(".treeBtn2").css("margin-left", "20px");
+            //    $(".treeBtn2").show();
+            //});
 
-                $("#leftTree").slideUp();
-                //$(".indexLeft").animate({
-                //    width: "0%"
-                //}, 1000);
-                $(".indexRight").animate({
-                    width: "98%",
-                }, 100);
-                //setTimeout(function () {
-                //    $(".indexLeft").css("border", "0px");
-                //}, 1000)
-                $(".indexRight").css("float", "left");
-                $(".indexRight").css("margin-left", "20px");
-                $(".treeBtn2").css("margin-left", "20px");
-                $(".treeBtn2").show();
-
-            });
-
-            $(".treeBtn2").click(function () {
-
-                $(".indexLeft").css("border", "1px solid #ccc");
-                //$(".indexLeft").animate({
-                //    width: "20%"
-                //}, 1000);
-                $("#leftTree").slideDown();
-                $(".indexRight").animate({
-                    width: "78%"
-                }, 100);
-                $(".indexRight").css("float", "right");
-                $(".indexRight").css("margin-left", "0px");
-                //$(".treeBtn").css("margin-left", "5px");
-                $(".treeBtn2").hide();
-
-            });
+            //$(".treeBtn2").click(function () {
+            //    $(".indexLeft").css("border", "1px solid #ccc");
+            //    //$(".indexLeft").animate({
+            //    //    width: "20%"
+            //    //}, 1000);
+            //    $("#leftTree").slideDown();
+            //    $(".indexRight").animate({
+            //        width: "78%"
+            //    }, 100);
+            //    $(".indexRight").css("float", "right");
+            //    $(".indexRight").css("margin-left", "0px");
+            //    //$(".treeBtn").css("margin-left", "5px");
+            //    $(".treeBtn2").hide();
+            //});
         });
 
 
@@ -229,12 +223,8 @@
                             alert("fail to log");
                         }
                     });
-
-
                 }
             })
-
-
         })
     </script>
 
