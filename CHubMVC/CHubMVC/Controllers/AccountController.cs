@@ -38,6 +38,7 @@ namespace CHubMVC.Controllers
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
+            //return RedirectToAction("Login_New", "Account");
         }
 
         //
@@ -91,6 +92,19 @@ namespace CHubMVC.Controllers
 
 
             //not success remail login page
+            return View();
+        }
+
+        /// <summary>
+        /// New Login 
+        /// Link To New Web Service
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult Login_New(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
