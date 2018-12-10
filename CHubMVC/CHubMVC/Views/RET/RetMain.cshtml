@@ -411,14 +411,14 @@
                 $("#btnNewLine").attr("disabled", false);
             }
             //btnDownloadToExcel,btnDownloadToRGA状态是APPROVED时可用
-            if (!(REQ_STATUS == "APPROVED")) {
-                $("#btnDownloadToExcel").attr("disabled", true);
-                $("#btnDownloadToRGA").attr("disabled", true);
-            }
-            else {
-                $("#btnDownloadToExcel").attr("disabled", false);
-                $("#btnDownloadToRGA").attr("disabled", false);
-            }
+            //if (!(REQ_STATUS == "APPROVED")) {
+            //    $("#btnDownloadToExcel").attr("disabled", true);
+            //    $("#btnDownloadToRGA").attr("disabled", true);
+            //}
+            //else {
+            //    $("#btnDownloadToExcel").attr("disabled", false);
+            //    $("#btnDownloadToRGA").attr("disabled", false);
+            //}
             //btnApprove状态是SUBMITED时可用
             if (!(REQ_STATUS == "SUBMITTED"))
                 $("#btnApprove").attr("disabled", true);
@@ -508,7 +508,7 @@
                     success: function (obj) {
                         if (obj.Success) {
                             $(tr).remove();
-                            alert("Success");
+                            //alert("Success");
                         }
                         else
                             alert(obj.Msg);
@@ -559,7 +559,7 @@
                     $this.button("reset");
                     if (obj.Success) {
                         RefreshRetMainDetailTbodyModal();
-                        alert("Success");
+                        //alert("Success");
                         //for (var i = 0; i < $(tr).length; i++) {
                         //    var td = $(tr[i]).find("td");
                         //    if (!($(td).find(".txtCUST_ITEM")[0].readOnly)) {
@@ -619,7 +619,7 @@
                     $this.button("reset");
                     if (obj.Success) {
                         RefreshRetMainDetailTbodyModal();
-                        alert("Success");
+                        //alert("Success");
                     }
                     else
                         alert(obj.Msg);
@@ -666,7 +666,7 @@
                     },
                     success: function (obj) {
                         if (obj.Success) {
-                            alert("Success");
+                            //alert("Success");
                             $("#myModal").modal("hide");
                             $("#btnQuery").click();
                         }
@@ -712,7 +712,7 @@
                     contentType: 'application/json;charset=utf-8',
                     success: function (obj) {
                         if (obj.Success) {
-                            alert("Success");
+                            //alert("Success");
                             $("#myModal").modal("hide");
                             $("#btnQuery").click();
                         }
@@ -777,7 +777,7 @@
                                 $("#btnDownloadToExcel").attr("disabled", false);
                                 $("#btnApprove").attr("disabled", true);
                                 $("#btnSave").attr("disabled", true);
-                                alert("Success");
+                                //alert("Success");
                             }
                             else
                                 alert(obj.Msg);
