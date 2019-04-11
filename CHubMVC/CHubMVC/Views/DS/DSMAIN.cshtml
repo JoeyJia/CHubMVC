@@ -1,0 +1,273 @@
+﻿@{
+    ViewBag.Title = "DSMAIN";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var appUser = ViewBag.AppUser;
+}
+<style type="text/css">
+    .form-group {
+        margin-bottom: 0;
+    }
+
+    a:hover {
+        cursor: pointer;
+        text-decoration: none;
+    }
+    table {
+        word-wrap:break-word;
+    }
+</style>
+<input type="hidden" id="txtAppUser" value="@appUser" />
+<div class="container-fluid" id="dsmainDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal" id="dsmainForm">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Customer PO：</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtCUSTOMER_PO_NO" placeholder="Customer PO" />
+                    </div>
+                    <label for="" class="col-sm-2 control-label">Order No:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtORDER_NO" placeholder="Order No" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Customer No:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtCUSTOMER_NO" placeholder="Customer No" />
+                    </div>
+                    <label for="" class="col-sm-2 control-label">Customer Name：</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtSHIP_TO_NAME" placeholder="Customer Name" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Part No:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtPART_NO" placeholder="Part No" />
+                    </div>
+                    <label for="" class="col-sm-2 control-label">DROP SHIP PO:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtPO_NO" placeholder="DROP SHIP PO" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Status：</label>
+                    <div class="col-sm-4">
+                        <label class="radio-inline">
+                            <input type="radio" name="STATUS_CODE" id="STATUS_CODE1" value="Opening" checked />Opening
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="STATUS_CODE" id="STATUS_CODE2" value="" />All
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:5px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Last days:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtORDER_DATE" value="30" placeholder="Last days" />
+                    </div>
+                    <div class="col-sm-2 text-right">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Search" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnRefresh" value="Order Status Refresh" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <div style="width:100%;overflow-x:scroll;overflow-y:auto;max-height:600px;">
+                        <table class="table table-bordered table-hover" id="resultTable" style="width:150%;max-width:150%;">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th style="width: 5%;">Customer PO</th>
+                                    <th>Order No</th>
+                                    <th>PO</th>
+                                    <th style="width: 5%;">PART_NO</th>
+                                    <th>DESC</th>
+                                    <th>Order Qty</th>
+                                    <th>Qty Shipped</th>
+                                    <th>ETA</th>
+                                    <th>ETA NOTE</th>
+                                    <th>Qty Reserved</th>
+                                    <th>Qty Reserved</th>
+                                    <th>Order Date</th>
+                                    <th>Customer name</th>
+                                    <th>Warehouse</th>
+                                    <th>Supplier</th>
+                                    <th>Supplier item</th>
+                                    <th>MOQ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_LoadingModal")
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" style="width:96%;">
+        <div class="modal-content">
+            <div class="modal-header panel-default" style="padding:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 40px; height: 40px;font-size:30px;">
+                    &times;
+                </button>
+                <div class="modal-title panel-heading">
+                    <b>More</b>
+                </div>
+            </div>
+            <div class="modal-body panel-default" style="padding:0">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <table class="table table-bordered" id="MoreModalTable">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Supplier SO</th>
+                                    <th>LINE No</th>
+                                    <th>Part No</th>
+                                    <th>Suplier Item</th>
+                                    <th>Order Qty</th>
+                                    <th>Qty Shipped</th>
+                                    <th>Order Date</th>
+                                    <th>ETA</th>
+                                    <th>SHIP Date</th>
+                                    <th>SHIP from</th>
+                                    <th>OA Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="MoreModalTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //Search
+        $("#btnSearch").on('click', function () {
+            var arg = {};
+            arg.CUSTOMER_PO_NO = $("#txtCUSTOMER_PO_NO").val();
+            arg.ORDER_NO = $("#txtORDER_NO").val();
+            arg.CUSTOMER_NO = $("#txtCUSTOMER_NO").val();
+            arg.SHIP_TO_NAME = $("#txtSHIP_TO_NAME").val();
+            arg.PART_NO = $("#txtPART_NO").val();
+            arg.PO_NO = $("#txtPO_NO").val();
+            arg.STATUS_CODE = $("input[name='STATUS_CODE']:checked").val();
+            arg.ORDER_DATE = $("#txtORDER_DATE").val();
+
+            $("#resultTbody").empty();
+            $("#loadingModal").modal("show");
+
+            $.ajax({
+                url: '/ds/DSMAINSearch',
+                type: 'post',
+                async: true,
+                data: JSON.stringify({
+                    arg: arg
+                }),
+                contentType: "application/json;charset=utf-8",
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#resultTbody").html(obj.Data);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+            })
+        });
+
+        //More
+        $("#resultTbody").on('click','.MoreDetail', function () {
+            var $detail = $(this);
+            var PO_NO = $detail.attr("data-pono");
+            var PART_NO = $detail.attr("data-partno");
+            //alert(PO_NO + " " + PART_NO);
+
+            $.ajax({
+                url: "/ds/DSMAINMore",
+                type: 'post',
+                async: true,
+                data: {
+                    PO_NO: PO_NO,
+                    PART_NO: PART_NO
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#MoreModalTbody").html(obj.Data);
+                        $("#myModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to more");
+                }
+            });
+        });
+
+        //Refresh
+        $("#btnRefresh").on('click', function () {
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/ds/RunP_DS_STatus_REFRESH',
+                type: 'post',
+                async: true,
+                data: {},
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#btnSearch").click();
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to run");
+                }
+            });
+        });
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+    });
+</script>

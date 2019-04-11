@@ -28,6 +28,9 @@
      #resultTable{
          width:150%;
      }
+    #resultTbody > tr > td {
+        word-break:break-word;
+    }
 </style>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -67,16 +70,21 @@
                        <table class="table table-bordered table-hover" id="tableHead">
                            <thead id="tabhead">
                                <tr>
-                                   <th style="width:4%;">Operation</th>
-                                   <th style="width:7%;">COMPANY CODE</th>
-                                   <th style="width:20%;">COMPANY NAME</th>
-                                   <th style="width:10%;">COMPANY NAME CN</th>
-                                   <th style="width:10%;">PLANNER</th>
-                                   <th style="width:10%;">PLANNER CODE</th>
-                                   <th style="width:10%;">NOTE</th>
-                                   <th style="width:10%;">GSM</th>
-                                   <th style="width:10%;">SITE ID</th>
-                                   <th style="width:10%;">BPA</th>
+                                   <th style="width:3%;">Operation</th>
+                                   <th style="width:4%;">COMPANY CODE</th>
+                                   <th style="width:8%;">COMPANY NAME</th>
+                                   <th style="width:8%;">COMPANY NAME CN</th>
+                                   <th style="width:4%;">PLANNER</th>
+                                   <th style="width:4%;">PLANNER CODE</th>
+                                   <th style="width:4%;">NOTE</th>
+                                   <th style="width:3%;">GSM</th>
+                                   <th style="width:4%;">SITE ID</th>
+                                   <th style="width:4%;">BPA</th>
+                                   <th style="width:4%;">INSURANCE_CODE</th>
+                                   <th style="width:4%;">DS TRACK(Y/N)</th>
+                                   <th style="width:5%;">TRACK EML</th>
+                                   <th style="width:4%;">SHORT NAME</th>
+                                   <th style="width:5%;">RETURN ALLOW DAYS</th>
                                </tr>
                            </thead>
                        </table>
@@ -139,6 +147,11 @@
             data.GSM_SUPPLIER_NO = $(td).find(".GSM_SUPPLIER_NO").val();
             data.VENDOR_SITE_ID = $(td).find(".VENDOR_SITE_ID").val();
             data.BPA_NO = $(td).find(".BPA_NO").val();
+            data.INSURANCE_CODE = $(td).find(".INSURANCE_CODE").val();
+            data.DS_TRACK = $(td).find(".DS_TRACK").val();
+            data.DS_TRACK_EML = $(td).find(".DS_TRACK_EML").val();
+            data.COMPANY_NAME_SHORT = $(td).find(".COMPANY_NAME_SHORT").val();
+            data.RETURN_ALLOW_DAYS = $(td).find(".RETURN_ALLOW_DAYS").val();
 
             $.ajax({
                 url: '/md/MDSuppSave',

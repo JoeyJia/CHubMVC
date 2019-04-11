@@ -1,0 +1,145 @@
+﻿@{
+    ViewBag.Title = "DSOAINQ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .form-group {
+        margin-bottom: 0;
+    }
+</style>
+<div class="container-fluid" id="dsoainqDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">PO NO:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtPO_NO" placeholder="PO NO" />
+                    </div>
+                    <label for="" class="col-sm-2 control-label">Supplier Code:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtCOMPANY_CODE" placeholder="Supplier Code" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Part No:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtPART_NO" placeholder="Part No" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Status:</label>
+                    <div class="col-sm-4">
+                        <label class="radio-inline">
+                            <input type="radio" name="OA_STATUS" id="OA_STATUS1" value="Opening" checked />Opening
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="OA_STATUS" id="OA_STATUS2" value="" />All
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:5px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Last Days:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtORDER_DATE" value="30" placeholder="Last Days" />
+                    </div>
+                    <div class="col-sm-2 text-right">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Search" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Retult</b>
+                    </div>
+                    <table class="table table-bordered table-hover" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th style="width:4%;">Status</th>
+                                <th style="width:4%;">Part No</th>
+                                <th style="width:7%;">Supplier Code</th>
+                                <th style="width:4%;">PO</th>
+                                <th>DESC</th>
+                                <th style="width: 6%;">Order QTY</th>
+                                <th style="width: 7%;">QTY SHIPPED</th>
+                                <th style="width: 9%;">Order Date</th>
+                                <th style="width: 9%;">ETA</th>
+                                <th style="width: 9%;">SHIP DATE</th>
+                                <th>Supplier SO</th>
+                                <th>SO LINE</th>
+                                <th>Supplier Item</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_LoadingModal")
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSearch").on('click', function () {
+            var PART_NO = $("#txtPART_NO").val();
+            var COMPANY_CODE = $("#txtCOMPANY_CODE").val();
+            var PO_NO = $("#txtPO_NO").val();
+            var OA_STATUS = $("input[name='OA_STATUS']:checked").val();
+            var ORDER_DATE = $("#txtORDER_DATE").val();
+
+            if (PO_NO == "" && COMPANY_CODE == "") {
+                alert("No data input");
+                return false;
+            }
+
+            $("#resultTbody").empty();
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/ds/DSOAINQSearch',
+                type: 'post',
+                async: true,
+                data: {
+                    PART_NO: PART_NO,
+                    COMPANY_CODE: COMPANY_CODE,
+                    PO_NO: PO_NO,
+                    OA_STATUS: OA_STATUS,
+                    ORDER_DATE: ORDER_DATE
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#resultTbody").html(obj.Data);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+            })
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+
+    });
+</script>

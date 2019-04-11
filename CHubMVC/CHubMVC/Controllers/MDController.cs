@@ -133,7 +133,7 @@ namespace CHubMVC.Controllers
 
 
         [HttpPost]
-        public ActionResult MDReqInqSearch(string MD_REQ_NO, string PART_NO, string REQ_DATE, string APP_STATUS, string REQ_BY, string WWID, string CHECK_EXIST,string COMM_PART)
+        public ActionResult MDReqInqSearch(string MD_REQ_NO, string PART_NO, string REQ_DATE, string APP_STATUS, string REQ_BY, string WWID, string CHECK_EXIST, string COMM_PART)
         {
             V_MD_REQ_ALL1ONE_BLL mraBLL = new V_MD_REQ_ALL1ONE_BLL();
             string mainHTML = string.Empty;
@@ -490,7 +490,7 @@ namespace CHubMVC.Controllers
             sb.Append("         <td>").Append("<span></span>").Append("</td>");
             sb.Append("         <td>").Append("<span></span>").Append("</td>");
             sb.Append("         <td>").Append("<span></span>").Append("</td>");
-            sb.Append("         <td>").Append(GetProductGroupID("","")).Append("</td>");
+            sb.Append("         <td>").Append(GetProductGroupID("", "")).Append("</td>");
             sb.Append("         <td>").Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnDelete\" value=\"delete\" />").Append("</td>");
             sb.Append("     </tr>");
             return sb.ToString();
@@ -762,7 +762,7 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult MDSRSearch(string PART_NO, string COMPANY_CODE, string SR_STATUS, string REQ_DATE,string IS_COMMON)
+        public ActionResult MDSRSearch(string PART_NO, string COMPANY_CODE, string SR_STATUS, string REQ_DATE, string IS_COMMON)
         {
             V_MD_SR_ALL_BLL bll = new V_MD_SR_ALL_BLL();
             try
@@ -860,15 +860,25 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult MDSRIsShowModal()
+        public ActionResult MDSRIsShowModal(string status)
         {
             V_MD_SR_ALL_BLL bll = new V_MD_SR_ALL_BLL();
             try
             {
-                if (IsOperate("MD_SR_MAINT"))
-                    return Json(new RequestResult(true));
+                if (status == "CONFIRM")
+                {
+                    if (IsOperate("MD_SR_CONFIRM"))
+                        return Json(new RequestResult(true));
+                    else
+                        return Json(new RequestResult(false, "You cannot operate"));
+                }
                 else
-                    return Json(new RequestResult(false, "You cannot operate"));
+                {
+                    if (IsOperate("MD_SR_MAINT"))
+                        return Json(new RequestResult(true));
+                    else
+                        return Json(new RequestResult(false, "You cannot operate"));
+                }                
             }
             catch (Exception ex)
             {
@@ -1115,7 +1125,7 @@ namespace CHubMVC.Controllers
             return sb.ToString();
         }
 
-        public StringBuilder GetMDSRColor(StringBuilder sb,string SR_STATUS)
+        public StringBuilder GetMDSRColor(StringBuilder sb, string SR_STATUS)
         {
             switch (SR_STATUS)
             {
@@ -1128,12 +1138,15 @@ namespace CHubMVC.Controllers
                 case "ONHOLD":
                     sb.Append("         <td style=\"color:red;\">");
                     break;
+                case "CONFIRMING":
+                    sb.Append("         <td style=\"color:orange;\">");
+                    break;
                 default:
                     sb.Append("         <td>");
                     break;
             }
             sb.Append(SR_STATUS).Append("</td>");
-            
+
             return sb;
         }
 
@@ -1207,21 +1220,70 @@ namespace CHubMVC.Controllers
             {
                 foreach (var item in list)
                 {
-                    sb.Append("     <tr>");
-                    sb.Append("         <td style=\"width:4%;\">").Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnSave\" value=\"Save\" data-companycode=\"" + item.COMPANY_CODE + "\" />").Append("</td>");
-                    sb.Append("         <td style=\"width:7%;\">").Append(item.COMPANY_CODE).Append("</td>");
-                    sb.Append("         <td style=\"width:20%;\">").Append(item.COMPANY_NAME).Append("</td>");
-                    sb.Append("         <td style=\"width:10%;\">").Append("<input type=\"text\" class=\"form-control input-sm COMPANY_NAME_CN\" value=\"" + item.COMPANY_NAME_CN + "\" title=\"" + item.COMPANY_NAME_CN + "\" />").Append("</td>");
-                    sb.Append("         <td style=\"width:10%;\">").Append("<input type=\"text\" class=\"form-control input-sm PLANNER\" value=\"" + item.PLANNER + "\" title=\"" + item.PLANNER + "\" />").Append(" </td>");
-                    sb.Append("         <td style=\"width:10%;\">").Append("<input type=\"text\" class=\"form-control input-sm PLANNER_CODE\" value=\"" + item.PLANNER_CODE + "\" title=\"" + item.PLANNER_CODE + "\" />").Append("</td>");
-                    sb.Append("         <td style=\"width:10%;\">").Append("<input type=\"text\" class=\"form-control input-sm NOTE\" value=\"" + item.NOTE + "\" title=\"" + item.NOTE + "\" />").Append("</td>");
-                    sb.Append("         <td style=\"width:10%;\">").Append("<input type=\"text\" class=\"form-control input-sm GSM_SUPPLIER_NO\" value=\"" + item.GSM_SUPPLIER_NO + "\" title=\"" + item.GSM_SUPPLIER_NO + "\" />").Append("</td>");
-                    sb.Append("         <td style=\"width:10%;\">").Append("<input type=\"text\" class=\"form-control input-sm VENDOR_SITE_ID\" value=\"" + item.VENDOR_SITE_ID + "\" title=\"" + item.VENDOR_SITE_ID + "\" />").Append("</td>");
-                    sb.Append("         <td style=\"width:10%;\">").Append("<input type=\"text\" class=\"form-control input-sm BPA_NO\" value=\"" + item.BPA_NO + "\" title=\"" + item.BPA_NO + "\" />").Append("</td>");
-                    sb.Append("     </tr>");
+                    sb.Append(" <tr>");
+                    sb.Append("     <td style=\"width:3%;\">").Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnSave\" value=\"Save\" data-companycode=\"" + item.COMPANY_CODE + "\" />").Append("</td>");
+                    sb.Append("     <td style=\"width:4%;\">").Append(item.COMPANY_CODE).Append("</td>");
+                    sb.Append("     <td style=\"width:8%;\">").Append(item.COMPANY_NAME).Append("</td>");
+                    sb.Append("     <td style=\"width:8%;\">").Append("<input type=\"text\" class=\"form-control input-sm COMPANY_NAME_CN\" value=\"" + item.COMPANY_NAME_CN + "\" title=\"" + item.COMPANY_NAME_CN + "\" />").Append("</td>");
+                    sb.Append("     <td style=\"width:4%;\">").Append("<input type=\"text\" class=\"form-control input-sm PLANNER\" value=\"" + item.PLANNER + "\" title=\"" + item.PLANNER + "\" />").Append(" </td>");
+                    sb.Append("     <td style=\"width:4%;\">").Append("<input type=\"text\" class=\"form-control input-sm PLANNER_CODE\" value=\"" + item.PLANNER_CODE + "\" title=\"" + item.PLANNER_CODE + "\" />").Append("</td>");
+                    sb.Append("     <td style=\"width:4%;\">").Append("<input type=\"text\" class=\"form-control input-sm NOTE\" value=\"" + item.NOTE + "\" title=\"" + item.NOTE + "\" />").Append("</td>");
+                    sb.Append("     <td style=\"width:3%;\">").Append("<input type=\"text\" class=\"form-control input-sm GSM_SUPPLIER_NO\" value=\"" + item.GSM_SUPPLIER_NO + "\" title=\"" + item.GSM_SUPPLIER_NO + "\" />").Append("</td>");
+                    sb.Append("     <td style=\"width:4%;\">").Append("<input type=\"text\" class=\"form-control input-sm VENDOR_SITE_ID\" value=\"" + item.VENDOR_SITE_ID + "\" title=\"" + item.VENDOR_SITE_ID + "\" />").Append("</td>");
+                    sb.Append("     <td style=\"width:4%;\">").Append("<input type=\"text\" class=\"form-control input-sm BPA_NO\" value=\"" + item.BPA_NO + "\" title=\"" + item.BPA_NO + "\" />").Append("</td>");
+                    sb.Append("     <td style=\"width:4%;\">").Append(GetINSURANCE_CODE(item.INSURANCE_CODE)).Append("</td>");
+                    sb.Append("     <td style=\"width:4%;\">").Append(GetDS_TRACK(item.DS_TRACK)).Append("</td>");
+                    sb.Append("     <td style=\"width:5%;\">").Append("<input type=\"text\" class=\"form-control input-sm DS_TRACK_EML\" value=\"" + item.DS_TRACK_EML + "\" title=\"" + item.DS_TRACK_EML + "\" />").Append("</td>");
+                    sb.Append("     <td style=\"width:4%;\">").Append("<input type=\"text\" class=\"form-control input-sm COMPANY_NAME_SHORT\" value=\"" + item.COMPANY_NAME_SHORT + "\" title=\"" + item.COMPANY_NAME_SHORT + "\" />").Append("</td>");
+                    var RETURN_ALLOW_DAYS = item.RETURN_ALLOW_DAYS == 0 ? "" : item.RETURN_ALLOW_DAYS.ToString();
+                    sb.Append("     <td style=\"width:5%;\">").Append("<input type=\"text\" class=\"form-control input-sm RETURN_ALLOW_DAYS\" value=\"" + RETURN_ALLOW_DAYS + "\" title=\"" + RETURN_ALLOW_DAYS + "\" />").Append("</td>");
+                    sb.Append(" </tr>");
                 }
             }
 
+            return sb.ToString();
+        }
+
+        public string GetINSURANCE_CODE(string INSURANCE_CODE)
+        {
+            StringBuilder sb = new StringBuilder();
+            MDSUPP_BLL mBLL = new MDSUPP_BLL();
+            try
+            {
+                var codes = mBLL.GetINSURANCE_CODE();
+                sb.Append(" <select class=\"form-control input-sm INSURANCE_CODE\">");
+                sb.Append("     <option value=\"\"></option>");
+                if (codes != null && codes.Count() > 0)
+                {
+                    foreach (var item in codes)
+                    {
+                        if (item.INSURANCE_CODE == INSURANCE_CODE)
+                            sb.Append("     <option value=\"" + item.INSURANCE_CODE + "\" selected>").Append(item.INSURANCE_CODE).Append("</option>");
+                        else
+                            sb.Append("     <option value=\"" + item.INSURANCE_CODE + "\">").Append(item.INSURANCE_CODE).Append("</option>");
+                    }
+                }
+                sb.Append(" </select>");
+            }
+            catch (Exception ex)
+            {
+            }
+            return sb.ToString();
+        }
+
+        public string GetDS_TRACK(string DS_TRACK)
+        {
+            StringBuilder sb = new StringBuilder();
+            string[] track = new string[] { "", "Y", "N" };
+            sb.Append(" <select class=\"form-control input-sm DS_TRACK\">");
+            foreach (var item in track)
+            {
+                if (item == DS_TRACK)
+                    sb.Append("     <option value=\"" + item + "\" selected>").Append(item).Append("</option>");
+                else
+                    sb.Append("     <option value=\"" + item + "\">").Append(item).Append("</option>");
+            }
+            sb.Append("</select>");
             return sb.ToString();
         }
 

@@ -177,7 +177,27 @@ namespace CHubCommon
             /// <summary>
             /// /ret/retmain
             /// </summary>
-            retmain
+            retmain,
+            /// <summary>
+            /// /adhoc/cwscust
+            /// </summary>
+            cwscust,
+            /// <summary>
+            /// /ret/retrestrict
+            /// </summary>
+            retrestrict,
+            /// <summary>
+            /// /ds/dsoainq
+            /// </summary>
+            dsoainq,
+            /// <summary>
+            /// /ds/dsmain
+            /// </summary>
+            dsmain,
+            /// <summary>
+            /// /kpi/kpiset
+            /// </summary>
+            kpiset
         }
 
         public enum OrderStatusEnum

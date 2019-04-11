@@ -23,5 +23,9 @@ namespace CHubBLL
         {
             dal.MDSuppSave(item);
         }
+        public List<MD_INSURANCE_CODES> GetINSURANCE_CODE()
+        {
+            return dal.GetINSURANCE_CODE();
+        }
     }
 }

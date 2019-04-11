@@ -20,5 +20,10 @@ namespace CHubDBEntity.UnmanagedModel
         public string GSM_SUPPLIER_NO { get; set; }
         public string VENDOR_SITE_ID { get; set; }
         public string BPA_NO { get; set; }
+        public string INSURANCE_CODE { get; set; }
+        public string DS_TRACK { get; set; }
+        public string DS_TRACK_EML { get; set; }
+        public string COMPANY_NAME_SHORT { get; set; }
+        public decimal RETURN_ALLOW_DAYS { get; set; }
     }
 }

@@ -36,7 +36,12 @@ namespace CHubDAL
                                         NOTE=:NOTE,
                                         GSM_SUPPLIER_NO=:GSM_SUPPLIER_NO,
                                         VENDOR_SITE_ID=:VENDOR_SITE_ID,
-                                        BPA_NO=:BPA_NO 
+                                        BPA_NO=:BPA_NO,
+                                        INSURANCE_CODE=:INSURANCE_CODE,
+                                        DS_TRACK=:DS_TRACK,
+                                        DS_TRACK_EML=:DS_TRACK_EML,
+                                        COMPANY_NAME_SHORT=:COMPANY_NAME_SHORT,
+                                        RETURN_ALLOW_DAYS=:RETURN_ALLOW_DAYS
                                         where COMPANY_CODE=:COMPANY_CODE
                                         ");
             OracleParameter[] param = new OracleParameter[] {
@@ -47,9 +52,21 @@ namespace CHubDAL
                 new OracleParameter(":GSM_SUPPLIER_NO",OracleDbType.Varchar2,item.GSM_SUPPLIER_NO,ParameterDirection.Input),
                 new OracleParameter(":VENDOR_SITE_ID",OracleDbType.Varchar2,item.VENDOR_SITE_ID,ParameterDirection.Input),
                 new OracleParameter(":BPA_NO",OracleDbType.Varchar2,item.BPA_NO,ParameterDirection.Input),
+                new OracleParameter(":INSURANCE_CODE",OracleDbType.Varchar2,item.INSURANCE_CODE,ParameterDirection.Input),
+                new OracleParameter(":DS_TRACK",OracleDbType.Varchar2,item.DS_TRACK,ParameterDirection.Input),
+                new OracleParameter(":DS_TRACK_EML",OracleDbType.Varchar2,item.DS_TRACK_EML,ParameterDirection.Input),
+                new OracleParameter(":COMPANY_NAME_SHORT",OracleDbType.Varchar2,item.COMPANY_NAME_SHORT,ParameterDirection.Input),
+                new OracleParameter(":RETURN_ALLOW_DAYS",OracleDbType.Decimal,item.RETURN_ALLOW_DAYS,ParameterDirection.Input),
                 new OracleParameter(":COMPANY_CODE",OracleDbType.Varchar2,item.COMPANY_CODE,ParameterDirection.Input)
             };
             ccHelper.AddOrUpdateWithParams(sql, param);
+        }
+
+        public List<MD_INSURANCE_CODES> GetINSURANCE_CODE()
+        {
+            string sql = string.Format(@"select * from MD_INSURANCE_CODES");
+            var result = ccHelper.Search<MD_INSURANCE_CODES>(sql);
+            return result;
         }
 
     }

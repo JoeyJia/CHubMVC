@@ -102,12 +102,12 @@
 <div class="container">
     <div class="row" style="margin-top: 20px;">
         <div class="form-group">
-            <label></label>
+            <p id="tmp_test"></p>
             <input type="button" id="search" value="查询" />
         </div>
     </div>
 
-    <div class="row">
+    @*<div class="row">
         <ul class="timeline-ul">
             <li class="timeline-li-last">
                 <div class="timeline-div">
@@ -144,7 +144,7 @@
                 </div>
             </li>
         </ul>
-    </div>
+    </div>*@
 
 </div>
 
@@ -179,10 +179,13 @@
 </div>
 
 
-<script type="text/javascript">
+@*<script type="text/javascript">
     $(document).ready(function () {
         $("#search").click(function () {
-            $("#myModal").modal("show");
+            getScrollTop();
+
+
+           // $("#myModal").modal("show");
             // window.open('http://cummins.hi-genious.com');
             //$.ajax({
             //    url: "/test/GetTrackInfo",
@@ -201,6 +204,17 @@
             //})
         });
 
+        function getScrollTop() {
+            var scrollTop = 0;
+            if (document.documentElement && document.documentElement.scrollTop) {
+                scrollTop = document.documentElement.scrollTop;
+            } else if (document.body) {
+                scrollTop = document.body.scrollTop;
+            }
+            return scrollTop;
+        }
+
+
         $("#confirm").on("click", function () {
             if ($("#valcode").val() == "abc123!") {
                 alert($("#tracknum").val());
@@ -211,4 +225,33 @@
             }
         })
     })
+</script>*@
+
+
+<script>
+    $(document).ready(function () {
+        $("#search").on('click', function () {
+            $.ajax({
+                url: '/test/GetTmp_Test',
+                type: 'post',
+                async: true,
+                data: {},
+                success: function (obj) {
+                    $("#tmp_test").html(obj.Data);
+                },
+                error: function (e) {
+
+                }
+            });
+
+
+        })
+        
+
+
+
+
+
+    })
+
 </script>

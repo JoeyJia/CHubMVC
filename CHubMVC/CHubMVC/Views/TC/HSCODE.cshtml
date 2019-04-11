@@ -168,6 +168,10 @@
                 alert("HSCODE Can Not Be Empty");
                 return;
             }
+            if (data.TAX_REFUND_RATE == "") {
+                alert("TAX_REFUND_RATE Can not be Empty");
+                return;
+            }
             var str;
             if ($scope.display == false)
                 str = "Add";

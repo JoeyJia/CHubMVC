@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewBag.Title = "Log Link To New";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <style type="text/css">
+        .txtLine {
+            border-bottom: 4px solid #C32518;
+        }
+
+        .txtLink {
+            width: 94%;
+            height: 365px;
+            margin-top: 80px;
+            /*margin-left: 40px;*/
+            /*background-color: red;*/
+        }
+
+        .txtIhub {
+            height: 50px;
+            padding-left: 10px;
+            background-color: #FF7F24;
+            color: #fff;
+        }
+
+            .txtIhub h2 {
+                padding-top: 10px;
+            }
+
+        .txtUrl {
+            /*background-color:red;*/
+            height: 300px;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid" style="height:80%;width:99%">
+        <div class="row" style="margin-top:5%;height:100px;">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <img src="~/Images/loginMidlogo.png" style="margin-left:40px;height:100px;width:auto">
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+                <img src="~/Images/hubLogo.png" style="margin-right:12%;margin-top:25px;height:75px;width:auto">
+            </div>
+        </div>
+        <div class="row" style="margin-top:5px;">
+            <div class="txtLine"></div>
+        </div>
+        <div class="row" style="margin-top:5px;">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <img src="~/Images/Moving.PNG" style="width: 94%; height: 445px;" />
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="txtLink">
+                    <div class="txtIhub">
+                        <h2>IHUB搬家了！！</h2>
+                    </div>
+                    <div class="txtUrl">
+                        <h3>
+                            点击URL登录新IHUB主页 -
+                            <br />
+                            <br />
+                            <a href="http://sdwpweb0002.ced.corp.cummins.com">
+                                HTTP://SDWPWEB0002.CED.CORP.CUMMINS.COM/
+                            </a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

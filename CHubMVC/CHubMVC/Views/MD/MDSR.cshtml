@@ -12,25 +12,28 @@
     }
 </style>
 <style type="text/css">
-     #tabdiv{
-         width:100%;
-         height:400px;
-         min-height:300px;
-         overflow-x:scroll;
-         overflow-y:auto;
-     }
-     #tableHead{
-         width:150%;
-         top:0px;
-         position:relative;
-         margin-bottom:0px;
-     }
-     #resultTable{
-         width:150%;
-     }
-     .form-group{
-         margin-bottom:0px;
-     }
+    #tabdiv {
+        width: 100%;
+        height: 400px;
+        min-height: 300px;
+        overflow-x: scroll;
+        overflow-y: auto;
+    }
+
+    #tableHead {
+        width: 150%;
+        top: 0px;
+        position: relative;
+        margin-bottom: 0px;
+    }
+
+    #resultTable {
+        width: 150%;
+    }
+
+    .form-group {
+        margin-bottom: 0px;
+    }
 </style>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -101,6 +104,7 @@
                     <input type="button" class="btn btn-primary btn-sm" id="btnConfirm" value="Confirm" data-status="CONFIRM" />
                     @*<input type="button" class="btn btn-primary btn-sm" id="btnReject" value="Reject" data-status="REJECT" />*@
                     <input type="button" class="btn btn-primary btn-sm" id="btnOnhold" value="Onhold" data-status="ONHOLD" />
+                    <input type="button" class="btn btn-primary btn-sm" id="btnSubmit" value="Submit" data-status="CONFIRMING" />
                     <input type="button" class="btn btn-primary btn-sm" id="btnRefreshStatus" value="Refresh Status" />
                 </div>
                 <div class="col-sm-6">
@@ -113,8 +117,8 @@
                     </form>
                 </div>
                 @*<div class="col-sm-2">
-                    <input type="button" class="btn btn-primary btn-sm" id="btnUploadCopy" value="Upload from clipboard" />
-                </div>*@
+                        <input type="button" class="btn btn-primary btn-sm" id="btnUploadCopy" value="Upload from clipboard" />
+                    </div>*@
             </div>
         </div>
 
@@ -126,8 +130,8 @@
                     </div>
                     <div id="tabdiv">
                         @*<table class="table table-bordered table-hover" id="tableHead">
-                            
-                        </table>*@ 
+
+                            </table>*@
                         <table class="table table-bordered table-hover" id="resultTable">
                             <thead>
                                 <tr>
@@ -628,6 +632,14 @@
             else
                 alert("No data select");
         })
+        //btn Submit
+        $("#btnSubmit").on('click', function () {
+            var status = $(this).attr("data-status");
+            if (srList != null && srList.length > 0)
+                CheckAndShowModal(status);
+            else
+                alert("No data select");
+        })
         function CheckAndShowModal(status) {
             var SEQ; var goOn = true;
             if (status == "CONFIRM") {//status为CONFIRM时，必须都有
@@ -652,13 +664,13 @@
                 alert("SEQ为" + SEQ + " No Data Input");
                 return false;
             }
-            
+
             if (TotalSave()) {
                 $.ajax({
                     url: '/md/MDSRIsShowModal',
                     type: 'post',
                     async: true,
-                    data: {},
+                    data: { status: status },
                     success: function (obj) {
                         if (obj.Success) {
                             $("#myModal").modal("show");

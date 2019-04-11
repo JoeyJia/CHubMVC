@@ -1,0 +1,441 @@
+﻿@model CHubMVC.Models.OrdInqModels
+@{
+    ViewBag.Title = "OrdInq";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .form-group {
+        margin-bottom: 0;
+    }
+
+    .tdTitle {
+        background-color: #f5f5f5;
+    }
+
+    #ORDER_HTable > tbody > tr > td {
+        width: 16.7%;
+    }
+    /*.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        background-color:#428bca;
+    }*/
+</style>
+@using (Html.BeginForm("OrdInq", "Order", FormMethod.Post, new { name = "ordinqForm", id = "ordinqForm", @class = "form-horizontal" }))
+{
+    <input type="hidden" id="ErrorMsg" value="@ViewBag.ErrorMsg" />
+    <div class="container-fluid" id="ordinqDiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <b>Query</b>
+            </div>
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Customer PO No:</label>
+                    <div class="col-sm-2">
+                        @*<input type="text" class="form-control input-sm" id="txtCUSTOMER_PO_NO" placeholder="Customer PO No" />*@
+                        @Html.TextBoxFor(m => m.CUSTOMER_PO_NO, new { @class = "form-control input-sm", placeholder = "Customer PO No" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">GOMS Order No:</label>
+                    <div class="col-sm-2">
+                        @*<input type="text" class="form-control input-sm" id="txtORDER_NO" placeholder="GOMS Order No" />*@
+                        @Html.TextBoxFor(m => m.ORDER_NO, new { @class = "form-control input-sm", placeholder = "GOMS Order No" })
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="submit" class="btn btn-primary btn-sm" id="btnSearch" value="Search" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <b>Result</b>
+                        </div>
+                        @if (Model.OrderList != null && Model.OrderList.Any())
+                        {
+                            var tabNum = 0; var conNum = 0; string tabClass = string.Empty; string conClass = string.Empty;
+                            <ul class="nav nav-tabs" id="resultTab">
+                                @foreach (var title in Model.titleList)
+                                {
+                                    var tabLink = title.Split('@')[1] + title.Split('@')[0];
+                                    if (tabNum == 0)
+                                    {
+                                        tabClass = "active";
+                                    }
+                                    else
+                                    {
+                                        tabClass = string.Empty;
+                                    }
+                                <li class="@tabClass"><a href="#@tabLink" data-toggle="tab">@title</a></li>
+                                    tabNum++;
+                                }
+                            </ul>
+                            <div class="tab-content" id="resultTabContent">
+                                @foreach (var item in Model.OrderList)
+                                {
+                                    var conLink = item.Order_H.TITLE.Split('@')[1] + item.Order_H.TITLE.Split('@')[0];
+                                    var color = string.Empty;
+                                    switch (item.Order_H.COLOR)
+                                    {
+                                        case "G":
+                                            color = "green";
+                                            break;
+                                        case "Y":
+                                            color = "orange";
+                                            break;
+                                        case "R":
+                                            color = "red";
+                                            break;
+                                        case "B":
+                                            color = "blue";
+                                            break;
+                                        default:
+                                            color = "";
+                                            break;
+                                    }
+                                    if (conNum == 0)
+                                    {
+                                        conClass = "active";
+                                    }
+                                    else
+                                    {
+                                        conClass = string.Empty;
+                                    }
+                                    <div class="tab-pane @conClass" id="@conLink">
+                                        <table class="table table-bordered" id="ORDER_HTable" style="margin-bottom:0px;">
+                                            <tr>
+                                                <td colspan="6" class="tdTitle">Order Header:</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdTitle">SHIP Status:</td>
+                                                <td style="color:@color;">@item.Order_H.SHIP_STATUS</td>
+                                                <td class="tdTitle">Customer:</td>
+                                                <td colspan="3">@item.LOCAL_SHIP_TO_NAME</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdTitle">Customer PO</td>
+                                                <td>@item.Order_H.CUSTOMER_PO_NO</td>
+                                                <td class="tdTitle">Order Type</td>
+                                                <td>
+                                                    @item.Order_H.DUE_DATE_CODE
+                                                    <div style="float:right;">@item.Order_H.DUE_DATE_DESC</div>
+                                                </td>
+                                                <td class="tdTitle">RDD</td>
+                                                <td>@item.Order_H.RDD.ToString("yyyy/MM/dd")</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdTitle">GOMS Order No</td>
+                                                <td>@item.Order_H.ORDER_NO</td>
+                                                <td class="tdTitle">Dealer PO</td>
+                                                <td>@item.Order_H.DEALER_PO_NO</td>
+                                                <td class="tdTitle">DB SO</td>
+                                                <td>@item.Order_H.DB_SO_NO</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdTitle">Order NOTE</td>
+                                                <td>@item.Order_H.NOTE_TEXT</td>
+                                                <td class="tdTitle">REF.</td>
+                                                <td>@item.Order_H.REF_NO</td>
+                                                <td class="tdTitle">GOMS</td>
+                                                <td>@item.Order_H.LOAD_FROM</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdTitle">Created By</td>
+                                                <td>@item.Order_H.CREATED_BY</td>
+                                                <td class="tdTitle">Create Date</td>
+                                                <td>@item.Order_H.CREATE_DATE.ToString("yyyy/MM/dd")</td>
+                                                <td class="tdTitle">Currency</td>
+                                                <td>@item.Order_H.ORDER_CURRENCY_CODE</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6" class="tdTitle">Shipping Address:</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdTitle">ADDR1:</td>
+                                                <td colspan="2">@item.LOCAL_SHIP_TO_ADDR_1</td>
+                                                <td class="tdTitle">ADDR2:</td>
+                                                <td colspan="2">@item.LOCAL_SHIP_TO_ADDR_2</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdTitle">ADDR3:</td>
+                                                <td colspan="2">@item.LOCAL_SHIP_TO_ADDR_3</td>
+                                                <td class="tdTitle">City：</td>
+                                                <td colspan="2">@item.LOCAL_SHIP_TO_CITY</td>
+                                            </tr>
+                                        </table>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <input type="button" class="btn btn-primary btn-sm btnTrack" data-load_from="@item.Order_H.LOAD_FROM" data-order_no="@item.Order_H.ORDER_NO" value="物流跟踪(30天内)" />
+                                            </div>
+                                        </div>
+                                        <table class="table table-bordered" id="ORDER_DTable">
+                                            <thead>
+                                                <tr style="background-color: #f5f5f5;">
+                                                    <td>Status</td>
+                                                    <td>LINE No</td>
+                                                    <td>Part No</td>
+                                                    <td>DESC</td>
+                                                    <td>QTY</td>
+                                                    <td>Reserved</td>
+                                                    <td>Picking</td>
+                                                    <td>Shipped</td>
+                                                    <td>RDD</td>
+                                                    <td>Order TYPE</td>
+                                                    <td>Method</td>
+                                                    <td>Warehouse</td>
+                                                    <td style="width:5%;"></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (item.Order_DList != null && item.Order_DList.Any())
+                                                {
+                                                    foreach (var detail in item.Order_DList)
+                                                    {
+                                                        string dcolor = string.Empty;
+                                                        switch (detail.COLOR)
+                                                        {
+                                                            case "G":
+                                                                dcolor = "green";
+                                                                break;
+                                                            case "Y":
+                                                                dcolor = "orange";
+                                                                break;
+                                                            case "R":
+                                                                dcolor = "red";
+                                                                break;
+                                                            case "B":
+                                                                dcolor = "blue";
+                                                                break;
+                                                            default:
+                                                                dcolor = "";
+                                                                break;
+                                                        }
+                                                        <tr>
+                                                            <td style="color:@dcolor;">@detail.STATUS_DESC</td>
+                                                            <td>@detail.LINE_NO</td>
+                                                            <td>@detail.PART_NO</td>
+                                                            <td>@detail.CATALOG_DESC</td>
+                                                            <td>@detail.REVISED_QTY_DUE</td>
+                                                            <td>@detail.QTY_RESERVED</td>
+                                                            <td>@detail.QTY_PICKED</td>
+                                                            <td style="color:@dcolor;">@detail.QTY_SHIPPED</td>
+                                                            <td>@detail.RDD.ToString("yyyy/MM/dd")</td>
+                                                            <td>@detail.DUE_DATE_CODE</td>
+                                                            <td>@detail.RELEASE_COMP_DESC</td>
+                                                            <td>@detail.WAREHOUSE</td>
+                                                            <td><input type="button" class="btn btn-primary btn-sm btnRelease" data-load_from="@detail.LOAD_FROM" data-order_no="@detail.ORDER_NO" data-line_no="@detail.LINE_NO" value="Release···" /></td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    conNum++;
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@Html.Partial("_LoadingModal")
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" style="width:80%;margin-top:100px;">
+        <div class="modal-content">
+            <div class="modal-header panel-default" style="padding:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 40px; height: 40px;font-size:30px;">
+                    &times;
+                </button>
+                <div class="modal-title panel-heading">
+                    <b>Release</b>
+                </div>
+            </div>
+            <div class="modal-body panel-default" style="padding:0">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <table class="table table-bordered" id="ReleaseModalTable">
+                            <thead>
+                                <tr style="background-color:#f5f5f5;">
+                                    <td>RELEASE NO</td>
+                                    <td>Status</td>
+                                    <td>PART NO</td>
+                                    <td>QTY</td>
+                                    <td>Reserved</td>
+                                    <td>Picking</td>
+                                    <td>Shipped</td>
+                                    <td>PROMISE DATE</td>
+                                    <td>Promise Msg</td>
+                                </tr>
+                            </thead>
+                            <tbody id="ReleaseModalTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="TrackModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" style="width:60%;">
+        <div class="modal-content">
+            <div class="modal-header panel-default" style="padding:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 40px; height: 40px;font-size:30px;">
+                    &times;
+                </button>
+                <div class="modal-title panel-heading">
+                    <b>Track</b>
+                </div>
+            </div>
+            <div class="modal-body panel-default" style="padding:0">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <table class="table table-bordered" id="TrackModalTable">
+                            <thead>
+                                <tr style="background-color:#f5f5f5;">
+                                    <td style="width:4%;">SN.</td>
+                                    <td>SHIP DATE</td>
+                                    <td>SHIP FROM</td>
+                                    <td>Carrier</td>
+                                    <td>Carrier Pro No</td>
+                                    <td style="width:5%;">Operation</td>
+                                </tr>
+                            </thead>
+                            <tbody id="TrackModalTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="TrackDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <div style="width:540px;height:100px;">
+                    <img src="~/Images/TrackLogo/cummins.jpg" style="float:left;" />
+                    <img src="~/Images/TrackLogo/wechat.jpg" style="float:right;" />
+                </div>
+                <iframe id="myIframe" style="width:540px;height:600px;" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        var errorMsg = $("#ErrorMsg").val();
+        if (errorMsg != "")
+            alert(errorMsg);
+
+
+        $("#btnSearch").on('click', function () {
+            var CUSTOMER_PO_NO = $("#CUSTOMER_PO_NO").val();
+            var ORDER_NO = $("#ORDER_NO").val();
+            if (CUSTOMER_PO_NO == "" && ORDER_NO == "") {
+                alert("No data input");
+                return false;
+            }
+            $("#loadingModal").modal("show");
+        })
+
+        $(".btnRelease").on('click', function () {
+            var $btnRelease = $(this);
+            var LOAD_FROM = $btnRelease.data().load_from;
+            var ORDER_NO = $btnRelease.data().order_no;
+            var LINE_NO = $btnRelease.data().line_no;
+            //alert(LOAD_FROM + "-" + ORDER_NO + "-" + LINE_NO);
+            //$("#myModal").modal("show");
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/order/GetOrder_R',
+                type: 'post',
+                async: true,
+                data: {
+                    LOAD_FROM: LOAD_FROM,
+                    ORDER_NO: ORDER_NO,
+                    LINE_NO: LINE_NO
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#ReleaseModalTbody").html(obj.Data);
+                        $("#myModal").modal("show");
+                    }
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to get order_r");
+                }
+            });
+
+        })
+
+
+        $(".btnTrack").on('click', function () {
+            var $btnTrack = $(this);
+            var LOAD_FROM = $btnTrack.data().load_from;
+            var ORDER_NO = $btnTrack.data().order_no;
+
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/order/GetTrackList',
+                type: 'post',
+                async: true,
+                data: {
+                    LOAD_FROM: LOAD_FROM,
+                    ORDER_NO: ORDER_NO
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal('hide');
+                    if (obj.Success) {
+                        $("#TrackModalTbody").html(obj.Data);
+                        $("#TrackModal").modal("show");
+                    }
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to get track");
+                }
+            })
+
+        })
+
+        $("#TrackModalTbody").on('click', '.btnViewTrack', function () {
+            var TRACK_NUM = $(this).data().track_num;
+            $("#myModalLabel").empty();
+            $("#myModalLabel").append("<span style='color:red'>【" + TRACK_NUM + "】</span>跟踪信息")
+            $("#myIframe").empty();
+            var url = "http://cummins.hi-genious.com/TransportManagement/PodTrack/Index?TrackNum=" + TRACK_NUM;
+            $("#myIframe").attr("src", url);
+            $("#TrackDetailModal").modal("show");
+        })
+
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+    });
+</script>

@@ -65,6 +65,8 @@
     <Compile Include="DB_KPI_HISTORY_DAL.cs" />
     <Compile Include="DB_KPI_GROUP_DAL.cs" />
     <Compile Include="DL_DAL.cs" />
+    <Compile Include="DSMAIN_DAL.cs" />
+    <Compile Include="DSOAINQ_DAL.cs" />
     <Compile Include="EW_USER_APPLY_DAL.cs" />
     <Compile Include="EW_SCHEDULE_TASK_DAL.cs" />
     <Compile Include="EW_SCHEDULE_DAL.cs" />
@@ -96,8 +98,10 @@
     <Compile Include="APP_WH_DAL.cs" />
     <Compile Include="GOMS_ASN_H_DAL.cs" />
     <Compile Include="JD_ADDR_CONVERT_DAL.cs" />
+    <Compile Include="KPISET_DAL.cs" />
     <Compile Include="MDSUPP_DAL.cs" />
     <Compile Include="MD_REQ_DAL.cs" />
+    <Compile Include="ORDINQ_DAL.cs" />
     <Compile Include="RETINV_DAL.cs" />
     <Compile Include="RETMAIN_DAL.cs" />
     <Compile Include="RETRESTRICT_DAL.cs" />

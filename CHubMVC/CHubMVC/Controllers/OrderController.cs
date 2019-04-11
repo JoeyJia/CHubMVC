@@ -1,19 +1,20 @@
-﻿using CHubCommon;
+﻿using CHubBLL;
+using CHubCommon;
+using CHubDBEntity;
+using CHubDBEntity.UnmanagedModel;
+using CHubModel;
+using CHubModel.ExtensionModel;
+using CHubMVC.Validations;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using CHubDBEntity;
-using CHubBLL;
-using CHubModel.ExtensionModel;
-using CHubModel;
 using System.Net;
 using System.Text;
+using System.Web;
+using System.Web.Mvc;
 using static CHubCommon.CHubEnum;
-using CHubMVC.Validations;
-using Newtonsoft.Json;
-using CHubDBEntity.UnmanagedModel;
+using CHubMVC.Models;
 
 namespace CHubMVC.Controllers
 {
@@ -341,7 +342,7 @@ namespace CHubMVC.Controllers
                 if (string.IsNullOrEmpty(arg.seq))
                     seq = bll.AddHeadersWithDetailsStage(orHeaderStage, altORHeaderStage, dStageList, arg.dueDate);
                 else
-                    seq = bll.UpdateHeadersWithDetailsStage(orHeaderStage, altORHeaderStage, dStageList,arg.dueDate);
+                    seq = bll.UpdateHeadersWithDetailsStage(orHeaderStage, altORHeaderStage, dStageList, arg.dueDate);
 
                 if (seq != 0.00M)
                     return Content(seq.ToString());
@@ -400,7 +401,7 @@ namespace CHubMVC.Controllers
                 if (string.IsNullOrEmpty(arg.seq))
                     seq = bll.AddHeadersWithDetails(orHeader, altORHeader, detailList, arg.dueDate);
                 else
-                    seq = bll.UpdateHeadersWithDetails(orHeader, altORHeader, detailList,arg.dueDate);
+                    seq = bll.UpdateHeadersWithDetails(orHeader, altORHeader, detailList, arg.dueDate);
 
                 if (seq != 0.00M)
                     return Content(seq.ToString());
@@ -604,7 +605,159 @@ namespace CHubMVC.Controllers
         #endregion
 
 
+        [HttpGet]
+        [Authorize]
+        public ActionResult OrdInq()
+        {
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, PageNameEnum.ordinq.ToString(), this.Request.Url.AbsoluteUri);
+            OrdInqModels vm = new OrdInqModels();
+            return View(vm);
+        }
 
+        [HttpPost]
+        [Authorize]
+        public ActionResult OrdInq(OrdInqModels vm)
+        {
+            ORDINQ_BLL oiBLL = new ORDINQ_BLL();
+            try
+            {
+                var result = oiBLL.GetORDER_HList(vm.CUSTOMER_PO_NO, vm.ORDER_NO);
+                vm.titleList = result.Select(i => i.TITLE).ToList();
+                vm.OrderList = new List<OrderList>();
+                if (result != null && result.Any())
+                {
+                    foreach (var item in result)
+                    {
+                        OrderList oList = new OrderList();
+                        oList.Order_H = item;
+                        var ship_location = oiBLL.GetSHIPPING_LOCAL(item.LOAD_FROM, item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.SHIP_TO_LOCATION, item.DEST_LOCATION).FirstOrDefault();
+                        if (ship_location != null)
+                        {
+                            oList.LOCAL_SHIP_TO_NAME = ship_location.LOCAL_SHIP_TO_NAME;
+                            oList.LOCAL_SHIP_TO_ADDR_1 = ship_location.LOCAL_SHIP_TO_ADDR_1;
+                            oList.LOCAL_SHIP_TO_ADDR_2 = ship_location.LOCAL_SHIP_TO_ADDR_2;
+                            oList.LOCAL_SHIP_TO_ADDR_3 = ship_location.LOCAL_SHIP_TO_ADDR_3;
+                            oList.LOCAL_SHIP_TO_CITY = ship_location.LOCAL_SHIP_TO_CITY;
+                        }
+                        oList.Order_DList = oiBLL.GetORDER_DList(item.LOAD_FROM, item.ORDER_NO);
+                        vm.OrderList.Add(oList);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("ORDER ORDINQ", ex);
+                ViewBag.ErrorMsg = ex.Message;
+            }
+            return View(vm);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult GetOrder_R(string LOAD_FROM, string ORDER_NO, string LINE_NO)
+        {
+            ORDINQ_BLL oiBLL = new ORDINQ_BLL();
+            try
+            {
+                var result = oiBLL.GetORDER_RList(LOAD_FROM, ORDER_NO, LINE_NO);
+                var mainHtml = GetOrder_RHtml(result);
+                return Json(new RequestResult(mainHtml));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("ORDER GetOrder_R", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult GetTrackList(string LOAD_FROM, string ORDER_NO)
+        {
+            ORDINQ_BLL oiBLL = new ORDINQ_BLL();
+            try
+            {
+                var result = oiBLL.GetTrackList(LOAD_FROM, ORDER_NO);
+                var mainHtml = GetTrackHtml(result);
+                return Json(new RequestResult(mainHtml));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("ORDER GetTrackList", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+
+        public string GetOrder_RHtml(List<V_GOMS_ORDER_R> list)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (list != null && list.Any())
+            {
+                foreach (var item in list)
+                {
+                    string fontColor = string.Empty;
+                    switch (item.COLOR)
+                    {
+                        case "G":
+                            fontColor = "green";
+                            break;
+                        case "Y":
+                            fontColor = "orange";
+                            break;
+                        case "R":
+                            fontColor = "red";
+                            break;
+                        case "B":
+                            fontColor = "blue";
+                            break;
+                        default:
+                            fontColor = "";
+                            break;
+                    }
+
+                    sb.Append(" <tr>");
+                    sb.Append("     <td>").Append(item.REL_NO).Append("</td>");
+                    sb.Append("     <td style='color:" + fontColor + "'>").Append(item.STATUS_DESC).Append("</td>");
+                    sb.Append("     <td>").Append(item.PART_NO).Append("</td>");
+                    sb.Append("     <td>").Append(item.REVISED_QTY_DUE).Append("</td>");
+                    sb.Append("     <td>").Append(item.QTY_RESERVED).Append("</td>");
+                    sb.Append("     <td>").Append(item.QTY_PICKED).Append("</td>");
+                    sb.Append("     <td style='color:" + fontColor + "'>").Append(item.QTY_SHIPPED).Append("</td>");
+                    sb.Append("     <td>").Append(item.PROMISE_DATE.HasValue ? item.PROMISE_DATE.Value.ToString("yyyy/MM/dd") : "").Append("</td>");
+                    sb.Append("     <td>").Append(item.PROMISE_MSG).Append("</td>");
+                    sb.Append(" </tr>");
+                }
+            }
+            return sb.ToString();
+        }
+        public string GetTrackHtml(List<V_SHIP_TRACK_PRO> list)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (list != null && list.Count() > 0)
+            {
+                var num = 0;
+                foreach (var item in list)
+                {
+                    num++;
+                    sb.Append(" <tr>");
+                    sb.Append("     <td>").Append(num).Append("</td>");
+                    sb.Append("     <td>").Append(item.SHIP_DATE.ToString("yyyy/MM/dd")).Append("</td>");
+                    sb.Append("     <td>").Append(item.GPS_NAME).Append("</td>");
+                    sb.Append("     <td>").Append(item.CARRIER_NAME).Append("</td>");
+                    sb.Append("     <td>").Append(item.CARRIER_PRO_NO).Append("</td>");
+                    if (!string.IsNullOrEmpty(item.CARRIER_PRO_NO))
+                        sb.Append("     <td>").Append("<input type='button' class='btn btn-primary btn-sm btnViewTrack' data-track_num='" + item.CARRIER_PRO_NO + "' value='查看物流' />").Append("</td>");
+                    else
+                        sb.Append("     <td>").Append("</td>");
+                    sb.Append(" </tr>");
+                }
+            }
+
+            return sb.ToString();
+        }
 
 
         #region *** private function ***

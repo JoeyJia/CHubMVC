@@ -49,25 +49,44 @@ namespace CHubMVC.Controllers
 
             List<PageList> pls = new List<PageList>();
             string space_desc = string.Empty;
-            var navs = navList.GroupBy(i => i.SPACE_DESC).Select(a =>a).ToList();
-            foreach (var i in navs)
-            {
+            navList.GroupBy(i => i.SPACE_DESC).ToList().ForEach(a => {
                 PageList pl = new PageList();
-                pl.SPACE_DESC = i.Key;
+                pl.SPACE_DESC = a.Key;
                 pl.pages = new List<PageList>();
-                foreach (var j in i)
+                foreach (var item in a)
                 {
                     PageList pp = new PageList();
-                    pp.SPACE_DESC = j.SPACE_DESC;
-                    pp.URL = j.URL;
-                    pp.DISPLAY = j.DISPLAY;
-                    pp.DESCRIPTION = j.DESCRIPTION;
-                    pp.ICON = j.ICON;
-                    pp.ICON_DESC = j.ICON_DESC;
+                    pp.SPACE_DESC = item.SPACE_DESC;
+                    pp.URL = item.URL;
+                    pp.DISPLAY = item.DISPLAY;
+                    pp.DESCRIPTION = item.DESCRIPTION;
+                    pp.ICON = item.ICON;
+                    pp.ICON_DESC = item.ICON_DESC;
                     pl.pages.Add(pp);
                 }
                 pls.Add(pl);
-            }
+            });
+            #region OLD
+            //var navs = navList.GroupBy(i => i.SPACE_DESC).Select(a =>a).ToList();
+            //foreach (var i in navs)
+            //{
+            //    PageList pl = new PageList();
+            //    pl.SPACE_DESC = i.Key;
+            //    pl.pages = new List<PageList>();
+            //    foreach (var j in i)
+            //    {
+            //        PageList pp = new PageList();
+            //        pp.SPACE_DESC = j.SPACE_DESC;
+            //        pp.URL = j.URL;
+            //        pp.DISPLAY = j.DISPLAY;
+            //        pp.DESCRIPTION = j.DESCRIPTION;
+            //        pp.ICON = j.ICON;
+            //        pp.ICON_DESC = j.ICON_DESC;
+            //        pl.pages.Add(pp);
+            //    }
+            //    pls.Add(pl);
+            //}
+            #endregion
             return pls;
         }
 

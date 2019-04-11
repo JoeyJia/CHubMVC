@@ -1,0 +1,212 @@
+﻿@{
+    ViewBag.Title = "KpiSet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .form-group {
+        margin-bottom: 0;
+    }
+</style>
+<div class="container-fluid body-content" id="kpisetDiv">
+    <input type="hidden" id="txtAppUser" value="@ViewBag.AppUser" />
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal" id="kipsetForm">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">KPI Code:</label>
+                    <div class="col-sm-2">
+                        <select class="form-control input-sm" id="txtORG_KPI">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Year:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtKPI_YEAR" placeholder="Year" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Search" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="row" style="border-top:0;">
+                    <div class="col-sm-2 text-left">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSave" value="Save" />
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <table class="table table-bordered table-hover" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th style="width:5%;">Year</th>
+                                <th style="width:5%;">ORG</th>
+                                <th style="width:6%;">KPI</th>
+                                <th>Sub KPI</th>
+                                <th>DESC</th>
+                                <th style="width:5%;">JAN</th>
+                                <th style="width:5%;">FEB</th>
+                                <th style="width:5%;">MAR</th>
+                                <th style="width:5%;">APR</th>
+                                <th style="width:5%;">MAY</th>
+                                <th style="width:5%;">JUN</th>
+                                <th style="width:5%;">JUL</th>
+                                <th style="width:5%;">AUG</th>
+                                <th style="width:5%;">SEP</th>
+                                <th style="width:5%;">OCT</th>
+                                <th style="width:5%;">NOV</th>
+                                <th style="width:5%;">DEC</th>
+                                @*<th>TARGET</th>
+                                <th>THRESH</th>*@
+                                <th>NOTE</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_LoadingModal")
+
+<script>
+    $(function () {
+        $.ajax({
+            url: '/kpi/GetKpiCode',
+            type: 'post',
+            async: true,
+            data: { AppUser: $("#txtAppUser").val() },
+            dataType: 'json',
+            success: function (obj) {
+                if (obj.Success) {
+                    if (obj.Data != null && obj.Data.length > 0) {
+                        for (var i = 0; i < obj.Data.length; i++) {
+                            $("<option></option>").text(obj.Data[i]).val(obj.Data[i]).appendTo("#txtORG_KPI");
+                        }
+                    }
+                }
+                else
+                    alert(obj.Msg);
+            },
+            error: function (e) {
+                alert("fail to get");
+            }
+        })
+    })
+
+    $(document).ready(function () {
+        $("#btnSearch").on('click', function () {
+            var ORG_KPI = $("#txtORG_KPI").val();
+            var KPI_YEAR = $("#txtKPI_YEAR").val();
+
+            if (KPI_YEAR == "" || KPI_YEAR == null) {
+                alert("No Year Input");
+                return false;
+            }
+            $("#resultTbody").empty();
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/kpi/KpiSetSearch',
+                type: 'post',
+                async: true,
+                data: {
+                    ORG_KPI: ORG_KPI,
+                    KPI_YEAR: KPI_YEAR
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#resultTbody").html(obj.Data);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+            })
+        });
+
+        $("#btnSave").on('click', function () {
+            var list = [];
+            var $tr = $("#resultTbody").find("tr");
+            if ($tr.length > 0) {
+                for (var i = 0; i < $tr.length; i++) {
+                    var $td = $($tr[i]).find("td");
+                    list.push({
+                        KPI_YEAR: $td.find(".KPI_YEAR").val(),
+                        ORG_ID: $td.find(".ORG_ID").val(),
+                        KPI_CODE: $td.find(".KPI_CODE").val(),
+                        KPI_SUB_CODE: $td.find(".KPI_SUB_CODE").val(),
+                        KPI_DESC: $td.find(".KPI_DESC").val(),
+                        KPI_VAL_01: $td.find(".KPI_VAL_01").val(),
+                        KPI_VAL_02: $td.find(".KPI_VAL_02").val(),
+                        KPI_VAL_03: $td.find(".KPI_VAL_03").val(),
+                        KPI_VAL_04: $td.find(".KPI_VAL_04").val(),
+                        KPI_VAL_05: $td.find(".KPI_VAL_05").val(),
+                        KPI_VAL_06: $td.find(".KPI_VAL_06").val(),
+                        KPI_VAL_07: $td.find(".KPI_VAL_07").val(),
+                        KPI_VAL_08: $td.find(".KPI_VAL_08").val(),
+                        KPI_VAL_09: $td.find(".KPI_VAL_09").val(),
+                        KPI_VAL_10: $td.find(".KPI_VAL_10").val(),
+                        KPI_VAL_11: $td.find(".KPI_VAL_11").val(),
+                        KPI_VAL_12: $td.find(".KPI_VAL_12").val(),
+                        //KPI_TARGET: $td.find(".KPI_TARGET").val(),
+                        //KPI_TARGET_THRESH: $td.find(".KPI_TARGET_THRESH").val(),
+                        NOTE: $td.find(".NOTE").val()
+                    });
+                }
+
+                $.ajax({
+                    url: '/kpi/KpiSetSave',
+                    type: 'post',
+                    async: true,
+                    data: JSON.stringify({
+                        list: list
+                    }),
+                    dataType: 'json',
+                    contentType: "application/json;charset=utf-8",
+                    success: function (obj) {
+                        if (!obj.Success)
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        alert("fail to save");
+                    }
+                });
+            }
+        });
+
+        $("#txtKPI_YEAR").on('blur', function () {
+            var $this = $(this);
+            var reg = /^\d{4}$/;
+            if ($this.val() != "") {
+                if (!reg.test($this.val())) {
+                    alert("Data Error");
+                    $this.focus();
+                    $this.select();
+                }
+            }            
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        $("#imgDiag").css("margin-top", "300px");
+
+    })
+</script>

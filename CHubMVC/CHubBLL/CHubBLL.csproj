@@ -82,6 +82,8 @@
     <Compile Include="CINVINQ_BLL.cs" />
     <Compile Include="CWSCUST_BLL.cs" />
     <Compile Include="DL_BLL.cs" />
+    <Compile Include="DSMAIN_BLL.cs" />
+    <Compile Include="DSOAINQ_BLL.cs" />
     <Compile Include="EXPWB_BLL.cs" />
     <Compile Include="EXP_EXCHANGE_RATE_BLL.cs" />
     <Compile Include="FINLOAD_BLL.cs" />
@@ -95,9 +97,11 @@
     <Compile Include="IA_PART_AUTOMAP_BLL.cs" />
     <Compile Include="IA_PRT_NOTE_CUST_BLL.cs" />
     <Compile Include="JD_ADDR_CONVERT_BLL.cs" />
+    <Compile Include="KPISET_BLL.cs" />
     <Compile Include="MDSUPP_BLL.cs" />
     <Compile Include="MD_REQ_BLL.cs" />
     <Compile Include="M_ADRNAM_MST_BLL.cs" />
+    <Compile Include="ORDINQ_BLL.cs" />
     <Compile Include="RETINV_BLL.cs" />
     <Compile Include="RETMAIN_BLL.cs" />
     <Compile Include="RETRESTRICT_BLL.cs" />

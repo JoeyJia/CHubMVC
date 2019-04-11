@@ -573,10 +573,10 @@ namespace CHubMVC.Controllers
             }
             else
                 exportDisplay = "disabled";
-            sb.Append("         <td>").Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnDetail\" value=\"DETAILS\" data-comminvid=\"" + COMM_INV_ID + "\" " + detailDisplay + " />")
-                                      .Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnComplete\" value=\"COMPLETE\" data-comminvid=\"" + COMM_INV_ID + "\" " + completeDisplay + " />")
-                                      .Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnDiscard\" value=\"DISCARD\" data-comminvid=\"" + COMM_INV_ID + "\" " + discardDisplay + " />")
-                                      .Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnExport\" value=\"EXPORT\" data-comminvid=\"" + COMM_INV_ID + "\" " + exportDisplay + " />");
+            sb.Append("         <td>").Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnComplete\" value=\"完成\" data-comminvid=\"" + COMM_INV_ID + "\" " + completeDisplay + " />")
+                                      .Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnDiscard\" value=\"作废\" data-comminvid=\"" + COMM_INV_ID + "\" " + discardDisplay + " />")
+                                      .Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnExport\" value=\"导出\" data-comminvid=\"" + COMM_INV_ID + "\" " + exportDisplay + " />")
+                                      .Append("<input type=\"button\" class=\"btn btn-primary btn-sm btnDetail\" value=\"细节\" data-comminvid=\"" + COMM_INV_ID + "\" " + detailDisplay + " />");
             return sb;
         }
 

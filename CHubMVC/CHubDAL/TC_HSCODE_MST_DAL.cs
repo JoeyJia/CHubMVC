@@ -58,7 +58,7 @@ namespace CHubDAL
                                         NOTE1='{6}',NOTE2='{7}',NOTE3='{8}',
                                         RECORD_DATE={9},UPDATED_BY='{10}'
                                     where HSCODE='{11}'",
-                                    tc.HSCODE_DESC, tc.TC_CATEGORY_ID, tc.TAX_REFUND_RATE == 0 ? null : tc.TAX_REFUND_RATE, tc.MFN_RATE == 0 ? null : tc.MFN_RATE, tc.UOM,tc.REGULATION, tc.NOTE1, tc.NOTE2, tc.NOTE3, "sysdate", tc.UPDATED_BY, tc.HSCODE);
+                                    tc.HSCODE_DESC, tc.TC_CATEGORY_ID, tc.TAX_REFUND_RATE.HasValue ? tc.TAX_REFUND_RATE.Value : 0, tc.MFN_RATE.HasValue ? tc.MFN_RATE.Value : 0, tc.UOM, tc.REGULATION, tc.NOTE1, tc.NOTE2, tc.NOTE3, "sysdate", tc.UPDATED_BY, tc.HSCODE);
                 //var ts = db.TC_HSCODE_MST.AsNoTracking().FirstOrDefault(h => h.HSCODE == tc.HSCODE);
                 //ts.HSCODE_DESC = tc.HSCODE_DESC;
                 //ts.TC_CATEGORY_ID = tc.TC_CATEGORY_ID;

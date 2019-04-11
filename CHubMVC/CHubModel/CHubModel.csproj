@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExtensionModel\DistinctCarCode.cs" />
+    <Compile Include="ExtensionModel\DSMAINModel.cs" />
     <Compile Include="ExtensionModel\ExAppCustAlias.cs" />
     <Compile Include="ExtensionModel\ExDBKPICode.cs" />
     <Compile Include="ExtensionModel\ExDBKPIHistory.cs" />
@@ -63,11 +64,13 @@
     <Compile Include="ExtensionModel\TrackNumLevel1.cs" />
     <Compile Include="ExtensionModel\TrackNumLevel2.cs" />
     <Compile Include="ExtensionModel\TranLoadPreFill.cs" />
+    <Compile Include="PageList.cs" />
     <Compile Include="PostResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TreeNode.cs" />
     <Compile Include="ExtensionModel\WayBillPageData.cs" />
     <Compile Include="WebArg\BartenderPrintDatas.cs" />
+    <Compile Include="WebArg\DSMAINArg.cs" />
     <Compile Include="WebArg\EXPCOMMINVArg.cs" />
     <Compile Include="WebArg\GKITSArg.cs" />
     <Compile Include="WebArg\GPartAddtionalArg.cs" />
@@ -76,6 +79,7 @@
     <Compile Include="WebArg\IACodeTypeArg.cs" />
     <Compile Include="WebArg\IALODDTLArg.cs" />
     <Compile Include="WebArg\IANOTECADDNEWArg.cs" />
+    <Compile Include="WebArg\KpiSetArg.cs" />
     <Compile Include="WebArg\LabelPrintArg.cs" />
     <Compile Include="WebArg\LabelPrintModel.cs" />
     <Compile Include="WebArg\MADRNAMMSTArg.cs" />

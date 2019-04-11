@@ -508,6 +508,7 @@
     </Compile>
     <Compile Include="UnmanagedModel\APP_OECUSTOMER_MST.cs" />
     <Compile Include="UnmanagedModel\APP_SECURE_PROC_ASSIGN.cs" />
+    <Compile Include="UnmanagedModel\DASH_KPI_HISTORY.cs" />
     <Compile Include="UnmanagedModel\EXP_COLLECTION_LOAD.cs" />
     <Compile Include="UnmanagedModel\EXP_COMM_INV.cs" />
     <Compile Include="UnmanagedModel\EXP_EXCHANGE_RATE.cs" />
@@ -517,6 +518,7 @@
     <Compile Include="UnmanagedModel\EXP_VAT_LOAD.cs" />
     <Compile Include="UnmanagedModel\EXP_VAT_XREF_LOAD.cs" />
     <Compile Include="UnmanagedModel\G_CATALOG_CUSTOMER_PART.cs" />
+    <Compile Include="UnmanagedModel\G_OECUST_SHIPPING_LOCAL.cs" />
     <Compile Include="UnmanagedModel\G_OESALES_CATALOG.cs" />
     <Compile Include="UnmanagedModel\G_NETAVL.cs" />
     <Compile Include="UnmanagedModel\IA_CODE_TYPE.cs" />
@@ -527,6 +529,7 @@
     <Compile Include="UnmanagedModel\JD_ADDR_CONVERT.cs" />
     <Compile Include="UnmanagedModel\MD_APP_STATUS.cs" />
     <Compile Include="UnmanagedModel\MD_COMPANY_SNAP.cs" />
+    <Compile Include="UnmanagedModel\MD_INSURANCE_CODES.cs" />
     <Compile Include="UnmanagedModel\MD_PIM_SNAP.cs" />
     <Compile Include="UnmanagedModel\MD_PRODUCT_GROUP.cs" />
     <Compile Include="UnmanagedModel\MD_REQ_DETAIL.cs" />
@@ -537,15 +540,21 @@
     <Compile Include="UnmanagedModel\RET_RETURN_TYPE.cs" />
     <Compile Include="UnmanagedModel\TC_HSCODE_CIQ_MST.cs" />
     <Compile Include="UnmanagedModel\TC_HSCODE_MST.cs" />
+    <Compile Include="UnmanagedModel\V_DASH_KPI_AUTH.cs" />
     <Compile Include="UnmanagedModel\V_DASH_SHIP11.cs" />
     <Compile Include="UnmanagedModel\V_DASH_SHIP12.cs" />
     <Compile Include="UnmanagedModel\V_DASH_SHIP21.cs" />
     <Compile Include="UnmanagedModel\V_DASH_SHIP22.cs" />
     <Compile Include="UnmanagedModel\V_DASH_TMS01.cs" />
+    <Compile Include="UnmanagedModel\V_DS_ORDER_BASE.cs" />
     <Compile Include="UnmanagedModel\V_EXP_STAGE_BASE.cs" />
     <Compile Include="UnmanagedModel\V_EXP_STAGE_UNINVOICED.cs" />
+    <Compile Include="UnmanagedModel\V_GOMS_ORDER_D.cs" />
+    <Compile Include="UnmanagedModel\V_GOMS_ORDER_H.cs" />
+    <Compile Include="UnmanagedModel\V_GOMS_ORDER_R.cs" />
     <Compile Include="UnmanagedModel\V_IA_LOD_BASE.cs" />
     <Compile Include="UnmanagedModel\V_IA_LOD_DTL.cs" />
+    <Compile Include="UnmanagedModel\V_IHUB_OA_BASE.cs" />
     <Compile Include="UnmanagedModel\V_INQ_TRACKNUM.cs" />
     <Compile Include="UnmanagedModel\V_INV_PDC.cs" />
     <Compile Include="UnmanagedModel\V_INV_RDC.cs" />
@@ -574,6 +583,7 @@
     <Compile Include="UnmanagedModel\V_RP_WAYBILL_H_PRINT.cs" />
     <Compile Include="UnmanagedModel\V_SHIPMENT_D_ALL1ONE.cs" />
     <Compile Include="UnmanagedModel\V_SHIPMENT_H_RP_ALL.cs" />
+    <Compile Include="UnmanagedModel\V_SHIP_TRACK_PRO.cs" />
     <Compile Include="UnmanagedModel\V_XCEC_ADDR_ALL.cs" />
     <Compile Include="UnmanagedModel\V_XCEC_ORDER_HDR_BASE.cs" />
     <Compile Include="UnmanagedModel\V_XCEC_ORDER_LN_BASE.cs" />
