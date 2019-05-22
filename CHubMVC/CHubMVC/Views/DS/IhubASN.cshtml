@@ -1,0 +1,205 @@
+﻿@{
+    ViewBag.Title = "IhubASN";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .form-group {
+        margin-bottom: 0;
+    }
+</style>
+<div class="container-fluid" id="ihubasnDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>IHUB ASN LOADING</b>
+        </div>
+        <form class="form-horizontal" name="loadForm" id="loadForm" method="post" enctype="multipart/form-data">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <div class="col-sm-3 col-sm-offset-2" style="padding-right:0;">
+                        <input type="file" class="form-control" id="ihubasnLoad" name="ihubasnLoad" />
+                    </div>
+                    <div class="col-sm-2" style="padding-left:0;">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnUpload" value="upload" />
+                        <input type="button" class="btn btn-primary btn-sm" id="btnDownload" value="download template" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Company Code </label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtCOMPANY_CODE" placeholder="COMPANY CODE" />
+                    </div>
+                    <div class="col-sm-6" style="margin-top: 8px;">
+                        <span id="txtCOMPANY_NAME"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">ASN NO</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtASN_NO" placeholder="ASN NO" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Last Days</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtLOAD_DAY" value="30" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Query" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <table class="table table-bordered table-striped table-hover" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th style="width:6%;">ASN NO</th>
+                                <th style="width:3%;">LINE NO</th>
+                                <th style="width:4%;">SHIP DATE</th>
+                                <th style="width:4%;">PO</th>
+                                <th style="width:4%;">PART NO</th>
+                                <th style="width:3%;">QTY</th>
+                                <th style="width:3%;">COO</th>
+                                <th style="width:10%;">NOTE</th>
+                                <th style="width:5%;">PLANNER</th>
+                                <th style="width:3%;">PO LINE</th>
+                                <th style="width:3%;">PO REL</th>
+                                <th style="width:4%;">LOAD DATE</th>
+                                <th style="width:4%;">LOAD BY</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_LoadingModal")
+<script>
+    $(document).ready(function () {
+        //Upload
+        $("#btnUpload").on('click', function () {
+            var file = $("#ihubasnLoad").val();
+            if (file == "") {
+                alert("请选择需要导入的Excel");
+                return false;
+            }
+            $("#loadingModal").modal("show");
+            $("#loadForm").ajaxSubmit({
+                url: '/ds/IhubASNUpload',
+                type: 'post',
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success)
+                        alert("成功导入" + obj.Data + "行");
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to upload");
+                }
+            })
+        })
+
+        //DownloadTemplate
+        $("#btnDownload").on('click', function () {
+            window.location.href = '/ds/DownloadTemplate';
+        })
+
+        //Search
+        $("#btnSearch").on('click', function () {
+            $("#resultTbody").empty();
+
+            var COMPANY_CODE = $("#txtCOMPANY_CODE").val();
+            var ASN_NO = $("#txtASN_NO").val();
+            var LOAD_DAY = $("#txtLOAD_DAY").val();
+
+            if (COMPANY_CODE == "") {
+                alert("COMPANY CODE Empty");
+                return false;
+            }
+            if (LOAD_DAY == "") {
+                alert("Last Days Empty");
+                return false;
+            }
+            if (parseInt(LOAD_DAY) > 365) {
+                alert("Last Days cannot more than 365");
+                return false;
+            }
+
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/ds/IhubASNSearch',
+                type: 'post',
+                data: {
+                    COMPANY_CODE: COMPANY_CODE,
+                    ASN_NO: ASN_NO,
+                    LOAD_DAY: LOAD_DAY
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success)
+                        $("#resultTbody").html(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+            })
+
+        })
+
+        $("#txtCOMPANY_CODE").on('input propertychange', function () {
+            var COMPANY_CODE = $(this).val();
+
+            $.ajax({
+                url: '/ds/GetCOMPANY_NAME',
+                type: 'post',
+                data: {
+                    COMPANY_CODE: COMPANY_CODE
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success)
+                        $("#txtCOMPANY_NAME").text(obj.Data);
+                    else
+                        $("#txtCOMPANY_NAME").text("");
+                },
+                error: function (e) {
+                    alert("fail to get");
+                }
+            })
+
+        })
+
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+    });
+</script>

@@ -67,6 +67,7 @@
     <Compile Include="DL_DAL.cs" />
     <Compile Include="DSMAIN_DAL.cs" />
     <Compile Include="DSOAINQ_DAL.cs" />
+    <Compile Include="DS_DAL.cs" />
     <Compile Include="EW_USER_APPLY_DAL.cs" />
     <Compile Include="EW_SCHEDULE_TASK_DAL.cs" />
     <Compile Include="EW_SCHEDULE_DAL.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="EW_LOG_DAL.cs" />
     <Compile Include="EXPWB_DAL.cs" />
     <Compile Include="EXP_EXCHANGE_RATE_DAL.cs" />
+    <Compile Include="FAR_DAL.cs" />
     <Compile Include="FINLOAD_DAL.cs" />
     <Compile Include="G_KITS_DAL.cs" />
     <Compile Include="G_OESALES_CATALOG_DAL.cs" />

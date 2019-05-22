@@ -13,7 +13,7 @@ namespace CHubDBEntity.UnmanagedModel
         public string ORDER_NO { get; set; }
         public string CUSTOMER_PO_NO { get; set; }
         public string CUSTOMER_NO { get; set; }
-        public decimal SHIP_TO_LOCATION { get; set; }
+        public Int64 SHIP_TO_LOCATION { get; set; }
         public Int64 DEST_LOCATION { get; set; }
         public string PO_NO { get; set; }
         public string COMPANY_CODE { get; set; }
@@ -29,7 +29,7 @@ namespace CHubDBEntity.UnmanagedModel
         public DateTime LOAD_DATE { get; set; }
         public string SUPPLIER_ITEM { get; set; }
         public decimal MOQ { get; set; }
-        public string NOTE { get; set; }
+        public decimal NOTE { get; set; }
         public DateTime? ETA { get; set; }
         public string ETA_NOTE { get; set; }
         public string COMPANY_NAME_SHORT { get; set; }

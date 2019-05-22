@@ -197,7 +197,15 @@ namespace CHubCommon
             /// <summary>
             /// /kpi/kpiset
             /// </summary>
-            kpiset
+            kpiset,
+            /// <summary>
+            /// /far/myfar
+            /// </summary>
+            myfar,
+            /// <summary>
+            /// /ds/ihubasn
+            /// </summary>
+            ihubasn
         }
 
         public enum OrderStatusEnum

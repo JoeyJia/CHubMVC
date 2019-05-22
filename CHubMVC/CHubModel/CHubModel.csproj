@@ -72,6 +72,7 @@
     <Compile Include="WebArg\BartenderPrintDatas.cs" />
     <Compile Include="WebArg\DSMAINArg.cs" />
     <Compile Include="WebArg\EXPCOMMINVArg.cs" />
+    <Compile Include="WebArg\FAR_Arg.cs" />
     <Compile Include="WebArg\GKITSArg.cs" />
     <Compile Include="WebArg\GPartAddtionalArg.cs" />
     <Compile Include="WebArg\GPARTDESCArg.cs" />

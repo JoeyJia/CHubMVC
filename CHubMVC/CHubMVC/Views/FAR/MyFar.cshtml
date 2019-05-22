@@ -1,0 +1,871 @@
+﻿@{
+    ViewBag.Title = "MyFar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .form-group {
+        margin-bottom: 0;
+    }
+
+    #modalTable > tbody > tr > td {
+        height: 30px;
+        padding: 0;
+        vertical-align: middle;
+        border: 0;
+        width: 25%;
+    }
+
+    .tdBT {
+        background-color: #f5f5f5;
+        width: 24% !important;
+        text-align: right;
+    }
+
+    .xx {
+        color: red;
+        font-size: 20px;
+        vertical-align: middle;
+    }
+</style>
+<div class="container-fluid body-content" id="myfarDiv">
+    <input type="hidden" id="txtAppUser" value="@ViewBag.AppUser" />
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal" id="myfarForm">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">FAR request No</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtFAR_NO" placeholder="FAR request No" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Period （年度）</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtPERIOD" placeholder="Period （年度）" value="@ViewBag.PERIOD" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Customer No</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txxCUSTOMER_NO" placeholder="Customer No" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Query" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-2 text-left">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnNew" value="New FAR " />
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <table class="table table-bordered table-striped table-hover" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th style="width:5%;">Request No</th>
+                                <th style="width:5%;">Period</th>
+                                <th style="width:5%;">Status</th>
+                                <th style="width:5%;">Customer No</th>
+                                <th style="width:12%;">Name</th>
+                                <th style="width:8%;">Project</th>
+                                <th>DESC</th>
+                                <th style="width:6%;">Req Date</th>
+                                <th style="width:5%;">Req by</th>
+                                <th style="width:6%;">OPT</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_LoadingModal")
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" style="width:98%;">
+        <div class="modal-content">
+            <div class="modal-header panel-default" style="padding:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 40px; height: 40px;font-size:30px;">
+                    &times;
+                </button>
+                <div class="modal-title panel-heading text-center">
+                    <b style="font-size: 18px;">Forecast Adjustment Request Form 预测调整申请表</b>
+                </div>
+            </div>
+            <div class="modal-body panel-default" style="padding:0;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="" class="col-sm-12" style="color:red;font-size:14px;">
+                            申请表填写说明:<br />
+                            1.填写以下预测调整申请表并提交至CPDC预测团队-Jimmy Yi并抄送相关CPDC计划人员<br />
+                            2.预测需求的要求日期必须在CPDC采购周期内(Inter-PDC Supplier 采购周期 60天,Local Supplier 采购周期 30 天)<br />
+                            3.需要申请人及其分公司经理的批复
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table" id="modalTable">
+                            <tr>
+                                <td class="tdBT">FAR Request NO：</td>
+                                <td id="modalFAR_NO"></td>
+                                <td class="tdBT">Status：</td>
+                                <td id="modalFAR_STATUS">
+                                    @*<select class="form-control input-sm" id="modalFAR_STATUS"></select>*@
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tdBT">Period(年度)：<span class="xx">*</span></td>
+                                <td>
+                                    @*<input type="text" class="form-control input-sm" id="modalPERIOD" value="@ViewBag.PERIOD" />*@
+                                    <select class="form-control input-sm" id="modalPERIOD"></select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tdBT">Customer No(客户号)：<span class="xx">*</span></td>
+                                <td>
+                                    <select class="form-control input-sm" id="modalCUSTOMER_NO"></select>
+                                </td>
+                                <td colspan="2" id="modalSHORT_NAME"></td>
+                            </tr>
+                            <tr>
+                                <td class="tdBT">Project Name(项目名称)：<span class="xx">*</span></td>
+                                <td>
+                                    <input type="text" class="form-control input-sm" id="modalFAR_PROJECT" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tdBT">调整类型：<span class="xx">*</span></td>
+                                <td>
+                                    <select class="form-control input-sm" id="modalADJ_TYPE"></select>
+                                </td>
+                                <td colspan="2" id="modalADJ_DESC"></td>
+                            </tr>
+                            <tr>
+                                <td class="tdBT">紧急程度类型：<span class="xx">*</span></td>
+                                <td>
+                                    <select class="form-control input-sm" id="modalPRIORITY_CODE"></select>
+                                </td>
+                                <td colspan="2" id="modalPRIORITY_DESC"></td>
+                            </tr>
+                            <tr>
+                                <td class="tdBT">申请说明/背景介绍：<span class="xx">*</span></td>
+                                <td colspan="3">
+                                    <textarea class="form-control input-sm" rows="3" cols="20" id="modalFAR_DESC"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tdBT">重复性需求 (变更将持续发生并应保持预测)：<span class="xx">*</span></td>
+                                <td>
+                                    <select class="form-control input-sm" id="modalRECURRING"></select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tdBT">是否属于抵消性质的需求导致另一个零件需求的增加/减少：<span class="xx">*</span></td>
+                                <td>
+                                    <select class="form-control input-sm" id="modalSUBSTITUTE"></select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tdBT">项目结束时或调整期结束时，需求预期达到何种程度？<span class="xx">*</span></td>
+                                <td>
+                                    <select class="form-control input-sm" id="modalINV_STRATEGY_CODE"></select>
+                                </td>
+                                <td colspan="2" id="modalINV_STRATEGY_DESC"></td>
+                            </tr>
+                            <tr>
+                                <td class="tdBT">超过预测期限后仍没消耗的库存处置方案建议：</td>
+                                <td colspan="3">
+                                    <textarea class="form-control input-sm" rows="3" cols="20" id="modalMITIGATION_PLAN"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="text-align:right;">
+                                    <input type="button" class="btn btn-primary btn-sm" id="btnSave" value="确定（OK）" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel-heading" style="background-color:#f5f5f5;border-color:#ddd;">
+                            <b>申请明细 (填写零件号，需求需要调整的数量及实际需求发生的月份):</b>
+                        </div>
+                        <form class="form-horizontal" name="farNewForm" id="farNew" method="post" enctype="multipart/form-data">
+                            <div class="col-sm-3" style="padding-right:0;">
+                                <input type="file" class="form-control" id="fileImport" name="fileImport" />
+                            </div>
+                            <div class="col-sm-6" style="padding-left:0;">
+                                <input type="button" class="btn btn-primary btn-sm" id="btnUpload" value="upload" data-loading-text="Loading......" />
+                                <input type="button" class="btn btn-primary btn-sm" id="btnExport" value="export" />
+                                <input type="button" class="btn btn-primary btn-sm" id="btnDownload" value="Download Template" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:15px;">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered table-hover" id="modalDetailTable">
+                            <thead>
+                                <tr>
+                                    <th style="width:8%;">Item Number</th>
+                                    <th style="width:6%;">Location</th>
+                                    <th style="width:8%;">Part NO</th>
+                                    <th>Part Status</th>
+                                    <th style="width:5%;">JAN(01)</th>
+                                    <th style="width:5%;">FEB(02)</th>
+                                    <th style="width:5%;">MAR(03)</th>
+                                    <th style="width:5%;">APR(04)</th>
+                                    <th style="width:5%;">MAT(05)</th>
+                                    <th style="width:5%;">JUN(06)</th>
+                                    <th style="width:5%;">JUL(07)</th>
+                                    <th style="width:5%;">AUG(08)</th>
+                                    <th style="width:5%;">SEP(09)</th>
+                                    <th style="width:5%;">OCT(10)</th>
+                                    <th style="width:5%;">NOV(11)</th>
+                                    <th style="width:5%;">DEC(12)</th>
+                                    <th>NOTE</th>
+                                    <th>OPT</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalDetailTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        var YN = ["NO", "YES"];
+        var far = {};
+        var FAR_NO;
+        var FAR_STATUS;
+
+        //查询
+        $("#btnSearch").on('click', function () {
+            var arg = {};
+            if ($("#txtPERIOD").val() == "") {
+                alert("NO PERIOD Input");
+                return false;
+            }
+
+            arg.FAR_NO = $("#txtFAR_NO").val();
+            arg.PERIOD = $("#txtPERIOD").val();
+            arg.CUSTOMER_NO = $("#txxCUSTOMER_NO").val();
+            arg.APP_USER = $("#txtAppUser").val();
+
+            $("#loadingModal").modal("show");
+
+            $.ajax({
+                url: '/far/MyFarSearch',
+                type: 'post',
+                async: true,
+                data: JSON.stringify(arg),
+                contentType: 'application/json;charset=utf-8',
+                datatType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#resultTbody").html(obj.Data);
+                    }
+                    else
+                        $("#resultTbody").html("");
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+
+            })
+
+        });
+
+        $("#txtPERIOD").on('blur', function () {
+            var $this = $(this);
+            var reg = /^\d{4}$/;
+            if ($this.val() != "") {
+                if (!reg.test($this.val())) {
+                    alert("Data Error");
+                    $this.focus();
+                    $this.select();
+                }
+            }
+        })
+
+        //新增
+        $("#btnNew").on('click', function () {
+            FillData(null);
+            FAR_NO = "";
+            FAR_STATUS = "OPEN";
+            CanChange();
+
+            $("#myModal").modal("show");
+        })
+        //Save
+        $("#btnSave").on('click', function () {
+            far = {};
+            //判断是否有空
+            if (!IsNull())
+                return false;
+
+            far.FAR_NO = $("#modalFAR_NO").text();
+            far.FAR_STATUS = $("#modalFAR_STATUS").text();
+            far.PERIOD = $("#modalPERIOD").val();
+            far.CUSTOMER_NO = $("#modalCUSTOMER_NO").val();
+            far.FAR_PROJECT = $("#modalFAR_PROJECT").val();
+            far.ADJ_TYPE = $("#modalADJ_TYPE").val();
+            far.PRIORITY_CODE = $("#modalPRIORITY_CODE").val();
+            far.FAR_DESC = $("#modalFAR_DESC").val();
+            far.RECURRING = $("#modalRECURRING").val();
+            far.SUBSTITUTE = $("#modalSUBSTITUTE").val();
+            far.INV_STRATEGY_CODE = $("#modalINV_STRATEGY_CODE").val();
+            far.MITIGATION_PLAN = $("#modalMITIGATION_PLAN").val();
+
+            $.ajax({
+                url: '/FAR/MyFarSave',
+                type: 'post',
+                async: true,
+                data: JSON.stringify({
+                    far: far,
+                    appUser: $("#txtAppUser").val()
+                }),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#modalFAR_NO").text(obj.Data);
+                        FAR_NO = obj.Data;
+                        //alert("Success");
+                        //$("#myModal").modal("hide");
+                        //$("#btnSearch").click();
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to save");
+                }
+            })
+        })
+
+        function IsNull() {
+            if ($("#modalPERIOD").val() == "" || $("#modalCUSTOMER_NO").val() == "" || $("#modalFAR_PROJECT").val() == "" || $("#modalADJ_TYPE").val() == "" || $("#modalPRIORITY_CODE").val() == "" || $("#modalFAR_DESC").val() == "" || $("#modalRECURRING").val() == "" || $("#modalSUBSTITUTE").val() == "" || $("#modalINV_STRATEGY_CODE").val() == "") {
+                alert("Empty Data");
+                return false;
+            }
+            return true;
+        }
+
+
+        //Details
+        $("#resultTbody").on('click', '.btnDetail', function () {
+            var $btnDetail = $(this);
+            FAR_NO = $btnDetail.attr("data-farno");
+            FAR_STATUS = $btnDetail.attr("data-status");
+
+            $("#loadingModal").modal("show");
+
+            $.ajax({
+                url: '/Far/GetMyFarDetail',
+                type: 'post',
+                data: { FAR_NO: FAR_NO },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        FillData(obj);
+                        CanChange();
+                        $("#myModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to get MyFarDetail");
+                }
+            })
+        })
+        //Confirm
+        $("#resultTbody").on('click', '.btnConfirm', function () {
+            var $btn = $(this);
+            FAR_NO = $btn.attr("data-farno");
+
+            $.ajax({
+                url: '/FAR/ConfirmMyFar',
+                type: 'post',
+                data: { FAR_NO: FAR_NO, APP_USER: $("#txtAppUser").val() },
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#btnSearch").click();
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (e) {
+                    alert("fail to confirm");
+                }
+
+            })
+        })
+        //Discard
+        $("#resultTbody").on('click', '.btnDiscard', function () {
+            var $btn = $(this);
+            FAR_NO = $btn.attr("data-farno");
+
+            $.ajax({
+                url: '/FAR/DiscardMyFar',
+                type: 'post',
+                data: { FAR_NO: FAR_NO, APP_USER: $("#txtAppUser").val() },
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#btnSearch").click();
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (e) {
+                    alert("fail to confirm");
+                }
+            })
+        })
+
+        //DELETE
+        $("#modalDetailTbody").on('click', '.btnDelete', function () {
+            var $btn = $(this);
+            var FAR_NO = $btn.attr("data-far_no");
+            var LOAD_SEQ = $btn.attr("data-load_seq");
+            var CUST_PARTNO = $btn.attr("data-cust_partno");
+
+            if (confirm("Sure to delete?")) {
+                $.ajax({
+                    url: '/Far/DeleteFarDetail',
+                    type: 'post',
+                    async: true,
+                    data: {
+                        FAR_NO: FAR_NO,
+                        LOAD_SEQ: LOAD_SEQ,
+                        CUST_PARTNO: CUST_PARTNO
+                    },
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success) {
+                            var $tr = $btn.parent().parent();
+                            $tr.remove();
+                        }
+                        else
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        alert("fail to delete");
+                    }
+                })
+            }
+        })
+
+
+
+        //填充数据
+        function FillData(obj) {
+            if (obj != null) {
+                $("#modalFAR_NO").text(obj.Header.FAR_NO);
+                $("#modalFAR_STATUS").text(obj.Header.FAR_STATUS);
+                if (obj.Header.FAR_STATUS == "OPEN")
+                    $("#modalFAR_STATUS").css('color', 'green');
+                else if (obj.Header.FAR_STATUS == "DISCARD")
+                    $("#modalFAR_STATUS").css('color', 'red');
+                else
+                    $("#modalFAR_STATUS").css('color', '');
+                //$("#modalPERIOD").val(obj.Header.PERIOD);
+                GetPERIOD(obj.Header.PERIOD);
+                GetCUSTOMER_NO(obj.Header.CUSTOMER_NO);
+                $("#modalSHORT_NAME").text(obj.Header.SHORT_NAME);
+                $("#modalFAR_PROJECT").val(obj.Header.FAR_PROJECT);
+                GetADJ_TYPE(obj.Header.ADJ_TYPE);
+                $("#modalADJ_DESC").text(obj.Header.ADJ_DESC);
+                GetPRIORITY_CODE(obj.Header.PRIORITY_CODE);
+                $("#modalPRIORITY_DESC").text(obj.Header.PRIORITY_DESC);
+                $("#modalFAR_DESC").val(obj.Header.FAR_DESC);
+                GetRECURRING(obj.Header.RECURRING);
+                GetSUBSTITUTE(obj.Header.SUBSTITUTE);
+                GetINV_STRATEGY_CODE(obj.Header.INV_STRATEGY_CODE);
+                $("#modalINV_STRATEGY_DESC").text(obj.Header.INV_STRATEGY_DESC);
+                $("#modalMITIGATION_PLAN").val(obj.Header.MITIGATION_PLAN);
+
+                $("#modalDetailTbody").html(obj.DetailHmtl);
+            }
+            else {
+                $("#modalFAR_NO").text("");
+                $("#modalFAR_STATUS").text("OPEN");
+                $("#modalFAR_STATUS").css('color', 'green');
+                //var year = new Date().getFullYear();
+                //$("#modalPERIOD").val(year);
+                GetPERIOD("");
+                GetCUSTOMER_NO("");;
+                $("#modalSHORT_NAME").text("");
+                $("#modalFAR_PROJECT").val("");
+                GetADJ_TYPE("");
+                $("#modalADJ_DESC").text("");
+                GetPRIORITY_CODE("");
+                $("#modalPRIORITY_DESC").text("");
+                $("#modalFAR_DESC").val("");
+                GetRECURRING("");
+                GetSUBSTITUTE("");
+                GetINV_STRATEGY_CODE("");
+                $("#modalINV_STRATEGY_DESC").text("");
+                $("#modalMITIGATION_PLAN").val("");
+
+                $("#modalDetailTbody").html("");
+            }
+            resetFileImput();
+        }
+        //能否修改
+        function CanChange() {
+            if (FAR_STATUS != "OPEN") {
+                $("#modalADJ_TYPE").attr("disabled", true);
+                $("#modalPRIORITY_CODE").attr("disabled", true);
+                $("#modalFAR_DESC").attr("disabled", true);
+                $("#modalRECURRING").attr("disabled", true);
+                $("#modalSUBSTITUTE").attr("disabled", true);
+                $("#modalINV_STRATEGY_CODE").attr("disabled", true);
+                $("#modalMITIGATION_PLAN").attr("disabled", true);
+                $("#btnUpload").attr("disabled", true);
+                $("#btnSave").attr("disabled", true);
+            }
+            else {
+                $("#modalADJ_TYPE").attr("disabled", false);
+                $("#modalPRIORITY_CODE").attr("disabled", false);
+                $("#modalFAR_DESC").attr("disabled", false);
+                $("#modalRECURRING").attr("disabled", false);
+                $("#modalSUBSTITUTE").attr("disabled", false);
+                $("#modalINV_STRATEGY_CODE").attr("disabled", false);
+                $("#modalMITIGATION_PLAN").attr("disabled", false);
+                $("#btnUpload").attr("disabled", false);
+                $("#btnSave").attr("disabled", false);
+            }
+            if (FAR_NO != "") {
+                $("#modalPERIOD").attr("disabled", true);
+                $("#modalCUSTOMER_NO").attr("disabled", true);
+                $("#modalFAR_PROJECT").attr("disabled", true);
+            }
+            else {
+                $("#modalPERIOD").attr("disabled", false);
+                $("#modalCUSTOMER_NO").attr("disabled", false);
+                $("#modalFAR_PROJECT").attr("disabled", false);
+            }
+        }
+
+        function resetFileImput() {
+            var file = $("#fileImport");
+            file.after(file.clone().val(""));
+            file.remove();
+        }
+
+
+        //Download
+        $("#btnDownload").on('click', function () {
+            window.location.href = '/FAR/DownloadTemplate';
+        })
+        //Export
+        $("#btnExport").on('click', function () {
+            if (FAR_NO == "")
+                return false;
+            window.location.href = "/FAR/ExportFar?FAR_NO=" + FAR_NO;
+        })
+        //Upload
+        $("#btnUpload").on('click', function () {
+            var file = $("#fileImport").val();
+            if (file == "") {
+                alert("请选择需要导入的Excel");
+                return false;
+            }
+            if (FAR_NO == "")
+                return false;
+
+            $("#loadingModal").modal("show");
+            $("#btnUpload").button("loading");
+            $("#farNew").ajaxSubmit({
+                url: '/far/FarUpload',
+                type: 'post',
+                data: { FAR_NO: FAR_NO },
+                dataType: 'json',
+                success: function (data) {
+                    $("#loadingModal").modal("hide");
+                    $("#btnUpload").button("reset");
+                    if (data.Success)
+                        $("#modalDetailTbody").html(data.Data);
+                    else
+                        alert(data.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("文件上传失败");
+                }
+            })
+
+        })
+
+
+        //modalFAR_STATUS
+        //function GetFAR_STATUS(FAR_STATUS) {
+        //    $("#modalFAR_STATUS").empty();
+        //    $.ajax({
+        //        url: '/far/GetFAR_STATUS',
+        //        type: 'post',
+        //        async: true,
+        //        data: {},
+        //        success: function (obj) {
+        //            if (obj.Success) {
+        //                if (obj.Data.length > 0) {
+        //                    for (var i = 0; i < obj.Data.length; i++) {
+        //                        if (FAR_STATUS != "") {
+        //                            if (FAR_STATUS == obj.Data[i].Value) {
+        //                                $("<option selected></option>").val(obj.Data[i].Value).text(obj.Data[i].Value + " " + obj.Data[i].Text).appendTo("#modalFAR_STATUS");
+        //                            }
+        //                            else {
+        //                                $("<option></option>").val(obj.Data[i].Value).text(obj.Data[i].Value + " " + obj.Data[i].Text).appendTo("#modalFAR_STATUS");
+        //                            }
+        //                        }
+        //                        else {
+        //                            if (obj.Data[i].Value == "OPEN") {
+        //                                $("<option selected></option>").val(obj.Data[i].Value).text(obj.Data[i].Value + " " + obj.Data[i].Text).appendTo("#modalFAR_STATUS");
+        //                            }
+        //                            else
+        //                                $("<option></option>").val(obj.Data[i].Value).text(obj.Data[i].Value + " " + obj.Data[i].Text).appendTo("#modalFAR_STATUS");
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        },
+        //        error: function (e) {
+        //            alert("fail to get FAR_STATUS");
+        //        }
+        //    })
+        //}
+
+        //modalPERIOD
+        function GetPERIOD(PERIOD) {
+            $("#modalPERIOD").empty();
+            var date = new Date();
+            var currentYear = date.getFullYear();
+            var nextYear = date.getFullYear() + 1;
+            var years = [currentYear, nextYear];
+
+            for (var i = 0; i < years.length; i++) {
+                if (PERIOD != "") {
+                    if (years[i] == PERIOD)
+                        $("<option selected></option>").val(years[i]).text(years[i]).appendTo("#modalPERIOD");
+                    else
+                        $("<option></option>").val(years[i]).text(years[i]).appendTo("#modalPERIOD");
+                }
+                else {
+                    if (years[i] == currentYear)
+                        $("<option selected></option>").val(years[i]).text(years[i]).appendTo("#modalPERIOD");
+                    else
+                        $("<option></option>").val(years[i]).text(years[i]).appendTo("#modalPERIOD");
+                }
+            }
+        }
+
+
+        //modalCUSTOMER_NO
+        function GetCUSTOMER_NO(CUSTOMER_NO) {
+            $("#modalCUSTOMER_NO").empty();
+            $.ajax({
+                url: '/far/GetCUSTOMER_NO',
+                type: 'post',
+                async: true,
+                data: {},
+                success: function (obj) {
+                    if (obj.Success) {
+                        if (obj.Data.length > 0) {
+                            $("<option></option>").val("").text("").appendTo("#modalCUSTOMER_NO");
+                            for (var i = 0; i < obj.Data.length; i++) {
+                                if (obj.Data[i].Value == CUSTOMER_NO) {
+                                    $("<option selected></option>").val(obj.Data[i].Value).text(obj.Data[i].Value + " " + obj.Data[i].Text).appendTo("#modalCUSTOMER_NO");
+                                }
+                                else
+                                    $("<option></option>").val(obj.Data[i].Value).text(obj.Data[i].Value + " " + obj.Data[i].Text).appendTo("#modalCUSTOMER_NO");
+                            }
+                        }
+                    }
+                },
+                error: function (e) {
+                    alert("fail to get GetCUSTOMER_NO");
+                }
+            })
+        }
+        //modalADJ_TYPE
+        function GetADJ_TYPE(ADJ_TYPE) {
+            $("#modalADJ_TYPE").empty();
+            $.ajax({
+                url: '/far/GetADJ_TYPE',
+                type: 'post',
+                async: true,
+                data: {},
+                success: function (obj) {
+                    if (obj.Success) {
+                        if (obj.Data.length > 0) {
+                            $("<option></option>").val("").text("").appendTo("#modalADJ_TYPE");
+                            for (var i = 0; i < obj.Data.length; i++) {
+                                if (obj.Data[i].Value == ADJ_TYPE) {
+                                    $("<option selected></option>").val(obj.Data[i].Value).text(obj.Data[i].Value + " " + obj.Data[i].Text).appendTo("#modalADJ_TYPE");
+                                }
+                                else
+                                    $("<option></option>").val(obj.Data[i].Value).text(obj.Data[i].Value + " " + obj.Data[i].Text).appendTo("#modalADJ_TYPE");
+                            }
+                        }
+                    }
+                },
+                error: function (e) {
+                    alert("fail to get GetADJ_TYPE");
+                }
+            })
+        }
+        //modalPRIORITY_CODE
+        function GetPRIORITY_CODE(PRIORITY_CODE) {
+            $("#modalPRIORITY_CODE").empty();
+            $.ajax({
+                url: '/far/GetPRIORITY_CODE',
+                type: 'post',
+                async: true,
+                data: {},
+                success: function (obj) {
+                    if (obj.Success) {
+                        if (obj.Data.length > 0) {
+                            $("<option></option>").val("").text("").appendTo("#modalPRIORITY_CODE");
+                            for (var i = 0; i < obj.Data.length; i++) {
+                                if (obj.Data[i].Value == PRIORITY_CODE) {
+                                    $("<option selected></option>").val(obj.Data[i].Value).text(obj.Data[i].Value + " " + obj.Data[i].Text).appendTo("#modalPRIORITY_CODE");
+                                }
+                                else
+                                    $("<option></option>").val(obj.Data[i].Value).text(obj.Data[i].Value + " " + obj.Data[i].Text).appendTo("#modalPRIORITY_CODE");
+                            }
+                        }
+                    }
+                },
+                error: function (e) {
+                    alert("fail to get GetPRIORITY_CODE");
+                }
+            })
+        }
+        //modalRECURRING
+        function GetRECURRING(RECURRING) {
+            $("#modalRECURRING").empty();
+            $("<option></option>").val("").text("").appendTo("#modalRECURRING");
+            for (var i = 0; i < YN.length; i++) {
+                if (RECURRING == YN[i])
+                    $("<option selected></option>").val(YN[i]).text(YN[i]).appendTo("#modalRECURRING");
+                else
+                    $("<option></option>").val(YN[i]).text(YN[i]).appendTo("#modalRECURRING");
+            }
+        }
+        //modalSUBSTITUTE
+        function GetSUBSTITUTE(SUBSTITUTE) {
+            $("#modalSUBSTITUTE").empty();
+            $("<option></option>").val("").text("").appendTo("#modalSUBSTITUTE");
+            for (var i = 0; i < YN.length; i++) {
+                if (SUBSTITUTE == YN[i])
+                    $("<option selected></option>").val(YN[i]).text(YN[i]).appendTo("#modalSUBSTITUTE");
+                else
+                    $("<option></option>").val(YN[i]).text(YN[i]).appendTo("#modalSUBSTITUTE");
+            }
+        }
+        //modalINV_STRATEGY_CODE
+        function GetINV_STRATEGY_CODE(INV_STRATEGY_CODE) {
+            $("#modalINV_STRATEGY_CODE").empty();
+            $.ajax({
+                url: '/far/GetINV_STRATEGY_CODE',
+                type: 'post',
+                async: true,
+                data: {},
+                success: function (obj) {
+                    if (obj.Success) {
+                        if (obj.Data.length > 0) {
+                            $("<option></option>").val("").text("").appendTo("#modalINV_STRATEGY_CODE");
+                            for (var i = 0; i < obj.Data.length; i++) {
+                                if (obj.Data[i].Value == INV_STRATEGY_CODE) {
+                                    $("<option selected></option>").val(obj.Data[i].Value).text(obj.Data[i].Value + " " + obj.Data[i].Text).appendTo("#modalINV_STRATEGY_CODE");
+                                }
+                                else
+                                    $("<option></option>").val(obj.Data[i].Value).text(obj.Data[i].Value + " " + obj.Data[i].Text).appendTo("#modalINV_STRATEGY_CODE");
+                            }
+                        }
+                    }
+                },
+                error: function (e) {
+                    alert("fail to get INV_STRATEGY_CODE");
+                }
+            })
+        }
+
+
+        $("#modalCUSTOMER_NO").on('change', function () {
+            var selVal = $(this).find('option:selected').text();
+            if (selVal == "")
+                $("#modalSHORT_NAME").text("");
+            else {
+                var text = selVal.split(' ')[1];
+                $("#modalSHORT_NAME").text(text);
+            }
+        })
+
+        $("#modalADJ_TYPE").on('change', function () {
+            var selVal = $(this).find('option:selected').text();
+            if (selVal == "")
+                $("#modalADJ_DESC").text("");
+            else {
+                var text = selVal.split(' ')[1];
+                $("#modalADJ_DESC").text(text);
+            }
+        })
+        $("#modalPRIORITY_CODE").on('change', function () {
+            var selVal = $(this).find('option:selected').text();
+            if (selVal == "")
+                $("#modalPRIORITY_DESC").text("");
+            else {
+                var text = selVal.split(' ')[1];
+                $("#modalPRIORITY_DESC").text(text);
+            }
+        })
+        $("#modalINV_STRATEGY_CODE").on('change', function () {
+            var selVal = $(this).find('option:selected').text();
+            if (selVal == "")
+                $("#modalINV_STRATEGY_DESC").text("");
+            else {
+                var text = selVal.split(' ')[1];
+                $("#modalINV_STRATEGY_DESC").text(text);
+            }
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+    });
+</script>

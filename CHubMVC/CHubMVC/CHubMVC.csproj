@@ -83,9 +83,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\oracle\client32\product\12.1.0\client_2\odp.net\managed\common\EF6\Oracle.ManagedDataAccess.EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Seagull.BarTender.Print, Version=10.1.4.1, Culture=neutral, PublicKeyToken=109ff779a1b4cbc7, processorArchitecture=x86">
+    <Reference Include="Seagull.BarTender.Print, Version=11.0.8.1, Culture=neutral, PublicKeyToken=109ff779a1b4cbc7, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Seagull\BarTender Suite\SDK\Assemblies\Seagull.BarTender.Print.dll</HintPath>
+      <HintPath>bin\Seagull.BarTender.Print.dll</HintPath>
     </Reference>
     <Reference Include="Spire.Pdf, Version=3.2.52.56040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -218,6 +218,7 @@
     <Compile Include="Controllers\DSController.cs" />
     <Compile Include="Controllers\EWController.cs" />
     <Compile Include="Controllers\EXPController.cs" />
+    <Compile Include="Controllers\FARController.cs" />
     <Compile Include="Controllers\IAController.cs" />
     <Compile Include="Controllers\MDController.cs" />
     <Compile Include="Controllers\MobileController.cs" />
@@ -533,6 +534,10 @@
     <Content Include="Views\DS\DSMAIN.cshtml" />
     <Content Include="Views\KPI\KpiSet.cshtml" />
     <Content Include="Views\Order\OrdInq.cshtml" />
+    <Content Include="Views\FAR\MyFar.cshtml" />
+    <Content Include="Template\FAR_MAIN_template.xlsx" />
+    <Content Include="Views\DS\IhubASN.cshtml" />
+    <Content Include="Template\Worksheet in DROPSHIP_SPACE_PAGES v2.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

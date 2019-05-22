@@ -130,6 +130,24 @@ namespace CHubCommon
             return str;
         }
 
+        public string ExecuteSql(string sql)
+        {
+            string result = string.Empty;
+            using (OracleConnection conn = new OracleConnection(connStr))
+            {
+                OracleCommand cmd = new OracleCommand(sql, conn);
+                cmd.CommandType = CommandType.Text;
+                conn.Open();
+                OracleDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    result = reader.IsDBNull(0) ? "" : reader.GetString(0);
+                }
+                conn.Close();
+            }
+            return result;
+        }
+
 
 
         public static void DataTabelToList<T>(List<T> list, DataTable dt) where T : class, new()

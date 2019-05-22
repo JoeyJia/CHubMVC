@@ -865,20 +865,12 @@ namespace CHubMVC.Controllers
             V_MD_SR_ALL_BLL bll = new V_MD_SR_ALL_BLL();
             try
             {
-                if (status == "CONFIRM")
-                {
-                    if (IsOperate("MD_SR_CONFIRM"))
-                        return Json(new RequestResult(true));
-                    else
-                        return Json(new RequestResult(false, "You cannot operate"));
-                }
+                string SECURE_ID = status == "CONFIRM" ? "MD_SR_CONFIRM" : "MD_SR_MAINT";
+
+                if (IsOperate(SECURE_ID))
+                    return Json(new RequestResult(true));
                 else
-                {
-                    if (IsOperate("MD_SR_MAINT"))
-                        return Json(new RequestResult(true));
-                    else
-                        return Json(new RequestResult(false, "You cannot operate"));
-                }                
+                    return Json(new RequestResult(false, "You cannot operate"));
             }
             catch (Exception ex)
             {

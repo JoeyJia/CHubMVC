@@ -82,7 +82,7 @@
                         <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Search" />
                     </div>
                     <div class="col-sm-2">
-                        <input type="button" class="btn btn-primary btn-sm" id="btnRefresh" value="Order Status Refresh" />
+                        <input type="button" class="btn btn-primary btn-sm" id="btnRefresh" value="Order Status Refresh" style="display:none;" />
                     </div>
                 </div>
             </div>
@@ -105,8 +105,8 @@
                                     <th>DESC</th>
                                     <th>Order Qty</th>
                                     <th>Qty Shipped</th>
-                                    <th>ETA</th>
-                                    <th>ETA NOTE</th>
+                                    <th>ESD.</th>
+                                    <th>ESD. NOTE</th>
                                     <th>Qty Reserved</th>
                                     <th>Qty Reserved</th>
                                     <th>Order Date</th>
@@ -144,7 +144,7 @@
                         <table class="table table-bordered" id="MoreModalTable">
                             <thead>
                                 <tr>
-                                    <th>Status</th>
+                                    @*<th>Status</th>*@
                                     <th>Supplier SO</th>
                                     <th>LINE No</th>
                                     <th>Part No</th>
@@ -152,8 +152,8 @@
                                     <th>Order Qty</th>
                                     <th>Qty Shipped</th>
                                     <th>Order Date</th>
-                                    <th>ETA</th>
-                                    <th>SHIP Date</th>
+                                    <th>Alloc Date</th>
+                                    <th>ESD.</th>
                                     <th>SHIP from</th>
                                     <th>OA Date</th>
                                 </tr>

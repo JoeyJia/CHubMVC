@@ -16,9 +16,9 @@ namespace CHubDBEntity.UnmanagedModel
         public string ITEM_DESC { get; set; }
         public decimal ORDER_QTY { get; set; }
         public decimal QTY_SHIPPED { get; set; }
-        public DateTime ORDER_DATE { get; set; }
-        public DateTime SHIP_DATE_PLAN { get; set; }
-        public DateTime SHIP_DATE { get; set; }
+        public DateTime? ORDER_DATE { get; set; }
+        public DateTime? SHIP_DATE_PLAN { get; set; }
+        public DateTime? SHIP_DATE { get; set; }
         public string SHIP_WH { get; set; }
         public string PART_NO { get; set; }
         public string PO_NO { get; set; }
@@ -26,7 +26,7 @@ namespace CHubDBEntity.UnmanagedModel
         public string NOTE { get; set; }
         public decimal LOAD_BATCH { get; set; }
         public string LOAD_BY { get; set; }
-        public DateTime RECORD_DATE { get; set; }
+        public DateTime? RECORD_DATE { get; set; }
         public string OA_STATUS { get; set; }
         public string SUPP_SO_ADDT { get; set; }
     }
