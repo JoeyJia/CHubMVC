@@ -256,23 +256,26 @@ namespace CHubMVC.Controllers
                 //数据导入表 IHUB_ASN_STG
                 foreach (DataRow dr in dt.Rows)
                 {
-                    IHUB_ASN_STG item = new IHUB_ASN_STG();
-                    item.ASN_NO = dr["ASN_NO"].ToString();
-                    item.LINE_NO = Convert.ToDecimal(dr["LINE_NO"].ToString());
-                    item.COMPANY_CODE = dr["COMPANY_CODE"].ToString();
-                    string ship_date = dr["SHIP_DATE"].ToString();
-                    item.SHIP_DATE = Convert.ToDateTime(ship_date.Substring(0, 4) + "/" + ship_date.Substring(4, 2) + "/" + ship_date.Substring(6, 2));
-                    item.PO_NO = dr["PO_NO"].ToString();
-                    item.PO_LINE_NO = !string.IsNullOrEmpty(dr["PO_LINE_NO"].ToString()) ? Convert.ToDecimal(dr["PO_LINE_NO"].ToString()) : 0;
-                    item.PO_REL_NO = !string.IsNullOrEmpty(dr["PO_REL_NO"].ToString()) ? Convert.ToDecimal(dr["PO_REL_NO"].ToString()) : 0;
-                    item.PART_NO = dr["PART_NO"].ToString();
-                    item.QTY_SHIPPED = !string.IsNullOrEmpty(dr["QTY_SHIPPED"].ToString()) ? Convert.ToDecimal(dr["QTY_SHIPPED"].ToString()) : 0;
-                    item.COO = dr["COO"].ToString();
-                    item.NOTE = dr["NOTE"].ToString();
-                    item.LOAD_BATCH = Convert.ToDecimal(LOAD_BATCH);
-                    item.LOAD_BY = Session[CHubConstValues.SessionUser].ToString();
-                    dBLL.IhubASNUpload(item);
-                    lineNo++;
+                    if (!string.IsNullOrEmpty(dr["ASN_NO"].ToString()))
+                    {
+                        IHUB_ASN_STG item = new IHUB_ASN_STG();
+                        item.ASN_NO = dr["ASN_NO"].ToString();
+                        item.LINE_NO = Convert.ToDecimal(dr["LINE_NO"].ToString());
+                        item.COMPANY_CODE = dr["COMPANY_CODE"].ToString();
+                        string ship_date = dr["SHIP_DATE(YYYYMMDD)"].ToString();
+                        item.SHIP_DATE = Convert.ToDateTime(ship_date.Substring(0, 4) + "/" + ship_date.Substring(4, 2) + "/" + ship_date.Substring(6, 2));
+                        item.PO_NO = dr["PO_NO"].ToString();
+                        item.PO_LINE_NO = !string.IsNullOrEmpty(dr["PO_LINE_NO"].ToString()) ? dr["PO_LINE_NO"].ToString() : "";
+                        item.PO_REL_NO = !string.IsNullOrEmpty(dr["PO_REL_NO"].ToString()) ? dr["PO_REL_NO"].ToString() : "";
+                        item.PART_NO = dr["PART_NO"].ToString();
+                        item.QTY_SHIPPED = !string.IsNullOrEmpty(dr["QTY_SHIPPED"].ToString()) ? Convert.ToDecimal(dr["QTY_SHIPPED"].ToString()) : 0;
+                        item.COO = dr["COO"].ToString();
+                        item.NOTE = dr["NOTE"].ToString();
+                        item.LOAD_BATCH = Convert.ToDecimal(LOAD_BATCH);
+                        item.LOAD_BY = Session[CHubConstValues.SessionUser].ToString();
+                        dBLL.IhubASNUpload(item);
+                        lineNo++;
+                    }               
                 }
                 //执行Function
                 var result = dBLL.RunF_IHUB_ASN_LOAD_CHK(Convert.ToDecimal(LOAD_BATCH));

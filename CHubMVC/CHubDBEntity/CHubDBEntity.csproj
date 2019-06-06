@@ -519,10 +519,13 @@
     <Compile Include="UnmanagedModel\EXP_VAT_XREF_LOAD.cs" />
     <Compile Include="UnmanagedModel\FAR_DETAIL_STG.cs" />
     <Compile Include="UnmanagedModel\FAR_HEADER.cs" />
+    <Compile Include="UnmanagedModel\G_ADDR_DFLT.cs" />
+    <Compile Include="UnmanagedModel\G_ADDR_SPL.cs" />
     <Compile Include="UnmanagedModel\G_CATALOG_CUSTOMER_PART.cs" />
     <Compile Include="UnmanagedModel\G_OECUST_SHIPPING_LOCAL.cs" />
     <Compile Include="UnmanagedModel\G_OESALES_CATALOG.cs" />
     <Compile Include="UnmanagedModel\G_NETAVL.cs" />
+    <Compile Include="UnmanagedModel\G_ORDER_TYPE.cs" />
     <Compile Include="UnmanagedModel\IA_CODE_TYPE.cs" />
     <Compile Include="UnmanagedModel\IHUB_ASN_STG.cs" />
     <Compile Include="UnmanagedModel\IHUB_LOAD_BASE.cs" />
@@ -539,6 +542,8 @@
     <Compile Include="UnmanagedModel\MD_REQ_HEADER.cs" />
     <Compile Include="UnmanagedModel\MD_REQ_SR.cs" />
     <Compile Include="UnmanagedModel\MD_SR_STATUS.cs" />
+    <Compile Include="UnmanagedModel\QUICK_OEORDER_DETAIL.cs" />
+    <Compile Include="UnmanagedModel\QUICK_OEORDER_HEADER.cs" />
     <Compile Include="UnmanagedModel\RET_PART_GROUP.cs" />
     <Compile Include="UnmanagedModel\RET_RETURN_TYPE.cs" />
     <Compile Include="UnmanagedModel\TC_HSCODE_CIQ_MST.cs" />
@@ -572,6 +577,8 @@
     <Compile Include="UnmanagedModel\V_PLABEL_BASE.cs" />
     <Compile Include="UnmanagedModel\V_PLABEL_BY_MOBILE_PRINT.cs" />
     <Compile Include="UnmanagedModel\V_PLABEL_PRINT.cs" />
+    <Compile Include="UnmanagedModel\V_QUICK_EXPORT_WEBPART_DTL.cs" />
+    <Compile Include="UnmanagedModel\V_QUICK_EXPORT_WEBPART_HDR.cs" />
     <Compile Include="UnmanagedModel\V_RET_INV_RETURN_D.cs" />
     <Compile Include="UnmanagedModel\V_RET_INV_RETURN_H.cs" />
     <Compile Include="UnmanagedModel\V_RET_PART_RESTRICT.cs" />

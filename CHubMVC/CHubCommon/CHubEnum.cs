@@ -205,7 +205,8 @@ namespace CHubCommon
             /// <summary>
             /// /ds/ihubasn
             /// </summary>
-            ihubasn
+            ihubasn,
+            quickord
         }
 
         public enum OrderStatusEnum

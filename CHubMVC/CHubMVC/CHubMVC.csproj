@@ -210,6 +210,7 @@
     <Compile Include="Common\BaseController.cs" />
     <Compile Include="Common\HangFireAuthorizationFilter.cs" />
     <Compile Include="Common\JsonNetResult.cs" />
+    <Compile Include="Common\MobileBaseController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdhocController.cs" />
     <Compile Include="Controllers\ADMController.cs" />
@@ -538,6 +539,7 @@
     <Content Include="Template\FAR_MAIN_template.xlsx" />
     <Content Include="Views\DS\IhubASN.cshtml" />
     <Content Include="Template\Worksheet in DROPSHIP_SPACE_PAGES v2.xlsx" />
+    <Content Include="Views\Order\QuickOrd.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

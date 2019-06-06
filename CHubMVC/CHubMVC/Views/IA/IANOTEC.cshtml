@@ -116,7 +116,9 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var PART_NO = "";
-
+        $("#txtPart_No").on('input propertychange', function () {
+            $("#txtPart_No").val($(this).val().toUpperCase());
+        })
 
         $("#btnAdd").attr("disabled", true);
         //Search

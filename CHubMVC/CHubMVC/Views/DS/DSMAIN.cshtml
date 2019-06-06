@@ -171,6 +171,11 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $("#txtPART_NO").on('input propertychange', function () {
+            $("#txtPART_NO").val($(this).val().toUpperCase());
+        })
+
+
         //Search
         $("#btnSearch").on('click', function () {
             var arg = {};

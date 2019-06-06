@@ -33,7 +33,7 @@ namespace CHubDAL
                                                 )
                                                 values(
                                                 '{0}',{1},'{2}',to_date('{3}','yyyy/mm/dd'),
-                                                '{4}',{5},{6},'{7}',{8},'{9}','{10}',
+                                                '{4}','{5}','{6}','{7}',{8},'{9}','{10}',
                                                 {11},'{12}'
                                                 )",
                                                 item.ASN_NO, item.LINE_NO, item.COMPANY_CODE, item.SHIP_DATE.ToString("yyyy/MM/dd"),

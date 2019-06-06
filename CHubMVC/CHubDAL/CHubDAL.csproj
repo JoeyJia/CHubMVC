@@ -104,6 +104,7 @@
     <Compile Include="MDSUPP_DAL.cs" />
     <Compile Include="MD_REQ_DAL.cs" />
     <Compile Include="ORDINQ_DAL.cs" />
+    <Compile Include="QuickOrd_DAL.cs" />
     <Compile Include="RETINV_DAL.cs" />
     <Compile Include="RETMAIN_DAL.cs" />
     <Compile Include="RETRESTRICT_DAL.cs" />

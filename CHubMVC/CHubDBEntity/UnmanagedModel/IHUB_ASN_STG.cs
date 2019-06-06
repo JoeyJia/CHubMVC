@@ -13,8 +13,8 @@ namespace CHubDBEntity.UnmanagedModel
         public string COMPANY_CODE { get; set; }
         public DateTime SHIP_DATE { get; set; }
         public string PO_NO { get; set; }
-        public decimal PO_LINE_NO { get; set; }
-        public decimal PO_REL_NO { get; set; }
+        public string PO_LINE_NO { get; set; }
+        public string PO_REL_NO { get; set; }
         public string PART_NO { get; set; }
         public decimal QTY_SHIPPED { get; set; }
         public string COO { get; set; }

@@ -93,6 +93,10 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $("#txtPART_NO").on('input propertychange', function () {
+            $("#txtPART_NO").val($(this).val().toUpperCase());
+        })
+
         $("#btnSearch").on('click', function () {
             var PART_NO = $("#txtPART_NO").val();
             var COMPANY_CODE = $("#txtCOMPANY_CODE").val();

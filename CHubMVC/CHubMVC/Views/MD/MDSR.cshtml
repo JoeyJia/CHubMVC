@@ -207,6 +207,10 @@
         var sr_status;//全局变量
         var srList = [];//全局集合
 
+        $("#txtPART_NO").on('input propertychange', function () {
+            $("#txtPART_NO").val($(this).val().toUpperCase());
+        })
+
         //加载Status
         $(function () {
             $.ajax({

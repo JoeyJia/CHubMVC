@@ -15,6 +15,7 @@ using System.Web;
 using System.Web.Mvc;
 using static CHubCommon.CHubEnum;
 using CHubMVC.Models;
+using System.IO;
 
 namespace CHubMVC.Controllers
 {
@@ -1408,6 +1409,354 @@ namespace CHubMVC.Controllers
             public string text { get; set; }
             public string value { get; set; }
             public List<Areas> nodes { get; set; }
+        }
+
+
+        public ActionResult QuickOrd()
+        {
+            string appUser = Session[CHubConstValues.SessionUser].ToString();
+            APP_RECENT_PAGES_BLL rpBLL = new APP_RECENT_PAGES_BLL();
+            rpBLL.Add(appUser, CHubEnum.PageNameEnum.quickord.ToString(), this.Request.Url.AbsoluteUri);
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult GetG_ADDR_DFLT(string SYSID, string ABBREVIATION)
+        {
+            QuickOrd_BLL qBLL = new QuickOrd_BLL();
+            try
+            {
+                var result = qBLL.GetG_ADDR_DFLT(SYSID, ABBREVIATION);
+                return Json(new RequestResult(result.FirstOrDefault()));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("Order GetG_ADDR_DFLT", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult GetG_ADDR_SPL(string SYSID, string ABBREVIATION, string KeyWord, int PageIndex)
+        {
+            QuickOrd_BLL qBLL = new QuickOrd_BLL();
+            try
+            {
+                string msg = string.Empty;
+                int PageStart = (PageIndex - 1) * 50 + 1;
+                int PageEnd = PageIndex * 50;
+                var result = qBLL.GetG_ADDR_SPL(SYSID, ABBREVIATION, KeyWord, PageStart, PageEnd);
+                if (result.Count() < 50)
+                    msg = "End";
+                var mainHtml = GetG_ADDR_SPLHtml(result);
+                return Json(new RequestResult(true, msg, mainHtml));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("Order GetG_ADDR_SPL");
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult GetG_ADDR_SPLDetail(string SYSID, string ABBREVIATION, string DEST_LOCATION)
+        {
+            QuickOrd_BLL qBLL = new QuickOrd_BLL();
+            try
+            {
+                var result = qBLL.GetG_ADDR_SPLDetail(SYSID, ABBREVIATION, DEST_LOCATION);
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("Order GetG_ADDR_SPLDetail");
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult GetG_ORDER_TYPE(string SYSID, string WAREHOUSE, string DUE_DATE_CODE = "")
+        {
+            QuickOrd_BLL qBLL = new QuickOrd_BLL();
+            try
+            {
+                var result = qBLL.GetG_ORDER_TYPE(SYSID, WAREHOUSE, DUE_DATE_CODE);
+                if (!string.IsNullOrEmpty(DUE_DATE_CODE))
+                    return Json(new RequestResult(result.First()));
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("Order GetG_ORDER_TYPE");
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult GetOrderDetail(string str, List<OrderLines> detail, string Header_DUE_DATE, string CUSTOMER_NO, string WAREHOUSE)
+        {
+            QuickOrd_BLL qBLL = new QuickOrd_BLL();
+            if (!string.IsNullOrEmpty(str))
+            {
+                int lineNo;
+                if (detail != null && detail.Any())
+                    lineNo = detail.Count();
+                else
+                {
+                    lineNo = 0;
+                    detail = new List<OrderLines>();
+                }
+                var data = str.Split(new char[] { '\r', '\n' }, StringSplitOptions.None);
+                data = data.Where(s => !string.IsNullOrEmpty(s)).ToArray();
+                foreach (var d in data)
+                {
+                    OrderLines ol = new OrderLines();
+                    ol.LINE_NO = lineNo + 1;
+
+                    if (d.IndexOf("\t") > 0)
+                    {
+                        ol.CUSTOMER_PARTNO = d.Split('\t')[0];
+                        ol.BUY_QTY = d.Split('\t')[1];
+                    }
+                    else
+                        ol.CUSTOMER_PARTNO = d;
+                    ol.PART_NO = qBLL.CallF_QUICK_PART(CUSTOMER_NO, ol.CUSTOMER_PARTNO);
+                    ol.RevisedQty = qBLL.CallF_QUICK_QTY(ol.PART_NO, ol.BUY_QTY);
+                    ol.DESCRIPTION = qBLL.CallF_QUICK_DESC(ol.PART_NO);
+                    ol.NOTE = qBLL.CallF_QUICK_MSG(ol.PART_NO);
+                    ol.Inventory = qBLL.CallF_QUICK_INV(WAREHOUSE, ol.PART_NO);
+                    ol.DUE_DATE = Header_DUE_DATE;
+                    detail.Add(ol);
+                    lineNo++;
+                }
+                var mainHtml = GetOrderDetailHtml(detail);
+                return Json(new RequestResult(mainHtml));
+            }
+            else
+                return Json(new RequestResult(false, "No Data!"));
+        }
+
+        [HttpPost]
+        public ActionResult QuickOrdSave(QUICK_OEORDER_HEADER header, List<QUICK_OEORDER_DETAIL> detail)
+        {
+            QuickOrd_BLL qBLL = new QuickOrd_BLL();
+            try
+            {
+                //Update
+                if (header.QUICK_ORDER_NO != 0)
+                {
+                    //更新header
+                    qBLL.UpdateQUICK_OEORDER_HEADER(header);
+                    //更新detail
+                    qBLL.GetQUICK_OEORDER_DETAILByQUICK_ORDER_NO(header.QUICK_ORDER_NO.ToString());
+                    if (detail != null && detail.Any())
+                    {
+                        foreach (var de in detail)
+                        {
+                            de.QUICK_ORDER_NO = header.QUICK_ORDER_NO;
+                            qBLL.SaveQUICK_OEORDER_DETAIL(de);
+                        }
+                    }
+                    return Json(new RequestResult(header.QUICK_ORDER_NO));
+                }
+                else//Insert
+                {
+                    //获取seq
+                    var QUICK_ORDER_NO = qBLL.GetQUICK_ORDER_NO();
+                    //保存header
+                    header.QUICK_ORDER_NO = Convert.ToDecimal(QUICK_ORDER_NO);
+                    header.CREATED_BY = Session[CHubConstValues.SessionUser].ToString();
+                    qBLL.SaveQUICK_OEORDER_HEADER(header);
+                    //保存detail
+                    if (detail != null && detail.Any())
+                    {
+                        foreach (var de in detail)
+                        {
+                            de.QUICK_ORDER_NO = Convert.ToDecimal(QUICK_ORDER_NO);
+                            qBLL.SaveQUICK_OEORDER_DETAIL(de);
+                        }
+                    }
+                    return Json(new RequestResult(QUICK_ORDER_NO));
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("Order QuickOrdSave", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult QuickOrdDownload(string QUICK_ORDER_NO)
+        {
+            QuickOrd_BLL qBLL = new QuickOrd_BLL();
+            try
+            {
+                if (!string.IsNullOrEmpty(QUICK_ORDER_NO))
+                {
+                    StringBuilder sb = new StringBuilder();
+                    var header = qBLL.GetV_QUICK_EXPORT_WEBPART_HDR(Convert.ToDecimal(QUICK_ORDER_NO));
+                    if (header == null)
+                        return Json(new RequestResult(false, "No Header data"));
+
+                    var detail = qBLL.GetV_QUICK_EXPORT_WEBPART_DTL(Convert.ToDecimal(QUICK_ORDER_NO));
+                    if (detail == null || detail.Count == 0)
+                        return Json(new RequestResult(false, "No Detail Data"));
+
+                    sb.AppendLine(header.First().TXT);
+                    foreach (var de in detail)
+                    {
+                        sb.AppendLine(de.TXT);
+                    }
+                    string fileName = header.First().FILE_NAME;
+                    string folderPath = Server.MapPath(CHubConstValues.ChubTempFolder);
+                    FileInfo folder = new FileInfo(folderPath);
+                    if (!Directory.Exists(folder.FullName))
+                        Directory.CreateDirectory(folder.FullName);
+                    string fullPath = folder.FullName + fileName;
+
+                    FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate);
+                    StreamWriter sw = new StreamWriter(fs, Encoding.UTF8);
+                    sw.Write(sb.ToString());
+                    sw.Flush();
+                    sw.Close();
+                    fs.Close();
+                    return Json(new RequestResult(fileName));
+                }
+                else
+                    return Json(new RequestResult(false, "No QUICK_ORDER_NO date"));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("Order QuickOrdDownload", ex);
+                return Json(new RequestResult(false, "fail to download"));
+            }
+        }
+
+        public void QODownload(string fileName)
+        {
+            string folderPath = Server.MapPath(CHubConstValues.ChubTempFolder);
+            FileInfo folder = new FileInfo(folderPath);
+            if (!Directory.Exists(folder.FullName))
+                Directory.CreateDirectory(folder.FullName);
+            string fullPath = folder.FullName + fileName;
+
+            FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate);
+            byte[] bytes = new byte[(int)fs.Length];
+            fs.Read(bytes, 0, bytes.Length);
+            fs.Close();
+            Response.ContentType = "application/octet-stream";
+            //通知浏览器下载文件而不是打开
+            Response.AddHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(Path.GetFileName(fullPath), System.Text.Encoding.UTF8));
+            Response.BinaryWrite(bytes);
+            Response.Flush();
+            Response.End();
+            System.IO.File.Delete(fullPath);
+        }
+
+        [HttpPost]
+        public ActionResult GetSingleDetail(string CUSTOMER_PARTNO, string BUY_QTY, string CUSTOMER_NO, string WAREHOUSE)
+        {
+            QuickOrd_BLL qBLL = new QuickOrd_BLL();
+            try
+            {
+                OrderLines ol = new OrderLines();
+                ol.CUSTOMER_PARTNO = CUSTOMER_PARTNO;
+                ol.BUY_QTY = BUY_QTY;
+                ol.PART_NO = qBLL.CallF_QUICK_PART(CUSTOMER_NO, ol.CUSTOMER_PARTNO);
+                ol.RevisedQty = qBLL.CallF_QUICK_QTY(ol.PART_NO, ol.BUY_QTY);
+                ol.DESCRIPTION = qBLL.CallF_QUICK_DESC(ol.PART_NO);
+                ol.NOTE = qBLL.CallF_QUICK_MSG(ol.PART_NO);
+                ol.Inventory = qBLL.CallF_QUICK_INV(WAREHOUSE, ol.PART_NO);
+                return Json(new RequestResult(ol));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("Order GetSingleDetail", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+
+        public string GetOrderDetailHtml(List<OrderLines> list)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (list != null && list.Any())
+            {
+                foreach (var item in list)
+                {
+                    sb.Append(" <tr>");
+                    sb.Append("     <td>").Append(item.LINE_NO).Append("</td>");
+                    sb.Append("     <td>").Append("<input type=\"text\" class=\"form-control input-sm CUSTOMER_PARTNO\" value=\"" + item.CUSTOMER_PARTNO + "\" />").Append("</td>");
+                    sb.Append("     <td>").Append("<input type=\"text\" class=\"form-control input-sm BUY_QTY\" value=\"" + item.BUY_QTY + "\" />").Append("</td>");
+                    if (!string.IsNullOrEmpty(item.PART_NO))
+                        sb.Append("     <td>").Append("<input type=\"text\" class=\"form-control input-sm PART_NO\" value=\"" + item.PART_NO + "\" disabled />").Append("</td>");
+                    else
+                        sb.Append("     <td>").Append("<input type=\"text\" class=\"form-control input-sm PART_NO\" value=\"" + item.PART_NO + "\" disabled style=\"border-color: red;\" />").Append("</td>");
+
+                    if (item.BUY_QTY != item.RevisedQty)
+                        sb.Append("     <td>").Append("<input type=\"text\" class=\"form-control input-sm RevisedQty\" value=\"" + item.RevisedQty + "\" disabled style=\"color:red;\" />").Append("</td>");
+                    else
+                        sb.Append("     <td>").Append("<input type=\"text\" class=\"form-control input-sm RevisedQty\" value=\"" + item.RevisedQty + "\" disabled />").Append("</td>");
+
+
+                    sb.Append("     <td>").Append("<input type=\"text\" class=\"form-control input-sm DESCRIPTION\" value=\"" + item.DESCRIPTION + "\" disabled />").Append("</td>");
+
+                    if (!string.IsNullOrEmpty(item.NOTE))
+                        sb.Append("     <td>").Append("<input type=\"text\" class=\"form-control input-sm NOTE\" value=\"" + item.NOTE + "\" disabled style=\"color:red;\" />").Append("</td>");
+                    else
+                        sb.Append("     <td>").Append("<input type=\"text\" class=\"form-control input-sm NOTE\" value=\"" + item.NOTE + "\" disabled />").Append("</td>");
+
+                    if (item.Inventory == "0")
+                        sb.Append("     <td>").Append("<input type=\"text\" class=\"form-control input-sm Inventory\" value=\"" + item.Inventory + "\" disabled style=\"color:red;\" />").Append("</td>");
+                    else if (Convert.ToInt32(item.Inventory) >= Convert.ToInt32(item.RevisedQty))
+                        sb.Append("     <td>").Append("<input type=\"text\" class=\"form-control input-sm Inventory\" value=\"" + item.Inventory + "\" disabled style=\"color:green;\" />").Append("</td>");
+                    else
+                        sb.Append("     <td>").Append("<input type=\"text\" class=\"form-control input-sm Inventory\" value=\"" + item.Inventory + "\" disabled style=\"color:orange;\" />").Append("</td>");
+
+                    sb.Append("     <td>").Append("<input type=\"text\" class=\"form-control input-sm calendarReWriter DUE_DATE\" value=\"" + item.DUE_DATE + "\" onclick='ShowCalendar(this)' />").Append("</td>");
+                    sb.Append("     <td>").Append("<input type=\"button\" class=\"btn btn-primary btn-xs btnDelete\" value=\"delete\" />").Append("</td>");
+                    sb.Append(" </tr>");
+                }
+            }
+            return sb.ToString();
+        }
+
+        public string GetG_ADDR_SPLHtml(List<G_ADDR_SPL> list)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (list != null && list.Any())
+            {
+                foreach (var item in list)
+                {
+                    sb.Append(" <tr>");
+                    sb.Append("     <td>").Append("<input type='radio' name='Radio' class='RadioSelect' value='" + item.DEST_LOCATION + "' />").Append("</td>");
+                    sb.Append("     <td>").Append(item.DEST_LOCATION).Append("</td>");
+                    sb.Append("     <td>").Append(item.LOCAL_DEST_NAME).Append("</td>");
+                    sb.Append("     <td>").Append(item.LOCAL_DEST_ADDR_1).Append("</td>");
+                    sb.Append("     <td>").Append(item.LOCAL_DEST_ADDR_2).Append("</td>");
+                    sb.Append("     <td>").Append(item.LOCAL_DEST_ADDR_3).Append("</td>");
+                    sb.Append("     <td>").Append(item.DEST_CONTACT).Append("</td>");
+                    sb.Append("     <td>").Append(item.DEST_PHONE).Append("</td>");
+                    sb.Append("     <td>").Append(item.DEST_ATTENTION).Append("</td>");
+                    sb.Append("     <td>").Append(item.WAREHOUSE).Append("</td>");
+                    sb.Append(" </tr>");
+                }
+            }
+            return sb.ToString();
+        }
+
+        public class OrderLines
+        {
+            public int LINE_NO { get; set; }
+            public string CUSTOMER_PARTNO { get; set; }
+            public string BUY_QTY { get; set; }
+            public string PART_NO { get; set; }
+            public string RevisedQty { get; set; }
+            public string DESCRIPTION { get; set; }
+            public string NOTE { get; set; }
+            public string Inventory { get; set; }
+            public string DUE_DATE { get; set; }
         }
 
 

@@ -211,6 +211,10 @@
         var appStatus;
         var list = [];
 
+        $("#txtPART_NO").on('input propertychange', function () {
+            $("#txtPART_NO").val($(this).val().toUpperCase());
+        })
+
         GetAPP_STATUS();
         function GetAPP_STATUS() {
             $.ajax({

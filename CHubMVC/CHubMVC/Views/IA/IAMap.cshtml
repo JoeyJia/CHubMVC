@@ -53,6 +53,10 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $("#txtPRTNUM").on('input propertychange', function () {
+            $("#txtPRTNUM").val($(this).val().toUpperCase());
+        })
+
         $("#searchButton").on("click", function () {
             if ($("#txtINPUT_PART").val() == "") {
                 alert("No INPUT_PART Input");

@@ -658,7 +658,11 @@ namespace CHubMVC.Controllers
                         if (asnData != null)
                         {
                             //Get the min value
-                            openSS.InTransit = openSS.InTransit < asnData.OPEN_QTY ? openSS.InTransit : asnData.OPEN_QTY.Value;
+                            openSS.InTransit = openSS.InTransit <= asnData.OPEN_QTY ? openSS.InTransit : asnData.OPEN_QTY.Value;
+                        }
+                        else
+                        {
+                            openSS.InTransit = openSS.InTransit <= 0 ? openSS.InTransit : 0;
                         }
                         openPDCList.Add(openSS);
                     }
@@ -704,7 +708,11 @@ namespace CHubMVC.Controllers
                         if (asnData != null)
                         {
                             //Get the min value
-                            openSS.InTransit = openSS.InTransit < asnData.OPEN_QTY ? openSS.InTransit : asnData.OPEN_QTY.Value;
+                            openSS.InTransit = openSS.InTransit <= asnData.OPEN_QTY ? openSS.InTransit : asnData.OPEN_QTY.Value;
+                        }
+                        else
+                        {
+                            openSS.InTransit = openSS.InTransit <= 0 ? openSS.InTransit : 0;
                         }
                         openRDCList.Add(openSS);
                     }

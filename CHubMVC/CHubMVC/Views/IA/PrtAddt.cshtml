@@ -86,6 +86,10 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $("#txtPart_NO").on('input propertychange', function () {
+            $("#txtPart_NO").val($(this).val().toUpperCase());
+        })
+
         $("#searchButton").on('click', function () {
             if ($("#txtPart_NO").val() == "") {
                 alert("No Part_NO Input");

@@ -53,6 +53,10 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $("#txtPart_NO").on('input propertychange', function () {
+            $("#txtPart_NO").val($(this).val().toUpperCase());
+        })
+
         $("#btnQuery").on('click', function () {
             var Part_NO = $("#txtPart_NO").val();
             if (Part_NO == null || Part_NO == "") {

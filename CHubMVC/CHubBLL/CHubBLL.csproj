@@ -113,6 +113,7 @@
     <Compile Include="MD_REQ_BLL.cs" />
     <Compile Include="M_ADRNAM_MST_BLL.cs" />
     <Compile Include="ORDINQ_BLL.cs" />
+    <Compile Include="QuickOrd_BLL.cs" />
     <Compile Include="RETINV_BLL.cs" />
     <Compile Include="RETMAIN_BLL.cs" />
     <Compile Include="RETRESTRICT_BLL.cs" />

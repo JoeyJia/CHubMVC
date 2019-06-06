@@ -35,7 +35,7 @@
                 <div class="form-group">
                     <label for="orderID" class="col-sm-2 control-label small">Part No.</label>
                     <div class="col-sm-2 col-lg-2">
-                        <input type="text" class="form-control input-sm" ng-model="partNo" placeholder="Part No.">
+                        <input type="text" class="form-control input-sm" ng-model="partNo" placeholder="Part No." id="txtPartNo">
                     </div>
                     <div class="col-sm-2">
                         <button class="btn btn-primary btn-sm" ng-click="fuzzySearch()">Search</button>
@@ -238,7 +238,9 @@
 </div>
 
 <script>
-
+    $("#txtPartNo").on('input propertychange', function () {
+        $("#txtPartNo").val($(this).val().toUpperCase());
+    })
 
     angular.module('easyQueryApp', []).controller('easyQueryCtrl', function ($scope, $http) {
         $scope.result = [];

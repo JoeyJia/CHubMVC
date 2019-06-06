@@ -16,7 +16,7 @@ using System.Configuration;
 
 namespace CHubMVC.Controllers
 {
-    public class MobileController : BaseController
+    public class MobileController : MobileBaseController
     {
         private static string webUrl = ConfigurationManager.AppSettings["LBScan"].ToString();
         private static string webType = ConfigurationManager.AppSettings["WebType"].ToString();
