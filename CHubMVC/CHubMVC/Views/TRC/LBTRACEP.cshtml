@@ -1,0 +1,182 @@
+﻿
+@{
+    ViewBag.Title = "LBTRACEP";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid" id="lbtracepDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Part Number</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="PART_NO" placeholder="Part Number" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Search" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <input type="button" class="btn btn-primary btn-sm" id="btnSave" value="Save" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <table class="table table-bordered table-striped table-hover" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th>Part Number</th>
+                                <th>Print PartNo</th>
+                                <th>DESC</th>
+                                <th>DESC (CN)</th>
+                                <th style="width:6%;">Label Trace</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5">
+                                    <a style="cursor:pointer;display:none;" id="More">More...</a>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_LoadingModal")
+
+<script>
+    $(document).ready(function () {
+        var PageIndex = 0;
+
+        $("#btnSearch").on('click', function () {
+            $("#resultTbody").empty();
+            PageIndex = 0;
+            var PART_NO = $("#PART_NO").val();
+            if (PART_NO == "") {
+                alert("Part Number Empty");
+                return false;
+            }
+
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/trc/LBTRACEPSearch',
+                type: 'post',
+                data: {
+                    PART_NO: PART_NO,
+                    PageIndex: PageIndex
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#resultTbody").html(obj.Data);
+                        if (obj.show)
+                            $("#More")[0].style.display = "";
+                        else
+                            $("#More")[0].style.display = "none";
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+            })
+        })
+        $("#More").on('click', function () {
+            PageIndex++;
+            var PART_NO = $("#PART_NO").val();
+            if (PART_NO == "") {
+                alert("Part Number Empty");
+                return false;
+            }
+
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/trc/LBTRACEPSearch',
+                type: 'post',
+                data: {
+                    PART_NO: PART_NO,
+                    PageIndex: PageIndex
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#resultTbody").append(obj.Data);
+                        if (obj.show)
+                            $("#More")[0].style.display = "";
+                        else
+                            $("#More")[0].style.display = "none";
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+            })
+        })
+
+        $("#btnSave").on('click', function () {
+            var list = [];
+            var $tr = $("#resultTbody").find("tr");
+            if ($tr.length > 0) {
+                for (var i = 0; i < $tr.length; i++) {
+                    var $td = $($tr[i]).find("td");
+                    var PART_NO = $td.eq(0).text();
+                    var LABEL_TRACE = $td.find("input[type=checkbox]")[0].checked ? "Y" : "";
+                    list.push({
+                        PART_NO: PART_NO,
+                        LABEL_TRACE:LABEL_TRACE
+                    })
+                }
+
+                $("#loadingModal").modal("show");
+                $.ajax({
+                    url: '/trc/LBTRACEPSave',
+                    type: 'post',
+                    data: JSON.stringify({
+                        list:list
+                    }),
+                    contentType: 'application/json;charset=utf-8',
+                    dataType: 'json',
+                    success: function (obj) {
+                        $("#loadingModal").modal("hide");
+                        if (!obj.Success)
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        $("#loadingModal").modal("hide");
+                        alert("fail to save");
+                    }
+                })
+            }
+        })
+
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#imgDiag").css("margin-top", "300px");
+    })
+</script>
+

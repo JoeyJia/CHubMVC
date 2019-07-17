@@ -5,6 +5,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using CHubCommon;
+using CHubDBEntity;
 
 namespace CHubMVC
 {
@@ -34,6 +35,14 @@ namespace CHubMVC
             if (filterContext.HttpContext.Session[CHubConstValues.SessionUser] == null)
             {
                 filterContext.HttpContext.Response.Redirect("/Account/Login");
+            }
+        }
+
+        public string AppUser
+        {
+            get
+            {
+                return Session[CHubConstValues.SessionUser].ToString();
             }
         }
 

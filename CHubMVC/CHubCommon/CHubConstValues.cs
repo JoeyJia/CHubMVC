@@ -50,6 +50,7 @@ namespace CHubCommon
         public static string EXPFinLoadThreeTemplateName = "EXP_COLLECTION_LOAD.xls";
         public static string EXPFarMainTemplateName = "FAR_MAIN_template.xlsx";
         public static string IhubASNTemplateName = "Worksheet in DROPSHIP_SPACE_PAGES v2.xlsx";
+        public static string BankReceiptTemplateName = "template_Bank_Receipt_load_V1.xls";
 
     }
 }

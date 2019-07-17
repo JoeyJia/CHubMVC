@@ -35,5 +35,21 @@ namespace CHubBLL
         {
             return dal.GetTrackList(LOAD_FROM, ORDER_NO);
         }
+        public bool CheckPrintSecurity(string SECURE_ID, string APP_USER)
+        {
+            return dal.CheckPrintSecurity(SECURE_ID, APP_USER);
+        }
+        public V_OA_H_PRINT SearchV_OA_H_PRINT(string LOAD_FROM, string ORDER_NO)
+        {
+            return dal.SearchV_OA_H_PRINT(LOAD_FROM, ORDER_NO);
+        }
+        public OA_TYPE_MST SearchOA_TYPE_MST(string OA_TYPE)
+        {
+            return dal.SearchOA_TYPE_MST(OA_TYPE);
+        }
+        public List<V_OA_D_PRINT> SearchV_OA_D_PRINT(string LOAD_FROM, string ORDER_NO)
+        {
+            return dal.SearchV_OA_D_PRINT(LOAD_FROM, ORDER_NO);
+        }
     }
 }

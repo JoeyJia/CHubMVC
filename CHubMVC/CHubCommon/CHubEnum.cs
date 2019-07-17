@@ -206,7 +206,23 @@ namespace CHubCommon
             /// /ds/ihubasn
             /// </summary>
             ihubasn,
-            quickord
+            quickord,
+            /// <summary>
+            /// /trc/lbtracec
+            /// </summary>
+            lbtracec,
+            /// <summary>
+            /// /trc/lbtracep
+            /// </summary>
+            lbtracep,
+            /// <summary>
+            /// /trc/lbtraceinq
+            /// </summary>
+            lbtraceinq,
+            /// <summary>
+            /// /mp/mp_custbank
+            /// </summary>
+            mp_custbank
         }
 
         public enum OrderStatusEnum

@@ -1,0 +1,993 @@
+﻿@model CHubMVC.Models.MPModels
+
+@{
+    ViewBag.Title = "MP_CUSTBANK";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .form-group {
+        margin-bottom: 0;
+    }
+
+    .tdTitle {
+        background-color: #f5f5f5;
+        width: 8% !important;
+    }
+
+    #transHistoryTable > tbody > tr > td {
+        border-top: 0;
+        width: 12.5%;
+    }
+
+    #manualADJTable > tbody > tr > td {
+        border-top: 0;
+    }
+
+    .xx {
+        color: red;
+    }
+
+    .adjtdTitle {
+        width: 16%;
+        background-color: #f5f5f5;
+    }
+</style>
+@using (Html.BeginForm("MP_CUSTBANK", "MP", FormMethod.Post, new { @name = "mp_custbankForm", @id = "mp_custbankForm", @class = "form-horizontal" }))
+{
+    <input type="hidden" id="ErrorMsg" value="@ViewBag.ErrorMsg" />
+    @*<input type="hidden" id="AppUser" value="@ViewBag.AppUser" />*@
+    @Html.Hidden("AppUser", (object)ViewBag.AppUser)
+    <div class="container-fluid" id="mp_custbankDiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <b>Query</b>
+            </div>
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-2">Customer No</label>
+                    <div class="col-sm-2">
+                        @*<input type="text" class="form-control input-sm" id="CUSTOMER_NO" placeholder="Customer No" />*@
+                        @Html.TextBoxFor(m => m.SearchCondition.CUSTOMER_NO, new { @class = "form-control input-sm", @placeholder = "Customer No" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-2">Customer Name</label>
+                    <div class="col-sm-2">
+                        @*<input type="text" class="form-control input-sm" id="BANK_PAYER" placeholder="Customer Name" />*@
+                        @Html.TextBoxFor(m => m.SearchCondition.BANK_PAYER, new { @class = "form-control input-sm", @placeholder = "Customer Name" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <input type="submit" class="btn btn-primary btn-sm" id="btnQuery" value="Query" />
+                        <input type="button" class="btn btn-primary btn-sm" id="btnLoad" value="Bank Receipt Loading" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <b>Result</b>
+                        </div>
+                        <table class="table table-bordered table-hover" id="resultTable">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%;">Customer No</th>
+                                    <th style="width:4%;">Bill to</th>
+                                    <th>Customer Name</th>
+                                    <th style="width:4%;">Currency</th>
+                                    <th style="width:4%;">Balance</th>
+                                    <th style="width:6%;">Credit Lmt</th>
+                                    <th style="width:6%;">Credit Lmt2</th>
+                                    <th style="width:8%;">NOTE</th>
+                                    <th style="width:5%;">Balance Active?</th>
+                                    <th style="width:4%;">Record Date</th>
+                                    <th style="width:4%;">Record By</th>
+                                    <th style="width: 15%;">OPT</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultTbody">
+                                @if (Model.CBCollection != null && Model.CBCollection.Any())
+                                {
+                                    foreach (var item in Model.CBCollection)
+                                    {
+                                        string color = string.Empty;
+                                        if (item.BALANCE <= 0)
+                                        {
+                                            color = "red";
+                                        }
+                                        else
+                                        {
+                                            color = "green";
+                                        }
+
+                                        <tr>
+                                            <td>@item.CUSTOMER_NO</td>
+                                            <td>@item.BILL_TO_LOCATION</td>
+                                            <td>
+                                                <input type="text" class="form-control input-sm BANK_PAYER" title="@item.BANK_PAYER" value="@item.BANK_PAYER" style="width:100%;" />
+                                            </td>
+                                            <td>@item.CURRENCY_CODE</td>
+                                            <td style="font-size:24px;color:@color;">@item.BALANCE</td>
+                                            <td>
+                                                <input type="text" class="form-control input-sm CREDIT_LIMIT" value="@item.CREDIT_LIMIT" />
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control input-sm CREDIT_LIMIT_2" value="@item.CREDIT_LIMIT_2" />
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control input-sm NOTE" value="@item.NOTE" />
+                                            </td>
+                                            <td>
+                                                @if (item.BALANCE_ACTIVE_FLAG == "Y")
+                                                {
+                                                    <select class="form-control input-sm BALANCE_ACTIVE_FLAG">
+                                                        <option value="Y" selected>Y</option>
+                                                        <option value="N">N</option>
+                                                    </select>
+                                                }
+                                                else
+                                                {
+                                                    <select class="form-control input-sm BALANCE_ACTIVE_FLAG">
+                                                        <option value="Y">Y</option>
+                                                        <option value="N" selected>N</option>
+                                                    </select>
+                                                }
+                                            </td>
+                                            <td>@Html.Raw(item.RECORD_DATE.HasValue ? item.RECORD_DATE.Value.ToString("yyyy/MM/dd") : "")</td>
+                                            <td>@item.RECORD_BY</td>
+                                            <td>
+                                                <input type="button" class="btn btn-primary btn-xs btnSave" data-customerno="@item.CUSTOMER_NO" data-billtolocation="@item.BILL_TO_LOCATION" data-currencycode="@item.CURRENCY_CODE" value="Save" />
+                                                <input type="button" class="btn btn-primary btn-xs btnTransHistory" data-customerno="@item.CUSTOMER_NO" data-billtolocation="@item.BILL_TO_LOCATION" data-currencycode="@item.CURRENCY_CODE" value="Trans History" />
+                                                @if (item.BALANCE_ACTIVE_FLAG == "N")
+                                                {
+                                                    <input type="button" class="btn btn-primary btn-xs btnManualADJ" value="Manual ADJ" disabled />
+                                                }
+                                                else
+                                                {
+                                                    <input type="button" class="btn btn-primary btn-xs btnManualADJ" data-customername="@item.BANK_PAYER" data-customerno="@item.CUSTOMER_NO" data-billtolocation="@item.BILL_TO_LOCATION" data-currencycode="@item.CURRENCY_CODE" value="Manual ADJ" />
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@Html.Partial("_LoadingModal");
+
+<!--Trans History-->
+<div class="modal fade" id="transHistoryModal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="transHistoryModalLabel" data-backdrop="static">
+    <div class="modal-dialog" style="width:96%;">
+        <div class="modal-content">
+            <div class="modal-header panel panel-default" style="padding:0;margin-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:30px;font-size:30px;">
+                    &times;
+                </button>
+                <div class="panel-heading">
+                    <b>Transaction History</b>
+                </div>
+            </div>
+            <div class="modal-body panel panel-default" style="padding:0;margin-bottom:0;">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <table class="table" id="transHistoryTable">
+                            <tr>
+                                <td class="tdTitle">Customer No</td>
+                                <td><span id="transCUSTOMER_NO"></span></td>
+                                <td class="tdTitle">Bill to</td>
+                                <td><span id="transBILL_TO_LOCATION"></span></td>
+                                <td class="tdTitle">Customer Name</td>
+                                <td colspan="3"><span id="transBANK_PAYER"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="tdTitle">Balance</td>
+                                <td><span id="transBALANCE"></span></td>
+                                <td class="tdTitle">Credit Limit</td>
+                                <td><span id="transCREDIT_LIMIT"></span></td>
+                                <td class="tdTitle">Credit Limit2</td>
+                                <td><span id="transCREDIT_LIMIT_2"></span></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tdTitle">Currency</td>
+                                <td><span id="transCURRENCY_CODE"></span></td>
+                                <td class="tdTitle">NOTE</td>
+                                <td colspan="3"><span id="transNOTE"></span></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tdTitle">Transaction Type</td>
+                                <td><select class="form-control input-sm" id="transTRANS_TYPE"></select></td>
+                                <td colspan="4"><span id="transTRANS_TYPE_DESC"></span></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tdTitle">Last Days</td>
+                                <td>
+                                    <input type="text" class="form-control input-sm" id="lastDays" value="30" />
+                                </td>
+                                <td colspan="2"></td>
+                                <td colspan="2">
+                                    <input type="button" class="btn btn-primary btn-sm" id="btnTransHistoryQuery" value="Query" />
+                                    <input type="button" class="btn btn-primary btn-sm" id="btnTransHistoryDownload" value="Download" />
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <table class="table table-bordered" id="transHistoryResultTable">
+                            <thead>
+                                <tr>
+                                    <th style="width:6%;">TRANS ID</th>
+                                    <th style="width:8%;">Trans Type</th>
+                                    <th style="width:6%;">Amt</th>
+                                    <th style="width:6%;">Tran date</th>
+                                    <th style="width:10%;">Doc No</th>
+                                    <th style="width:18%;">Brief Info.</th>
+                                    <th style="width:5%;">User ID</th>
+                                    <th>NOTE</th>
+                                    <th style="width:6%;">Balance</th>
+                                    <th style="width:6%;">Order No</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transHistoryResultTbody"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="10">
+                                        <a href="javascript:void(0)" class="" id="btnMore" style="text-decoration:none;display:none;">More...</a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Manual ADj-->
+<div class="modal fade" id="manualADJModal" tabindex="-1" role="dialog" aria-labelledby="manualADJModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" style="width:80%;">
+        <div class="modal-content">
+            <div class="modal-header panel panel-default" style="padding:0;margin-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:30px;font-size:30px;">
+                    &times;
+                </button>
+                <div class="panel-heading">
+                    <b>Manual Balance Adjustments</b>
+                </div>
+            </div>
+            <div class="modal-body panel panel-default" style="padding:0;margin-bottom:0;">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <table class="table" id="manualADJTable">
+                            <tr>
+                                <td class="adjtdTitle">Customer Name</td>
+                                <td colspan="3" style="width:25%;"><span id="adjBANK_PAYER"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="adjtdTitle">Customer No</td>
+                                <td style="width:25%;"><span id="adjCUSTOMER_NO"></span></td>
+                                <td class="adjtdTitle">Bill to</td>
+                                <td style="width:25%;"><span id="adjBILL_TO_LOCATION"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="adjtdTitle">Currency Code</td>
+                                <td style="width:25%;"><span id="adjCURRENCY_CODE"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="adjtdTitle"><span class="xx">*</span>Transaction Type</td>
+                                <td style="width:25%;">
+                                    <select class="form-control input-sm" id="adjTRANS_TYPE"></select>
+                                </td>
+                                <td colspan="2"><span id="adjTRANS_TYPE_DESC" style="padding:8px;"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="adjtdTitle"><span class="xx">*</span>Order_no</td>
+                                <td style="width:25%;">
+                                    <input type="text" class="form-control" id="adjORDER_NO" style="height:45px;font-size:30px;width:70%;float:left" disabled />
+                                    <input type="button" class="btn btn-primary btn-sm" id="btnVerify" value="Verify" style="height:45px;width:70px;margin-left:15px;float:left;" disabled />
+                                </td>
+                                <td colspan="2" style="padding: 14px;">
+                                    <span id="ajdORDER_NO_CHECK" style="font-size: 18px;"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="adjtdTitle"><span class="xx">*</span>Amount</td>
+                                <td style="width:25%;">
+                                    <input type="text" class="form-control" id="adjAMT" style="height:55px;font-size:40px;" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="adjtdTitle"><span class="xx">*</span>Document No</td>
+                                <td style="width:25%;">
+                                    <input type="text" class="form-control input-sm" id="adjDOC_NO" style="height:55px;font-size:40px;" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="adjtdTitle">Brief  Infor.</td>
+                                <td style="width:25%;">
+                                    <input type="text" class="form-control input-sm" id="adjBRIEF" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="adjtdTitle">NOTE</td>
+                                <td style="width:25%;">
+                                    <input type="text" class="form-control input-sm" id="adjNOTE" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="text-align:right;">
+                                    <input type="button" class="btn btn-primary btn-sm" id="btnADJConfirm" value="Confirm" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Double Confirm-->
+<div class="modal fade" id="doubleConfirmModal" tabindex="-1" role="dialog" aria-labelledby="doubleConfirmModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" style="margin-top:300px;">
+        <div class="modal-content">
+            <div class="modal-header panel panel-default" style="padding:0;margin-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:30px;font-size:30px;">
+                    &times;
+                </button>
+                <div class="panel-heading">
+                    <b>Double Confirm</b>
+                </div>
+            </div>
+            <div class="modal-body panel panel-default" style="padding:0;margin-bottom:0;">
+                <div class="row" style="margin-top:15px;">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right" style="height:55px;padding-top:18px;font-size:18px;">
+                            <span>Document No</span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            <input type="text" class="form-control input-sm" id="DoubleDOC_NO" placeholder="Document No" style="height:55px;font-size:40px;" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:15px;">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnDoubleConfirm" value="Double Confirm" />
+                        <input type="button" class="btn btn-primary btn-sm" id="btnCancel" value="Cancel" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Bank Receipt Loading-->
+<div class="modal fade" id="BankLoadingModal" tabindex="-1" role="dialog" aria-labelledby="BankLoadingModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" style="margin-top:200px;width:50%;">
+        <div class="modal-content">
+            <div class="modal-header panel panel-default" style="padding:0;margin-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:30px;font-size:30px;">
+                    &times;
+                </button>
+                <div class="panel-heading">
+                    <b>Bank Receipt Batch Loading</b>
+                </div>
+            </div>
+            <div class="modal-body panel panel-default" style="margin-bottom:0;">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <form class="form-horizontal" name="bankLoadForm" id="bankLoadForm">
+                            <div class="col-sm-6 col-sm-offset-1">
+                                <input type="file" class="form-control" id="bankLoadInput" name="bankLoadInput" />
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="button" class="btn btn-primary btn-sm" id="btnUpload" value="Load" />
+                                <input type="button" class="btn btn-primary btn-sm" id="btnDownloadTemplate" value="Download Template" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        //全局变量
+        var CUSTOMER_NO;
+        var BILL_TO_LOCATION;
+        var CURRENCY_CODE;
+        var CUSTOMER_NAME;
+        var TRANS_TYPE;
+        var TRANS_AMT;
+        var DOC_NO;
+        var BRIEF;
+        var NOTE;
+        var ORDER_NO;
+        var PageIndex
+
+        var errorMsg = $("#ErrorMsg").val();
+        if (errorMsg != "")
+            alert(errorMsg);
+        //Search
+        $("#btnQuery").on('click', function () {
+            CUSTOMER_NO = $("#SearchCondition_CUSTOMER_NO").val();
+            BANK_PAYER = $("#SearchCondition_BANK_PAYER").val();
+
+            if (CUSTOMER_NO == "" && BANK_PAYER == "") {
+                alert("No Condition");
+                return false;
+            }
+            $("#loadingModal").modal("show");
+        })
+
+        $("#btnLoad").on('click', function () {
+            $.ajax({
+                url: '/mp/LoadCheck',
+                type: 'post',
+                data: { AppUser: $("#AppUser").val() },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success)
+                        $("#BankLoadingModal").modal("show");
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to check");
+                }
+            })
+            //$("#BankLoadingModal").modal("show");
+        })
+        $("#btnUpload").on('click', function () {
+            var file = $("#bankLoadInput").val();
+            if (file == "") {
+                alert("No file load");
+                return false;
+            }
+            $("form[name=bankLoadForm]").ajaxSubmit({
+                url: '/mp/BankUpload',
+                type: 'post',
+                data: {
+                    AppUser: $("#AppUser").val()
+                },
+                dataType: 'json',
+                enctype: "multipart/form-data",
+                success: function (data) {
+                    if (data.Success)
+                        window.location.href = "/mp/Download?fileName=" + data.Data;
+                    else
+                        alert(data.Msg);
+                },
+                error: function (e) {
+                    alert("fail to Load");
+                }
+            })
+        })
+
+        //Download template
+        $("#btnDownloadTemplate").on('click', function () {
+            window.location.href = '/mp/DownloadTemplate';
+        })
+
+        //Save
+        $("#resultTbody").on('click', '.btnSave', function () {
+            //alert($("#AppUser").val());
+            var obj = {};
+            var $save = $(this);
+            //no change
+            obj.CUSTOMER_NO = $save.attr("data-customerno");
+            obj.BILL_TO_LOCATION = $save.attr("data-billtolocation");
+            obj.CURRENCY_CODE = $save.attr("data-currencycode");
+            //can change
+            var $td = $save.parent().parent().find("td");
+            obj.BANK_PAYER = $td.find(".BANK_PAYER").val();
+            obj.CREDIT_LIMIT = $td.find(".CREDIT_LIMIT").val();
+            obj.CREDIT_LIMIT_2 = $td.find(".CREDIT_LIMIT_2").val();
+            obj.NOTE = $td.find(".NOTE").val();
+            obj.BALANCE_ACTIVE_FLAG = $td.find(".BALANCE_ACTIVE_FLAG").val();
+
+            $.ajax({
+                url: '/mp/MP_CUSTBANKSave',
+                type: 'post',
+                data: JSON.stringify({
+                    item: obj,
+                    appUser: $("#AppUser").val()
+                }),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Success) {
+                        var date = new Date(data.Data.RECORD_DATE);
+                        var year = date.getFullYear();
+                        var month = date.getMonth() + 1;
+                        var day = date.getDate();
+                        if (month <= 9)
+                            month = "0" + month;
+                        if (day <= 9)
+                            day = "0" + day;
+                        $td.eq(9).html(year + "/" + month + "/" + day);
+                        $td.eq(10).html(data.Data.RECORD_BY);
+                        $("#btnQuery").click();
+                    }
+                    else
+                        alert(data.Msg);
+                },
+                error: function (e) {
+                    alert("fail to save");
+                }
+            })
+
+        })
+
+        //Trans History
+        $("#resultTbody").on('click', '.btnTransHistory', function () {
+            var $transHistory = $(this);
+            CUSTOMER_NO = $transHistory.attr("data-customerno");
+            BILL_TO_LOCATION = $transHistory.attr("data-billtolocation");
+            CURRENCY_CODE = $transHistory.attr("data-currencycode");
+
+            PageIndex = 1;
+
+            $("#transTRANS_TYPE").empty();
+            $("#transHistoryResultTbody").empty();
+            $.ajax({
+                url: '/mp/TransHistoryGetCUSTBANK',
+                type: 'post',
+                data: {
+                    CUSTOMER_NO: CUSTOMER_NO,
+                    BILL_TO_LOCATION: BILL_TO_LOCATION,
+                    CURRENCY_CODE: CURRENCY_CODE
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#transCUSTOMER_NO").html(obj.custBank.CUSTOMER_NO);
+                        $("#transBILL_TO_LOCATION").html(obj.custBank.BILL_TO_LOCATION);
+                        $("#transBANK_PAYER").html(obj.custBank.BANK_PAYER);
+                        $("#transBALANCE").html(obj.custBank.BALANCE);
+                        if (parseFloat(obj.custBank.BALANCE) <= 0)
+                            $("#transBALANCE")[0].style.color = "red";
+                        else
+                            $("#transBALANCE")[0].style.color = "green";
+                        $("#transBALANCE")[0].style.fontSize = "18px";
+                        $("#transCREDIT_LIMIT").html(obj.custBank.CREDIT_LIMIT);
+                        $("#transCREDIT_LIMIT_2").html(obj.custBank.CREDIT_LIMIT_2);
+                        $("#transCURRENCY_CODE").html(obj.custBank.CURRENCY_CODE);
+                        $("#transNOTE").html(obj.custBank.NOTE);
+
+                        if (obj.transType != null && obj.transType.length > 0) {
+                            $("<option></option>").val("").text("").appendTo("#transTRANS_TYPE")
+                            for (var i = 0; i < obj.transType.length; i++) {
+                                $("<option></option>").val(obj.transType[i].TRANS_TYPE).text(obj.transType[i].TRANS_TYPE + "  " + obj.transType[i].TRANS_TYPE_DESC).appendTo("#transTRANS_TYPE");
+                            }
+                        }
+                        $("#transHistoryModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg)
+                },
+                error: function (e) {
+                    alert("fail to get");
+                }
+            })
+        })
+
+        $("#transTRANS_TYPE").on('change', function () {
+            if ($("#transTRANS_TYPE").val() == "")
+                $("#transTRANS_TYPE_DESC").html("");
+            else {
+                $.ajax({
+                    url: '/mp/TransHistoryGetTrans_TYPE',
+                    type: 'post',
+                    data: {
+                        TRANS_TYPE: $("#transTRANS_TYPE").val()
+                    },
+                    success: function (obj) {
+                        if (obj.Success)
+                            $("#transTRANS_TYPE_DESC").html(obj.Data);
+                        else
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        alert("fail to get");
+                    }
+                })
+            }
+        })
+        //Trans History Query
+        $("#btnTransHistoryQuery").on('click', function () {
+            PageIndex = 1;
+
+            if ($("#lastDays").val() == "") {
+                alert("No days input");
+                return false;
+            }
+            $("#transHistoryResultTbody").empty();
+            $.ajax({
+                url: '/mp/TransHistoryQuery',
+                type: 'post',
+                data: {
+                    CUSTOMER_NO: CUSTOMER_NO,
+                    BILL_TO_LOCATION: BILL_TO_LOCATION,
+                    CURRENCY_CODE: CURRENCY_CODE,
+                    TRANS_TYPE: $("#transTRANS_TYPE").val(),
+                    TRANS_DATE: $("#lastDays").val(),
+                    PageIndex: PageIndex
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#transHistoryResultTbody").html(obj.Data);
+                        if (obj.Msg == "End")
+                            $("#btnMore")[0].style.display = "none";
+                        else
+                            $("#btnMore")[0].style.display = "";
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to query");
+                }
+            })
+        })
+
+        $("#btnMore").on('click', function () {
+            PageIndex++;
+
+            $.ajax({
+                url: '/mp/TransHistoryQuery',
+                type: 'post',
+                data: {
+                    CUSTOMER_NO: CUSTOMER_NO,
+                    BILL_TO_LOCATION: BILL_TO_LOCATION,
+                    CURRENCY_CODE: CURRENCY_CODE,
+                    TRANS_TYPE: $("#transTRANS_TYPE").val(),
+                    TRANS_DATE: $("#lastDays").val(),
+                    PageIndex: PageIndex
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#transHistoryResultTbody").append(obj.Data);
+                        if (obj.Msg == "End")
+                            $("#btnMore")[0].style.display = "none";
+                        else
+                            $("#btnMore")[0].style.display = "";
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to query");
+                }
+            })
+        })
+
+        //Trans History Download
+        $("#btnTransHistoryDownload").on('click', function () {
+            if ($("#lastDays").val() == "") {
+                alert("No days input");
+                return false;
+            }
+
+            $.ajax({
+                url: '/mp/TransHistoryDownload',
+                type: 'post',
+                data: {
+                    CUSTOMER_NO: CUSTOMER_NO,
+                    BILL_TO_LOCATION: BILL_TO_LOCATION,
+                    CURRENCY_CODE: CURRENCY_CODE,
+                    TRANS_TYPE: $("#transTRANS_TYPE").val(),
+                    TRANS_DATE: $("#lastDays").val()
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success)
+                        window.location.href = "/mp/Download?fileName=" + obj.Data;
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to download");
+                }
+            })
+        })
+
+        //Manual ADJ
+        $("#resultTbody").on('click', '.btnManualADJ', function () {
+            var $manualADJ = $(this);
+            CUSTOMER_NO = $manualADJ.attr("data-customerno");
+            BILL_TO_LOCATION = $manualADJ.attr("data-billtolocation");
+            CURRENCY_CODE = $manualADJ.attr("data-currencycode");
+            CUSTOMER_NAME = $manualADJ.attr("data-customername");
+
+            $("#adjBANK_PAYER").html(CUSTOMER_NAME);
+            $("#adjCUSTOMER_NO").html(CUSTOMER_NO);
+            $("#adjBILL_TO_LOCATION").html(BILL_TO_LOCATION);
+            $("#adjCURRENCY_CODE").html(CURRENCY_CODE);
+
+            EmptyData();
+            $.ajax({
+                url: '/mp/getmanualadjTransType',
+                type: 'post',
+                data: {
+                    App_User: $("#AppUser").val()
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        if (obj.Data != null && obj.Data.length > 0) {
+                            $("<option></option>").val("").text("").appendTo("#adjTRANS_TYPE");
+                            for (var i = 0; i < obj.Data.length; i++) {
+                                $("<option></option>").val(obj.Data[i].TRANS_TYPE).text(obj.Data[i].TRANS_TYPE + " " + obj.Data[i].TRANS_TYPE_DESC).appendTo("#adjTRANS_TYPE");
+                            }
+                        }
+                        $("#manualADJModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get type");
+                }
+            })
+        })
+        function EmptyData() {
+            $("#adjTRANS_TYPE").empty();
+            $("#adjTRANS_TYPE").attr("disabled", false);
+            $("#adjTRANS_TYPE_DESC").html("");
+            $("#adjORDER_NO").attr("disabled", true);
+            $("#adjORDER_NO").val("");
+            $("#btnVerify").attr("disabled", true);
+            $("#ajdORDER_NO_CHECK").html("");
+            $("#adjAMT").val("");
+            $("#adjAMT")[0].style.color = "#555555";
+            $("#adjAMT").attr("disabled", false);
+            $("#adjDOC_NO").val("");
+            $("#adjBRIEF").val("");
+            $("#adjNOTE").val("");
+            $("#btnADJConfirm").attr("disabled", false);
+        }
+
+        $("#adjTRANS_TYPE").on('change', function () {
+            $(this).attr("disabled", true);
+            $("#adjORDER_NO").val("");
+            $("#ajdORDER_NO_CHECK").html("");
+            $("#adjAMT").val("");
+            $("#adjAMT")[0].style.color = "#555555";
+
+            if ($("#adjTRANS_TYPE").val() == "ORDER") {
+                $("#adjORDER_NO").attr("disabled", false);
+                $("#btnVerify").attr("disabled", false);
+                $("#adjAMT").attr("disabled", true);
+            }
+            else {
+                $("#adjORDER_NO").attr("disabled", true);
+                $("#btnVerify").attr("disabled", true);
+                $("#adjAMT").attr("disabled", false);
+            }
+
+            if ($("#adjTRANS_TYPE").val() == "") {
+                $("#adjTRANS_TYPE_DESC").html("");
+                $("#adjORDER_NO").attr("disabled", true);
+                $("#btnVerify").attr("disabled", true);
+            }
+            else {
+                $.ajax({
+                    url: '/mp/getmanualadjTransType',
+                    type: 'post',
+                    data: {
+                        App_User: $("#AppUser").val(),
+                        TRANS_TYPE: $("#adjTRANS_TYPE").val()
+                    },
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success) {
+                            if (obj.Data != null && obj.Data.length > 0) {
+                                $("#adjTRANS_TYPE_DESC").html(obj.Data[0].TRANS_TYPE_DESC);
+                            }
+                        }
+                        else
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        alert("fail to get desc");
+                    }
+                })
+            }
+        })
+
+        //当ORDER_NO可输入时，先check，后计算出amt
+        $("#btnVerify").on('click', function () {
+            $("#btnVerify").button("loading");
+
+            $.ajax({
+                url: '/mp/ManualADJOrderNocheckAndAmt',
+                type: 'post',
+                data: {
+                    CUSTOMER_NO: CUSTOMER_NO,
+                    BILL_TO_LOCATION: BILL_TO_LOCATION,
+                    ORDER_NO: $("#adjORDER_NO").val()
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#btnVerify").button("reset");
+                    if (obj.Success) {
+                        $("#ajdORDER_NO_CHECK").html(obj.Msg);
+                        if (obj.Msg == "OK") {
+                            $("#ajdORDER_NO_CHECK")[0].style.color = "green";
+                            $("#btnADJConfirm").attr("disabled", false);
+                        }
+                        else {
+                            $("#ajdORDER_NO_CHECK")[0].style.color = "orange";
+                            $("#btnADJConfirm").attr("disabled", true);
+                        }
+                        $("#adjAMT").val(obj.Data);
+                        $("#adjAMT")[0].style.color = "orange";
+                        //Trans_Type=ORDER,自动填入Order_No
+                        $("#adjDOC_NO").val($("#adjORDER_NO").val());
+                        $("#adjDOC_NO").focus();
+                        //Trans_Type=ORDER,Call Function
+                        $("#adjBRIEF").val(obj.Brief);
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (e) {
+                    alert("fail to check");
+                }
+            })
+        })
+
+        //DOC_NO检查，如果存在报错
+        $("#adjDOC_NO").on('blur', function () {
+            $.ajax({
+                url: '/mp/ManualADJcheckDOC_NO',
+                type: 'post',
+                async:false,
+                data: {
+                    DOC_NO: $("#adjDOC_NO").val()
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+
+                    }
+                    else {
+                        alert(obj.Msg);
+                        $("#adjDOC_NO").select();
+                    }
+                },
+                error: function (e) {
+                    alert("fail to check docno");
+                }
+            })
+        })
+
+        $("#adjAMT").on('blur', function () {
+            var amt = $("#adjAMT").val();
+            var reg = /^\d+(.\d{1,2})?$/;
+            if (amt != "") {
+                if (!reg.test(amt)) {
+                    alert("Amount Error format");
+                    $("#adjAMT").focus();
+                    $("#adjAMT").select();
+                }
+            }
+
+        })
+
+        //Confirm
+        $("#btnADJConfirm").on('click', function () {
+            TRANS_TYPE = $("#adjTRANS_TYPE").val();
+            TRANS_AMT = $("#adjAMT").val();
+            DOC_NO = $("#adjDOC_NO").val();
+            BRIEF = $("#adjBRIEF").val();
+            NOTE = $("#adjNOTE").val();
+            ORDER_NO = $("#adjORDER_NO").val();
+
+            if (TRANS_TYPE == "") {
+                alert("No Trans Type select");
+                return false;
+            }
+            else {
+                if (TRANS_TYPE == "ORDER") {
+                    if (ORDER_NO == "") {
+                        alert("No ORDER NO input");
+                        return false;
+                    }
+                }
+                if (TRANS_AMT == "") {
+                    alert("No AMT input");
+                    return false;
+                }
+                if (DOC_NO == "") {
+                    alert("No DOC_NO input");
+                    return false;
+                }
+            }
+            $("#DoubleDOC_NO").val("");
+            $("#doubleConfirmModal").modal("show");
+        })
+
+        //Double Confirm
+        $("#btnDoubleConfirm").on('click', function () {
+            var doubleDOC_NO = $("#DoubleDOC_NO").val();
+
+            if (doubleDOC_NO != DOC_NO) {
+                alert("DOC NO不一致，请重新输入");
+                $("#DoubleDOC_NO").focus();
+                $("#DoubleDOC_NO").select();
+                return false;
+            }
+
+            var item = {};
+            item.CUSTOMER_NO = CUSTOMER_NO;
+            item.BILL_TO_LOCATION = BILL_TO_LOCATION;
+            item.CURRENCY_CODE = CURRENCY_CODE;
+            item.TRANS_TYPE = TRANS_TYPE;
+            item.TRANS_AMT = TRANS_AMT;
+            item.TRANS_DOC_NO = DOC_NO;
+            item.APP_USER = $("#AppUser").val();
+            item.TRANS_BRIEF = BRIEF;
+            item.NOTE = NOTE;
+            item.BANK_PAYER = CUSTOMER_NAME;
+            item.ORDER_NO = ORDER_NO;
+
+            $.ajax({
+                url: "/mp/RunP_BANK_TRANS_NEW",
+                type: 'post',
+                data: JSON.stringify(item),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#doubleConfirmModal").modal("hide");
+                        $("#manualADJModal").modal("hide");
+                        setTimeout($("#btnQuery").click(), 2000);
+                    }
+                    else
+                        alert(obj.Msg);
+
+                },
+                error: function (e) {
+                    alert("fail to run proc");
+                }
+            })
+        })
+        $("#btnCancel").on('click', function () {
+            $("#doubleConfirmModal").modal("hide");
+        })
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#imgDiag").css("margin-top", "300px");
+    });
+</script>

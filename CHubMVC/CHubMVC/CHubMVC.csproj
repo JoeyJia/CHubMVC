@@ -223,6 +223,7 @@
     <Compile Include="Controllers\IAController.cs" />
     <Compile Include="Controllers\MDController.cs" />
     <Compile Include="Controllers\MobileController.cs" />
+    <Compile Include="Controllers\MPController.cs" />
     <Compile Include="Controllers\RETController.cs" />
     <Compile Include="Controllers\RPController.cs" />
     <Compile Include="Controllers\KPIController.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\TRCController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -238,6 +240,7 @@
     <Compile Include="Models\ADMModels.cs" />
     <Compile Include="Models\IAModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\MPModels.cs" />
     <Compile Include="Models\OrdInqModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -336,6 +339,7 @@
     <Content Include="Images\LongBg\bg_6.jpg" />
     <Content Include="Images\LongBg\bg_7.jpg" />
     <Content Include="Images\Moving.PNG" />
+    <Content Include="Images\OAPrint.jpg" />
     <Content Include="Images\page_ico\adrcrt.ico" />
     <Content Include="Images\page_ico\adrmap.ico" />
     <Content Include="Images\page_ico\blank.ico" />
@@ -383,6 +387,7 @@
     <Content Include="Images\page_ico\wbentry.ico" />
     <Content Include="Images\page_ico\wbprt.ico" />
     <Content Include="Images\page_ico\xcecwb.ico" />
+    <Content Include="Images\Pay_code.png" />
     <Content Include="Images\TrackLogo\cummins.jpg" />
     <Content Include="Images\TrackLogo\wechat.jpg" />
     <Content Include="Images\wechat.jpg" />
@@ -540,6 +545,12 @@
     <Content Include="Views\DS\IhubASN.cshtml" />
     <Content Include="Template\Worksheet in DROPSHIP_SPACE_PAGES v2.xlsx" />
     <Content Include="Views\Order\QuickOrd.cshtml" />
+    <Content Include="Views\TRC\LBTRACEC.cshtml" />
+    <Content Include="Views\TRC\LBTRACEP.cshtml" />
+    <Content Include="Views\TRC\LBTRACEINQ.cshtml" />
+    <Content Include="Views\Mobile\LBTraceScan.cshtml" />
+    <Content Include="Views\MP\MP_CUSTBANK.cshtml" />
+    <Content Include="Template\template_Bank_Receipt_load_V1.xls" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -171,6 +171,15 @@ namespace CHubCommon
                         object value = dr[tempName];
                         if (value != DBNull.Value)
                         {
+                            if (pi.PropertyType.FullName == "System.Decimal")
+                                value = Convert.ToDecimal(value);
+                            if (pi.PropertyType.FullName == "System.Int32")
+                                value = Convert.ToInt32(value);
+                            if (pi.PropertyType.FullName == "System.Int64")
+                                value = Convert.ToInt64(value);
+                            if (pi.PropertyType.FullName == "System.String")
+                                value = Convert.ToString(value);
+
                             pi.SetValue(t, value, null);
                         }
                     }

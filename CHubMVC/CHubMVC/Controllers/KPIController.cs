@@ -242,6 +242,18 @@ namespace CHubMVC.Controllers
                     sb.Append("     <td>").Append("<input type='text' class='form-control input-sm KPI_CODE' value='" + item.KPI_CODE + "' title='" + item.KPI_CODE + "' readonly />").Append("</td>");
                     sb.Append("     <td>").Append("<input type='text' class='form-control input-sm KPI_SUB_CODE' value='" + item.KPI_SUB_CODE + "' title='" + item.KPI_SUB_CODE + "' readonly />").Append("</td>");
                     sb.Append("     <td>").Append("<input type='text' class='form-control input-sm KPI_DESC' value='" + item.KPI_DESC + "' title='" + item.KPI_DESC + "' readonly />").Append("</td>");
+                    item.KPI_VAL_01 = item.KPI_VAL_01.HasValue ? item.KPI_VAL_01 : null;
+                    item.KPI_VAL_02 = item.KPI_VAL_02.HasValue ? item.KPI_VAL_02 : null;
+                    item.KPI_VAL_03 = item.KPI_VAL_03.HasValue ? item.KPI_VAL_03 : null;
+                    item.KPI_VAL_04 = item.KPI_VAL_04.HasValue ? item.KPI_VAL_04 : null;
+                    item.KPI_VAL_05 = item.KPI_VAL_05.HasValue ? item.KPI_VAL_05 : null;
+                    item.KPI_VAL_06 = item.KPI_VAL_06.HasValue ? item.KPI_VAL_06 : null;
+                    item.KPI_VAL_07 = item.KPI_VAL_07.HasValue ? item.KPI_VAL_07 : null;
+                    item.KPI_VAL_08 = item.KPI_VAL_08.HasValue ? item.KPI_VAL_08 : null;
+                    item.KPI_VAL_09 = item.KPI_VAL_09.HasValue ? item.KPI_VAL_09 : null;
+                    item.KPI_VAL_10 = item.KPI_VAL_10.HasValue ? item.KPI_VAL_10 : null;
+                    item.KPI_VAL_11 = item.KPI_VAL_11.HasValue ? item.KPI_VAL_11 : null;
+                    item.KPI_VAL_12 = item.KPI_VAL_12.HasValue ? item.KPI_VAL_12 : null;
                     sb.Append("     <td>").Append("<input type='text' class='form-control input-sm KPI_VAL_01' value='" + item.KPI_VAL_01 + "' title='" + item.KPI_VAL_01 + "' />").Append("</td>");
                     sb.Append("     <td>").Append("<input type='text' class='form-control input-sm KPI_VAL_02' value='" + item.KPI_VAL_02 + "' title='" + item.KPI_VAL_02 + "' />").Append("</td>");
                     sb.Append("     <td>").Append("<input type='text' class='form-control input-sm KPI_VAL_03' value='" + item.KPI_VAL_03 + "' title='" + item.KPI_VAL_03 + "' />").Append("</td>");

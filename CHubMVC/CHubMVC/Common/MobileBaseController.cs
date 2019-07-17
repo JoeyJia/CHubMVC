@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using CHubCommon;
 using System.Text;
+using CHubDBEntity;
 
 namespace CHubMVC
 {
@@ -29,12 +30,19 @@ namespace CHubMVC
         //    }
         //    return;
         //}
-        protected override void OnActionExecuted(ActionExecutedContext filterContext)
-        {
-            if (filterContext.HttpContext.Session[CHubConstValues.SessionUser] == null)
-            {
-                filterContext.HttpContext.Response.Redirect("/Mobile/Login");
-            }
-        }
+        //protected override void OnActionExecuted(ActionExecutedContext filterContext)
+        //{
+        //    if (filterContext.HttpContext.Session[CHubConstValues.SessionUser] == null)
+        //    {
+        //        filterContext.HttpContext.Response.Redirect("/Mobile/Login");
+        //    }
+        //}
+
+        //public APP_USERS appUser
+        //{
+        //    get {
+        //        return Session[CHubConstValues.SessionUser] as APP_USERS;
+        //    }
+        //}
     }
 }

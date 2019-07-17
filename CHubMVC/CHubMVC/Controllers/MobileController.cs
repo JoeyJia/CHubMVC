@@ -208,5 +208,82 @@ namespace CHubMVC.Controllers
             }
         }
 
+        public ActionResult LBTraceScan()
+        {
+            if (Session[CHubConstValues.SessionUser] == null)
+                return RedirectToAction("Login", "Mobile");
+
+            ViewBag.AppUser = Session[CHubConstValues.SessionUser].ToString();
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult LBTraceScanGetCUST(string DOC_NO)
+        {
+            LBTraceScan_BLL tBLL = new LBTraceScan_BLL();
+            try
+            {
+                var result = tBLL.LBTraceScanGetCUST(DOC_NO);
+                return Json(new RequestResult(result));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("mobile LBTraceScanGetCUST", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult LBTraceScanGetNum(string DOC_NO)
+        {
+            LBTraceScan_BLL tBLL = new LBTraceScan_BLL();
+            try
+            {
+                decimal Count = 0;decimal Total = 0;string color = string.Empty;
+                var count = tBLL.LBTraceScanGetCount(DOC_NO);
+                if (!string.IsNullOrEmpty(count))
+                    Count = Convert.ToDecimal(count);
+                var total = tBLL.LBTraceScanGetTotal(DOC_NO);
+                if (!string.IsNullOrEmpty(total))
+                    Total = Convert.ToDecimal(total);
+                if (Count < Total)
+                    color = "orange";
+                else
+                    color = "green";
+
+                return Json(new { Success = true, Count = Count, Total = Total, Color = color });
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("mobile lbtracescanGetNum", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult LBTraceScanComplete(string APP_USER,string DOC_NO, List<string> BARCODE)
+        {
+            LBTraceScan_BLL tBLL = new LBTraceScan_BLL();
+            try
+            {
+                if (BARCODE != null && BARCODE.Count() > 0)
+                {
+                    foreach (var code in BARCODE)
+                    {
+                        var SCAN_SEQ = tBLL.GetSeq();
+                        tBLL.LBTraceScanComplete(SCAN_SEQ, DOC_NO, code, APP_USER);
+                    }
+                    return Json(new RequestResult(true));
+                }
+                else
+                    return Json(new RequestResult(false, "No data"));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("mobile LBTraceScanComplete", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+            
     }
 }

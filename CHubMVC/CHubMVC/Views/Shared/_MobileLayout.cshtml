@@ -29,6 +29,9 @@
         .navbar {
             min-height: 30px;
         }
+        .navbar-nav {
+            margin:0;
+        }
     </style>
     <style type="text/css">
         @@media all and (max-width:230px) {
@@ -91,7 +94,7 @@
             <div class="navbar-collapse collapse ng-scope" ng-app="appLink" ng-controller="menuCtrl" style="display:block !important;">
                 <ul class="nav navbar-nav" id="jt" style="display:none;width:30px;float:left;">
                    <!--<li><a class="navbar-brand" href="/Mobile/Home">Home</a></li>--> 
-                    <li><span class="glyphicon glyphicon-chevron-left" style="margin: 5px 0 0 20px;color: rgb(153, 153, 153);cursor: pointer;width:  30px;height:  30px;font-size: 24px;"></span></li>
+                    <li><span class="glyphicon glyphicon-chevron-left" style="margin: 5px 0 0 5px;color: rgb(153, 153, 153);cursor: pointer;width:  30px;height:  30px;font-size: 24px;"></span></li>
                 </ul>
                 @Html.Partial("_MobileLoginPartial")
             </div>

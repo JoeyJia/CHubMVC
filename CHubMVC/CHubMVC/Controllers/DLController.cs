@@ -112,7 +112,7 @@ namespace CHubMVC.Controllers
                 bool hasTitle = true;
 
                 string fileName = hpf.FileName;
-                string extension = Path.GetExtension(fileName);//后缀名
+                string extension = Path.GetExtension(fileName).ToLower();//后缀名
 
                 //导入的时候要匹配当前LOAD_TYPE的LOAD_FMT文件后缀格式
                 string load_fmt = ilt.LOAD_FMT;

@@ -16,6 +16,7 @@ using System.Web.Mvc;
 using static CHubCommon.CHubEnum;
 using CHubMVC.Models;
 using System.IO;
+using CHubBLL.OtherProcess;
 
 namespace CHubMVC.Controllers
 {
@@ -654,6 +655,46 @@ namespace CHubMVC.Controllers
             }
             return View(vm);
         }
+
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult PrintIhubOA(string LOAD_FROM,string ORDER_NO)
+        {
+            ORDINQ_BLL oBLL = new ORDINQ_BLL();
+            try
+            {
+                var appUser = Session[CHubConstValues.SessionUser].ToString();
+                //权限检测
+                if (oBLL.CheckPrintSecurity("PRINT_IHUB_OA", appUser))
+                {
+                    //生成pdf
+                    var header = oBLL.SearchV_OA_H_PRINT(LOAD_FROM, ORDER_NO);
+                    if (header != null)
+                    {
+                        //根据OA_TYPE获取表头
+                        var title = oBLL.SearchOA_TYPE_MST(header.OA_TYPE);
+                        //获取明细
+                        var details = oBLL.SearchV_OA_D_PRINT(header.LOAD_FROM, header.ORDER_NO);
+                        
+                        string basePath = Server.MapPath(CHubConstValues.ChubTempFolder);
+                        IHUBOAPrintBLL printBLL = new IHUBOAPrintBLL(basePath);
+                        string fileName = printBLL.BuildIhubOAPrintFile(title,header,details);
+                        string webPath = "/temp/" + fileName;
+                        return Json(new RequestResult(webPath));
+                    }
+                    return Json(new RequestResult(false, "No Data"));
+                }
+                else
+                    return Json(new RequestResult(false, "You cannot Operate!"));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("ORDER PrintIhubOA", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
 
         [HttpPost]
         [Authorize]

@@ -114,6 +114,7 @@
     <Compile Include="Log\LogHelper.cs" />
     <Compile Include="Log\TxtLog.cs" />
     <Compile Include="PDFHelper\CusPDFDocument.cs" />
+    <Compile Include="PDFHelper\IHUBOAPageEventHelper.cs" />
     <Compile Include="PDFHelper\LabelEventHelper.cs" />
     <Compile Include="PDFHelper\PackPageEventHelper.cs" />
     <Compile Include="PDFHelper\LocalPageEventHelper.cs" />

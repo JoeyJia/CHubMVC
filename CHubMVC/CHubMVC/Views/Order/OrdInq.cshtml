@@ -69,7 +69,7 @@
                                     {
                                         tabClass = string.Empty;
                                     }
-                                <li class="@tabClass"><a href="#@tabLink" data-toggle="tab">@title</a></li>
+                                    <li class="@tabClass"><a href="#@tabLink" data-toggle="tab">@title</a></li>
                                     tabNum++;
                                 }
                             </ul>
@@ -169,6 +169,7 @@
                                         <div class="row">
                                             <div class="col-lg-12 col-md-12 col-sm-12">
                                                 <input type="button" class="btn btn-primary btn-sm btnTrack" data-load_from="@item.Order_H.LOAD_FROM" data-order_no="@item.Order_H.ORDER_NO" value="物流跟踪(30天内)" />
+                                                <input type="button" class="btn btn-primary btn-sm btnPrint" data-load_from="@item.Order_H.LOAD_FROM" data-order_no="@item.Order_H.ORDER_NO" value="Print IHUB OA" />
                                             </div>
                                         </div>
                                         <table class="table table-bordered" id="ORDER_DTable">
@@ -213,21 +214,21 @@
                                                                 dcolor = "";
                                                                 break;
                                                         }
-                                                        <tr>
-                                                            <td style="color:@dcolor;">@detail.STATUS_DESC</td>
-                                                            <td>@detail.LINE_NO</td>
-                                                            <td>@detail.PART_NO</td>
-                                                            <td>@detail.CATALOG_DESC</td>
-                                                            <td>@detail.REVISED_QTY_DUE</td>
-                                                            <td>@detail.QTY_RESERVED</td>
-                                                            <td>@detail.QTY_PICKED</td>
-                                                            <td style="color:@dcolor;">@detail.QTY_SHIPPED</td>
-                                                            <td>@detail.RDD.ToString("yyyy/MM/dd")</td>
-                                                            <td>@detail.DUE_DATE_CODE</td>
-                                                            <td>@detail.RELEASE_COMP_DESC</td>
-                                                            <td>@detail.WAREHOUSE</td>
-                                                            <td><input type="button" class="btn btn-primary btn-sm btnRelease" data-load_from="@detail.LOAD_FROM" data-order_no="@detail.ORDER_NO" data-line_no="@detail.LINE_NO" value="Release···" /></td>
-                                                        </tr>
+                                                <tr>
+                                                    <td style="color:@dcolor;">@detail.STATUS_DESC</td>
+                                                    <td>@detail.LINE_NO</td>
+                                                    <td>@detail.PART_NO</td>
+                                                    <td>@detail.CATALOG_DESC</td>
+                                                    <td>@detail.REVISED_QTY_DUE</td>
+                                                    <td>@detail.QTY_RESERVED</td>
+                                                    <td>@detail.QTY_PICKED</td>
+                                                    <td style="color:@dcolor;">@detail.QTY_SHIPPED</td>
+                                                    <td>@detail.RDD.ToString("yyyy/MM/dd")</td>
+                                                    <td>@detail.DUE_DATE_CODE</td>
+                                                    <td>@detail.RELEASE_COMP_DESC</td>
+                                                    <td>@detail.WAREHOUSE</td>
+                                                    <td><input type="button" class="btn btn-primary btn-sm btnRelease" data-load_from="@detail.LOAD_FROM" data-order_no="@detail.ORDER_NO" data-line_no="@detail.LINE_NO" value="Release···" /></td>
+                                                </tr>
                                                     }
                                                 }
                                             </tbody>
@@ -418,6 +419,39 @@
             })
 
         })
+
+
+        //Print
+        $(".btnPrint").on('click', function () {
+            var ORDER_NO = $(this).attr("data-order_no");
+            var LOAD_FROM = $(this).attr("data-load_from");
+
+            $("#loadingModal").modal("show");
+
+            $.ajax({
+                url: '/order/PrintIhubOA',
+                type: 'post',
+                data: {
+                    LOAD_FROM:LOAD_FROM,
+                    ORDER_NO:ORDER_NO
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success)
+                        window.open(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to print");
+                }
+            })
+        })
+
+
+
 
         $("#TrackModalTbody").on('click', '.btnViewTrack', function () {
             var TRACK_NUM = $(this).data().track_num;

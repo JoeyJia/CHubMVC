@@ -1,0 +1,254 @@
+﻿@{
+    ViewBag.Title = "LBTRACEINQ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    /*.table > tbody > tr > td {
+        width:25%;
+    }*/
+
+    .tdTitle {
+        width: 20%;
+        background-color: #f5f5f5;
+        font-weight: bold;
+    }
+</style>
+<div class="container-fluid" id="lbtraceinqDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Label Barcode</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="BARCODE" placeholder="Label Barcode" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">DOC No (Shipment No)</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="DOC_NO" placeholder="DOC No" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Search" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <table class="table table-bordered table-striped table-hover" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th style="width:6%;">DOC No</th>
+                                <th style="width:7%;">Bar code</th>
+                                <th>SHIP to Name</th>
+                                <th style="width:6%;">Scan Date</th>
+                                <th style="width:6%;">ship Date</th>
+                                <th style="width:6%;">Operator</th>
+                                <th>NOTE</th>
+                                <th style="width:5%;">OPT</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" id="myModalDialog" style="width:80%;">
+        <div class="modal-content">
+            <div class="modal-header panel-default" style="padding:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 50px; height: 50px; font-size: 30px;">
+                    &times;
+                </button>
+                <div class="modal-title panel-heading text-center" style="height:50px;font-size:22px;">
+                    Scan Documents details
+                </div>
+            </div>
+            <div class="modal-body panel-default" style="padding:0;">
+                <div class="panel-heading">
+                    <b>Ship Infor.</b>
+                </div>
+                <table class="table table-bordered">
+                    <tr>
+                        <td class="tdTitle">Shipment No</td>
+                        <td><span id="SHIPMENT_NO"></span></td>
+                        <td class="tdTitle">Warehouse</td>
+                        <td><span id="WAREHOUSE"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle">ABBR.</td>
+                        <td><span id="SHIP_TO_ABBR"></span></td>
+                        <td class="tdTitle">Dest Location</td>
+                        <td><span id="DEST_LOCATION"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle">ship Date</td>
+                        <td><span id="SHIP_DATE"></span></td>
+                        <td class="tdTitle">Scan Date</td>
+                        <td><span id="SCAN_DATE"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle">Barcode</td>
+                        <td><span id="Modal_BARCODE"></span></td>
+                        <td class="tdTitle">User</td>
+                        <td><span id="APP_USER"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle">NOTE</td>
+                        <td colspan="3"><span id="NOTE"></span></td>
+                    </tr>
+                </table>
+                <div class="panel-heading">
+                    <b>Customer Infor.</b>
+                </div>
+                <table class="table table-bordered">
+                    <tr>
+                        <td class="tdTitle">SHIP TO Name</td>
+                        <td colspan="3"><span id="LOCAL_SHIP_TO_NAME"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle">Contact</td>
+                        <td><span id="SHIP_TO_CONTACT"></span></td>
+                        <td class="tdTitle">Phone</td>
+                        <td><span id="SHIP_TO_PHONE"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle">SHIP TO ADDR 1</td>
+                        <td colspan="3"><span id="LOCAL_SHIP_TO_ADDR_1"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle">SHIP TO ADDR 2</td>
+                        <td colspan="3"><span id="LOCAL_SHIP_TO_ADDR_2"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle">SHIP TO ADDR 3</td>
+                        <td colspan="3"><span id="LOCAL_SHIP_TO_ADDR_3"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle">City</td>
+                        <td colspan="3"><span id="LOCAL_SHIP_TO_CITY"></span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@Html.Partial("_LoadingModal")
+<script>
+    $(document).ready(function () {
+        $("#btnSearch").on('click', function () {
+            $("#resultTbody").empty();
+            var BARCODE = $("#BARCODE").val();
+            var DOC_NO = $("#DOC_NO").val();
+
+            if (BARCODE == "" && DOC_NO == "") {
+                alert("Data Empty");
+                return false;
+            }
+
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/trc/LBTRACEINQSearch',
+                type: 'post',
+                data: {
+                    BARCODE: BARCODE,
+                    DOC_NO: DOC_NO
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success)
+                        $("#resultTbody").html(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+            })
+        })
+
+        $("#resultTbody").on('click', '.btnDetail', function () {
+            var $detail = $(this);
+            var SCAN_SEQ = $detail.attr("data-scan_seq");
+
+            //$("#myModal").modal("show");
+            $.ajax({
+                url: '/trc/LBTRACEINQDetail',
+                type: 'post',
+                data: {
+                    SCAN_SEQ: SCAN_SEQ
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        FillData(obj.Data);
+                        $("#myModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get detail");
+                }
+            })
+        })
+        function FillData(data) {
+            $("#SHIPMENT_NO").html(data.SHIPMENT_NO);
+            $("#WAREHOUSE").html(data.WAREHOUSE);
+            $("#SHIP_TO_ABBR").html(data.SHIP_TO_ABBR);
+            $("#DEST_LOCATION").html(data.DEST_LOCATION);
+            $("#SHIP_DATE").html(ConvertDateForm(data.SHIP_DATE));
+            $("#SCAN_DATE").html(ConvertDateForm(data.SCAN_DATE));
+            $("#Modal_BARCODE").html(data.BARCODE);
+            $("#APP_USER").html(data.APP_USER);
+            $("#NOTE").html(data.NOTE);
+            $("#LOCAL_SHIP_TO_NAME").html(data.LOCAL_SHIP_TO_NAME);
+            $("#SHIP_TO_CONTACT").html(data.SHIP_TO_CONTACT);
+            $("#SHIP_TO_PHONE").html(data.SHIP_TO_PHONE);
+            $("#LOCAL_SHIP_TO_ADDR_1").html(data.LOCAL_SHIP_TO_ADDR_1);
+            $("#LOCAL_SHIP_TO_ADDR_2").html(data.LOCAL_SHIP_TO_ADDR_2);
+            $("#LOCAL_SHIP_TO_ADDR_3").html(data.LOCAL_SHIP_TO_ADDR_3);
+            $("#LOCAL_SHIP_TO_CITY").html(data.LOCAL_SHIP_TO_CITY);
+        }
+
+        function ConvertDateForm(data) {
+            var date = new Date(data);
+            var year = date.getFullYear();
+            var month = (date.getMonth() + 1).toString();
+            var day = date.getDate().toString();
+            if (month.length == 1)
+                month = "0" + month;
+            if (day.length == 1)
+                day = "0" + day;
+            var dateTime = year + "/" + month + "/" + day;
+            return dateTime;
+        }
+
+    })
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $("#imgDiag").css("margin-top", "300px");
+    })
+</script>
+

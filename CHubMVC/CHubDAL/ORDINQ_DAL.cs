@@ -56,5 +56,31 @@ namespace CHubDAL
             return result;
         }
 
+        public bool CheckPrintSecurity(string SECURE_ID, string APP_USER)
+        {
+            var check = ccHelper.CheckSecurity(SECURE_ID, APP_USER);
+            return check;
+        }
+
+        public V_OA_H_PRINT SearchV_OA_H_PRINT(string LOAD_FROM, string ORDER_NO)
+        {
+            string sql = string.Format(@"select * from V_OA_H_PRINT where LOAD_FROM='{0}' and ORDER_NO='{1}'", LOAD_FROM, ORDER_NO);
+            var result = ccHelper.Search<V_OA_H_PRINT>(sql).FirstOrDefault();
+            return result;
+        }
+        public OA_TYPE_MST SearchOA_TYPE_MST(string OA_TYPE)
+        {
+            string sql = string.Format(@"select * from OA_TYPE_MST where OA_TYPE='{0}'", OA_TYPE);
+            var result = ccHelper.Search<OA_TYPE_MST>(sql).FirstOrDefault();
+            return result;
+        }
+        public List<V_OA_D_PRINT> SearchV_OA_D_PRINT(string LOAD_FROM, string ORDER_NO)
+        {
+            string sql = string.Format(@"select * from V_OA_D_PRINT where LOAD_FROM='{0}' and ORDER_NO='{1}' order by LINE_NO", LOAD_FROM, ORDER_NO);
+            var result = ccHelper.Search<V_OA_D_PRINT>(sql);
+            return result;
+        }
+
+
     }
 }

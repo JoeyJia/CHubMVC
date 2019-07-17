@@ -1,0 +1,202 @@
+﻿@{
+    ViewBag.Title = "TRC LBTRACEC";
+}
+<div class="container-fluid" id="lbtracecDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal" id="lbtracecForm">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Customer name</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="ADRNAM" placeholder="Customer name" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Warehouse</label>
+                    <div class="col-sm-2">
+                        <select class="form-control input-sm" id="WH_ID"></select>
+                    </div>
+                    <div class="col-sm-2" style="margin-top:8px;">
+                        <span id="DESCRIPTION"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-2 col-sm-offset-4">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Search" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <input type="button" class="btn btn-primary btn-sm" id="btnSave" value="Save" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <table class="table table-bordered table-striped table-hover" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th style="width:8%;">Warehouse</th>
+                                <th>Customer</th>
+                                <th style="width:7%;">Label Trace</th>
+                                <th style="width:8%;">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_LoadingModal")
+
+<script>
+    //获取WH_ID
+    $(function () {
+        $.ajax({
+            url: '/trc/GetWH_ID',
+            type: 'post',
+            data: {},
+            dataType: 'json',
+            success: function (obj) {
+                $("#WH_ID").empty();
+                if (obj.Success) {
+                    if (obj.Data != null && obj.Data.length > 0) {
+                        $("<option></option>").val("").text("").appendTo("#WH_ID");
+                        for (var i = 0; i < obj.Data.length; i++) {
+                            $("<option></option>").val(obj.Data[i].WH_ID).text(obj.Data[i].WH_ID + " " + obj.Data[i].DESCRIPTION).appendTo("#WH_ID");
+                        }
+                    }
+                }
+                else
+                    alert(obj.Msg);
+            },
+            error: function (e) {
+                alert("fail to get");
+            }
+        })
+    })
+
+    $(document).ready(function () {
+        $("#btnSearch").on('click', function () {
+            $('#resultTbody').empty();
+            var ADRNAM = $('#ADRNAM').val();
+            var WH_ID = $('#WH_ID').val();
+            if (ADRNAM == "") {
+                alert("Customer Name Empty");
+                return false;
+            }
+
+            $("#loadingModal").modal("show");
+
+            $.ajax({
+                url: '/trc/LBTRACECSearch',
+                type: 'post',
+                data: {
+                    ADRNAM: ADRNAM,
+                    WH_ID: WH_ID
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $('#resultTbody').html(obj.Data);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+            })
+        })
+
+        $('#WH_ID').on('change', function () {
+            var wh_id = $(this).val();
+            if (wh_id == "")
+                $("#DESCRIPTION").html("");
+            else {
+                $.ajax({
+                    url: '/trc/GetWH_ID_DESC',
+                    type: 'post',
+                    data: {
+                        WH_ID: wh_id
+                    },
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success) {
+                            $("#DESCRIPTION").html(obj.Data.DESCRIPTION);
+                        }
+                        else
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        alert("fail to get desc");
+                    }
+                })
+            }
+        })
+
+        $('#btnSave').on('click', function () {
+            var list = [];
+            var $tr = $("#resultTbody").find("tr");
+            if ($tr.length > 0) {
+                for (var i = 0; i < $tr.length; i++) {
+                    var $td = $($tr[i]).find("td");
+                    var WH_ID = $td.eq(0).text();
+                    var ADRNAM = $td.eq(1).text();
+                    var LABEL_TRACE = $td.find("input[type=checkbox]")[0].checked ? "Y" : "";
+                    list.push({
+                        WH_ID: WH_ID,
+                        ADRNAM: ADRNAM,
+                        LABEL_TRACE: LABEL_TRACE
+                    })
+                }
+
+                $("#loadingModal").modal("show");
+
+                $.ajax({
+                    url: '/trc/LBTRACECSave',
+                    type: 'post',
+                    data: JSON.stringify({
+                        list: list
+                    }),
+                    contentType: 'application/json;charset=utf-8',
+                    dataType: 'json',
+                    success: function (obj) {
+                        $("#loadingModal").modal("hide");
+                        if (!obj.Success)
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        $("#loadingModal").modal("hide");
+                        alert("fail to save");
+                    }
+                })
+            }
+            else
+                alert("No data");
+        })
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#imgDiag").css("margin-top", "300px");
+    })
+</script>

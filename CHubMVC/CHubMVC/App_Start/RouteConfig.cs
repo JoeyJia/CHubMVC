@@ -22,7 +22,7 @@ namespace CHubMVC
             routes.MapRoute(
                 name: "Mobiles",
                 url: "mobile/{action}/{id}",
-                defaults: new { controller = "Mobile", action = "Login", id = UrlParameter.Optional }
+                defaults: new { controller = "Mobile", action = "Home", id = UrlParameter.Optional }
             );
 
 
