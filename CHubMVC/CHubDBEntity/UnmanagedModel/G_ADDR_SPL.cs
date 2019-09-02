@@ -36,7 +36,7 @@ namespace CHubDBEntity.UnmanagedModel
         public string LOCAL_DEST_CITY { get; set; }
         public string LOCAL_DEST_COUNTRY { get; set; }
         public string LOCAL_DEST_STATE { get; set; }
-        public DateTime RECORD_DATE_OSDL { get; set; }
+        public DateTime? RECORD_DATE_OSDL { get; set; }
         public string ABBREVIATION { get; set; }
         public string DUE_DATE_CODE { get; set; }
     }

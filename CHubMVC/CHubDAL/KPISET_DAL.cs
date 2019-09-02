@@ -21,7 +21,7 @@ namespace CHubDAL
         public List<V_DASH_KPI_AUTH> GetKpiCode(string AppUser)
         {
             string sql = string.Format(@"select * from V_DASH_KPI_AUTH where APP_USER='{0}'", AppUser);
-            var result = ccHelper.Search<V_DASH_KPI_AUTH>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_DASH_KPI_AUTH>(sql);
             return result;
         }
 
@@ -34,7 +34,7 @@ namespace CHubDAL
                 sql += string.Format(@" and KPI_CODE='{0}'", KPI_CODE);
             if (!string.IsNullOrEmpty(KPI_YEAR))
                 sql += string.Format(@" and KPI_YEAR='{0}'", KPI_YEAR);
-            var result = ccHelper.Search<DASH_KPI_HISTORY>(sql);
+            var result = ccHelper.ExecuteSqlToList<DASH_KPI_HISTORY>(sql);
             return result;
         }
 

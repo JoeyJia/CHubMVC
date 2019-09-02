@@ -100,5 +100,10 @@ namespace CHubBLL
         {
             return dal.CallF_EXP_HSCODE_CHK_BY_LOD(LODNUM);
         }
+
+        public void RunP_RELOAD_SHIP_FROM_RP(string SHIP_ID)
+        {
+            dal.RunP_RELOAD_SHIP_FROM_RP(SHIP_ID);
+        }
     }
 }

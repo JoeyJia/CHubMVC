@@ -37,6 +37,7 @@
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <input type="button" class="btn btn-primary btn-sm" id="btnSave" value="Save" />
+                <input type="button" class="btn btn-primary btn-sm" id="btnDownload" value="download full list" />
             </div>
         </div>
         <div class="row">
@@ -191,6 +192,24 @@
             }
             else
                 alert("No data");
+        })
+
+        $("#btnDownload").on('click', function () {
+            $.ajax({
+                url: '/trc/LBTRACECDownload',
+                type: 'post',
+                data: {},
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success)
+                        window.location.href = '/trc/DownLoad?fileName=' + obj.Data;
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to download");
+                }
+            })
         })
     })
 </script>

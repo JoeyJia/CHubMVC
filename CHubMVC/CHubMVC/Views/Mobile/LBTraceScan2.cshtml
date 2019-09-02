@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "Mobile LBTraceScan2";
+    Layout = "~/Views/Shared/_MobileLayout.cshtml";
+}
+<style type="text/css">
+    /*.form-control {
+        height: 20px;
+    }*/
+</style>
+
+@Html.Hidden("appUser", (object)ViewBag.AppUser)
+<div class="container" id="lbtracescan2Div" style="margin-top:-10px;">
+    <div class="row">
+        <div class="form-group">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right" style="height:30px;;background-color:#f5f5f5;">
+                <label for="">Doc No</label>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <input type="text" class="form-control input-sm" id="DOC_NO" />
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:5px;">
+        <div class="form-group">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right" style="height:30px;background-color:#f5f5f5;">
+                <label for="">Barcode</label>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <input type="text" class="form-control input-sm" id="BARCODE" />
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:5px;">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" style="color:red;">
+            <span id="ErrorMsg"></span>
+        </div>
+    </div>
+    <div class="row" style="margin-top:5px;">
+        <div class="form-group">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right" style="height:30px;background-color:#f5f5f5;">
+                <label for="">History</label>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                <span id="History" style="font-size:10px;">
+                     
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#jt")[0].style.display = "";
+
+        $("#jt").on('click', function () {
+            window.location.href = "/mobile/home";
+        });
+        
+        var history = [];
+
+        $("#DOC_NO").select();
+
+        $("#DOC_NO").on('focus', function () {
+            $("#DOC_NO").select();
+        })
+
+
+        $("#DOC_NO").on('input propertychange', function () {
+            if ($("#DOC_NO").val() != null && $("#DOC_NO").val() != ""){
+                var DOC_NO = $("#DOC_NO").val();
+                var obj = DOC_NO.split('');
+                if (obj[9] == "-") {
+                    $("#BARCODE").select();
+                    $("#ErrorMsg").html("");
+                }
+                else {
+                    $("#DOC_NO").select();
+                    $("#ErrorMsg").html("DOC NO错误码，请重新扫描");
+                }
+                    
+            }
+                //$("#BARCODE").select();
+            else
+                $("#DOC_NO").select();
+        })
+
+        $("#BARCODE").on('input propertychange', function () {
+            var BARCODE = $("#BARCODE").val();
+            if (BARCODE.length != 12) {
+                $("#ErrorMsg").html("错误码，请重新扫描");
+                $("#BARCODE").select();
+            }
+            else {
+                $("#ErrorMsg").html("");
+                $.ajax({
+                    url: '/mobile/LBTraceScan2Complete',
+                    type: 'post',
+                    async: true,
+                    data: {
+                        DOC_NO: $("#DOC_NO").val(),
+                        BARCODE: BARCODE,
+                        APP_USER:$("#appUser").val()
+                    },
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success) {
+                            history.push($("#BARCODE").val() + " -> " + $("#DOC_NO").val());
+                            showHistory();
+                            $("#DOC_NO").val("");
+                            $("#DOC_NO").select();
+                            $("#BARCODE").val("");
+                        }
+                        else
+                            $("#History").html(obj.Msg);
+                    },
+                    error: function (e) {
+                        alert("fail to add");
+                    }
+                })
+
+            }
+        })
+
+        function showHistory() {
+            var html = "";
+            for (var i = 0; ; i++) {
+                if (i == 4)
+                    break;
+                if (history[history.length - 1 - i])
+                    html += history[history.length - 1 - i] + "<br />";
+            }
+            $("#History").html(html);
+        }
+    })
+</script>

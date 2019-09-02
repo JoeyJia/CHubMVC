@@ -54,14 +54,14 @@ namespace CHubDAL
             this.CheckCultureInfoForDate();
             string sql = string.Format(@"Update JD_ADDR_CONVERT set CONVERTED_ADDR='{0}',TERRITORY='{1}',UPDATED_BY='{2}',RECORD_DATE=to_date('{3}','yyyy-mm-dd hh24:mi:ss') where JID={4}", 
                                         adrmap.CONVERTED_ADDR,adrmap.TERRITORY, adrmap.UPDATED_BY, adrmap.RECORD_DATE.Value.ToString("yyyy-MM-dd HH:mm:ss"), adrmap.JID);
-            cchhelper.Update(sql);
+            cchhelper.ExecuteNonQuery(sql);
         }
 
         public List<JD_4_CLASS_MST> GetArea(string type, string province = null, string city = null, string county = null)
         {
             //string sql = GetSql(type, province, city, county);
             string sql = string.Format(@"select * from JD_4_CLASS_MST");
-            var result = cchhelper.Search<JD_4_CLASS_MST>(sql);
+            var result = cchhelper.ExecuteSqlToList<JD_4_CLASS_MST>(sql);
             return result;
         }
 
@@ -89,7 +89,7 @@ namespace CHubDAL
         public bool CheckSecurityOfAMSave(string SECURE_ID,string APP_USER)
         {
             string sql = string.Format(@"select * from APP_SECURE_PROC_ASSIGN where SECURE_ID='{0}' and APP_USER='{1}' and ACTIVEIND='Y'", SECURE_ID, APP_USER);
-            var result = cchhelper.Search<APP_SECURE_PROC_ASSIGN>(sql);
+            var result = cchhelper.ExecuteSqlToList<APP_SECURE_PROC_ASSIGN>(sql);
             if (result != null && result.Any())
                 return true;
             else

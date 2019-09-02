@@ -33,7 +33,7 @@ namespace CHubDAL
             if (!string.IsNullOrEmpty(ADDR_3))
                 sql += string.Format(@" and ADDR_3 like '%{0}%'", ADDR_3);
 
-            var result = cchelper.Search<V_XCEC_ADDR_ALL>(sql);
+            var result = cchelper.ExecuteSqlToList<V_XCEC_ADDR_ALL>(sql);
 
             return result;
         }
@@ -51,7 +51,7 @@ namespace CHubDAL
         public List<V_XCEC_ADDR_ALL> GetXcecAddrAll(string WAREHOUSE, string DEST_LOCATION)
         {
             string sql = string.Format(@"select * from V_XCEC_ADDR_ALL where WAREHOUSE='{0}' and DEST_LOCATION='{1}'", WAREHOUSE, DEST_LOCATION);
-            var result = cchelper.Search<V_XCEC_ADDR_ALL>(sql);
+            var result = cchelper.ExecuteSqlToList<V_XCEC_ADDR_ALL>(sql);
             return result;
         }
 
@@ -66,7 +66,7 @@ namespace CHubDAL
                                         UPDATED_BY='{4}',
                                         MATCH_FLAG='{5}',
                                         ALIAS_NAME='{6}' where XCEC_ADDR_SEQ='{7}'", addr.CUSTOMER_NO, addr.BILL_TO_LOCATION, addr.SHIP_TO_LOCATION, addr.DEST_LOCATION, User, "Y", addr.ALIAS_NAME, XCEC_ADDR_SEQ);
-            cchelper.Update(sql);
+            cchelper.ExecuteNonQuery(sql);
         }
 
 

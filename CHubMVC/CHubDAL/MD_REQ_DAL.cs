@@ -106,7 +106,7 @@ namespace CHubDAL
         public void SaveMD_REQ_HEADER(MD_REQ_HEADER mrHeader)
         {
             string sql = string.Format(@"insert into MD_REQ_HEADER(MD_REQ_NO,REQ_DESC,REQ_BY) values('{0}','{1}','{2}')", mrHeader.MD_REQ_NO, mrHeader.REQ_DESC, mrHeader.REQ_BY);
-            cchelper.Update(sql);
+            cchelper.ExecuteNonQuery(sql);
         }
 
         public void SaveMD_REQ_DETAIL(MD_REQ_DETAIL mrDetail)

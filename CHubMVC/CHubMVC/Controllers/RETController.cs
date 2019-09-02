@@ -743,7 +743,7 @@ namespace CHubMVC.Controllers
             RETMAIN_BLL rmBLL = new RETMAIN_BLL();
             try
             {
-                var result = rmBLL.GetRETURN_TYPEs().Select(a => a.RETURN_TYPE).ToList();
+                var result = rmBLL.GetRETURN_TYPEs().ToList();
                 return Json(new RequestResult(result));
             }
             catch (Exception ex)
@@ -988,6 +988,9 @@ namespace CHubMVC.Controllers
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
+                if (string.IsNullOrEmpty(dt.Rows[i][0].ToString()) && string.IsNullOrEmpty(dt.Rows[i][1].ToString()))
+                    break;
+
                 List<string> datas = new List<string>();
                 for (int j = 0; j < dt.Columns.Count; j++)
                 {

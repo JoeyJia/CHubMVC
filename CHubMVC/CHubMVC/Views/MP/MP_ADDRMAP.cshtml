@@ -1,0 +1,448 @@
+﻿@model CHubMVC.Models.MPModels
+@{
+    ViewBag.Title = "MP_ADDRMAP";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .form-group {
+        margin-bottom: 0;
+    }
+
+    #CustomerAddressTable > tbody > tr > td {
+        width: 16%;
+    }
+
+    #GOMSAddressTable > tbody > tr > td {
+        width: 16%;
+    }
+
+    .tdTitle {
+        background-color: #f5f5f5;
+    }
+</style>
+@using (Html.BeginForm("MP_ADDRMAP", "MP", FormMethod.Post, new { @name = "mp_addrmapForm", @id = "mp_addrmapForm", @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(m => m.appUser)
+    <div class="container-fluid" id="mp_addrmapDiv">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <b>Query</b>
+            </div>
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-2">Customer</label>
+                    <div class="col-sm-2">
+                        @*<input type="text" class="form-control input-sm" id="SHIP_NAME" placeholder="Customer" />*@
+                        @Html.TextBoxFor(m => m.addrSearchCondition.SHIP_NAME, new { @class = "form-control input-sm", @placeholder = "Customer" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-2">TERRITORY</label>
+                    <div class="col-sm-2">
+                        @*<input type="button" class="form-control input-sm" id="SHIP_TERRITORY" placeholder="TERRITORY" />*@
+                        @Html.TextBoxFor(m => m.addrSearchCondition.SHIP_TERRITORY, new { @class = "form-control input-sm", @placeholder = "TERRITORY" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-2">ADDR</label>
+                    <div class="col-sm-2">
+                        @*<input type="text" class="form-control input-sm" id="SHIP_ADDR" placeholder="ADDR" />*@
+                        @Html.TextBoxFor(m => m.addrSearchCondition.SHIP_ADDR, new { @class = "form-control input-sm", @placeholder = "ADDR" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-2">Status</label>
+                    <div class="col-sm-2">
+                        <label for="" class="radio-inline">
+                            @*<input type="radio" name="MAP_STATUS" id="MAP_STATUS_Q" value="Q" checked />Q*@
+                            @Html.RadioButtonFor(m => m.addrSearchCondition.MAP_STATUS, "Q", new { @id = "MAP_STATUS_Q", @checked = true })@Html.Raw("Q")
+                        </label>
+                        <label for="" class="radio-inline">
+                            @*<input type="radio" name="MAP_STATUS" id="MAP_STATUS_ALL" value="ALL" />ALL*@
+                            @Html.RadioButtonFor(m => m.addrSearchCondition.MAP_STATUS, "", new { @id = "MAP_STATUS_ALL" })@Html.Raw("ALL")
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-2">Last Days</label>
+                    <div class="col-sm-2">
+                        @*<input type="text" class="form-control input-sm" id="CREATE_DATE" value="7" />*@
+                        @Html.TextBoxFor(m => m.addrSearchCondition.LastDays, new { @class = "form-control input-sm" })
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="submit" class="btn btn-primary btn-sm" id="btnSearch" value="Search" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <b>Result</b>
+                        </div>
+                        <table class="table table-bordered table-hover" id="resultTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%;">OPT</th>
+                                    <th style="width: 3%;">Status</th>
+                                    <th style="width: 5%;">SEQ</th>
+                                    <th>Customer</th>
+                                    <th>TERRITORY</th>
+                                    <th>ADDR</th>
+                                    <th>Contact</th>
+                                    <th>Phone</th>
+                                    <th style="width: 4%;">ABBR</th>
+                                    <th style="width: 6%;">DEST LOC</th>
+                                    <th style="width: 5%;">SYSTEM</th>
+                                    <th style="width: 6%;">Create Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultTbody">
+                                @if (Model.addrCollection != null && Model.addrCollection.Any())
+                                {
+                                    foreach (var item in Model.addrCollection)
+                                    {
+                                <tr>
+                                    <td><input type="button" class="btn btn-primary btn-sm btnGomsAddr" value="GOMS Address" data-addrToken="@item.ADDR_TOKEN" data-toSystem="@item.TO_SYSTEM" data-abbr="@item.ABBR" data-destLocation="@item.DEST_LOCATION" /></td>
+                                    <td>@item.MAP_STATUS</td>
+                                    <td>@item.ADDR_TOKEN</td>
+                                    <td>@item.SHIP_NAME</td>
+                                    <td>@item.SHIP_TERRITORY</td>
+                                    <td>@item.SHIP_ADDR</td>
+                                    <td>@item.SHIP_CONTACT</td>
+                                    <td>@item.SHIP_MOBILE</td>
+                                    <td>@item.ABBR</td>
+                                    <td>@item.DEST_LOCATION</td>
+                                    <td>@item.TO_SYSTEM</td>
+                                    <td>@item.CREATE_DATE.ToString("yyyy/MM/dd")</td>
+                                </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addrMapModal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="addrMapModalLabel" data-backdrop="static">
+        <div class="modal-dialog" style="width:96%;">
+            <div class="modal-content">
+                <div class="modal-header" style="padding:0;height:30px;">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:30px;font-size:30px;">
+                        &times;
+                    </button>
+                </div>
+                <div class="modal-body" style="padding:0;">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <b>Customer  Address (MobileParts)</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <table class="table table-bordered" id="CustomerAddressTable">
+                                    <tr>
+                                        <td class="tdTitle">Customer</td>
+                                        <td id="modalSHIP_NAME"></td>
+                                        <td class="tdTitle">TERRITORY</td>
+                                        <td colspan="3" id="modalSHIP_TERRITORY"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdTitle">Addr</td>
+                                        <td id="modalSHIP_ADDR"></td>
+                                        <td class="tdTitle">Contact</td>
+                                        <td id="modalSHIP_CONTACT"></td>
+                                        <td class="tdTitle">Phone</td>
+                                        <td id="modalSHIP_MOBILE"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdTitle">SEQ</td>
+                                        <td id="modalADDR_TOKEN"></td>
+                                        <td class="tdTitle">ABBR</td>
+                                        <td id="modalABBR"></td>
+                                        <td class="tdTitle">system</td>
+                                        <td id="modalTO_SYSTEM"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdTitle">NOTE</td>
+                                        <td id="modalNOTE"></td>
+                                        <td class="tdTitle">DEST LOC</td>
+                                        <td id="modalDEST_LOCATION"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="panel-heading">
+                            <b>GOMS Address (Mapped)</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <table class="table table-bordered" id="GOMSAddressTable">
+                                    <tr>
+                                        <td class="tdTitle">Customer</td>
+                                        <td id="gomsLOCAL_DEST_NAME"></td>
+                                        <td class="tdTitle">ADDR1</td>
+                                        <td colspan="3" id="gomsLOCAL_DEST_ADDR_1"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdTitle">ADDR2</td>
+                                        <td id="gomsLOCAL_DEST_ADDR_2"></td>
+                                        <td class="tdTitle">ADDR3</td>
+                                        <td id="gomsLOCAL_DEST_ADDR_3"></td>
+                                        <td class="tdTitle">CITY</td>
+                                        <td id="gomsLOCAL_DEST_CITY"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdTitle">Contact</td>
+                                        <td id="gomsDEST_CONTACT"></td>
+                                        <td class="tdTitle">Phone</td>
+                                        <td id="gomsDEST_PHONE"></td>
+                                        <td class="tdTitle">ATTEN.</td>
+                                        <td id="gomsDEST_ATTENTION"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdTitle">DEST LOC</td>
+                                        <td id="gomsDEST_LOCATION"></td>
+                                        <td class="tdTitle">ABBR</td>
+                                        <td id="gomsABBREVIATION"></td>
+                                        <td class="tdTitle">SYSTEM</td>
+                                        <td id="gomsSYSID"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdTitle">Name （english)</td>
+                                        <td id="gomsNAME"></td>
+                                        <td class="tdTitle">Record Date</td>
+                                        <td id="gomsRECORD_DATE_OSDL"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="panel-heading">
+                            <b>Mapping/Re-Mapping</b>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="" class="control-label col-sm-2">Key Words</label>
+                                <div class="col-sm-2">
+                                    <input type="text" class="form-control input-sm" id="keyWords" />
+                                </div>
+                                <div class="col-sm-2">
+                                    <input type="button" class="btn btn-primary btn-sm" id="btnkeyWordSearch" value="Search" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <table class="table table-bordered" id="mapTable">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 3%;"></th>
+                                            <th>Name</th>
+                                            <th>ADDR1</th>
+                                            <th>ADDR2</th>
+                                            <th>ADDR3</th>
+                                            <th>Contact</th>
+                                            <th>Phone</th>
+                                            <th>ABBR</th>
+                                            <th>Record Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="mapTbody"></tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="9" class="text-right">
+                                                <input type="button" class="btn btn-primary btn-sm" id="btnConfirm" value="Confirm" />
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_LoadingModal")
+
+    <script>
+        $(document).ready(function () {
+            //$("#addrSearchCondition_LastDays").val("7");
+
+            var ADDR_TOKEN;
+            var ABBR;
+            var TO_SYSTEM;
+
+            $("#resultTbody").on('click', '.btnGomsAddr', function () {
+                var $btn = $(this);
+                ADDR_TOKEN = $btn.attr("data-addrToken");
+                TO_SYSTEM = $btn.attr("data-toSystem");
+                ABBR = $btn.attr("data-abbr");
+                var DEST_LOCATION = $btn.attr("data-destLocation");
+
+                $("#loadingModal").modal("show");
+                $.ajax({
+                    url: '/mp/GetMP_ADDRMAP_Detail',
+                    type: 'post',
+                    data: {
+                        ADDR_TOKEN: ADDR_TOKEN,
+                        TO_SYSTEM: TO_SYSTEM,
+                        ABBR: ABBR,
+                        DEST_LOCATION: DEST_LOCATION
+                    },
+                    dataType: 'json',
+                    success: function (obj) {
+                        $("#loadingModal").modal("hide");
+                        if (obj.Success) {
+                            FillData(obj.ca, obj.ga);
+                            $("#keyWords").val("");
+                            $("#mapTbody").html("");
+                            $("#addrMapModal").modal("show");
+                        }
+                        else
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        $("#loadingModal").modal("hide");
+                        alert("fail to get");
+                    }
+                })
+            })
+
+            function FillData(ca, ga) {
+                if (ca != null) {
+                    $("#modalSHIP_NAME").html(ca.SHIP_NAME);
+                    $("#modalSHIP_TERRITORY").html(ca.SHIP_TERRITORY);
+                    $("#modalSHIP_ADDR").html(ca.SHIP_ADDR);
+                    $("#modalSHIP_CONTACT").html(ca.SHIP_CONTACT);
+                    $("#modalSHIP_MOBILE").html(ca.SHIP_MOBILE);
+                    $("#modalADDR_TOKEN").html(ca.ADDR_TOKEN);
+                    $("#modalABBR").html(ca.ABBR);
+                    $("#modalTO_SYSTEM").html(ca.TO_SYSTEM);
+                    $("#modalNOTE").html(ca.NOTE);
+                    $("#modalDEST_LOCATION").html(ca.DEST_LOCATION);
+                }
+
+                if (ga != null) {
+                    $("#gomsLOCAL_DEST_NAME").html(ga.LOCAL_DEST_NAME);
+                    $("#gomsLOCAL_DEST_ADDR_1").html(ga.LOCAL_DEST_ADDR_1);
+                    $("#gomsLOCAL_DEST_ADDR_2").html(ga.LOCAL_DEST_ADDR_2);
+                    $("#gomsLOCAL_DEST_ADDR_3").html(ga.LOCAL_DEST_ADDR_3);
+                    $("#gomsLOCAL_DEST_CITY").html(ga.LOCAL_DEST_CITY);
+                    $("#gomsDEST_CONTACT").html(ga.DEST_CONTACT);
+                    $("#gomsDEST_PHONE").html(ga.DEST_PHONE);
+                    $("#gomsDEST_ATTENTION").html(ga.DEST_ATTENTION);
+                    $("#gomsDEST_LOCATION").html(ga.DEST_LOCATION);
+                    $("#gomsABBREVIATION").html(ga.ABBREVIATION);
+                    $("#gomsSYSID").html(ga.SYSID);
+                    $("#gomsNAME").html(ga.NAME);
+                    var date = new Date(ga.RECORD_DATE_OSDL);
+                    var year = date.getFullYear() + "/"; //+ (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : "0" + (date.getMonth() + 1) + "/" + date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
+                    var month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : "0" + (date.getMonth() + 1) + "/";
+                    var day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
+                    var dd = year + month + day;
+                    $("#gomsRECORD_DATE_OSDL").html(dd);
+                }
+                else {
+                    $("#gomsLOCAL_DEST_NAME").html("");
+                    $("#gomsLOCAL_DEST_ADDR_1").html("");
+                    $("#gomsLOCAL_DEST_ADDR_2").html("");
+                    $("#gomsLOCAL_DEST_ADDR_3").html("");
+                    $("#gomsLOCAL_DEST_CITY").html("");
+                    $("#gomsDEST_CONTACT").html("");
+                    $("#gomsDEST_PHONE").html("");
+                    $("#gomsDEST_ATTENTION").html("");
+                    $("#gomsDEST_LOCATION").html("");
+                    $("#gomsABBREVIATION").html("");
+                    $("#gomsSYSID").html("");
+                    $("#gomsNAME").html("");
+                    $("#gomsRECORD_DATE_OSDL").html("");
+                }
+
+
+            }
+
+            $("#btnkeyWordSearch").on('click', function () {
+                var keyWord = $("#keyWords").val();
+
+                $("#btnkeyWordSearch").button("loading");
+                $("#mapTbody").empty();
+                $.ajax({
+                    url: '/mp/GetGomsAddressByKeyWord',
+                    type: 'post',
+                    data: {
+                        keyWord: keyWord,
+                        TO_SYSTEM: TO_SYSTEM,
+                        ABBR:ABBR
+                    },
+                    dataType: 'json',
+                    success: function (obj) {
+                        $("#btnkeyWordSearch").button("reset");
+                        if (obj.Success) {
+                            $("#mapTbody").html(obj.Data);
+                        }
+                        else
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        $("#btnkeyWordSearch").button("reset");
+                        alert("fail to get");
+                    }
+                })
+            })
+
+            $("#btnConfirm").on('click', function () {
+                if (confirm("Double Confirm?")) {
+                    var $radio = $("#mapTbody input[name=Radio]:checked");
+                    if ($radio.length > 0) {
+                        var SYSID = $radio.attr("data-sysid");
+                        var ABBREVIATION = $radio.attr("data-abbr");
+                        var DEST_LOCATION = $radio.attr("data-destLocation");
+
+                        $.ajax({
+                            url: "/mp/MP_ADDRMAP_Confirm",
+                            type: 'post',
+                            data: {
+                                ADDR_TOKEN: ADDR_TOKEN,
+                                SYSID: SYSID,
+                                ABBREVIATION: ABBREVIATION,
+                                DEST_LOCATION: DEST_LOCATION,
+                                APP_USER: $("#appUser").val()
+                            },
+                            dataType: 'json',
+                            success: function (obj) {
+                                if (obj.Success)
+                                    FillData(null, obj.Data);
+                                else
+                                    alert(obj.Msg);
+                            },
+                            error: function (e) {
+                                alert("fail to Confirm");
+                            }
+                        })
+                    }
+                    else
+                        alert("请先选择！");
+                }
+            })
+
+            $(".close").on('click', function () {
+                $("#btnSearch").click();
+            })
+        })
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#imgDiag").css("margin-top", '300px');
+        })
+    </script>
+}

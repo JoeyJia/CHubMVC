@@ -24,7 +24,7 @@ namespace CHubDAL
             string sql = string.Format(@"select * from V_RET_PART_RESTRICT where 1=1");
             if (!string.IsNullOrEmpty(PART_NO))
                 sql += string.Format(@" and PART_NO like '%{0}%'", PART_NO);
-            var result = ccHelper.Search<V_RET_PART_RESTRICT>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_RET_PART_RESTRICT>(sql);
             return result;
 
         }

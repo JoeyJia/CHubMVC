@@ -56,7 +56,7 @@ namespace CHubDAL
         {
             string sql = string.Format(@"Insert into APP_PAGES_USAGE(PAGE_NAME,APP_USER,ACTIVITY_DATE,NOTE)
                                     Values('{0}','{1}',sysdate,'')", PAGE_NAME, appUser);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
     }

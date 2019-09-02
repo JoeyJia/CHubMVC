@@ -14,27 +14,27 @@
 <title>@ViewBag.Title</title>
 <style type="text/css">
     .form-control {
-        font-size:32px;
-        height:75px;
+        font-size:22px;
+        height:55px;
     }
     .btn {
-        font-size:32px;
+        font-size:22px;
     }
 </style>
 
 <body>
-    <div class="container-fluid" style="width:100%;height:87.5%;">
+    <div class="container" style="width:100%;height:87.5%;">
         <div class="row" @*style="margin-top:5%;"*@>
             <div class="col-md-12 col-sm-12 text-center">
                 <img src="/Images/hubLogo.png" style="height:55px;">
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12 col-sm-12" style="background-color:#C32518;height:545px;">
+            <div class="col-md-12 col-sm-12" style="background-color:#C32518;height:435px;">
                 <div class="row">
-                    <div class="col-md-2 col-sm-2"></div>
-                    <div class="col-md-8 col-sm-8">
-                        <div class="panel panel-default" style="height:425px;background-color:#eee;margin-top:50px">
+                    @*<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">*@
+                        <div class="panel panel-default" style="height:365px;background-color:#eee;margin-top:50px">
                             <section id="loginform">
                                 @using (Html.BeginForm("Login", "Mobile", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                                 {
@@ -42,14 +42,14 @@
                                 <div class="panel panel-default" style="height:75%;">
                                     <div class="form-group" style="margin-top:20px">
                                         <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1">
-                                            <label for="" style="font-size:32px;">User Name:</label>
+                                            <label for="" style="font-size:20px;">User Name:</label>
                                             @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @id = "userName", @placeholder = "Your WWID", @required = "required" })
                                             @*<input type="text" id="username" name="username" class="form-control" placeholder="Your WWID" value="" />*@
                                         </div>
                                     </div>
                                     <div class="form-group" style="margin-top:20px">
                                         <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1">
-                                            <label for="" style="font-size:32px;">PassWord:</label>
+                                            <label for="" style="font-size:20px;">PassWord:</label>
                                             @Html.PasswordFor(m => m.Password, new { @class = "form-control", @id = "pwd", @placeholder = "Your CED Password" })
                                             @Html.ValidationSummary()
                                             @*<input type="text" id="password" name="password" class="form-control" placeholder="Your CED Password" value="" />*@
@@ -64,8 +64,8 @@
                                 }
                             </section>
                         </div>
-                    </div>
-                    <div class="col-md-2 col-sm-2"></div>
+                    @*</div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>*@
                 </div>
             </div>
         </div>

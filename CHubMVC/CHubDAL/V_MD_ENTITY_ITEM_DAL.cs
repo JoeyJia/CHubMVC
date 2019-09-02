@@ -19,7 +19,7 @@ namespace CHubDAL
         public List<V_MD_ENTITY_ITEM> MDJvItemSearch(string Part_NO)
         {
             string sql = string.Format(@"select * from V_MD_ENTITY_ITEM where PART_NO like '%{0}%'", Part_NO);
-            var result = cchelper.Search<V_MD_ENTITY_ITEM>(sql);
+            var result = cchelper.ExecuteSqlToList<V_MD_ENTITY_ITEM>(sql);
             return result;
         }
     }

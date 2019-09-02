@@ -75,30 +75,34 @@
             <div class="row">
                 <div class="form-group">
                     <label for="" class="col-sm-2 control-label">Customer No: </label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
                         <select class="form-control input-sm" id="txtINPUT1">
                             <option value=""></option>
                         </select>
                     </div>
-                    <label for="" class="col-sm-2 control-label">Return Type:</label>
+                    <label for="" class="col-sm-1 control-label">Return Type:</label>
                     <div class="col-sm-2">
                         <select class="form-control input-sm" id="txtINPUT2">
                             <option value=""></option>
                         </select>
                     </div>
-                    <div class="col-sm-2" style="padding:6px;">
+                    <div class="col-sm-1" style="padding:4px;">
                         <span id="txtTYPE_DESC"></span>
+                    </div>
+                    <label for="" class="col-sm-1 control-label">NOTE:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="txtINPUT3" />
                     </div>
                 </div>
             </div>
-            <div class="row" style="display:none">
+            @*<div class="row" style="display:none">
                 <div class="form-group">
                     <label for="" class="col-sm-2 control-label">INPUT3</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="txtINPUT3" value="" />
                     </div>
                 </div>
-            </div>
+            </div>*@
         </form>
         <div class="row">
             <div class="form-group">
@@ -389,24 +393,26 @@
             $("#tdREQ_STATUS").html(REQ_STATUS_HTML);
         }
         function BtnCanClick(td) {
-            //btnReVerify,btnSave状态是NEW和SUBMITED时可用
+            //btnReVerify,btnSave,btnCancel状态是NEW和SUBMITED时可用
             if (!(REQ_STATUS == "NEW" || REQ_STATUS == "SUBMITTED")) {
                 $("#btnReVerify").attr("disabled", true);
                 $("#btnSave").attr("disabled", true);
+                $("#btnCancel").attr("disabled", true);
             }
             else {
                 $("#btnReVerify").attr("disabled", false);
                 $("#btnSave").attr("disabled", false);
+                $("#btnCancel").attr("disabled", false);
             }
                 
-            //btnCancel,btnSubmit状态是NEW时可用
+            //btnSubmit状态是NEW时可用
             if (!(REQ_STATUS == "NEW")) {
-                $("#btnCancel").attr("disabled", true);
+                //$("#btnCancel").attr("disabled", true);
                 $("#btnSubmit").attr("disabled", true);
                 $("#btnNewLine").attr("disabled", true);
             }
             else {
-                $("#btnCancel").attr("disabled", false);
+                //$("#btnCancel").attr("disabled", false);
                 $("#btnSubmit").attr("disabled", false);
                 $("#btnNewLine").attr("disabled", false);
             }
@@ -1015,7 +1021,7 @@
                 if (obj.Success) {
                     if (obj.Data != null && obj.Data.length > 0) {
                         for (var i = 0; i < obj.Data.length; i++) {
-                            $("<option></option>").text(obj.Data[i]).val(obj.Data[i]).appendTo("#txtINPUT2");
+                            $("<option></option>").text(obj.Data[i].RETURN_TYPE + " " + obj.Data[i].TYPE_DESC).val(obj.Data[i].RETURN_TYPE).appendTo("#txtINPUT2");
                         }
                     }
                 }
@@ -1112,7 +1118,7 @@
             var LOAD_TYPE = $("#txtLOAD_TYPE").val();
             var INPUT1 = $("#txtINPUT1").val();
             var INPUT2 = $("#txtINPUT2").val();
-            var INPUT3 = ""; //$("#txtINPUT3").val() 后期用
+            var INPUT3 = $("#txtINPUT3").val(); //$("#txtINPUT3").val() 后期用
 
             var path = $("#retmainloadInput").val();
             if (path == "") {
@@ -1123,6 +1129,10 @@
             //都不能为空
             if (LOAD_TYPE == "" || INPUT1 == "" || INPUT2 == "") {
                 alert("No data select!");
+                return false;
+            }
+            if (INPUT3 == "") {
+                alert("No note input!");
                 return false;
             }
 

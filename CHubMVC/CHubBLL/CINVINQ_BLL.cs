@@ -58,5 +58,9 @@ namespace CHubBLL
         {
             return dal.RunSql(sql);
         }
+        public void SureToReDiscard(string COMM_INV_ID)
+        {
+            dal.SureToReDiscard(COMM_INV_ID);
+        }
     }
 }

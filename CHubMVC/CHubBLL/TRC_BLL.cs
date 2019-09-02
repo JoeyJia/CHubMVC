@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity.UnmanagedModel;
+using System.Data;
 
 namespace CHubBLL
 {
@@ -42,7 +43,7 @@ namespace CHubBLL
         }
         public List<V_G_PART_ADDTIONAL> LBTRACEPSearch(string PART_NO, int RowStart, int RowEnd)
         {
-            return dal.LBTRACEPSearch(PART_NO,RowStart,RowEnd);
+            return dal.LBTRACEPSearch(PART_NO, RowStart, RowEnd);
         }
         public bool LBTRACEPCheck(V_G_PART_ADDTIONAL item)
         {
@@ -59,6 +60,38 @@ namespace CHubBLL
         public V_TRC_SCAN_HISTORY LBTRACEINQDetail(string SCAN_SEQ)
         {
             return dal.LBTRACEINQDetail(SCAN_SEQ);
+        }
+        public DataTable LBTRACECDownload()
+        {
+            return dal.LBTRACECDownload();
+        }
+        public DataTable LBTRACEPDownload()
+        {
+            return dal.LBTRACEPDownload();
+        }
+        public List<V_TRC_AUTO_SETUP> LBAutoSetupSearch(string KEY_WORD)
+        {
+            return dal.LBAutoSetupSearch(KEY_WORD);
+        }
+        public string GetLBAutoSetupSeq()
+        {
+            return dal.GetLBAutoSetupSeq();
+        }
+        public void LBAutoSetupAddOrUpdate(V_TRC_AUTO_SETUP item, string type)
+        {
+            dal.LBAutoSetupAddOrUpdate(item, type);
+        }
+        public void LBAutoSetupApplyAll()
+        {
+            dal.LBAutoSetupApplyAll();
+        }
+        public DataTable LBAutoSetupDownload()
+        {
+            return dal.LBAutoSetupDownload();
+        }
+        public List<RP_ADR_MST_NEW> LBAutoSetupShowList(string WH_ID, string KEY_WORD)
+        {
+            return dal.LBAutoSetupShowList(WH_ID, KEY_WORD);
         }
     }
 }

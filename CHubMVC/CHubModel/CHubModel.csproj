@@ -89,6 +89,7 @@
     <Compile Include="WebArg\MDReqSRArg.cs" />
     <Compile Include="WebArg\MDSRLOADArg.cs" />
     <Compile Include="WebArg\MobilePageArg.cs" />
+    <Compile Include="WebArg\MPMainArg.cs" />
     <Compile Include="WebArg\OrderLineBatchCheckArg.cs" />
     <Compile Include="WebArg\OrderLineCheckArg.cs" />
     <Compile Include="WebArg\OrderLineItem.cs" />

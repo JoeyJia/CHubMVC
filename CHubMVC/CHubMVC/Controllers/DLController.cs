@@ -123,7 +123,7 @@ namespace CHubMVC.Controllers
                 string delimiter = ilt.DELIMITER;//csv文件用，分隔符
 
                 //获取集合
-                List<IHUB_LOAD_BASE> ilbs = GetLists(hpf, extension, first_row, delimiter,ref hasTitle);
+                List<IHUB_LOAD_BASE> ilbs = GetLists(hpf, extension, first_row, delimiter, ref hasTitle);
 
                 string LOAD_BATCH = dBLL.GetLOAD_BATCH();
                 string LOAD_BY = Session[CHubConstValues.SessionUser].ToString();
@@ -192,7 +192,7 @@ namespace CHubMVC.Controllers
         /// <param name="first_row">从第几行开始导入</param>
         /// <param name="delimiter">csv文件用，分隔符</param>
         /// <returns></returns>
-        public List<IHUB_LOAD_BASE> GetLists(HttpPostedFileBase hpf, string extension, decimal first_row, string delimiter,ref bool hasTitle)
+        public List<IHUB_LOAD_BASE> GetLists(HttpPostedFileBase hpf, string extension, decimal first_row, string delimiter, ref bool hasTitle)
         {
             List<IHUB_LOAD_BASE> ilbs = new List<IHUB_LOAD_BASE>();
 
@@ -213,7 +213,7 @@ namespace CHubMVC.Controllers
             {
                 if (extension == ".xls" || extension == ".xlsx")//excel
                 {
-                    ilbs = EXCELToList(fileFullName,first_row,ref hasTitle);
+                    ilbs = EXCELToList(fileFullName, first_row, ref hasTitle);
                     //NPOIExcelHelper npoiHelper = new NPOIExcelHelper(fileFullName);
                     //DataTable dt = npoiHelper.ExcelToDataTable();
                     //System.IO.File.Delete(fileFullName);
@@ -240,7 +240,7 @@ namespace CHubMVC.Controllers
         }
 
 
-        public List<IHUB_LOAD_BASE> EXCELToList(string fileName,decimal first_row,ref bool hasTitle)
+        public List<IHUB_LOAD_BASE> EXCELToList(string fileName, decimal first_row, ref bool hasTitle)
         {
             List<IHUB_LOAD_BASE> ilbs = new List<IHUB_LOAD_BASE>();
 
@@ -257,9 +257,12 @@ namespace CHubMVC.Controllers
 
             if (dt == null && dt.Rows.Count == 0)
                 return ilbs;
-            
+
             for (int i = 0; i < dt.Rows.Count; i++)
             {
+                if (string.IsNullOrEmpty(dt.Rows[i][0].ToString()) && string.IsNullOrEmpty(dt.Rows[i][1].ToString()))
+                    break;
+
                 List<string> datas = new List<string>();
                 for (int j = 0; j < dt.Columns.Count; j++)
                 {
@@ -378,7 +381,7 @@ namespace CHubMVC.Controllers
                     ilbs.Add(item);
                 }
             }
-            
+
             return ilbs;
         }
 

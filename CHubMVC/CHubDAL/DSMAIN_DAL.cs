@@ -36,7 +36,7 @@ namespace CHubDAL
                 sql += string.Format(@" and STATUS_CODE='{0}'", arg.STATUS_CODE);
             if (!string.IsNullOrEmpty(arg.ORDER_DATE))
                 sql += string.Format(@" and ORDER_DATE>=sysdate-{0}", Convert.ToDecimal(arg.ORDER_DATE));
-            var result = ccHelper.Search<V_DS_ORDER_BASE>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_DS_ORDER_BASE>(sql);
             return result;
         }
 
@@ -48,7 +48,7 @@ namespace CHubDAL
         public List<V_IHUB_OA_BASE> DSMAINMore(string PO_NO, string PART_NO)
         {
             string sql = string.Format(@"select * from V_IHUB_OA_BASE where PO_NO='{0}' and PART_NO='{1}'", PO_NO, PART_NO);
-            var result = ccHelper.Search<V_IHUB_OA_BASE>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_IHUB_OA_BASE>(sql);
             return result;
         }
 

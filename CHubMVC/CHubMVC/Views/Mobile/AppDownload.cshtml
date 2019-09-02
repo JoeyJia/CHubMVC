@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "IHUB APP Download";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        #myDiv {
+            height:100%;
+            width:100%;
+            overflow:hidden;
+            /*display:table-cell;*/
+            text-align:center;
+            vertical-align:middle;
+        }
+        #myDiv img{
+            margin-top:10%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid" style="height:100%;width:100%;">
+        <div class="row" id="myDiv">
+            <img src="~/Images/IhubApp.png" />
+        </div>
+    </div>
+</body>
+</html>

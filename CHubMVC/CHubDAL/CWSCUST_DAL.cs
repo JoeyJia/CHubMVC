@@ -20,7 +20,7 @@ namespace CHubDAL
         public List<APP_OECUSTOMER_MST> CwsCustSearch(string CUSTOMER_NO)
         {
             string sql = string.Format(@"select * from APP_OECUSTOMER_MST where CUSTOMER_NO like '%{0}%'", CUSTOMER_NO);
-            var result = ccHelper.Search<APP_OECUSTOMER_MST>(sql);
+            var result = ccHelper.ExecuteSqlToList<APP_OECUSTOMER_MST>(sql);
             return result;
         }
 

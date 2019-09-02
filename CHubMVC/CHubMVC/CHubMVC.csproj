@@ -224,6 +224,7 @@
     <Compile Include="Controllers\MDController.cs" />
     <Compile Include="Controllers\MobileController.cs" />
     <Compile Include="Controllers\MPController.cs" />
+    <Compile Include="Controllers\PRCController.cs" />
     <Compile Include="Controllers\RETController.cs" />
     <Compile Include="Controllers\RPController.cs" />
     <Compile Include="Controllers\KPIController.cs" />
@@ -322,6 +323,7 @@
     <Content Include="Images\ico\SPDC.ico" />
     <Content Include="Images\ico\Zheng.ico" />
     <Content Include="Images\ico\Zhi.ico" />
+    <Content Include="Images\IhubApp.png" />
     <Content Include="Images\inprogress.jpg" />
     <Content Include="Images\liugong.jpg" />
     <Content Include="Images\loading.gif" />
@@ -551,6 +553,13 @@
     <Content Include="Views\Mobile\LBTraceScan.cshtml" />
     <Content Include="Views\MP\MP_CUSTBANK.cshtml" />
     <Content Include="Template\template_Bank_Receipt_load_V1.xls" />
+    <Content Include="Views\Test\TestForm.cshtml" />
+    <Content Include="Views\Mobile\LBTraceScan2.cshtml" />
+    <Content Include="Views\MP\MP_ADDRMAP.cshtml" />
+    <Content Include="Views\PRC\PRCBench.cshtml" />
+    <Content Include="Views\Mobile\AppDownload.cshtml" />
+    <Content Include="Views\TRC\LBAutoSetup.cshtml" />
+    <Content Include="Views\MP\MP_MAIN.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

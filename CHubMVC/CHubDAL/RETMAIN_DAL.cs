@@ -26,14 +26,14 @@ namespace CHubDAL
                 sql += string.Format(@" and RET_REQ_NO='{0}'", RET_REQ_NO);
             if (!string.IsNullOrEmpty(REQ_DATE))
                 sql += string.Format(@" and REQ_DATE>sysdate-{0}", Convert.ToDecimal(REQ_DATE));
-            var result = ccHelper.Search<V_RET_REQ_H>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_RET_REQ_H>(sql);
             return result;
         }
 
         public List<V_RET_REQ_D> GetRetMainDetailModal(string RET_REQ_NO)
         {
             string sql = string.Format(@"select * from  V_RET_REQ_D where ret_req_no ='{0}' order by LINE_NO", RET_REQ_NO);
-            var result = ccHelper.Search<V_RET_REQ_D>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_RET_REQ_D>(sql);
             return result;
         }
         public List<V_RET_REQ_D> GetRetMainDetailByRejectReason(string RET_REQ_NO, string REJECT_REASON)
@@ -42,21 +42,21 @@ namespace CHubDAL
             if (!string.IsNullOrEmpty(REJECT_REASON))
                 sql += string.Format(@" and REJECT_REASON='{0}'", REJECT_REASON);
             sql += string.Format(@" order by LINE_NO");
-            var result = ccHelper.Search<V_RET_REQ_D>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_RET_REQ_D>(sql);
             return result;
         }
 
         public List<RET_PART_GROUP> GetPART_GROUP()
         {
             string sql = string.Format(@"select * from RET_PART_GROUP");
-            var result = ccHelper.Search<RET_PART_GROUP>(sql);
+            var result = ccHelper.ExecuteSqlToList<RET_PART_GROUP>(sql);
             return result;
         }
 
         public void DeleteFromRET_REQ_D(string RET_REQ_NO, string LINE_NO)
         {
             string sql = string.Format(@"delete from RET_REQ_D where RET_REQ_NO='{0}' and LINE_NO='{1}'", RET_REQ_NO, LINE_NO);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
         public void SaveRET_REQ_D(RET_REQ_DArg arg, string RET_REQ_NO)
@@ -64,7 +64,7 @@ namespace CHubDAL
             string sql = string.Empty;
             OracleParameter[] param = null;
             string existSql = string.Format(@"select * from V_RET_REQ_D where RET_REQ_NO='{0}' and LINE_NO='{1}'", RET_REQ_NO, arg.LINE_NO);
-            var result = ccHelper.Search<V_RET_REQ_D>(existSql);
+            var result = ccHelper.ExecuteSqlToList<V_RET_REQ_D>(existSql);
             //更新
             if (result != null && result.Count() > 0)
             {
@@ -127,7 +127,7 @@ namespace CHubDAL
         public void UpdateREQ_STATUS(string REQ_STATUS, string RET_REQ_NO)
         {
             string sql = string.Format(@"update RET_REQ_H set REQ_STATUS='{0}' where RET_REQ_NO='{1}'", REQ_STATUS, RET_REQ_NO);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
         public void ExecP_RET_Verify(string RET_REQ_NO)
@@ -137,7 +137,7 @@ namespace CHubDAL
             };
             param[0].Value = Convert.ToDecimal(RET_REQ_NO);
             param[0].Direction = ParameterDirection.Input;
-            ccHelper.ExecProcedure("P_RET_Verify", param);
+            ccHelper.ExecProcedureWithParams("P_RET_Verify", param);
         }
 
         public string CallF_GOMS_PARTNO(string CUST_ITEM)
@@ -179,14 +179,14 @@ namespace CHubDAL
         public void ChangeRET_REQ_H_Status(string RET_REQ_NO)
         {
             string sql = string.Format(@"Update RET_REQ_H set REQ_STATUS='{0}' where RET_REQ_NO='{1}'", "APPROVED", RET_REQ_NO);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
         public List<string> GetLOAD_TYPEs(string appUser)
         {
             List<string> str = new List<string>();
             string sql = string.Format(@"select * from IHUB_LOAD_TYPE_AUTH where APP_USER='{0}' and AUTH_BEGIN_DATE <=sysdate and (AUTH_END_DATE>=sysdate or AUTH_END_DATE is null)", appUser);
-            var result = ccHelper.Search<IHUB_LOAD_TYPE_AUTH>(sql);
+            var result = ccHelper.ExecuteSqlToList<IHUB_LOAD_TYPE_AUTH>(sql);
             str = result.Select(a => a.LOAD_TYPE).ToList();
             return str;
         }
@@ -194,7 +194,7 @@ namespace CHubDAL
         {
             string str = string.Empty;
             string sql = string.Format(@"select * from IHUB_LOAD_TYPE where LOAD_TYPE='{0}'", LOAD_TYPE);
-            var result = ccHelper.Search<IHUB_LOAD_TYPE>(sql);
+            var result = ccHelper.ExecuteSqlToList<IHUB_LOAD_TYPE>(sql);
             str = result.Select(a => a.LOAD_DESC).FirstOrDefault();
             return str;
         }
@@ -202,14 +202,14 @@ namespace CHubDAL
         public List<RET_RETURN_TYPE> GetRETURN_TYPEs()
         {
             string sql = string.Format(@"select * from RET_RETURN_TYPE");
-            var result = ccHelper.Search<RET_RETURN_TYPE>(sql);
+            var result = ccHelper.ExecuteSqlToList<RET_RETURN_TYPE>(sql);
             return result;
         }
 
         public IHUB_LOAD_TYPE GetIHUB_LOAD_TYPE(string LOAD_TYPE)
         {
             string sql = string.Format(@"select * from IHUB_LOAD_TYPE where LOAD_TYPE='{0}'", LOAD_TYPE);
-            var result = ccHelper.Search<IHUB_LOAD_TYPE>(sql).First();
+            var result = ccHelper.ExecuteSqlToList<IHUB_LOAD_TYPE>(sql).First();
             return result;
         }
     }

@@ -11,6 +11,8 @@ namespace CHubDBEntity.UnmanagedModel
         public decimal SCAN_SEQ { get; set; }
         public string DOC_NO { get; set; }
         public string BARCODE { get; set; }
+        public string SHIP_ID { get; set; }
+        public string PART_NO { get; set; }
         public string APP_USER { get; set; }
         public DateTime SCAN_DATE { get; set; }
         public DateTime CREATE_DATE { get; set; }

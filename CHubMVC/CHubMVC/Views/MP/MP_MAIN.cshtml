@@ -1,0 +1,1382 @@
+﻿@{
+    ViewBag.Title = "MP MP_MAIN";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    #resultTbody a:hover {
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .fullTd {
+        background-color: #f5f5f5;
+        width: 20% !important;
+        text-align: right;
+    }
+
+    .emptyTd {
+        background-color: white !important;
+        width: 20% !important;
+    }
+
+    .ModalTable > tbody > tr > td {
+        width: 30%;
+    }
+
+    #CustomerAddressTable > tbody > tr > td {
+        width: 16%;
+    }
+
+    #GOMSAddressTable > tbody > tr > td {
+        width: 16%;
+    }
+
+    .tdTitle {
+        background-color: #f5f5f5;
+    }
+</style>
+<input type="hidden" id="appUser" value="@ViewBag.AppUser" />
+<div class="container-fluid" id="mp_mainDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal" id="mp_mainForm">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Warehouse</label>
+                    <div class="col-sm-2">
+                        <select class="form-control input-sm" id="WAREHOUSE"></select>
+                    </div>
+                    <div class="col-sm-1">
+                        <span id="WAREHOUSE_DESC"></span>
+                    </div>
+                    <label for="" class="col-sm-2 control-label">Order Type</label>
+                    <div class="col-sm-2">
+                        <select class="form-control input-sm" id="ORDER_TYPE" disabled>
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="col-sm-1">
+                        <span id="ORDER_TYPE_DESC"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Order Status</label>
+                    <div class="col-sm-2">
+                        <select class="form-control input-sm" id="ORDER_STATUS"></select>
+                    </div>
+                    <div class="col-sm-1">
+                        <span id="STATUS_DESC"></span>
+                    </div>
+                    <label for="" class="col-sm-2 control-label">Ship Method</label>
+                    <div class="col-sm-2">
+                        <select class="form-control input-sm" id="SHIP_METHOD"></select>
+                    </div>
+                    <div class="col-sm-1">
+                        <span id="SHIP_METHOD_DESC"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Customer</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="SHIP_NAME" placeholder="Customer" />
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <label for="" class="col-sm-2 control-label">GOMS Customer No</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="CUSTOMER_NO" placeholder="GOMS Customer No" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Mobile Parts Order No</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="SO_NO" placeholder="Mobile Parts Order No" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Created in Last days</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="LAST_DAY" placeholder="Created in Last days" value="7" />
+                    </div>
+                    <div class="col-sm-2 col-sm-offset-1 text-right">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Query" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <table class="table table-bordered" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>GOMS Order</th>
+                                <th>GOMS Addr Map</th>
+                                <th>Warehouse</th>
+                                <th>MP Order No</th>
+                                <th>Customer</th>
+                                <th>Order Type</th>
+                                <th>Due Date</th>
+                                <th>Amount</th>
+                                <th>Order Note</th>
+                                <th>Customer No</th>
+                                <th>Pay Method</th>
+                                <th>Ship Method</th>
+                                <th>FaPiao Type</th>
+                                <th>Create Date</th>
+                                <th style="width:10%;">OPT</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_LoadingModal")
+
+<!--SO_NO弹屏-->
+<div class="modal fade" id="SO_NOModal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="SO_NOModalLabel" data-backdrop="static">
+    <div class="modal-dialog" style="width:68%;margin-top:80px;">
+        <div class="modal-content">
+            <div class="modal-header panel panel-default" style="padding:0;margin-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:30px;font-size:30px;margin-top:4px;">
+                    &times;
+                </button>
+                <div class="panel-heading">
+                    <b>Order Information</b>
+                </div>
+            </div>
+            <div class="modal-body" style="padding:0;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered ModalTable" id="SO_NOTable">
+                            <tr>
+                                <td class="fullTd">Status</td>
+                                <td id="SO_ORDER_STATUS"></td>
+                                <td class="fullTd">Status Comments</td>
+                                <td id="SO_STATUS_COMMENTS"></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">MP Order No</td>
+                                <td id="SO_SO_NO"></td>
+                                <td class="fullTd">MP(APP) User</td>
+                                <td id="SO_APP_ID"></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Order Type</td>
+                                <td id="SO_ORDER_TYPE"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Charge PCT</td>
+                                <td id="SO_CHARGE_PCT"></td>
+                                <td class="fullTd">Mics Charge Amt</td>
+                                <td id="SO_MISC_CHARGE_AMT"></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Charge Note</td>
+                                <td id="SO_CHARGE_NOTE"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">To_System</td>
+                                <td id="SO_TO_SYSTEM"></td>
+                                <td class="fullTd">GOMS Order No</td>
+                                <td id="SO_GOMS_ORDER_NO"></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">ABBR</td>
+                                <td id="SO_ABBR"></td>
+                                <td class="fullTd">Dest Location</td>
+                                <td id="SO_DEST_LOCATION"></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Dealer PO</td>
+                                <td id="SO_DEALER_PO_NO"></td>
+                                <td class="fullTd">Enter Date</td>
+                                <td id="SO_ENTER_DATE"></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Complete Flag</td>
+                                <td id="SO_SHIP_COMPLETE_FLAG"></td>
+                                <td class="fullTd">Total Lines</td>
+                                <td id="SO_TOTAL_LINES"></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Flex 1</td>
+                                <td id="SO_FLEX1"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Flex 2</td>
+                                <td id="SO_FLEX2"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Flex 3</td>
+                                <td id="SO_FLEX3"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">PROCESS FLAG</td>
+                                <td id="SO_PROCESS_FLAG"></td>
+                                <td class="fullTd">Last Proc Date</td>
+                                <td id="SO_LAST_PROC_DATE"></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Proc Msg</td>
+                                <td id="SO_PROC_ERROR_MSG"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">ADDR Token</td>
+                                <td id="SO_ADDR_TOKEN"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--SHIP_NAME弹屏-->
+<div class="modal fade" id="SHIP_NAMEModal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="SHIP_NAMEModalLable" data-backdrop="static">
+    <div class="modal-dialog" style="width:68%;margin-top:100px;">
+        <div class="modal-content">
+            <div class="modal-header panel panel-default" style="padding:0;margin-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:30px;font-size:30px;margin-top:4px;">
+                    &times;
+                </button>
+                <div class="panel-heading">
+                    <b>SHIP Information</b>
+                </div>
+            </div>
+            <div class="modal-body" style="padding:0;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered ModalTable" id="SHIP_NAMETable">
+                            <tr>
+                                <td class="fullTd">Ship Method</td>
+                                <td id="SHIP_SHIP_METHOD"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Customer</td>
+                                <td id="SHIP_SHIP_NAME"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Ship TERRITORY</td>
+                                <td id="SHIP_SHIP_TERRITORY"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Ship Addr</td>
+                                <td id="SHIP_SHIP_ADDR"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Contact</td>
+                                <td id="SHIP_SHIP_CONTACT"></td>
+                                <td class="fullTd">Phone</td>
+                                <td id="SHIP_SHIP_MOBILE"></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Province</td>
+                                <td id="SHIP_SHIP_PROVINCE"></td>
+                                <td class="fullTd">City</td>
+                                <td id="SHIP_SHIP_CITY"></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Note</td>
+                                <td id="SHIP_SHIP_NOTE"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Self Pick Code</td>
+                                <td id="SHIP_SELF_PICK_CODE"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--PAY_METHOD弹屏-->
+<div class="modal fade" id="PAY_METHODModal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="PAY_METHODModalLabel" data-backdrop="static">
+    <div class="modal-dialog" style="width:68%;margin-top:100px;">
+        <div class="modal-content">
+            <div class="modal-header panel panel-default" style="padding:0;margin-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:30px;font-size:30px;margin-top:4px;">
+                    &times;
+                </button>
+                <div class="panel-heading">
+                    <b>Pay Information</b>
+                </div>
+            </div>
+            <div class="modal-body" style="padding:0;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered ModalTable" id="PAY_METHODTable">
+                            <tr>
+                                <td class="fullTd">Pay Method</td>
+                                <td id="PAY_PAY_METHOD"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Amount Paied</td>
+                                <td id="PAY_PAY_AMT"></td>
+                                <td class="fullTd">Currency</td>
+                                <td id="PAY_CURRENCY_CODE"></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Ref No</td>
+                                <td id="PAY_PAY_REF_NO"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Pay Date</td>
+                                <td id="PAY_PAY_DATE"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Pay Note</td>
+                                <td id="PAY_PAY_NOTE"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--FP_TYPE弹屏-->
+<div class="modal fade" id="FP_TYPEModal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="FP_TYPEModalLabel" data-backdrop="static">
+    <div class="modal-dialog" style="width:68%;margin-top:80px;">
+        <div class="modal-content">
+            <div class="modal-header panel panel-default" style="padding:0;margin-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:30px;font-size:30px;margin-top:4px;">
+                    &times;
+                </button>
+                <div class="panel-heading">
+                    <b>Fapiao Information</b>
+                </div>
+            </div>
+            <div class="modal-body" style="padding:0;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered ModalTable" id="FP_TYPETable">
+                            <tr>
+                                <td class="fullTd">FaPiao Type</td>
+                                <td id="FP_FP_TYPE"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Company</td>
+                                <td id="FP_FP_COMPANY_NAME"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Addr</td>
+                                <td id="FP_FP_ADDR"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Tax No</td>
+                                <td id="FP_FP_TAX_NO"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Tel</td>
+                                <td id="FP_FP_TEL"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Bank</td>
+                                <td id="FP_FP_BANK"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Bank Acct.</td>
+                                <td id="FP_FP_BANK_ACCT"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Note</td>
+                                <td id="FP_FP_NOTE"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Email</td>
+                                <td id="FP_FP_EMAIL"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Mail Addr</td>
+                                <td id="FP_FP_MAIL_ADDR"></td>
+                                <td class="emptyTd"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="fullTd">Mail Contact</td>
+                                <td id="FP_FP_MAIL_CONTACT"></td>
+                                <td class="fullTd">Mail Tel</td>
+                                <td id="FP_FP_MAIL_TEL"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--LINE弹窗-->
+<div class="modal fade" id="OrderLinesModal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="OrderLinesModalLabel" data-backdrop="static">
+    <div class="modal-dialog" style="width:88%;margin-top:80px;">
+        <div class="modal-content">
+            <div class="modal-header panel panel-default" style="padding:0;margin-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:30px;font-size:30px;margin-top:4px;">
+                    &times;
+                </button>
+                <div class="panel-heading">
+                    <b>Order  Lines</b>
+                </div>
+            </div>
+            <div class="modal-body" style="padding:0;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered" id="OrderLinesTable">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%;">Line No</th>
+                                    <th style="width:10%;">Part No</th>
+                                    <th style="width:6%;">Unit Price</th>
+                                    <th style="width:3%;">Qty</th>
+                                    <th style="width:10%;">Print Partno</th>
+                                    <th style="width:10%;">Movex No</th>
+                                    <th style="width:10%;">Customer Partno</th>
+                                    <th>Note</th>
+                                    <th style="width:6%;">List Price</th>
+                                    <th style="width:8%;">Create Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="OrderLinesTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ConfirmModal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="ConfirmModalLabel" data-backdrop="static">
+    <div class="modal-dialog" style="margin-top:200px;">
+        <div class="modal-content">
+            <div class="modal-header panel panel-default" style="padding:0;margin-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:30px;font-size:30px;margin-top:4px;">
+                    &times;
+                </button>
+                <div class="panel-heading" id="modalHeader">
+                </div>
+            </div>
+            <div class="modal-body" style="padding:0;">
+                <div class="row" style="margin-top:15px;">
+                    <div class="col-sm-12">
+                        <div class="col-sm-2 text-right" style="height: 30px; padding-top: 7px; font-weight: bold;">
+                            <span>Reason</span>
+                        </div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control input-sm" id="Reason" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnNO" value="No" />
+                        <input type="button" class="btn btn-primary btn-sm" id="btnConfirm" value="Confirm" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addrMapModal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="addrMapModalLabel" data-backdrop="static">
+    <div class="modal-dialog" style="width:96%;">
+        <div class="modal-content">
+            <div class="modal-header panel panel-default" style="padding:0;height:30px;margin-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:30px;font-size:30px;">
+                    &times;
+                </button>
+                <div class="panel-heading">
+                    <b>Customer  Address (MobileParts)</b>
+                </div>
+            </div>
+            <div class="modal-body" style="padding:0;">
+                <div class="panel panel-default">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <table class="table table-bordered" id="CustomerAddressTable">
+                                <tr>
+                                    <td class="tdTitle">Customer</td>
+                                    <td id="modalSHIP_NAME"></td>
+                                    <td class="tdTitle">TERRITORY</td>
+                                    <td colspan="3" id="modalSHIP_TERRITORY"></td>
+                                </tr>
+                                <tr>
+                                    <td class="tdTitle">Addr</td>
+                                    <td id="modalSHIP_ADDR"></td>
+                                    <td class="tdTitle">Contact</td>
+                                    <td id="modalSHIP_CONTACT"></td>
+                                    <td class="tdTitle">Phone</td>
+                                    <td id="modalSHIP_MOBILE"></td>
+                                </tr>
+                                <tr>
+                                    <td class="tdTitle">SEQ</td>
+                                    <td id="modalADDR_TOKEN"></td>
+                                    <td class="tdTitle">ABBR</td>
+                                    <td id="modalABBR"></td>
+                                    <td class="tdTitle">system</td>
+                                    <td id="modalTO_SYSTEM"></td>
+                                </tr>
+                                <tr>
+                                    <td class="tdTitle">NOTE</td>
+                                    <td id="modalNOTE"></td>
+                                    <td class="tdTitle">DEST LOC</td>
+                                    <td id="modalDEST_LOCATION"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel-heading">
+                        <b>GOMS Address (Mapped)</b>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <table class="table table-bordered" id="GOMSAddressTable">
+                                <tr>
+                                    <td class="tdTitle">Customer</td>
+                                    <td id="gomsLOCAL_DEST_NAME"></td>
+                                    <td class="tdTitle">ADDR1</td>
+                                    <td colspan="3" id="gomsLOCAL_DEST_ADDR_1"></td>
+                                </tr>
+                                <tr>
+                                    <td class="tdTitle">ADDR2</td>
+                                    <td id="gomsLOCAL_DEST_ADDR_2"></td>
+                                    <td class="tdTitle">ADDR3</td>
+                                    <td id="gomsLOCAL_DEST_ADDR_3"></td>
+                                    <td class="tdTitle">CITY</td>
+                                    <td id="gomsLOCAL_DEST_CITY"></td>
+                                </tr>
+                                <tr>
+                                    <td class="tdTitle">Contact</td>
+                                    <td id="gomsDEST_CONTACT"></td>
+                                    <td class="tdTitle">Phone</td>
+                                    <td id="gomsDEST_PHONE"></td>
+                                    <td class="tdTitle">ATTEN.</td>
+                                    <td id="gomsDEST_ATTENTION"></td>
+                                </tr>
+                                <tr>
+                                    <td class="tdTitle">DEST LOC</td>
+                                    <td id="gomsDEST_LOCATION"></td>
+                                    <td class="tdTitle">ABBR</td>
+                                    <td id="gomsABBREVIATION"></td>
+                                    <td class="tdTitle">SYSTEM</td>
+                                    <td id="gomsSYSID"></td>
+                                </tr>
+                                <tr>
+                                    <td class="tdTitle">Name （english)</td>
+                                    <td id="gomsNAME"></td>
+                                    <td class="tdTitle">Record Date</td>
+                                    <td id="gomsRECORD_DATE_OSDL"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel-heading">
+                        <b>Mapping/Re-Mapping</b>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="" class="control-label col-sm-2" style="text-align: right; padding-top: 7px;">Key Words</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control input-sm" id="keyWords" />
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="button" class="btn btn-primary btn-sm" id="btnkeyWordSearch" value="Search" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <table class="table table-bordered" id="mapTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 3%;"></th>
+                                        <th>Name</th>
+                                        <th>ADDR1</th>
+                                        <th>ADDR2</th>
+                                        <th>ADDR3</th>
+                                        <th>Contact</th>
+                                        <th>Phone</th>
+                                        <th>ABBR</th>
+                                        <th>Record Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mapTbody"></tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="9" class="text-right">
+                                            <input type="button" class="btn btn-primary btn-sm" id="btnConfirm" value="Confirm" />
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //WAREHOUSE 下拉
+    $(function () {
+        $.ajax({
+            url: '/mp/GetWarehouseList',
+            type: 'post',
+            data: {},
+            dataType: 'json',
+            success: function (obj) {
+                $("#WAREHOUSE").empty();
+                if (obj.Success) {
+                    //WAREHOUSE
+                    $("<option></option>").val("").text("").appendTo("#WAREHOUSE");
+                    if (obj.Data != null && obj.Data.length > 0) {
+                        for (var i = 0; i < obj.Data.length; i++) {
+                            $("<option></option>").val(obj.Data[i].Value).text(obj.Data[i].Text).appendTo("#WAREHOUSE");
+                        }
+                    }
+                }
+                else
+                    alert(obj.Msg);
+            },
+            error: function (e) {
+                alert("fail to GetWarehouseList");
+            }
+        })
+    })
+    //ORDER_STATUS 下拉
+    $(function () {
+        $.ajax({
+            url: '/mp/GetOrderStatusList',
+            type: 'post',
+            data: {},
+            dataType: 'json',
+            success: function (obj) {
+                $("#ORDER_STATUS").empty();
+                if (obj.Success) {
+                    //ORDER_STATUS
+                    $("<option></option>").val("").text("").appendTo("#ORDER_STATUS");
+                    if (obj.Data != null && obj.Data.length > 0) {
+                        for (var i = 0; i < obj.Data.length; i++) {
+                            $("<option></option>").val(obj.Data[i].Value).text(obj.Data[i].Text).appendTo("#ORDER_STATUS");
+                        }
+                    }
+                }
+                else
+                    alert(obj.Msg);
+            },
+            error: function (e) {
+                alert("fail to GetOrderStatusList")
+            }
+        })
+    })
+    //SHIP_METHOD 下拉
+    $(function () {
+        $.ajax({
+            url: '/mp/GetShipMethodList',
+            type: 'post',
+            data: {},
+            dataType: 'json',
+            success: function (obj) {
+                $("#SHIP_METHOD").empty();
+                if (obj.Success) {
+                    //SHIP_METHOD
+                    $("<option></option>").val("").text("").appendTo("#SHIP_METHOD");
+                    if (obj.Data != null && obj.Data.length > 0) {
+                        for (var i = 0; i < obj.Data.length; i++) {
+                            $("<option></option>").val(obj.Data[i].Value).text(obj.Data[i].Text).appendTo("#SHIP_METHOD");
+                        }
+                    }
+                }
+                else
+                    alert(obj.Msg);
+            },
+            error: function (e) {
+                alert("fail to GetShipMethodList")
+            }
+        })
+    })
+
+    $(document).ready(function () {
+        var SO_NO;
+        var Code;//Cancel;Hold
+
+        var ADDR_TOKEN;
+        var TO_SYSTEM;
+        var ABBR;
+        
+        //WAREHOUSE下拉改变，获取WAREHOUSE_DESC
+        //ORDER_TYPE 下拉，跟WAREHOUSE联动
+        $("#WAREHOUSE").on('change', function () {
+            var wh = $("#WAREHOUSE").val();
+            if (wh == "") {
+                $("#ORDER_TYPE").empty();
+                $("#ORDER_TYPE").attr("disabled", true);
+                $("#ORDER_TYPE_DESC").html("");
+                $("#WAREHOUSE_DESC").html("");
+            }
+            else {
+                $.ajax({
+                    url: '/mp/GetOrderTypeList',
+                    type: 'post',
+                    data: {
+                        WAREHOUSE: wh
+                    },
+                    dataType: 'json',
+                    success: function (obj) {
+                        $("#ORDER_TYPE").empty();
+                        $("#ORDER_TYPE").attr("disabled", false);
+                        if (obj.Success) {
+                            //ORDER_TYPE
+                            $("<option></option>").val("").text("").appendTo("#ORDER_TYPE");
+                            if (obj.Data != null && obj.Data.length > 0) {
+                                for (var i = 0; i < obj.Data.length; i++) {
+                                    $("<option></option>").val(obj.Data[i].Value).text(obj.Data[i].Text).appendTo("#ORDER_TYPE");
+                                }
+                            }
+                            $("#WAREHOUSE_DESC").html(obj.Msg);
+                        }
+                        else
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        alert("fail to GetOrderTypeList");
+                    }
+                })
+            }
+        })
+
+        //ORDER_TYPE下拉改变，获取ORDER_TYPE_DESC
+        $("#ORDER_TYPE").on('change', function () {
+            var wh = $("#WAREHOUSE").val();
+            var ot = $("#ORDER_TYPE").val();
+            if (ot == "")
+                $("#ORDER_TYPE_DESC").html("");
+            else {
+                $.ajax({
+                    url: '/mp/GetOrderTypeDesc',
+                    type: 'post',
+                    data: {
+                        WAREHOUSE: wh,
+                        ORDER_TYPE: ot
+                    },
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success)
+                            $("#ORDER_TYPE_DESC").html(obj.Data);
+                        else
+                            alert(obj.Msg);
+                    }
+                })
+            }
+        })
+
+        //ORDER_STATUS下拉改变，获取STATUS_DESC
+        $("#ORDER_STATUS").on('change', function () {
+            var os = $("#ORDER_STATUS").val();
+            if (os == "")
+                $("#STATUS_DESC").html("");
+            else {
+                $.ajax({
+                    url: '/mp/GetOrderStatusDesc',
+                    type: 'post',
+                    data: {
+                        ORDER_STATUS: os
+                    },
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success)
+                            $("#STATUS_DESC").html(obj.Data);
+                        else
+                            alert(obj.Msg);
+                    }
+                })
+            }
+        })
+
+        //SHIP_METHOD下拉改变，获取SHIP_METHOD_DESC
+        $("#SHIP_METHOD").on('change', function () {
+            var sm = $("#SHIP_METHOD").val();
+            if (sm == "")
+                $("#SHIP_METHOD_DESC").html("");
+            else {
+                $.ajax({
+                    url: '/mp/GetShipMethodDesc',
+                    type: 'post',
+                    data: {
+                        SHIP_METHOD: sm
+                    },
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success)
+                            $("#SHIP_METHOD_DESC").html(obj.Data);
+                        else
+                            alert(obj.Msg);
+                    }
+                })
+            }
+        })
+
+        //查询
+        $("#btnSearch").on('click', function () {
+            var arg = {};
+            var ld = $("#LAST_DAY").val();
+            if (ld == "" || parseFloat(ld) <= 0 || parseFloat(ld) > 90) {
+                alert("Last day Error");
+                return false;
+            }
+            arg.WAREHOUSE = $("#WAREHOUSE").val();
+            arg.ORDER_TYPE = $("#ORDER_TYPE").val();
+            arg.ORDER_STATUS = $("#ORDER_STATUS").val();
+            arg.SHIP_METHOD = $("#SHIP_METHOD").val();
+            arg.SHIP_NAME = $("#SHIP_NAME").val();
+            arg.CUSTOMER_NO = $("#CUSTOMER_NO").val();
+            arg.SO_NO = $("#SO_NO").val();
+            arg.LAST_DAY = $("#LAST_DAY").val();
+
+            $("#resultTbody").empty();
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/mp/MP_MAINSearch',
+                type: 'post',
+                data: JSON.stringify(arg),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success)
+                        $("#resultTbody").html(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+            })
+        })
+
+        //SO_NO弹屏
+        $("#resultTbody").on('click', '.SO_NO', function () {
+            var $a = $(this);
+            SO_NO = $a.attr("data-sono");
+            //alert(SO_NO);
+
+            $.ajax({
+                url: '/mp/GetMPMainInfo',
+                type: 'post',
+                data: {
+                    SO_NO: SO_NO
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        FillSO_NOModalData(obj.Data);
+                        $("#SO_NOModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                }
+            })
+        })
+        function FillSO_NOModalData(data) {
+            $("#SO_ORDER_STATUS").html(data.ORDER_STATUS);
+            $("#SO_ORDER_STATUS").css("color", GetDataColor(data.STATUS_COLOR));
+            $("#SO_STATUS_COMMENTS").html(data.STATUS_COMMENTS);
+            $("#SO_SO_NO").html(data.SO_NO);
+            $("#SO_APP_ID").html(data.APP_ID);
+            $("#SO_ORDER_TYPE").html(data.ORDER_TYPE);
+            $("#SO_CHARGE_PCT").html(data.CHARGE_PCT);
+            $("#SO_MISC_CHARGE_AMT").html(data.MISC_CHARGE_AMT);
+            $("#SO_CHARGE_NOTE").html(data.CHARGE_NOTE);
+            $("#SO_TO_SYSTEM").html(data.TO_SYSTEM);
+            $("#SO_GOMS_ORDER_NO").html(data.GOMS_ORDER_NO);
+            $("#SO_ABBR").html(data.ABBR);
+            $("#SO_DEST_LOCATION").html(data.DEST_LOCATION);
+            $("#SO_DEALER_PO_NO").html(data.DEALER_PO_NO);
+            $("#SO_ENTER_DATE").html(GetDataDate(data.ENTER_DATE));
+            $("#SO_SHIP_COMPLETE_FLAG").html(data.SHIP_COMPLETE_FLAG);
+            $("#SO_TOTAL_LINES").html(data.TOTAL_LINES);
+            $("#SO_FLEX1").html(data.FLEX1);
+            $("#SO_FLEX2").html(data.FLEX2);
+            $("#SO_FLEX3").html(data.FLEX3);
+            $("#SO_PROCESS_FLAG").html(data.PROCESS_FLAG);
+            $("#SO_LAST_PROC_DATE").html(GetDataDate(data.LAST_PROC_DATE));
+            $("#SO_PROC_ERROR_MSG").html(data.PROC_ERROR_MSG);
+            $("#SO_ADDR_TOKEN").html(data.ADDR_TOKEN);
+        }
+
+        //SHIP_NAME弹屏
+        $("#resultTbody").on('click', '.SHIP_NAME', function () {
+            var $a = $(this);
+            SO_NO = $a.attr("data-sono");
+            //alert(SO_NO);
+            //$("#SHIP_NAMEModal").modal("show");
+
+            $.ajax({
+                url: '/mp/GetMPMainInfo',
+                type: 'post',
+                data: {
+                    SO_NO: SO_NO
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        FillSHIP_NAMEModalData(obj.Data);
+                        $("#SHIP_NAMEModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                }
+            })
+        })
+        function FillSHIP_NAMEModalData(data) {
+            $("#SHIP_SHIP_METHOD").html(data.SHIP_METHOD);
+            $("#SHIP_SHIP_NAME").html(data.SHIP_NAME);
+            $("#SHIP_SHIP_TERRITORY").html(data.SHIP_TERRITORY);
+            $("#SHIP_SHIP_ADDR").html(data.SHIP_ADDR);
+            $("#SHIP_SHIP_CONTACT").html(data.SHIP_CONTACT);
+            $("#SHIP_SHIP_MOBILE").html(data.SHIP_MOBILE);
+            $("#SHIP_SHIP_PROVINCE").html(data.SHIP_PROVINCE);
+            $("#SHIP_SHIP_CITY").html(data.SHIP_CITY);
+            $("#SHIP_SHIP_NOTE").html(data.SHIP_NOTE);
+            $("#SHIP_SELF_PICK_CODE").html(data.SELF_PICK_CODE);
+        }
+
+        //PAY_METHOD弹屏
+        $("#resultTbody").on('click', '.PAY_METHOD', function () {
+            var $a = $(this);
+            SO_NO = $a.attr("data-sono");
+            //alert(SO_NO);
+            //$("#PAY_METHODModal").modal("show");
+
+            $.ajax({
+                url: '/mp/GetMPMainInfo',
+                type: 'post',
+                data: {
+                    SO_NO: SO_NO
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        FillPAY_METHODModalData(obj.Data);
+                        $("#PAY_METHODModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                }
+            })
+        })
+        function FillPAY_METHODModalData(data) {
+            $("#PAY_PAY_METHOD").html(data.PAY_METHOD);
+            $("#PAY_PAY_AMT").html(data.PAY_AMT);
+            $("#PAY_CURRENCY_CODE").html(data.CURRENCY_CODE);
+            $("#PAY_PAY_REF_NO").html(data.PAY_REF_NO);
+            $("#PAY_PAY_DATE").html(GetDataDate(data.PAY_DATE));
+            $("#PAY_PAY_NOTE").html(data.PAY_NOTE);
+        }
+
+        //FP_TYPE弹屏
+        $("#resultTbody").on('click', '.FP_TYPE', function () {
+            var $a = $(this);
+            SO_NO = $a.attr("data-sono");
+            //alert(SO_NO);
+            //$("#FP_TYPEModal").modal("show");
+
+            $.ajax({
+                url: '/mp/GetMPMainInfo',
+                type: 'post',
+                data: {
+                    SO_NO: SO_NO
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#FP_TYPEModal").modal("show");
+                        FillFP_TYPEModalData(obj.Data);
+                    }
+
+                    else
+                        alert(obj.Msg);
+                }
+            })
+        })
+        function FillFP_TYPEModalData(data) {
+            $("#FP_FP_TYPE").html(data.FP_TYPE);
+            $("#FP_FP_COMPANY_NAME").html(data.FP_COMPANY_NAME);
+            $("#FP_FP_ADDR").html(data.FP_ADDR);
+            $("#FP_FP_TAX_NO").html(data.FP_TAX_NO);
+            $("#FP_FP_TEL").html(data.FP_TEL);
+            $("#FP_FP_BANK").html(data.FP_BANK);
+            $("#FP_FP_BANK_ACCT").html(data.FP_BANK_ACCT);
+            $("#FP_FP_NOTE").html(data.FP_NOTE);
+            $("#FP_FP_EMAIL").html(data.FP_EMAIL);
+            $("#FP_FP_MAIL_ADDR").html(data.FP_MAIL_ADDR);
+            $("#FP_FP_MAIL_CONTACT").html(data.FP_MAIL_CONTACT);
+            $("#FP_FP_MAIL_TEL").html(data.FP_MAIL_TEL);
+        }
+
+        //LINES
+        $("#resultTbody").on('click', '.btnDetail', function () {
+            var $btn = $(this);
+            SO_NO = $btn.attr("data-sono");
+            //alert(SO_NO);
+            //$("#OrderLinesModal").modal('show');
+
+            $.ajax({
+                url: '/mp/MP_MAINDetail',
+                type: 'post',
+                data: {
+                    SO_NO: SO_NO
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#OrderLinesTbody").html(obj.Data);
+                        $("#OrderLinesModal").modal('show');
+                    }
+                    else
+                        alert(obj.Msg);
+                }
+            })
+        })
+
+        //Cancel
+        $("#resultTbody").on('click', '.btnCancel', function () {
+            //$("#modalHeader").html("<b>Order Cancel Double Confirm</b>");
+            //$("#ConfirmModal").modal("show");
+            var $btn = $(this);
+            SO_NO = $btn.attr("data-sono");
+            Code = "CANCEL";
+            $("#modalHeader").html("<b>Order Cancel Double Confirm</b>");
+            CancelOrHold();
+        })
+        //Hold
+        $("#resultTbody").on('click', '.btnHold', function () {
+            //$("#modalHeader").html("<b>Order Hold Double Confirm</b>");
+            //$("#ConfirmModal").modal("show");
+            var $btn = $(this);
+            SO_NO = $btn.attr("data-sono");
+            Code = "HOLD";
+            $("#modalHeader").html("<b>Order Hold Double Confirm</b>");
+            CancelOrHold();
+        })
+        function CancelOrHold() {
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/mp/MP_MAINCheck',
+                type: 'post',
+                data: {
+                    SO_NO: SO_NO,
+                    APP_USER: $("#appUser").val()
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#ConfirmModal").modal("show");
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+                }
+            })
+        }
+
+        //No
+        $("#btnNO").on('click', function () {
+            $("#ConfirmModal").modal("hide");
+            $("#Reason").val("");
+        })
+        //Confirm
+        $("#btnConfirm").on('click', function () {
+            var Reason = $("#Reason").val();
+            if (Reason == "") {
+                alert("Reason Empty");
+                $("#Reason").focus();
+                return false;
+            }
+
+            $.ajax({
+                url: '/mp/MP_MAINConfirm',
+                type: 'post',
+                data: {
+                    SO_NO: SO_NO,
+                    Code: Code,
+                    Reason: Reason
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#ConfirmModal").modal("hide");
+                        $("#btnSearch").click();
+                    }
+                    else
+                        alert(obj.Msg);
+                }
+            })
+        })
+
+
+        $("#resultTbody").on('click', '.MAP_STATUS', function () {
+            var $a = $(this);
+            ADDR_TOKEN = $a.attr("data-addrtoken");
+
+            $("#loadingModal").modal("show");
+            //$("#addrMapModal").modal("show");
+            $.ajax({
+                url: '/mp/MP_MAINMapping',
+                type: 'post',
+                data: {
+                    ADDR_TOKEN:ADDR_TOKEN
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        FillData(obj.ca, obj.ga);
+                        $("#keyWords").val("");
+                        $("#mapTbody").html("");
+                        $("#addrMapModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                }
+            })
+
+        })
+        function FillData(ca, ga) {
+            if (ca != null) {
+                $("#modalSHIP_NAME").html(ca.SHIP_NAME);
+                $("#modalSHIP_TERRITORY").html(ca.SHIP_TERRITORY);
+                $("#modalSHIP_ADDR").html(ca.SHIP_ADDR);
+                $("#modalSHIP_CONTACT").html(ca.SHIP_CONTACT);
+                $("#modalSHIP_MOBILE").html(ca.SHIP_MOBILE);
+                $("#modalADDR_TOKEN").html(ca.ADDR_TOKEN);
+                $("#modalABBR").html(ca.ABBR);
+                $("#modalTO_SYSTEM").html(ca.TO_SYSTEM);
+                $("#modalNOTE").html(ca.NOTE);
+                $("#modalDEST_LOCATION").html(ca.DEST_LOCATION);
+                TO_SYSTEM = ca.TO_SYSTEM;
+                ABBR = ca.ABBR;
+            }
+
+            if (ga != null) {
+                $("#gomsLOCAL_DEST_NAME").html(ga.LOCAL_DEST_NAME);
+                $("#gomsLOCAL_DEST_ADDR_1").html(ga.LOCAL_DEST_ADDR_1);
+                $("#gomsLOCAL_DEST_ADDR_2").html(ga.LOCAL_DEST_ADDR_2);
+                $("#gomsLOCAL_DEST_ADDR_3").html(ga.LOCAL_DEST_ADDR_3);
+                $("#gomsLOCAL_DEST_CITY").html(ga.LOCAL_DEST_CITY);
+                $("#gomsDEST_CONTACT").html(ga.DEST_CONTACT);
+                $("#gomsDEST_PHONE").html(ga.DEST_PHONE);
+                $("#gomsDEST_ATTENTION").html(ga.DEST_ATTENTION);
+                $("#gomsDEST_LOCATION").html(ga.DEST_LOCATION);
+                $("#gomsABBREVIATION").html(ga.ABBREVIATION);
+                $("#gomsSYSID").html(ga.SYSID);
+                $("#gomsNAME").html(ga.NAME);
+                var date = new Date(ga.RECORD_DATE_OSDL);
+                var year = date.getFullYear() + "/"; //+ (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : "0" + (date.getMonth() + 1) + "/" + date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
+                var month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : "0" + (date.getMonth() + 1) + "/";
+                var day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
+                var dd = year + month + day;
+                $("#gomsRECORD_DATE_OSDL").html(dd);
+            }
+            else {
+                $("#gomsLOCAL_DEST_NAME").html("");
+                $("#gomsLOCAL_DEST_ADDR_1").html("");
+                $("#gomsLOCAL_DEST_ADDR_2").html("");
+                $("#gomsLOCAL_DEST_ADDR_3").html("");
+                $("#gomsLOCAL_DEST_CITY").html("");
+                $("#gomsDEST_CONTACT").html("");
+                $("#gomsDEST_PHONE").html("");
+                $("#gomsDEST_ATTENTION").html("");
+                $("#gomsDEST_LOCATION").html("");
+                $("#gomsABBREVIATION").html("");
+                $("#gomsSYSID").html("");
+                $("#gomsNAME").html("");
+                $("#gomsRECORD_DATE_OSDL").html("");
+            }
+
+
+        }
+
+        $("#btnkeyWordSearch").on('click', function () {
+            var keyWord = $("#keyWords").val();
+
+            $("#btnkeyWordSearch").button("loading");
+            $("#mapTbody").empty();
+            $.ajax({
+                url: '/mp/GetGomsAddressByKeyWord',
+                type: 'post',
+                data: {
+                    keyWord: keyWord,
+                    TO_SYSTEM: TO_SYSTEM,
+                    ABBR: ABBR
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#btnkeyWordSearch").button("reset");
+                    if (obj.Success) {
+                        $("#mapTbody").html(obj.Data);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#btnkeyWordSearch").button("reset");
+                    alert("fail to get");
+                }
+            })
+        })
+
+        $("#btnConfirm").on('click', function () {
+            if (confirm("Double Confirm?")) {
+                var $radio = $("#mapTbody input[name=Radio]:checked");
+                if ($radio.length > 0) {
+                    var SYSID = $radio.attr("data-sysid");
+                    var ABBREVIATION = $radio.attr("data-abbr");
+                    var DEST_LOCATION = $radio.attr("data-destLocation");
+
+                    $.ajax({
+                        url: "/mp/MP_ADDRMAP_Confirm",
+                        type: 'post',
+                        data: {
+                            ADDR_TOKEN: ADDR_TOKEN,
+                            SYSID: SYSID,
+                            ABBREVIATION: ABBREVIATION,
+                            DEST_LOCATION: DEST_LOCATION,
+                            APP_USER: $("#appUser").val()
+                        },
+                        dataType: 'json',
+                        success: function (obj) {
+                            if (obj.Success)
+                                FillData(null, obj.Data);
+                            else
+                                alert(obj.Msg);
+                        },
+                        error: function (e) {
+                            alert("fail to Confirm");
+                        }
+                    })
+                }
+                else
+                    alert("请先选择！");
+            }
+        })
+
+        $(".close").on('click', function () {
+            $("#btnSearch").click();
+        })
+
+
+        //获取颜色
+        function GetDataColor(colorName) {
+            var color = "";
+            switch (colorName) {
+                case "R":
+                    color = "red";
+                    break;
+                case "Y":
+                    color = "orange";
+                    break;
+                case "G":
+                    color = "green";
+                    break;
+                case "B":
+                    color = "blue";
+                    break;
+            }
+            return color;
+        }
+        //日期格式化
+        function GetDataDate(date) {
+            var dd = new Date(date);
+            var year = dd.getFullYear();
+            if (year = 1)
+                return "";
+            var month = dd.getMonth() + 1;
+            if (parseFloat(month) <= 9)
+                month = "0" + month;
+            var day = dd.getDate();
+            if (parseFloat(day) <= 9)
+                day = "0" + day;
+            return year + "/" + month + "/" + day;
+        }
+
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#imgDiag").css("margin-top", "300px");
+    })
+</script>

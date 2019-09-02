@@ -24,7 +24,7 @@ namespace CHubCommon
         /// 更新sql
         /// </summary>
         /// <param name="sql"></param>
-        public void Update(string sql)
+        public void ExecuteNonQuery(string sql)
         {
             using (OracleConnection conn = new OracleConnection(connStr))
             {
@@ -39,7 +39,7 @@ namespace CHubCommon
         /// <summary>
         /// 执行无参的存过
         /// </summary>
-        /// <param name="Proc"></param>
+        /// <param name="Proc">存过名称</param>
         public void ExecProcedureWithoutParams(string Proc)
         {
             //CheckCultureInfoForDate();
@@ -60,12 +60,10 @@ namespace CHubCommon
         /// <typeparam name="T"></typeparam>
         /// <param name="sql"></param>
         /// <returns></returns>
-        public List<T> Search<T>(string sql) where T : class, new()
+        public List<T> ExecuteSqlToList<T>(string sql) where T : class, new()
         {
             List<T> list = new List<T>();
             DataTable dt = new DataTable();
-
-            //CheckCultureInfoForDate();
 
             using (OracleConnection conn = new OracleConnection(connStr))
             {
@@ -130,6 +128,11 @@ namespace CHubCommon
             return str;
         }
 
+        /// <summary>
+        /// 当前废弃
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
         public string ExecuteSql(string sql)
         {
             string result = string.Empty;
@@ -230,7 +233,7 @@ namespace CHubCommon
             if (cur.Name == "zh-CN")
             {
                 string sql = "alter session set nls_date_language = 'american'";
-                Update(sql);
+                ExecuteNonQuery(sql);
             }
         }
 
@@ -372,7 +375,7 @@ namespace CHubCommon
         /// </summary>
         /// <param name="ProcName"></param>
         /// <param name="param"></param>
-        public void ExecProcedure(string ProcName, OracleParameter[] param)
+        public void ExecProcedureWithParams(string ProcName, OracleParameter[] param)
         {
             using (OracleConnection conn = new OracleConnection(connStr))
             {

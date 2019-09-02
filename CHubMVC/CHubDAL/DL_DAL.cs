@@ -21,7 +21,7 @@ namespace CHubDAL
         {
             List<string> str = new List<string>();
             string sql = string.Format(@"select * from IHUB_LOAD_TYPE_AUTH where APP_USER='{0}' and AUTH_BEGIN_DATE <=sysdate and (AUTH_END_DATE>=sysdate or AUTH_END_DATE is null)", appUser);
-            var result = ccHelper.Search<IHUB_LOAD_TYPE_AUTH>(sql);
+            var result = ccHelper.ExecuteSqlToList<IHUB_LOAD_TYPE_AUTH>(sql);
             str = result.Select(a => a.LOAD_TYPE).ToList();
             return str;
         }
@@ -30,7 +30,7 @@ namespace CHubDAL
         {
             string str = string.Empty;
             string sql = string.Format(@"select * from IHUB_LOAD_TYPE where LOAD_TYPE='{0}'", LOAD_TYPE);
-            var result = ccHelper.Search<IHUB_LOAD_TYPE>(sql);
+            var result = ccHelper.ExecuteSqlToList<IHUB_LOAD_TYPE>(sql);
             str = result.Select(a => a.LOAD_DESC).FirstOrDefault();
             return str;
         }
@@ -38,7 +38,7 @@ namespace CHubDAL
         public IHUB_LOAD_TYPE GetIHUB_LOAD_TYPE(string LOAD_TYPE)
         {
             string sql = string.Format(@"select * from IHUB_LOAD_TYPE where LOAD_TYPE='{0}'", LOAD_TYPE);
-            var result = ccHelper.Search<IHUB_LOAD_TYPE>(sql).FirstOrDefault();
+            var result = ccHelper.ExecuteSqlToList<IHUB_LOAD_TYPE>(sql).FirstOrDefault();
             return result;
         }
 
@@ -64,7 +64,7 @@ namespace CHubDAL
                                 ilb.T01,ilb.T02,ilb.T03,ilb.T04,ilb.T05,ilb.T06,ilb.T07,ilb.T08,ilb.T09,ilb.T10,ilb.T11,ilb.T12,
                                 ilb.T13,ilb.T14,ilb.T15,ilb.T16,ilb.T17,ilb.T18,ilb.T19,ilb.T20,ilb.T21,ilb.T22,ilb.T23,ilb.T24
                                 );
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
 
 
 
@@ -154,7 +154,7 @@ namespace CHubDAL
                                 ilb.T01, ilb.T02, ilb.T03, ilb.T04, ilb.T05, ilb.T06, ilb.T07, ilb.T08, ilb.T09, ilb.T10, ilb.T11, ilb.T12,
                                 ilb.T13, ilb.T14, ilb.T15, ilb.T16, ilb.T17, ilb.T18, ilb.T19, ilb.T20, ilb.T21, ilb.T22, ilb.T23, ilb.T24, INPUT1, INPUT2, INPUT3
                                 );
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
 
@@ -167,7 +167,7 @@ namespace CHubDAL
             param[0].Value = LOAD_BATCH;
             param[1].Value = LOAD_TYPE;
 
-            ccHelper.ExecProcedure("P_IHUB_lOAD_POST", param);
+            ccHelper.ExecProcedureWithParams("P_IHUB_lOAD_POST", param);
         }
 
     }

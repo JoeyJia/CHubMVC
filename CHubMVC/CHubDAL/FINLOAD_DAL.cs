@@ -40,7 +40,7 @@ namespace CHubDAL
                                     LOAD_DATE) 
                             VALUES('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}','{10}', sysdate)",
                             LOAD_BATCH, evl.UBIVNO, evl.UACUNO, evl.MMITDS, evl.UBIVQS, evl.TAX_REFUND_RATE, evl.AMT_USD, evl.UBSPUN, evl.UBLNAM, evl.NOTE, appUser);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
         public void ExecP_EXP_VAT_LOAD_POST(string LOAD_BATCH)
@@ -75,7 +75,7 @@ namespace CHubDAL
                                 LOADED_BY)
                                 VALUES('{0}','{1}','{2}','{3}',to_date('{4}','yyyy/mm/dd hh24:mi:ss'),'{5}',sysdate,'{6}')",
                                 LOAD_BATCH, item.UBIVNO, item.VAT_INVOICE_NO, item.VAT_AMT, item.VAT_DATE, item.NOTE, appUser);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
         public string GetNumOfEXP_VAT_XREF_LOAD(string LOAD_BATCH)
@@ -105,7 +105,7 @@ namespace CHubDAL
                                         LOADED_BY)
                                         VALUES('{0}','{1}','{2}','{3}','{4}','{5}',sysdate,'{6}')",
                                         LOAD_BATCH, item.INVOICE_ID, item.UBIVNO, item.RECEIVED_AMT_USD, item.RECEIVED_RATE, item.NOTE, appUser);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
         public string GetNumOfEXP_COLLECTION_LOAD(string LOAD_BATCH)

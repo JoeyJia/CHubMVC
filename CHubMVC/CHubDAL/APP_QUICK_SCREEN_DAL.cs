@@ -86,7 +86,7 @@ namespace CHubDAL
 
         public void UpdateOrInsertQuickScreen(string sql)
         {
-            cchelper.Update(sql);
+            cchelper.ExecuteNonQuery(sql);
         }
 
     }

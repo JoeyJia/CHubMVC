@@ -26,11 +26,13 @@
                             <option value=""></option>
                         </select>
                     </div>
-                    <div class="col-sm-4" style="padding: 8px;">
+                    <div class="col-sm-3" style="padding: 8px;">
                         <span id="txtSHIP_TO_ALIAS"></span>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-4">
                         <input type="button" class="btn btn-primary btn-sm" id="btnPullFromRP" value="Pull from RP" />
+                        &nbsp;
+                        <input type="button" class="btn btn-primary btn-sm" id="btnShipReload" value="Staing Shipment Reload" />
                     </div>
                 </div>
             </div>
@@ -190,7 +192,36 @@
     </div>
 </div>
 
-
+<div class="modal fade" id="ShipmentReloadModal" tabindex="-1" role="dialog" aria-labelledby="ShipmentReloadModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" style="margin-top:200px;">
+        <div class="modal-content">
+            <div class="modal-header panel panel-default" style="padding:0;margin-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:30px;font-size:30px;">
+                    &times;
+                </button>
+                <div class="panel-heading">
+                    <b>Shipment Reload</b>
+                </div>
+            </div>
+            <div class="modal-body panel panel-default" style="padding:0;margin-bottom:0;">
+                <div class="row" style="margin-top:15px;">
+                    <div class="col-sm-4 text-right">
+                        <span>SHIPMENT NO:</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control input-sm" id="SHIP_ID" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnReloadOK" value="OK" />
+                        <input type="button" class="btn btn-primary btn-sm" id="btnReloadCancel" value="Cancel" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @Html.Partial("_LoadingModal")
 
@@ -278,6 +309,61 @@
                 }
             })
         })
+
+        $("#btnShipReload").on('click', function () {
+            $.ajax({
+                url: '/exp/CheckReloadSecurity',
+                type: 'post',
+                async: false,
+                data: {},
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#ShipmentReloadModal").modal("show");
+                        $("#SHIP_ID").val("");
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to check");
+                }
+            })
+        })
+
+        $("#btnReloadOK").on('click', function () {
+            var SHIP_ID = $("#SHIP_ID").val();
+            if (SHIP_ID == "" || SHIP_ID == null) {
+                alert("Empty SHIP_ID");
+                return false;
+            }
+
+            $.ajax({
+                url: '/exp/RunP_RELOAD_SHIP_FROM_RP',
+                type: 'post',
+                async: false,
+                data: {
+                    SHIP_ID:SHIP_ID
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success)
+                        $("#ShipmentReloadModal").modal("hide");
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to run");
+                }
+            })
+        })
+
+        $("#btnReloadCancel").on("click", function () {
+            $("#ShipmentReloadModal").modal("hide");
+            $("#SHIP_ID").val("");
+        })
+
+
 
         GetSHIP_TO_INDEX();
 

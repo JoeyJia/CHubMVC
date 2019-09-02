@@ -115,6 +115,10 @@ namespace CHubMVC.Controllers
             return RedirectToAction("Login", "Mobile");
         }
 
+        public ActionResult AppDownload()
+        {
+            return View();
+        }
 
         public ActionResult IAScan_M(string LODNUM_DISPLAY)
         {
@@ -281,6 +285,32 @@ namespace CHubMVC.Controllers
             catch (Exception ex)
             {
                 LogHelper.WriteLog("mobile LBTraceScanComplete", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        public ActionResult LBTraceScan2()
+        {
+            if (Session[CHubConstValues.SessionUser] == null)
+                return RedirectToAction("Login", "Mobile");
+
+            ViewBag.AppUser = Session[CHubConstValues.SessionUser].ToString();
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult LBTraceScan2Complete(string DOC_NO, string BARCODE, string APP_USER)
+        {
+            LBTraceScan_BLL tBLL = new LBTraceScan_BLL();
+            try
+            {
+                var SCAN_SEQ = tBLL.GetSeq();
+                tBLL.LBTraceScanComplete(SCAN_SEQ, DOC_NO, BARCODE, APP_USER);
+                return Json(new RequestResult(true));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("mobile LBTraceScan2Complete", ex);
                 return Json(new RequestResult(false, ex.Message));
             }
         }

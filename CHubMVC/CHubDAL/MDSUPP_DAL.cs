@@ -23,7 +23,7 @@ namespace CHubDAL
             string sql = string.Format(@"select * from V_MD_COMPANY_SNAP where 1=1");
             if (!string.IsNullOrEmpty(COMPANY_CODE))
                 sql += string.Format(@" and COMPANY_CODE like '%{0}%' ", COMPANY_CODE);
-            var result = ccHelper.Search<MD_COMPANY_SNAP>(sql);
+            var result = ccHelper.ExecuteSqlToList<MD_COMPANY_SNAP>(sql);
             return result;
         }
 
@@ -65,7 +65,7 @@ namespace CHubDAL
         public List<MD_INSURANCE_CODES> GetINSURANCE_CODE()
         {
             string sql = string.Format(@"select * from MD_INSURANCE_CODES");
-            var result = ccHelper.Search<MD_INSURANCE_CODES>(sql);
+            var result = ccHelper.ExecuteSqlToList<MD_INSURANCE_CODES>(sql);
             return result;
         }
 

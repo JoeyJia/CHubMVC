@@ -1,0 +1,254 @@
+﻿@{
+    ViewBag.Title = "TRC LBAutoSetup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid" id="lbautosetupDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal" id="lbautosetupForm">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Key Word</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="KEY_WORD" placeholder="Key Word" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Query" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-sm-12">
+                <input type="button" class="btn btn-primary btn-sm" id="btnSave" value="Save" />
+                <input type="button" class="btn btn-primary btn-sm" id="btnApply" value="Apply All" />
+                <input type="button" class="btn btn-primary btn-sm" id="btnDownload" value="Download Full List" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <table class="table table-bordered" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th>Key Words</th>
+                                <th style="width:20%;">WH ID</th>
+                                <th style="width:4%;">Active</th>
+                                <th style="width:18%;">Description</th>
+                                <th style="width:6%;">Create date</th>
+                                <th style="width:5%;">OPT</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="6">
+                                    <input type="button" class="btn btn-primary btn-sm" id="btnAdd" value="Add new" />
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_LoadingModal")
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" id="myModalDialog" style="width:60%;">
+        <div class="modal-content">
+            <div class="modal-header panel-default" style="padding:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 50px; height: 50px; font-size: 30px;">
+                    &times;
+                </button>
+                <div class="modal-title panel-heading" style="background-color:#f5f5f5;">
+                    <b>Show List ( Matching)</b>
+                </div>
+            </div>
+            <div class="modal-body" style="padding:0;">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 colxs12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th style="width:6%;">WH ID</th>
+                                    <th style="width:10%;">Label Trace</th>
+                                    <th style="width:10%;">Load Date</th>
+                                    <th style="width:24%;">NOTE</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalResultTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        //Query
+        $("#btnSearch").on('click', function () {
+            $("#resultTbody").empty();
+            $("#loadingModal").modal("show");
+
+            $.ajax({
+                url: '/trc/LBAutoSetupSearch',
+                type: 'post',
+                data: {
+                    KEY_WORD: $("#KEY_WORD").val()
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success)
+                        $("#resultTbody").html(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+            })
+        })
+        //Save
+        $("#btnSave").on('click', function () {
+            var arg = [];
+            var $tr = $("#resultTbody tr");
+            for (var i = 0; i < $tr.length; i++) {
+                var $td = $($tr[i]).find("td");
+                arg.push({
+                    AUTO_ID: $($tr[i]).attr("data-id"),
+                    KEY_WORD: $td.find(".KEY_WORD").val(),
+                    WH_ID: $td.find(".WH_ID").val(),
+                    ACTIVEIND: $td.find("input[type=checkbox]")[0].checked ? "Y" : "N"
+                })
+            }
+
+            $.ajax({
+                url: '/trc/LBAutoSetupSave',
+                type: 'post',
+                data: JSON.stringify({
+                    list: arg
+                }),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success)
+                        $("#btnSearch").click();
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to save");
+                }
+            })
+        })
+        //Add New
+        $("#btnAdd").on('click', function () {
+            $.ajax({
+                url: '/trc/LBAutoSetupAddNew',
+                type: 'post',
+                data: {},
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success)
+                        $("#resultTbody").append(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to add");
+                }
+            })
+        })
+        //Apply All
+        $("#btnApply").on('click', function () {
+            $.ajax({
+                url: '/trc/LBAutoSetupApplyAll',
+                type: 'post',
+                data: {},
+                dataType: 'json',
+                success: function (obj) {
+                    if (!obj.Success)
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to apply");
+                }
+            })
+        })
+        //Download
+        $("#btnDownload").on('click', function () {
+            $.ajax({
+                url: '/trc/LBAutoSetupDownload',
+                type: 'post',
+                data: {},
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success)
+                        window.location.href = '/trc/DownLoad?fileName=' + obj.Data;
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to download");
+                }
+            })
+        })
+        //Show List
+        $("#resultTbody").on('click', ".btnShowList", function () {
+            $btn = $(this);
+            var WH_ID = $btn.attr("data-whid");
+            var KEY_WORD = $btn.attr("data-keyword");
+
+            $.ajax({
+                url: '/trc/LBAutoSetupShowList',
+                type: 'post',
+                data: {
+                    WH_ID: WH_ID,
+                    KEY_WORD: KEY_WORD
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#modalResultTbody").html(obj.Data);
+                        $("#myModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to show list");
+                }
+            })
+            //$("#myModal").modal("show");
+        })
+
+        $("#resultTbody").on('blur', ".KEY_WORD", function () {
+            var $input = $(this);
+            var keyWord = $input.val();
+            if (keyWord.length < 2) {
+                alert("至少输入两个字符");
+                $input.focus();
+            }
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        $("#imgDiag").css("margin-top", "300px");
+    })
+</script>
+
+

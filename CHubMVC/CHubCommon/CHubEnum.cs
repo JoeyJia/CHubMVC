@@ -216,13 +216,29 @@ namespace CHubCommon
             /// </summary>
             lbtracep,
             /// <summary>
+            /// /trc/lbautosetup
+            /// </summary>
+            lbautosetup,
+            /// <summary>
             /// /trc/lbtraceinq
             /// </summary>
             lbtraceinq,
             /// <summary>
             /// /mp/mp_custbank
             /// </summary>
-            mp_custbank
+            mp_custbank,
+            /// <summary>
+            /// /mp/mp_addrmap
+            /// </summary>
+            mp_addrmap,
+            /// <summary>
+            /// mp/mp_main
+            /// </summary>
+            mp_main,
+            /// <summary>
+            /// /prc/prcbench
+            /// </summary>
+            prcbench
         }
 
         public enum OrderStatusEnum

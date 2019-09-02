@@ -33,7 +33,7 @@ namespace CHubDAL
             param[0].Value = WH_ID;
             param[1].Value = !string.IsNullOrEmpty(LODNUM) ? LODNUM : " ";
 
-            ccHelper.ExecProcedure("PRE_WORK_MOBILE_PRINT", param);
+            ccHelper.ExecProcedureWithParams("PRE_WORK_MOBILE_PRINT", param);
         }
 
         public void RunPRE_WORK_MOBILE_UnCatalog(string WH_ID, string PRTNUM)
@@ -44,14 +44,14 @@ namespace CHubDAL
             };
             param[0].Value = WH_ID;
             param[1].Value = PRTNUM;
-            ccHelper.ExecProcedure("PRE_WORK_MOBILE_UnCatalog", param);
+            ccHelper.ExecProcedureWithParams("PRE_WORK_MOBILE_UnCatalog", param);
         }
 
         public V_PLABEL_BY_MOBILE_PRINT GetV_PLABEL_BY_MOBILE_PRINT(string WH_ID, string LODNUM, string PRTNUM, string LABEL_CODE)
         {
             string sql = string.Format(@"select * from V_PLABEL_BY_MOBILE_PRINT where WH_ID='{0}' and trim(LODNUM)='{1}' and PRTNUM='{2}' and LABEL_CODE='{3}' and rownum =1",
                                         WH_ID, string.IsNullOrEmpty(LODNUM) ? "NA" : LODNUM, PRTNUM, LABEL_CODE);
-            var result = ccHelper.Search<V_PLABEL_BY_MOBILE_PRINT>(sql).ToList().FirstOrDefault();
+            var result = ccHelper.ExecuteSqlToList<V_PLABEL_BY_MOBILE_PRINT>(sql).ToList().FirstOrDefault();
             return result;
         }
 
@@ -59,7 +59,7 @@ namespace CHubDAL
         {
             string sql = string.Format(@"select * from V_PLABEL_BY_MOBILE_PRINT where VID='{0}' and WH_ID='{1}' and trim(LODNUM)='{2}' and PRTNUM='{3}' and LABEL_CODE='{4}'",
                                         VID, WH_ID, LODNUM, PRTNUM, LABEL_CODE);
-            var result = ccHelper.Search<V_PLABEL_BY_MOBILE_PRINT>(sql).ToList();
+            var result = ccHelper.ExecuteSqlToList<V_PLABEL_BY_MOBILE_PRINT>(sql).ToList();
             return result;
         }
 

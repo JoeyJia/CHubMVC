@@ -84,7 +84,7 @@ namespace CHubDAL
                                     REGULATION)
                                     values('{0}','{1}','{2}','{3}','{4}','{5}',{6},'{7}','{8}','{9}','{10}')",
                                     tc.HSCODE, tc.HSCODE_DESC, tc.TC_CATEGORY_ID, tc.NOTE1, tc.NOTE2, tc.NOTE3, "sysdate", tc.TAX_REFUND_RATE, tc.MFN_RATE, tc.UOM, tc.REGULATION);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
 

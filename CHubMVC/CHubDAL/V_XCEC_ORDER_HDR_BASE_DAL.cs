@@ -33,14 +33,14 @@ namespace CHubDAL
                 sql += string.Format(@" and CREATE_DATE >= sysdate-{0}", Convert.ToInt32(CREATE_DATE));
             if (!string.IsNullOrEmpty(PROCESS_STATUS))
                 sql += string.Format(@" and PROCESS_STATUS='{0}'", PROCESS_STATUS);
-            var result = cchelper.Search<V_XCEC_ORDER_HDR_BASE>(sql);
+            var result = cchelper.ExecuteSqlToList<V_XCEC_ORDER_HDR_BASE>(sql);
             return result;
         }
 
         public List<V_XCEC_ORDER_HDR_BASE> SearchXcecWBDetail(string WAREHOUSE, string IHUB_ORDER_NO)
         {
             string sql = string.Format(@"select * from V_XCEC_ORDER_HDR_BASE where WAREHOUSE='{0}' and IHUB_ORDER_NO='{1}'", WAREHOUSE, IHUB_ORDER_NO);
-            var result = cchelper.Search<V_XCEC_ORDER_HDR_BASE>(sql);
+            var result = cchelper.ExecuteSqlToList<V_XCEC_ORDER_HDR_BASE>(sql);
             return result;
         }
 
@@ -49,14 +49,14 @@ namespace CHubDAL
             //this.CheckCultureInfoForDate();
             //string sql = string.Format(@"select * from xcec_int.xcec_order_base");
             string sql = string.Format(@"select * from V_XCEC_ORDER_LN_BASE where CUST_ORDER_NO='{0}' order by ORDER_LINE_NO", CUST_ORDER_NO);
-            var result = cchelper.Search<V_XCEC_ORDER_LN_BASE>(sql);
+            var result = cchelper.ExecuteSqlToList<V_XCEC_ORDER_LN_BASE>(sql);
             return result;
         }
 
         public void UpdateProcessStatus(V_XCEC_ORDER_HDR_BASE result)
         {
             string sql = string.Format(@"UPDATE xcec_int.XCEC_ORDER_LOG SET PROCESS_STATUS = '{0}' where IHUB_ORDER_NO = '{1}'", "Q", result.IHUB_ORDER_NO);
-            cchelper.Update(sql);
+            cchelper.ExecuteNonQuery(sql);
         }
 
         public void ExecProc()

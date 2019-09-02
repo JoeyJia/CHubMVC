@@ -520,7 +520,11 @@
     <Compile Include="UnmanagedModel\EXP_VAT_XREF_LOAD.cs" />
     <Compile Include="UnmanagedModel\E_BANKING_TRANS.cs" />
     <Compile Include="UnmanagedModel\E_BANKING_TRANS_LOAD.cs" />
+    <Compile Include="UnmanagedModel\E_ORDER_STATUS.cs" />
+    <Compile Include="UnmanagedModel\E_ORDER_TYPE_MST.cs" />
+    <Compile Include="UnmanagedModel\E_SHIP_METHOD_MST.cs" />
     <Compile Include="UnmanagedModel\E_TRANS_TYPE.cs" />
+    <Compile Include="UnmanagedModel\E_WH_MST.cs" />
     <Compile Include="UnmanagedModel\FAR_DETAIL_STG.cs" />
     <Compile Include="UnmanagedModel\FAR_HEADER.cs" />
     <Compile Include="UnmanagedModel\G_ADDR_DFLT.cs" />
@@ -563,8 +567,11 @@
     <Compile Include="UnmanagedModel\V_DS_ORDER_BASE.cs" />
     <Compile Include="UnmanagedModel\V_EXP_STAGE_BASE.cs" />
     <Compile Include="UnmanagedModel\V_EXP_STAGE_UNINVOICED.cs" />
+    <Compile Include="UnmanagedModel\V_E_ADDR_MST.cs" />
     <Compile Include="UnmanagedModel\V_E_BANKING_TRANS.cs" />
     <Compile Include="UnmanagedModel\V_E_CUST_BANKING.cs" />
+    <Compile Include="UnmanagedModel\V_E_SO_DETAIL.cs" />
+    <Compile Include="UnmanagedModel\V_E_SO_HEADER.cs" />
     <Compile Include="UnmanagedModel\V_E_TRANS_TYPE_ASSIGN.cs" />
     <Compile Include="UnmanagedModel\V_FAR_DETAIL.cs" />
     <Compile Include="UnmanagedModel\V_FAR_HEADER.cs" />
@@ -609,6 +616,7 @@
     <Compile Include="UnmanagedModel\V_SHIPMENT_D_ALL1ONE.cs" />
     <Compile Include="UnmanagedModel\V_SHIPMENT_H_RP_ALL.cs" />
     <Compile Include="UnmanagedModel\V_SHIP_TRACK_PRO.cs" />
+    <Compile Include="UnmanagedModel\V_TRC_AUTO_SETUP.cs" />
     <Compile Include="UnmanagedModel\V_TRC_SCAN_HISTORY.cs" />
     <Compile Include="UnmanagedModel\V_XCEC_ADDR_ALL.cs" />
     <Compile Include="UnmanagedModel\V_XCEC_ORDER_HDR_BASE.cs" />

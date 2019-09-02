@@ -22,14 +22,14 @@ namespace CHubDAL
         public List<MD_SR_STATUS> GetSR_STATUS()
         {
             string sql = string.Format(@"select SR_STATUS,SR_STATUS_DESC from MD_SR_STATUS");
-            var result = ccHelper.Search<MD_SR_STATUS>(sql);
+            var result = ccHelper.ExecuteSqlToList<MD_SR_STATUS>(sql);
             return result;
         }
 
         public MD_SR_STATUS GetSR_STATUS_DESC(string SR_STATUS)
         {
             string sql = string.Format(@"select SR_STATUS,SR_STATUS_DESC from MD_SR_STATUS where SR_STATUS='{0}'", SR_STATUS);
-            var result = ccHelper.Search<MD_SR_STATUS>(sql).FirstOrDefault();
+            var result = ccHelper.ExecuteSqlToList<MD_SR_STATUS>(sql).FirstOrDefault();
             return result;
         }
 
@@ -47,20 +47,20 @@ namespace CHubDAL
             if (!string.IsNullOrEmpty(IS_COMMON))
                 sql += string.Format(@" and IS_COMMON ='{0}'", IS_COMMON);
 
-            var result = ccHelper.Search<V_MD_SR_ALL>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_MD_SR_ALL>(sql);
             return result;
         }
 
         public void MDSRSave(MDReqSRArg arg)
         {
             string sql = string.Format(@"Update MD_REQ_SR Set COMPANY_CODE='{0}',SUPPLIER_PARTNO='{1}',PRICE='{2}',MOQ='{3}',LOT_SIZE='{4}',LT='{5}',IS_COMMON='{6}',SR_COMMENTS='{7}' where SR_REQ_NO='{8}'", arg.COMPANY_CODE, arg.Supplier_PARTNO, arg.PRICE, arg.MOQ, arg.LOT_SIZE, arg.LT, arg.IS_COMMON, arg.SR_COMMENTS, arg.SR_REQ_NO);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
         public bool IsOperate(string SECURE_ID, string UserName)
         {
             string sql = string.Format(@"select * from APP_SECURE_PROC_ASSIGN where SECURE_ID='{0}' and APP_USER='{1}' and ACTIVEIND='{2}'", SECURE_ID, UserName, "Y");
-            var result = ccHelper.Search<APP_SECURE_PROC_ASSIGN>(sql);
+            var result = ccHelper.ExecuteSqlToList<APP_SECURE_PROC_ASSIGN>(sql);
             if (result != null && result.Any())
                 return true;
             else
@@ -70,7 +70,7 @@ namespace CHubDAL
         public void MDSRChangeStatus(List<string> SR_REQ_NO, string SR_STATUS, string SR_COMMENTS)
         {
             string sql = string.Format(@"Update MD_REQ_SR set SR_STATUS='{0}',SR_COMMENTS='{1}' where SR_REQ_NO in ({2})", SR_STATUS, SR_COMMENTS, ValueConvert.ToSqlInStr(SR_REQ_NO));
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
         public DataTable MDSRDownloadTemp()
@@ -145,7 +145,7 @@ namespace CHubDAL
         public MD_COMPANY_SNAP CheckCOMPANY_CODE(string COMPANY_CODE)
         {
             string sql = string.Format(@"select * from MD_COMPANY_SNAP where COMPANY_CODE='{0}'", COMPANY_CODE);
-            var result = ccHelper.Search<MD_COMPANY_SNAP>(sql).FirstOrDefault();
+            var result = ccHelper.ExecuteSqlToList<MD_COMPANY_SNAP>(sql).FirstOrDefault();
             return result;
         }
 

@@ -25,7 +25,7 @@ namespace CHubDAL
                 sql += string.Format(@" and CUSTOMER_NO='{0}'", SearchCondition.CUSTOMER_NO);
             if (!string.IsNullOrEmpty(SearchCondition.BANK_PAYER))
                 sql += string.Format(@" and BANK_PAYER like '%{0}%'", SearchCondition.BANK_PAYER);
-            var result = ccHelper.Search<V_E_CUST_BANKING>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_E_CUST_BANKING>(sql);
             return result;
         }
 
@@ -43,13 +43,13 @@ namespace CHubDAL
                                             item.BANK_PAYER, item.CREDIT_LIMIT, item.CREDIT_LIMIT_2,
                                             item.NOTE, item.BALANCE_ACTIVE_FLAG, AppUser,
                                             item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.CURRENCY_CODE);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
         public V_E_CUST_BANKING MP_CUSTBANK(V_E_CUST_BANKING item)
         {
             string sql = string.Format(@"select * from V_E_CUST_BANKING where CUSTOMER_NO='{0}' and BILL_TO_LOCATION='{1}' and CURRENCY_CODE='{2}'", item.CUSTOMER_NO, item.BILL_TO_LOCATION, item.CURRENCY_CODE);
-            var result = ccHelper.Search<V_E_CUST_BANKING>(sql).First();
+            var result = ccHelper.ExecuteSqlToList<V_E_CUST_BANKING>(sql).First();
             return result;
         }
 
@@ -61,7 +61,7 @@ namespace CHubDAL
                 sql += string.Format(@" and APP_USER='{0}' and ACTIVEIND='Y'", App_User);
             if (!string.IsNullOrEmpty(TRANS_TYPE))
                 sql += string.Format(@" and TRANS_TYPE='{0}'", TRANS_TYPE);
-            var result = ccHelper.Search<V_E_TRANS_TYPE_ASSIGN>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_E_TRANS_TYPE_ASSIGN>(sql);
             return result;
         }
 
@@ -116,21 +116,21 @@ namespace CHubDAL
             param[9].Value = item.BANK_PAYER;
             param[10].Value = item.ORDER_NO;
 
-            ccHelper.ExecProcedure("P_BANK_TRANS_NEW", param);
+            ccHelper.ExecProcedureWithParams("P_BANK_TRANS_NEW", param);
         }
 
 
         public List<E_TRANS_TYPE> GetTransType()
         {
             string sql = string.Format(@"select * from E_TRANS_TYPE");
-            var result = ccHelper.Search<E_TRANS_TYPE>(sql);
+            var result = ccHelper.ExecuteSqlToList<E_TRANS_TYPE>(sql);
             return result;
         }
 
         public string TransHistoryGetTrans_TYPE(string TRANS_TYPE)
         {
             string sql = string.Format(@"select * from E_TRANS_TYPE where TRANS_TYPE='{0}'", TRANS_TYPE);
-            var result = ccHelper.Search<E_TRANS_TYPE>(sql).First().TRANS_TYPE_DESC;
+            var result = ccHelper.ExecuteSqlToList<E_TRANS_TYPE>(sql).First().TRANS_TYPE_DESC;
             return result;
         }
 
@@ -141,7 +141,7 @@ namespace CHubDAL
                 sql += string.Format(@" and TRANS_TYPE='{0}'", TRANS_TYPE);
             if (!string.IsNullOrEmpty(TRANS_DATE))
                 sql += string.Format(@" and TRANS_DATE>=sysdate-{0}", Convert.ToInt32(TRANS_DATE));
-            var result = ccHelper.Search<V_E_BANKING_TRANS>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_E_BANKING_TRANS>(sql);
             return result;
         }
 
@@ -191,7 +191,7 @@ namespace CHubDAL
                                             LOAD_BATCH,
                                             LINE_NO
                                             );
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
         public void RunP_BANK_TRANS_LOAD_POST(decimal LOAD_BATCH)
@@ -200,7 +200,7 @@ namespace CHubDAL
                new OracleParameter(":v_load_batch",OracleDbType.Decimal)
             };
             param[0].Value = LOAD_BATCH;
-            ccHelper.ExecProcedure("EAPP.P_BANK_TRANS_LOAD_POST", param);
+            ccHelper.ExecProcedureWithParams("EAPP.P_BANK_TRANS_LOAD_POST", param);
         }
 
         public DataTable BankReceiptDownload(decimal LOAD_BATCH)

@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "TestForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid" id="testFormDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b></b>
+        </div>
+        <div class="row" style="margin-top:15px;">
+            <div class="form-group">
+                <form class="form-horizontal form-inline" id="testForm" name="testForm">
+                    <label for="" class="col-sm-2 control-label">FILE:</label>
+                    <div class="col-sm-4">
+                        <input type="file" class="form-control input-sm" id="testFile" name="testFile" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnUpload" value="Upload" /> 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#btnUpload").on('click', function () {
+            var formData = new FormData();
+            var fileName = $("#testFile")[0].files[0];
+            if (fileName == null || fileName == "") {
+                alert("请选择需要导入的文件");
+                return false;
+            }
+
+            formData.append("file", fileName);
+            $.ajax({
+                url: '/test/TestUpload',
+                type: 'post',
+                async: false,
+                contentType: false, //这个一定要写，不然传不了文件
+                processData: false, //这个也一定要写，不然会报错
+                data: formData,
+                dataType: 'json',
+                success: function (obj) {
+
+                },
+                error: function (e) {
+                    alert("fail to upload");
+                }
+            })
+
+
+        })
+
+
+    })
+</script>
+

@@ -78,6 +78,44 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
+        public ActionResult CheckReloadSecurity()
+        {
+            EXPWB_BLL eBLL = new EXPWB_BLL();
+            try
+            {
+                string appUser = Session[CHubConstValues.SessionUser].ToString();
+                if (eBLL.CheckSecurityOfbtnCreateInv("EXP_STG_RELOAD", appUser))
+                    return Json(new RequestResult(true));
+                else
+                    return Json(new RequestResult(false, "You cannot operate"));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("EXP CheckReloadSecurity", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult RunP_RELOAD_SHIP_FROM_RP(string SHIP_ID)
+        {
+            EXPWB_BLL eBLL = new EXPWB_BLL();
+            try
+            {
+                eBLL.RunP_RELOAD_SHIP_FROM_RP(SHIP_ID);
+                return Json(new RequestResult(true));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("EXP RunP_RELOAD_SHIP_FROM_RP", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
         public ActionResult GetSHIP_TO_INDEX()
         {
             EXPWB_BLL eBLL = new EXPWB_BLL();
@@ -418,6 +456,43 @@ namespace CHubMVC.Controllers
             catch (Exception ex)
             {
                 LogHelper.WriteLog("EXP SearchDetailsByV_EXP_STAGE_BASE", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult CheckZFSecurity()
+        {
+            CINVINQ_BLL cBLL = new CINVINQ_BLL();
+            try
+            {
+                string appUser = Session[CHubConstValues.SessionUser].ToString();
+                if (cBLL.CheckSecurity("EXP_INV_REDISCARD", AppUser))
+                    return Json(new RequestResult(true));
+                else
+                    return Json(new RequestResult(false, "You cannot operate!"));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("EXP CheckZFSecurity", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult SureToReDiscard(string COMM_INV_ID)
+        {
+            CINVINQ_BLL cBLL = new CINVINQ_BLL();
+            try
+            {
+                cBLL.SureToReDiscard(COMM_INV_ID);
+                return Json(new RequestResult(true));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("EXP SureToReDiscard", ex);
                 return Json(new RequestResult(false, ex.Message));
             }
         }

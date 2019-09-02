@@ -29,7 +29,7 @@ namespace CHubDAL
                 sql += string.Format(@" and OA_STATUS='{0}'", OA_STATUS);
             if (!string.IsNullOrEmpty(ORDER_DATE))
                 sql += string.Format(@" and ORDER_DATE>=sysdate-{0}", Convert.ToDecimal(ORDER_DATE));
-            var result = ccHelper.Search<V_IHUB_OA_BASE>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_IHUB_OA_BASE>(sql);
             return result;
         }
 

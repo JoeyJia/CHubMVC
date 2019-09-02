@@ -19,7 +19,7 @@ namespace CHubDAL
         public List<G_ADDR_DFLT> GetG_ADDR_DFLT(string SYSID, string ABBREVIATION)
         {
             string sql = string.Format(@"select * from G_ADDR_DFLT where SYSID='{0}' and ABBREVIATION='{1}'", SYSID, ABBREVIATION);
-            var result = ccHelper.Search<G_ADDR_DFLT>(sql);
+            var result = ccHelper.ExecuteSqlToList<G_ADDR_DFLT>(sql);
             return result;
         }
 
@@ -30,14 +30,14 @@ namespace CHubDAL
                 sql += string.Format(@" and (LOCAL_DEST_NAME like '%{0}%' or LOCAL_DEST_ADDR_1 like '%{0}%' or LOCAL_DEST_ADDR_2 like '%{0}%' or LOCAL_DEST_ADDR_3 like '%{0}%')", KeyWord);
             sql += string.Format(@" order by DEST_LOCATION) a");
             sql += string.Format(@" where a.line>={0} and a.line<={1}", PageStart, PageEnd);
-            var result = ccHelper.Search<G_ADDR_SPL>(sql);
+            var result = ccHelper.ExecuteSqlToList<G_ADDR_SPL>(sql);
             return result;
         }
 
         public G_ADDR_SPL GetG_ADDR_SPLDetail(string SYSID, string ABBREVIATION, string DEST_LOCATION)
         {
             string sql = string.Format(@"select * from G_ADDR_SPL where SYSID='{0}' and ABBREVIATION='{1}' and DEST_LOCATION='{2}'", SYSID, ABBREVIATION, DEST_LOCATION);
-            var result = ccHelper.Search<G_ADDR_SPL>(sql).First();
+            var result = ccHelper.ExecuteSqlToList<G_ADDR_SPL>(sql).First();
             return result;
         }
 
@@ -46,7 +46,7 @@ namespace CHubDAL
             string sql = string.Format(@"select * from G_ORDER_TYPE where SYSID='{0}' and WAREHOUSE='{1}'", SYSID, WAREHOUSE);
             if (!string.IsNullOrEmpty(DUE_DATE_CODE))
                 sql += string.Format(@" and DUE_DATE_CODE='{0}'", DUE_DATE_CODE);
-            var result = ccHelper.Search<G_ORDER_TYPE>(sql);
+            var result = ccHelper.ExecuteSqlToList<G_ORDER_TYPE>(sql);
             return result;
         }
 
@@ -104,7 +104,7 @@ namespace CHubDAL
                                             header.SHIP_TO_LOCATION, header.DEST_LOCATION, header.SPL_IND, header.CUSTOMER_PO_NO, header.DEALER_PO_NO,
                                             header.ORDER_TYPE, header.PRIORITY_CODE, !string.IsNullOrEmpty(header.DUE_DATE.ToString()) ? header.DUE_DATE.ToString("yyyy-MM-dd") : "", header.SHIP_COMPLETE_FLAG, header.WAREHOUSE,
                                             header.ORDER_NOTES, header.CREATED_BY, "sysdate");
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
         public void UpdateQUICK_OEORDER_HEADER(QUICK_OEORDER_HEADER header)
@@ -118,7 +118,7 @@ namespace CHubDAL
                                                     header.DEST_LOCATION, header.SPL_IND, header.CUSTOMER_PO_NO, header.DEALER_PO_NO, header.ORDER_TYPE,
                                                     header.PRIORITY_CODE, !string.IsNullOrEmpty(header.DUE_DATE.ToString()) ? header.DUE_DATE.ToString("yyyy-MM-dd") : "", header.SHIP_COMPLETE_FLAG, header.WAREHOUSE, header.ORDER_NOTES,
                                                     header.QUICK_ORDER_NO);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
         public void SaveQUICK_OEORDER_DETAIL(QUICK_OEORDER_DETAIL detail)
@@ -129,30 +129,30 @@ namespace CHubDAL
                                             values({0},{1},'{2}','{3}',{4},
                                             '{5}',to_date('{6}','yyyy/mm/dd'),sysdate)", detail.QUICK_ORDER_NO, detail.LINE_NO, detail.CUSTOMER_PARTNO, detail.PART_NO, detail.BUY_QTY,
                                             detail.DESCRIPTION, !string.IsNullOrEmpty(detail.DUE_DATE.ToString()) ? detail.DUE_DATE.ToString("yyyy-MM-dd") : "", "sysdate");
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
         public void GetQUICK_OEORDER_DETAILByQUICK_ORDER_NO(string QUICK_ORDER_NO)
         {
             string sql = string.Format(@"select * from QUICK_OEORDER_DETAIL where QUICK_ORDER_NO='{0}'", QUICK_ORDER_NO);
-            var result = ccHelper.Search<QUICK_OEORDER_DETAIL>(sql);
+            var result = ccHelper.ExecuteSqlToList<QUICK_OEORDER_DETAIL>(sql);
             if (result != null && result.Count() > 0)
             {
                 string dSql = string.Format(@"delete QUICK_OEORDER_DETAIL where QUICK_ORDER_NO='{0}'", QUICK_ORDER_NO);
-                ccHelper.Update(dSql);
+                ccHelper.ExecuteNonQuery(dSql);
             }
         }
 
         public List<V_QUICK_EXPORT_WEBPART_HDR> GetV_QUICK_EXPORT_WEBPART_HDR(decimal QUICK_ORDER_NO)
         {
             string sql = string.Format(@"select * from V_QUICK_EXPORT_WEBPART_HDR where QUICK_ORDER_NO={0}", QUICK_ORDER_NO);
-            var result = ccHelper.Search<V_QUICK_EXPORT_WEBPART_HDR>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_QUICK_EXPORT_WEBPART_HDR>(sql);
             return result;
         }
         public List<V_QUICK_EXPORT_WEBPART_DTL> GetV_QUICK_EXPORT_WEBPART_DTL(decimal QUICK_ORDER_NO)
         {
             string sql = string.Format(@"select * from V_QUICK_EXPORT_WEBPART_DTL where QUICK_ORDER_NO={0}", QUICK_ORDER_NO);
-            var result = ccHelper.Search<V_QUICK_EXPORT_WEBPART_DTL>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_QUICK_EXPORT_WEBPART_DTL>(sql);
             return result;
         }
     }

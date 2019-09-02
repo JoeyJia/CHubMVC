@@ -22,7 +22,7 @@ namespace CHubDAL
         public List<V_RET_USER_CUST_LINK> GetCustomer_No(string AppUser)
         {
             string sql = string.Format(@"select * from V_RET_USER_CUST_LINK where APP_USER='{0}'", AppUser);
-            var result = ccHelper.Search<V_RET_USER_CUST_LINK>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_RET_USER_CUST_LINK>(sql);
             return result;
         }
 
@@ -37,14 +37,14 @@ namespace CHubDAL
                 sql += string.Format(@" and RET_REQ_NO='{0}'", arg.RET_REQ_NO);
             if (arg.INVOICE_DATE > 0)
                 sql += string.Format(@" and INVOICE_DATE>sysdate-{0}", arg.INVOICE_DATE);
-            var result = ccHelper.Search<V_RET_INV_RETURN_H>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_RET_INV_RETURN_H>(sql);
             return result;
         }
 
         public List<V_RET_INV_RETURN_D> GetRetInvDetailModal(string INVOICE_ID)
         {
             string sql = string.Format(@"select * from V_RET_INV_RETURN_D where INVOICE_ID='{0}'", INVOICE_ID);
-            var result = ccHelper.Search<V_RET_INV_RETURN_D>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_RET_INV_RETURN_D>(sql);
             return result;
         }
 
@@ -62,7 +62,7 @@ namespace CHubDAL
             param[0].Value = INVOICE_ID;
             param[0].Direction = System.Data.ParameterDirection.Input;
 
-            ccHelper.ExecProcedure("P_RET_Match", param);
+            ccHelper.ExecProcedureWithParams("P_RET_Match", param);
         }
 
         public void RunProc_P_RET_INV_CLOSE(string INVOICE_ID)
@@ -73,7 +73,7 @@ namespace CHubDAL
             param[0].Value = INVOICE_ID;
             param[0].Direction = ParameterDirection.Input;
 
-            ccHelper.ExecProcedure("P_RET_INV_CLOSE", param);
+            ccHelper.ExecProcedureWithParams("P_RET_INV_CLOSE", param);
         }
 
         public string RetInvGetSql(string INVOICE_ID)

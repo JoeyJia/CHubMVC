@@ -39,7 +39,7 @@ namespace CHubDAL
                                                 item.ASN_NO, item.LINE_NO, item.COMPANY_CODE, item.SHIP_DATE.ToString("yyyy/MM/dd"),
                                                 item.PO_NO, item.PO_LINE_NO, item.PO_REL_NO, item.PART_NO, item.QTY_SHIPPED, item.COO, item.NOTE,
                                                 item.LOAD_BATCH, item.LOAD_BY);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
         public string RunF_IHUB_ASN_LOAD_CHK(decimal LOAD_BATCH)
@@ -55,7 +55,7 @@ namespace CHubDAL
             };
             param[0].Value = LOAD_BATCH;
             param[0].Direction = System.Data.ParameterDirection.Input;
-            ccHelper.ExecProcedure("P_IHUB_ASN_LOAD_POST", param);
+            ccHelper.ExecProcedureWithParams("P_IHUB_ASN_LOAD_POST", param);
         }
 
         public List<V_IHUB_ASN> IhubASNSearch(string COMPANY_CODE, string ASN_NO, int LOAD_DAY)
@@ -67,7 +67,7 @@ namespace CHubDAL
                 sql += string.Format(@" and ASN_NO='{0}'", ASN_NO);
             if (LOAD_DAY > 0)
                 sql += string.Format(@" and LOAD_DATE>sysdate-{0}", LOAD_DAY);
-            var result = ccHelper.Search<V_IHUB_ASN>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_IHUB_ASN>(sql);
             return result;
         }
 

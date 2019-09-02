@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using CHubCommon;
 using CHubDBEntity;
+using System.IO;
 
 namespace CHubMVC
 {
@@ -46,5 +47,9 @@ namespace CHubMVC
             }
         }
 
+        public ActionResult ExcelDownload(string fullPath)
+        {
+            return File(fullPath, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Path.GetFileName(fullPath));
+        }
     }
 }

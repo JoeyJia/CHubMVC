@@ -28,7 +28,7 @@ namespace CHubDAL
             if (!string.IsNullOrEmpty(arg.CUSTOMER_NO))
                 sql += string.Format(@" and CUSTOMER_NO like '%{0}%'", arg.CUSTOMER_NO);
             sql += string.Format(@" and REQ_BY='{0}'", arg.APP_USER);
-            var result = ccHelper.Search<V_FAR_HEADER>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_FAR_HEADER>(sql);
             return result;
         }
 
@@ -91,7 +91,7 @@ namespace CHubDAL
                                             far.FAR_STATUS, far.PERIOD, far.CUSTOMER_NO, far.FAR_PROJECT, far.ADJ_TYPE,
                                             far.PRIORITY_CODE, far.FAR_DESC, far.RECURRING, far.SUBSTITUTE, far.INV_STRATEGY_CODE,
                                             far.MITIGATION_PLAN, far.FAR_NO);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
         public void MyFarAdd(FAR_HEADER far)
@@ -113,7 +113,7 @@ namespace CHubDAL
                                             far.FAR_NO, far.FAR_STATUS, far.PERIOD, far.CUSTOMER_NO, far.FAR_PROJECT,
                                             far.ADJ_TYPE, far.PRIORITY_CODE, far.FAR_DESC, far.RECURRING, far.SUBSTITUTE,
                                             far.INV_STRATEGY_CODE, far.MITIGATION_PLAN, far.REQ_BY);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
 
         }
 
@@ -127,13 +127,13 @@ namespace CHubDAL
         public V_FAR_HEADER GetMyFarHeader(string FAR_NO)
         {
             string sql = string.Format(@"select * from V_FAR_HEADER where FAR_NO='{0}'", FAR_NO);
-            var result = ccHelper.Search<V_FAR_HEADER>(sql).First();
+            var result = ccHelper.ExecuteSqlToList<V_FAR_HEADER>(sql).First();
             return result;
         }
         public List<V_FAR_DETAIL> GetMyFarDetail(string FAR_NO)
         {
             string sql = string.Format(@"select * from V_FAR_DETAIL where FAR_NO='{0}'", FAR_NO);
-            var result = ccHelper.Search<V_FAR_DETAIL>(sql);
+            var result = ccHelper.ExecuteSqlToList<V_FAR_DETAIL>(sql);
             return result;
         }
         public bool CheckSecurity(string SECURE_ID, string APP_USER)
@@ -143,7 +143,7 @@ namespace CHubDAL
         public void UpdateFarStatus(string FAR_NO, string FAR_STATUS)
         {
             string sql = string.Format(@"Update FAR_HEADER set FAR_STATUS='{0}' where FAR_NO='{1}'", FAR_STATUS, FAR_NO);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
         public string ExportFar(string FAR_NO)
         {
@@ -188,7 +188,7 @@ namespace CHubDAL
                                             fd.FAR_NO, LOAD_SEQ, fd.CUST_PARTNO, fd.LOCATION_CODE, 
                                             fd.M01, fd.M02, fd.M03, fd.M04, fd.M05, fd.M06, fd.M07, fd.M08,
                                             fd.M09, fd.M10, fd.M11, fd.M12, fd.NOTE);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
         public string CheckCUST_PARTNO(string CUST_PARTNO)
@@ -202,7 +202,7 @@ namespace CHubDAL
             string sql = string.Format(@"delete FAR_DETAIL where FAR_NO='{0}' 
                                                 and LOAD_SEQ='{1}' 
                                                 and CUST_PARTNO='{2}'", FAR_NO, LOAD_SEQ, CUST_PARTNO);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
     }
 }

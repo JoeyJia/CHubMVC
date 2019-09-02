@@ -43,7 +43,7 @@ namespace CHubDAL
         {
             string sql = string.Format(@"insert into TRC_SCAN_HISTORY(SCAN_SEQ,DOC_NO,BARCODE,APP_USER,SCAN_DATE,CREATE_DATE,NOTE)
                                         values('{0}','{1}','{2}','{3}',sysdate,sysdate,'NOTE')", seq, doc_no, barcode, app_user);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
     }
 }

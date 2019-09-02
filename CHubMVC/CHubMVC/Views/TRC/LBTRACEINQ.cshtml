@@ -50,6 +50,7 @@
                             <tr>
                                 <th style="width:6%;">DOC No</th>
                                 <th style="width:7%;">Bar code</th>
+                                <th style="width:5%;">Part No</th>
                                 <th>SHIP to Name</th>
                                 <th style="width:6%;">Scan Date</th>
                                 <th style="width:6%;">ship Date</th>
@@ -105,6 +106,12 @@
                         <td><span id="Modal_BARCODE"></span></td>
                         <td class="tdTitle">User</td>
                         <td><span id="APP_USER"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle">DOC No</td>
+                        <td><span id="Modal_DOC_NO"></span></td>
+                        <td class="tdTitle">Part No.</td>
+                        <td><span id="Modal_PART_NO"></span></td>
                     </tr>
                     <tr>
                         <td class="tdTitle">NOTE</td>
@@ -219,6 +226,8 @@
             $("#SCAN_DATE").html(ConvertDateForm(data.SCAN_DATE));
             $("#Modal_BARCODE").html(data.BARCODE);
             $("#APP_USER").html(data.APP_USER);
+            $("#Modal_DOC_NO").html(data.DOC_NO);
+            $("#Modal_PART_NO").html(data.PART_NO);
             $("#NOTE").html(data.NOTE);
             $("#LOCAL_SHIP_TO_NAME").html(data.LOCAL_SHIP_TO_NAME);
             $("#SHIP_TO_CONTACT").html(data.SHIP_TO_CONTACT);

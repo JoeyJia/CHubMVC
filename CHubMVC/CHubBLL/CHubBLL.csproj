@@ -112,10 +112,13 @@
     <Compile Include="LBTraceScan_BLL.cs" />
     <Compile Include="MDSUPP_BLL.cs" />
     <Compile Include="MD_REQ_BLL.cs" />
+    <Compile Include="MP_ADDRMAP_BLL.cs" />
     <Compile Include="MP_CUSTBANK_BLL.cs" />
+    <Compile Include="MP_MAIN_BLL.cs" />
     <Compile Include="M_ADRNAM_MST_BLL.cs" />
     <Compile Include="ORDINQ_BLL.cs" />
     <Compile Include="OtherProcess\IHUBOAPrintBLL.cs" />
+    <Compile Include="PRC_BLL.cs" />
     <Compile Include="QuickOrd_BLL.cs" />
     <Compile Include="RETINV_BLL.cs" />
     <Compile Include="RETMAIN_BLL.cs" />

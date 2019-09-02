@@ -20,7 +20,7 @@ namespace CHubDAL
         {
             List<string> types = new List<string>();
             string sql = "select distinct EXCHANGE_TYPE from EXP_EXCHANGE_RATE";
-            var result = ccHelper.Search<EXP_EXCHANGE_RATE>(sql);
+            var result = ccHelper.ExecuteSqlToList<EXP_EXCHANGE_RATE>(sql);
             foreach (var item in result)
             {
                 types.Add(item.EXCHANGE_TYPE);
@@ -34,7 +34,7 @@ namespace CHubDAL
             if (!string.IsNullOrEmpty(EXCHANGE_TYPE))
                 sql += string.Format(@" and EXCHANGE_TYPE='{0}'", EXCHANGE_TYPE);
             sql += string.Format(@" order by CREATE_DATE desc");
-            var result = ccHelper.Search<EXP_EXCHANGE_RATE>(sql);
+            var result = ccHelper.ExecuteSqlToList<EXP_EXCHANGE_RATE>(sql);
             return result;
         }
 
@@ -54,7 +54,7 @@ namespace CHubDAL
                 sql = string.Format(@"Insert Into  EXP_EXCHANGE_RATE(EXCHANGE_TYPE,START_DATE,END_DATE,EXCHANGE_RATE,NOTE,CREATE_DATE,CREATED_BY)
                                     Values('{0}',to_date('{1}','yyyy/mm/dd'),to_date('{2}','yyyy/mm/dd'),'{3}','{4}',sysdate,'{5}')",
                                     eer.EXCHANGE_TYPE, eer.START_DATE.ToString("yyyy/MM/dd"), eer.END_DATE.ToString("yyyy/MM/dd"), eer.EXCHANGE_RATE, eer.NOTE, appUser);
-            ccHelper.Update(sql);
+            ccHelper.ExecuteNonQuery(sql);
         }
 
     }
