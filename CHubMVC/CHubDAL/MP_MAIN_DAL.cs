@@ -44,9 +44,29 @@ namespace CHubDAL
             return result;
         }
 
-        public List<V_E_SO_HEADER> MP_MAINSearch(MPMainArg arg)
+
+
+        public List<V_E_SO_HEADER> MP_MAINSearch(MPMainArg arg, int PageIndex, int PageSize, out int RowCount)
         {
-            string sql = string.Format(@"select * from V_E_SO_HEADER where 1=1");
+            int RowStart = PageIndex * PageSize + 1;
+            int RowEnd = (PageIndex + 1) * PageSize;
+
+            string sql = string.Format(@"select * from (
+                                select row_number() over(order by CREATE_DATE desc) rowno, t.* from V_E_SO_HEADER t
+                                where 1=1");
+            sql = GetSql(sql, arg);
+            sql += string.Format(@") v where v.rowno>={0} and v.rowno<={1}", RowStart, RowEnd);
+            var result = ccHelper.ExecuteSqlToList<V_E_SO_HEADER>(sql);
+
+            string rowSql = string.Format(@"select count(*) from V_E_SO_HEADER where 1=1");
+            rowSql = GetSql(rowSql, arg);
+            RowCount = Convert.ToInt32(ccHelper.ExecuteSqlToDataTable(rowSql).Rows[0][0]);
+
+            return result;
+        }
+
+        public string GetSql(string sql, MPMainArg arg)
+        {
             if (!string.IsNullOrEmpty(arg.WAREHOUSE))
                 sql += string.Format(@" and WAREHOUSE='{0}'", arg.WAREHOUSE);
             if (!string.IsNullOrEmpty(arg.ORDER_TYPE))
@@ -63,8 +83,8 @@ namespace CHubDAL
                 sql += string.Format(@" and SO_NO='{0}'", arg.SO_NO);
             if (!string.IsNullOrEmpty(arg.LAST_DAY))
                 sql += string.Format(@" and CREATE_DATE>=sysdate-{0}", Convert.ToDecimal(arg.LAST_DAY));
-            var result = ccHelper.ExecuteSqlToList<V_E_SO_HEADER>(sql);
-            return result;
+
+            return sql;
         }
 
         public List<V_E_SO_DETAIL> MP_MAINDetail(string SO_NO)

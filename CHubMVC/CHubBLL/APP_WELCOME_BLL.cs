@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDAL;
 using CHubDBEntity;
+using CHubDBEntity.UnmanagedModel;
 
 namespace CHubBLL
 {
@@ -24,6 +25,10 @@ namespace CHubBLL
         public List<APP_WELCOME> GetAppWelcome()
         {
             return dal.GetAppWelcome();
+        }
+        public List<APP_ENV> GetAppEnv()
+        {
+            return dal.GetAppEnv();
         }
 
     }

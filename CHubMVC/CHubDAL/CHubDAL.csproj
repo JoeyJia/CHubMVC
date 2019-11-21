@@ -88,6 +88,7 @@
     <Compile Include="IA_LOD_DTL_DAL.cs" />
     <Compile Include="IA_PART_AUTOMAP_DAL.cs" />
     <Compile Include="IA_PRT_NOTE_CUST_DAL.cs" />
+    <Compile Include="IhubJob_DAL.cs" />
     <Compile Include="ITT_CUST_LOAD_DAL.cs" />
     <Compile Include="ITT_PO_DAL.cs" />
     <Compile Include="ITT_TRAN_LOAD_DAL.cs" />

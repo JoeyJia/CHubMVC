@@ -506,7 +506,9 @@
     <Compile Include="TS_OR_HEADER_STAGE.cs">
       <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="UnmanagedModel\APP_ENV.cs" />
     <Compile Include="UnmanagedModel\APP_OECUSTOMER_MST.cs" />
+    <Compile Include="UnmanagedModel\APP_SECURE_PROCESS.cs" />
     <Compile Include="UnmanagedModel\APP_SECURE_PROC_ASSIGN.cs" />
     <Compile Include="UnmanagedModel\APP_WH_NEW.cs" />
     <Compile Include="UnmanagedModel\DASH_KPI_HISTORY.cs" />
@@ -520,6 +522,7 @@
     <Compile Include="UnmanagedModel\EXP_VAT_XREF_LOAD.cs" />
     <Compile Include="UnmanagedModel\E_BANKING_TRANS.cs" />
     <Compile Include="UnmanagedModel\E_BANKING_TRANS_LOAD.cs" />
+    <Compile Include="UnmanagedModel\E_CUST_BANKING_ADDT.cs" />
     <Compile Include="UnmanagedModel\E_ORDER_STATUS.cs" />
     <Compile Include="UnmanagedModel\E_ORDER_TYPE_MST.cs" />
     <Compile Include="UnmanagedModel\E_SHIP_METHOD_MST.cs" />
@@ -586,6 +589,7 @@
     <Compile Include="UnmanagedModel\V_INQ_TRACKNUM.cs" />
     <Compile Include="UnmanagedModel\V_INV_PDC.cs" />
     <Compile Include="UnmanagedModel\V_INV_RDC.cs" />
+    <Compile Include="UnmanagedModel\V_JOB_LINK_USER.cs" />
     <Compile Include="UnmanagedModel\V_MD_ENTITY_ITEM.cs" />
     <Compile Include="UnmanagedModel\V_MD_REQ_ALL1ONE.cs" />
     <Compile Include="UnmanagedModel\V_MD_SR_ALL.cs" />

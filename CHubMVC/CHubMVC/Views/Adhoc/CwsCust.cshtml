@@ -4,7 +4,24 @@
 }
 <style>
     .form-group {
-        margin-bottom:0;
+        margin-bottom: 0;
+    }
+
+    .editSubject {
+        background-color: #f5f5f5;
+        font-weight: bold;
+    }
+
+    .editTitle {
+        background-color: #f5f5f5;
+    }
+
+    #editTable > tbody > tr > td {
+        width: 16.6%;
+    }
+
+    #editTable > tbody > tr > td {
+        border: 0;
     }
 </style>
 
@@ -37,12 +54,15 @@
                             <tr>
                                 <th style="width:8%;">Customer No</th>
                                 <th style="width:36%;">Customer Name</th>
-                                <th style="width:6%;">CWS (Y/N)</th>
-                                <th>FLAG01</th>
-                                <th>FLAG02</th>
-                                <th>FLAG03</th>
-                                <th>NOTE</th>
+                                <th>Short Name</th>
+                                <th style="width:6%;">Create Date</th>
+                                <th style="width:6%;">Load Date</th>
                                 <th style="width:3%;">Operation</th>
+                                @*<th style="width:6%;">CWS (Y/N)</th>*@
+                                @*<th>FLAG01</th>*@
+                                @*<th>FLAG02</th>*@
+                                @*<th>FLAG03</th>*@
+                                @*<th>NOTE</th>*@
                             </tr>
                         </thead>
                         <tbody id="resultTbody"></tbody>
@@ -54,10 +74,184 @@
 </div>
 @Html.Partial("_LoadingModal")
 
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" style="width:68%;">
+        <div class="modal-content">
+            <div class="modal-header panel-default" style="padding:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 40px; height: 40px;font-size:30px;">
+                    &times;
+                </button>
+                <div class="modal-title panel-heading text-center">
+                    <b>Edit</b>
+                </div>
+            </div>
+            <div class="modal-body" style="padding:0;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered" id="editTable">
+                            <tr>
+                                <td colspan="6" class="editSubject">OA</td>
+                            </tr>
+                            <tr>
+                                <td class="editTitle">Customer EML</td>
+                                <td colspan="5">
+                                    <input type="text" class="form-control input-sm" id="CUST_EML_OA" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="editTitle">OA TYPE</td>
+                                <td>
+                                    <select class="form-control input-sm" id="OA_TYPE">
+                                        <option value=""></option>
+                                    </select>
+                                </td>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td class="editTitle">CC Email</td>
+                                <td colspan="5">
+                                    <input type="text" class="form-control input-sm" id="CC_EML_OA" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" class="editSubject">DROP SHIP</td>
+                            </tr>
+                            <tr>
+                                <td class="editTitle">Customer EML</td>
+                                <td>
+                                    <input type="text" class="form-control input-sm" id="CUST_EML_DS" />
+                                </td>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td class="editTitle">CC Email</td>
+                                <td>
+                                    <input type="text" class="form-control input-sm" id="CC_EML_DS" />
+                                </td>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" class="editSubject">System Flags</td>
+                            </tr>
+                            <tr>
+                                <td class="editTitle">CWS Flag （ Customer Warranty System)</td>
+                                <td>
+                                    <select class="form-control input-sm" id="CWS_FLAG">
+                                        <option value=""></option>
+                                        <option value="Y">Y</option>
+                                        <option value="N">N</option>
+                                    </select>
+                                </td>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td class="editTitle">FAR Flag</td>
+                                <td>
+                                    <select class="form-control input-sm" id="FAR_FLAG">
+                                        <option value=""></option>
+                                        <option value="Y">Y</option>
+                                        <option value="N">N</option>
+                                    </select>
+                                </td>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" class="editSubject">Supportin CSR</td>
+                            </tr>
+                            <tr>
+                                <td class="editTitle">CSR（wwid)</td>
+                                <td>
+                                    <input type="text" class="form-control input-sm" id="CSR" />
+                                </td>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td class="editTitle">CSR Email</td>
+                                <td colspan="5">
+                                    <input type="text" class="form-control input-sm" id="CSR_EML" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" class="editSubject">Others</td>
+                            </tr>
+                            <tr>
+                                <td class="editTitle">Flag01</td>
+                                <td>
+                                    <input type="text" class="form-control input-sm" id="FLAG01" />
+                                </td>
+                                <td class="editTitle">Flag03</td>
+                                <td>
+                                    <input type="text" class="form-control input-sm" id="FLAG02" />
+                                </td>
+                                <td class="editTitle">Flag03</td>
+                                <td>
+                                    <input type="text" class="form-control input-sm" id="FLAG03" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="editTitle">NOTE</td>
+                                <td colspan="5">
+                                    <input type="text" class="form-control input-sm" id="NOTE" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" style="text-align: right; padding-right: 100px;">
+                                    <input type="button" class="btn btn-primary btn-sm" id="btnSave" value="SAVE" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    //获取对应的oatype
+    $(function () {
+        $.ajax({
+            url: '/adhoc/GetOA_TYPE',
+            type: 'post',
+            async: true,
+            data: {},
+            dataType: 'json',
+            success: function (obj) {
+                if (obj.Success) {
+                    if (obj.Data.length > 0) {
+                        for (var i = 0; i < obj.Data.length; i++) {
+                            $("<option></option>").val(obj.Data[i].OA_TYPE).text(obj.Data[i].OA_TYPE + " (" + obj.Data[i].OA_DESC + ")").appendTo("#OA_TYPE");
+                        }
+                    }
+                }
+                else
+                    alert(obj.Msg);
+            }
+        })
+    })
+
+
     $(document).ready(function () {
         var arg = {};
+        var CUSTOMER_NO;
 
+        //OK
         $("#btnOK").on('click', function () {
             //$("#resultTbody").empty();
             var CUSTOMER_NO = $("#txtCUSTOMER_NO").val();
@@ -66,6 +260,7 @@
                 return false;
             }
 
+            $("#resultTbody").empty();
             $("#loadingModal").modal("show");
             $.ajax({
                 url: '/adhoc/CwsCustSearch',
@@ -90,6 +285,7 @@
             })
         });
 
+        //弃用
         $("#resultTbody").on('click', '.btnSave', function () {
             var $this = $(this);
             arg = {};
@@ -108,16 +304,16 @@
                 type: 'post',
                 async: true,
                 data: JSON.stringify({
-                    arg:arg
+                    arg: arg
                 }),
                 dataType: 'json',
                 contentType: 'application/json;charset=utf-8',
                 success: function (obj) {
                     $("#loadingModal").modal("hide");
-                    if (obj.Success){
+                    if (obj.Success) {
                         //alert("Success");
                         $("#btnOK").click();
-                    }                        
+                    }
                     else
                         alert(obj.Msg);
                 },
@@ -128,6 +324,116 @@
             })
         });
 
+        //Edit
+        $("#resultTbody").on('click', '.btnEdit', function () {
+            var $btn = $(this);
+            CUSTOMER_NO = $btn.attr("data-customerno");
+            //alert(CUSTOMER_NO);
+            //$("#editModal").modal("show");
+
+            $.ajax({
+                url: "/adhoc/CwsCustEdit",
+                type: 'post',
+                data: {
+                    CUSTOMER_NO: CUSTOMER_NO
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        FillData(obj.Data);
+                        $("#editModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                }
+            })
+        })
+        function FillData(data) {
+            if (data != null) {
+                $("#CUST_EML_OA").val(data.CUST_EML_OA);
+                $("#OA_TYPE").val(data.OA_TYPE);
+                $("#CC_EML_OA").val(data.CC_EML_OA);
+                $("#CUST_EML_DS").val(data.CUST_EML_DS);
+                $("#CC_EML_DS").val(data.CC_EML_DS);
+                $("#CWS_FLAG").val(data.CWS_FLAG);
+                $("#FAR_FLAG").val(data.FAR_FLAG);
+                $("#CSR").val(data.CSR);
+                $("#CSR_EML").val(data.CSR_EML);
+                $("#FLAG01").val(data.FLAG01);
+                $("#FLAG02").val(data.FLAG02);
+                $("#FLAG03").val(data.FLAG03);
+                $("#NOTE").val(data.NOTE);
+            }
+        }
+
+        //Save
+        $("#btnSave").on('click', function () {
+            arg = {};
+            arg.CUSTOMER_NO = CUSTOMER_NO;
+            arg.CUST_EML_OA = $("#CUST_EML_OA").val();
+            arg.OA_TYPE = $("#OA_TYPE").val();
+            arg.CC_EML_OA = $("#CC_EML_OA").val();
+            arg.CUST_EML_DS = $("#CUST_EML_DS").val();
+            arg.CC_EML_DS = $("#CC_EML_DS").val();
+            arg.CWS_FLAG = $("#CWS_FLAG").val();
+            arg.FAR_FLAG = $("#FAR_FLAG").val();
+            arg.CSR = $("#CSR").val();
+            arg.CSR_EML = $("#CSR_EML").val();
+            arg.FLAG01 = $("#FLAG01").val();
+            arg.FLAG02 = $("#FLAG02").val();
+            arg.FLAG03 = $("#FLAG03").val();
+            arg.NOTE = $("#NOTE").val();
+
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/adhoc/CwsCustSave',
+                type: 'post',
+                async: true,
+                data: JSON.stringify({
+                    arg: arg
+                }),
+                dataType: 'json',
+                contentType: 'application/json;charset=utf-8',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#editModal").modal("hide");
+                        $("#btnOK").click();
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to save");
+                }
+            })
+
+        })
+
+        $("#CSR").on('blur', function () {
+            var $obj = $(this);
+            if ($obj.val() != "") {
+                $.ajax({
+                    url: '/adhoc/CheckAPP_USER',
+                    type: 'post',
+                    data: {
+                        APP_USER:$obj.val()
+                    },
+                    dataType:'json',
+                    success: function (obj) {
+                        if (obj.Success) {
+
+                        }
+                        else {
+                            alert("wwid not exist");
+                            $("#CSR").select();
+                        }
+                    }
+                })
+
+            }
+        })
 
     });
 </script>

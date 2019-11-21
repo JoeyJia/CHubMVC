@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDBEntity.UnmanagedModel;
 using CHubDAL;
+using System.Data;
 
 namespace CHubBLL
 {
@@ -21,19 +22,19 @@ namespace CHubBLL
         }
         public List<G_ADDR_SPL> GetG_ADDR_SPL(string SYSID, string ABBREVIATION, string KeyWord, int PageStart, int PageEnd)
         {
-            return dal.GetG_ADDR_SPL(SYSID, ABBREVIATION, KeyWord,PageStart,PageEnd);
+            return dal.GetG_ADDR_SPL(SYSID, ABBREVIATION, KeyWord, PageStart, PageEnd);
         }
         public G_ADDR_SPL GetG_ADDR_SPLDetail(string SYSID, string ABBREVIATION, string DEST_LOCATION)
         {
             return dal.GetG_ADDR_SPLDetail(SYSID, ABBREVIATION, DEST_LOCATION);
         }
-        public List<G_ORDER_TYPE> GetG_ORDER_TYPE(string SYSID, string WAREHOUSE,string DUE_DATE_CODE)
+        public List<G_ORDER_TYPE> GetG_ORDER_TYPE(string SYSID, string WAREHOUSE, string DUE_DATE_CODE)
         {
-            return dal.GetG_ORDER_TYPE(SYSID, WAREHOUSE,DUE_DATE_CODE);
+            return dal.GetG_ORDER_TYPE(SYSID, WAREHOUSE, DUE_DATE_CODE);
         }
-        public string CallF_QUICK_PART(string CUSTOMER_NO, string CUSTOMER_PARTNO)
+        public string CallF_QUICK_PART(string GOMS, string CUSTOMER_NO, string CUSTOMER_PARTNO)
         {
-            return dal.CallF_QUICK_PART(CUSTOMER_NO, CUSTOMER_PARTNO);
+            return dal.CallF_QUICK_PART(GOMS, CUSTOMER_NO, CUSTOMER_PARTNO);
         }
         public string CallF_QUICK_QTY(string PART_NO, string BUY_QTY)
         {
@@ -79,6 +80,25 @@ namespace CHubBLL
         {
             return dal.GetV_QUICK_EXPORT_WEBPART_DTL(QUICK_ORDER_NO);
         }
-
+        public string RunFunc(string QUICK_ORDER_NO, string Identifier)
+        {
+            return dal.RunFunc(QUICK_ORDER_NO, Identifier);
+        }
+        public DataTable GetQORDLine(string QUICK_ORDER_NO)
+        {
+            return dal.GetQORDLine(QUICK_ORDER_NO);
+        }
+        public void UpdateState(string QUICK_ORDER_NO, string PROCESS_STATUS, string PROCESS_ERROR = "")
+        {
+            dal.UpdateState(QUICK_ORDER_NO, PROCESS_STATUS, PROCESS_ERROR);
+        }
+        public void ExecP_CRT_ORDER_FILE_QORD(string QUICK_ORDER_NO)
+        {
+            dal.ExecP_CRT_ORDER_FILE_QORD(QUICK_ORDER_NO);
+        }
+        public void UpdateQORDStatus(string QUICK_ORDER_NO)
+        {
+            dal.UpdateQORDStatus(QUICK_ORDER_NO);
+        }
     }
 }

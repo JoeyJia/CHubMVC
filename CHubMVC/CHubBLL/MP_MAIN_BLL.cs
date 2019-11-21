@@ -33,9 +33,9 @@ namespace CHubBLL
         {
             return dal.GetOrderTypeList();
         }
-        public List<V_E_SO_HEADER> MP_MAINSearch(MPMainArg arg)
+        public List<V_E_SO_HEADER> MP_MAINSearch(MPMainArg arg,out int RowCount, int PageIndex=0,int PageSize=50)
         {
-            return dal.MP_MAINSearch(arg);
+            return dal.MP_MAINSearch(arg,PageIndex,PageSize,out RowCount);
         }
         public List<V_E_SO_DETAIL> MP_MAINDetail(string SO_NO)
         {
@@ -55,3 +55,4 @@ namespace CHubBLL
         }
     }
 }
+ 

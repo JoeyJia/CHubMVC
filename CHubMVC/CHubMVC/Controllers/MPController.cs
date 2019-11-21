@@ -389,6 +389,44 @@ namespace CHubMVC.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        public ActionResult MP_CUSTBANK_OtherSetup(string CUSTOMER_NO)
+        {
+            MP_CUSTBANK_BLL mpBLL = new MP_CUSTBANK_BLL();
+            try
+            {
+                var result = mpBLL.MP_CUSTBANK_OtherSetup(CUSTOMER_NO);
+                if (result != null && result.Any())
+                    return Json(new RequestResult(result.First()));
+                else
+                    return Json(new RequestResult(false, "No Data"));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("MP MP_CUSTBANK_OtherSetup", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult MP_CUSTBANK_OtherSetupSave(E_CUST_BANKING_ADDT arg)
+        {
+            MP_CUSTBANK_BLL mpBLL = new MP_CUSTBANK_BLL();
+            try
+            {
+                mpBLL.MP_CUSTBANK_OtherSetupSave(arg);
+                return Json(new RequestResult(true));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("MP MP_CUSTBANK_OtherSetupSave", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+
+        [Authorize]
         public ActionResult MP_ADDRMAP()
         {
             string appUser = Session[CHubConstValues.SessionUser].ToString();
@@ -515,7 +553,7 @@ namespace CHubMVC.Controllers
             try
             {
                 List<SelectListItem> list = new List<SelectListItem>();
-                var result= mpBLL.GetWarehouseList();
+                var result = mpBLL.GetWarehouseList();
                 if (result != null && result.Any())
                 {
                     foreach (var item in result)
@@ -581,7 +619,7 @@ namespace CHubMVC.Controllers
                         list.Add(new SelectListItem() { Value = item.SHIP_METHOD, Text = item.SHIP_METHOD + " (" + item.SHIP_METHOD_DESC + ")" });
 
                     }
-                } 
+                }
                 return Json(new RequestResult(list));
             }
             catch (Exception ex)
@@ -628,7 +666,7 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult GetOrderTypeDesc(string WAREHOUSE,string ORDER_TYPE)
+        public ActionResult GetOrderTypeDesc(string WAREHOUSE, string ORDER_TYPE)
         {
             MP_MAIN_BLL mpBLL = new MP_MAIN_BLL();
             try
@@ -693,14 +731,20 @@ namespace CHubMVC.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpPost]
-        public ActionResult MP_MAINSearch(MPMainArg arg)
+        public ActionResult MP_MAINSearch(MPMainArg arg, int PageIndex)
         {
             MP_MAIN_BLL mpBLL = new MP_MAIN_BLL();
             try
             {
-                var result = mpBLL.MP_MAINSearch(arg);
+                int RowCount = 0;
+                int PageSize = 50; bool showMore = true;
+                var result = mpBLL.MP_MAINSearch(arg, out RowCount, PageIndex, PageSize);
+                if (((PageIndex + 1) * PageSize) >= RowCount)
+                    showMore = false;
+
+                //result = result.Skip(PageIndex * PageSize).Take(PageSize).ToList();
                 var mainHtml = GetMP_MAINHtml(result);
-                return Json(new RequestResult(mainHtml));
+                return Json(new RequestResult(true, showMore ? "" : "End", mainHtml));
             }
             catch (Exception ex)
             {
@@ -716,9 +760,10 @@ namespace CHubMVC.Controllers
             MP_MAIN_BLL mpBLL = new MP_MAIN_BLL();
             try
             {
+                int RowCount = 0;
                 MPMainArg arg = new MPMainArg();
                 arg.SO_NO = SO_NO;
-                var result = mpBLL.MP_MAINSearch(arg).First();
+                var result = mpBLL.MP_MAINSearch(arg, out RowCount).First();
                 return Json(new RequestResult(result));
             }
             catch (Exception ex)
@@ -748,7 +793,7 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult MP_MAINCheck(string SO_NO,string APP_USER)
+        public ActionResult MP_MAINCheck(string SO_NO, string APP_USER)
         {
             MP_MAIN_BLL mpBLL = new MP_MAIN_BLL();
             try
@@ -836,10 +881,10 @@ namespace CHubMVC.Controllers
                         sb.Append("<input type='button' class='btn btn-primary btn-xs btnCancel' value='Cancel' data-sono='" + item.SO_NO + "' />");
                     else
                         sb.Append("<input type='button' class='btn btn-primary btn-xs btnCancel' value='Cancel' data-sono='" + item.SO_NO + "' disabled />");
-                    if (item.ORDER_STATUS == "NEW" || item.ORDER_STATUS == "REJECTED")
-                        sb.Append("<input type='button' class='btn btn-primary btn-xs btnHold' value='Hold' data-sono='" + item.SO_NO + "' />");
-                    else
-                        sb.Append("<input type='button' class='btn btn-primary btn-xs btnHold' value='Hold' data-sono='" + item.SO_NO + "' disabled />");
+                    //if (item.ORDER_STATUS == "NEW" || item.ORDER_STATUS == "REJECTED")
+                    //    sb.Append("<input type='button' class='btn btn-primary btn-xs btnHold' value='Hold' data-sono='" + item.SO_NO + "' />");
+                    //else
+                    //    sb.Append("<input type='button' class='btn btn-primary btn-xs btnHold' value='Hold' data-sono='" + item.SO_NO + "' disabled />");
                     sb.Append("     </td>");
                     sb.Append(" </tr>");
                 }

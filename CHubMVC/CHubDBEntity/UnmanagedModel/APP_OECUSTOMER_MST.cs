@@ -17,5 +17,14 @@ namespace CHubDBEntity.UnmanagedModel
         public string FLAG03 { get; set; }
         public string NOTE { get; set; }
         public DateTime LOAD_DATE { get; set; }
+        public string CSR { get; set; }
+        public string CSR_EML { get; set; }
+        public string SHORT_NAME { get; set; }
+        public string FAR_FLAG { get; set; }
+        public string CUST_EML_DS { get; set; }
+        public string CC_EML_DS { get; set; }
+        public string OA_TYPE { get; set; }
+        public string CUST_EML_OA { get; set; }
+        public string CC_EML_OA { get; set; }
     }
 }

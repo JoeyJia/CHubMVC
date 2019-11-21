@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using CHubDBEntity.UnmanagedModel;
 using CHubCommon;
+using System.Data;
+using Oracle.ManagedDataAccess.Client;
 
 namespace CHubDAL
 {
@@ -50,9 +52,10 @@ namespace CHubDAL
             return result;
         }
 
-        public string CallF_QUICK_PART(string CUSTOMER_NO, string CUSTOMER_PARTNO)
+        public string CallF_QUICK_PART(string GOMS, string CUSTOMER_NO, string CUSTOMER_PARTNO)
         {
-            string sql = string.Format(@"select F_QUICK_PART('{0}','{1}') from dual", CUSTOMER_NO, CUSTOMER_PARTNO);
+            string sql = string.Format(@"select F_QUICK_PART_V2('{0}','{1}','{2}') from dual", GOMS, CUSTOMER_NO, CUSTOMER_PARTNO);
+            //string sql = string.Format(@"select F_QUICK_PART('{0}','{1}') from dual", CUSTOMER_NO, CUSTOMER_PARTNO);
             var result = ccHelper.ExecuteFunc(sql);
             return result;
         }
@@ -154,6 +157,39 @@ namespace CHubDAL
             string sql = string.Format(@"select * from V_QUICK_EXPORT_WEBPART_DTL where QUICK_ORDER_NO={0}", QUICK_ORDER_NO);
             var result = ccHelper.ExecuteSqlToList<V_QUICK_EXPORT_WEBPART_DTL>(sql);
             return result;
+        }
+
+        public string RunFunc(string QUICK_ORDER_NO, string Identifier)
+        {
+            string sql = string.Format(@"select F_ORDER_FILE_QORD('{0}','{1}') from dual", QUICK_ORDER_NO, Identifier);
+            var result = ccHelper.ExecuteFunc(sql);
+            return result;
+        }
+        public DataTable GetQORDLine(string QUICK_ORDER_NO)
+        {
+            string sql = string.Format(@"select order_file from V_ORDER_FILE_LINE_QORD where Quick_Order_no ='{0}'", QUICK_ORDER_NO);
+            DataTable dt = ccHelper.ExecuteSqlToDataTable(sql);
+            return dt;
+        }
+        public void UpdateState(string QUICK_ORDER_NO, string PROCESS_STATUS, string PROCESS_ERROR)
+        {
+            string sql = string.Format(@"update QUICK_OEORDER_HEADER set PROCESS_STATUS='{0}',PROCESS_DATE=sysdate,PROCESS_ERROR='{1}' where QUICK_ORDER_NO='{2}'", PROCESS_STATUS, PROCESS_ERROR.Replace("'", "''"), QUICK_ORDER_NO);
+            ccHelper.ExecuteNonQuery(sql);
+        }
+
+        public void ExecP_CRT_ORDER_FILE_QORD(string QUICK_ORDER_NO)
+        {
+            OracleParameter[] param = new OracleParameter[] {
+                new OracleParameter(":V_order_no",OracleDbType.Decimal)
+            };
+            param[0].Value = Convert.ToDecimal(QUICK_ORDER_NO);
+            param[0].Direction = ParameterDirection.Input;
+            ccHelper.ExecProcedureWithParams("P_CRT_ORDER_FILE_QORD", param);
+        }
+        public void UpdateQORDStatus(string QUICK_ORDER_NO)
+        {
+            string sql = string.Format(@"update QUICK_OEORDER_HEADER set PROCESS_STATUS='C',PROCESS_DATE=sysdate where QUICK_ORDER_NO='{0}'", QUICK_ORDER_NO);
+            ccHelper.ExecuteNonQuery(sql);
         }
     }
 }

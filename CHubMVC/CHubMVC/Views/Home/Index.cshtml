@@ -2,6 +2,8 @@
 @using CHubModel;
 @{
     var pageLists = ViewBag.pageList as List<PageList>;
+    var recentLists = ViewBag.recentList as List<APP_PAGES>;
+    var ihubEnv = ViewBag.ihubEnv as string;
 }
 @{
     ViewBag.Title = "Home Page";
@@ -29,17 +31,19 @@
         font-size: 24px;
     }
 
-    .box {
-        width: 72px;
+    .imgwrap {
         text-align: center;
-        /*height: 110px;*/
+        height: 88px;
     }
 
-        .box img {
+        .imgwrap img {
             width: 48px;
             height: 48px;
+            vertical-align: middle;
+        }
+
+        .imgwrap span {
             display: block;
-            margin-left:18%;
         }
 </style>
 
@@ -50,37 +54,50 @@
 <div class="container-fluid body-content">
     <div class="row">
         <div class="col-md-12 col-lg-12">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-default text-center">
-                        @foreach (var item in ViewBag.welcomeList)
-                        {
-                            <h3>@item.WEL_MSG</h3>
-                        }
+            @if (ihubEnv == "TEST")
+            {
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default text-center" style="background-color:red;color:white;">
+                            @foreach (var item in ViewBag.welcomeList)
+                            {
+                                <h3>@item.WEL_MSG</h3>
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default text-center">
+                            @foreach (var item in ViewBag.welcomeList)
+                            {
+                                <h3>@item.WEL_MSG</h3>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
 
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-heading"><b>Recent</b></div>
-
-                        <form class="form-horizontal" role="form">
-                            <div class="form-group" style="margin-left:10px;margin-top:10px;">
-                                @foreach (var item in ViewBag.recentList)
-                                {
-                                <div class="col-lg-1 col-md-2 col-sm-3 col-xs-4">
-                                    <div class="box">
+                        <div class="row" style="margin-top:15px;">
+                            @foreach (var item in recentLists)
+                            {
+                                <div class="col-lg-1 col-md-2 col-sm-3 col-xs-4" style="margin-top:5px;">
+                                    <div class="imgwrap">
                                         <a href="@item.URL" title="@item.DESCRIPTION" target="_blank">
                                             <img src="~/Images/page_ico/@item.ICON" />
-                                            @item.ICON_DESC
+                                            <span>@item.ICON_DESC</span>
                                         </a>
                                     </div>
                                 </div>
-                                }
-                            </div>
-                        </form>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
@@ -91,22 +108,19 @@
                         <div class="panel panel-default">
                             <div class="panel-heading"><b>@pls.SPACE_DESC</b></div>
                         </div>
-
-                        <form class="form-horizontal" role="form">
-                            <div class="form-group" style="margin-left:10px;margin-top:10px;">
-                                @foreach (var item in pls.pages)
-                                {
-                                    <div class="col-lg-1 col-md-2 col-sm-3 col-xs-4">
-                                        <div class="box menuList">
-                                            <a href="@item.URL" title="@item.DESCRIPTION" target="_blank">
-                                                <img src="~/Images/page_ico/@item.ICON" />
-                                                @item.ICON_DESC
-                                            </a>
-                                        </div>
+                        <div class="row">
+                            @foreach (var item in pls.pages)
+                            {
+                                <div class="col-lg-1 col-md-2 col-sm-3 col-xs-4">
+                                    <div class="imgwrap menuList">
+                                        <a href="@item.URL" title="@item.DESCRIPTION" target="_blank">
+                                            <img src="~/Images/page_ico/@item.ICON" />
+                                            <span>@item.ICON_DESC</span>
+                                        </a>
                                     </div>
-                                }
-                            </div>
-                        </form>
+                                </div>
+                            }
+                        </div>
                     }
                 </div>
             </div>
@@ -145,7 +159,7 @@
                 type: 'post',
                 async: true,
                 data: {
-                    URL:url
+                    URL: url
                 },
                 dataType: 'json',
                 success: function (obj) {

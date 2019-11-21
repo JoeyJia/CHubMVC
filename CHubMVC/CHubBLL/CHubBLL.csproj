@@ -107,6 +107,7 @@
     <Compile Include="IA_LOD_DTL_BLL.cs" />
     <Compile Include="IA_PART_AUTOMAP_BLL.cs" />
     <Compile Include="IA_PRT_NOTE_CUST_BLL.cs" />
+    <Compile Include="IhubJob_BLL.cs" />
     <Compile Include="JD_ADDR_CONVERT_BLL.cs" />
     <Compile Include="KPISET_BLL.cs" />
     <Compile Include="LBTraceScan_BLL.cs" />

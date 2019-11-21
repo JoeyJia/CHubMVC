@@ -14,6 +14,13 @@
         width: 8% !important;
     }
 
+    .osTd {
+        background-color: #f5f5f5;
+        width: 25%;
+        text-align: right;
+        vertical-align: middle !important;
+    }
+
     #transHistoryTable > tbody > tr > td {
         border-top: 0;
         width: 12.5%;
@@ -88,7 +95,7 @@
                                     <th style="width:5%;">Balance Active?</th>
                                     <th style="width:4%;">Record Date</th>
                                     <th style="width:4%;">Record By</th>
-                                    <th style="width: 15%;">OPT</th>
+                                    <th style="width: 21%;">OPT</th>
                                 </tr>
                             </thead>
                             <tbody id="resultTbody">
@@ -106,54 +113,55 @@
                                             color = "green";
                                         }
 
-                                        <tr>
-                                            <td>@item.CUSTOMER_NO</td>
-                                            <td>@item.BILL_TO_LOCATION</td>
-                                            <td>
-                                                <input type="text" class="form-control input-sm BANK_PAYER" title="@item.BANK_PAYER" value="@item.BANK_PAYER" style="width:100%;" />
-                                            </td>
-                                            <td>@item.CURRENCY_CODE</td>
-                                            <td style="font-size:24px;color:@color;">@item.BALANCE</td>
-                                            <td>
-                                                <input type="text" class="form-control input-sm CREDIT_LIMIT" value="@item.CREDIT_LIMIT" />
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control input-sm CREDIT_LIMIT_2" value="@item.CREDIT_LIMIT_2" />
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control input-sm NOTE" value="@item.NOTE" />
-                                            </td>
-                                            <td>
-                                                @if (item.BALANCE_ACTIVE_FLAG == "Y")
+                                <tr>
+                                    <td>@item.CUSTOMER_NO</td>
+                                    <td>@item.BILL_TO_LOCATION</td>
+                                    <td>
+                                        <input type="text" class="form-control input-sm BANK_PAYER" title="@item.BANK_PAYER" value="@item.BANK_PAYER" style="width:100%;" />
+                                    </td>
+                                    <td>@item.CURRENCY_CODE</td>
+                                    <td style="font-size:24px;color:@color;">@item.BALANCE</td>
+                                    <td>
+                                        <input type="text" class="form-control input-sm CREDIT_LIMIT" value="@item.CREDIT_LIMIT" />
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control input-sm CREDIT_LIMIT_2" value="@item.CREDIT_LIMIT_2" />
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control input-sm NOTE" value="@item.NOTE" />
+                                    </td>
+                                    <td>
+                                        @if (item.BALANCE_ACTIVE_FLAG == "Y")
                                                 {
-                                                    <select class="form-control input-sm BALANCE_ACTIVE_FLAG">
-                                                        <option value="Y" selected>Y</option>
-                                                        <option value="N">N</option>
-                                                    </select>
+                                        <select class="form-control input-sm BALANCE_ACTIVE_FLAG">
+                                            <option value="Y" selected>Y</option>
+                                            <option value="N">N</option>
+                                        </select>
                                                 }
                                                 else
                                                 {
-                                                    <select class="form-control input-sm BALANCE_ACTIVE_FLAG">
-                                                        <option value="Y">Y</option>
-                                                        <option value="N" selected>N</option>
-                                                    </select>
+                                        <select class="form-control input-sm BALANCE_ACTIVE_FLAG">
+                                            <option value="Y">Y</option>
+                                            <option value="N" selected>N</option>
+                                        </select>
                                                 }
-                                            </td>
-                                            <td>@Html.Raw(item.RECORD_DATE.HasValue ? item.RECORD_DATE.Value.ToString("yyyy/MM/dd") : "")</td>
-                                            <td>@item.RECORD_BY</td>
-                                            <td>
-                                                <input type="button" class="btn btn-primary btn-xs btnSave" data-customerno="@item.CUSTOMER_NO" data-billtolocation="@item.BILL_TO_LOCATION" data-currencycode="@item.CURRENCY_CODE" value="Save" />
-                                                <input type="button" class="btn btn-primary btn-xs btnTransHistory" data-customerno="@item.CUSTOMER_NO" data-billtolocation="@item.BILL_TO_LOCATION" data-currencycode="@item.CURRENCY_CODE" value="Trans History" />
-                                                @if (item.BALANCE_ACTIVE_FLAG == "N")
+                                    </td>
+                                    <td>@Html.Raw(item.RECORD_DATE.HasValue ? item.RECORD_DATE.Value.ToString("yyyy/MM/dd") : "")</td>
+                                    <td>@item.RECORD_BY</td>
+                                    <td>
+                                        <input type="button" class="btn btn-primary btn-xs btnSave" data-customerno="@item.CUSTOMER_NO" data-billtolocation="@item.BILL_TO_LOCATION" data-currencycode="@item.CURRENCY_CODE" value="Save" />
+                                        <input type="button" class="btn btn-primary btn-xs btnTransHistory" data-customerno="@item.CUSTOMER_NO" data-billtolocation="@item.BILL_TO_LOCATION" data-currencycode="@item.CURRENCY_CODE" value="Trans History" />
+                                        @if (item.BALANCE_ACTIVE_FLAG == "N")
                                                 {
-                                                    <input type="button" class="btn btn-primary btn-xs btnManualADJ" value="Manual ADJ" disabled />
+                                        <input type="button" class="btn btn-primary btn-xs btnManualADJ" value="Manual ADJ" disabled />
                                                 }
                                                 else
                                                 {
-                                                    <input type="button" class="btn btn-primary btn-xs btnManualADJ" data-customername="@item.BANK_PAYER" data-customerno="@item.CUSTOMER_NO" data-billtolocation="@item.BILL_TO_LOCATION" data-currencycode="@item.CURRENCY_CODE" value="Manual ADJ" />
+                                        <input type="button" class="btn btn-primary btn-xs btnManualADJ" data-customername="@item.BANK_PAYER" data-customerno="@item.CUSTOMER_NO" data-billtolocation="@item.BILL_TO_LOCATION" data-currencycode="@item.CURRENCY_CODE" value="Manual ADJ" />
                                                 }
-                                            </td>
-                                        </tr>
+                                        <input type="button" class="btn btn-primary btn-xs btnOtherSetup" data-customerno="@item.CUSTOMER_NO" value="Other Setup" />
+                                    </td>
+                                </tr>
                                     }
                                 }
                             </tbody>
@@ -413,6 +421,83 @@
     </div>
 </div>
 
+<div class="modal fade" id="OtherSetupModal" tabindex="-1" role="dialog" aria-labelledby="OtherSetupModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content" style="margin-top:100px;">
+            <div class="modal-header panel panel-default" style="padding:0;margin-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:30px;font-size:30px;">
+                    &times;
+                </button>
+                <div class="panel-heading">
+                    <b>Customer Banking Additional Infor.</b>
+                </div>
+            </div>
+            <div class="modal-body" style="padding:0;">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td class="osTd">Customer No</td>
+                                <td style="padding:0;">
+                                    <input type="text" class="form-control input-sm" id="OSCUSTOMER_NO" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="osTd">Auto Send Balance</td>
+                                <td>
+                                    <input type="checkbox" class="checkbox-inline" id="OSBALANCE_AUTO_FLAG" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="osTd">Customer Email</td>
+                                <td style="padding:0;">
+                                    <textarea cols="20" rows="2" class="form-control input-sm" id="OSBALANCE_EMAIL_TO"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="osTd">CC email</td>
+                                <td style="padding:0;">
+                                    <textarea cols="20" rows="2" class="form-control input-sm" id="OSBALANCE_EMAIL_CC"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="osTd">NOTE</td>
+                                <td style="padding:0;">
+                                    <input type="text" class="form-control input-sm" id="OSNOTE" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="osTd">Flex1</td>
+                                <td style="padding:0;">
+                                    <input type="text" class="form-control input-sm" id="OSFLEX1" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="osTd">Flex2</td>
+                                <td style="padding:0;">
+                                    <input type="text" class="form-control input-sm" id="OSFLEX2" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="osTd">Flex3</td>
+                                <td style="padding:0;">
+                                    <input type="text" class="form-control input-sm" id="OSFLEX3" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align:center;">
+                                    <input type="button" class="btn btn-primary btn-sm" id="btnOSSave" value="Save" />
+                                    <input type="button" class="btn btn-primary btn-sm" id="btnOSCancel" value="Cancel" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
         //全局变量
@@ -426,7 +511,7 @@
         var BRIEF;
         var NOTE;
         var ORDER_NO;
-        var PageIndex
+        var PageIndex;
 
         var errorMsg = $("#ErrorMsg").val();
         if (errorMsg != "")
@@ -869,7 +954,7 @@
             $.ajax({
                 url: '/mp/ManualADJcheckDOC_NO',
                 type: 'post',
-                async:false,
+                async: false,
                 data: {
                     DOC_NO: $("#adjDOC_NO").val()
                 },
@@ -983,6 +1068,74 @@
         $("#btnCancel").on('click', function () {
             $("#doubleConfirmModal").modal("hide");
         })
+
+        $("#resultTbody").on('click', '.btnOtherSetup', function () {
+            var $btn = $(this);
+            CUSTOMER_NO = $btn.attr("data-customerno");
+            //alert(CUSTOMER_NO);
+            //$("#OtherSetupModal").modal("show");
+            $.ajax({
+                url: '/mp/MP_CUSTBANK_OtherSetup',
+                type: 'post',
+                data: {
+                   CUSTOMER_NO:CUSTOMER_NO
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        FillOtherSetupData(obj.Data);
+                        $("#OtherSetupModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                }
+            })
+        })
+        function FillOtherSetupData(data) {
+            $("#OSCUSTOMER_NO").val(data.CUSTOMER_NO);
+            if (data.BALANCE_AUTO_FLAG == "Y")
+                $("#OSBALANCE_AUTO_FLAG").attr("checked", true);
+            else
+                $("#OSBALANCE_AUTO_FLAG").attr("checked", false);
+            $("#OSBALANCE_EMAIL_TO").val(data.BALANCE_EMAIL_TO);
+            $("#OSBALANCE_EMAIL_CC").val(data.BALANCE_EMAIL_CC);
+            $("#OSNOTE").val(data.NOTE);
+            $("#OSFLEX1").val(data.FLEX1);
+            $("#OSFLEX2").val(data.FLEX2);
+            $("#OSFLEX3").val(data.FLEX3);
+        }
+
+        $("#btnOSSave").on('click', function () {
+            var arg = {};
+            arg.CUSTOMER_NO = $("#OSCUSTOMER_NO").val();
+            arg.BALANCE_AUTO_FLAG = $("#OSBALANCE_AUTO_FLAG")[0].checked ? "Y" : "N";
+            arg.BALANCE_EMAIL_TO = $("#OSBALANCE_EMAIL_TO").val();
+            arg.BALANCE_EMAIL_CC = $("#OSBALANCE_EMAIL_CC").val();
+            arg.NOTE = $("#OSNOTE").val();
+            arg.FLEX1 = $("#OSFLEX1").val();
+            arg.FLEX2 = $("#OSFLEX2").val();
+            arg.FLEX3 = $("#OSFLEX3").val();
+
+            $.ajax({
+                url: '/mp/MP_CUSTBANK_OtherSetupSave',
+                type: 'post',
+                data: JSON.stringify(arg),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#OtherSetupModal").modal("hide");
+                    }
+                    else
+                        alert(obj.Msg);
+                }
+            })
+        })
+
+        $("#btnOSCancel").on('click', function () {
+            $("#OtherSetupModal").modal("hide");
+        })
+
     })
 </script>
 

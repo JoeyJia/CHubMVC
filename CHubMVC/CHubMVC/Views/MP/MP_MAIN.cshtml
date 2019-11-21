@@ -34,6 +34,10 @@
     .tdTitle {
         background-color: #f5f5f5;
     }
+
+    .form-group {
+        margin-bottom: 0;
+    }
 </style>
 <input type="hidden" id="appUser" value="@ViewBag.AppUser" />
 <div class="container-fluid" id="mp_mainDiv">
@@ -45,14 +49,14 @@
             <div class="row" style="margin-top:15px;">
                 <div class="form-group">
                     <label for="" class="col-sm-2 control-label">Warehouse</label>
-                    <div class="col-sm-2">
+                    <div class="col-sm-1">
                         <select class="form-control input-sm" id="WAREHOUSE"></select>
                     </div>
                     <div class="col-sm-1">
                         <span id="WAREHOUSE_DESC"></span>
                     </div>
-                    <label for="" class="col-sm-2 control-label">Order Type</label>
-                    <div class="col-sm-2">
+                    <label for="" class="col-sm-1 control-label">Order Type</label>
+                    <div class="col-sm-1">
                         <select class="form-control input-sm" id="ORDER_TYPE" disabled>
                             <option value=""></option>
                         </select>
@@ -60,23 +64,12 @@
                     <div class="col-sm-1">
                         <span id="ORDER_TYPE_DESC"></span>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <label for="" class="col-sm-2 control-label">Order Status</label>
-                    <div class="col-sm-2">
+                    <label for="" class="col-sm-1 control-label">Order Status</label>
+                    <div class="col-sm-1">
                         <select class="form-control input-sm" id="ORDER_STATUS"></select>
                     </div>
                     <div class="col-sm-1">
                         <span id="STATUS_DESC"></span>
-                    </div>
-                    <label for="" class="col-sm-2 control-label">Ship Method</label>
-                    <div class="col-sm-2">
-                        <select class="form-control input-sm" id="SHIP_METHOD"></select>
-                    </div>
-                    <div class="col-sm-1">
-                        <span id="SHIP_METHOD_DESC"></span>
                     </div>
                 </div>
             </div>
@@ -86,18 +79,16 @@
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="SHIP_NAME" placeholder="Customer" />
                     </div>
-                    <div class="col-sm-1"></div>
-                    <label for="" class="col-sm-2 control-label">GOMS Customer No</label>
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control input-sm" id="CUSTOMER_NO" placeholder="GOMS Customer No" />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <label for="" class="col-sm-2 control-label">Mobile Parts Order No</label>
+                    <label for="" class="col-sm-1 control-label">MP OrderNo</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="SO_NO" placeholder="Mobile Parts Order No" />
+                    </div>
+                    <label for="" class="col-sm-1 control-label">Ship Method</label>
+                    <div class="col-sm-1">
+                        <select class="form-control input-sm" id="SHIP_METHOD"></select>
+                    </div>
+                    <div class="col-sm-1">
+                        <span id="SHIP_METHOD_DESC"></span>
                     </div>
                 </div>
             </div>
@@ -107,7 +98,11 @@
                     <div class="col-sm-2">
                         <input type="text" class="form-control input-sm" id="LAST_DAY" placeholder="Created in Last days" value="7" />
                     </div>
-                    <div class="col-sm-2 col-sm-offset-1 text-right">
+                    <label for="" class="col-sm-1 control-label">GOMS CustNo</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="CUSTOMER_NO" placeholder="GOMS Customer No" />
+                    </div>
+                    <div class="col-sm-2 text-right">
                         <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Query" />
                     </div>
                 </div>
@@ -137,10 +132,17 @@
                                 <th>Ship Method</th>
                                 <th>FaPiao Type</th>
                                 <th>Create Date</th>
-                                <th style="width:10%;">OPT</th>
+                                <th style="width:8%;">OPT</th>
                             </tr>
                         </thead>
                         <tbody id="resultTbody"></tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="16">
+                                    <a href="javascript:void(0);" id="btnMore" style="text-decoration:none;font-size:16px;">More...</a>
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -551,7 +553,7 @@
     <div class="modal-dialog" style="width:96%;">
         <div class="modal-content">
             <div class="modal-header panel panel-default" style="padding:0;height:30px;margin-bottom:0;">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:30px;font-size:30px;">
+                <button type="button" class="close" id="btnCloseModal" data-dismiss="modal" aria-hidden="true" style="width:30px;font-size:30px;">
                     &times;
                 </button>
                 <div class="panel-heading">
@@ -673,7 +675,7 @@
                                 <tfoot>
                                     <tr>
                                         <td colspan="9" class="text-right">
-                                            <input type="button" class="btn btn-primary btn-sm" id="btnConfirm" value="Confirm" />
+                                            <input type="button" class="btn btn-primary btn-sm" id="btnAddrMapConfirm" value="Confirm" />
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -773,7 +775,9 @@
         var ADDR_TOKEN;
         var TO_SYSTEM;
         var ABBR;
-        
+
+        var PageIndex = 0;
+
         //WAREHOUSE下拉改变，获取WAREHOUSE_DESC
         //ORDER_TYPE 下拉，跟WAREHOUSE联动
         $("#WAREHOUSE").on('change', function () {
@@ -889,8 +893,10 @@
         //查询
         $("#btnSearch").on('click', function () {
             var arg = {};
+            PageIndex = 0;
+            $('#btnMore')[0].style.display = "";
             var ld = $("#LAST_DAY").val();
-            if (ld == "" || parseFloat(ld) <= 0 || parseFloat(ld) > 90) {
+            if (ld != "" && parseFloat(ld) > 90) {
                 alert("Last day Error");
                 return false;
             }
@@ -908,13 +914,21 @@
             $.ajax({
                 url: '/mp/MP_MAINSearch',
                 type: 'post',
-                data: JSON.stringify(arg),
+                data: JSON.stringify({
+                    arg: arg,
+                    PageIndex: PageIndex
+                }),
                 contentType: 'application/json;charset=utf-8',
                 dataType: 'json',
                 success: function (obj) {
                     $("#loadingModal").modal("hide");
-                    if (obj.Success)
+                    if (obj.Success) {
+                        if (obj.Msg != "")
+                            $('#btnMore')[0].style.display = "none";
+                        else
+                            $('#btnMore')[0].style.display = "";
                         $("#resultTbody").html(obj.Data);
+                    }
                     else
                         alert(obj.Msg);
                 },
@@ -923,6 +937,49 @@
                     alert("fail to search");
                 }
             })
+        })
+        //More
+        $('#btnMore').on('click', function () {
+            var arg = {};
+            PageIndex++;
+
+            arg.WAREHOUSE = $("#WAREHOUSE").val();
+            arg.ORDER_TYPE = $("#ORDER_TYPE").val();
+            arg.ORDER_STATUS = $("#ORDER_STATUS").val();
+            arg.SHIP_METHOD = $("#SHIP_METHOD").val();
+            arg.SHIP_NAME = $("#SHIP_NAME").val();
+            arg.CUSTOMER_NO = $("#CUSTOMER_NO").val();
+            arg.SO_NO = $("#SO_NO").val();
+            arg.LAST_DAY = $("#LAST_DAY").val();
+
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/mp/MP_MAINSearch',
+                type: 'post',
+                data: JSON.stringify({
+                    arg: arg,
+                    PageIndex: PageIndex
+                }),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        if (obj.Msg != "")
+                            $('#btnMore')[0].style.display = "none";
+                        else
+                            $('#btnMore')[0].style.display = "";
+                        $("#resultTbody").append(obj.Data);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to search");
+                }
+            })
+
         })
 
         //SO_NO弹屏
@@ -1197,7 +1254,7 @@
                 url: '/mp/MP_MAINMapping',
                 type: 'post',
                 data: {
-                    ADDR_TOKEN:ADDR_TOKEN
+                    ADDR_TOKEN: ADDR_TOKEN
                 },
                 dataType: 'json',
                 success: function (obj) {
@@ -1269,6 +1326,10 @@
 
         }
 
+        $("#btnCloseModal").on('click', function () {
+            $("#btnSearch").click();
+        })
+
         $("#btnkeyWordSearch").on('click', function () {
             var keyWord = $("#keyWords").val();
 
@@ -1298,7 +1359,7 @@
             })
         })
 
-        $("#btnConfirm").on('click', function () {
+        $("#btnAddrMapConfirm").on('click', function () {
             if (confirm("Double Confirm?")) {
                 var $radio = $("#mapTbody input[name=Radio]:checked");
                 if ($radio.length > 0) {
@@ -1334,7 +1395,7 @@
         })
 
         $(".close").on('click', function () {
-            $("#btnSearch").click();
+
         })
 
 
@@ -1361,7 +1422,7 @@
         function GetDataDate(date) {
             var dd = new Date(date);
             var year = dd.getFullYear();
-            if (year = 1)
+            if (year == 1)
                 return "";
             var month = dd.getMonth() + 1;
             if (parseFloat(month) <= 9)

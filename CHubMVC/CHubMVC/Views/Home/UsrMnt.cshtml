@@ -1,0 +1,476 @@
+﻿
+@{
+    ViewBag.Title = "UsrMnt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Html.Hidden("appUser", (object)ViewBag.AppUser)
+<div class="container-fluid" id="usrmntDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-2">User Name:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="APP_USER" placeholder="User Name" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Query" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Result</b>
+                    </div>
+                    <table class="table table-bordered table-hover" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th>User Name</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>DESC</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th style="width:14%;">OPT</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_LoadingModal")
+
+<div class="modal fade" id="rolesModal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="rolesModalLabel" data-backdrop="static">
+    <div class="modal-dialog" style="margin-top:100px;width:60%;">
+        <div class="modal-content">
+            <div class="modal-header panel panel-default" style="padding:0;margin-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:30px;font-size:30px;margin-top:4px;">
+                    &times;
+                </button>
+                <div class="panel-heading">
+                    <b>Assinged Role List</b>
+                </div>
+            </div>
+            <div class="modal-body" style="padding:0;">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%;">Role Name</th>
+                                    <th>Comments</th>
+                                    <th style="width:15%;">Create Date</th>
+                                    <th style="width:5%;">OPT</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rolesTbody"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4">
+                                        <input type="button" class="btn btn-primary btn-sm" id="btnRolesNew" value="New" />
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnRolesSave" value="Save" />
+                        <input type="button" class="btn btn-primary btn-sm" id="btnRolesCancel" value="Cancel" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="securityModal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="securityModalLabel" data-backdrop="static">
+    <div class="modal-dialog" style="margin-top:100px;width:60%;">
+        <div class="modal-content">
+            <div class="modal-header panel panel-default" style="padding:0;margin-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width:30px;font-size:30px;margin-top:4px;">
+                    &times;
+                </button>
+                <div class="panel-heading">
+                    <b>Security Process Assigned</b>
+                </div>
+            </div>
+            <div class="modal-body" style="padding:0;">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <table class="table table-bordered" id="securityTable">
+                            <thead>
+                                <tr>
+                                    <th style="width:25%;">Security ID</th>
+                                    <th>Comments</th>
+                                    <th style="width:5%;">Active?</th>
+                                    <th style="width:5%;">OPT</th>
+                                </tr>
+                            </thead>
+                            <tbody id="securityTbody"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4">
+                                        <input type="button" class="btn btn-primary btn-sm" id="btnSecurityNew" value="New" />
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSecuritySave" value="Save" />
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSecurityCancel" value="Cancel" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var APP_USER;
+
+        $("#imgDiag").css("margin-Top", '300px');
+
+        //查询
+        $("#btnSearch").on('click', function () {
+            APP_USER = $("#APP_USER").val();
+            if (APP_USER == "" || APP_USER == null) {
+                alert("No condition");
+                return false;
+            }
+
+            $("#loadingModal").modal("show");
+            $("#resultTbody").empty();
+
+            $.ajax({
+                url: '/home/UsrMntSearch',
+                type: 'post',
+                data: {
+                    APP_USER: APP_USER
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success)
+                        $("#resultTbody").html(obj.Data);
+                    else
+                        alert(obj.Msg);
+                }
+            })
+        })
+
+        //Save
+        $("#resultTbody").on('click', '.btnSave', function () {
+            var $btn = $(this);
+            APP_USER = $btn.attr("data-appuser");
+
+            var $tr = $btn.parent().parent();
+            var $td = $tr.find("td");
+
+            var arg = {};
+            arg.APP_USER = APP_USER;
+            arg.FIRST_NAME = $td.find(".FIRST_NAME").val();
+            arg.LAST_NAME = $td.find(".LAST_NAME").val();
+            arg.DESCRIPTION = $td.find(".DESCRIPTION").val();
+            arg.PHONE = $td.find(".PHONE").val();
+            arg.EMAIL_ADDR = $td.find(".EMAIL_ADDR").val();
+            arg.STATUS = $td.find(".STATUS").val();
+
+            $.ajax({
+                url: '/home/UsrMntSave',
+                type: 'post',
+                data: JSON.stringify(arg),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+
+                    }
+                    else
+                        alert(obj.Msg);
+                }
+            })
+        })
+
+        //Roles
+        $("#resultTbody").on('click', '.btnRoles', function () {
+            var $btn = $(this);
+            APP_USER = $btn.attr("data-appuser");
+
+            $("#loadingModal").modal("show");
+            $("#rolesTbody").empty();
+
+            $.ajax({
+                url: '/home/UsrMntRoles',
+                type: 'post',
+                data: {
+                    APP_USER: APP_USER
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#rolesTbody").html(obj.Data);
+                        $("#rolesModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                }
+            })
+        })
+        //Roles delete
+        $("#rolesTbody").on('click', '.btnRolesDelete', function () {
+            if (confirm("Sure to delete")) {
+                var $btn = $(this);
+                var arg = {};
+                arg.APP_USER = APP_USER;
+                arg.ROLE_NAME = $btn.attr("data-rolename");
+
+                $.ajax({
+                    url: '/home/UsrMntRolesDelete',
+                    type: 'post',
+                    data: JSON.stringify(arg),
+                    contentType: 'application/json;charset=utf-8',
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success) {
+                            var $tr = $btn.parent().parent();
+                            $tr.remove();
+                        }
+                        else
+                            alert(obj.Msg);
+                    }
+                })
+            }
+        })
+        //Roles New
+        $("#btnRolesNew").on('click', function () {
+            $.ajax({
+                url: '/home/UsrMntRolesNew',
+                type: 'post',
+                data: {
+                    APP_USER: APP_USER
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success)
+                        $("#rolesTbody").append(obj.Data);
+                    else
+                        alert(obj.Msg);
+                }
+            })
+        })
+        //Roles New delete
+        $("#rolesTbody").on('click', '.btnRolesNewDelete', function () {
+            var $btn = $(this);
+            var $tr = $btn.parent().parent();
+            $tr.remove();
+        })
+        //Roles Save
+        $("#btnRolesSave").on('click', function () {
+            var list = []; var selected = true;
+            var $tr = $("#rolesTbody").find("tr");
+            if ($tr.length > 0) {
+                for (var i = 0; i < $tr.length; i++) {
+                    var $td = $($tr[i]).find("td");
+                    if ($td.find(".ROLE_NAME").length > 0) {
+                        if ($td.find(".ROLE_NAME").val() == "") {
+                            selected = false;
+                            break;
+                        }
+                        list.push({
+                            APP_USER: APP_USER,
+                            ROLE_NAME: $td.find(".ROLE_NAME").val(),
+                            COMMENTS: $td.find(".COMMENTS").val(),
+                            CREATED_BY: $("#appUser").val()
+                        })
+                    }
+                }
+
+                if (!selected) {
+                    alert("No Role Name select");
+                    return false;
+                }
+
+                $.ajax({
+                    url: '/home/UsrMntRolesSave',
+                    type: 'post',
+                    data: JSON.stringify(list),
+                    contentType: 'application/json;charset=utf-8',
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success) {
+                            $("#rolesTbody").empty();
+                            $("#rolesTbody").html(obj.Data);
+                        }
+                        else
+                            alert(obj.Msg);
+                    }
+                })
+            }
+        })
+        //Roles Cancel
+        $("#btnRolesCancel").on('click', function () {
+            $("#rolesModal").modal("hide");
+        })
+        //Roles Role_Name Change
+        $("#rolesTbody").on('change', '.ROLE_NAME', function () {
+            var $select = $(this);
+            var $tr = $select.parent().parent();
+            var $td = $tr.find("td");
+
+            if ($select.val() == "")
+                $td.find(".COMMENTS").val("");
+            else {
+                $.ajax({
+                    url: '/home/UsrMntRolesRole_NameChange',
+                    type: 'post',
+                    data: {
+                        ROLE_NAME: $select.val()
+                    },
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success)
+                            $td.find(".COMMENTS").val(obj.Data);
+                        else
+                            alert(obj.Msg);
+                    }
+                })
+            }
+        })
+
+        //Security
+        $("#resultTbody").on('click', '.btnSecurity', function () {
+            var $btn = $(this);
+            APP_USER = $btn.attr("data-appuser");
+
+            $("#loadingModal").modal("show");
+            $("#securityTbody").empty();
+
+            $.ajax({
+                url: '/home/UsrMntSecurity',
+                type: 'post',
+                data: {
+                    APP_USER: APP_USER
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#securityTbody").html(obj.Data);
+                        $("#securityModal").modal("show");
+                    }
+                    else
+                        alert(obj.Msg);
+                }
+            })
+        })
+        //Security delete
+        $("#securityTbody").on('click', '.btnSecurityDelete', function () {
+            if (confirm("Sure to delete")) {
+                var $btn = $(this);
+                var arg = {};
+                arg.APP_USER = APP_USER;
+                arg.SECURE_ID = $btn.attr("data-securityid");
+
+                $.ajax({
+                    url: '/home/UsrMntSecurityDelete',
+                    type: 'post',
+                    data: JSON.stringify(arg),
+                    contentType: 'application/json;charset=utf-8',
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success) {
+                            var $tr = $btn.parent().parent();
+                            $tr.remove();
+                        }
+                        else
+                            alert(obj.Msg);
+                    }
+                })
+            }
+        })
+        //Security New
+        $("#btnSecurityNew").on('click', function () {
+            $.ajax({
+                url: '/home/UsrMntSecurityNew',
+                type: 'post',
+                data: {
+                    APP_USER: APP_USER
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success)
+                        $("#securityTbody").append(obj.Data);
+                    else
+                        alert(obj.Msg);
+                }
+            })
+        })
+        //Security New delete
+        $("#securityTbody").on('click', '.btnSecurityNewDelete', function () {
+            var $btn = $(this);
+            var $tr = $btn.parent().parent();
+            $tr.remove();
+        })
+        //Security Save
+        $("#btnSecuritySave").on('click', function () {
+            var list = []; var selected = true;
+            var $tr = $("#securityTbody").find("tr");
+            if ($tr.length > 0) {
+                for (var i = 0; i < $tr.length; i++) {
+                    var $td = $($tr[i]).find("td");
+                    if ($td.find(".SECURE_ID").length > 0) {
+                        if ($td.find(".SECURE_ID").val() == "") {
+                            selected = false;
+                            break;
+                        }
+                        list.push({
+                            APP_USER: APP_USER,
+                            SECURE_ID: $td.find(".SECURE_ID").val(),
+                            COMMENTS: $td.find(".COMMENTS").val(),
+                            ACTIVEIND: $td.find(".ACTIVEIND").val()
+                        })
+                    }
+                }
+                if (!selected) {
+                    alert("No SECURE_ID select");
+                    return false;
+                }
+
+                $.ajax({
+                    url: '/home/UsrMntSecuritySave',
+                    type: 'post',
+                    data: JSON.stringify(list),
+                    contentType: 'application/json;charset=utf-8',
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success) {
+                            $("#securityTbody").empty();
+                            $("#securityTbody").html(obj.Data);
+                        }
+                        else
+                            alert(obj.Msg);
+                    }
+                })
+            }
+        })
+        //Security Cancel
+        $("#btnSecurityCancel").on('click', function () {
+            $("#securityModal").modal("hide");
+        })
+
+
+    })
+</script>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CHubDBEntity;
+using CHubDBEntity.UnmanagedModel;
 
 namespace CHubDAL
 {
@@ -24,6 +25,12 @@ namespace CHubDAL
             return result; //db.APP_WELCOME.OrderBy(a=>a.MSG_SEQ).ToList();
         }
 
+        public List<APP_ENV> GetAppEnv()
+        {
+            string sql = string.Format(@"select * from APP_ENV");
+            var result = db.Database.SqlQuery<APP_ENV>(sql).ToList();
+            return result;
+        }
 
     }
 }

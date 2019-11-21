@@ -32,7 +32,7 @@ namespace CHubBLL
         {
             return dal.MP_CUSTBANK(item);
         }
-        public List<V_E_TRANS_TYPE_ASSIGN> GetManualADJTransType(string App_User,string TRANS_TYPE)
+        public List<V_E_TRANS_TYPE_ASSIGN> GetManualADJTransType(string App_User, string TRANS_TYPE)
         {
             return dal.GetManualADJTransType(App_User, TRANS_TYPE);
         }
@@ -87,6 +87,14 @@ namespace CHubBLL
         public string CallF_GOMS_ORD_BRIEF(string ORDER_NO)
         {
             return dal.CallF_GOMS_ORD_BRIEF(ORDER_NO);
+        }
+        public List<E_CUST_BANKING_ADDT> MP_CUSTBANK_OtherSetup(string CUSTOMER_NO)
+        {
+            return dal.MP_CUSTBANK_OtherSetup(CUSTOMER_NO);
+        }
+        public void MP_CUSTBANK_OtherSetupSave(E_CUST_BANKING_ADDT arg)
+        {
+            dal.MP_CUSTBANK_OtherSetupSave(arg);
         }
     }
 }

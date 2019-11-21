@@ -217,5 +217,25 @@ namespace CHubDAL
             return result;
         }
 
+        public List<E_CUST_BANKING_ADDT> MP_CUSTBANK_OtherSetup(string CUSTOMER_NO)
+        {
+            string sql = string.Format(@"select * from E_CUST_BANKING_ADDT where CUSTOMER_NO='{0}'", CUSTOMER_NO);
+            var result = ccHelper.ExecuteSqlToList<E_CUST_BANKING_ADDT>(sql);
+            return result;
+        }
+        public void MP_CUSTBANK_OtherSetupSave(E_CUST_BANKING_ADDT arg)
+        {
+            string sql = string.Format(@"update E_CUST_BANKING_ADDT set 
+                                    BALANCE_AUTO_FLAG='{0}',
+                                    BALANCE_EMAIL_TO='{1}',
+                                    BALANCE_EMAIL_CC='{2}',
+                                    NOTE='{3}',
+                                    FLEX1='{4}',
+                                    FLEX2='{5}',
+                                    FLEX3='{6}' where CUSTOMER_NO='{7}'",
+                                    arg.BALANCE_AUTO_FLAG, arg.BALANCE_EMAIL_TO, arg.BALANCE_EMAIL_CC, arg.NOTE, arg.FLEX1, arg.FLEX2, arg.FLEX3, arg.CUSTOMER_NO);
+            ccHelper.ExecuteNonQuery(sql);
+        }
+
     }
 }

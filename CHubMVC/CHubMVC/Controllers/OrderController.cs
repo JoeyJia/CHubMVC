@@ -17,6 +17,7 @@ using static CHubCommon.CHubEnum;
 using CHubMVC.Models;
 using System.IO;
 using CHubBLL.OtherProcess;
+using System.Data;
 
 namespace CHubMVC.Controllers
 {
@@ -659,7 +660,7 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult PrintIhubOA(string LOAD_FROM,string ORDER_NO)
+        public ActionResult PrintIhubOA(string LOAD_FROM, string ORDER_NO)
         {
             ORDINQ_BLL oBLL = new ORDINQ_BLL();
             try
@@ -676,10 +677,10 @@ namespace CHubMVC.Controllers
                         var title = oBLL.SearchOA_TYPE_MST(header.OA_TYPE);
                         //获取明细
                         var details = oBLL.SearchV_OA_D_PRINT(header.LOAD_FROM, header.ORDER_NO);
-                        
+
                         string basePath = Server.MapPath(CHubConstValues.ChubTempFolder);
                         IHUBOAPrintBLL printBLL = new IHUBOAPrintBLL(basePath);
-                        string fileName = printBLL.BuildIhubOAPrintFile(title,header,details);
+                        string fileName = printBLL.BuildIhubOAPrintFile(title, header, details);
                         string webPath = "/temp/" + fileName;
                         return Json(new RequestResult(webPath));
                     }
@@ -1534,7 +1535,7 @@ namespace CHubMVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetOrderDetail(string str, List<OrderLines> detail, string Header_DUE_DATE, string CUSTOMER_NO, string WAREHOUSE)
+        public ActionResult GetOrderDetail(string str, List<OrderLines> detail, string GOMS, string Header_DUE_DATE, string CUSTOMER_NO, string WAREHOUSE)
         {
             QuickOrd_BLL qBLL = new QuickOrd_BLL();
             if (!string.IsNullOrEmpty(str))
@@ -1561,7 +1562,7 @@ namespace CHubMVC.Controllers
                     }
                     else
                         ol.CUSTOMER_PARTNO = d;
-                    ol.PART_NO = qBLL.CallF_QUICK_PART(CUSTOMER_NO, ol.CUSTOMER_PARTNO);
+                    ol.PART_NO = qBLL.CallF_QUICK_PART(GOMS, CUSTOMER_NO, ol.CUSTOMER_PARTNO);
                     ol.RevisedQty = qBLL.CallF_QUICK_QTY(ol.PART_NO, ol.BUY_QTY);
                     ol.DESCRIPTION = qBLL.CallF_QUICK_DESC(ol.PART_NO);
                     ol.NOTE = qBLL.CallF_QUICK_MSG(ol.PART_NO);
@@ -1583,6 +1584,7 @@ namespace CHubMVC.Controllers
             QuickOrd_BLL qBLL = new QuickOrd_BLL();
             try
             {
+                string QUICK_ORDER_NO;
                 //Update
                 if (header.QUICK_ORDER_NO != 0)
                 {
@@ -1598,12 +1600,12 @@ namespace CHubMVC.Controllers
                             qBLL.SaveQUICK_OEORDER_DETAIL(de);
                         }
                     }
-                    return Json(new RequestResult(header.QUICK_ORDER_NO));
+                    QUICK_ORDER_NO = header.QUICK_ORDER_NO.ToString();
                 }
                 else//Insert
                 {
                     //获取seq
-                    var QUICK_ORDER_NO = qBLL.GetQUICK_ORDER_NO();
+                    QUICK_ORDER_NO = qBLL.GetQUICK_ORDER_NO();
                     //保存header
                     header.QUICK_ORDER_NO = Convert.ToDecimal(QUICK_ORDER_NO);
                     header.CREATED_BY = Session[CHubConstValues.SessionUser].ToString();
@@ -1617,14 +1619,83 @@ namespace CHubMVC.Controllers
                             qBLL.SaveQUICK_OEORDER_DETAIL(de);
                         }
                     }
-                    return Json(new RequestResult(QUICK_ORDER_NO));
                 }
+                //执行存过
+                qBLL.ExecP_CRT_ORDER_FILE_QORD(QUICK_ORDER_NO);
+                //修改订单状态
+                qBLL.UpdateQORDStatus(QUICK_ORDER_NO);
+                //提示"订单已成功提交"
+                return Json(new RequestResult(true, "订单已成功提交", QUICK_ORDER_NO));
             }
             catch (Exception ex)
             {
                 LogHelper.WriteLog("Order QuickOrdSave", ex);
                 return Json(new RequestResult(false, ex.Message));
             }
+        }
+
+        //public string CreateFile(string QUICK_ORDER_NO)
+        //{
+        //    string result = string.Empty;
+        //    QuickOrd_BLL qBLL = new QuickOrd_BLL();
+        //    try
+        //    {
+        //        StringBuilder sb = new StringBuilder();
+        //        //获取文件路径
+        //        string fileName = qBLL.RunFunc(QUICK_ORDER_NO, "FILENAME");// @"c:\temp\P_QORD_" + QUICK_ORDER_NO + "_20190906130916.prn";
+        //        FileInfo folder = new FileInfo(fileName);
+        //        if (!Directory.Exists(folder.DirectoryName))
+        //            Directory.CreateDirectory(folder.DirectoryName);
+
+        //        //new TxtLog().log("当前文件路径：" + folder.FullName, @"c:\temp\order.txt");
+
+        //        string hd1 = qBLL.RunFunc(QUICK_ORDER_NO, "HD1");
+        //        sb.AppendLine(hd1);
+        //        string hd2 = qBLL.RunFunc(QUICK_ORDER_NO, "HD2");
+        //        if (!string.IsNullOrEmpty(hd2))
+        //            sb.AppendLine(hd2);
+        //        string hd3 = qBLL.RunFunc(QUICK_ORDER_NO, "HD3");
+        //        if (!string.IsNullOrEmpty(hd3))
+        //            sb.AppendLine(hd3);
+
+        //        DataTable dt = qBLL.GetQORDLine(QUICK_ORDER_NO);
+        //        if (dt != null && dt.Rows.Count > 0)
+        //        {
+        //            foreach (DataRow dr in dt.Rows)
+        //            {
+        //                sb.AppendLine(dr["ORDER_FILE"].ToString());
+        //            }
+        //        }
+        //        string on1 = qBLL.RunFunc(QUICK_ORDER_NO, "ON1");
+        //        if (!string.IsNullOrEmpty(on1))
+        //            sb.AppendLine(on1);
+
+        //        WriteContent(fileName, sb.ToString());
+
+        //        qBLL.UpdateState(QUICK_ORDER_NO, "C");
+        //        result = "订单已成功提交";
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        qBLL.UpdateState(QUICK_ORDER_NO, "E", ex.Message);
+        //        result = "订单提交失败:" + ex.Message;
+        //    }
+        //    return result;
+        //}
+
+        /// <summary>
+        /// 写入内容
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="content"></param>
+        public static void WriteContent(string fileName, string content)
+        {
+            FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate);
+            StreamWriter sw = new StreamWriter(fs, Encoding.UTF8);
+            sw.WriteLine(content);
+            sw.Flush();
+            sw.Close();
+            fs.Close();
         }
 
         [HttpPost]
@@ -1696,7 +1767,7 @@ namespace CHubMVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetSingleDetail(string CUSTOMER_PARTNO, string BUY_QTY, string CUSTOMER_NO, string WAREHOUSE)
+        public ActionResult GetSingleDetail(string GOMS, string CUSTOMER_PARTNO, string BUY_QTY, string CUSTOMER_NO, string WAREHOUSE)
         {
             QuickOrd_BLL qBLL = new QuickOrd_BLL();
             try
@@ -1704,7 +1775,7 @@ namespace CHubMVC.Controllers
                 OrderLines ol = new OrderLines();
                 ol.CUSTOMER_PARTNO = CUSTOMER_PARTNO;
                 ol.BUY_QTY = BUY_QTY;
-                ol.PART_NO = qBLL.CallF_QUICK_PART(CUSTOMER_NO, ol.CUSTOMER_PARTNO);
+                ol.PART_NO = qBLL.CallF_QUICK_PART(GOMS, CUSTOMER_NO, ol.CUSTOMER_PARTNO);
                 ol.RevisedQty = qBLL.CallF_QUICK_QTY(ol.PART_NO, ol.BUY_QTY);
                 ol.DESCRIPTION = qBLL.CallF_QUICK_DESC(ol.PART_NO);
                 ol.NOTE = qBLL.CallF_QUICK_MSG(ol.PART_NO);
@@ -1748,7 +1819,7 @@ namespace CHubMVC.Controllers
                     else
                         sb.Append("     <td>").Append("<input type=\"text\" class=\"form-control input-sm NOTE\" value=\"" + item.NOTE + "\" disabled />").Append("</td>");
 
-                    if (item.Inventory == "0")
+                    if (item.Inventory == "0" || item.Inventory == "")
                         sb.Append("     <td>").Append("<input type=\"text\" class=\"form-control input-sm Inventory\" value=\"" + item.Inventory + "\" disabled style=\"color:red;\" />").Append("</td>");
                     else if (Convert.ToInt32(item.Inventory) >= Convert.ToInt32(item.RevisedQty))
                         sb.Append("     <td>").Append("<input type=\"text\" class=\"form-control input-sm Inventory\" value=\"" + item.Inventory + "\" disabled style=\"color:green;\" />").Append("</td>");
