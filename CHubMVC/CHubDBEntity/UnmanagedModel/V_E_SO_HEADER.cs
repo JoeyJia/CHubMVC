@@ -79,5 +79,7 @@ namespace CHubDBEntity.UnmanagedModel
         public string MAP_COLOR { get; set; }
         public string GOMS_STATUS { get; set; }
         public string GOMS_COLOR { get; set; }
+        public string CANCEL_FLAG { get; set; }
+        public string APPROVAL_FLAG { get; set; }
     }
 }

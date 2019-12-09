@@ -1187,6 +1187,13 @@
             $("#modalHeader").html("<b>Order Hold Double Confirm</b>");
             CancelOrHold();
         })
+        $('#resultTbody').on('click', '.btnApproval', function () {
+            var $btn = $(this);
+            SO_NO = $btn.attr("data-sono");
+            Code = "APPROVAL";
+            $("#modalHeader").html("<b>Manual Approval -  Double Confirm</b>");
+            ApprovalCheck();
+        })
         function CancelOrHold() {
             $("#loadingModal").modal("show");
             $.ajax({
@@ -1194,6 +1201,26 @@
                 type: 'post',
                 data: {
                     SO_NO: SO_NO,
+                    APP_USER: $("#appUser").val()
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#ConfirmModal").modal("show");
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+                }
+            })
+        }
+        function ApprovalCheck() {
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/mp/MP_MAINApprovalCheck',
+                type: 'post',
+                data: {
                     APP_USER: $("#appUser").val()
                 },
                 dataType: 'json',

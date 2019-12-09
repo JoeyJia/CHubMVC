@@ -818,6 +818,26 @@ namespace CHubMVC.Controllers
 
         [Authorize]
         [HttpPost]
+        public ActionResult MP_MAINApprovalCheck(string APP_USER)
+        {
+            MP_MAIN_BLL mpBLL = new MP_MAIN_BLL();
+            try
+            {
+                if (mpBLL.CheckSecurity("MP_MANUAL_APPROVAL", APP_USER))
+                    return Json(new RequestResult(true));
+                else
+                    return Json(new RequestResult(false, "You cannot Operate"));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("MP MP_MAINApprovalCheck", ex);
+                return Json(new RequestResult(false, ex.Message));
+            }
+        }
+
+
+        [Authorize]
+        [HttpPost]
         public ActionResult MP_MAINConfirm(string SO_NO, string Code, string Reason)
         {
             MP_MAIN_BLL mpBLL = new MP_MAIN_BLL();
@@ -877,10 +897,14 @@ namespace CHubMVC.Controllers
                     sb.Append("     <td>").Append(item.CREATE_DATE.ToString("yyyy/MM/dd")).Append("</td>");
                     sb.Append("     <td>")
                         .Append("<input type='button' class='btn btn-primary btn-xs btnDetail' value='LINES' data-sono='" + item.SO_NO + "' />");
-                    if (item.ORDER_STATUS == "NEW" || item.ORDER_STATUS == "ONHOLD" || item.ORDER_STATUS == "REJECTED")
+                    if (item.CANCEL_FLAG == "Y")
                         sb.Append("<input type='button' class='btn btn-primary btn-xs btnCancel' value='Cancel' data-sono='" + item.SO_NO + "' />");
-                    else
-                        sb.Append("<input type='button' class='btn btn-primary btn-xs btnCancel' value='Cancel' data-sono='" + item.SO_NO + "' disabled />");
+                    if (item.APPROVAL_FLAG == "Y")
+                        sb.Append("<input type='button' class='btn btn-primary btn-xs btnApproval' value='Approval' data-sono='" + item.SO_NO + "' />");
+                    //if (item.ORDER_STATUS == "NEW" || item.ORDER_STATUS == "ONHOLD" || item.ORDER_STATUS == "REJECTED")
+                    //    sb.Append("<input type='button' class='btn btn-primary btn-xs btnCancel' value='Cancel' data-sono='" + item.SO_NO + "' />");
+                    //else
+                    //    sb.Append("<input type='button' class='btn btn-primary btn-xs btnCancel' value='Cancel' data-sono='" + item.SO_NO + "' disabled />");
                     //if (item.ORDER_STATUS == "NEW" || item.ORDER_STATUS == "REJECTED")
                     //    sb.Append("<input type='button' class='btn btn-primary btn-xs btnHold' value='Hold' data-sono='" + item.SO_NO + "' />");
                     //else

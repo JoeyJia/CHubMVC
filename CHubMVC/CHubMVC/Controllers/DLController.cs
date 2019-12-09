@@ -129,6 +129,7 @@ namespace CHubMVC.Controllers
                 string LOAD_BY = Session[CHubConstValues.SessionUser].ToString();
                 int Count = 0;
                 bool load = true;
+                string msg = string.Empty;
 
                 //新增
                 if (ilbs != null && ilbs.Count > 0)
@@ -157,6 +158,7 @@ namespace CHubMVC.Controllers
                         catch (Exception ex)
                         {
                             load = false;
+                            msg = ex.Message;
                             break;
                         }
                     }
@@ -165,7 +167,7 @@ namespace CHubMVC.Controllers
                     return Json(new RequestResult(false, "No data"));
 
                 if (!load)
-                    return Json(new RequestResult(false, "fail to load"));
+                    return Json(new RequestResult(false, "fail to load" + "\n" + msg));
 
                 //执行存过，监测
                 try
