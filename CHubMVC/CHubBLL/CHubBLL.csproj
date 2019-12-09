@@ -96,6 +96,7 @@
     <Compile Include="DS_BLL.cs" />
     <Compile Include="EXPWB_BLL.cs" />
     <Compile Include="EXP_EXCHANGE_RATE_BLL.cs" />
+    <Compile Include="XX_ASNDIFF_RESULT_CODE_BLL.cs" />
     <Compile Include="FAR_BLL.cs" />
     <Compile Include="FINLOAD_BLL.cs" />
     <Compile Include="GOMS_ASN_H_BLL.cs" />
