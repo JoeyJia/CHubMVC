@@ -567,6 +567,8 @@
     <Compile Include="UnmanagedModel\V_DASH_SHIP21.cs" />
     <Compile Include="UnmanagedModel\V_DASH_SHIP22.cs" />
     <Compile Include="UnmanagedModel\V_DASH_TMS01.cs" />
+    <Compile Include="UnmanagedModel\XX_ASNDIFF_RESULT_CODE.cs" />
+    <Compile Include="UnmanagedModel\V_DIS_ASN_BASE.cs" />
     <Compile Include="UnmanagedModel\V_DS_ORDER_BASE.cs" />
     <Compile Include="UnmanagedModel\V_EXP_STAGE_BASE.cs" />
     <Compile Include="UnmanagedModel\V_EXP_STAGE_UNINVOICED.cs" />
@@ -883,6 +885,7 @@
     <Compile Include="V_USER_ROLE_LINK.cs">
       <DependentUpon>ChubDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="UnmanagedModel\XX_ASN_DIFF.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

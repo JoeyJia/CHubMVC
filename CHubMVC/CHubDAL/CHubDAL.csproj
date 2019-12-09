@@ -58,6 +58,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="XX_ASNDIFF_RESULT_CODE_DAL.cs" />
+    <Compile Include="XX_ASN_DIFF_DAL.cs" />
     <Compile Include="APP_QUICK_SCREEN_DAL.cs" />
     <Compile Include="Chart_DAL.cs" />
     <Compile Include="CINVINQ_DAL.cs" />

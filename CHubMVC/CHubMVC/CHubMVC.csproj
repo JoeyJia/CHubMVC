@@ -220,6 +220,7 @@
     <Compile Include="Controllers\EWController.cs" />
     <Compile Include="Controllers\EXPController.cs" />
     <Compile Include="Controllers\FARController.cs" />
+    <Compile Include="Controllers\AsnDiffController.cs" />
     <Compile Include="Controllers\IAController.cs" />
     <Compile Include="Controllers\MDController.cs" />
     <Compile Include="Controllers\MobileController.cs" />
@@ -232,7 +233,6 @@
     <Compile Include="Controllers\TCController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
-    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\TRCController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -567,6 +567,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="EmailAttach\" />
     <Folder Include="temp\" />
+    <Folder Include="Views\AsnDiff\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
