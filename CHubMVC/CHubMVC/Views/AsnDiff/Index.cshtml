@@ -48,25 +48,25 @@
         <form class="form-horizontal" id="mp_mainForm">
             <div class="row" style="margin-top:15px;">
                 <div class="form-group">
-                    <label for="" class="col-sm-2 control-label">Warehouse</label>
+                    <label for="" class="col-sm-2 control-label">WareHouse</label>
                     <div class="col-sm-1">
-                        <select class="form-control input-sm" id="WAREHOUSE"></select>
+                        <select class="form-control input-sm" id="WareHouse"></select>
                     </div>
                     <div class="col-sm-1">
-                        <span id="WAREHOUSE_DESC"></span>
+                        <span id="WareHouse_DESC"></span>
                     </div>
 
                     <label for="" class="col-sm-2 control-label">ASN No.</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control input-sm" id="AsnID" placeholder="ASN No." />
+                        <input type="text" class="form-control input-sm" id="AsnNo" placeholder="AsnNo" />
                     </div>
                 </div>
             </div>
             <div class="row" style="margin-top:15px;">
                 <div class="form-group">
-                    <label for="" class="col-sm-2 control-label">Result</label>
+                    <label for="" class="col-sm-2 control-label">ClaimResult</label>
                     <div class="col-sm-1">
-                        <select class="form-control input-sm" id="ClaimResult"></select>
+                        <select class="form-control input-sm" id="ResultType"></select>
                     </div>
                     <div class="col-sm-1">
                         <span id="ClaimResult_DESC"></span>
@@ -75,9 +75,9 @@
                     <label for="" class="col-sm-2 control-label">IsClose</label>
                     <div class="col-sm-1">
                         <select class="form-control input-sm" id="IsClose">
-                            <option>All</option>
-                            <option>Closed</option>
-                            <option>Opened</option>
+                            <option value="-1">All</option>
+                            <option value="1">Closed</option>
+                            <option value="0">Opened</option>
                         </select>
                     </div>
                     <div class="col-sm-1">
@@ -98,28 +98,21 @@
                     <table class="table table-bordered" id="resultTable">
                         <thead>
                             <tr>
-                                <th>Status</th>
-                                <th>GOMS Order</th>
-                                <th>GOMS Addr Map</th>
-                                <th>Warehouse</th>
-                                <th>MP Order No</th>
-                                <th>Customer</th>
-                                <th>Order Type</th>
-                                <th>Due Date</th>
-                                <th>Amount</th>
-                                <th>Order Note</th>
-                                <th>Customer No</th>
-                                <th>Pay Method</th>
-                                <th>Ship Method</th>
-                                <th>FaPiao Type</th>
-                                <th>Create Date</th>
-                                <th style="width:8%;">OPT</th>
+                                <th>DIFFrenceID</th>
+                                <th>WareHouse</th>
+                                <th>ASNNo</th>
+                                <th>Part No.</th>
+                                <th>CreateDate</th>
+                                <th>Disp Action</th>
+                                <th>Result</th>
+                                <th>CloseDate</th>
+                                <th style="width:11%;">OPT</th>
                             </tr>
                         </thead>
                         <tbody id="resultTbody"></tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="16">
+                                <td colspan="8">
                                     <a href="javascript:void(0);" id="btnMore" style="text-decoration:none;font-size:16px;">More...</a>
                                 </td>
                             </tr>
@@ -678,13 +671,13 @@
             data: {},
             dataType: 'json',
             success: function (obj) {
-                $("#WAREHOUSE").empty();
+                $("#WareHouse").empty();
                 if (obj.Success) {
                     //WAREHOUSE
-                    $("<option></option>").val("").text("").appendTo("#WAREHOUSE");
+                    $("<option></option>").val("").text("").appendTo("#WareHouse");
                     if (obj.Data != null && obj.Data.length > 0) {
                         for (var i = 0; i < obj.Data.length; i++) {
-                            $("<option></option>").val(obj.Data[i].Value).text(obj.Data[i].Text).appendTo("#WAREHOUSE");
+                            $("<option></option>").val(obj.Data[i].Value).text(obj.Data[i].Text).appendTo("#WareHouse");
                         }
                     }
                 }
@@ -696,21 +689,21 @@
             }
         })
     })
-    //ORDER_STATUS 下拉
+    //Result 下拉
     $(function () {
         $.ajax({
-            url: '/mp/GetOrderStatusList',
+            url: '/AsnDiff/GetResultTypeList',
             type: 'post',
             data: {},
             dataType: 'json',
             success: function (obj) {
-                $("#ORDER_STATUS").empty();
+                $("#ResultType").empty();
                 if (obj.Success) {
-                    //ORDER_STATUS
-                    $("<option></option>").val("").text("").appendTo("#ORDER_STATUS");
+                    //WAREHOUSE
+                    $("<option></option>").val("").text("").appendTo("#ResultType");
                     if (obj.Data != null && obj.Data.length > 0) {
                         for (var i = 0; i < obj.Data.length; i++) {
-                            $("<option></option>").val(obj.Data[i].Value).text(obj.Data[i].Text).appendTo("#ORDER_STATUS");
+                            $("<option></option>").val(obj.Data[i].Value).text(obj.Data[i].Text).appendTo("#ResultType");
                         }
                     }
                 }
@@ -718,33 +711,7 @@
                     alert(obj.Msg);
             },
             error: function (e) {
-                alert("fail to GetOrderStatusList")
-            }
-        })
-    })
-    //SHIP_METHOD 下拉
-    $(function () {
-        $.ajax({
-            url: '/mp/GetShipMethodList',
-            type: 'post',
-            data: {},
-            dataType: 'json',
-            success: function (obj) {
-                $("#SHIP_METHOD").empty();
-                if (obj.Success) {
-                    //SHIP_METHOD
-                    $("<option></option>").val("").text("").appendTo("#SHIP_METHOD");
-                    if (obj.Data != null && obj.Data.length > 0) {
-                        for (var i = 0; i < obj.Data.length; i++) {
-                            $("<option></option>").val(obj.Data[i].Value).text(obj.Data[i].Text).appendTo("#SHIP_METHOD");
-                        }
-                    }
-                }
-                else
-                    alert(obj.Msg);
-            },
-            error: function (e) {
-                alert("fail to GetShipMethodList")
+                alert("fail to GetWarehouseList");
             }
         })
     })
@@ -881,23 +848,20 @@
                 alert("Last day Error");
                 return false;
             }
-            arg.WAREHOUSE = $("#WAREHOUSE").val();
-            arg.ORDER_TYPE = $("#ORDER_TYPE").val();
-            arg.ORDER_STATUS = $("#ORDER_STATUS").val();
-            arg.SHIP_METHOD = $("#SHIP_METHOD").val();
-            arg.SHIP_NAME = $("#SHIP_NAME").val();
-            arg.CUSTOMER_NO = $("#CUSTOMER_NO").val();
-            arg.SO_NO = $("#SO_NO").val();
-            arg.LAST_DAY = $("#LAST_DAY").val();
-
+            arg.WareHouse = $("#WareHouse").val();
+            arg.AsnNo = $("#AsnNo").val();
+            arg.CreateDate_Start = $("#CreateDate_Start").val();
+            arg.CreateDate_End = $("#CreateDate_End").val();
+            arg.ResultType = $("#ResultType").val();
+            arg.IsClose = $("#IsClose").val();
+            
             $("#resultTbody").empty();
             $("#loadingModal").modal("show");
             $.ajax({
-                url: '/mp/MP_MAINSearch',
+                url: '/AsnDiff/AsnDiff',
                 type: 'post',
                 data: JSON.stringify({
-                    arg: arg,
-                    PageIndex: PageIndex
+                    arg: arg
                 }),
                 contentType: 'application/json;charset=utf-8',
                 dataType: 'json',

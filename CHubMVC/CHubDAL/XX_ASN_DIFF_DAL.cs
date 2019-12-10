@@ -143,9 +143,9 @@ namespace CHubDAL
             {
                 sqlwhere += " and CLAIM_RESULT='" + AsnDiffSearch.ResultType + "'";
             }
-            if(AsnDiffSearch.IsClose!="-1")
+            if(!string.IsNullOrEmpty(AsnDiffSearch.IsClose) && AsnDiffSearch.IsClose=="-1")
             {
-                sqlwhere += " and IsClose='" + AsnDiffSearch.IsClose + "'";
+                sqlwhere += " and Is_Close='" + AsnDiffSearch.IsClose + "'";
             }
             string sql = string.Format(@"select * from XX_ASN_DIFF where 1=1 "+sqlwhere);
             var result = ccHelper.ExecuteSqlToList<XX_ASN_DIFF>(sql);
