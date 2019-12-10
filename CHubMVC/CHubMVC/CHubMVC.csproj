@@ -562,12 +562,12 @@
     <Content Include="Views\MP\MP_MAIN.cshtml" />
     <Content Include="Views\Home\UsrMnt.cshtml" />
     <Content Include="Views\Home\IhubJob.cshtml" />
+    <Content Include="Views\AsnDiff\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="EmailAttach\" />
     <Folder Include="temp\" />
-    <Folder Include="Views\AsnDiff\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

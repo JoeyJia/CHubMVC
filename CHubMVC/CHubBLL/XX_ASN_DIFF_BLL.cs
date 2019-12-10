@@ -46,6 +46,7 @@ namespace CHubBLL
         public string UpdateXXAsnDiff(XX_ASN_DIFF asndiff)
         {
             return dal.UpdateXXAsnDiff(asndiff);
+            
         }
 
         /// <summary>
