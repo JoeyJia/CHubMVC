@@ -58,7 +58,7 @@ namespace CHubDAL
             }
             if (asndiff.SHIP_DATE != null && asndiff.SHIP_DATE.Value != null)
             {
-                sqlwhere += " SHIP_DATE='" + asndiff.SHIP_DATE.Value.ToString() + "' ,";
+                sqlwhere += " SHIP_DATE=to_date('" + asndiff.SHIP_DATE.Value.ToString() + "','yyyy-mm-dd') ,";
             }
             if (asndiff.QTY_FIN_WRITEOFF != 0)
             {
@@ -66,7 +66,8 @@ namespace CHubDAL
             }
             if (asndiff.CLAIM_DATE != null && asndiff.CLAIM_DATE.Value != null)
             {
-                sqlwhere += " CLAIM_DATE='" + asndiff.CLAIM_DATE.Value.ToString() + "' ,";
+                sqlwhere += " CLAIM_DATE=to_date('" + asndiff.CLAIM_DATE.Value.ToString() + "','yyyy-mm-dd') ,";
+                
             }
             if (!string.IsNullOrEmpty(asndiff.CLAIM_NOTES))
             {
@@ -95,7 +96,7 @@ namespace CHubDAL
             }
             if (asndiff.CLOSE_DATE != null && asndiff.CLOSE_DATE.Value != null)
             {
-                sqlwhere += " CLOSE_DATE='" + asndiff.CLOSE_DATE + "' ,";
+                sqlwhere += " CLOSE_DATE=to_date('" + asndiff.CLOSE_DATE.Value.ToString() + "','yyyy-mm-dd') ,";
                 sqlwhere += " Is_Close='1' ,";
             }
             if (!string.IsNullOrEmpty(sqlwhere))
