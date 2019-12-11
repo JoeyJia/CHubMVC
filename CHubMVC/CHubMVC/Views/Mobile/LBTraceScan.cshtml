@@ -1,0 +1,257 @@
+﻿@{
+    ViewBag.Title = "Mobile LBTraceScan";
+    Layout = "~/Views/Shared/_MobileLayout.cshtml";
+}
+<style type="text/css">
+    .form-control {
+        height:20px;
+    }
+</style>
+
+@*<input type="hidden" id="appUser" value="@ViewBag.AppUser" />*@
+@Html.Hidden("appUser", (object)ViewBag.AppUser)
+<div class="container" id="lbtracescanDiv" style="margin-top:-14px;">
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="height:20px;text-align:right;background-color:#f5f5f5;font-size:12px;">
+            <label for="">DOC NO:</label>
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <input type="text" class="form-control input-sm" id="DOC_NO" />
+        </div>
+    </div>
+    <div class="row">
+        <div id="CUST" style="font-size:10px;text-align:center;color:orange;"></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="padding-left:0;padding-right:0;">
+            <input type="button" class="btn btn-primary btn-sm" style="width:100%;" id="btnConfirm" value="确认">
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="padding-left:0;padding-right:0;">
+            <input type="button" class="btn btn-primary btn-sm" style="width:100%;" id="btnCancel" value="清空">
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="padding-left:0;padding-right:0;">
+            <input type="button" class="btn btn-primary btn-sm" style="width:100%;" id="btnComplete" value="完成" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <span>Count:</span>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+            <span id="Count"></span>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <span>Total:</span>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+            <span id="Total"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="height:20px;text-align:right;background-color:#f5f5f5;">
+            <label for="">Barcode:</label>
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <input type="text" class="form-control input-sm" id="BARCODE" />
+            @*<div style="border:1px solid #f5f5f5;height:30px;" id="BARCODE" contenteditable="true"></div>*@
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="height:15px;">
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 text-center">
+            <span id="ErrorMsg" style="font-size:12px;"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="height:20px;text-align:right;background-color:#f5f5f5;">
+            <label for="">History:</label>
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 text-center">
+            <span id="History" style="font-size:12px;"></span>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#jt")[0].style.display = "";
+
+        $("#jt").on('click', function () {
+            window.location.href = "/mobile/home";
+        })
+
+
+        var code = [];
+        var IsExist = false;
+
+        $("#DOC_NO").select();
+        $("#btnConfirm").attr("disabled", true);
+
+        $("#DOC_NO").on("input propertychange", function () {
+            GetCust();
+        })
+        function GetCust() {
+            var DOC_NO = $("#DOC_NO").val();
+
+            $.ajax({
+                url: '/mobile/lbtracescanGetCust',
+                type: 'post',
+                data: {
+                    DOC_NO: DOC_NO
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#CUST").html(obj.Data);
+                        if (obj.Data != "" && obj.Data != null)
+                            $("#btnConfirm").attr("disabled", false);
+                        else
+                            $("#btnConfirm").attr("disabled", true);
+                    }
+                   
+                },
+                error: function (e) {
+                    alert("fail to get cust");
+                }
+            });
+        }
+
+        $("#btnConfirm").on('click', function () {
+            GetNum();
+        })
+        function GetNum() {
+            var DOC_NO = $("#DOC_NO").val();
+
+            $.ajax({
+                url: '/mobile/lbtracescanGetNum',
+                type: 'post',
+                data: {
+                    DOC_NO: DOC_NO
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#Count").html(obj.Count);
+                        $("#Total").html(obj.Total);
+                        $("#Count")[0].style.color = obj.Color;
+                        $("#BARCODE").select();
+                        //$("#BARCODE")[0].style.borderColor = "#66afe9";
+                        code = [];
+                        $("#DOC_NO").attr("disabled", true);
+                        $("#btnConfirm").attr("disabled", true);
+                        $("#btnCancel").attr("disabled", true);
+                    }
+                },
+                error: function (e) {
+                    alert("fail to get num");
+                }
+            })
+        }
+
+        $("#btnCancel").on('click', function () {
+            $("#DOC_NO").val("");
+            $("#DOC_NO").select();
+            $("#CUST").html("");
+            code = [];
+            IsExist = false;
+        })
+
+        $("#BARCODE").on("input propertychange", function () {
+            if ($("#BARCODE").val().length == 12) {
+                CheckAndHistory();
+            }
+            else {
+                $("#ErrorMsg").html("错误码，请重新扫描");
+                $("#ErrorMsg")[0].style.color = "red";
+            }
+            $("#BARCODE").select();
+        })
+        function CheckAndHistory() {
+            var BARCODE = $("#BARCODE").val();
+            if (BARCODE != "") {
+                IsExist = false;
+                $("#ErrorMsg").html("");
+
+                if (code != null && code.length > 0) {
+                    for (var i = 0; i < code.length; i++) {
+                        if (BARCODE == code[i]) {
+                            $("#ErrorMsg").html("当前" + BARCODE + "已扫描");
+                            $("#ErrorMsg")[0].style.color = "red";
+                            IsExist = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!IsExist) {
+                    code.push(BARCODE);
+                    $("#Count").html(parseFloat($("#Count").html()) + 1);
+                    if (parseFloat($("#Count").html()) > parseFloat($("#Total").html())) {
+                        $("#Count")[0].style.color = "green";
+                    }
+                }
+                var html = "";
+
+                if (code.length >= 3) {
+                    for (var i = 1; i < 4; i++) {
+                        html += code[code.length - i] + "<br />";
+                    }
+                }
+                else if (code.length == 2) {
+                    html += code[1] + "<br />";
+                    html += code[0] + "<br />";
+                }
+                else if (code.length == 1) {
+                    html += code[0]
+                }
+                $("#History").html(html);
+            }
+        }
+
+        $("#btnComplete").on('click', function () {
+            $.ajax({
+                url: '/mobile/LBTraceScanComplete',
+                type: 'post',
+                data: JSON.stringify({
+                    APP_USER: $("#appUser").val(),
+                    DOC_NO: $("#DOC_NO").val(),
+                    BARCODE: code
+                }),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        EmptyData();
+                        $("#DOC_NO").select();
+                    }
+                    else
+                        $("#History").html(obj.Msg);
+                    //alert(obj.Data);
+                },
+                error: function (e) {
+                    alert("fail to complete");
+                }
+            })
+        })
+
+        function EmptyData() {
+            $("#DOC_NO").val("");
+            $("#CUST").html("");
+            $("#Count").html("");
+            $("#Total").html("");
+            $("#BARCODE").val("");
+            $("#ErrorMsg").html("");
+            $("#History").html("");
+            code = [];
+            IsExist = false;
+            $("#DOC_NO").attr("disabled", false);
+            $("#btnConfirm").attr("disabled", true);
+            $("#btnCancel").attr("disabled", false);
+        }
+
+    })
+</script>

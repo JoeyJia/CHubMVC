@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title="TEST TimeTest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+<link href="~/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    $(".form_datetime").datetimepicker({
+    //        format: 'yyyy-mm-dd hh:mm:ss',//显示格式
+    //        todayHighlight: 1,//今天高亮
+    //        minView: "month",//设置只显示到月份
+    //        language: 'zh-CN',  //日期
+    //        startView: 2,
+    //        forceParse: 0,
+    //        showMeridian: 1,
+    //        autoclose: 1//选择后自动关闭
+    //    });
+    //})
+</script>
+<style type="text/css">
+    .datetimepicker {
+        top: 160px;
+        left: 550px;
+    }
+</style>
+
+<div class="container-fluid" id="timetest">
+    <div class="panel panel-default">
+        <div class="panel panel-heading">
+            <b>Query</b>
+        </div>
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-2">Time</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control input-sm" id="txtStartTime" value="" onclick="ShowCalendar(this)" />
+                        <span>~</span>
+                        <input type="text" class="form-control" id="txtEndTime" value="" onclick="ShowCalendar(this)" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Submit" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form class="form-horizontal" enctype="multipart/form-data" method="post" id="TestForm" name="TestForm">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-2">Form测试</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="formTest" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnFormTest" value="formTest" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="form-group">
+                <textarea id="txtContent" class="col-sm-2 form-control" cols="50" rows="5"></textarea>
+                <div class="col-sm-2">
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+
+    function ShowCalendar(txt) {
+        //$(txt).datepicker({ dateFormat: 'yy-mm-dd', changeYear: true, minDate: new Date(2000, 1, 1), maxDate: '+10y +1d' }).datepicker('show');
+        //alert($(txt).val());
+        //$(txt).datetimepicker({
+        //    format: 'yyyy-mm-dd hh:mm:ss',//显示格式
+        //    todayHighlight: 1,//今天高亮
+        //    minView: "month",//设置只显示到月份
+        //    orientation:'bottom',//显示位置
+        //    startView: 2,
+        //    forceParse: 0,
+        //    showMeridian: 1,
+        //    autoclose: 1//选择后自动关闭
+        //}).datetimepicker('show');
+        $(txt).datetimepicker({
+            format: 'yyyy-mm-dd hh:mm:ss',//显示格式
+            todayHighlight: 1,//今天高亮
+            minView: "month",//设置只显示到月份
+            pickerPosition: 'bottom-left',
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            autoclose: 1//选择后自动关闭
+        }).datetimepicker('show');
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnFormTest").on('click', function () {
+            var form = $("form[name=TestForm]");
+            var options = {
+                url: '/test/FormTest',
+                type: 'post',
+                data: { TextValue: $("#formTest").val() },
+                success: function (data) {
+
+                }
+            };
+            form.ajaxSubmit(options);
+        })
+
+
+
+    })
+</script>

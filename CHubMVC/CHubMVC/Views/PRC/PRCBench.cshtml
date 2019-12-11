@@ -1,0 +1,178 @@
+﻿@{
+    ViewBag.Title = "PRCBench";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<input type="hidden" id="txtAppUser" value="@ViewBag.AppUser" />
+
+<div class="container-fluid" id="prcbenchDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Step 1. IHUB loading - Movex File ( List Price) loading</b>
+        </div>
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Loading Code:</label>
+                    <div class="col-sm-2">
+                        <select class="form-control input-sm" id="txtLOAD_TYPE">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2" style="padding:6px;">
+                        <span id="txtLOAD_DESC"></span>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnDownload" value="download template" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="form-group">
+                <form class="form-horizontal" name="ihubloadForm" id="ihubload" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Select Source:</label>
+                        <div class="col-sm-3">
+                            <input type="file" class="form-control" id="ihubloadInput" name="ihubloadInput" />
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="button" class="btn btn-primary btn-sm" id="btnUpload" value="upload" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="panel-heading">
+            <b>Step 2. Download Output Pricing Files</b>
+        </div>
+        <div class="row" style="margin-top:15px;">
+            <div class="col-sm-8 col-sm-offset-2">
+                <input type="button" class="btn btn-primary btn-sm" id="btnVerify" value="Last Verifications" />
+                <label for="">Latest Pricing Loading and IHUB Verifications</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_LoadingModal")
+
+<script>
+    $(function () {
+        $.ajax({
+            url: '/dl/GetLOAD_TYPE',
+            type: 'post',
+            async: true,
+            data: { appUser: $("#txtAppUser").val() },
+            success: function (obj) {
+                if (obj.Success) {
+                    if (obj.Data != null && obj.Data.length > 0) {
+                        for (var i = 0; i < obj.Data.length; i++) {
+                            $("<option></option>").text(obj.Data[i]).val(obj.Data[i]).appendTo("#txtLOAD_TYPE");
+                        }
+                    }
+                }
+                else
+                    alert(obj.Msg);
+            },
+            error: function (e) {
+                alert("fail to get" + e.responseText);
+            }
+        });
+    });
+    $(document).ready(function () {
+        $("#txtLOAD_TYPE").on("change", function () {
+            var LOAD_TYPE = $("#txtLOAD_TYPE").val();
+            if (LOAD_TYPE != "") {
+                $.ajax({
+                    url: '/dl/GetLOAD_DESC',
+                    type: 'post',
+                    async: true,
+                    data: { LOAD_TYPE: LOAD_TYPE },
+                    success: function (obj) {
+                        if (obj.Success)
+                            $("#txtLOAD_DESC").html(obj.Data);
+                        else
+                            alert(obj.Msg);
+                    },
+                    error: function (e) {
+                        alert("fail to get" + e.responseText);
+                    }
+                });
+            } else
+                $("#txtLOAD_DESC").html("");
+        });
+
+        $("#btnUpload").on('click', function () {
+            var path = $("#ihubloadInput").val();
+            if (path = "") {
+                alert("导入文件不能为空");
+                return;
+            }
+            $("#loadingModal").modal("show");
+            $("#ihubload").ajaxSubmit({
+                url: '/dl/IHubUpload',
+                type: 'post',
+                data: { LOAD_TYPE: $("#txtLOAD_TYPE").val() },
+                dataType: 'json',
+                success: function (data) {
+                    $("#loadingModal").modal("hide");
+                    if (data.Success)
+                        alert(data.Msg);
+                    else
+                        alert(data.Msg);
+                },
+                error: function (msg) {
+                    $("#loadingModal").modal("hide");
+                    alert("文件上传失败");
+                }
+            });
+
+
+        });
+
+        $("#btnDownload").on('click', function () {
+            $.ajax({
+                url: "/dl/IHubDownload",
+                type: 'post',
+                async: true,
+                data: { LOAD_TYPE: $("#txtLOAD_TYPE").val() },
+                success: function (obj) {
+                    if (obj.Success)
+                        window.location.href = obj.Data;
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to download" + e.responseText);
+                }
+            });
+        });
+
+        $("#btnVerify").on('click', function () {
+            $.ajax({
+                url: '/prc/PRCVerify',
+                type: 'post',
+                data: {},
+                dataType: 'json',
+                success: function (obj) {
+                    if (!obj.Success)
+                        alert(obj.Msg);
+                    else
+                        window.location.href = '/prc/DownLoad?fileName=' + obj.Data;
+                },
+                error: function (e) {
+                    alert("fail to verify");
+                }
+            })
+        })
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        //debugger;
+        var ss = window.innerHeight;
+        $("#imgDiag").css("margin-top", "300px");
+
+    });
+</script>

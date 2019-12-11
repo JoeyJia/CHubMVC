@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "RP Test";
+}
+@Styles.Render("~/Content/datatimecss")
+@Scripts.Render("~/bundles/datetime")
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <table id="resultTable" class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>测试标题1</th>
+                        <th>测试标题2</th>
+                        <th>测试标题3</th>
+                        <th>测试标题4</th>
+                        <th>测试标题5</th>
+                        <th>测试标题6</th>
+                        <th>测试标题7</th>
+                        <th>测试标题8</th>
+                        <th>测试标题9</th>
+                    </tr>
+                </thead>
+                <tbody id="resultTbody">
+                    @for (int i = 0; i < 9; i++)
+                    {
+                    <tr>
+                        <td>
+                            <span class="glyphicon glyphicon-plus detailOpen" style="cursor:pointer;" data-cc="@i"></span>
+                            @Html.Raw("测试结果")@i
+                        </td>
+                        <td>@Html.Raw("测试结果")@i</td>
+                        <td>@Html.Raw("测试结果")@i</td>
+                        <td>@Html.Raw("测试结果")@i</td>
+                        <td>@Html.Raw("测试结果")@i</td>
+                        <td>@Html.Raw("测试结果")@i</td>
+                        <td>@Html.Raw("测试结果")@i</td>
+                        <td>@Html.Raw("测试结果")@i</td>
+                        <td>@Html.Raw("测试结果")@i@Html.Raw("Test")</td>
+                    </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-sm-2">
+                <input type="text" class="form-control calendarReWriter input-sm" id="due_date" onclick="ShowCalendar(this)" />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(".calendarReWriter").datetimepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        minView: 'month',
+        todayBtn: true,
+        todayHighlight: true,
+        initialDate: new Date(),
+        pickerPosition: "bottom-left"
+    })
+
+
+
+
+    $(document).ready(function () {
+        $(".detailOpen").on('click', function () {
+            var $td = $(this).parent().parent().find("td:last");
+            alert($td[0].innerText);
+
+
+        })
+
+
+
+
+
+        //glyphicon-minus
+        //$("#resultTbody").on('click', '.detailOpen', function () {
+        //    var $detailOpen = $(this);
+        //    var cc = $detailOpen.attr("data-cc");
+        //    var $tr = $detailOpen.parent().parent();
+        //    var $resultTr = $tr.next();
+        //    var html = "";
+
+        //    if ($detailOpen.hasClass("glyphicon-plus")) {
+        //        html += "     <td colspan='9'>";
+        //        html += "       <span>测试明细" + cc + "</span>";
+        //        html += "     </td>";
+        //        $resultTr.html(html);
+        //        $resultTr[0].style.display = "";
+        //        $detailOpen.removeClass("glyphicon-plus");
+        //        $detailOpen.addClass("glyphicon-minus");
+        //    }
+        //    else {
+        //        $resultTr.html(html);
+        //        $resultTr[0].style.display = "none";
+        //        $detailOpen.removeClass("glyphicon-minus");
+        //        $detailOpen.addClass("glyphicon-plus");
+        //    }
+        //});
+    })
+</script>

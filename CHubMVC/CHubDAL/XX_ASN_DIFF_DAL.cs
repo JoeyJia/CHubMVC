@@ -96,7 +96,7 @@ namespace CHubDAL
             if (asndiff.CLOSE_DATE != null && asndiff.CLOSE_DATE.Value != null)
             {
                 sqlwhere += " CLOSE_DATE='" + asndiff.CLOSE_DATE + "' ,";
-                sqlwhere += " IsClose='1' ,";
+                sqlwhere += " Is_Close='1' ,";
             }
             if (!string.IsNullOrEmpty(sqlwhere))
             {
@@ -115,9 +115,16 @@ namespace CHubDAL
         /// <returns></returns>
         public bool UpdateXXAsnDiffRemark(string asnid, string remark)
         {
-            string sql = string.Format(@"UPDATE XX_ASN_DIFF SET DIFFREMARK+=' " + remark + " where ASN_DIFF_ID= " + asnid);
+            string sql = string.Format(@"UPDATE XX_ASN_DIFF SET DIFFREMARK=' " + remark + " where ASN_DIFF_ID= " + asnid);
             ccHelper.ExecuteNonQuery(sql);
             return true;
+        }
+
+        public XX_ASN_DIFF GetAsnDiffById(long asndiffid)
+        {
+            string sql = string.Format(@"select * from XX_ASN_DIFF where 1=1 ASN_DIFF_ID=" + asndiffid);
+            var result = ccHelper.ExecuteSqlToList<XX_ASN_DIFF>(sql).FirstOrDefault();
+            return result;
         }
 
         public List<XX_ASN_DIFF> GetAsnDiffListBySearch(AsnDiffArg AsnDiffSearch)
@@ -133,17 +140,18 @@ namespace CHubDAL
             }
             if(AsnDiffSearch.CreateDate_Start!=null && AsnDiffSearch.CreateDate_Start.Value!=null)
             {
-                sqlwhere += " and CREATE_DATE>='" + AsnDiffSearch.CreateDate_Start.Value.ToString() + "'";
+
+                sqlwhere += " and CREATE_DATE<=to_date('" + AsnDiffSearch.CreateDate_Start.Value.ToString() + "','yyyy-mm-dd')";
             }
             if (AsnDiffSearch.CreateDate_End != null && AsnDiffSearch.CreateDate_End.Value != null)
             {
-                sqlwhere += " and CREATE_DATE<='" + AsnDiffSearch.CreateDate_End.Value.ToString() + "'";
+                sqlwhere += " and CREATE_DATE<=to_date('" + AsnDiffSearch.CreateDate_End.Value.ToString() + "','yyyy-mm-dd')";
             }
             if(!string.IsNullOrEmpty(AsnDiffSearch.ResultType))
             {
                 sqlwhere += " and CLAIM_RESULT='" + AsnDiffSearch.ResultType + "'";
             }
-            if(!string.IsNullOrEmpty(AsnDiffSearch.IsClose) && AsnDiffSearch.IsClose=="-1")
+            if(!string.IsNullOrEmpty(AsnDiffSearch.IsClose) && AsnDiffSearch.IsClose!="-1")
             {
                 sqlwhere += " and Is_Close='" + AsnDiffSearch.IsClose + "'";
             }

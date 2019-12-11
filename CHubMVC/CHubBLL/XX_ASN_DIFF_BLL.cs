@@ -27,7 +27,15 @@ namespace CHubBLL
         {
             return dal.GetAsnDiffListBySearch(AsnDiffSearch);
         }
-
+        /// <summary>
+        /// 根据差异id获取明细数据
+        /// </summary>
+        /// <param name="asndiffid"></param>
+        /// <returns></returns>
+        public XX_ASN_DIFF GetAsnDiffById(long asndiffid)
+        {
+            return dal.GetAsnDiffById(asndiffid);
+        }
         /// <summary>
         /// 更新订单备注 备注累加
         /// </summary>

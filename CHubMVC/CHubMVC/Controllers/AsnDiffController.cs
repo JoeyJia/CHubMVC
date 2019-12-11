@@ -57,6 +57,13 @@ namespace CHubMVC.Controllers
             var mainHtml = GetMP_MAINHtml(result);
             return Json(new RequestResult(true, showMore ? "" : "End", mainHtml));
         }
+        public ActionResult GetAsnDiffInfoById(long asndiffid)
+        {
+
+            XX_ASN_DIFF_BLL bll = new XX_ASN_DIFF_BLL();
+            var result = bll.GetAsnDiffById(asndiffid);
+            return Json(new RequestResult(true, "", result));
+        }
         public string GetMP_MAINHtml(List<XX_ASN_DIFF> list)
         {
             StringBuilder sb = new StringBuilder();
@@ -73,6 +80,19 @@ namespace CHubMVC.Controllers
                     sb.Append("     <td>").Append(item.DISP_ACTION).Append("</td>");
                     sb.Append("     <td>").Append(item.CLAIM_RESULT).Append("</td>");
                     sb.Append("     <td>").Append(item.CLOSE_DATE).Append("</td>");
+
+                    sb.Append("     <td>");
+                    if (item.IS_CLOSE == "1")
+                    {
+                        sb.Append("<input type='button' class='btn btn-primary btn-xs btnDetail' value='LINES' data-sono='" + item.ASN_DIFF_ID + "' />");
+
+                    }
+                    else
+                    {
+                        sb.Append("<input type='button' class='btn btn-primary btn-xs btnEdit' value='Edit' data-sono='" + item.ASN_DIFF_ID + "' />");
+
+                    }
+                    sb.Append("</td>");
                     sb.Append(" </tr>");
                 }
             }
@@ -101,5 +121,6 @@ namespace CHubMVC.Controllers
             bll.SaveAsnDiff(warehouse, asnid, out res);
             return res;
         }
+
     }
 }

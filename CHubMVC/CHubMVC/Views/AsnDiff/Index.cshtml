@@ -2,6 +2,9 @@
     ViewBag.Title = "AsnDiff AsnDIff";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<link href="~/Content/bootstrap-datetimepicker.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datetimepicker.js"></script>
 <style type="text/css">
     #resultTbody a:hover {
         font-weight: bold;
@@ -49,7 +52,7 @@
             <div class="row" style="margin-top:15px;">
                 <div class="form-group">
                     <label for="" class="col-sm-2 control-label">WareHouse</label>
-                    <div class="col-sm-1">
+                    <div class="col-sm-2">
                         <select class="form-control input-sm" id="WareHouse"></select>
                     </div>
                     <div class="col-sm-1">
@@ -64,16 +67,33 @@
             </div>
             <div class="row" style="margin-top:15px;">
                 <div class="form-group">
-                    <label for="" class="col-sm-2 control-label">ClaimResult</label>
+                    <label for="" class="col-sm-2 control-label">StartDate</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm calendarReWriter" id="CreateDate_Start" onclick="ShowCalendar(this)" />
+
+                    </div>
                     <div class="col-sm-1">
+                        <span id=""></span>
+                    </div>
+                    <label for="" class="col-sm-2 control-label">EndDate</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm calendarReWriter" id="CreateDate_End" onclick="ShowCalendar(this)" />
+
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">ClaimResult</label>
+                    <div class="col-sm-2">
                         <select class="form-control input-sm" id="ResultType"></select>
                     </div>
                     <div class="col-sm-1">
-                        <span id="ClaimResult_DESC"></span>
+                        <span id=""></span>
                     </div>
 
                     <label for="" class="col-sm-2 control-label">IsClose</label>
-                    <div class="col-sm-1">
+                    <div class="col-sm-2">
                         <select class="form-control input-sm" id="IsClose">
                             <option value="-1">All</option>
                             <option value="1">Closed</option>
@@ -83,44 +103,62 @@
                     <div class="col-sm-1">
                         <span id="IsClose_DESC"></span>
                     </div>
-                    <div class="col-sm-2 text-right">
+                </div>
+            </div>
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    
+                    <div class="col-sm-10 text-right">
                         <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Query" />
                     </div>
                 </div>
             </div>
-        </form>
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <b>Result</b>
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group" style="margin-left:15px">
+                    <div class="col-sm-2 text-right">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Add New" />
+                        <input type="button" class="btn btn-primary btn-sm" id="btnSearch" value="Export" />
+
                     </div>
-                    <table class="table table-bordered" id="resultTable">
-                        <thead>
-                            <tr>
-                                <th>DIFFrenceID</th>
-                                <th>WareHouse</th>
-                                <th>ASNNo</th>
-                                <th>Part No.</th>
-                                <th>CreateDate</th>
-                                <th>Disp Action</th>
-                                <th>Result</th>
-                                <th>CloseDate</th>
-                                <th style="width:11%;">OPT</th>
-                            </tr>
-                        </thead>
-                        <tbody id="resultTbody"></tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="8">
-                                    <a href="javascript:void(0);" id="btnMore" style="text-decoration:none;font-size:16px;">More...</a>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
                 </div>
             </div>
-        </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="panel panel-default">
+
+
+                        <div class="panel-heading">
+                            <b>Result</b>
+                        </div>
+                        <table class="table table-bordered" id="resultTable">
+                            <thead>
+                                <tr>
+                                    <th>DiffrenceID</th>
+                                    <th>WareHouse</th>
+                                    <th>ASNNo</th>
+                                    <th>Part No.</th>
+                                    <th>CreateDate</th>
+                                    <th>Disp Action</th>
+                                    <th>Result</th>
+                                    <th>CloseDate</th>
+                                    <th style="width:11%;">OPT</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultTbody"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="8">
+                                        <a href="javascript:void(0);" id="btnMore" style="text-decoration:none;font-size:16px;">More...</a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+       
     </div>
 </div>
 
@@ -663,6 +701,19 @@
 </div>
 
 <script>
+    function ShowCalendar(obj) {
+        $(obj).datetimepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            minView: 'month',
+            todayBtn: true,
+            todayHighlight: true,
+            initialDate: new Date(),
+            pickerPosition: "bottom-left"
+        }).datetimepicker("show");
+    }
+
+
     //WAREHOUSE 下拉
     $(function () {
         $.ajax({

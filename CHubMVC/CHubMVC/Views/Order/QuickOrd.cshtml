@@ -1,0 +1,1149 @@
+﻿@{
+    ViewBag.Title = "QuickQrd";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/bootstrap-datetimepicker.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datetimepicker.js"></script>
+<style type="text/css">
+    .form-group {
+        margin-bottom: 0;
+    }
+
+    #headerTable > tbody > tr > td {
+        width: 16%;
+        padding: 0;
+        vertical-align: middle;
+        border-top: 0;
+        height: 35px;
+    }
+
+
+    #detailTable > tbody > tr > td {
+        padding: 0;
+        vertical-align: middle;
+        border-top: 0;
+    }
+
+    .titleTd {
+        background-color: #D3D3D3;
+        text-align: right;
+        padding-right: 10px !important;
+        font-weight: bolder;
+    }
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    .bs {
+        color: red;
+        font-size: 16px;
+        font-weight: bolder;
+    }
+</style>
+
+<div class="container-fluid" id="qucikordDiv">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Order Header</b>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-bordered" id="headerTable">
+                    <tbody id="headerTbody">
+                        <tr>
+                            <td class="titleTd">GOMS Instance</td>
+                            <td>
+                                <select class="form-control input-sm" id="GOMS">
+                                    <option value="PDC">PDC</option>
+                                    <option value="RDC" selected>RDC</option>
+                                </select>
+                            </td>
+                            <td colspan="2">
+                                <span id="GOMS_DESC">Regonal DC (China)</span>
+                            </td>
+                            <td class="titleTd">Quick Order No </td>
+                            <td>
+                                <span id="QUICK_ORDER_NO"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="titleTd">ABBR.<span class="bs">*</span></td>
+                            <td>
+                                <input type="text" class="form-control input-sm" id="ABBREVIATION" />
+                            </td>
+                            <td colspan="4">
+                                <span id="NAME"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="titleTd">Customer No</td>
+                            <td>
+                                <span id="CUSTOMER_NO"></span>
+                            </td>
+                            <td class="titleTd">Bill to</td>
+                            <td>
+                                <span id="BILL_TO_LOCATION"></span>
+                            </td>
+                            <td class="titleTd">Ship to</td>
+                            <td>
+                                <span id="SHIP_TO_LOCATION"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6"></td>
+                        </tr>
+                        <tr>
+                            <td class="titleTd">Special Ship to</td>
+                            <td>
+                                <input type="checkbox" id="SPL_IND" />
+                            </td>
+                            <td class="titleTd">SPL NO</td>
+                            <td>
+                                <span id="DEST_LOCATION"></span>
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td class="titleTd">Ship to Name</td>
+                            <td>
+                                <span id="SHIP_TO_NAME"></span>
+                            </td>
+                            <td class="titleTd">Contact</td>
+                            <td>
+                                <span id="CONTACT"></span>
+                            </td>
+                            <td class="titleTd">Phone</td>
+                            <td>
+                                <span id="PHONE"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="titleTd">ADDR1</td>
+                            <td>
+                                <span id="ADDR1"></span>
+                            </td>
+                            <td class="titleTd">ADDR2</td>
+                            <td>
+                                <span id="ADDR2"></span>
+                            </td>
+                            <td class="titleTd">ADDR3</td>
+                            <td>
+                                <span id="ADDR3"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="titleTd">City</td>
+                            <td>
+                                <span id="CITY"></span>
+                            </td>
+                            <td class="titleTd">Country</td>
+                            <td>
+                                <span id="COUNTRY"></span>
+                            </td>
+                            <td class="titleTd">State</td>
+                            <td>
+                                <span id="STATE"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="titleTd">ATTN</td>
+                            <td>
+                                <span id="ATTENTION"></span>
+                            </td>
+                            <td class="titleTd">Warehouse</td>
+                            <td>
+                                <span id="WAREHOUSE"></span>
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="6"></td>
+                        </tr>
+                        <tr>
+                            <td class="titleTd">Order TYPE</td>
+                            <td>
+                                <select class="form-control input-sm" id="DUE_DATE_CODE"></select>
+                            </td>
+                            <td>
+                                <span id="DUE_DATE_DESC"></span>
+                            </td>
+                            <td class="titleTd">Priority Code</td>
+                            <td>
+                                <span id="PRIORITY_CODE"></span>
+                            </td>
+                            <td>
+                                <span id="PRIORITY_DESC"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="titleTd">Due Date<span class="bs">*</span></td>
+                            <td>
+                                <input type="text" class="form-control input-sm calendarReWriter" id="DUE_DATE" onclick="ShowCalendar(this)" />
+                            </td>
+                            <td></td>
+                            <td class="titleTd">Complete Ship</td>
+                            <td>
+                                <input type="checkbox" id="SHIP_COMPLETE_FLAG" />
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="titleTd">Customer PO<span class="bs">*</span></td>
+                            <td colspan="2">
+                                <input type="text" class="form-control input-sm" id="CUSTOMER_PO_NO" />
+                            </td>
+                            <td class="titleTd">Dealer PO</td>
+                            <td colspan="2">
+                                <input type="text" class="form-control input-sm" id="DEALER_PO_NO" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="titleTd">NOTE(English Only)</td>
+                            <td colspan="5">
+                                <input type="text" class="form-control input-sm" id="ORDER_NOTES" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <input type="button" class="btn btn-primary btn-sm" id="btnCopy" value="Copy from clipboard" />
+                <input type="button" class="btn btn-primary btn-sm" id="btnSave" value="Save & Submit" />
+                <input type="button" class="btn btn-primary btn-sm" id="btnClear" value="Clear Line Data" />
+                <input type="button" class="btn btn-primary btn-sm" id="btnDownload" value="Download" style="display:none;" />
+                <input type="button" class="btn btn-primary btn-sm" id="btnNewOrder" value="New Order" />
+            </div>
+        </div>
+        <div class="panel-heading">
+            <b>Order Lines</b>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-bordered" id="detailTable">
+                    <thead>
+                        <tr style="background-color:#f5f5f5;">
+                            <th style="width:5%;">LINE NO</th>
+                            <th style="width: 10%;">Customer PartNo</th>
+                            <th style="width:5%;">Qty</th>
+                            <th style="width: 10%;">Part No</th>
+                            <th style="width: 10%;">
+                                Perfered Qty(MOQ)
+                            </th>
+                            <th style="width: 25%;">DESC</th>
+                            <th>Note</th>
+                            <th style="width: 5%;">Inventory</th>
+                            <th style="width: 7%;">Due Date</th>
+                            <th style="width: 3%;">OPT</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detailTbody">
+                        <tr>
+                            <td>1</td>
+                            <td>
+                                <input type="text" class="form-control input-sm CUSTOMER_PARTNO" />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control input-sm BUY_QTY" />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control input-sm PART_NO" disabled />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control input-sm RevisedQty" disabled />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control input-sm DESCRIPTION" disabled />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control input-sm NOTE" disabled />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control input-sm Inventory" disabled />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control input-sm calendarReWriter DUE_DATE" onclick="ShowCalendar(this)" />
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-primary btn-xs btnDelete" value="delete" />
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="10">
+                                <input type="button" class="btn btn-primary btn-sm" id="btnNewLine" value="New Line" />
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" id="myModalDialog" style="width:98%;">
+        <div class="modal-content">
+            <div class="modal-header panel-default" style="padding:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="width: 50px; height: 50px; font-size: 30px;">
+                    &times;
+                </button>
+                <div class="modal-title panel-heading" style="height:50px;font-size:22px;">
+                    Select Special Ship Address
+                </div>
+            </div>
+            <div class="modal-body panel-default" style="padding:0;">
+                <form class="form-horizontal">
+                    <div class="row" style="margin-top:8px;">
+                        <div class="form-group">
+                            <label for="" class="control-label col-sm-2" style="text-align:right;">Key Words</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control input-sm" id="KeyWord" />
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="button" class="btn btn-primary btn-sm" id="btnFilter" value="Filter" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered" id="selectTable">
+                            <thead>
+                                <tr style="background-color:#f5f5f5;">
+                                    <th style="width:3%;"></th>
+                                    <th>SPL No</th>
+                                    <th>Ship To Name</th>
+                                    <th>ADDR1</th>
+                                    <th>ADDR2</th>
+                                    <th>ADDR3</th>
+                                    <th>Contact</th>
+                                    <th>Phone</th>
+                                    <th>ATTN</th>
+                                    <th>WH</th>
+                                </tr>
+                            </thead>
+                            <tbody id="selectTbody"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="10">
+                                        <input type="button" class="btn btn-primary btn-sm" id="btnMore" value="More..." />
+                                        <input type="button" class="btn btn-primary btn-sm" id="btnOK" value="OK" />
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@Html.Partial("_LoadingModal")
+
+<!--Body-->
+<script>
+    function ShowCalendar(obj) {
+        $(obj).datetimepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            minView: 'month',
+            todayBtn: true,
+            todayHighlight: true,
+            initialDate: new Date(),
+            pickerPosition: "bottom-left"
+        }).datetimepicker("show");
+    }
+
+
+    $(document).ready(function () {
+        var PageIndex = 1;
+        var ABBREVIATION = "";
+        var SYSID = "";
+        var WAREHOUSE = "";
+        var CUSTOMER_NO = "";
+        var header = {};
+        var detail = [];
+        var DFLTData = null;
+
+        //$(".calendarReWriter").datetimepicker({
+        //    format: 'yyyy-mm-dd',
+        //    autoclose: true,
+        //    minView: 'month',
+        //    todayBtn: true,
+        //    todayHighlight: true,
+        //    initialDate: new Date(),
+        //    pickerPosition: "bottom-left"
+        //})
+
+        //$("#detailTbody").on('click', '.calendarReWriter', function () {
+        //    $(this).datetimepicker({
+        //        format: 'yyyy-mm-dd',
+        //        autoclose: true,
+        //        minView: 'month',
+        //        todayBtn: true,
+        //        todayHighlight: true,
+        //        initialDate: new Date(),
+        //        pickerPosition: "bottom-left"
+        //    })
+        //})
+
+        $("#GOMS").on('change', function () {
+            SYSID = $(this).val();
+            ABBREVIATION = $("#ABBREVIATION").val();
+
+            if (SYSID == "PDC")
+                $("#GOMS_DESC").html("Master DC (China)");
+            else
+                $("#GOMS_DESC").html("Regonal DC (China)");
+
+            $("#SPL_IND").attr("checked", false);
+            $("#SHIP_COMPLETE_FLAG").attr('checked', false);
+            $("#DUE_DATE_CODE").empty();
+
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/order/GetG_ADDR_DFLT',
+                type: 'post',
+                data: {
+                    SYSID: SYSID,
+                    ABBREVIATION: ABBREVIATION
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        DFLTData = obj.Data;
+                        FillDFLTData(obj.Data);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to get G_ADDR_DFLT");
+                }
+            })
+        })
+        //ABBREVIATION
+        $("#ABBREVIATION").on('blur', function () {
+            ABBREVIATION = $(this).val();
+            SYSID = $("#GOMS").val();
+
+            $("#SPL_IND").attr("checked", false);
+            $("#SHIP_COMPLETE_FLAG").attr('checked', false);
+            $("#DUE_DATE_CODE").empty();
+
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/order/GetG_ADDR_DFLT',
+                type: 'post',
+                data: {
+                    SYSID: SYSID,
+                    ABBREVIATION: ABBREVIATION
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        DFLTData = obj.Data;
+                        FillDFLTData(obj.Data);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to get G_ADDR_DFLT");
+                }
+            })
+        })
+        function FillDFLTData(data) {
+            if (data == null) {
+                $("#NAME").html("");
+                $("#CUSTOMER_NO").html("");
+                CUSTOMER_NO = "";
+                $("#BILL_TO_LOCATION").html("");
+                $("#SHIP_TO_LOCATION").html("");
+                $("#SHIP_TO_NAME").html("");
+                $("#CONTACT").html("");
+                $("#PHONE").html("");
+                $("#ADDR1").html("");
+                $("#ADDR2").html("");
+                $("#ADDR3").html("");
+                $("#CITY").html("");
+                $("#COUNTRY").html("");
+                $("#STATE").html("");
+                $("#ATTENTION").html("");
+                $("#WAREHOUSE").html("");
+                WAREHOUSE = "";
+                GetG_ORDER_TYPE("");
+            }
+            else {
+                $("#NAME").html(data.NAME);
+                $("#CUSTOMER_NO").html(data.CUSTOMER_NO);
+                CUSTOMER_NO = data.CUSTOMER_NO;
+                $("#BILL_TO_LOCATION").html(data.BILL_TO_LOCATION);
+                $("#SHIP_TO_LOCATION").html(data.SHIP_TO_LOCATION);
+                $("#SHIP_TO_NAME").html(data.LOCAL_SHIP_TO_NAME);
+                $("#CONTACT").html(data.SHIP_TO_CONTACT);
+                $("#PHONE").html(data.SHIP_TO_PHONE);
+                $("#ADDR1").html(data.LOCAL_SHIP_TO_ADDR_1);
+                $("#ADDR2").html(data.LOCAL_SHIP_TO_ADDR_2);
+                $("#ADDR3").html(data.LOCAL_SHIP_TO_ADDR_3);
+                $("#CITY").html(data.LOCAL_SHIP_TO_CITY);
+                $("#COUNTRY").html(data.LOCAL_SHIP_TO_COUNTRY);
+                $("#STATE").html(data.LOCAL_SHIP_TO_STATE);
+                $("#ATTENTION").html(data.SHIP_TO_ATTEN);
+                $("#WAREHOUSE").html(data.WAREHOUSE);
+                WAREHOUSE = data.WAREHOUSE;
+                GetG_ORDER_TYPE(data.DUE_DATE_CODE);
+            }
+        }
+
+        //Special Ship to 勾选
+        $("#SPL_IND").on('click', function () {
+            PageIndex = 1;
+            var $check = $(this);
+            if ($check[0].checked) {
+                var KeyWord = ""; //$("#KeyWord").val();
+
+                $("#loadingModal").modal("show");
+                $.ajax({
+                    url: '/order/GetG_ADDR_SPL',
+                    type: 'post',
+                    data: {
+                        SYSID: SYSID,
+                        ABBREVIATION: ABBREVIATION,
+                        KeyWord: KeyWord,
+                        PageIndex: PageIndex
+                    },
+                    dataType: 'json',
+                    success: function (obj) {
+                        $("#loadingModal").modal("hide");
+                        if (obj.Success) {
+                            $("#selectTbody").html(obj.Data);
+                            $("#myModal").modal("show");
+                            if (obj.Msg == "End")
+                                $("#btnMore").css("display", "none");
+                            else
+                                $("#btnMore").css("display", "");
+                            PageIndex++;
+                        }
+                        else {
+                            alert(obj.Msg);
+                        }
+                    },
+                    error: function (e) {
+                        $("#loadingModal").modal("hide");
+                        alert("fail to get G_ADDR_SPL")
+                    }
+                })
+            }
+            else {
+                $("#DEST_LOCATION").html("");
+                FillDFLTData(DFLTData);
+            }
+        })
+        $("#btnMore").on('click', function () {
+            $("#btnMore").button("loading");
+            //ABBREVIATION = $("#ABBREVIATION").val();
+            //SYSID = $("#GOMS").val();
+            var KeyWord = $("#KeyWord").val();
+
+            $.ajax({
+                url: '/order/GetG_ADDR_SPL',
+                type: 'post',
+                data: {
+                    SYSID: SYSID,
+                    ABBREVIATION: ABBREVIATION,
+                    KeyWord: KeyWord,
+                    PageIndex: PageIndex
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#btnMore").button("reset");
+                    if (obj.Success) {
+                        $("#selectTbody").append(obj.Data);
+                        if (obj.Msg == "End")
+                            $("#btnMore").css("display", "none");
+                        else
+                            $("#btnMore").css("display", "");
+                        PageIndex++;
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (e) {
+                    alert("fail to get G_ADDR_SPL")
+                }
+            })
+        })
+        $("#btnOK").on("click", function () {
+            $("#btnOK").button("loading");
+            var DEST_LOCATION = $("input:radio[name=Radio]:checked").val();
+            //alert(DEST_LOCATION);
+            $.ajax({
+                url: '/order/GetG_ADDR_SPLDetail',
+                type: 'post',
+                data: {
+                    SYSID: SYSID,
+                    ABBREVIATION: ABBREVIATION,
+                    DEST_LOCATION: DEST_LOCATION
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#btnOK").button("reset");
+                    if (obj.Success) {
+                        $("#myModal").modal("hide");
+                        FillSPLData(obj.Data);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get G_ADDR_SPLDetail");
+                }
+            })
+        })
+        function FillSPLData(data) {
+            $("#DEST_LOCATION").html(data.DEST_LOCATION);
+            $("#SHIP_TO_NAME").html(data.LOCAL_DEST_NAME);
+            $("#CONTACT").html(data.DEST_CONTACT);
+            $("#PHONE").html(data.DEST_PHONE);
+            $("#ADDR1").html(data.LOCAL_DEST_ADDR_1);
+            $("#ADDR2").html(data.LOCAL_DEST_ADDR_2);
+            $("#ADDR3").html(data.LOCAL_DEST_ADDR_3);
+            $("#CITY").html(data.LOCAL_DEST_CITY);
+            $("#COUNTRY").html(data.LOCAL_DEST_COUNTRY);
+            $("#STATE").html(data.LOCAL_DEST_STATE);
+            $("#ATTENTION").html(data.DEST_ATTENTION);
+            $("#WAREHOUSE").html(data.WAREHOUSE);
+            GetG_ORDER_TYPE(data.DUE_DATE_CODE)
+        }
+        $("#btnFilter").on('click', function () {
+            $("#btnFilter").button("loading");
+            PageIndex = 1;
+            var KeyWord = $("#KeyWord").val();
+
+            $.ajax({
+                url: '/order/GetG_ADDR_SPL',
+                type: 'post',
+                data: {
+                    SYSID: SYSID,
+                    ABBREVIATION: ABBREVIATION,
+                    KeyWord: KeyWord,
+                    PageIndex: PageIndex
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#btnFilter").button("reset");
+                    if (obj.Success) {
+                        $("#selectTbody").html(obj.Data);
+                        if (obj.Msg == "End")
+                            $("#btnMore").css("display", "none");
+                        else
+                            $("#btnMore").css("display", "");
+                        PageIndex++;
+                    }
+                    else {
+                        alert(obj.Msg);
+                    }
+                },
+                error: function (e) {
+                    alert("fail to get G_ADDR_SPL")
+                }
+            })
+        })
+
+        $("#DUE_DATE_CODE").on('change', function () {
+            var $item = $(this);
+            $.ajax({
+                url: '/order/GetG_ORDER_TYPE',
+                type: 'post',
+                async: true,
+                data: {
+                    SYSID: SYSID,
+                    WAREHOUSE: WAREHOUSE,
+                    DUE_DATE_CODE: $item.val()
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        $("#DUE_DATE_DESC").html(obj.Data.DUE_DATE_DESC);
+                        $("#PRIORITY_CODE").html(obj.Data.PRIORITY_CODE);
+                        $("#PRIORITY_DESC").html(obj.Data.PRIORITY_DESC);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to get G_ORDER_TYPE");
+                }
+            })
+        })
+
+
+        $("#DUE_DATE").on('change', function () {
+            $('.DUE_DATE').val($(this).val());
+        });
+
+        //New Line
+        $('#btnNewLine').on('click', function () {
+            var $tr = $('#detailTbody').find("tr");
+            var html = "";
+            var StartLine;
+            if ($tr.length > 0)
+                StartLine = $tr.length + 1;
+            else
+                StartLine = 1;
+            html += " <tr>";
+            html += "     <td>" + StartLine + "</td>";
+            html += "     <td>" + "<input type=\"text\" class=\"form-control input-sm CUSTOMER_PARTNO\" />" + "</td>";
+            html += "     <td>" + "<input type=\"text\" class=\"form-control input-sm BUY_QTY\" />" + "</td>";
+            html += "     <td>" + "<input type=\"text\" class=\"form-control input-sm PART_NO\" disabled />" + "</td>";
+            html += "     <td>" + "<input type=\"text\" class=\"form-control input-sm RevisedQty\" disabled />" + "</td>";
+            html += "     <td>" + "<input type=\"text\" class=\"form-control input-sm DESCRIPTION\" disabled />" + "</td>";
+            html += "     <td>" + "<input type=\"text\" class=\"form-control input-sm NOTE\" disabled />" + "</td>";
+            html += "     <td>" + "<input type=\"text\" class=\"form-control input-sm Inventory\" disabled />" + "</td>";
+            html += "     <td>" + "<input type=\"text\" class=\"form-control input-sm calendarReWriter DUE_DATE\" onclick='ShowCalendar(this)' />" + "</td>";
+            html += "     <td>" + "<input type=\"button\" class=\"btn btn-primary btn-xs btnDelete\" value=\"delete\" />" + "</td>";
+            html += " </tr>";
+
+            $('#detailTbody').append(html);
+            //$('.DUE_DATE').val($("#DUE_DATE").val());
+            $('#detailTbody .DUE_DATE:last').val($("#DUE_DATE").val());
+        })
+
+        //delete
+        $('#detailTbody').on('click', '.btnDelete', function () {
+            var $delete = $(this);
+            var $tr = $delete.parent().parent();
+            $tr.remove();
+            RefreshLineNO();
+        })
+        function RefreshLineNO() {
+            var $tr = $('#detailTbody').find("tr");
+            for (var i = 0; i < $tr.length; i++) {
+                var $td = $($tr[i]).find("td").eq(0);
+                $td[0].innerText = i + 1;
+            }
+        }
+
+
+        //Copy from clipboard
+        $("#btnCopy").on('click', function () {
+            detail = [];
+            var str = getClipboard();
+            //alert(str);
+            var Header_DUE_DATE = $("#DUE_DATE").val();
+            var GOMS = $("#GOMS").val();
+            var $tr = $("#detailTbody").find("tr");
+            for (var i = 0; i < $tr.length; i++) {
+                var $td = $($tr[i]).find("td");
+                var CUSTOMER_PARTNO = $td.find(".CUSTOMER_PARTNO").val();
+                var BUY_QTY = $td.find(".BUY_QTY").val();
+                var PART_NO = $td.find(".PART_NO").val();
+                var RevisedQty = $td.find(".RevisedQty").val();
+                var DESCRIPTION = $td.find(".DESCRIPTION").val();
+                var NOTE = $td.find(".NOTE").val();
+                var Inventory = $td.find(".Inventory").val();
+                var DUE_DATE = $td.find(".DUE_DATE").val();
+                if (!(CUSTOMER_PARTNO == "" && BUY_QTY == "")) {
+                    detail.push({
+                        LINE_NO: (i + 1),
+                        CUSTOMER_PARTNO: CUSTOMER_PARTNO,
+                        BUY_QTY: BUY_QTY,
+                        PART_NO: PART_NO,
+                        RevisedQty: RevisedQty,
+                        DESCRIPTION: DESCRIPTION,
+                        NOTE: NOTE,
+                        Inventory: Inventory,
+                        DUE_DATE: DUE_DATE
+                    })
+                }
+            }
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/order/GetOrderDetail',
+                type: 'post',
+                data: JSON.stringify({
+                    str: str,
+                    detail: detail,
+                    GOMS:GOMS,
+                    Header_DUE_DATE: Header_DUE_DATE,
+                    CUSTOMER_NO: CUSTOMER_NO,
+                    WAREHOUSE: WAREHOUSE
+                }),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    $("#detailTbody").empty();
+                    if (obj.Success)
+                        $("#detailTbody").html(obj.Data);
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to get OrderDetail");
+                }
+            })
+
+        });
+        function getClipboard() {
+            if (window.clipboardData) {
+                return window.clipboardData.getData('Text');
+            }
+            return null;
+        }
+
+        //不能有空格，不能为空
+        $("#CUSTOMER_PO_NO").on('blur', function () {
+            CUSTOMER_PO_NO = $(this).val();
+            if (CUSTOMER_PO_NO.indexOf(' ') > 0 || CUSTOMER_PO_NO == "") {
+                alert("Space or Empty");
+                $("#CUSTOMER_PO_NO").select();
+            }
+        })
+
+        //Save
+        $("#btnSave").on('click', function () {
+            header = {};
+            detail = [];
+
+            header.GOMS = $('#GOMS').val();
+            header.QUICK_ORDER_NO = $("#QUICK_ORDER_NO").html();
+            header.ABBREVIATION = $('#ABBREVIATION').val();
+            header.CUSTOMER_NO = $('#CUSTOMER_NO').html();
+            header.BILL_TO_LOCATION = $('#BILL_TO_LOCATION').html();
+            header.SHIP_TO_LOCATION = $('#SHIP_TO_LOCATION').html();
+            header.DEST_LOCATION = $('#DEST_LOCATION').html();
+            header.SPL_IND = $('#SPL_IND')[0].checked ? "Y" : "N";
+            header.CUSTOMER_PO_NO = $('#CUSTOMER_PO_NO').val();
+            header.DEALER_PO_NO = $('#DEALER_PO_NO').val();
+            header.ORDER_TYPE = $('#DUE_DATE_CODE').val();
+            header.PRIORITY_CODE = $('#PRIORITY_CODE').html();
+            header.DUE_DATE = $('#DUE_DATE').val();
+            header.SHIP_COMPLETE_FLAG = $('#SHIP_COMPLETE_FLAG')[0].checked ? 1 : 0;
+            header.WAREHOUSE = $("#WAREHOUSE").html();
+            header.ORDER_NOTES = $('#ORDER_NOTES').val();
+
+            if (header.ABBREVIATION == "" || header.DUE_DATE == "" || header.CUSTOMER_PO_NO == "" || header.CUSTOMER_PO_NO.indexOf(' ') > 0) {
+                alert("Empty data");
+                return false;
+            }
+
+            var $tr = $("#detailTbody").find("tr");
+            for (var i = 0; i < $tr.length; i++) {
+                var $td = $($tr[i]).find("td");
+                var LINE_NO = $td.eq(0).text();
+                var CUSTOMER_PARTNO = $td.find(".CUSTOMER_PARTNO").val();
+                var BUY_QTY = $td.find(".BUY_QTY").val();
+                var PART_NO = $td.find(".PART_NO").val();
+                var DESCRIPTION = $td.find(".DESCRIPTION").val();
+                var NOTE = $td.find(".NOTE").val();
+                var DUE_DATE = $td.find(".DUE_DATE").val() == "" ? "" : $td.find(".DUE_DATE").val();
+                if (!(CUSTOMER_PARTNO == "" && BUY_QTY == "")) {
+                    detail.push({
+                        LINE_NO: LINE_NO,
+                        CUSTOMER_PARTNO: CUSTOMER_PARTNO,
+                        BUY_QTY: BUY_QTY,
+                        PART_NO: PART_NO,
+                        DESCRIPTION: DESCRIPTION,
+                        NOTE: NOTE,
+                        DUE_DATE: DUE_DATE
+                    })
+                }
+            }
+            //检查必须有Lines
+            if (!(detail != null && detail.length > 0)) {
+                alert("Order Lines无数据");
+                return false;
+            }
+
+            var html = "";
+            if (detail != null && detail.length > 0) {
+                for (var i = 0; i < detail.length; i++) {
+                    if (!(detail[i].PART_NO != "" && detail[i].NOTE == ""))
+                        html += "第" + detail[i].LINE_NO + "行，PART_NO有空或者NOTE不为空" + "\n";
+                }
+            }
+            if (html != "") {
+                alert(html);
+                return false;
+            }
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/order/QuickOrdSave',
+                type: 'post',
+                data: JSON.stringify({
+                    header: header,
+                    detail: detail
+                }),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        $("#QUICK_ORDER_NO").html(obj.Data);
+                        alert(obj.Msg);
+                        $("#btnNewOrder").click();
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to save");
+                }
+            })
+        });
+        //Clear Data
+        $("#btnClear").on('click', function () {
+            $("#detailTbody").empty();
+        });
+        //Download
+        $("#btnDownload").on('click', function () {
+            var QUICK_ORDER_NO = $("#QUICK_ORDER_NO").html();
+            $.ajax({
+                url: '/order/QuickOrdDownload',
+                type: 'post',
+                data: {
+                    QUICK_ORDER_NO: QUICK_ORDER_NO
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success)
+                        window.location.href = "/order/QODownload?fileName=" + obj.Data;
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    alert("fail to download");
+                }
+            })
+        });
+
+
+
+        function GetG_ORDER_TYPE(DUE_DATE_CODE) {
+            $("#DUE_DATE_CODE").empty();
+            $.ajax({
+                url: '/order/GetG_ORDER_TYPE',
+                type: 'post',
+                async: true,
+                data: {
+                    SYSID: SYSID,
+                    WAREHOUSE: WAREHOUSE
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.Success) {
+                        if (DUE_DATE_CODE == "") {
+                            $("<option selected></option>").val("").text("").appendTo("#DUE_DATE_CODE");
+                            $("#DUE_DATE_DESC").html("");
+                            $("#PRIORITY_CODE").html("");
+                            $("#PRIORITY_DESC").html("");
+                        }
+                        for (var i = 0; i < obj.Data.length; i++) {
+                            if (obj.Data[i].DUE_DATE_CODE == DUE_DATE_CODE) {
+                                $("<option selected></option>").val(obj.Data[i].DUE_DATE_CODE).text(obj.Data[i].DUE_DATE_CODE + " " + obj.Data[i].DUE_DATE_DESC).appendTo("#DUE_DATE_CODE");
+                                $("#DUE_DATE_DESC").html(obj.Data[i].DUE_DATE_DESC);
+                                $("#PRIORITY_CODE").html(obj.Data[i].PRIORITY_CODE);
+                                $("#PRIORITY_DESC").html(obj.Data[i].PRIORITY_DESC);
+                            }
+                            else {
+                                $("<option></option>").val(obj.Data[i].DUE_DATE_CODE).text(obj.Data[i].DUE_DATE_CODE + " " + obj.Data[i].DUE_DATE_DESC).appendTo("#DUE_DATE_CODE");
+                            }
+                        }
+                    }
+                },
+                error: function (e) {
+                    alert("fail to get G_ORDER_TYPE");
+                }
+            })
+        }
+
+
+
+
+        $(".close").on('click', function () {
+            $("#SPL_IND").attr("checked", false);
+            PageIndex = 1;
+            $("#selectTbody").empty();
+            $("#KeyWord").val("");
+            $("#btnMore").css("display", "");
+        })
+
+
+        $("#detailTbody").on('blur', '.CUSTOMER_PARTNO', function () {
+            var $tr = $(this).parent().parent();
+            var $td = $tr.find("td");
+            var GOMS = $("#GOMS").val();
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/order/GetSingleDetail',
+                type: 'post',
+                data: {
+                    GOMS:GOMS,
+                    CUSTOMER_PARTNO: $td.find('.CUSTOMER_PARTNO').val(),
+                    BUY_QTY: $td.find('.BUY_QTY').val(),
+                    CUSTOMER_NO: $("#CUSTOMER_NO").html(),
+                    WAREHOUSE: $("#WAREHOUSE").html()
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        SingleDetail(obj.Data, $tr);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to get detail");
+                }
+            })
+        })
+
+        $("#detailTbody").on('blur', '.BUY_QTY', function () {
+            var $tr = $(this).parent().parent();
+            var $td = $tr.find("td");
+            $("#loadingModal").modal("show");
+            $.ajax({
+                url: '/order/GetSingleDetail',
+                type: 'post',
+                data: {
+                    CUSTOMER_PARTNO: $td.find('.CUSTOMER_PARTNO').val(),
+                    BUY_QTY: $td.find('.BUY_QTY').val(),
+                    CUSTOMER_NO: $("#CUSTOMER_NO").html(),
+                    WAREHOUSE: $("#WAREHOUSE").html()
+                },
+                dataType: 'json',
+                success: function (obj) {
+                    $("#loadingModal").modal("hide");
+                    if (obj.Success) {
+                        SingleDetail(obj.Data, $tr);
+                    }
+                    else
+                        alert(obj.Msg);
+                },
+                error: function (e) {
+                    $("#loadingModal").modal("hide");
+                    alert("fail to get detail");
+                }
+            })
+        })
+
+        function SingleDetail(data, tr) {
+            var $td = tr.find("td");
+            $td.find(".PART_NO").val(data.PART_NO);
+            if (data.PART_NO == "")
+                $td.find(".PART_NO")[0].style.borderColor = "red";
+            else
+                $td.find(".PART_NO")[0].style.borderColor = "#ECECEC";
+            $td.find(".RevisedQty").val(data.RevisedQty);
+            if ($td.find(".RevisedQty").val() != $td.find(".BUY_QTY").val())
+                $td.find(".RevisedQty")[0].style.color = "red";
+            else
+                $td.find(".RevisedQty")[0].style.color = "#555555";
+            $td.find(".DESCRIPTION").val(data.DESCRIPTION);
+            $td.find(".NOTE").val(data.NOTE);
+            if ($td.find(".NOTE").val() != "")
+                $td.find(".NOTE")[0].style.color = "red";
+            else
+                $td.find(".NOTE")[0].style.color = "#555555";
+            $td.find(".Inventory").val(data.Inventory);
+            if ($td.find(".Inventory").val() == "0")
+                $td.find(".Inventory")[0].style.color = "red";
+            else if (parseInt($td.find(".Inventory").val()) >= parseInt($td.find(".RevisedQty").val()))
+                $td.find(".Inventory")[0].style.color = "green";
+            else
+                $td.find(".Inventory")[0].style.color = "orange";
+        }
+
+        $("#detailTbody").on('change', '.DUE_DATE', function () {
+            var detailDUE_DATE = $(this);
+            var headerDUE_DATE = $("#DUE_DATE");
+            if (headerDUE_DATE.val() != "") {
+                var header = new Date(Date.parse(headerDUE_DATE.val()))
+                var detail = new Date(Date.parse(detailDUE_DATE.val()))
+                if (detail < header)
+                    alert("Data Error");
+            }
+        })
+
+        $("#btnNewOrder").on('click', function () {
+            $("#GOMS").val("RDC");
+            $("#GOMS_DESC").html("Regonal DC (China)");
+            $("#QUICK_ORDER_NO").html("");
+            $("#ABBREVIATION").val("");
+            $("#NAME").html("");
+            $("#CUSTOMER_NO").html("");
+            $("#BILL_TO_LOCATION").html("");
+            $("#SHIP_TO_LOCATION").html("");
+            $("#SPL_IND").attr("checked", false);
+            $("#DEST_LOCATION").html("");
+            $("#SHIP_TO_NAME").html("");
+            $("#CONTACT").html("");
+            $("#PHONE").html("");
+            $("#ADDR1").html("");
+            $("#ADDR2").html("");
+            $("#ADDR3").html("");
+            $("#CITY").html("");
+            $("#COUNTRY").html("");
+            $("#STATE").html("");
+            $("#ATTENTION").html("");
+            $("#WAREHOUSE").html("");
+            GetG_ORDER_TYPE("");
+            $("#DUE_DATE").val("");
+            $("#SHIP_COMPLETE_FLAG").attr("checked", false);
+            $("#CUSTOMER_PO_NO").val("");
+            $("#DEALER_PO_NO").val("");
+            $("#ORDER_NOTES").val("");
+            $("#detailTbody").empty();
+            $("#btnNewLine").click();
+            PageIndex = 1;
+            ABBREVIATION = "";
+            SYSID = "";
+            WAREHOUSE = "";
+            CUSTOMER_NO = "";
+            header = {};
+            detail = [];
+            DFLTData = null;
+        })
+
+    })
+
+
+
+
+</script>
+
+
+
+
+
+
+<!--datetimepicker-->
+<script>
+    $(document).ready(function () {
+
+    })
+</script>
+<!--loadingModal-->
+<script>
+    $(document).ready(function () {
+        $("#imgDiag").css("margin-top", "300px");
+    })
+</script>

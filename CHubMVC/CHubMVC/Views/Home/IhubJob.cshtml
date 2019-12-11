@@ -1,0 +1,287 @@
+﻿@{
+    ViewBag.Title = "IhubJob";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .form-group {
+        margin-bottom: 0;
+    }
+</style>
+@Html.Hidden("appUser", (object)ViewBag.AppUser)
+<div class="container-fluid" id="ihubjobDiv">
+    <div class="panel panel-default">
+        <form class="form-horizontal">
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-2">iHub Job</label>
+                    <div class="col-sm-2">
+                        <select class="form-control input-sm" id="JOB_NAME">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6" style="padding-top: 8px;">
+                        <span id="JOB_DESC"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:30px">
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-2">Parameter(1)</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="JOB_P1" disabled />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-2">Parameter(2)</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="JOB_P2" disabled />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-2">Parameter(3)</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="JOB_P3" disabled />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-2">Parameter(4)</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="JOB_P4" disabled />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-2">Parameter(5)</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" id="JOB_P5" disabled />
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:15px;">
+                <div class="form-group">
+                    <div class="col-sm-2 col-sm-offset-4">
+                        <input type="button" class="btn btn-primary btn-sm" id="btnRun" value="Run" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@Html.Partial("_LoadingModal");
+<script>
+    $(document).ready(function () {
+        var job;
+        $("#JOB_NAME").on('change', function () {
+            var jd = $("#JOB_NAME").val();
+            if (jd == "") {
+                job = null;
+                $("#JOB_DESC").html("");
+                FillData("");
+            }
+            else {
+                $.ajax({
+                    url: '/home/GetJOB_DESC',
+                    type: 'post',
+                    data: {
+                        JOB_NAME: jd,
+                        App_User: $("#appUser").val()
+                    },
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success) {
+                            job = obj.Data;
+                            $("#JOB_DESC").html(obj.Data.JOB_DESC);
+                            FillData(obj.Data);
+                        }
+                        else
+                            alert(obj.Msg);
+                    }
+                })
+            }
+        })
+
+        function FillData(data) {
+            if (data == "") {
+                $("#JOB_P1").val("");
+                $("#JOB_P1").attr("placeholder", "");
+                $("#JOB_P1").attr("disabled", true);
+                $("#JOB_P2").val("");
+                $("#JOB_P2").attr("placeholder", "");
+                $("#JOB_P2").attr("disabled", true);
+                $("#JOB_P3").val("");
+                $("#JOB_P3").attr("placeholder", "");
+                $("#JOB_P3").attr("disabled", true);
+                $("#JOB_P4").val("");
+                $("#JOB_P4").attr("placeholder", "");
+                $("#JOB_P4").attr("disabled", true);
+                $("#JOB_P5").val("");
+                $("#JOB_P5").attr("placeholder", "");
+                $("#JOB_P5").attr("disabled", true);
+            }
+            else {
+                if (data.JOB_P1 == null || data.JOB_P1 == "") {
+                    $("#JOB_P1").val("");
+                    $("#JOB_P1").attr("placeholder", "");
+                    $("#JOB_P1").attr("disabled", true);
+                }
+                else {
+                    $("#JOB_P1").val("");
+                    $("#JOB_P1").attr("placeholder", data.JOB_P1);
+                    $("#JOB_P1").attr("disabled", false);
+                }
+                if (data.JOB_P2 == null || data.JOB_P2 == "") {
+                    $("#JOB_P2").val("");
+                    $("#JOB_P2").attr("placeholder", "");
+                    $("#JOB_P2").attr("disabled", true);
+                }
+                else {
+                    $("#JOB_P2").val("");
+                    $("#JOB_P2").attr("placeholder", data.JOB_P2);
+                    $("#JOB_P2").attr("disabled", false);
+                }
+                if (data.JOB_P3 == null || data.JOB_P3 == "") {
+                    $("#JOB_P3").val("");
+                    $("#JOB_P3").attr("placeholder", "");
+                    $("#JOB_P3").attr("disabled", true);
+                }
+                else {
+                    $("#JOB_P3").val("");
+                    $("#JOB_P3").attr("placeholder", data.JOB_P3);
+                    $("#JOB_P3").attr("disabled", false);
+                }
+                if (data.JOB_P4 == null || data.JOB_P4 == "") {
+                    $("#JOB_P4").val("");
+                    $("#JOB_P4").attr("placeholder", "");
+                    $("#JOB_P4").attr("disabled", true);
+                }
+                else {
+                    $("#JOB_P4").val("");
+                    $("#JOB_P4").attr("placeholder", data.JOB_P4);
+                    $("#JOB_P4").attr("disabled", false);
+                }
+                if (data.JOB_P5 == null || data.JOB_P5 == "") {
+                    $("#JOB_P5").val("");
+                    $("#JOB_P5").attr("placeholder", "");
+                    $("#JOB_P5").attr("disabled", true);
+                }
+                else {
+                    $("#JOB_P5").val("");
+                    $("#JOB_P5").attr("placeholder", data.JOB_P5);
+                    $("#JOB_P5").attr("disabled", false);
+                }
+            }
+        }
+
+        $("#btnRun").on('click', function () {
+            if (job != null) {
+                var paras = [];
+                if (!($("#JOB_P1").prop("disabled"))) {
+                    if ($("#JOB_P1").val() == "") {
+                        alert("Parameter(1)不能为空");
+                        return;
+                    }
+                    else {
+                        paras.push($("#JOB_P1").val());
+                    }
+                }
+                if (!($("#JOB_P2").prop("disabled"))) {
+                    if ($("#JOB_P2").val() == "") {
+                        alert("Parameter(2)不能为空");
+                        return;
+                    }
+                    else {
+                        paras.push($("#JOB_P2").val());
+                    }
+                }
+                if (!($("#JOB_P3").prop("disabled"))) {
+                    if ($("#JOB_P3").val() == "") {
+                        alert("Parameter(3)不能为空");
+                        return;
+                    }
+                    else {
+                        paras.push($("#JOB_P3").val());
+                    }
+                }
+                if (!($("#JOB_P4").prop("disabled"))) {
+                    if ($("#JOB_P4").val() == "") {
+                        alert("Parameter(4)不能为空");
+                        return;
+                    }
+                    else {
+                        paras.push($("#JOB_P4").val());
+                    }
+                }
+                if (!($("#JOB_P5").prop("disabled"))) {
+                    if ($("#JOB_P5").val() == "") {
+                        alert("Parameter(5)不能为空");
+                        return;
+                    }
+                    else {
+                        paras.push($("#JOB_P5").val());
+                    }
+                }
+
+                $.ajax({
+                    url: '/home/IhubJobRun',
+                    type: 'post',
+                    data: JSON.stringify({
+                        arg: job,
+                        paras:paras
+                    }),
+                    contentType: 'application/json;charset=utf-8',
+                    dataType: 'json',
+                    success: function (obj) {
+                        if (obj.Success) {
+
+                        }
+                        else
+                            alert(obj.Msg);
+                    }
+                })
+            }
+        })
+
+
+
+
+
+
+    })
+
+    //JOB_DISPALY
+    $(function () {
+        $.ajax({
+            url: '/home/GetJOB_DISPLAY',
+            type: 'post',
+            data: {
+                App_User: $("#appUser").val()
+            },
+            dataType: 'json',
+            success: function (obj) {
+                if (obj.Success) {
+                    if (obj.Data != null && obj.Data.length > 0) {
+                        for (var i = 0; i < obj.Data.length; i++) {
+                            $("<option></option>").val(obj.Data[i].JOB_NAME).text(obj.Data[i].JOB_DISPLAY).appendTo("#JOB_NAME");
+                        }
+                    }
+                }
+                else
+                    alert(obj.Msg);
+            }
+        })
+    })
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#imgDiag").css("margin-Top", '300px');
+    })
+</script>
